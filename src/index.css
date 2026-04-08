@@ -176,7 +176,7 @@ input,select,textarea{font-family:inherit}
 .bento-wide{grid-column:span 2}
 .bento-chart{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;box-shadow:var(--sh);transition:all var(--tr)}
 .bento-chart:hover{box-shadow:var(--sh-md)}
-.bento-seg{grid-column:span 2;grid-row:span 2;background:var(--panel-grad);border-radius:var(--r-lg);padding:16px;box-shadow:0 8px 32px rgba(30,27,75,.2);color:#fff;overflow-y:auto;max-height:340px}
+.bento-seg{background:var(--panel-grad);border-radius:var(--r-lg);padding:16px;box-shadow:0 8px 32px rgba(30,27,75,.2);color:#fff;overflow-y:auto;max-height:260px}
 .bento-seg::-webkit-scrollbar{width:4px}
 .bento-seg::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:10px}
 .bento-seg-title{font-size:13px;font-weight:800;color:#fff;margin-bottom:10px;display:flex;align-items:center;gap:7px}
@@ -219,9 +219,9 @@ td b{color:var(--txt);font-weight:600}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 
 /* ─── MODALS ─── */
-.modal-bg{display:none;position:fixed;inset:0;z-index:600;background:rgba(15,12,60,.5);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px}
+.modal-bg{display:none;position:fixed;inset:0;z-index:600;background:rgba(15,12,60,.5);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 .modal-bg.open{display:flex}
-.modal{background:var(--surface);border-radius:var(--r-xl);padding:24px;width:100%;max-width:480px;box-shadow:var(--sh-lg);animation:pgIn .2s ease both;max-height:90vh;overflow-y:auto}
+.modal{background:var(--surface);border-radius:var(--r-xl);padding:24px;width:100%;max-width:480px;box-shadow:var(--sh-lg);animation:pgIn .2s ease both;max-height:85vh;overflow-y:auto;margin:auto}
 .modal-lg{max-width:640px}
 .mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .mh h3{font-size:17px;font-weight:800;color:var(--txt);letter-spacing:-.3px}
@@ -407,7 +407,12 @@ td b{color:var(--txt);font-weight:600}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
 
+/* ─── PERIOD PILLS ─── */
+.period-pills{display:flex;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:2px}
+.period-pills .pill{border:none;background:none;border-radius:6px;font-size:10px;font-weight:600;padding:4px 10px}
+.period-pills .pill.active{background:var(--surface);color:var(--acento);box-shadow:var(--sh)}
+
 /* ─── RESPONSIVE ─── */
 @media(max-width:1100px){.bento{grid-template-columns:repeat(2,1fr)}.bento-seg{grid-column:1/-1}.budget-layout{grid-template-columns:1fr}.analysis-grid{grid-template-columns:1fr}}
 @media(max-width:900px){.login-left{display:none}.login-right{width:100%}.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0;max-width:100vw}}
-@media(max-width:600px){.bento{grid-template-columns:1fr}.bento-wide,.bento-seg{grid-column:1/-1}.grid2,.grid3{grid-template-columns:1fr}.ph{flex-direction:column}.ph-right{width:100%}}
+@media(max-width:600px){.bento{grid-template-columns:1fr}.bento-wide,.bento-seg{grid-column:1/-1}.grid2,.grid3{grid-template-columns:1fr}.ph{flex-direction:column}.ph-right{width:100%;flex-wrap:wrap}.period-pills{order:-1}}

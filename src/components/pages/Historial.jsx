@@ -60,6 +60,13 @@ const TIERS = [
   { key: 'green', min: 0, max: 3, label: 'Reciente — 0 a 3 días', color: 'var(--green)', icon: 'fa-clock' },
 ]
 
+const PERIODS = [
+  { key: '3m', label: '3 meses', months: 3 },
+  { key: '6m', label: '6 meses', months: 6 },
+  { key: '12m', label: '12 meses', months: 12 },
+  { key: 'all', label: 'Todo', months: 0 },
+]
+
 /* ── Seguimiento card with Re-enviar button ── */
 function SeguimientoCard({ b, onEdit, onWA, onResend }) {
   const now = new Date()
@@ -157,6 +164,50 @@ function ResendModal({ budget, onClose, onSend }) {
   )
 }
 
+/* ── Status Donut ── */
+function StatusDonut({ statuses, budgets }) {
+  const total = budgets.length || 1
+  let cumulative = 0
+  const segments = statuses.map(s => {
+    const n = budgets.filter(b => b.status === s.k).length
+    const pct = n / total * 100
+    const start = cumulative
+    cumulative += pct
+    return { ...s, n, pct, start }
+  }).filter(s => s.n > 0)
+
+  const radius = 36
+  const circumference = 2 * Math.PI * radius
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+      <svg width="90" height="90" viewBox="0 0 90 90" style={{ flexShrink: 0 }}>
+        <circle cx="45" cy="45" r={radius} fill="none" stroke="var(--surface2)" strokeWidth="10" />
+        {segments.map((s, i) => (
+          <circle key={i} cx="45" cy="45" r={radius} fill="none" stroke={s.c} strokeWidth="10"
+            strokeDasharray={`${s.pct / 100 * circumference} ${circumference}`}
+            strokeDashoffset={-s.start / 100 * circumference}
+            transform="rotate(-90 45 45)" strokeLinecap="round" style={{ transition: 'all .6s ease' }} />
+        ))}
+        <text x="45" y="43" textAnchor="middle" fontSize="16" fontWeight="800" fill="var(--txt)">{budgets.length}</text>
+        <text x="45" y="55" textAnchor="middle" fontSize="8" fill="var(--txt3)" fontWeight="600">TOTAL</text>
+      </svg>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
+        {statuses.map(s => {
+          const n = budgets.filter(b => b.status === s.k).length
+          return (
+            <div key={s.k} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: s.c, flexShrink: 0 }} />
+              <span style={{ fontSize: 12, color: 'var(--txt2)', flex: 1 }}>{s.l}</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: n > 0 ? 'var(--txt)' : 'var(--txt4)' }}>{n}</span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function Historial() {
   const { get, config, updateBudgetStatus, deleteBudget } = useData()
   const toast = useToast()
@@ -166,25 +217,34 @@ export default function Historial() {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
   const [resendBudget, setResendBudget] = useState(null)
+  const [period, setPeriod] = useState('6m')
 
   const budgets = get('budgets')
   const c = config()
   const now = new Date()
-  const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
 
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
 
+  // Period filter
+  const periodMonths = PERIODS.find(p => p.key === period)?.months || 0
+  const periodStart = periodMonths > 0 ? new Date(now.getFullYear(), now.getMonth() - periodMonths, 1) : null
+  const periodBudgets = periodStart
+    ? budgets.filter(b => b.date && new Date(b.date) >= periodStart)
+    : budgets
+
   // KPI calculations
-  const monthBudgets = budgets.filter(b => b.date?.startsWith(ym))
-  const confirmed = budgets.filter(b => b.status === 'confirmed')
+  const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  const monthBudgets = periodBudgets.filter(b => b.date?.startsWith(ym))
+  const confirmed = periodBudgets.filter(b => b.status === 'confirmed')
   const totConf = confirmed.reduce((s, b) => s + (b.total || 0), 0)
   const mInc = monthBudgets.reduce((s, b) => s + (b.total || 0), 0)
   const mGain = monthBudgets.reduce((s, b) => s + (b.totalGain || 0), 0)
-  const convRate = budgets.length ? Math.round(confirmed.length / budgets.length * 100) + '%' : '—'
+  const convRate = periodBudgets.length ? Math.round(confirmed.length / periodBudgets.length * 100) + '%' : '—'
 
-  // Income bars (last 6 months)
+  // Income bars (last N months based on period)
+  const barMonths = periodMonths || 12
   const incomeData = []
-  for (let i = 5; i >= 0; i--) {
+  for (let i = barMonths - 1; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
     const val = budgets.filter(b => b.date?.startsWith(key) && b.status === 'confirmed').reduce((s, b) => s + (b.total || 0), 0)
@@ -192,14 +252,14 @@ export default function Historial() {
   }
 
   const gainData = []
-  for (let i = 5; i >= 0; i--) {
+  for (let i = barMonths - 1; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
     const val = budgets.filter(b => b.date?.startsWith(key) && b.status === 'confirmed').reduce((s, b) => s + (b.totalGain || 0), 0)
     gainData.push({ lbl: MONTHS[d.getMonth()], val })
   }
 
-  // Status progress
+  // Status
   const statuses = [
     { k: 'draft', l: 'Borrador', c: '#94A3B8' },
     { k: 'sent', l: 'Enviado', c: 'var(--blue)' },
@@ -209,7 +269,7 @@ export default function Historial() {
   ]
 
   // Filtered budgets for list tab
-  let filteredBudgets = [...budgets]
+  let filteredBudgets = [...periodBudgets]
   if (filter !== 'all') filteredBudgets = filteredBudgets.filter(b => b.status === filter)
   if (search) {
     const sq = search.toLowerCase()
@@ -236,7 +296,7 @@ export default function Historial() {
     }))
   }, [seguimiento])
 
-  // Dashboard mini-timeline: top 3 most urgent (red tier first, then orange, etc.)
+  // Dashboard mini-timeline: top 3 most urgent
   const urgentTop3 = useMemo(() => {
     return seguimiento.slice(0, 3)
   }, [seguimiento])
@@ -247,7 +307,7 @@ export default function Historial() {
   const topClients = Object.entries(byClient).sort((a, b) => b[1] - a[1]).slice(0, 5)
 
   // Analysis metrics
-  const totBudgeted = budgets.reduce((s, b) => s + (b.total || 0), 0)
+  const totBudgeted = periodBudgets.reduce((s, b) => s + (b.total || 0), 0)
   const totGain = confirmed.reduce((s, b) => s + (b.totalGain || 0), 0)
   const avgTicket = confirmed.length ? Math.round(totConf / confirmed.length) : 0
 
@@ -293,6 +353,15 @@ export default function Historial() {
       <div className="ph">
         <div className="ph-left"><h2>Historial</h2><p>Registro de presupuestos y análisis del negocio</p></div>
         <div className="ph-right">
+          {/* Period filter */}
+          <div className="period-pills">
+            {PERIODS.map(p => (
+              <button key={p.key} className={`pill ${period === p.key ? 'active' : ''}`}
+                onClick={() => setPeriod(p.key)} style={{ padding: '4px 10px', fontSize: 10 }}>
+                {p.label}
+              </button>
+            ))}
+          </div>
           <button className="btn btn-secondary btn-sm" onClick={exportCSV}><i className="fa fa-download" /> Exportar</button>
           <button className="btn btn-primary btn-sm" onClick={() => nav('/presupuesto')}><i className="fa fa-plus" /> Nuevo presupuesto</button>
         </div>
@@ -320,16 +389,26 @@ export default function Historial() {
               <KpiCard label="Total facturado" value={fmt(totConf)} foot="presupuestos confirmados" color="brand" icon="fa-dollar-sign" />
               <KpiCard label="Ingresos del mes" value={fmt(mInc)} foot={`${monthBudgets.length} presupuestos`} color="blue" icon="fa-chart-line" />
               <KpiCard label="Ganancia del mes" value={fmt(mGain)} foot="del período actual" color="green" icon="fa-coins" />
-              <KpiCard label="Tasa de conversión" value={convRate} foot={`${confirmed.length} de ${budgets.length} confirmados`} color="amber" icon="fa-funnel" />
+              <KpiCard label="Tasa de conversión" value={convRate} foot={`${confirmed.length} de ${periodBudgets.length} confirmados`} color="amber" icon="fa-funnel" />
 
               <div className="bento-chart bento-wide">
-                <div className="card-header"><span className="card-title"><i className="fa fa-chart-bar" style={{ color: 'var(--brand)', marginRight: 7 }} />Ingresos confirmados — 6 meses</span></div>
+                <div className="card-header">
+                  <span className="card-title"><i className="fa fa-chart-bar" style={{ color: 'var(--brand)', marginRight: 7 }} />Ingresos confirmados — {PERIODS.find(p => p.key === period)?.label}</span>
+                </div>
                 <BarChart data={incomeData} />
               </div>
 
-              {/* ── Mini-Timeline: top 3 urgentes ── */}
-              <div className="bento-seg">
-                <div className="bento-seg-title"><i className="fa fa-fire" />Seguimiento activo</div>
+              {/* ── Estado de presupuestos: Donut compacto ── */}
+              <div className="bento-chart">
+                <div className="card-header"><span className="card-title">Estado de presupuestos</span></div>
+                <StatusDonut statuses={statuses} budgets={periodBudgets} />
+              </div>
+
+              {/* ── Mini-Timeline seguimiento: compacto ── */}
+              <div className="bento-chart" style={{ background: 'var(--panel-grad)', border: 'none', color: '#fff' }}>
+                <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 7 }}>
+                  <i className="fa fa-fire" />Seguimiento activo
+                </div>
                 {urgentTop3.length ? (
                   <>
                     {urgentTop3.map(b => {
@@ -337,19 +416,19 @@ export default function Historial() {
                       return (
                         <div key={b.id} className="mini-seg-item" style={{ borderLeft: `3px solid ${urg.color}` }}>
                           <div className="mini-seg-header">
-                            <div className={`seg-light ${urg.cls}`} style={{ width: 30, height: 30, fontSize: 12 }}>
+                            <div className={`seg-light ${urg.cls}`} style={{ width: 28, height: 28, fontSize: 11 }}>
                               <i className={`fa ${urg.icon}`} />
                             </div>
                             <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ fontWeight: 700, fontSize: 12, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              <div style={{ fontWeight: 700, fontSize: 11, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                 {b.company || b.contact || '—'}
                               </div>
-                              <div style={{ fontSize: 11, color: 'rgba(255,255,255,.45)' }}>
-                                {b.num} · {b.days} días · {fmt(b.total)}
+                              <div style={{ fontSize: 10, color: 'rgba(255,255,255,.45)' }}>
+                                {b.num} · {b.days}d · {fmt(b.total)}
                               </div>
                             </div>
-                            <div style={{ display: 'flex', gap: 6 }}>
-                              <button className="mini-seg-btn wa" onClick={() => openWADirect(b)} title="WhatsApp directo">
+                            <div style={{ display: 'flex', gap: 4 }}>
+                              <button className="mini-seg-btn wa" onClick={() => openWADirect(b)} title="WhatsApp">
                                 <i className="fa-brands fa-whatsapp" />
                               </button>
                               <button className="mini-seg-btn resend" onClick={() => handleResend(b)} title="Re-enviar">
@@ -367,25 +446,11 @@ export default function Historial() {
                     )}
                   </>
                 ) : (
-                  <div style={{ textAlign: 'center', padding: 28, color: 'rgba(255,255,255,.35)', fontSize: 12 }}>
-                    <i className="fa fa-check-circle" style={{ fontSize: 20, marginBottom: 8, display: 'block' }} />
+                  <div style={{ textAlign: 'center', padding: 20, color: 'rgba(255,255,255,.35)', fontSize: 12 }}>
+                    <i className="fa fa-check-circle" style={{ fontSize: 18, marginBottom: 6, display: 'block' }} />
                     Sin presupuestos pendientes
                   </div>
                 )}
-              </div>
-
-              <div className="bento-chart bento-wide">
-                <div className="card-header"><span className="card-title">Estado de presupuestos</span></div>
-                {statuses.map(s => {
-                  const n = budgets.filter(b => b.status === s.k).length
-                  const pct = budgets.length ? Math.round(n / budgets.length * 100) : 0
-                  return (
-                    <div key={s.k} className="prog-item">
-                      <div className="prog-head"><span style={{ fontSize: 12, color: 'var(--txt2)' }}>{s.l}</span><span style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt)' }}>{n}</span></div>
-                      <div className="prog-track"><div className="prog-fill" style={{ width: `${pct}%`, background: s.c }} /></div>
-                    </div>
-                  )
-                })}
               </div>
 
               <div className="bento-chart bento-wide">
@@ -478,7 +543,7 @@ export default function Historial() {
         <div className="analysis-grid">
           <div className="card">
             <div className="card-header"><span className="card-title"><i className="fa fa-chart-pie" style={{ color: 'var(--brand)', marginRight: 6 }} />Métricas globales</span></div>
-            {[['Total presupuestado', fmt(totBudgeted)], ['Total confirmado', fmt(totConf)], ['Ganancia acumulada', fmt(totGain)], ['Ticket promedio', fmt(avgTicket)], ['Tasa de conversión', convRate], ['Nº de presupuestos', budgets.length]].map(([l, v], i) => (
+            {[['Total presupuestado', fmt(totBudgeted)], ['Total confirmado', fmt(totConf)], ['Ganancia acumulada', fmt(totGain)], ['Ticket promedio', fmt(avgTicket)], ['Tasa de conversión', convRate], ['Nº de presupuestos', periodBudgets.length]].map(([l, v], i) => (
               <div key={i} className="metric-row"><span className="mr-label">{l}</span><span className="mr-val">{v}</span></div>
             ))}
           </div>
@@ -490,20 +555,7 @@ export default function Historial() {
           </div>
           <div className="card">
             <div className="card-header"><span className="card-title"><i className="fa fa-funnel" style={{ color: 'var(--green)', marginRight: 6 }} />Conversión por estado</span></div>
-            {statuses.map(s => {
-              const n = budgets.filter(b => b.status === s.k).length
-              const p = budgets.length ? Math.round(n / budgets.length * 100) : 0
-              return (
-                <div key={s.k} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                  <div style={{ width: 10, height: 10, borderRadius: '50%', background: s.c, flexShrink: 0 }} />
-                  <span style={{ fontSize: 12, color: 'var(--txt2)', flex: 1 }}>{s.l}</span>
-                  <div style={{ flex: 2, height: 6, background: 'var(--surface2)', borderRadius: 3, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${p}%`, background: s.c }} />
-                  </div>
-                  <span style={{ fontSize: 12, fontWeight: 700, width: 20, textAlign: 'right' }}>{n}</span>
-                </div>
-              )
-            })}
+            <StatusDonut statuses={statuses} budgets={periodBudgets} />
           </div>
           <div className="card">
             <div className="card-header"><span className="card-title"><i className="fa fa-coins" style={{ color: 'var(--amber)', marginRight: 6 }} />Ganancia por mes</span></div>
