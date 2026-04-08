@@ -15,7 +15,7 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
 
   return (
     <div className="modal-bg open" style={{ zIndex: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'fixed', inset: 0 }} onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-      <div style={{ background: 'var(--surface)', borderRadius: 18, width: '100%', maxWidth: 640, maxHeight: '90vh', boxShadow: 'var(--sh-lg)', animation: 'pgIn .2s ease both', display: 'flex', flexDirection: 'column', overflow: 'hidden' }} onClick={e => e.stopPropagation()}>
+      <div style={{ background: 'var(--surface)', borderRadius: 18, width: '100%', maxWidth: 780, maxHeight: '88vh', boxShadow: 'var(--sh-lg)', animation: 'pgIn .2s ease both', display: 'flex', flexDirection: 'column', overflow: 'hidden' }} onClick={e => e.stopPropagation()}>
         {/* Toolbar */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 18px', borderBottom: '1px solid var(--border)', flexShrink: 0, background: 'var(--surface2)', borderRadius: '18px 18px 0 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

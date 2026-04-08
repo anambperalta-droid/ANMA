@@ -88,3 +88,15 @@ export const STATUS_CLS = {
   confirmed: 'b-confirmed',
   lost: 'b-lost',
 }
+
+export const PAY_STATUS_MAP = {
+  pending: 'Pago pendiente',
+  partial: 'Sena abonada',
+  paid: 'Pagado',
+}
+
+export const PAY_STATUS_CLS = {
+  pending: 'b-draft',
+  partial: 'b-negotiating',
+  paid: 'b-confirmed',
+}

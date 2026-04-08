@@ -76,7 +76,7 @@ export default function Presupuesto() {
 
   const [form, setForm] = useState({
     contact: '', company: '', wa: '', ocasion: '', delivery: '', deliveryDate: '',
-    shipCost: 0, status: 'draft', noteInt: '', noteCli: '',
+    shipCost: 0, status: 'draft', payStatus: 'pending', noteInt: '', noteCli: '',
     margin: c.defaultMargin || 40, deposit: c.defaultDeposit || 50, logoCost: 0,
   })
   const [items, setItems] = useState([emptyItem()])
@@ -98,6 +98,7 @@ export default function Presupuesto() {
           ocasion: b.ocasion || '', delivery: b.delivery || '', deliveryDate: b.deliveryDate || '',
           shipCost: b.shipCost || 0, status: b.status || 'draft',
           noteInt: b.noteInt || '', noteCli: b.noteCli || '',
+          payStatus: b.payStatus || 'pending',
           margin: b.margin ?? c.defaultMargin ?? 40,
           deposit: b.deposit ?? c.defaultDeposit ?? 50,
           logoCost: b.logoCost || 0,
@@ -157,7 +158,7 @@ export default function Presupuesto() {
     if (!form.contact && !form.company) { toast('Ingresá al menos contacto o empresa.', 'er'); return }
     const validItems = items.filter(i => i.name).map(i => ({ ...i, qty: num(i.qty), costUnit: num(i.costUnit), priceUnit: num(i.priceUnit) }))
     if (!validItems.length) { toast('Agregá al menos un producto.', 'er'); return }
-    const saveForm = { ...form, shipCost: num(form.shipCost), logoCost: num(form.logoCost), margin: num(form.margin), deposit: num(form.deposit) }
+    const saveForm = { ...form, shipCost: num(form.shipCost), logoCost: num(form.logoCost), margin: num(form.margin), deposit: num(form.deposit), payStatus: form.payStatus || 'pending' }
     saveBudget({ ...(editId ? { id: editId } : {}), ...saveForm, items: validItems, totalCost: calc.baseCost, totalGain: calc.gain, total: calc.total, depositAmt: calc.depositAmt })
     toast('Presupuesto guardado', 'ok')
     nav('/')
@@ -166,7 +167,7 @@ export default function Presupuesto() {
   const waText = useMemo(() => {
     const bName = c.businessName || 'ANMA'
     const prodList = items.filter(i => i.name).map(i => `• ${i.qty}x ${i.name}`).join('\n')
-    return `Hola ${form.contact || '[NOMBRE]'}! Te envío el presupuesto de *${bName}* para ${form.company || '[EMPRESA]'}:\n\n${prodList}\n\n💰 Total: ${fmt(calc.total)}\n📅 Entrega estimada: ${form.deliveryDate || 'A coordinar'}${form.noteCli ? '\n📝 ' + form.noteCli : ''}\n\n¿Te queda alguna duda? Quedamos a disposición!`
+    return `Hola ${form.contact || '[NOMBRE]'}! Te envio el presupuesto de *${bName}* para ${form.company || '[EMPRESA]'}:\n\n${prodList}\n\n*Total:* ${fmt(calc.total)}\n*Entrega estimada:* ${form.deliveryDate || 'A coordinar'}${form.noteCli ? '\n*Nota:* ' + form.noteCli : ''}\n\nTe queda alguna duda? Quedamos a disposicion!`
   }, [form, items, calc.total, c.businessName])
 
   const copyWA = () => navigator.clipboard.writeText(waText).then(() => toast('Mensaje WA copiado', 'ok'))
@@ -270,6 +271,13 @@ export default function Presupuesto() {
                   <option value="draft">Borrador</option><option value="sent">Enviado</option>
                   <option value="negotiating">Negociando</option><option value="confirmed">Confirmado</option>
                   <option value="lost">Perdido</option>
+                </select>
+              </div>
+              <div className="fg"><label>Estado de pago</label>
+                <select value={form.payStatus} onChange={e => setF('payStatus', e.target.value)}>
+                  <option value="pending">Pago pendiente</option>
+                  <option value="partial">Sena abonada</option>
+                  <option value="paid">Pagado</option>
                 </select>
               </div>
             </div>

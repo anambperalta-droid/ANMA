@@ -24,7 +24,7 @@ export default function Sidebar({ open, onClose }) {
   const { get, config } = useData()
   const c = config()
   const name = c.businessName || 'ANMA'
-  const sub = c.subtitle || 'Regalos Empresariales'
+  const sub = c.subtitle || 'Tu negocio en un solo lugar'
   const email = c.email || ''
   const userName = email.split('@')[0] || 'Administrador'
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
-import { fmt, MONTHS, STATUS_MAP, STATUS_CLS } from '../../lib/storage'
+import { fmt, MONTHS, STATUS_MAP, STATUS_CLS, PAY_STATUS_MAP, PAY_STATUS_CLS } from '../../lib/storage'
 
 function Badge({ status }) {
   return <span className={`badge ${STATUS_CLS[status] || 'b-draft'}`}>{STATUS_MAP[status] || 'Borrador'}</span>
@@ -107,7 +107,7 @@ function SeguimientoCard({ b, onEdit, onWA, onResend }) {
 
 /* ── Resend Modal ── */
 function ResendModal({ budget, onClose, onSend }) {
-  const defaultMsg = `Hola ${budget.contact || ''}! 👋\n\nTe escribo para darle seguimiento al presupuesto ${budget.num || ''} que te enviamos el ${budget.date || '—'} por un total de ${fmt(budget.total)}.\n\n¿Pudiste revisarlo? Estamos a disposición para cualquier consulta o ajuste que necesites.\n\n¡Saludos!\nEquipo ANMA`
+  const defaultMsg = `Hola ${budget.contact || ''}!\n\nTe escribo para darle seguimiento al presupuesto ${budget.num || ''} que te enviamos el ${budget.date || '—'} por un total de ${fmt(budget.total)}.\n\nPudiste revisarlo? Estamos a disposicion para cualquier consulta o ajuste que necesites.\n\nSaludos!\nEquipo ANMA`
   const [msg, setMsg] = useState(defaultMsg)
 
   const copyAndClose = () => {
@@ -503,7 +503,7 @@ export default function Historial() {
           </div>
           <div className="tbl-card">
             <table>
-              <thead><tr><th>N°</th><th>Fecha</th><th>Cliente</th><th>Empresa</th><th>Entrega</th><th>Total</th><th>Ganancia</th><th>Estado</th><th>Acciones</th></tr></thead>
+              <thead><tr><th>N°</th><th>Fecha</th><th>Cliente</th><th>Empresa</th><th>Entrega</th><th>Total</th><th>Ganancia</th><th>Estado</th><th>Pago</th><th>Acciones</th></tr></thead>
               <tbody>
                 {filteredBudgets.length ? filteredBudgets.map(b => (
                   <tr key={b.id}>
@@ -520,6 +520,7 @@ export default function Historial() {
                         {Object.entries(STATUS_MAP).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                       </select>
                     </td>
+                    <td><span className={`badge ${PAY_STATUS_CLS[b.payStatus] || 'b-draft'}`}>{PAY_STATUS_MAP[b.payStatus] || 'Pendiente'}</span></td>
                     <td>
                       <div className="acts">
                         <button className="act edit" onClick={() => editB(b.id)} title="Editar"><i className="fa fa-pen" /></button>
@@ -529,7 +530,7 @@ export default function Historial() {
                     </td>
                   </tr>
                 )) : (
-                  <tr><td colSpan={9}><div className="empty"><div className="ico"><i className="fa fa-file-invoice" /></div><p>No hay presupuestos con este filtro</p></div></td></tr>
+                  <tr><td colSpan={10}><div className="empty"><div className="ico"><i className="fa fa-file-invoice" /></div><p>No hay presupuestos con este filtro</p></div></td></tr>
                 )}
               </tbody>
             </table>
