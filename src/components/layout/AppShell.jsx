@@ -5,6 +5,7 @@ import { applyThemeColors } from '../../lib/theme'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 import CommandPalette from './CommandPalette'
+import TaskFab from './TaskFab'
 import Historial from '../pages/Historial'
 import Presupuesto from '../pages/Presupuesto'
 import Clientes from '../pages/Clientes'
@@ -54,6 +55,7 @@ export default function AppShell() {
         </div>
       </div>
       {cmdOpen && <CommandPalette onClose={() => setCmdOpen(false)} />}
+      <TaskFab />
     </div>
   )
 }
