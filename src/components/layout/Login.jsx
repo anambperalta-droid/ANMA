@@ -32,18 +32,22 @@ export default function Login() {
             {c.logo ? <img src={c.logo} alt="" /> : name.slice(0, 2).toUpperCase()}
           </div>
           <h1>{name}</h1>
-          <p>Gestion profesional de regalos empresariales para potenciar tu negocio</p>
+          <p>Tu negocio en un solo lugar</p>
           <div className="login-feature">
             <div className="login-feature-icon"><i className="fa fa-file-invoice-dollar" /></div>
-            <div className="login-feature-text"><div className="t">Presupuestos al instante</div><div className="s">Genera y envia por WhatsApp en segundos</div></div>
+            <div className="login-feature-text"><div className="t">Presupuestos y facturacion</div><div className="s">Crea, envia y hace seguimiento en segundos</div></div>
           </div>
           <div className="login-feature">
             <div className="login-feature-icon"><i className="fa fa-chart-line" /></div>
-            <div className="login-feature-text"><div className="t">Analisis de tu negocio</div><div className="s">KPIs, conversion y rentabilidad en tiempo real</div></div>
+            <div className="login-feature-text"><div className="t">Metricas en tiempo real</div><div className="s">Ventas, cobros, clientes y rentabilidad al dia</div></div>
           </div>
           <div className="login-feature">
-            <div className="login-feature-icon"><i className="fa fa-shield-halved" /></div>
-            <div className="login-feature-text"><div className="t">Datos seguros y privados</div><div className="s">Protegido con Supabase Auth</div></div>
+            <div className="login-feature-icon"><i className="fa fa-bell" /></div>
+            <div className="login-feature-text"><div className="t">Alertas y recordatorios</div><div className="s">Nunca pierdas un seguimiento o un cobro pendiente</div></div>
+          </div>
+          <div className="login-feature">
+            <div className="login-feature-icon"><i className="fa fa-users" /></div>
+            <div className="login-feature-text"><div className="t">Clientes y proveedores</div><div className="s">Toda tu red de contactos organizada y accesible</div></div>
           </div>
         </div>
       </div>
