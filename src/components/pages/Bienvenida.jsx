@@ -13,35 +13,96 @@ export default function Bienvenida() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const hash = window.location.hash
-    if (hash && hash.includes('access_token')) {
-      const params = new URLSearchParams(hash.substring(1))
-      const accessToken = params.get('access_token')
-      const refreshToken = params.get('refresh_token')
-      if (accessToken && refreshToken) {
-        supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
-          .then(({ error }) => {
-            if (error) {
-              setError('El enlace de invitacion expiro o es invalido.')
-              setLoading(false)
-            } else {
-              window.history.replaceState(null, '', window.location.pathname)
-              setSessionReady(true)
-              setLoading(false)
-            }
-          })
+    async function detectSession() {
+      // 1) PKCE flow: ?code= in query params
+      const url = new URL(window.location.href)
+      const code = url.searchParams.get('code')
+      if (code) {
+        const { error: codeErr } = await supabase.auth.exchangeCodeForSession(code)
+        if (codeErr) {
+          setError('El enlace de invitacion expiro o es invalido.')
+          setLoading(false)
+          return
+        }
+        window.history.replaceState(null, '', window.location.pathname)
+        setSessionReady(true)
+        setLoading(false)
         return
       }
-    }
-    supabase.auth.getSession().then(({ data: { session } }) => {
+
+      // 2) Implicit flow: #access_token= in hash
+      const hash = window.location.hash
+      if (hash && hash.includes('access_token')) {
+        const params = new URLSearchParams(hash.substring(1))
+        const accessToken = params.get('access_token')
+        const refreshToken = params.get('refresh_token')
+        if (accessToken && refreshToken) {
+          const { error: sessErr } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          })
+          if (sessErr) {
+            setError('El enlace de invitacion expiro o es invalido.')
+            setLoading(false)
+            return
+          }
+          window.history.replaceState(null, '', window.location.pathname)
+          setSessionReady(true)
+          setLoading(false)
+          return
+        }
+      }
+
+      // 3) Token hash flow (email OTP): ?token_hash=&type=
+      const tokenHash = url.searchParams.get('token_hash')
+      const type = url.searchParams.get('type')
+      if (tokenHash && type) {
+        const { error: otpErr } = await supabase.auth.verifyOtp({
+          token_hash: tokenHash,
+          type: type,
+        })
+        if (otpErr) {
+          setError('El enlace de invitacion expiro o es invalido.')
+          setLoading(false)
+          return
+        }
+        window.history.replaceState(null, '', window.location.pathname)
+        setSessionReady(true)
+        setLoading(false)
+        return
+      }
+
+      // 4) Already has a session (user refreshed the page)
+      const { data: { session } } = await supabase.auth.getSession()
       if (session) {
         setSessionReady(true)
         setLoading(false)
-      } else {
-        setError('No se detecto una invitacion valida. Solicita un nuevo enlace al administrador.')
-        setLoading(false)
+        return
       }
-    })
+
+      // 5) Let Supabase auto-detect from URL (fallback)
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+        if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION')) {
+          setSessionReady(true)
+          setLoading(false)
+          subscription.unsubscribe()
+        }
+      })
+
+      // Timeout: if nothing detected in 3s, show error
+      setTimeout(() => {
+        setLoading((prev) => {
+          if (prev) {
+            setError('No se detecto una invitacion valida. Solicita un nuevo enlace al administrador.')
+            subscription.unsubscribe()
+            return false
+          }
+          return prev
+        })
+      }, 3000)
+    }
+
+    detectSession()
   }, [])
 
   const handleSubmit = async () => {
@@ -65,7 +126,9 @@ export default function Bienvenida() {
     return (
       <div style={styles.container}>
         <div style={styles.card}>
-          <div className="sk sk-kpi" style={{ height: 200 }} />
+          <div style={styles.logo}>AN</div>
+          <p style={styles.subtitle}>Verificando invitacion...</p>
+          <div className="sk sk-kpi" style={{ height: 40, width: '100%' }} />
         </div>
       </div>
     )
