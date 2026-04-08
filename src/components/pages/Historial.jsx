@@ -232,22 +232,38 @@ export default function Historial() {
     ? budgets.filter(b => b.date && new Date(b.date) >= periodStart)
     : budgets
 
-  // KPI calculations
+  // Helper: dinero real cobrado segun estado de pago
+  const cobrado = (b) => {
+    if (b.payStatus === 'paid') return b.total || 0
+    if (b.payStatus === 'partial') return b.depositAmt || Math.round((b.total || 0) * (b.deposit || 50) / 100)
+    return 0
+  }
+  const ganCobrada = (b) => {
+    if (b.payStatus === 'paid') return b.totalGain || 0
+    if (b.payStatus === 'partial') {
+      const pct = (b.depositAmt || 0) / ((b.total || 1))
+      return Math.round((b.totalGain || 0) * pct)
+    }
+    return 0
+  }
+
+  // KPI calculations — basados en dinero COBRADO
   const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
   const monthBudgets = periodBudgets.filter(b => b.date?.startsWith(ym))
   const confirmed = periodBudgets.filter(b => b.status === 'confirmed')
-  const totConf = confirmed.reduce((s, b) => s + (b.total || 0), 0)
-  const mInc = monthBudgets.reduce((s, b) => s + (b.total || 0), 0)
-  const mGain = monthBudgets.reduce((s, b) => s + (b.totalGain || 0), 0)
+  const pagados = periodBudgets.filter(b => b.payStatus === 'paid' || b.payStatus === 'partial')
+  const totCobrado = pagados.reduce((s, b) => s + cobrado(b), 0)
+  const mInc = monthBudgets.reduce((s, b) => s + cobrado(b), 0)
+  const mGain = monthBudgets.reduce((s, b) => s + ganCobrada(b), 0)
   const convRate = periodBudgets.length ? Math.round(confirmed.length / periodBudgets.length * 100) + '%' : '—'
 
-  // Income bars (last N months based on period)
+  // Income bars (last N months based on period) — dinero cobrado
   const barMonths = periodMonths || 12
   const incomeData = []
   for (let i = barMonths - 1; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
-    const val = budgets.filter(b => b.date?.startsWith(key) && b.status === 'confirmed').reduce((s, b) => s + (b.total || 0), 0)
+    const val = budgets.filter(b => b.date?.startsWith(key)).reduce((s, b) => s + cobrado(b), 0)
     incomeData.push({ lbl: MONTHS[d.getMonth()], val })
   }
 
@@ -255,7 +271,7 @@ export default function Historial() {
   for (let i = barMonths - 1; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
-    const val = budgets.filter(b => b.date?.startsWith(key) && b.status === 'confirmed').reduce((s, b) => s + (b.totalGain || 0), 0)
+    const val = budgets.filter(b => b.date?.startsWith(key)).reduce((s, b) => s + ganCobrada(b), 0)
     gainData.push({ lbl: MONTHS[d.getMonth()], val })
   }
 
@@ -308,8 +324,8 @@ export default function Historial() {
 
   // Analysis metrics
   const totBudgeted = periodBudgets.reduce((s, b) => s + (b.total || 0), 0)
-  const totGain = confirmed.reduce((s, b) => s + (b.totalGain || 0), 0)
-  const avgTicket = confirmed.length ? Math.round(totConf / confirmed.length) : 0
+  const totGain = pagados.reduce((s, b) => s + ganCobrada(b), 0)
+  const avgTicket = pagados.length ? Math.round(totCobrado / pagados.length) : 0
 
   const editB = (id) => nav(`/presupuesto/${id}`)
   const copyWA = (b) => {
@@ -386,7 +402,7 @@ export default function Historial() {
             </div>
           ) : (
             <div className="bento sk-fade-in">
-              <KpiCard label="Total facturado" value={fmt(totConf)} foot="presupuestos confirmados" color="brand" icon="fa-dollar-sign" />
+              <KpiCard label="Total cobrado" value={fmt(totCobrado)} foot={`${pagados.length} pagos recibidos`} color="brand" icon="fa-dollar-sign" />
               <KpiCard label="Ingresos del mes" value={fmt(mInc)} foot={`${monthBudgets.length} presupuestos`} color="blue" icon="fa-chart-line" />
               <KpiCard label="Ganancia del mes" value={fmt(mGain)} foot="del período actual" color="green" icon="fa-coins" />
               <KpiCard label="Tasa de conversión" value={convRate} foot={`${confirmed.length} de ${periodBudgets.length} confirmados`} color="amber" icon="fa-funnel" />
@@ -544,7 +560,7 @@ export default function Historial() {
         <div className="analysis-grid">
           <div className="card">
             <div className="card-header"><span className="card-title"><i className="fa fa-chart-pie" style={{ color: 'var(--brand)', marginRight: 6 }} />Métricas globales</span></div>
-            {[['Total presupuestado', fmt(totBudgeted)], ['Total confirmado', fmt(totConf)], ['Ganancia acumulada', fmt(totGain)], ['Ticket promedio', fmt(avgTicket)], ['Tasa de conversión', convRate], ['Nº de presupuestos', periodBudgets.length]].map(([l, v], i) => (
+            {[['Total presupuestado', fmt(totBudgeted)], ['Total cobrado', fmt(totCobrado)], ['Ganancia cobrada', fmt(totGain)], ['Ticket promedio', fmt(avgTicket)], ['Tasa de conversion', convRate], ['N de presupuestos', periodBudgets.length]].map(([l, v], i) => (
               <div key={i} className="metric-row"><span className="mr-label">{l}</span><span className="mr-val">{v}</span></div>
             ))}
           </div>
