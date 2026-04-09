@@ -151,7 +151,7 @@ export default function Catalogo() {
 
       {csvModal && (
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) { setCsvModal(false); setCsvPreview([]) } }}>
-          <div className="modal" style={{ maxWidth: 580 }}>
+          <div className="modal" style={{ maxWidth: 680 }}>
             <div className="mh"><h3>Importar productos desde CSV</h3><button className="mclose" onClick={() => { setCsvModal(false); setCsvPreview([]) }}><i className="fa fa-xmark" /></button></div>
             <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 18px', marginBottom: 16, fontSize: 12, color: 'var(--txt2)' }}>
               <b>Formato:</b> Nombre del producto, Costo (una por línea)

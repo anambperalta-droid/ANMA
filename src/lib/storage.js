@@ -22,7 +22,7 @@ export function wCfg(patch) {
 
 export const DEFAULTS = {
   businessName: 'ANMA',
-  subtitle: 'Regalos Empresariales',
+  subtitle: 'Tu negocio en un solo lugar',
   currency: '$',
   defaultMargin: 40,
   defaultDeposit: 50,
@@ -91,7 +91,7 @@ export const STATUS_CLS = {
 
 export const PAY_STATUS_MAP = {
   pending: 'Pago pendiente',
-  partial: 'Sena abonada',
+  partial: 'Seña abonada',
   paid: 'Pagado',
 }
 

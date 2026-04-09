@@ -59,7 +59,7 @@ export function applyThemeColors(principal, acento) {
     root.setProperty('--acento-light', mixHex(acento, '#ffffff', 0.65))
     root.setProperty('--acento-xlt', `rgba(${r},${g},${b},.08)`)
     root.setProperty('--acento-dim', `rgba(${r},${g},${b},.12)`)
-    root.setProperty('--acento-grad', `linear-gradient(135deg, ${acento} 0%, ${mixHex(acento, '#10B981', 0.55)} 100%)`)
+    root.setProperty('--acento-grad', acento)
     root.setProperty('--sh-acento', `0 6px 20px rgba(${r},${g},${b},.25)`)
 
     /* Verde semántico (ganancias, confirmados) sigue al acento */

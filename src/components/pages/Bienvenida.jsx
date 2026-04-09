@@ -109,7 +109,7 @@ export default function Bienvenida() {
     setError('')
     if (!password || !confirm) { setError('Completa ambos campos.'); return }
     if (password.length < 6) { setError('Minimo 6 caracteres.'); return }
-    if (password !== confirm) { setError('Las contrasenas no coinciden.'); return }
+    if (password !== confirm) { setError('Las contraseñas no coinciden.'); return }
     setSubmitting(true)
     const { error: updateErr } = await supabase.auth.updateUser({ password })
     if (updateErr) {
@@ -151,7 +151,7 @@ export default function Bienvenida() {
       <div style={styles.card}>
         <div style={styles.logo}>AN</div>
         <h1 style={styles.title}>Bienvenido a ANMA</h1>
-        <p style={styles.subtitle}>Elige tu contrasena para comenzar</p>
+        <p style={styles.subtitle}>Elige tu contraseña para comenzar</p>
 
         {error && (
           <div style={styles.error}>
@@ -160,7 +160,7 @@ export default function Bienvenida() {
         )}
 
         <div className="form-group fg" style={{ width: '100%' }}>
-          <label className="f-lbl">Elegir Contrasena</label>
+          <label className="f-lbl">Elegir Contraseña</label>
           <div className="f-wrap">
             <input
               type={showPwd ? 'text' : 'password'}
@@ -179,11 +179,11 @@ export default function Bienvenida() {
         </div>
 
         <div className="form-group fg" style={{ width: '100%' }}>
-          <label className="f-lbl">Confirmar Contrasena</label>
+          <label className="f-lbl">Confirmar Contraseña</label>
           <input
             type={showPwd ? 'text' : 'password'}
             className="f-inp"
-            placeholder="Repeti la contrasena"
+            placeholder="Repeti la contraseña"
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             onKeyDown={handleKey}

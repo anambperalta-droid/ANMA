@@ -68,7 +68,7 @@ export default function Login() {
               onChange={e => setEmail(e.target.value)} onKeyDown={handleKey} autoComplete="email" />
           </div>
           <div className="form-group fg">
-            <label className="f-lbl">Contrasena</label>
+            <label className="f-lbl">Contraseña</label>
             <div className="f-wrap">
               <input type={showPwd ? 'text' : 'password'} className="f-inp" placeholder="********"
                 value={pass} onChange={e => setPass(e.target.value)} onKeyDown={handleKey}

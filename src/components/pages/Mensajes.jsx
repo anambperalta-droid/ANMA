@@ -16,9 +16,9 @@ const STAGE_ICONS = {
 /* ═══ 12 templates default ═══ */
 const DEFAULT_TEMPLATES = [
   { stage: 'Captación', title: 'Presentacion inicial', isDefault: true,
-    text: 'Hola {{nombre}}!\n\nSoy de *{{negocio}}*, nos dedicamos a regalos empresariales personalizados.\n\nMe encantaria contarte que opciones tenemos para {{empresa}}. Tenes unos minutos esta semana?\n\nSaludos!' },
+    text: 'Hola {{nombre}}!\n\nSoy de *{{negocio}}*, trabajamos con productos personalizados para empresas.\n\nMe encantaria contarte que opciones tenemos para {{empresa}}. Tenes unos minutos esta semana?\n\nSaludos!' },
   { stage: 'Captación', title: 'Contacto por referencia', isDefault: true,
-    text: 'Hola {{nombre}}!\n\nMe pasaron tu contacto como referente de {{empresa}}. Somos *{{negocio}}* y trabajamos con regalos corporativos a medida.\n\nTe interesaria ver nuestro catalogo?\n\nQuedo atento!' },
+    text: 'Hola {{nombre}}!\n\nMe pasaron tu contacto como referente de {{empresa}}. Somos *{{negocio}}* y trabajamos con soluciones a medida para empresas.\n\nTe interesaria ver nuestro catalogo?\n\nQuedo atento!' },
   { stage: 'Captación', title: 'Seguimiento amable', isDefault: true,
     text: 'Hola {{nombre}}! Como andas?\n\nTe escribo para saber si pudiste revisar la propuesta que te mande el {{fecha}}.\n\nNecesitas que ajustemos algo? Estamos para ayudarte.\n\nSaludos!' },
   { stage: 'Presupuestos', title: 'Envio de presupuesto', isDefault: true,
@@ -28,7 +28,7 @@ const DEFAULT_TEMPLATES = [
   { stage: 'Presupuestos', title: 'Contrapropuesta', isDefault: true,
     text: 'Hola {{nombre}}!\n\nRevise los numeros para {{empresa}} y puedo ofrecerte:\n\n- {{producto}} x {{precio}} (con descuento del 5% por cantidad)\n- Envio bonificado\n\nEs nuestro mejor precio. Confirmamos?' },
   { stage: 'Pagos', title: 'Confirmacion de pedido', isDefault: true,
-    text: 'Excelente {{nombre}}!\n\nQueda confirmado el pedido para {{empresa}}:\n\n- {{producto}}\n*Total:* {{precio}}\n*Sena:* [monto sena]\n*Entrega:* {{fecha}}\n\nTe paso los datos para la transferencia. Gracias por confiar en *{{negocio}}*!' },
+    text: 'Excelente {{nombre}}!\n\nQueda confirmado el pedido para {{empresa}}:\n\n- {{producto}}\n*Total:* {{precio}}\n*Seña:* [monto seña]\n*Entrega:* {{fecha}}\n\nTe paso los datos para la transferencia. Gracias por confiar en *{{negocio}}*!' },
   { stage: 'Pagos', title: 'Recordatorio de pago', isDefault: true,
     text: 'Hola {{nombre}}!\n\nTe escribo para recordarte que queda pendiente el saldo del pedido de {{empresa}} por {{precio}}.\n\nNecesitas los datos bancarios de nuevo? Estamos para ayudarte.\n\nSaludos!' },
   { stage: 'Logística', title: 'Aviso de despacho', isDefault: true,

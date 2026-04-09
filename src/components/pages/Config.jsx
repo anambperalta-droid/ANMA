@@ -175,7 +175,7 @@ export default function Config() {
             </div>
             <div>
               <div className="fg"><label>Nombre del negocio</label><input type="text" value={bname} onChange={e => setBname(e.target.value)} placeholder="ANMA" /></div>
-              <div className="fg"><label>Subtítulo</label><input type="text" value={bsub} onChange={e => setBsub(e.target.value)} placeholder="Regalos Empresariales" /></div>
+              <div className="fg"><label>Subtítulo</label><input type="text" value={bsub} onChange={e => setBsub(e.target.value)} placeholder="Tu negocio en un solo lugar" /></div>
               {/* ── Selector de Marca Blanca ── */}
               <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '16px 18px', marginTop: 8, border: '1.5px solid var(--border)' }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', letterSpacing: '.8px', textTransform: 'uppercase', marginBottom: 12 }}>Colores de marca</div>
@@ -274,7 +274,7 @@ export default function Config() {
           <div className="fg"><label>Access Token</label><input type="password" value={mpToken} onChange={e => setMpToken(e.target.value)} placeholder="APP_USR-xxxxxxxx..." style={{ fontFamily: 'monospace', fontSize: 12 }} /></div>
           <div className="fg"><label>Public Key</label><input type="text" value={mpPubkey} onChange={e => setMpPubkey(e.target.value)} placeholder="APP_USR-xxxxxxxx..." style={{ fontFamily: 'monospace', fontSize: 12 }} /></div>
           <div className="grid2">
-            <div className="fg"><label>Nombre visible</label><input type="text" value={mpName} onChange={e => setMpName(e.target.value)} placeholder="ANMA Regalos" /></div>
+            <div className="fg"><label>Nombre visible</label><input type="text" value={mpName} onChange={e => setMpName(e.target.value)} placeholder="Mi Negocio" /></div>
             <div className="fg"><label>Moneda</label><select value={mpCurrency} onChange={e => setMpCurrency(e.target.value)}><option value="ARS">ARS</option><option value="BRL">BRL</option><option value="CLP">CLP</option><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
           </div>
           <div className="toggle-field">
