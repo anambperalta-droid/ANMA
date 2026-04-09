@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { useData } from '../../context/DataContext'
 import { fmt, STATUS_MAP, PAY_STATUS_MAP } from '../../lib/storage'
 
-const STORAGE_KEY = 'anma3_tasks'
+const STORAGE_KEY = 'anma4_tasks'
 const PRIORITIES = [
   { key: 'today', label: 'Urgente hoy', color: '#DC2626', bg: '#FEF2F2', border: '#FCA5A5' },
   { key: 'tomorrow', label: 'Manana', color: '#D97706', bg: '#FFFBEB', border: '#FCD34D' },

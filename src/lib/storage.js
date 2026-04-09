@@ -2,7 +2,7 @@
    ANMA — Storage Layer v4
    Modelo: Stock + Insumos + B2B/B2C
 ═══════════════════════════════════════ */
-const K = 'anma3_'
+const K = 'anma4_'
 
 export function db(key, fallback = []) {
   try {
