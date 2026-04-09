@@ -15,7 +15,7 @@ export function DataProvider({ children }) {
   const config = useCallback(() => cfg(), [tick])
   const updateConfig = useCallback((patch) => { wCfg(patch); refresh() }, [refresh])
 
-  // Budget helpers
+  /* ── Pedido / Venta (ex-budget) ── */
   const saveBudget = useCallback((bData) => {
     const bud = db('budgets', [])
     const c = cfg()
@@ -47,7 +47,7 @@ export function DataProvider({ children }) {
     refresh()
   }, [refresh])
 
-  // CRUD helpers for other entities
+  /* ── CRUD genérico ── */
   const saveEntity = useCallback((key, item) => {
     const list = db(key, [])
     if (item.id) {
@@ -67,11 +67,76 @@ export function DataProvider({ children }) {
     refresh()
   }, [refresh])
 
+  /* ── Stock: movimientos de inventario ── */
+  const recordStockMove = useCallback((move) => {
+    // Save the movement record
+    const moves = db('stockMoves', [])
+    if (!move.id) move.id = Date.now()
+    move.date = move.date || new Date().toISOString().slice(0, 10)
+    moves.push(move)
+    dbW('stockMoves', moves)
+
+    // Update insumo stock
+    if (move.insumoId) {
+      const insumos = db('insumos', [])
+      const idx = insumos.findIndex(x => x.id === move.insumoId)
+      if (idx > -1) {
+        const qty = Number(move.qty) || 0
+        if (move.type === 'in' || move.type === 'return') {
+          insumos[idx].stock = (insumos[idx].stock || 0) + qty
+        } else if (move.type === 'out' || move.type === 'sale') {
+          insumos[idx].stock = Math.max(0, (insumos[idx].stock || 0) - qty)
+        } else if (move.type === 'adjust') {
+          insumos[idx].stock = qty // set absolute value
+        }
+        insumos[idx].lastMove = move.date
+        dbW('insumos', insumos)
+      }
+    }
+
+    // Update product stock if productId provided
+    if (move.productId) {
+      const products = db('products', [])
+      const idx = products.findIndex(x => x.id === move.productId)
+      if (idx > -1) {
+        const qty = Number(move.qty) || 0
+        if (move.type === 'in' || move.type === 'return') {
+          products[idx].stock = (products[idx].stock || 0) + qty
+        } else if (move.type === 'out' || move.type === 'sale') {
+          products[idx].stock = Math.max(0, (products[idx].stock || 0) - qty)
+        } else if (move.type === 'adjust') {
+          products[idx].stock = qty
+        }
+        products[idx].lastMove = move.date
+        dbW('products', products)
+      }
+    }
+
+    refresh()
+    return move
+  }, [refresh])
+
+  /* ── Deducir stock al confirmar pedido ── */
+  const deductStockForOrder = useCallback((items) => {
+    items.forEach(item => {
+      if (item.productId) {
+        recordStockMove({
+          type: 'sale',
+          productId: item.productId,
+          qty: item.qty,
+          ref: `Venta`,
+          note: item.name,
+        })
+      }
+    })
+  }, [recordStockMove])
+
   return (
     <Ctx.Provider value={{
       get, set, config, updateConfig, refresh, tick,
       saveBudget, deleteBudget, updateBudgetStatus,
       saveEntity, deleteEntity,
+      recordStockMove, deductStockForOrder,
     }}>
       {children}
     </Ctx.Provider>

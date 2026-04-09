@@ -73,9 +73,37 @@ export default function TaskFab() {
     const budgets = get('budgets')
     const now = new Date()
 
-    // Presupuestos enviados sin respuesta hace +7 dias
+    // Stock bajo en productos
+    const products = get('products', [])
+    products.forEach(p => {
+      if (p.minStock > 0 && (p.stock || 0) <= p.minStock) {
+        list.push({
+          id: 'stock-p-' + p.id,
+          type: 'stock',
+          icon: 'fa-triangle-exclamation',
+          color: (p.stock || 0) === 0 ? '#DC2626' : '#D97706',
+          text: `Producto: ${p.name} — Stock: ${p.stock || 0} (min: ${p.minStock})`,
+        })
+      }
+    })
+
+    // Stock bajo en insumos
+    const insumos = get('insumos', [])
+    insumos.forEach(ins => {
+      if (ins.minStock > 0 && (ins.stock || 0) <= ins.minStock) {
+        list.push({
+          id: 'stock-i-' + ins.id,
+          type: 'stock',
+          icon: 'fa-boxes-stacked',
+          color: (ins.stock || 0) === 0 ? '#DC2626' : '#D97706',
+          text: `Insumo: ${ins.name} — Stock: ${ins.stock || 0} (min: ${ins.minStock})`,
+        })
+      }
+    })
+
+    // Pedidos pendientes sin respuesta hace +7 dias
     budgets.forEach(b => {
-      if (['sent', 'negotiating'].includes(b.status) && b.date) {
+      if (['sent', 'pending', 'negotiating'].includes(b.status) && b.date) {
         const days = Math.floor((now - new Date(b.date)) / 86400000)
         if (days >= 7) {
           list.push({
@@ -104,7 +132,7 @@ export default function TaskFab() {
 
     // Entregas proximas (en los proximos 3 dias)
     budgets.forEach(b => {
-      if (b.deliveryDate && ['confirmed', 'sent', 'negotiating'].includes(b.status)) {
+      if (b.deliveryDate && ['confirmed', 'inprogress', 'shipped'].includes(b.status)) {
         const delivery = new Date(b.deliveryDate)
         const diff = Math.floor((delivery - now) / 86400000)
         if (diff >= 0 && diff <= 3) {

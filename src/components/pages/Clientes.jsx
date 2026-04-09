@@ -55,7 +55,6 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
               {budget.contact && <div><span style={{ color: '#888', fontSize: 11 }}>Contacto: </span><b>{budget.contact}</b></div>}
               {budget.company && <div><span style={{ color: '#888', fontSize: 11 }}>Empresa: </span><b>{budget.company}</b></div>}
               {budget.wa && <div><span style={{ color: '#888', fontSize: 11 }}>WhatsApp: </span>{budget.wa}</div>}
-              {budget.ocasion && <div><span style={{ color: '#888', fontSize: 11 }}>Ocasión: </span>{budget.ocasion}</div>}
             </div>
           </div>
 
@@ -135,7 +134,7 @@ export default function Clientes() {
   const [detailTab, setDetailTab] = useState('info')
   const [viewMode, setViewMode] = useState('table')
   const [loading, setLoading] = useState(true)
-  const [form, setForm] = useState({ company: '', contact: '', wa: '', email: '', rubro: '', notes: '' })
+  const [form, setForm] = useState({ company: '', contact: '', wa: '', email: '', rubro: '', notes: '', clientType: 'b2c' })
   const [newNote, setNewNote] = useState('')
   const [previewBudget, setPreviewBudget] = useState(null)
   const fileRef = useRef(null)
@@ -151,7 +150,7 @@ export default function Clientes() {
   ) : clients
 
   const setF = (k, v) => setForm(f => ({ ...f, [k]: v }))
-  const openEdit = (c) => { setForm(c || { company: '', contact: '', wa: '', email: '', rubro: '', notes: '' }); setModal(true) }
+  const openEdit = (c) => { setForm(c || { company: '', contact: '', wa: '', email: '', rubro: '', notes: '', clientType: 'b2c' }); setModal(true) }
   const save = () => {
     if (!form.company) { toast('Ingresá el nombre de la empresa.', 'er'); return }
     saveEntity('clients', form); setModal(false); toast('Cliente guardado', 'ok')
@@ -247,13 +246,15 @@ export default function Clientes() {
       {viewMode === 'table' ? (
         <div className="tbl-card">
           <table>
-            <thead><tr><th>Empresa</th><th>Contacto</th><th>WhatsApp</th><th>Email</th><th>Rubro</th><th>Presup.</th><th>Acciones</th></tr></thead>
+            <thead><tr><th>Empresa</th><th>Contacto</th><th>Tipo</th><th>WhatsApp</th><th>Rubro</th><th>Pedidos</th><th>Acciones</th></tr></thead>
             <tbody>
               {loading ? [1,2,3,4,5].map(i => (
                 <tr key={i}><td colSpan={7}><div className="sk sk-text" style={{ height: 16, width: `${55 + Math.random() * 35}%` }} /></td></tr>
               )) : filtered.length ? filtered.map(c => (
                 <tr key={c.id} style={{ cursor: 'pointer' }} onClick={() => openDetail(c)}>
-                  <td><b>{c.company}</b></td><td>{c.contact}</td><td>{c.wa}</td><td>{c.email}</td>
+                  <td><b>{c.company}</b></td><td>{c.contact}</td>
+                  <td><span className={`badge ${c.clientType === 'b2b' ? 'b-confirmed' : 'b-sent'}`}>{c.clientType === 'b2b' ? 'B2B' : 'B2C'}</span></td>
+                  <td>{c.wa}</td>
                   <td>{c.rubro && <span className="badge b-purple">{c.rubro}</span>}</td>
                   <td><span className="badge b-sent">{clientBudgets(c).length}</span></td>
                   <td><div className="acts" onClick={e => e.stopPropagation()}>
@@ -261,7 +262,7 @@ export default function Clientes() {
                     <button className="act del" onClick={() => del(c.id)}><i className="fa fa-trash" /></button>
                   </div></td>
                 </tr>
-              )) : <tr><td colSpan={7}><div className="empty"><div className="ico"><i className="fa fa-users" /></div><h4>Sin clientes</h4><p>Agregá tu primer cliente</p></div></td></tr>}
+              )) : <tr><td colSpan={7}><div className="empty"><div className="ico"><i className="fa fa-users" /></div><h4>Sin clientes</h4><p>Agregá tu primer cliente o empresa</p></div></td></tr>}
             </tbody>
           </table>
         </div>
@@ -312,7 +313,15 @@ export default function Clientes() {
               <div className="fg"><label>WhatsApp</label><input type="text" value={form.wa} onChange={e => setF('wa', e.target.value)} placeholder="+54 ..." /></div>
               <div className="fg"><label>Email</label><input type="email" value={form.email} onChange={e => setF('email', e.target.value)} /></div>
             </div>
-            <div className="fg"><label>Rubro</label><input type="text" value={form.rubro} onChange={e => setF('rubro', e.target.value)} placeholder="Tecnología, Salud..." /></div>
+            <div className="grid2">
+              <div className="fg"><label>Rubro</label><input type="text" value={form.rubro} onChange={e => setF('rubro', e.target.value)} placeholder="Tecnología, Salud..." /></div>
+              <div className="fg"><label>Tipo de cliente</label>
+                <select value={form.clientType || 'b2c'} onChange={e => setF('clientType', e.target.value)}>
+                  <option value="b2c">B2C — Cliente final</option>
+                  <option value="b2b">B2B — Empresa / Mayorista</option>
+                </select>
+              </div>
+            </div>
             <div className="fg"><label>Notas</label><textarea value={form.notes} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones..." /></div>
             <div className="mfooter"><button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button><button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar</button></div>
           </div>
@@ -332,7 +341,11 @@ export default function Clientes() {
                   </div>
                   <div>
                     <h3 style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.3px', margin: 0 }}>{detailClient.company}</h3>
-                    <div style={{ fontSize: 12, color: 'var(--txt3)', marginTop: 1 }}>{detailClient.contact}{detailClient.rubro ? ` · ${detailClient.rubro}` : ''}</div>
+                    <div style={{ fontSize: 12, color: 'var(--txt3)', marginTop: 1, display: 'flex', alignItems: 'center', gap: 6 }}>
+                      {detailClient.contact}
+                      <span className={`badge ${detailClient.clientType === 'b2b' ? 'b-confirmed' : 'b-sent'}`} style={{ fontSize: 9 }}>{detailClient.clientType === 'b2b' ? 'B2B' : 'B2C'}</span>
+                      {detailClient.rubro && <span style={{ color: 'var(--txt4)' }}>· {detailClient.rubro}</span>}
+                    </div>
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: 5 }}>
@@ -391,7 +404,7 @@ export default function Clientes() {
                               <span style={{ fontWeight: 700, fontSize: 12, color: 'var(--txt)' }}>{b.num || '—'}</span>
                               <span className={`badge ${STATUS_CLS[b.status] || 'b-draft'}`}>{STATUS_MAP[b.status] || 'Borrador'}</span>
                             </div>
-                            <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>{b.date || '—'}{b.ocasion ? ` · ${b.ocasion}` : ''}</div>
+                            <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>{b.date || '—'}</div>
                           </div>
                           <div style={{ textAlign: 'right', flexShrink: 0 }}>
                             <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--brand)' }}>{fmt(b.total)}</div>

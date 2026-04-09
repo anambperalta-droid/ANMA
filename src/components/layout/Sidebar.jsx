@@ -3,15 +3,16 @@ import { useAuth } from '../../context/AuthContext'
 import { useData } from '../../context/DataContext'
 
 const NAV = [
-  { section: 'Gestión' },
-  { path: '/', icon: 'fa-clock-rotate-left', label: 'Historial', chipKey: 'budgets' },
-  { path: '/presupuesto', icon: 'fa-file-invoice-dollar', label: 'Presupuesto' },
+  { section: 'Ventas' },
+  { path: '/', icon: 'fa-chart-line', label: 'Dashboard', chipKey: 'budgets' },
+  { path: '/presupuesto', icon: 'fa-file-invoice-dollar', label: 'Nuevo pedido' },
   { path: '/clientes', icon: 'fa-users', label: 'Clientes', chipKey: 'clients' },
-  { section: 'Catálogo' },
-  { path: '/catalogo', icon: 'fa-box-open', label: 'Productos', chipKey: 'products' },
+  { section: 'Inventario' },
+  { path: '/catalogo', icon: 'fa-cube', label: 'Productos', chipKey: 'products' },
+  { path: '/insumos', icon: 'fa-boxes-stacked', label: 'Insumos', chipKey: 'insumos' },
   { path: '/proveedores', icon: 'fa-industry', label: 'Proveedores', chipKey: 'suppliers' },
+  { section: 'Operaciones' },
   { path: '/logistica', icon: 'fa-truck-fast', label: 'Logística' },
-  { section: 'Comunicación' },
   { path: '/mensajes', icon: 'fa-brands fa-whatsapp', label: 'Mensajes WA' },
   { section: 'Sistema' },
   { path: '/config', icon: 'fa-gear', label: 'Configuración' },
@@ -31,7 +32,7 @@ export default function Sidebar({ open, onClose }) {
   const goTo = (path) => { nav(path); onClose() }
 
   const doBackup = () => {
-    const data = { budgets: get('budgets'), clients: get('clients'), products: get('products'), suppliers: get('suppliers'), tariffs: get('tariffs'), shipments: get('shipments'), waTemplates: get('waTemplates'), cfg: config() }
+    const data = { budgets: get('budgets'), clients: get('clients'), products: get('products'), suppliers: get('suppliers'), insumos: get('insumos'), stockMoves: get('stockMoves'), tariffs: get('tariffs'), shipments: get('shipments'), waTemplates: get('waTemplates'), cfg: config() }
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
     a.download = `ANMA_backup_${new Date().toISOString().slice(0,10)}.json`; a.click()

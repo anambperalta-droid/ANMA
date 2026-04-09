@@ -13,6 +13,7 @@ import Catalogo from '../pages/Catalogo'
 import Proveedores from '../pages/Proveedores'
 import Logistica from '../pages/Logistica'
 import Mensajes from '../pages/Mensajes'
+import Insumos from '../pages/Insumos'
 import Config from '../pages/Config'
 
 export default function AppShell() {
@@ -47,6 +48,7 @@ export default function AppShell() {
             <Route path="/presupuesto/:id" element={<Presupuesto />} />
             <Route path="/clientes" element={<Clientes />} />
             <Route path="/catalogo" element={<Catalogo />} />
+            <Route path="/insumos" element={<Insumos />} />
             <Route path="/proveedores" element={<Proveedores />} />
             <Route path="/logistica" element={<Logistica />} />
             <Route path="/mensajes" element={<Mensajes />} />

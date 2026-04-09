@@ -84,8 +84,7 @@ function SeguimientoCard({ b, onEdit, onWA, onResend }) {
         </div>
         <div className="seg-cli"><b>{b.contact || 'Sin contacto'}</b> — {b.company || 'Sin empresa'}</div>
         <div className="seg-co">
-          {b.ocasion && <><i className="fa fa-calendar-day" style={{ marginRight: 4 }} />{b.ocasion}  ·  </>}
-          <i className="fa fa-calendar" style={{ marginRight: 4 }} />Enviado: {b.date || '—'}
+          <i className="fa fa-calendar" style={{ marginRight: 4 }} />Creado: {b.date || '—'}
           {b.deliveryDate && ` · Entrega: ${b.deliveryDate}`}
         </div>
       </div>
@@ -367,7 +366,7 @@ export default function Historial() {
   return (
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>
       <div className="ph">
-        <div className="ph-left"><h2>Historial</h2><p>Registro de presupuestos y análisis del negocio</p></div>
+        <div className="ph-left"><h2>Dashboard</h2><p>Pedidos, ventas y análisis del negocio</p></div>
         <div className="ph-right">
           {/* Period filter */}
           <div className="period-pills">
@@ -379,14 +378,14 @@ export default function Historial() {
             ))}
           </div>
           <button className="btn btn-secondary btn-sm" onClick={exportCSV}><i className="fa fa-download" /> Exportar</button>
-          <button className="btn btn-primary btn-sm" onClick={() => nav('/presupuesto')}><i className="fa fa-plus" /> Nuevo presupuesto</button>
+          <button className="btn btn-primary btn-sm" onClick={() => nav('/presupuesto')}><i className="fa fa-plus" /> Nuevo pedido</button>
         </div>
       </div>
 
       <div className="tab-bar">
         {['resumen', 'lista', 'analisis', 'seguimiento'].map(t => (
           <div key={t} className={`tab-btn ${tab === t ? 'active' : ''}`} onClick={() => setTab(t)}>
-            {t === 'resumen' ? 'Resumen' : t === 'lista' ? 'Presupuestos' : t === 'analisis' ? 'Análisis' : `Seguimiento (${seguimiento.length})`}
+            {t === 'resumen' ? 'Resumen' : t === 'lista' ? 'Pedidos' : t === 'analisis' ? 'Análisis' : `Seguimiento (${seguimiento.length})`}
           </div>
         ))}
       </div>
@@ -403,7 +402,7 @@ export default function Historial() {
           ) : (
             <div className="bento sk-fade-in">
               <KpiCard label="Total cobrado" value={fmt(totCobrado)} foot={`${pagados.length} pagos recibidos`} color="brand" icon="fa-dollar-sign" />
-              <KpiCard label="Ingresos del mes" value={fmt(mInc)} foot={`${monthBudgets.length} presupuestos`} color="blue" icon="fa-chart-line" />
+              <KpiCard label="Ingresos del mes" value={fmt(mInc)} foot={`${monthBudgets.length} pedidos`} color="blue" icon="fa-chart-line" />
               <KpiCard label="Ganancia del mes" value={fmt(mGain)} foot="del período actual" color="green" icon="fa-coins" />
               <KpiCard label="Tasa de conversión" value={convRate} foot={`${confirmed.length} de ${periodBudgets.length} confirmados`} color="amber" icon="fa-funnel" />
 
@@ -416,7 +415,7 @@ export default function Historial() {
 
               {/* ── Estado de presupuestos: Donut compacto ── */}
               <div className="bento-chart">
-                <div className="card-header"><span className="card-title">Estado de presupuestos</span></div>
+                <div className="card-header"><span className="card-title">Estado de pedidos</span></div>
                 <StatusDonut statuses={statuses} budgets={periodBudgets} />
               </div>
 

@@ -75,7 +75,7 @@ export default function Presupuesto() {
   const c = config()
 
   const [form, setForm] = useState({
-    contact: '', company: '', wa: '', ocasion: '', delivery: '', deliveryDate: '',
+    contact: '', company: '', wa: '', clientType: 'b2c', delivery: '', deliveryDate: '',
     shipCost: 0, status: 'draft', payStatus: 'pending', noteInt: '', noteCli: '',
     margin: c.defaultMargin || 40, deposit: c.defaultDeposit || 50, logoCost: 0,
   })
@@ -95,7 +95,7 @@ export default function Presupuesto() {
       if (b) {
         setForm({
           contact: b.contact || '', company: b.company || '', wa: b.wa || '',
-          ocasion: b.ocasion || '', delivery: b.delivery || '', deliveryDate: b.deliveryDate || '',
+          clientType: b.clientType || 'b2c', delivery: b.delivery || '', deliveryDate: b.deliveryDate || '',
           shipCost: b.shipCost || 0, status: b.status || 'draft',
           noteInt: b.noteInt || '', noteCli: b.noteCli || '',
           payStatus: b.payStatus || 'pending',
@@ -112,7 +112,20 @@ export default function Presupuesto() {
   const setF = (key, val) => setForm(f => ({ ...f, [key]: val }))
 
   const handleClientSelect = (client) => {
-    setForm(f => ({ ...f, contact: client.contact || '', company: client.company || '', wa: client.wa || '' }))
+    const type = client.clientType || 'b2c'
+    setForm(f => ({ ...f, contact: client.contact || '', company: client.company || '', wa: client.wa || '', clientType: type }))
+    // Auto-reprice items based on client type
+    const rules = c.pricingRules || { b2c: { margin: 40 }, b2b: { margin: 25 } }
+    const m = (rules[type]?.margin || 40) / 100
+    setItems(prev => prev.map(it => {
+      if (!it.name || !it.costUnit) return it
+      const match = products.find(p => p.name === it.name)
+      if (match) {
+        const price = type === 'b2b' ? (match.priceB2B || Math.round(num(match.cost) * (1 + m))) : (match.priceB2C || Math.round(num(match.cost) * (1 + m)))
+        return { ...it, priceUnit: price }
+      }
+      return it
+    }))
   }
 
   const updateItem = (idx, key, val) => {
@@ -123,7 +136,11 @@ export default function Presupuesto() {
         const match = products.find(p => p.name === val)
         if (match) {
           updated.costUnit = match.cost || 0
-          updated.priceUnit = Math.round(num(match.cost) * (1 + marginPct / 100))
+          updated.productId = match.id
+          updated.priceUnit = form.clientType === 'b2b'
+            ? (match.priceB2B || Math.round(num(match.cost) * 1.25))
+            : (match.priceB2C || Math.round(num(match.cost) * (1 + marginPct / 100)))
+          updated.stockAvailable = match.stock || 0
         }
       }
       return updated
@@ -229,7 +246,7 @@ export default function Presupuesto() {
   return (
     <div className="page active" style={{ animation: 'pgIn .2s ease both' }}>
       <div className="ph">
-        <div className="ph-left"><h2>{editId ? 'Editar presupuesto' : 'Nuevo presupuesto'}</h2><p>Completá los datos para generar el presupuesto</p></div>
+        <div className="ph-left"><h2>{editId ? 'Editar pedido' : 'Nuevo pedido'}</h2><p>Completá los datos del pedido o cotización</p></div>
         <div className="ph-right"><button className="btn btn-ghost btn-sm" onClick={() => nav('/')}><i className="fa fa-xmark" /> Descartar</button></div>
       </div>
 
@@ -245,10 +262,10 @@ export default function Presupuesto() {
               </div>
               <div className="fg"><label>Empresa</label><input type="text" value={form.company} onChange={e => setF('company', e.target.value)} placeholder="Empresa S.A." /></div>
               <div className="fg"><label>WhatsApp</label><input type="text" value={form.wa} onChange={e => setF('wa', e.target.value)} placeholder="+54 351 ..." /></div>
-              <div className="fg"><label>Ocasión</label>
-                <select value={form.ocasion} onChange={e => setF('ocasion', e.target.value)}>
-                  <option value="">— seleccionar —</option>
-                  {(c.occasions || []).map(o => <option key={o} value={o}>{o}</option>)}
+              <div className="fg"><label>Tipo de cliente</label>
+                <select value={form.clientType || 'b2c'} onChange={e => setF('clientType', e.target.value)}>
+                  <option value="b2c">B2C — Cliente final</option>
+                  <option value="b2b">B2B — Empresa / Mayorista</option>
                 </select>
               </div>
             </div>
@@ -268,9 +285,10 @@ export default function Presupuesto() {
               <div className="fg"><label>Costo envío ($)</label><input type="number" value={form.shipCost} onFocus={selectOnFocus} onChange={e => setF('shipCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('shipCost', 0) }} min="0" /></div>
               <div className="fg"><label>Estado</label>
                 <select value={form.status} onChange={e => setF('status', e.target.value)}>
-                  <option value="draft">Borrador</option><option value="sent">Enviado</option>
-                  <option value="negotiating">Negociando</option><option value="confirmed">Confirmado</option>
-                  <option value="lost">Perdido</option>
+                  <option value="draft">Borrador</option><option value="pending">Pendiente</option>
+                  <option value="confirmed">Confirmado</option><option value="inprogress">En proceso</option>
+                  <option value="shipped">Enviado</option><option value="delivered">Entregado</option>
+                  <option value="cancelled">Cancelado</option>
                 </select>
               </div>
               <div className="fg"><label>Estado de pago</label>
@@ -292,18 +310,25 @@ export default function Presupuesto() {
             <div className="bsec-title"><i className="fa fa-box-open" />Productos</div>
             <div style={{ overflowX: 'auto' }}>
               <table>
-                <thead><tr><th style={{ minWidth: 160 }}>Producto</th><th style={{ width: 65 }}>Cant.</th><th style={{ width: 100 }}>Costo u.</th><th style={{ width: 100 }}>Precio u.</th><th style={{ width: 95 }}>Subtotal</th><th style={{ width: 36 }}></th></tr></thead>
+                <thead><tr><th style={{ minWidth: 160 }}>Producto</th><th style={{ width: 55 }}>Stock</th><th style={{ width: 60 }}>Cant.</th><th style={{ width: 95 }}>Costo u.</th><th style={{ width: 95 }}>Precio u.</th><th style={{ width: 90 }}>Subtotal</th><th style={{ width: 36 }}></th></tr></thead>
                 <tbody>
-                  {items.map((it, i) => (
+                  {items.map((it, i) => {
+                    const overStock = it.stockAvailable !== undefined && num(it.qty) > it.stockAvailable
+                    return (
                     <tr key={i}>
                       <td><input type="text" value={it.name} onChange={e => updateItem(i, 'name', e.target.value)} placeholder="Nombre del producto" list="prod-suggestions" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
+                      <td style={{ textAlign: 'center', fontSize: 11, color: overStock ? 'var(--red)' : 'var(--txt3)', fontWeight: overStock ? 700 : 400 }}>
+                        {it.stockAvailable !== undefined ? it.stockAvailable : '—'}
+                        {overStock && <i className="fa fa-triangle-exclamation" style={{ color: 'var(--red)', marginLeft: 2, fontSize: 9 }} />}
+                      </td>
                       <td><input type="number" value={it.qty} onFocus={selectOnFocus} onChange={e => updateItem(i, 'qty', e.target.value === '' ? '' : Math.max(1, Number(e.target.value) || 1))} onBlur={e => { if (e.target.value === '') updateItem(i, 'qty', 1) }} min="1" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
                       <td><input type="number" value={it.costUnit} onFocus={selectOnFocus} onChange={e => updateItem(i, 'costUnit', e.target.value)} onBlur={e => { if (e.target.value === '') updateItem(i, 'costUnit', 0) }} min="0" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
                       <td><input type="number" value={it.priceUnit} onFocus={selectOnFocus} onChange={e => updateItem(i, 'priceUnit', e.target.value)} onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }} min="0" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
                       <td style={{ fontWeight: 600, color: 'var(--brand)', fontSize: 12 }}>{fmt(num(it.qty) * num(it.priceUnit))}</td>
                       <td><button className="act del" onClick={() => removeItem(i)}><i className="fa fa-xmark" /></button></td>
                     </tr>
-                  ))}
+                    )
+                  })}
                 </tbody>
               </table>
               <datalist id="prod-suggestions">{products.map(p => <option key={p.id} value={p.name} />)}</datalist>

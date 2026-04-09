@@ -232,7 +232,7 @@ export default function Config() {
           <div className="grid2">
             <div className="fg"><label>Email</label><input type="email" value={cEmail} onChange={e => setCEmail(e.target.value)} placeholder="hola@anma.com" /></div>
             <div className="fg"><label>WhatsApp</label><input type="text" value={cWA} onChange={e => setCWA(e.target.value)} placeholder="+54 351 ..." /></div>
-            <div className="fg"><label>Instagram</label><input type="text" value={cIG} onChange={e => setCIG(e.target.value)} placeholder="@anma_regalos" /></div>
+            <div className="fg"><label>Instagram</label><input type="text" value={cIG} onChange={e => setCIG(e.target.value)} placeholder="@mi_negocio" /></div>
             <div className="fg"><label>Sitio web</label><input type="text" value={cWeb} onChange={e => setCWeb(e.target.value)} placeholder="https://..." /></div>
           </div>
           <div className="fg"><label>Dirección</label><input type="text" value={cAddr} onChange={e => setCAddr(e.target.value)} placeholder="Av. Corrientes 1234, CABA" /></div>
@@ -255,9 +255,10 @@ export default function Config() {
 
       {tab === 'listas' && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 20 }}>
-          <ListEditor label="Modalidades de entrega" items={c.deliveryModes || []} onAdd={v => handleListAdd('deliveryModes', v)} onRemove={i => handleListRemove('deliveryModes', i)} />
           <ListEditor label="Categorías de productos" items={c.productCats || []} onAdd={v => handleListAdd('productCats', v)} onRemove={i => handleListRemove('productCats', i)} />
-          <ListEditor label="Ocasiones habituales" items={c.occasions || []} onAdd={v => handleListAdd('occasions', v)} onRemove={i => handleListRemove('occasions', i)} />
+          <ListEditor label="Categorías de insumos" items={c.insumoCats || []} onAdd={v => handleListAdd('insumoCats', v)} onRemove={i => handleListRemove('insumoCats', i)} />
+          <ListEditor label="Unidades de medida" items={c.units || []} onAdd={v => handleListAdd('units', v)} onRemove={i => handleListRemove('units', i)} />
+          <ListEditor label="Modalidades de entrega" items={c.deliveryModes || []} onAdd={v => handleListAdd('deliveryModes', v)} onRemove={i => handleListRemove('deliveryModes', i)} />
         </div>
       )}
 
