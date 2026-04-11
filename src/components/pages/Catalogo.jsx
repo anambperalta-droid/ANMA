@@ -210,8 +210,8 @@ export default function Catalogo() {
                   <td><span className="badge b-purple">{p.cat}</span></td>
                   <td style={{ fontSize: 11 }}>{supplierName(p.supplierId)}</td>
                   <td style={{ textAlign: 'right' }}>{fmt(p.cost)}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 600, color: 'var(--green)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 600, color: 'var(--brand)' }}>{fmt(p.priceB2B || autoPrice(p.cost).b2b)}</td>
+                  <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>
+                  <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2B || autoPrice(p.cost).b2b)}</td>
                   <td style={{ textAlign: 'center', fontWeight: 700, color: isLow ? 'var(--red)' : 'var(--txt)' }}>
                     {p.stock || 0}
                     {isLow && <i className="fa fa-triangle-exclamation" style={{ color: 'var(--red)', marginLeft: 4, fontSize: 10 }} />}
