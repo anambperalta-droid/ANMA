@@ -14,16 +14,23 @@ const selectOnFocus = (e) => e.target.select()
 /* ── Validación WhatsApp ── */
 const isValidWA = (v) => { if (!v) return true; const cleaned = v.replace(/[\s\-()]/g, ''); return /^[+]?\d{8,15}$/.test(cleaned) }
 
-/* ── Sección colapsable ── */
-function BSection({ icon, title, badge, children, defaultOpen = true, error = false }) {
-  const [open, setOpen] = useState(defaultOpen)
+/* ── Pasos del wizard ── */
+const WIZARD_STEPS = [
+  { id: 1, icon: 'fa-user-tie', label: 'Cliente', desc: 'Contacto y datos' },
+  { id: 2, icon: 'fa-box-open', label: 'Productos', desc: 'Items del pedido' },
+  { id: 3, icon: 'fa-truck', label: 'Entrega', desc: 'Envío y precio' },
+  { id: 4, icon: 'fa-check-double', label: 'Confirmar', desc: 'Revisar y enviar' },
+]
+
+/* ── Encabezado de panel ── */
+function PaneHeader({ icon, title, subtitle }) {
   return (
-    <div className={`bsec ${open ? '' : 'collapsed'} ${error ? 'has-err' : ''}`}>
-      <div className="bsec-title" onClick={() => setOpen(!open)}>
-        <div className="bsec-title-left"><i className={`fa ${icon}`} />{title}{badge ? <span className="bsec-badge">{badge}</span> : null}{error ? <i className="fa fa-circle-exclamation" style={{ color: 'var(--red)', fontSize: 11, marginLeft: 4 }} /> : null}</div>
-        <i className={`fa fa-chevron-${open ? 'up' : 'down'} bsec-ch`} />
+    <div className="wiz-pane-head">
+      <div className="wiz-pane-ico"><i className={`fa ${icon}`} /></div>
+      <div>
+        <div className="wiz-pane-title">{title}</div>
+        {subtitle && <div className="wiz-pane-sub">{subtitle}</div>}
       </div>
-      <div className="bsec-body">{children}</div>
     </div>
   )
 }
@@ -103,6 +110,7 @@ export default function Presupuesto() {
   const [mpLoading, setMpLoading] = useState(false)
   const [previewHtml, setPreviewHtml] = useState('')
   const [waTouched, setWaTouched] = useState(false)
+  const [currentStep, setCurrentStep] = useState(1)
 
   const clients = get('clients')
   const products = get('products')
@@ -204,6 +212,35 @@ export default function Presupuesto() {
     nav('/')
   }
 
+  /* ── Validación por paso ── */
+  const stepError = (step) => {
+    if (step === 1) {
+      if (!form.contact && !form.company) return 'Cargá un contacto o nombre de empresa para continuar.'
+      if (form.wa && !isValidWA(form.wa)) return 'El WhatsApp no tiene un formato válido. Ej: +54 351 1234567'
+      return null
+    }
+    if (step === 2) {
+      if (!items.some(i => i.name)) return 'Agregá al menos un producto al pedido.'
+      return null
+    }
+    return null
+  }
+  const goNext = () => {
+    const err = stepError(currentStep)
+    if (err) { toast(err, 'er'); if (currentStep === 1 && form.wa) setWaTouched(true); return }
+    setCurrentStep(s => Math.min(WIZARD_STEPS.length, s + 1))
+  }
+  const goPrev = () => setCurrentStep(s => Math.max(1, s - 1))
+  const goStep = (id) => {
+    // permitir volver atrás libremente; avanzar sólo si los pasos previos están OK
+    if (id <= currentStep) { setCurrentStep(id); return }
+    for (let s = currentStep; s < id; s++) {
+      const err = stepError(s)
+      if (err) { toast(err, 'er'); return }
+    }
+    setCurrentStep(id)
+  }
+
   const waText = useMemo(() => {
     const bName = c.businessName || 'ANMA'
     const prodList = items.filter(i => i.name).map(i => `• ${i.qty}x ${i.name}`).join('\n')
@@ -292,107 +329,196 @@ export default function Presupuesto() {
         <div className="ph-right"><button className="btn btn-ghost btn-sm" onClick={() => nav('/')}><i className="fa fa-xmark" /> Descartar</button></div>
       </div>
 
+      {/* STEPPER */}
+      <div className="wizard-steps">
+        {WIZARD_STEPS.map((s, idx) => {
+          const state = currentStep === s.id ? 'active' : currentStep > s.id ? 'done' : 'pending'
+          return (
+            <div key={s.id} className="wiz-step-wrap">
+              <div className={`wiz-step ${state}`} onClick={() => goStep(s.id)}>
+                <div className="wiz-step-num">
+                  {state === 'done' ? <i className="fa fa-check" /> : s.id}
+                </div>
+                <div className="wiz-step-txt">
+                  <div className="wiz-step-lbl">{s.label}</div>
+                  <div className="wiz-step-desc">{s.desc}</div>
+                </div>
+                <i className={`fa ${s.icon} wiz-step-bgicon`} />
+              </div>
+              {idx < WIZARD_STEPS.length - 1 && <div className={`wiz-conn ${currentStep > s.id ? 'done' : ''}`} />}
+            </div>
+          )
+        })}
+      </div>
+
       <div className="budget-layout">
         <div>
-          {/* CLIENTE */}
-          <BSection icon="fa-user-tie" title="Cliente" badge={form.contact || form.company || null} error={!form.contact && !form.company} defaultOpen={true}>
-            <div className="grid2">
-              <div className="fg">
-                <label>Contacto (buscar en CRM)</label>
-                <ClientCombo clients={clients} value={form.contact} onSelect={handleClientSelect} onChange={val => setF('contact', val)} />
-              </div>
-              <div className="fg"><label>Empresa</label><input type="text" value={form.company} onChange={e => setF('company', e.target.value)} placeholder="Empresa S.A." /></div>
-              <div className="fg">
-                <label>WhatsApp</label>
-                <input type="text" value={form.wa}
-                  onChange={e => { setF('wa', e.target.value); if (!waTouched) setWaTouched(true) }}
-                  onBlur={() => setWaTouched(true)}
-                  placeholder="+54 351 1234567"
-                  className={waTouched && form.wa && !isValidWA(form.wa) ? 'inp-err' : ''} />
-                {waTouched && form.wa && !isValidWA(form.wa) && (
-                  <div className="fg-err"><i className="fa fa-circle-exclamation" /> Formato no válido. Ej: <b>+54 351 1234567</b> (8 a 15 dígitos)</div>
-                )}
-              </div>
-              <div className="fg"><label>Tipo de cliente</label>
-                <select value={form.clientType || 'b2c'} onChange={e => setF('clientType', e.target.value)}>
-                  <option value="b2c">B2C — Cliente final</option>
-                  <option value="b2b">B2B — Empresa / Mayorista</option>
-                </select>
-              </div>
-            </div>
-          </BSection>
+          <div className="wiz-pane">
+            {/* ─── PASO 1: CLIENTE ─── */}
+            {currentStep === 1 && (
+              <>
+                <PaneHeader icon="fa-user-tie" title="Paso 1 · Cliente" subtitle="¿A quién le estás haciendo el presupuesto?" />
+                <div className="grid2">
+                  <div className="fg">
+                    <label>Contacto (buscar en CRM)</label>
+                    <ClientCombo clients={clients} value={form.contact} onSelect={handleClientSelect} onChange={val => setF('contact', val)} />
+                  </div>
+                  <div className="fg"><label>Empresa</label><input type="text" value={form.company} onChange={e => setF('company', e.target.value)} placeholder="Empresa S.A." /></div>
+                  <div className="fg">
+                    <label>WhatsApp</label>
+                    <input type="text" value={form.wa}
+                      onChange={e => { setF('wa', e.target.value); if (!waTouched) setWaTouched(true) }}
+                      onBlur={() => setWaTouched(true)}
+                      placeholder="+54 351 1234567"
+                      className={waTouched && form.wa && !isValidWA(form.wa) ? 'inp-err' : ''} />
+                    {waTouched && form.wa && !isValidWA(form.wa) && (
+                      <div className="fg-err"><i className="fa fa-circle-exclamation" /> Formato no válido. Ej: <b>+54 351 1234567</b> (8 a 15 dígitos)</div>
+                    )}
+                  </div>
+                  <div className="fg"><label>Tipo de cliente</label>
+                    <select value={form.clientType || 'b2c'} onChange={e => setF('clientType', e.target.value)}>
+                      <option value="b2c">B2C — Cliente final</option>
+                      <option value="b2b">B2B — Empresa / Mayorista</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="wiz-tip">
+                  <i className="fa fa-lightbulb" /> Buscá un contacto existente o creá uno nuevo escribiendo el nombre. Los precios se ajustan según el tipo de cliente (B2C o B2B).
+                </div>
+              </>
+            )}
 
-          {/* ENTREGA */}
-          <BSection icon="fa-truck" title="Entrega y estado" badge={form.deliveryDate || form.delivery || null} defaultOpen={false}>
-            <div className="grid2">
-              <div className="fg"><label>Modalidad</label>
-                <select value={form.delivery} onChange={e => setF('delivery', e.target.value)}>
-                  <option value="">— seleccionar —</option>
-                  {(c.deliveryModes || []).map(d => <option key={d} value={d}>{d}</option>)}
-                </select>
-              </div>
-              <div className="fg"><label>Fecha pactada</label><input type="date" value={form.deliveryDate} onChange={e => setF('deliveryDate', e.target.value)} /></div>
-              <div className="fg"><label>Costo envío ($)</label><input type="number" value={form.shipCost} onFocus={selectOnFocus} onChange={e => setF('shipCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('shipCost', 0) }} min="0" /></div>
-              <div className="fg"><label>Estado</label>
-                <select value={form.status} onChange={e => setF('status', e.target.value)}>
-                  <option value="draft">Borrador</option><option value="pending">Pendiente</option>
-                  <option value="confirmed">Confirmado</option><option value="inprogress">En proceso</option>
-                  <option value="shipped">Enviado</option><option value="delivered">Entregado</option>
-                  <option value="cancelled">Cancelado</option>
-                </select>
-              </div>
-              <div className="fg"><label>Estado de pago</label>
-                <select value={form.payStatus} onChange={e => setF('payStatus', e.target.value)}>
-                  <option value="pending">Pago pendiente</option>
-                  <option value="partial">Seña abonada</option>
-                  <option value="paid">Pagado</option>
-                </select>
-              </div>
-            </div>
-            <div className="grid2">
-              <div className="fg"><label>Nota interna</label><textarea value={form.noteInt} onChange={e => setF('noteInt', e.target.value)} rows={2} placeholder="Solo para vos..." /></div>
-              <div className="fg"><label>Nota al cliente (PDF)</label><textarea value={form.noteCli} onChange={e => setF('noteCli', e.target.value)} rows={2} placeholder="Visible en el presupuesto..." /></div>
-            </div>
-          </BSection>
+            {/* ─── PASO 2: PRODUCTOS ─── */}
+            {currentStep === 2 && (
+              <>
+                <PaneHeader icon="fa-box-open" title="Paso 2 · Productos" subtitle="Agregá los ítems que incluye el pedido" />
+                <div style={{ overflowX: 'auto' }}>
+                  <table>
+                    <thead><tr><th style={{ minWidth: 160 }}>Producto</th><th style={{ width: 55 }}>Stock</th><th style={{ width: 60 }}>Cant.</th><th style={{ width: 95 }}>Costo u.</th><th style={{ width: 95 }}>Precio u.</th><th style={{ width: 90 }}>Subtotal</th><th style={{ width: 36 }}></th></tr></thead>
+                    <tbody>
+                      {items.map((it, i) => {
+                        const overStock = it.stockAvailable !== undefined && num(it.qty) > it.stockAvailable
+                        return (
+                          <tr key={i}>
+                            <td><input type="text" value={it.name} onChange={e => updateItem(i, 'name', e.target.value)} placeholder="Nombre del producto" list="prod-suggestions" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
+                            <td style={{ textAlign: 'center', fontSize: 11, color: overStock ? 'var(--red)' : 'var(--txt3)', fontWeight: overStock ? 700 : 400 }}>
+                              {it.stockAvailable !== undefined ? it.stockAvailable : '—'}
+                              {overStock && <i className="fa fa-triangle-exclamation" style={{ color: 'var(--red)', marginLeft: 2, fontSize: 9 }} />}
+                            </td>
+                            <td><input type="number" value={it.qty} onFocus={selectOnFocus} onChange={e => updateItem(i, 'qty', e.target.value === '' ? '' : Math.max(1, Number(e.target.value) || 1))} onBlur={e => { if (e.target.value === '') updateItem(i, 'qty', 1) }} min="1" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
+                            <td><input type="number" value={it.costUnit} onFocus={selectOnFocus} onChange={e => updateItem(i, 'costUnit', e.target.value)} onBlur={e => { if (e.target.value === '') updateItem(i, 'costUnit', 0) }} min="0" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
+                            <td><input type="number" value={it.priceUnit} onFocus={selectOnFocus} onChange={e => updateItem(i, 'priceUnit', e.target.value)} onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }} min="0" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
+                            <td style={{ fontWeight: 600, color: 'var(--brand)', fontSize: 12 }}>{fmt(num(it.qty) * num(it.priceUnit))}</td>
+                            <td><button className="act del" onClick={() => removeItem(i)}><i className="fa fa-xmark" /></button></td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                  <datalist id="prod-suggestions">{products.map(p => <option key={p.id} value={p.name} />)}</datalist>
+                </div>
+                <button className="btn btn-ghost btn-xs" style={{ marginTop: 8 }} onClick={addItem}><i className="fa fa-plus" /> Agregar producto</button>
+                <div className="wiz-tip">
+                  <i className="fa fa-lightbulb" /> Escribí el nombre del producto para autocompletar desde tu catálogo — el costo y precio se llenan solos.
+                </div>
+              </>
+            )}
 
-          {/* PRODUCTOS */}
-          <BSection icon="fa-box-open" title="Productos" badge={items.filter(i => i.name).length ? `${items.filter(i => i.name).length} ítems` : null} error={!items.some(i => i.name)} defaultOpen={true}>
-            <div style={{ overflowX: 'auto' }}>
-              <table>
-                <thead><tr><th style={{ minWidth: 160 }}>Producto</th><th style={{ width: 55 }}>Stock</th><th style={{ width: 60 }}>Cant.</th><th style={{ width: 95 }}>Costo u.</th><th style={{ width: 95 }}>Precio u.</th><th style={{ width: 90 }}>Subtotal</th><th style={{ width: 36 }}></th></tr></thead>
-                <tbody>
-                  {items.map((it, i) => {
-                    const overStock = it.stockAvailable !== undefined && num(it.qty) > it.stockAvailable
-                    return (
-                    <tr key={i}>
-                      <td><input type="text" value={it.name} onChange={e => updateItem(i, 'name', e.target.value)} placeholder="Nombre del producto" list="prod-suggestions" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
-                      <td style={{ textAlign: 'center', fontSize: 11, color: overStock ? 'var(--red)' : 'var(--txt3)', fontWeight: overStock ? 700 : 400 }}>
-                        {it.stockAvailable !== undefined ? it.stockAvailable : '—'}
-                        {overStock && <i className="fa fa-triangle-exclamation" style={{ color: 'var(--red)', marginLeft: 2, fontSize: 9 }} />}
-                      </td>
-                      <td><input type="number" value={it.qty} onFocus={selectOnFocus} onChange={e => updateItem(i, 'qty', e.target.value === '' ? '' : Math.max(1, Number(e.target.value) || 1))} onBlur={e => { if (e.target.value === '') updateItem(i, 'qty', 1) }} min="1" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
-                      <td><input type="number" value={it.costUnit} onFocus={selectOnFocus} onChange={e => updateItem(i, 'costUnit', e.target.value)} onBlur={e => { if (e.target.value === '') updateItem(i, 'costUnit', 0) }} min="0" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
-                      <td><input type="number" value={it.priceUnit} onFocus={selectOnFocus} onChange={e => updateItem(i, 'priceUnit', e.target.value)} onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }} min="0" style={{ padding: '6px 8px', fontSize: 12 }} /></td>
-                      <td style={{ fontWeight: 600, color: 'var(--brand)', fontSize: 12 }}>{fmt(num(it.qty) * num(it.priceUnit))}</td>
-                      <td><button className="act del" onClick={() => removeItem(i)}><i className="fa fa-xmark" /></button></td>
-                    </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-              <datalist id="prod-suggestions">{products.map(p => <option key={p.id} value={p.name} />)}</datalist>
-            </div>
-            <button className="btn btn-ghost btn-xs" style={{ marginTop: 8 }} onClick={addItem}><i className="fa fa-plus" /> Agregar producto</button>
-          </BSection>
+            {/* ─── PASO 3: ENTREGA ─── */}
+            {currentStep === 3 && (
+              <>
+                <PaneHeader icon="fa-truck" title="Paso 3 · Entrega y precio" subtitle="Configurá modalidad, fechas y parámetros" />
+                <div className="grid2">
+                  <div className="fg"><label>Modalidad</label>
+                    <select value={form.delivery} onChange={e => setF('delivery', e.target.value)}>
+                      <option value="">— seleccionar —</option>
+                      {(c.deliveryModes || []).map(d => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  </div>
+                  <div className="fg"><label>Fecha pactada</label><input type="date" value={form.deliveryDate} onChange={e => setF('deliveryDate', e.target.value)} /></div>
+                  <div className="fg"><label>Costo envío ($)</label><input type="number" value={form.shipCost} onFocus={selectOnFocus} onChange={e => setF('shipCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('shipCost', 0) }} min="0" /></div>
+                  <div className="fg"><label>Estado del pedido</label>
+                    <select value={form.status} onChange={e => setF('status', e.target.value)}>
+                      <option value="draft">Borrador</option><option value="pending">Pendiente</option>
+                      <option value="confirmed">Confirmado</option><option value="inprogress">En proceso</option>
+                      <option value="shipped">Enviado</option><option value="delivered">Entregado</option>
+                      <option value="cancelled">Cancelado</option>
+                    </select>
+                  </div>
+                  <div className="fg"><label>Estado de pago</label>
+                    <select value={form.payStatus} onChange={e => setF('payStatus', e.target.value)}>
+                      <option value="pending">Pago pendiente</option>
+                      <option value="partial">Seña abonada</option>
+                      <option value="paid">Pagado</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="grid3" style={{ marginTop: 4 }}>
+                  <div className="fg"><label>Margen ganancia (%)</label><input type="number" value={form.margin} onFocus={selectOnFocus} onChange={e => setF('margin', e.target.value)} onBlur={e => { if (e.target.value === '') setF('margin', 0) }} min="0" max="100" /></div>
+                  <div className="fg"><label>Seña requerida (%)</label><input type="number" value={form.deposit} onFocus={selectOnFocus} onChange={e => setF('deposit', e.target.value)} onBlur={e => { if (e.target.value === '') setF('deposit', 0) }} min="0" max="100" /></div>
+                  <div className="fg"><label>Impresión/logo x u. ($)</label><input type="number" value={form.logoCost} onFocus={selectOnFocus} onChange={e => setF('logoCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('logoCost', 0) }} min="0" /></div>
+                </div>
+                <div className="grid2">
+                  <div className="fg"><label>Nota interna</label><textarea value={form.noteInt} onChange={e => setF('noteInt', e.target.value)} rows={2} placeholder="Solo para vos..." /></div>
+                  <div className="fg"><label>Nota al cliente (PDF)</label><textarea value={form.noteCli} onChange={e => setF('noteCli', e.target.value)} rows={2} placeholder="Visible en el presupuesto..." /></div>
+                </div>
+              </>
+            )}
 
-          {/* PARÁMETROS */}
-          <BSection icon="fa-sliders" title="Parámetros de precio" badge={`${form.margin || 0}% margen · ${form.deposit || 0}% seña`} defaultOpen={false}>
-            <div className="grid3">
-              <div className="fg"><label>Margen ganancia (%)</label><input type="number" value={form.margin} onFocus={selectOnFocus} onChange={e => setF('margin', e.target.value)} onBlur={e => { if (e.target.value === '') setF('margin', 0) }} min="0" max="100" /></div>
-              <div className="fg"><label>Seña requerida (%)</label><input type="number" value={form.deposit} onFocus={selectOnFocus} onChange={e => setF('deposit', e.target.value)} onBlur={e => { if (e.target.value === '') setF('deposit', 0) }} min="0" max="100" /></div>
-              <div className="fg"><label>Impresión/logo x u. ($)</label><input type="number" value={form.logoCost} onFocus={selectOnFocus} onChange={e => setF('logoCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('logoCost', 0) }} min="0" /></div>
+            {/* ─── PASO 4: CONFIRMAR ─── */}
+            {currentStep === 4 && (
+              <>
+                <PaneHeader icon="fa-check-double" title="Paso 4 · Confirmar y enviar" subtitle="Revisá todo antes de guardar" />
+                <div className="wiz-review">
+                  <div className="wiz-rev-card">
+                    <div className="wiz-rev-card-h"><i className="fa fa-user-tie" /> Cliente <button className="wiz-rev-edit" onClick={() => goStep(1)}>Editar</button></div>
+                    <div className="wiz-rev-body">
+                      <div><b>{form.contact || '—'}</b>{form.company ? ` · ${form.company}` : ''}</div>
+                      <div className="wiz-rev-meta">{form.wa || 'Sin WhatsApp'} · {form.clientType === 'b2b' ? 'B2B' : 'B2C'}</div>
+                    </div>
+                  </div>
+                  <div className="wiz-rev-card">
+                    <div className="wiz-rev-card-h"><i className="fa fa-box-open" /> Productos ({items.filter(i => i.name).length}) <button className="wiz-rev-edit" onClick={() => goStep(2)}>Editar</button></div>
+                    <div className="wiz-rev-body">
+                      {items.filter(i => i.name).map((it, idx) => (
+                        <div key={idx} className="wiz-rev-item">
+                          <span>{it.qty}× {it.name}</span>
+                          <span>{fmt(num(it.qty) * num(it.priceUnit))}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="wiz-rev-card">
+                    <div className="wiz-rev-card-h"><i className="fa fa-truck" /> Entrega <button className="wiz-rev-edit" onClick={() => goStep(3)}>Editar</button></div>
+                    <div className="wiz-rev-body">
+                      <div>{form.delivery || 'Sin modalidad'} · {form.deliveryDate || 'Sin fecha'}</div>
+                      <div className="wiz-rev-meta">Envío {fmt(num(form.shipCost))} · Margen {form.margin}% · Seña {form.deposit}%</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="wiz-tip" style={{ marginTop: 14 }}>
+                  <i className="fa fa-circle-check" /> Todo listo. Al confirmar guardás el presupuesto y volvés al dashboard.
+                </div>
+              </>
+            )}
+
+            {/* NAV WIZARD */}
+            <div className="wiz-nav">
+              <button className="btn btn-ghost" onClick={goPrev} disabled={currentStep === 1}>
+                <i className="fa fa-arrow-left" /> Anterior
+              </button>
+              <div className="wiz-nav-mid">Paso {currentStep} de {WIZARD_STEPS.length}</div>
+              {currentStep < WIZARD_STEPS.length ? (
+                <button className="btn btn-primary" onClick={goNext}>
+                  Siguiente <i className="fa fa-arrow-right" />
+                </button>
+              ) : (
+                <button className="btn btn-primary" onClick={handleSave}>
+                  <i className="fa fa-floppy-disk" /> Confirmar y guardar
+                </button>
+              )}
             </div>
-          </BSection>
+          </div>
         </div>
 
         {/* PANEL LATERAL */}
