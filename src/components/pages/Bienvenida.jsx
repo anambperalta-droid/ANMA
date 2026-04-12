@@ -111,10 +111,25 @@ export default function Bienvenida() {
     if (password.length < 6) { setError('Minimo 6 caracteres.'); return }
     if (password !== confirm) { setError('Las contraseñas no coinciden.'); return }
     setSubmitting(true)
-    const { error: updateErr } = await supabase.auth.updateUser({ password })
+    const { data: updated, error: updateErr } = await supabase.auth.updateUser({ password })
     if (updateErr) {
       setError(updateErr.message)
       setSubmitting(false)
+      return
+    }
+    // Si la invitación fue para OTRO sitio (metadata.invited_to_site), redirigimos alli.
+    // Como el origen actual ya coincide con el site (el redirectTo nos trajo aca),
+    // simplemente mandamos al dashboard.
+    const siteMeta = updated?.user?.user_metadata?.invited_to_site
+    const currentHost = window.location.hostname
+    const hubHost = 'anma-hub.vercel.app'
+    const hostHost = 'anma-host.vercel.app'
+    if (siteMeta === 'hub' && currentHost !== hubHost && currentHost !== 'localhost') {
+      window.location.replace(`https://${hubHost}/`)
+      return
+    }
+    if (siteMeta === 'host' && currentHost !== hostHost && currentHost !== 'localhost') {
+      window.location.replace(`https://${hostHost}/`)
       return
     }
     navigate('/', { replace: true })
