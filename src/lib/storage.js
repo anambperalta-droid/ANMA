@@ -41,6 +41,7 @@ export const DEFAULTS = {
   businessName: 'ANMA',
   subtitle: 'Tu negocio en un solo lugar',
   currency: '$',
+  numberFormat: 'es-AR',
   defaultMargin: 40,
   defaultDeposit: 50,
   validity: 15,
@@ -87,7 +88,8 @@ export function ensureDefaults() {
 export const fmt = (v) => {
   const c = cfg()
   const cur = c.currency || '$'
-  return cur + (Number(v) || 0).toLocaleString('es-AR', { maximumFractionDigits: 0 })
+  const locale = c.numberFormat || 'es-AR'
+  return cur + (Number(v) || 0).toLocaleString(locale, { maximumFractionDigits: 0 })
 }
 
 export const MONTHS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
