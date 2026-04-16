@@ -10,6 +10,12 @@ export function DataProvider({ children }) {
   ensureDefaults()
 
   useEffect(() => {
+    const h = () => refresh()
+    window.addEventListener('anma:synced', h)
+    return () => window.removeEventListener('anma:synced', h)
+  }, [refresh])
+
+  useEffect(() => {
     ;['suppliers', 'products', 'clients', 'insumos', 'budgets'].forEach(key => {
       const list = db(key, [])
       const seen = new Set()
