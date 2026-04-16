@@ -48,14 +48,18 @@ serve(async (req) => {
     const ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!
     const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 
-    const userClient = createClient(SUPABASE_URL, ANON_KEY, {
-      global: { headers: { Authorization: authHeader } },
+    // Extraer token Bearer y validarlo server-side (compatible con ES256 y HS256)
+    const token = authHeader.replace(/^Bearer\s+/i, '').trim()
+    if (!token) return json({ error: 'Missing bearer token' }, 401)
+
+    const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false },
     })
 
     const {
       data: { user },
       error: userErr,
-    } = await userClient.auth.getUser()
+    } = await admin.auth.getUser(token)
     if (userErr || !user) return json({ error: 'Invalid or expired token' }, 401)
 
     // 2) Validación de payload
@@ -73,11 +77,7 @@ serve(async (req) => {
       }, 400)
     }
 
-    // 3) Invitación con privilegios admin (server-side)
-    const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    })
-
+    // 3) Invitación con privilegios admin (reutiliza el cliente ya creado)
     const { data, error } = await admin.auth.admin.inviteUserByEmail(email, {
       redirectTo,
       data: {
