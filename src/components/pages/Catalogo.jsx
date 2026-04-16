@@ -297,7 +297,7 @@ export default function Catalogo() {
               <div className="fg"><label>Categoría</label>
                 <select value={form.cat} onChange={e => setF('cat', e.target.value)}>
                   <option value="">Sin categoría</option>
-                  {cats.map(cat => <option key={cat}>{cat}</option>)}
+                  {cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                 </select>
               </div>
               <div className="fg"><label>Unidad</label>
@@ -437,7 +437,7 @@ export default function Catalogo() {
           <div className="modal" style={{ maxWidth: 680 }}>
             <div className="mh"><h3>Importar productos desde CSV</h3><button className="mclose" onClick={() => { setCsvModal(false); setCsvPreview([]) }}><i className="fa fa-xmark" /></button></div>
             <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 18px', marginBottom: 16, fontSize: 12, color: 'var(--txt2)' }}><b>Formato:</b> Nombre del producto, Costo (una por línea)</div>
-            <div className="fg"><label>Categoría</label><select value={csvCat} onChange={e => setCsvCat(e.target.value)}>{cats.map(cat => <option key={cat}>{cat}</option>)}</select></div>
+            <div className="fg"><label>Categoría</label><select value={csvCat} onChange={e => setCsvCat(e.target.value)}>{cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}</select></div>
             <div className="fg"><label>Archivo CSV</label><input ref={csvRef} type="file" accept=".csv,.txt" onChange={handleCsvFile} style={{ padding: '10px 14px', border: '2px dashed var(--border)', borderRadius: 10, width: '100%', cursor: 'pointer' }} /></div>
             {csvPreview.length > 0 && (
               <div style={{ maxHeight: 180, overflow: 'auto', border: '1px solid var(--border)', borderRadius: 8, marginTop: 8 }}>
@@ -458,7 +458,7 @@ export default function Catalogo() {
           <div className="modal">
             <div className="mh"><h3>Carga masiva de productos</h3><button className="mclose" onClick={() => setBulkModal(false)}><i className="fa fa-xmark" /></button></div>
             <div style={{ fontSize: 12, color: 'var(--txt2)', marginBottom: 14, background: 'var(--surface2)', padding: '10px 14px', borderRadius: 8 }}>Formato: <code>Nombre, costo</code> (una por línea)</div>
-            <div className="fg"><label>Categoría</label><select value={bulkCat} onChange={e => setBulkCat(e.target.value)}>{cats.map(cat => <option key={cat}>{cat}</option>)}</select></div>
+            <div className="fg"><label>Categoría</label><select value={bulkCat} onChange={e => setBulkCat(e.target.value)}>{cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}</select></div>
             <div className="fg"><label>Datos</label><textarea value={bulkData} onChange={e => setBulkData(e.target.value)} rows={8} placeholder={'Remera algodón, 2500\nPantalón cargo, 4800'} /></div>
             <div className="mfooter"><button className="btn btn-secondary" onClick={() => setBulkModal(false)}>Cancelar</button><button className="btn btn-primary" onClick={doBulk}><i className="fa fa-bolt" /> Importar</button></div>
           </div>

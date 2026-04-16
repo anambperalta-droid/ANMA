@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect } from 'react'
 import { db, dbW, cfg, wCfg, ensureDefaults } from '../lib/storage'
 
 const Ctx = createContext()
@@ -8,6 +8,23 @@ export function DataProvider({ children }) {
   const refresh = useCallback(() => setTick((t) => t + 1), [])
 
   ensureDefaults()
+
+  useEffect(() => {
+    ;['suppliers', 'products', 'clients', 'insumos', 'budgets'].forEach(key => {
+      const list = db(key, [])
+      const seen = new Set()
+      let changed = false
+      const fixed = list.map(item => {
+        if (!item.id || seen.has(item.id)) {
+          item = { ...item, id: Date.now() + Math.floor(Math.random() * 99991) }
+          changed = true
+        }
+        seen.add(item.id)
+        return item
+      })
+      if (changed) { dbW(key, fixed); console.log(`[ANMA] Deduped IDs for ${key}`) }
+    })
+  }, []) // run once on mount
 
   const get = useCallback((key, fallback = []) => db(key, fallback), [tick])
   const set = useCallback((key, val) => { dbW(key, val); refresh() }, [refresh])
@@ -24,7 +41,7 @@ export function DataProvider({ children }) {
       if (i > -1) bud[i] = { ...bud[i], ...bData }
     } else {
       const num = c.nextNum || 1
-      bData.id = Date.now()
+      bData.id = Date.now() + Math.floor(Math.random() * 99991)
       bData.num = `${c.budgetPrefix || 'AN'}-${String(num).padStart(4, '0')}`
       bData.date = new Date().toISOString().slice(0, 10)
       bud.push(bData)
@@ -54,7 +71,7 @@ export function DataProvider({ children }) {
       const i = list.findIndex((x) => x.id === item.id)
       if (i > -1) list[i] = { ...list[i], ...item }
     } else {
-      item.id = Date.now()
+      item.id = Date.now() + Math.floor(Math.random() * 99991)
       list.push(item)
     }
     dbW(key, list)
@@ -71,7 +88,7 @@ export function DataProvider({ children }) {
   const recordStockMove = useCallback((move) => {
     // Save the movement record
     const moves = db('stockMoves', [])
-    if (!move.id) move.id = Date.now()
+    if (!move.id) move.id = Date.now() + Math.floor(Math.random() * 99991)
     move.date = move.date || new Date().toISOString().slice(0, 10)
     moves.push(move)
     dbW('stockMoves', moves)
