@@ -1,19 +1,31 @@
 /* ═══════════════════════════════════════
    ANMA — Storage Layer v4
    Modelo: Stock + Insumos + B2B/B2C
+   Datos aislados por usuario (userId)
 ═══════════════════════════════════════ */
-const K = 'anma4_'
+const BASE = 'anma4_'
+
+// userId se setea al loguearse (ver DataContext)
+let _userId = null
+
+export function setStorageUser(userId) {
+  _userId = userId || null
+}
+
+function K() {
+  return _userId ? `${BASE}u_${_userId}_` : `${BASE}`
+}
 
 export function db(key, fallback = []) {
   try {
-    return JSON.parse(localStorage.getItem(K + key)) ?? fallback
+    return JSON.parse(localStorage.getItem(K() + key)) ?? fallback
   } catch {
     return fallback
   }
 }
 
 export function dbW(key, value) {
-  localStorage.setItem(K + key, JSON.stringify(value))
+  localStorage.setItem(K() + key, JSON.stringify(value))
 }
 
 export function cfg() {
@@ -42,7 +54,6 @@ export const DEFAULTS = {
     'Envío express — 24/48hs (+15%)',
     'Entrega a coordinar',
   ],
-  /* ── Categorías dinámicas (admin configura) ── */
   productCats: [
     'Producto terminado',
     'Semi-elaborado',
@@ -58,7 +69,6 @@ export const DEFAULTS = {
   ],
   units: ['unidad', 'kg', 'litro', 'metro', 'caja', 'pack', 'rollo'],
   clientTypes: ['B2C — Cliente final', 'B2B — Empresa'],
-  /* ── Reglas de precio por tipo de cliente ── */
   pricingRules: {
     b2c: { margin: 40, minQty: 1, label: 'Precio público' },
     b2b: { margin: 25, minQty: 10, label: 'Precio mayorista' },
@@ -68,13 +78,6 @@ export const DEFAULTS = {
 export function ensureDefaults() {
   const c = cfg()
   if (!c.businessName) wCfg(DEFAULTS)
-  if (!c.email || !c.ph) {
-    wCfg({
-      email: 'admin@anma.com',
-      ph: '944ce261c4dc5b37feb359c238187e5ea6ceb915f0e28a648448d7c4a5c7f7d3',
-    })
-  }
-  // Migrate: add new defaults if missing
   if (!c.insumoCats) wCfg({ insumoCats: DEFAULTS.insumoCats })
   if (!c.units) wCfg({ units: DEFAULTS.units })
   if (!c.clientTypes) wCfg({ clientTypes: DEFAULTS.clientTypes })
@@ -89,7 +92,6 @@ export const fmt = (v) => {
 
 export const MONTHS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
 
-/* ── Pedido / Venta statuses ── */
 export const STATUS_MAP = {
   draft: 'Borrador',
   pending: 'Pendiente',
@@ -110,7 +112,6 @@ export const STATUS_CLS = {
   cancelled: 'b-lost',
 }
 
-/* ── Pago ── */
 export const PAY_STATUS_MAP = {
   pending: 'Pago pendiente',
   partial: 'Seña abonada',
@@ -123,7 +124,6 @@ export const PAY_STATUS_CLS = {
   paid: 'b-confirmed',
 }
 
-/* ── Stock movement types ── */
 export const MOVE_TYPES = {
   in: 'Ingreso',
   out: 'Egreso',
