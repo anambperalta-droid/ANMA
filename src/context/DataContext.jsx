@@ -16,6 +16,7 @@ export function DataProvider({ children }) {
   }, [refresh])
 
   useEffect(() => {
+    let anyChanged = false
     ;['suppliers', 'products', 'clients', 'insumos', 'budgets'].forEach(key => {
       const list = db(key, [])
       const seen = new Set()
@@ -23,14 +24,15 @@ export function DataProvider({ children }) {
       const fixed = list.map(item => {
         if (!item.id || seen.has(item.id)) {
           item = { ...item, id: Date.now() + Math.floor(Math.random() * 99991) }
-          changed = true
+          changed = true; anyChanged = true
         }
         seen.add(item.id)
         return item
       })
-      if (changed) { dbW(key, fixed); console.log(`[ANMA] Deduped IDs for ${key}`) }
+      if (changed) dbW(key, fixed)
     })
-  }, []) // run once on mount
+    if (anyChanged) refresh()
+  }, [])
 
   const get = useCallback((key, fallback = []) => db(key, fallback), [tick])
   const set = useCallback((key, val) => { dbW(key, val); refresh() }, [refresh])

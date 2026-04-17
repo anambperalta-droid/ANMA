@@ -85,7 +85,7 @@ export default function Catalogo() {
 
   const open = (p) => {
     if (p) {
-      setForm({ ...EMPTY, ...p })
+      setForm({ ...EMPTY, ...p, cat: p.cat != null ? p.cat : (cats[0] || '') })
     } else {
       const prices = autoPrice(0)
       setForm({ ...EMPTY, cat: cats[0] || '', priceB2C: prices.b2c, priceB2B: prices.b2b })
@@ -102,7 +102,7 @@ export default function Catalogo() {
 
   const save = () => {
     if (!form.name) { toast('Ingresá el nombre del producto.', 'er'); return }
-    const data = { ...form, cost: num(form.cost), stock: num(form.stock), minStock: num(form.minStock), priceB2C: num(form.priceB2C), priceB2B: num(form.priceB2B) }
+    const data = { ...form, cat: form.cat ?? '', cost: num(form.cost), stock: num(form.stock), minStock: num(form.minStock), priceB2C: num(form.priceB2C), priceB2B: num(form.priceB2B) }
     saveEntity('products', data); setModal(false); toast('Producto guardado', 'ok')
   }
 
