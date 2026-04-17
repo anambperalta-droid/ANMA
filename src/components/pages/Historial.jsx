@@ -11,13 +11,18 @@ function Badge({ status }) {
 
 function KpiCard({ label, value, delta, isKey }) {
   return (
-    <div className="bento-kpi" style={isKey ? { borderLeft: '4px solid var(--green)', paddingLeft: 16 } : {}}>
-      <div style={{ fontSize: 11, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 }}>{label}</div>
-      <div style={{ fontSize: 29, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-0.03em', lineHeight: 1 }}>{value}</div>
+    <div className="bento-kpi" style={isKey ? { borderLeft: '4px solid var(--green)', paddingLeft: 20 } : {}}>
+      <div style={{ fontSize: 11, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 12 }}>{label}</div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'wrap' }}>
+        <div style={{ fontSize: 29, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-0.03em', lineHeight: 1 }}>{value}</div>
+        {delta !== null && delta !== undefined && (
+          <span style={{ fontSize: 12, fontWeight: 700, color: delta >= 0 ? 'var(--green)' : 'var(--red)' }}>
+            {delta >= 0 ? '↑' : '↓'} {Math.abs(delta)}%
+          </span>
+        )}
+      </div>
       {delta !== null && delta !== undefined && (
-        <div style={{ fontSize: 10, fontWeight: 700, marginTop: 8, color: delta >= 0 ? 'var(--green)' : 'var(--red)' }}>
-          {delta >= 0 ? '↑' : '↓'} {Math.abs(delta)}% vs mes ant.
-        </div>
+        <div style={{ fontSize: 9, color: '#9CA3AF', marginTop: 5, letterSpacing: '0.03em' }}>vs. periodo anterior</div>
       )}
     </div>
   )
@@ -264,6 +269,7 @@ export default function Historial() {
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
+  const [filterLoading, setFilterLoading] = useState(false)
   const [resendBudget, setResendBudget] = useState(null)
   const [period, setPeriod] = useState('6m')
   const [showPeriodDrop, setShowPeriodDrop] = useState(false)
@@ -281,8 +287,14 @@ export default function Historial() {
   const now = new Date()
 
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
+  useEffect(() => {
+    setFilterLoading(true)
+    const t = setTimeout(() => setFilterLoading(false), 220)
+    return () => clearTimeout(t)
+  }, [period, customFrom, customTo])
 
   // Period filter
+  const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
   const prevYM2 = (() => { const d = new Date(now.getFullYear(), now.getMonth() - 1, 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}` })()
   let periodBudgets
   if (period === 'custom' && customFrom && customTo) {
@@ -321,7 +333,6 @@ export default function Historial() {
   }
 
   // KPI calculations — basados en dinero COBRADO
-  const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
   const monthBudgets = periodBudgets.filter(b => b.date?.startsWith(ym))
   const confirmed = periodBudgets.filter(b => b.status === 'confirmed')
   const pagados = periodBudgets.filter(b => b.payStatus === 'paid' || b.payStatus === 'partial')
@@ -573,11 +584,11 @@ export default function Historial() {
       {/* ═══ RESUMEN / DASHBOARD ═══ */}
       {tab === 'resumen' && (
         <>
-          {loading ? (
+          {(loading || filterLoading) ? (
             <div className="bento">
               <div className="sk sk-kpi" /><div className="sk sk-kpi" /><div className="sk sk-kpi" /><div className="sk sk-kpi" />
-              <div className="sk sk-kpi bento-wide" style={{ height: 180 }} />
-              <div className="sk sk-kpi bento-wide" style={{ height: 180 }} />
+              <div className="sk sk-kpi bento-wide" style={{ height: 200 }} />
+              <div className="sk sk-kpi bento-wide" style={{ height: 200 }} />
             </div>
           ) : (
             <div className="bento sk-fade-in">
