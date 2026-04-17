@@ -7,14 +7,14 @@ const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unida
 
 /* Paleta de colores para categorías */
 const CAT_PALETTE = [
-  { bg: '#EDE9FE', color: '#7C3AED' },
-  { bg: '#DCFCE7', color: '#16A34A' },
-  { bg: '#DBEAFE', color: '#1D4ED8' },
-  { bg: '#FEF3C7', color: '#D97706' },
-  { bg: '#FCE7F3', color: '#DB2777' },
-  { bg: '#CCFBF1', color: '#0D9488' },
-  { bg: '#FEE2E2', color: '#DC2626' },
-  { bg: '#F0FDF4', color: '#15803D' },
+  { bg: '#F5F3FF', color: '#8B5CF6' },
+  { bg: '#EFF6FF', color: '#60A5FA' },
+  { bg: '#ECFDF5', color: '#34D399' },
+  { bg: '#FFFBEB', color: '#F59E0B' },
+  { bg: '#FDF2F8', color: '#F472B6' },
+  { bg: '#F0FDFA', color: '#2DD4BF' },
+  { bg: '#FFF7ED', color: '#FB923C' },
+  { bg: '#F1F5F9', color: '#94A3B8' },
 ]
 
 export default function Catalogo() {
@@ -84,9 +84,10 @@ export default function Catalogo() {
   /* Color badge por categoría */
   const catColor = (cat) => CAT_PALETTE[cats.indexOf(cat) % CAT_PALETTE.length] || CAT_PALETTE[0]
 
+  const safeCat = (val) => (val && cats.includes(val)) ? val : (cats[0] || '')
   const open = (p) => {
     if (p) {
-      setForm({ ...EMPTY, ...p, cat: p.cat != null ? p.cat : (cats[0] || '') })
+      setForm({ ...EMPTY, ...p, cat: safeCat(p.cat) })
     } else {
       const prices = autoPrice(0)
       setForm({ ...EMPTY, cat: cats[0] || '', priceB2C: prices.b2c, priceB2B: prices.b2b })
