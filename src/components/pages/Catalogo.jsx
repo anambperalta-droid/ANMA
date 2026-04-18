@@ -41,6 +41,7 @@ export default function Catalogo() {
   const csvRef = useRef(null)
 
   // New state variables
+  const [stockAlert, setStockAlert] = useState(false)
   const [selectedIds, setSelectedIds] = useState(new Set())
   const [bulkCatModal, setBulkCatModal] = useState(false)
   const [bulkCatValue, setBulkCatValue] = useState('')
@@ -61,9 +62,10 @@ export default function Catalogo() {
   const filtered = useMemo(() => {
     let f = products
     if (catFilter !== 'all') f = f.filter(p => p.cat === catFilter)
+    if (stockAlert) f = f.filter(p => p.minStock > 0 && (p.stock || 0) <= p.minStock)
     if (search) { const s = search.toLowerCase(); f = f.filter(p => (p.name || '').toLowerCase().includes(s) || (p.sku || '').toLowerCase().includes(s)) }
     return f
-  }, [products, catFilter, search])
+  }, [products, catFilter, stockAlert, search])
 
   const isAllSelected = filtered.length > 0 && filtered.every(p => selectedIds.has(p.id))
 
@@ -281,17 +283,20 @@ export default function Catalogo() {
         </div>
       </div>
 
-      {lowStock.length > 0 && (
-        <div style={{ background: 'var(--red-lt)', border: '1.5px solid #FCA5A5', borderRadius: 10, padding: '10px 16px', marginBottom: 14, fontSize: 12, color: 'var(--red)', display: 'flex', alignItems: 'center', gap: 8 }}>
-          <i className="fa fa-triangle-exclamation" />
-          <span><b>{lowStock.length} producto{lowStock.length > 1 ? 's' : ''}</b> con stock bajo: {lowStock.slice(0, 4).map(x => x.name).join(', ')}</span>
-        </div>
-      )}
-
       <div className="pill-row">
         <div className="search-row" style={{ maxWidth: 280 }}><i className="fa fa-magnifying-glass" /><input type="text" placeholder="Buscar producto o SKU..." value={search} onChange={e => setSearch(e.target.value)} /></div>
         <div className={`pill ${catFilter === 'all' ? 'active' : ''}`} onClick={() => setCatFilter('all')}>Todos</div>
         {cats.map(cat => <div key={cat} className={`pill ${catFilter === cat ? 'active' : ''}`} onClick={() => setCatFilter(cat)}>{cat}</div>)}
+        {lowStock.length > 0 && (
+          <div
+            className={`pill ${stockAlert ? 'active' : ''}`}
+            style={stockAlert ? {} : { borderColor: '#FCA5A5', color: 'var(--red)' }}
+            onClick={() => setStockAlert(v => !v)}
+          >
+            <i className="fa fa-triangle-exclamation" style={{ marginRight: 4 }} />
+            Stock crítico ({lowStock.length})
+          </div>
+        )}
         <button
           onClick={() => setCatMgmtModal(true)}
           style={{ marginLeft: 'auto', background: 'none', border: '1px solid var(--border)', borderRadius: 8, padding: '4px 10px', cursor: 'pointer', color: 'var(--txt3)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 5, fontFamily: 'inherit' }}
@@ -326,7 +331,7 @@ export default function Catalogo() {
             <th style={{ textAlign: 'right' }}>P. Mayorista</th>
             <th style={{ textAlign: 'center' }}>% Margen</th>
             {showCostInfo && <th>Últ. actualización</th>}
-            <th style={{ textAlign: 'center' }}>Stock</th>
+            <th style={{ textAlign: 'right' }}>Stock</th>
             <th>Acciones</th>
           </tr></thead>
           <tbody>
@@ -337,12 +342,12 @@ export default function Catalogo() {
               const mp = marginPct(p)
               const cc = catColor(p.cat)
               return (
-                <tr key={p.id} style={isLow ? { background: 'var(--red-lt)' } : undefined}>
+                <tr key={p.id}>
                   <td style={{ textAlign: 'center' }}>
                     <input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)} style={{ cursor: 'pointer' }} />
                   </td>
                   <td>
-                    <div style={{ fontWeight: 600 }}>{p.name}</div>
+                    <div style={{ fontWeight: 800 }}>{p.name}</div>
                     {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
                   </td>
                   <td>
@@ -380,9 +385,8 @@ export default function Catalogo() {
                       ) : <span style={{ color: 'var(--txt4)' }}>—</span>}
                     </td>
                   )}
-                  <td style={{ textAlign: 'center', fontWeight: 700, color: isLow ? 'var(--red)' : 'var(--txt)' }}>
+                  <td style={{ textAlign: 'right', fontWeight: 700, color: isLow ? 'var(--red)' : 'var(--txt)' }}>
                     {p.stock || 0}
-                    {isLow && <i className="fa fa-triangle-exclamation" style={{ color: 'var(--red)', marginLeft: 4, fontSize: 10 }} />}
                   </td>
                   <td><div className="acts">
                     <button className="act" title="Movimiento de stock" onClick={() => openMove(p)}><i className="fa fa-arrows-rotate" /></button>
@@ -433,8 +437,8 @@ export default function Catalogo() {
           <div className="modal" style={{ maxWidth: 740 }}>
             <div className="mh"><h3>{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
             <div className="grid2">
-              <div className="fg"><label>Nombre *</label><input type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Remera algodón premium" /></div>
-              <div className="fg"><label>SKU / Código</label><input type="text" value={form.sku || ''} onChange={e => setF('sku', e.target.value)} placeholder="Opcional" /></div>
+              <div className="fg"><label>Nombre *</label><input autoFocus tabIndex={1} type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Remera algodón premium" /></div>
+              <div className="fg"><label>SKU / Código</label><input tabIndex={2} type="text" value={form.sku || ''} onChange={e => setF('sku', e.target.value)} placeholder="Opcional" /></div>
               <div className="fg"><label>Categoría</label>
                 <select value={form.cat} onChange={e => setF('cat', e.target.value)}>
                   <option value="">Sin categoría</option>
@@ -450,14 +454,14 @@ export default function Catalogo() {
             <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginTop: 8, marginBottom: 8, border: '1.5px solid var(--border)' }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', letterSpacing: '.6px', textTransform: 'uppercase', marginBottom: 10 }}>Precios</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
-                <div className="fg"><label>Costo</label><input type="number" value={form.cost} onChange={e => handleCostChange(e.target.value)} placeholder="0" min="0" /></div>
-                <div className="fg"><label>Precio B2C (público)</label><input type="number" value={form.priceB2C} onChange={e => setF('priceB2C', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--green)', borderWidth: 2 }} /></div>
-                <div className="fg"><label>Precio B2B (mayorista)</label><input type="number" value={form.priceB2B} onChange={e => setF('priceB2B', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--brand)', borderWidth: 2 }} /></div>
+                <div className="fg"><label>Costo</label><input tabIndex={5} type="number" value={form.cost} onChange={e => handleCostChange(e.target.value)} placeholder="0" min="0" /></div>
+                <div className="fg"><label>Precio B2C (público)</label><input tabIndex={6} type="number" value={form.priceB2C} onChange={e => setF('priceB2C', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--green)', borderWidth: 2 }} /></div>
+                <div className="fg"><label>Precio B2B (mayorista)</label><input tabIndex={7} type="number" value={form.priceB2B} onChange={e => setF('priceB2B', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--brand)', borderWidth: 2 }} /></div>
               </div>
             </div>
             <div className="grid2" style={{ marginTop: 8 }}>
-              <div className="fg"><label>Stock actual</label><input type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} placeholder="0" /></div>
-              <div className="fg"><label>Stock mínimo (alerta)</label><input type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} placeholder="0" /></div>
+              <div className="fg"><label>Stock actual</label><input tabIndex={8} type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} placeholder="0" /></div>
+              <div className="fg"><label>Stock mínimo (alerta)</label><input tabIndex={9} type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} placeholder="0" /></div>
             </div>
             <div className="fg"><label>Proveedor</label>
               <select value={form.supplierId || ''} onChange={e => setF('supplierId', e.target.value)}>
