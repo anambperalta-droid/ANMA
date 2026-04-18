@@ -18,7 +18,7 @@ const CAT_PALETTE = [
 ]
 
 export default function Catalogo() {
-  const { get, config, saveEntity, deleteEntity, recordStockMove } = useData()
+  const { get, config, updateConfig, saveEntity, deleteEntity, recordStockMove } = useData()
   const toast = useToast()
   const c = config()
   const [search, setSearch] = useState('')
@@ -40,6 +40,15 @@ export default function Catalogo() {
   const [csvCat, setCsvCat] = useState('')
   const csvRef = useRef(null)
 
+  // New state variables
+  const [selectedIds, setSelectedIds] = useState(new Set())
+  const [bulkCatModal, setBulkCatModal] = useState(false)
+  const [bulkCatValue, setBulkCatValue] = useState('')
+  const [bulkSupplierModal, setBulkSupplierModal] = useState(false)
+  const [bulkSupplierValue, setBulkSupplierValue] = useState('')
+  const [catMgmtModal, setCatMgmtModal] = useState(false)
+  const [editingCat, setEditingCat] = useState(null) // { original, value }
+
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
 
   const products = get('products')
@@ -55,6 +64,8 @@ export default function Catalogo() {
     if (search) { const s = search.toLowerCase(); f = f.filter(p => (p.name || '').toLowerCase().includes(s) || (p.sku || '').toLowerCase().includes(s)) }
     return f
   }, [products, catFilter, search])
+
+  const isAllSelected = filtered.length > 0 && filtered.every(p => selectedIds.has(p.id))
 
   const lowStock = products.filter(p => p.minStock > 0 && (p.stock || 0) <= p.minStock)
   const totalValue = products.reduce((s, p) => s + (p.stock || 0) * (Number(p.cost) || 0), 0)
@@ -127,13 +138,15 @@ export default function Catalogo() {
     const pct = Number(pricePct)
     if (!pct) { toast('Ingresá un porcentaje válido', 'er'); return }
     const factor = 1 + pct / 100
-    priceUpdatePreview.forEach(p => {
+    const targets = selectedIds.size > 0 ? products.filter(p => selectedIds.has(p.id)) : priceUpdatePreview
+    targets.forEach(p => {
       const newCost = Math.round((Number(p.cost) || 0) * factor)
       const prices = autoPrice(newCost)
       saveEntity('products', { ...p, cost: newCost, priceB2C: prices.b2c, priceB2B: prices.b2b })
     })
-    toast(`${priceUpdatePreview.length} productos actualizados ${pct > 0 ? '+' : ''}${pct}%`, 'ok')
+    toast(`${targets.length} productos actualizados ${pct > 0 ? '+' : ''}${pct}%`, 'ok')
     setPriceUpdateModal(false); setPricePct(''); setPriceSupplier('all')
+    if (selectedIds.size > 0) setSelectedIds(new Set())
   }
 
   const addInsumo = () => setForm(f => ({ ...f, insumos: [...(f.insumos || []), { insumoId: '', qtyNeeded: 1 }] }))
@@ -186,9 +199,60 @@ export default function Catalogo() {
     if (csvRef.current) csvRef.current.value = ''
   }
 
+  /* Selection helpers */
+  const toggleSelect = (id) => setSelectedIds(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n })
+  const toggleSelectAll = () => setSelectedIds(prev => prev.size === filtered.length && filtered.every(p => prev.has(p.id)) ? new Set() : new Set(filtered.map(p => p.id)))
+
+  const doBulkDelete = () => {
+    if (!selectedIds.size) return
+    if (!window.confirm(`¿Eliminar ${selectedIds.size} producto${selectedIds.size !== 1 ? 's' : ''}? Esta acción no se puede deshacer.`)) return
+    selectedIds.forEach(id => deleteEntity('products', id))
+    toast(`${selectedIds.size} productos eliminados`, 'in')
+    setSelectedIds(new Set())
+  }
+
+  const doBulkCat = () => {
+    if (!bulkCatValue) return
+    selectedIds.forEach(id => {
+      const p = products.find(x => x.id === id)
+      if (p) saveEntity('products', { ...p, cat: bulkCatValue })
+    })
+    toast(`${selectedIds.size} productos movidos a "${bulkCatValue}"`, 'ok')
+    setSelectedIds(new Set()); setBulkCatModal(false); setBulkCatValue('')
+  }
+
+  const doBulkSupplier = () => {
+    selectedIds.forEach(id => {
+      const p = products.find(x => x.id === id)
+      if (p) saveEntity('products', { ...p, supplierId: bulkSupplierValue })
+    })
+    toast(`${selectedIds.size} productos actualizados`, 'ok')
+    setSelectedIds(new Set()); setBulkSupplierModal(false); setBulkSupplierValue('')
+  }
+
+  const doRenamecat = (original, newName) => {
+    if (!newName || newName === original) { setEditingCat(null); return }
+    const newCats = cats.map(c => c === original ? newName : c)
+    updateConfig({ productCats: newCats })
+    products.filter(p => p.cat === original).forEach(p => saveEntity('products', { ...p, cat: newName }))
+    toast(`Categoría renombrada a "${newName}"`, 'ok')
+    setEditingCat(null)
+  }
+
+  const doDeleteCat = (cat) => {
+    const affected = products.filter(p => p.cat === cat).length
+    if (!window.confirm(`¿Eliminar categoría "${cat}"?${affected > 0 ? `\n${affected} producto${affected !== 1 ? 's' : ''} quedarán sin categoría.` : ''}`)) return
+    updateConfig({ productCats: cats.filter(c => c !== cat) })
+    products.filter(p => p.cat === cat).forEach(p => saveEntity('products', { ...p, cat: '' }))
+    toast(`Categoría eliminada`, 'in')
+  }
+
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === 'Escape') {
+        if (catMgmtModal) { setCatMgmtModal(false); setEditingCat(null); return }
+        if (bulkCatModal) { setBulkCatModal(false); return }
+        if (bulkSupplierModal) { setBulkSupplierModal(false); return }
         if (priceUpdateModal) { setPriceUpdateModal(false); return }
         if (moveModal) { setMoveModal(null); return }
         if (csvModal) { setCsvModal(false); setCsvPreview([]); return }
@@ -198,7 +262,7 @@ export default function Catalogo() {
     }
     window.addEventListener('keydown', handleEsc)
     return () => window.removeEventListener('keydown', handleEsc)
-  }, [priceUpdateModal, moveModal, csvModal, bulkModal, modal])
+  }, [catMgmtModal, bulkCatModal, bulkSupplierModal, priceUpdateModal, moveModal, csvModal, bulkModal, modal])
 
   return (
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>
@@ -228,11 +292,21 @@ export default function Catalogo() {
         <div className="search-row" style={{ maxWidth: 280 }}><i className="fa fa-magnifying-glass" /><input type="text" placeholder="Buscar producto o SKU..." value={search} onChange={e => setSearch(e.target.value)} /></div>
         <div className={`pill ${catFilter === 'all' ? 'active' : ''}`} onClick={() => setCatFilter('all')}>Todos</div>
         {cats.map(cat => <div key={cat} className={`pill ${catFilter === cat ? 'active' : ''}`} onClick={() => setCatFilter(cat)}>{cat}</div>)}
+        <button
+          onClick={() => setCatMgmtModal(true)}
+          style={{ marginLeft: 'auto', background: 'none', border: '1px solid var(--border)', borderRadius: 8, padding: '4px 10px', cursor: 'pointer', color: 'var(--txt3)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 5, fontFamily: 'inherit' }}
+          title="Gestionar categorías"
+        >
+          <i className="fa fa-sliders" /> Gestionar
+        </button>
       </div>
 
       <div className="tbl-card">
         <table>
           <thead><tr>
+            <th style={{ width: 36, textAlign: 'center' }}>
+              <input type="checkbox" checked={isAllSelected} onChange={toggleSelectAll} style={{ cursor: 'pointer' }} />
+            </th>
             <th>Producto</th>
             <th>Categoría</th>
             <th>Proveedor</th>
@@ -257,13 +331,16 @@ export default function Catalogo() {
           </tr></thead>
           <tbody>
             {loading ? [1,2,3,4].map(i => (
-              <tr key={i}><td colSpan={showCostInfo ? 10 : 9}><div className="sk sk-text" style={{ height: 18, width: `${50 + Math.random() * 40}%` }} /></td></tr>
+              <tr key={i}><td colSpan={showCostInfo ? 11 : 10}><div className="sk sk-text" style={{ height: 18, width: `${50 + Math.random() * 40}%` }} /></td></tr>
             )) : filtered.length ? filtered.map(p => {
               const isLow = p.minStock > 0 && (p.stock || 0) <= p.minStock
               const mp = marginPct(p)
               const cc = catColor(p.cat)
               return (
                 <tr key={p.id} style={isLow ? { background: 'var(--red-lt)' } : undefined}>
+                  <td style={{ textAlign: 'center' }}>
+                    <input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)} style={{ cursor: 'pointer' }} />
+                  </td>
                   <td>
                     <div style={{ fontWeight: 600 }}>{p.name}</div>
                     {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
@@ -314,10 +391,41 @@ export default function Catalogo() {
                   </div></td>
                 </tr>
               )
-            }) : <tr><td colSpan={showCostInfo ? 10 : 9}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>Sin productos</p></div></td></tr>}
+            }) : <tr><td colSpan={showCostInfo ? 11 : 10}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>Sin productos</p></div></td></tr>}
           </tbody>
         </table>
       </div>
+
+      {/* Floating bulk action bar */}
+      {selectedIds.size > 0 && (
+        <div style={{
+          position: 'fixed', bottom: 28, left: '50%', transform: 'translateX(-50%)',
+          background: 'var(--surface)', border: '2px solid var(--brand)', borderRadius: 14,
+          boxShadow: '0 8px 32px rgba(0,0,0,.18)', padding: '10px 16px',
+          display: 'flex', alignItems: 'center', gap: 10, zIndex: 200, flexWrap: 'wrap',
+          animation: 'pgIn .2s ease both'
+        }}>
+          <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--brand)', marginRight: 4 }}>
+            <i className="fa fa-check-square" style={{ marginRight: 6 }} />{selectedIds.size} seleccionado{selectedIds.size !== 1 ? 's' : ''}
+          </span>
+          <div style={{ width: 1, height: 22, background: 'var(--border)' }} />
+          <button className="btn btn-ghost btn-sm" onClick={() => { setBulkCatValue(cats[0] || ''); setBulkCatModal(true) }}>
+            <i className="fa fa-tag" /> Categoría
+          </button>
+          <button className="btn btn-ghost btn-sm" onClick={() => { setBulkSupplierValue(''); setBulkSupplierModal(true) }}>
+            <i className="fa fa-truck" /> Proveedor
+          </button>
+          <button className="btn btn-ghost btn-sm" onClick={() => { setPricePct(''); setPriceUpdateModal(true) }}>
+            <i className="fa fa-percent" /> Precios
+          </button>
+          <button className="btn btn-sm" onClick={doBulkDelete} style={{ background: 'var(--red)', color: '#fff', border: 'none' }}>
+            <i className="fa fa-trash" /> Eliminar
+          </button>
+          <button className="btn btn-ghost btn-sm" onClick={() => setSelectedIds(new Set())}>
+            <i className="fa fa-xmark" />
+          </button>
+        </div>
+      )}
 
       {/* Modal producto */}
       {modal && (
@@ -395,16 +503,18 @@ export default function Catalogo() {
             <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '12px 16px', marginBottom: 16, fontSize: 12, color: 'var(--txt2)', lineHeight: 1.6 }}>
               Aumenta o disminuye el <b>costo</b> de un proveedor en un porcentaje. Los precios B2C y B2B se recalculan automáticamente según tus reglas de margen.
             </div>
-            <div className="fg">
-              <label>Proveedor</label>
-              <select value={priceSupplier} onChange={e => setPriceSupplier(e.target.value)}>
-                <option value="all">Todos los proveedores ({products.length} productos)</option>
-                {suppliers.map(s => {
-                  const count = products.filter(p => String(p.supplierId) === String(s.id)).length
-                  return <option key={s.id} value={s.id}>{s.name} ({count} productos)</option>
-                })}
-              </select>
-            </div>
+            {selectedIds.size === 0 && (
+              <div className="fg">
+                <label>Proveedor</label>
+                <select value={priceSupplier} onChange={e => setPriceSupplier(e.target.value)}>
+                  <option value="all">Todos los proveedores ({products.length} productos)</option>
+                  {suppliers.map(s => {
+                    const count = products.filter(p => String(p.supplierId) === String(s.id)).length
+                    return <option key={s.id} value={s.id}>{s.name} ({count} productos)</option>
+                  })}
+                </select>
+              </div>
+            )}
             <div className="fg">
               <label>% de ajuste</label>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -422,13 +532,13 @@ export default function Catalogo() {
             {pricePct && Number(pricePct) !== 0 && (
               <div style={{ background: Number(pricePct) > 0 ? '#DCFCE7' : '#FEE2E2', borderRadius: 10, padding: '10px 14px', fontSize: 12, marginBottom: 8 }}>
                 <i className={`fa ${Number(pricePct) > 0 ? 'fa-arrow-up' : 'fa-arrow-down'}`} style={{ marginRight: 6, color: Number(pricePct) > 0 ? 'var(--green)' : 'var(--red)' }} />
-                Se actualizarán <b>{priceUpdatePreview.length} productos</b> con un ajuste de <b>{Number(pricePct) > 0 ? '+' : ''}{pricePct}%</b>
+                Se actualizarán <b>{selectedIds.size > 0 ? selectedIds.size : priceUpdatePreview.length} productos</b> con un ajuste de <b>{Number(pricePct) > 0 ? '+' : ''}{pricePct}%</b>
               </div>
             )}
             <div className="mfooter">
               <button className="btn btn-secondary" onClick={() => setPriceUpdateModal(false)}>Cancelar</button>
               <button className="btn btn-primary" onClick={doPriceUpdate} disabled={!pricePct || Number(pricePct) === 0}>
-                <i className="fa fa-bolt" /> Actualizar {priceUpdatePreview.length} productos
+                <i className="fa fa-bolt" /> Actualizar {selectedIds.size > 0 ? selectedIds.size : priceUpdatePreview.length} productos
               </button>
             </div>
           </div>
@@ -494,6 +604,94 @@ export default function Catalogo() {
             <div className="fg"><label>Categoría</label><select value={bulkCat} onChange={e => setBulkCat(e.target.value)}>{cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}</select></div>
             <div className="fg"><label>Datos</label><textarea value={bulkData} onChange={e => setBulkData(e.target.value)} rows={8} placeholder={'Remera algodón, 2500\nPantalón cargo, 4800'} /></div>
             <div className="mfooter"><button className="btn btn-secondary" onClick={() => setBulkModal(false)}>Cancelar</button><button className="btn btn-primary" onClick={doBulk}><i className="fa fa-bolt" /> Importar</button></div>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk category modal */}
+      {bulkCatModal && (
+        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setBulkCatModal(false) }}>
+          <div className="modal" style={{ maxWidth: 400 }}>
+            <div className="mh"><h3><i className="fa fa-tag" style={{ marginRight: 8 }} />Cambiar categoría</h3><button className="mclose" onClick={() => setBulkCatModal(false)}><i className="fa fa-xmark" /></button></div>
+            <p style={{ fontSize: 13, color: 'var(--txt2)', marginBottom: 12 }}>Mover <b>{selectedIds.size} producto{selectedIds.size !== 1 ? 's' : ''}</b> a:</p>
+            <div className="fg">
+              <select value={bulkCatValue} onChange={e => setBulkCatValue(e.target.value)}>
+                <option value="">Sin categoría</option>
+                {cats.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <div className="mfooter">
+              <button className="btn btn-secondary" onClick={() => setBulkCatModal(false)}>Cancelar</button>
+              <button className="btn btn-primary" onClick={doBulkCat}><i className="fa fa-check" /> Aplicar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk supplier modal */}
+      {bulkSupplierModal && (
+        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setBulkSupplierModal(false) }}>
+          <div className="modal" style={{ maxWidth: 400 }}>
+            <div className="mh"><h3><i className="fa fa-truck" style={{ marginRight: 8 }} />Cambiar proveedor</h3><button className="mclose" onClick={() => setBulkSupplierModal(false)}><i className="fa fa-xmark" /></button></div>
+            <p style={{ fontSize: 13, color: 'var(--txt2)', marginBottom: 12 }}>Asignar proveedor a <b>{selectedIds.size} producto{selectedIds.size !== 1 ? 's' : ''}</b>:</p>
+            <div className="fg">
+              <select value={bulkSupplierValue} onChange={e => setBulkSupplierValue(e.target.value)}>
+                <option value="">Sin asignar</option>
+                {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
+            </div>
+            <div className="mfooter">
+              <button className="btn btn-secondary" onClick={() => setBulkSupplierModal(false)}>Cancelar</button>
+              <button className="btn btn-primary" onClick={doBulkSupplier}><i className="fa fa-check" /> Aplicar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Category management modal */}
+      {catMgmtModal && (
+        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) { setCatMgmtModal(false); setEditingCat(null) } }}>
+          <div className="modal" style={{ maxWidth: 480 }}>
+            <div className="mh"><h3><i className="fa fa-sliders" style={{ marginRight: 8 }} />Gestionar categorías</h3><button className="mclose" onClick={() => { setCatMgmtModal(false); setEditingCat(null) }}><i className="fa fa-xmark" /></button></div>
+            {cats.length === 0 && <div style={{ fontSize: 13, color: 'var(--txt3)', textAlign: 'center', padding: 20 }}>No hay categorías definidas.<br/>Creá una desde Configuración.</div>}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 340, overflowY: 'auto' }}>
+              {cats.map((cat, i) => {
+                const cc = catColor(cat)
+                const count = products.filter(p => p.cat === cat).length
+                const isEditing = editingCat?.original === cat
+                return (
+                  <div key={cat} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', borderRadius: 10, border: '1px solid var(--border)', background: isEditing ? 'var(--brand-xlt)' : 'var(--surface)' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', background: cc.bg, color: cc.color, fontSize: 11, fontWeight: 700, padding: '2px 10px', borderRadius: 20, whiteSpace: 'nowrap', minWidth: 0, flexShrink: 0 }}>{cat}</span>
+                    {isEditing ? (
+                      <input
+                        autoFocus
+                        type="text"
+                        value={editingCat.value}
+                        onChange={e => setEditingCat(ec => ({ ...ec, value: e.target.value }))}
+                        onKeyDown={e => { if (e.key === 'Enter') doRenamecat(cat, editingCat.value); if (e.key === 'Escape') setEditingCat(null) }}
+                        style={{ flex: 1, padding: '5px 8px', border: '2px solid var(--brand)', borderRadius: 7, fontSize: 13, fontFamily: 'inherit' }}
+                      />
+                    ) : (
+                      <span style={{ flex: 1, fontSize: 13, color: 'var(--txt2)' }}>{count} producto{count !== 1 ? 's' : ''}</span>
+                    )}
+                    {isEditing ? (
+                      <>
+                        <button className="btn btn-primary btn-xs" onClick={() => doRenamecat(cat, editingCat.value)}><i className="fa fa-check" /></button>
+                        <button className="btn btn-ghost btn-xs" onClick={() => setEditingCat(null)}><i className="fa fa-xmark" /></button>
+                      </>
+                    ) : (
+                      <>
+                        <button className="btn btn-ghost btn-xs" title="Renombrar" onClick={() => setEditingCat({ original: cat, value: cat })}><i className="fa fa-pen" /></button>
+                        <button className="btn btn-ghost btn-xs" title="Eliminar" style={{ color: 'var(--red)' }} onClick={() => doDeleteCat(cat)}><i className="fa fa-trash" /></button>
+                      </>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+            <div className="mfooter" style={{ justifyContent: 'flex-end' }}>
+              <button className="btn btn-secondary" onClick={() => { setCatMgmtModal(false); setEditingCat(null) }}>Cerrar</button>
+            </div>
           </div>
         </div>
       )}
