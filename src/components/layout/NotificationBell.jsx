@@ -18,14 +18,46 @@ const daysUntil = (iso) => {
   return Math.ceil((d - t) / 86400000)
 }
 
-function buildAlerts(budgets) {
+function buildAlerts(budgets, products) {
   const alerts = []
-  const now = new Date()
 
+  // ── STOCK ALERTS ──
+  ;(products || []).forEach(p => {
+    const stock = Number(p.stock ?? -1)
+    const minStock = Number(p.minStock ?? 0)
+    if (!p.name || stock < 0) return
+    const pid = typeof p.id === 'number' ? p.id : 0
+    if (stock === 0 && minStock >= 0) {
+      alerts.push({
+        id: `stock0-${p.id}`,
+        level: 'critical',
+        icon: 'fa-box-open',
+        title: `Sin stock: ${p.name}`,
+        body: `El producto se agotó — reponelo antes de aceptar nuevos pedidos`,
+        cta: 'Ver catálogo',
+        route: '/catalogo',
+        ts: pid,
+      })
+    } else if (minStock > 0 && stock <= minStock) {
+      alerts.push({
+        id: `stocklow-${p.id}`,
+        level: 'warning',
+        icon: 'fa-box',
+        title: `Te quedan solo ${stock} ${p.name}`,
+        body: `Mínimo configurado: ${minStock} unidades — es momento de reponer`,
+        cta: 'Ver catálogo',
+        route: '/catalogo',
+        ts: pid,
+      })
+    }
+  })
+
+  // ── BUDGET ALERTS ──
   budgets.forEach(b => {
     const sinceDays = daysAgo(b.date)
     const delivDays = daysUntil(b.deliveryDate)
     const active = !['cancelled', 'lost'].includes(b.status)
+    const cliente = b.contact || b.company || 'el cliente'
 
     // 🔴 CRÍTICO: entrega vencida
     if (b.deliveryDate && delivDays !== null && delivDays < 0 && active && b.status !== 'delivered') {
@@ -34,7 +66,7 @@ function buildAlerts(budgets) {
         level: 'critical',
         icon: 'fa-fire',
         title: `Entrega vencida — ${b.num}`,
-        body: `${b.contact || b.company || '—'} · ${Math.abs(delivDays)}d de retraso · ${fmt(b.total)}`,
+        body: `${cliente} · ${Math.abs(delivDays)}d de retraso · ${fmt(b.total)}`,
         cta: 'Ver pedido',
         route: `/presupuesto/${b.id}`,
         ts: b.id,
@@ -48,22 +80,39 @@ function buildAlerts(budgets) {
         level: 'critical',
         icon: 'fa-circle-dollar-to-slot',
         title: `Cobro pendiente — ${b.num}`,
-        body: `${b.contact || b.company || '—'} · ${sinceDays}d sin cobrar · ${fmt(b.total)}`,
+        body: `${cliente} · ${sinceDays}d sin cobrar · ${fmt(b.total)}`,
         cta: 'Ver pedido',
         route: `/presupuesto/${b.id}`,
         ts: b.id,
       })
     }
 
-    // 🟡 ALERTA: entrega en ≤3 días
+    // 🟡 ALERTA: entrega próxima ≤3 días — lenguaje natural
     if (b.deliveryDate && delivDays !== null && delivDays >= 0 && delivDays <= 3 && active && b.status !== 'delivered') {
+      const whenLabel = delivDays === 0 ? 'HOY' : delivDays === 1 ? 'mañana' : `en ${delivDays} días`
       alerts.push({
         id: `soon-${b.id}`,
         level: 'warning',
         icon: 'fa-truck-fast',
-        title: `Entrega en ${delivDays === 0 ? 'HOY' : delivDays + (delivDays === 1 ? ' día' : ' días')} — ${b.num}`,
-        body: `${b.contact || b.company || '—'} · ${fmt(b.total)}`,
+        title: delivDays <= 1
+          ? `Debés entregar ${whenLabel} a ${cliente}`
+          : `Entregá el pedido de ${cliente} ${whenLabel}`,
+        body: `${b.num} · ${fmt(b.total)}`,
         cta: 'Ver pedido',
+        route: `/presupuesto/${b.id}`,
+        ts: b.id,
+      })
+    }
+
+    // 🟡 ALERTA: confirmado sin seña 2-14 días
+    if (b.status === 'confirmed' && b.payStatus === 'pending' && sinceDays !== null && sinceDays >= 2 && sinceDays <= 14) {
+      alerts.push({
+        id: `nosena-${b.id}`,
+        level: 'warning',
+        icon: 'fa-clock-rotate-left',
+        title: `${b.num} lleva ${sinceDays}d sin la seña`,
+        body: `${cliente} — pedido confirmado pero sin cobrar depósito · ${fmt(b.total)}`,
+        cta: 'Cobrar seña',
         route: `/presupuesto/${b.id}`,
         ts: b.id,
       })
@@ -76,7 +125,7 @@ function buildAlerts(budgets) {
         level: 'warning',
         icon: 'fa-hourglass-half',
         title: `Seguimiento necesario — ${b.num}`,
-        body: `${b.contact || b.company || '—'} · ${sinceDays}d sin respuesta · ${fmt(b.total)}`,
+        body: `${cliente} · ${sinceDays}d sin respuesta · ${fmt(b.total)}`,
         cta: 'Ver historial',
         route: '/',
         ts: b.id,
@@ -90,7 +139,7 @@ function buildAlerts(budgets) {
         level: 'success',
         icon: 'fa-circle-check',
         title: `Pedido confirmado — ${b.num}`,
-        body: `${b.contact || b.company || '—'} · ${fmt(b.total)}`,
+        body: `${cliente} · ${fmt(b.total)}`,
         cta: 'Ver pedido',
         route: `/presupuesto/${b.id}`,
         ts: b.id,
@@ -104,7 +153,7 @@ function buildAlerts(budgets) {
         level: 'success',
         icon: 'fa-sack-dollar',
         title: `${b.payStatus === 'paid' ? 'Pago recibido' : 'Seña recibida'} — ${b.num}`,
-        body: `${b.contact || b.company || '—'} · ${fmt(b.total)}`,
+        body: `${cliente} · ${fmt(b.total)}`,
         cta: 'Ver pedido',
         route: `/presupuesto/${b.id}`,
         ts: b.id,
@@ -133,7 +182,8 @@ export default function NotificationBell() {
   })
 
   const budgets = get('budgets')
-  const alerts = useMemo(() => buildAlerts(budgets), [budgets])
+  const products = get('products')
+  const alerts = useMemo(() => buildAlerts(budgets, products), [budgets, products])
 
   const unread = alerts.filter(a => !readIds.has(a.id))
   const hasCritical = unread.some(a => a.level === 'critical')
@@ -157,7 +207,6 @@ export default function NotificationBell() {
     nav(alert.route)
   }
 
-  // Cerrar con ESC
   useEffect(() => {
     if (!open) return
     const h = (e) => { if (e.key === 'Escape') setOpen(false) }
@@ -167,7 +216,6 @@ export default function NotificationBell() {
 
   return (
     <>
-      {/* CAMPANA */}
       <button
         className={`tb-btn notif-bell ${hasCritical ? 'pulse-critical' : ''}`}
         onClick={() => setOpen(o => !o)}
@@ -177,33 +225,21 @@ export default function NotificationBell() {
           position: 'relative',
           background: unreadCount > 0 ? (hasCritical ? '#FEE2E2' : '#FEF3C7') : '#FFF7ED',
           color: hasCritical ? '#DC2626' : '#D97706',
-          borderRadius: 10,
-          width: 36,
-          height: 36,
-          fontSize: 15,
-          border: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          borderRadius: 10, width: 36, height: 36, fontSize: 15, border: 'none',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
           transition: 'background .2s',
         }}
       >
         <i className="fa fa-bell" />
         {unreadCount > 0 && (
-          <span className="notif-badge" style={{
-            background: hasCritical ? 'var(--red)' : '#F59E0B',
-          }}>
+          <span className="notif-badge" style={{ background: hasCritical ? 'var(--red)' : '#F59E0B' }}>
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
       </button>
 
-      {/* OVERLAY */}
-      {open && (
-        <div className="notif-overlay" onClick={() => setOpen(false)} />
-      )}
+      {open && <div className="notif-overlay" onClick={() => setOpen(false)} />}
 
-      {/* DRAWER */}
       <div className={`notif-drawer ${open ? 'open' : ''}`}>
         <div className="notif-drawer-head">
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -254,9 +290,7 @@ export default function NotificationBell() {
                       {alert.cta} <i className="fa fa-arrow-right" style={{ fontSize: 9, marginLeft: 4 }} />
                     </button>
                   </div>
-                  {!isRead && (
-                    <div className="notif-dot" style={{ background: col.bg }} title="No leída" />
-                  )}
+                  {!isRead && <div className="notif-dot" style={{ background: col.bg }} title="No leída" />}
                 </div>
               )
             })
