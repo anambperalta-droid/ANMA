@@ -100,7 +100,7 @@ export default function Catalogo() {
   const safeCat = (val) => (val && cats.includes(val)) ? val : (cats[0] || '')
   const open = (p) => {
     if (p) {
-      setForm({ ...EMPTY, ...p, cat: safeCat(p.cat) })
+      setForm({ ...EMPTY, ...p, cat: p.cat ?? '' })
     } else {
       const prices = autoPrice(0)
       setForm({ ...EMPTY, cat: cats[0] || '', priceB2C: prices.b2c, priceB2B: prices.b2b })
@@ -443,6 +443,9 @@ export default function Catalogo() {
                 <select value={form.cat} onChange={e => setF('cat', e.target.value)}>
                   <option value="">Sin categoría</option>
                   {cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                  {form.cat && !cats.includes(form.cat) && (
+                    <option value={form.cat}>{form.cat}</option>
+                  )}
                 </select>
               </div>
               <div className="fg"><label>Unidad</label>
