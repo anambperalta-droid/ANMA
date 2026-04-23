@@ -3,7 +3,31 @@ import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { fmt } from '../../lib/storage'
 
-const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', insumos: [] }
+const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', insumos: [], image: '' }
+
+const compressImage = (file, maxBytes = 180000) => new Promise((resolve) => {
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    const img = new Image()
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      let { width, height } = img
+      const maxDim = 600
+      if (width > maxDim || height > maxDim) {
+        if (width > height) { height = Math.round(height * maxDim / width); width = maxDim }
+        else { width = Math.round(width * maxDim / height); height = maxDim }
+      }
+      canvas.width = width; canvas.height = height
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height)
+      let q = 0.85
+      let result = canvas.toDataURL('image/jpeg', q)
+      while (result.length > maxBytes && q > 0.2) { q -= 0.1; result = canvas.toDataURL('image/jpeg', q) }
+      resolve(result)
+    }
+    img.src = e.target.result
+  }
+  reader.readAsDataURL(file)
+})
 
 /* Paleta de colores para categorías */
 const CAT_PALETTE = [
@@ -49,6 +73,8 @@ export default function Catalogo() {
   const [bulkSupplierValue, setBulkSupplierValue] = useState('')
   const [catMgmtModal, setCatMgmtModal] = useState(false)
   const [editingCat, setEditingCat] = useState(null) // { original, value }
+  const [viewMode, setViewMode] = useState('table')
+  const imgRef = useRef(null)
 
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
 
@@ -98,9 +124,17 @@ export default function Catalogo() {
   const catColor = (cat) => CAT_PALETTE[cats.indexOf(cat) % CAT_PALETTE.length] || CAT_PALETTE[0]
 
   const safeCat = (val) => (val && cats.includes(val)) ? val : (cats[0] || '')
+  const handleImgUpload = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const compressed = await compressImage(file)
+    setF('image', compressed)
+    e.target.value = ''
+  }
+
   const open = (p) => {
     if (p) {
-      setForm({ ...EMPTY, ...p, cat: p.cat ?? '' })
+      setForm({ ...EMPTY, ...p, cat: p.cat ?? '', image: p.image || '' })
     } else {
       const prices = autoPrice(0)
       setForm({ ...EMPTY, cat: cats[0] || '', priceB2C: prices.b2c, priceB2B: prices.b2b })
@@ -279,6 +313,13 @@ export default function Catalogo() {
           </button>
           <button className="btn btn-ghost btn-sm" onClick={() => { setCsvCat(cats[0] || ''); setCsvModal(true) }}><i className="fa fa-file-csv" /> CSV</button>
           <button className="btn btn-secondary btn-sm" onClick={() => { setBulkCat(cats[0] || ''); setBulkModal(true) }}><i className="fa fa-file-import" /> Masivo</button>
+          <button
+            className="btn btn-ghost btn-sm"
+            onClick={() => setViewMode(v => v === 'table' ? 'grid' : 'table')}
+            title={viewMode === 'table' ? 'Vista grilla' : 'Vista tabla'}
+          >
+            <i className={`fa ${viewMode === 'table' ? 'fa-grip' : 'fa-table-list'}`} />
+          </button>
           <button className="btn btn-primary btn-sm" onClick={() => open()}><i className="fa fa-plus" /> Nuevo producto</button>
         </div>
       </div>
@@ -306,99 +347,151 @@ export default function Catalogo() {
         </button>
       </div>
 
-      <div className="tbl-card">
-        <table>
-          <thead><tr>
-            <th style={{ width: 36, textAlign: 'center' }}>
-              <input type="checkbox" checked={isAllSelected} onChange={toggleSelectAll} style={{ cursor: 'pointer' }} />
-            </th>
-            <th>Producto</th>
-            <th>Categoría</th>
-            <th>Proveedor</th>
-            <th style={{ textAlign: 'right' }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'flex-end' }}>
-                Costo
-                <button
-                  title={showCostInfo ? 'Ocultar última actualización' : 'Mostrar última actualización'}
-                  onClick={() => setShowCostInfo(v => !v)}
-                  style={{ background: showCostInfo ? 'var(--brand)' : 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 6, color: showCostInfo ? '#fff' : 'var(--txt3)', fontSize: 9, padding: '2px 6px', cursor: 'pointer', fontWeight: 700, transition: 'all .2s' }}
-                >
-                  <i className="fa fa-clock" /> ult. act.
-                </button>
-              </span>
-            </th>
-            <th style={{ textAlign: 'right' }}>P. Público</th>
-            <th style={{ textAlign: 'right' }}>P. Mayorista</th>
-            <th style={{ textAlign: 'center' }}>% Margen</th>
-            {showCostInfo && <th>Últ. actualización</th>}
-            <th style={{ textAlign: 'right' }}>Stock</th>
-            <th>Acciones</th>
-          </tr></thead>
-          <tbody>
-            {loading ? [1,2,3,4].map(i => (
-              <tr key={i}><td colSpan={showCostInfo ? 11 : 10}><div className="sk sk-text" style={{ height: 18, width: `${50 + Math.random() * 40}%` }} /></td></tr>
-            )) : filtered.length ? filtered.map(p => {
-              const isLow = p.minStock > 0 && (p.stock || 0) <= p.minStock
-              const mp = marginPct(p)
-              const cc = catColor(p.cat)
-              return (
-                <tr key={p.id}>
-                  <td style={{ textAlign: 'center' }}>
-                    <input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)} style={{ cursor: 'pointer' }} />
-                  </td>
-                  <td>
-                    <div style={{ fontWeight: 800 }}>{p.name}</div>
-                    {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
-                  </td>
-                  <td>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', background: cc.bg, color: cc.color, fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, whiteSpace: 'nowrap' }}>
-                      {p.cat || '—'}
-                    </span>
-                  </td>
-                  <td style={{ fontSize: 11 }}>{supplierName(p.supplierId)}</td>
-                  <td style={{ textAlign: 'right' }}>{fmt(p.cost)}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2B || autoPrice(p.cost).b2b)}</td>
-                  <td style={{ textAlign: 'center' }}>
-                    {mp !== null ? (
-                      <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 800, color: marginColor(mp), background: marginColor(mp) + '18', padding: '2px 8px', borderRadius: 10 }}>
-                        {mp}%
-                      </span>
-                    ) : <span style={{ color: 'var(--txt4)', fontSize: 11 }}>—</span>}
-                  </td>
-                  {showCostInfo && (
-                    <td style={{ fontSize: 11 }}>
-                      {p.updatedAt ? (
-                        <span style={{ color: (() => {
-                          const days = Math.floor((Date.now() - new Date(p.updatedAt)) / 86400000)
-                          return days > 180 ? '#DC2626' : days > 60 ? '#D97706' : '#16A34A'
-                        })(), fontWeight: 600 }}>
-                          {(() => {
-                            const days = Math.floor((Date.now() - new Date(p.updatedAt)) / 86400000)
-                            if (days === 0) return 'Hoy'
-                            if (days === 1) return 'Ayer'
-                            if (days < 30) return `hace ${days}d`
-                            if (days < 365) return `hace ${Math.floor(days/30)}m`
-                            return `hace ${Math.floor(days/365)}a`
-                          })()}
-                        </span>
-                      ) : <span style={{ color: 'var(--txt4)' }}>—</span>}
+      {viewMode === 'table' ? (
+        <div className="tbl-card">
+          <table>
+            <thead><tr>
+              <th style={{ width: 36, textAlign: 'center' }}>
+                <input type="checkbox" checked={isAllSelected} onChange={toggleSelectAll} style={{ cursor: 'pointer' }} />
+              </th>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Proveedor</th>
+              <th style={{ textAlign: 'right' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'flex-end' }}>
+                  Costo
+                  <button title={showCostInfo ? 'Ocultar última actualización' : 'Mostrar última actualización'} onClick={() => setShowCostInfo(v => !v)}
+                    style={{ background: showCostInfo ? 'var(--brand)' : 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 6, color: showCostInfo ? '#fff' : 'var(--txt3)', fontSize: 9, padding: '2px 6px', cursor: 'pointer', fontWeight: 700, transition: 'all .2s' }}>
+                    <i className="fa fa-clock" /> ult. act.
+                  </button>
+                </span>
+              </th>
+              <th style={{ textAlign: 'right' }}>P. Público</th>
+              <th style={{ textAlign: 'right' }}>P. Mayorista</th>
+              <th style={{ textAlign: 'center' }}>% Margen</th>
+              {showCostInfo && <th>Últ. actualización</th>}
+              <th style={{ textAlign: 'right' }}>Stock</th>
+              <th>Acciones</th>
+            </tr></thead>
+            <tbody>
+              {loading ? [1,2,3,4].map(i => (
+                <tr key={i}><td colSpan={showCostInfo ? 11 : 10}><div className="sk sk-text" style={{ height: 18, width: `${50 + Math.random() * 40}%` }} /></td></tr>
+              )) : filtered.length ? filtered.map(p => {
+                const isLow = p.minStock > 0 && (p.stock || 0) <= p.minStock
+                const mp = marginPct(p)
+                const cc = catColor(p.cat)
+                return (
+                  <tr key={p.id}>
+                    <td style={{ textAlign: 'center' }}>
+                      <input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)} style={{ cursor: 'pointer' }} />
                     </td>
-                  )}
-                  <td style={{ textAlign: 'right', fontWeight: 700, color: isLow ? 'var(--red)' : 'var(--txt)' }}>
-                    {p.stock || 0}
-                  </td>
-                  <td><div className="acts">
-                    <button className="act" title="Movimiento de stock" onClick={() => openMove(p)}><i className="fa fa-arrows-rotate" /></button>
-                    <button className="act edit" onClick={() => open(p)} title="Editar"><i className="fa fa-pen" /></button>
-                    <button className="act del" onClick={() => del(p.id)} title="Eliminar"><i className="fa fa-trash" /></button>
-                  </div></td>
-                </tr>
-              )
-            }) : <tr><td colSpan={showCostInfo ? 11 : 10}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>Sin productos</p></div></td></tr>}
-          </tbody>
-        </table>
-      </div>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        {p.image && <img src={p.image} alt={p.name} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 6, border: '1px solid var(--border)', flexShrink: 0 }} />}
+                        <div>
+                          <div style={{ fontWeight: 800 }}>{p.name}</div>
+                          {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
+                        </div>
+                      </div>
+                    </td>
+                    <td><span style={{ display: 'inline-flex', alignItems: 'center', background: cc.bg, color: cc.color, fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, whiteSpace: 'nowrap' }}>{p.cat || '—'}</span></td>
+                    <td style={{ fontSize: 11 }}>{supplierName(p.supplierId)}</td>
+                    <td style={{ textAlign: 'right' }}>{fmt(p.cost)}</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2B || autoPrice(p.cost).b2b)}</td>
+                    <td style={{ textAlign: 'center' }}>
+                      {mp !== null ? <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 800, color: marginColor(mp), background: marginColor(mp) + '18', padding: '2px 8px', borderRadius: 10 }}>{mp}%</span> : <span style={{ color: 'var(--txt4)', fontSize: 11 }}>—</span>}
+                    </td>
+                    {showCostInfo && (
+                      <td style={{ fontSize: 11 }}>
+                        {p.updatedAt ? (
+                          <span style={{ color: (() => { const d = Math.floor((Date.now() - new Date(p.updatedAt)) / 86400000); return d > 180 ? '#DC2626' : d > 60 ? '#D97706' : '#16A34A' })(), fontWeight: 600 }}>
+                            {(() => { const d = Math.floor((Date.now() - new Date(p.updatedAt)) / 86400000); if (d === 0) return 'Hoy'; if (d === 1) return 'Ayer'; if (d < 30) return `hace ${d}d`; if (d < 365) return `hace ${Math.floor(d/30)}m`; return `hace ${Math.floor(d/365)}a` })()}
+                          </span>
+                        ) : <span style={{ color: 'var(--txt4)' }}>—</span>}
+                      </td>
+                    )}
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: isLow ? 'var(--red)' : 'var(--txt)' }}>{p.stock || 0}</td>
+                    <td><div className="acts">
+                      <button className="act" title="Movimiento de stock" onClick={() => openMove(p)}><i className="fa fa-arrows-rotate" /></button>
+                      <button className="act edit" onClick={() => open(p)} title="Editar"><i className="fa fa-pen" /></button>
+                      <button className="act del" onClick={() => del(p.id)} title="Eliminar"><i className="fa fa-trash" /></button>
+                    </div></td>
+                  </tr>
+                )
+              }) : <tr><td colSpan={showCostInfo ? 11 : 10}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>Sin productos</p></div></td></tr>}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        /* ── GRID VIEW ── */
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(190px,1fr))', gap: 14, marginTop: 4 }}>
+          {loading ? [1,2,3,4,5,6].map(i => (
+            <div key={i} className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <div className="sk" style={{ height: 130, borderRadius: '10px 10px 0 0' }} />
+              <div style={{ padding: '10px 12px' }}>
+                <div className="sk sk-text" style={{ height: 13, width: '70%', marginBottom: 8 }} />
+                <div className="sk sk-text" style={{ height: 11, width: '45%' }} />
+              </div>
+            </div>
+          )) : filtered.length ? filtered.map(p => {
+            const mp = marginPct(p)
+            const cc = catColor(p.cat)
+            const isLow = p.minStock > 0 && (p.stock || 0) <= p.minStock
+            return (
+              <div key={p.id} className="card" style={{ padding: 0, overflow: 'hidden', transition: 'transform .18s,box-shadow .18s' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = 'var(--sh-lg)' }}
+                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}
+              >
+                <div style={{ height: 130, background: cc.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+                  {p.image
+                    ? <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : <i className="fa fa-box-open" style={{ fontSize: 36, color: cc.color, opacity: .5 }} />
+                  }
+                  <input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)}
+                    style={{ position: 'absolute', top: 8, left: 8, cursor: 'pointer', width: 16, height: 16 }}
+                    onClick={e => e.stopPropagation()} />
+                  {isLow && <div style={{ position: 'absolute', top: 8, right: 8, background: 'var(--red)', color: '#fff', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 6 }}>STOCK BAJO</div>}
+                </div>
+                <div style={{ padding: '10px 12px' }}>
+                  <div style={{ fontWeight: 800, fontSize: 13, color: 'var(--txt)', marginBottom: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={p.name}>{p.name}</div>
+                  {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)', marginBottom: 3 }}>SKU: {p.sku}</div>}
+                  <span style={{ display: 'inline-block', padding: '1px 8px', borderRadius: 20, fontSize: 10, fontWeight: 700, background: cc.bg, color: cc.color, marginBottom: 6 }}>{p.cat || '—'}</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                    <span style={{ fontSize: 11, color: 'var(--txt3)' }}>Costo: {fmt(p.cost)}</span>
+                    <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</span>
+                  </div>
+                  {mp !== null && <div style={{ fontSize: 10, fontWeight: 700, color: marginColor(mp), marginTop: 2 }}>{mp}% margen</div>}
+                  <div style={{ fontSize: 11, color: isLow ? 'var(--red)' : 'var(--txt3)', marginTop: 4, fontWeight: isLow ? 700 : 400 }}>Stock: {p.stock || 0}</div>
+                </div>
+                <div style={{ display: 'flex', borderTop: '1px solid var(--border)' }}>
+                  <button onClick={() => openMove(p)} style={{ flex: 1, padding: '7px 0', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--txt3)', fontSize: 12, fontFamily: 'inherit', transition: 'background .15s' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--surface2)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'none'} title="Stock">
+                    <i className="fa fa-arrows-rotate" />
+                  </button>
+                  <div style={{ width: 1, background: 'var(--border)' }} />
+                  <button onClick={() => open(p)} style={{ flex: 2, padding: '7px 0', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--brand)', fontSize: 12, fontWeight: 600, fontFamily: 'inherit', transition: 'background .15s' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--brand-xlt)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+                    <i className="fa fa-pen" /> Editar
+                  </button>
+                  <div style={{ width: 1, background: 'var(--border)' }} />
+                  <button onClick={() => del(p.id)} style={{ flex: 1, padding: '7px 0', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--red)', fontSize: 12, fontFamily: 'inherit', transition: 'background .15s' }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#FFF1F2'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+                    <i className="fa fa-trash" />
+                  </button>
+                </div>
+              </div>
+            )
+          }) : (
+            <div style={{ gridColumn: '1/-1' }}>
+              <div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>Sin productos</p></div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Floating bulk action bar */}
       {selectedIds.size > 0 && (
@@ -494,6 +587,28 @@ export default function Catalogo() {
               ))}
             </div>
             <div className="fg" style={{ marginTop: 8 }}><label>Notas</label><textarea value={form.notes || ''} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones internas..." /></div>
+            <div className="fg" style={{ marginTop: 8 }}>
+              <label>Imagen del producto <span style={{ fontWeight: 400, color: 'var(--txt3)' }}>(opcional)</span></label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                {form.image
+                  ? <img src={form.image} alt="preview" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, border: '1.5px solid var(--border)', flexShrink: 0 }} />
+                  : <div style={{ width: 60, height: 60, borderRadius: 8, border: '1.5px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <i className="fa fa-image" style={{ color: 'var(--txt4)', fontSize: 20 }} />
+                    </div>
+                }
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <input ref={imgRef} type="file" accept="image/*" onChange={handleImgUpload} style={{ display: 'none' }} />
+                  <button className="btn btn-ghost btn-sm" type="button" onClick={() => imgRef.current?.click()}>
+                    <i className="fa fa-upload" /> {form.image ? 'Cambiar imagen' : 'Subir imagen'}
+                  </button>
+                  {form.image && (
+                    <button className="btn btn-ghost btn-sm" type="button" style={{ color: 'var(--red)' }} onClick={() => setF('image', '')}>
+                      <i className="fa fa-trash" /> Quitar
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
             <div className="mfooter"><button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button><button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar</button></div>
           </div>
         </div>
