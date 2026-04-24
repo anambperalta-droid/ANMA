@@ -260,7 +260,7 @@ function StatusDonut({ statuses, budgets }) {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-      <svg width="90" height="90" viewBox="0 0 90 90" style={{ flexShrink: 0 }}>
+      <svg width="77" height="77" viewBox="0 0 90 90" style={{ flexShrink: 0 }}>
         <circle cx="45" cy="45" r={radius} fill="none" stroke="var(--surface2)" strokeWidth="10" />
         {segments.map((s, i) => (
           <circle key={i} cx="45" cy="45" r={radius} fill="none" stroke={s.c} strokeWidth="10"
@@ -684,7 +684,7 @@ export default function Historial() {
         </div>
       </div>
 
-      <div className="tab-bar" style={{ marginBottom: 20 }}>
+      <div className="tab-bar" style={{ marginTop: 18, marginBottom: 20 }}>
         {['resumen', 'lista', 'analisis', 'seguimiento'].map(t => (
           <div key={t} className={`tab-btn ${tab === t ? 'active' : ''}`} onClick={() => setTab(t)}>
             {t === 'resumen' ? 'Resumen' : t === 'lista' ? 'Pedidos' : t === 'analisis' ? 'Análisis' : `Seguimiento (${seguimiento.length})`}
@@ -709,15 +709,15 @@ export default function Historial() {
               <KpiCard label="Presupuestos" value={String(periodBudgets.length)} />
 
               {/* ── Bar chart 65% + Panel derecho 35% ── */}
-              <div className="bento-wide" style={{ display: 'flex', gap: 14 }}>
-                <div className="bento-chart" style={{ flex: '0 0 63%', boxSizing: 'border-box' }}>
+              <div className="bento-wide" style={{ display: 'flex', gap: 14, gridColumn: '1 / -1', flexWrap: 'wrap' }}>
+                <div className="bento-chart" style={{ flex: '1 1 55%', minWidth: 300, boxSizing: 'border-box' }}>
                   <div className="card-header">
                     <span className="card-title"><i className="fa fa-chart-bar" style={{ color: 'var(--brand)', marginRight: 7 }} />Ingresos cobrados — {isDaily ? 'día a día · ' : ''}{PERIODS.find(p => p.key === period)?.label}</span>
                   </div>
                   <BarChart data={chartData} prevData={prevChartData} />
                 </div>
 
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 14, minWidth: 0 }}>
+                <div style={{ flex: '1 1 30%', minWidth: 220, display: 'flex', flexDirection: 'column', gap: 14 }}>
                   {/* Donut */}
                   <div className="bento-chart">
                     <div className="card-header"><span className="card-title">Estado de pedidos</span></div>
@@ -812,7 +812,7 @@ export default function Historial() {
                 </div>
               </div>
 
-              <div className="bento-chart bento-wide">
+              <div className="bento-chart bento-wide" style={{ gridColumn: '1 / -1', overflow: 'visible' }}>
                 <div className="card-header">
                   <span className="card-title">Últimos presupuestos</span>
                   <span className="card-link" onClick={() => setTab('lista')}>Ver todos <i className="fa fa-arrow-right" /></span>
@@ -838,7 +838,7 @@ export default function Historial() {
                             </button>
                             {openMenuId === b.id && (
                               <div
-                                style={{ position: 'absolute', right: 0, top: '100%', zIndex: 50, background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 10, padding: 6, minWidth: 148, boxShadow: '0 8px 24px rgba(0,0,0,.13)' }}
+                                style={{ position: 'absolute', right: 0, top: '100%', zIndex: 200, background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 10, padding: 6, minWidth: 148, boxShadow: '0 8px 24px rgba(0,0,0,.13)' }}
                                 onClick={e => e.stopPropagation()}
                               >
                                 {[
