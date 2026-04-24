@@ -61,9 +61,71 @@ serve(async (req) => {
       auth: { persistSession: false, autoRefreshToken: false },
     })
 
+    // ── RBAC: determine the invoker's workspace and seat headroom ──
+    // The invoker is always inviting into their OWN workspace (workspace_id = user.id).
+    // Global admin (ana.mbperalta) bypasses seat limit.
+    const isGlobalAdmin = (user.email || '').toLowerCase() === 'ana.mbperalta@gmail.com'
+    const workspaceId: string = user.id
+
+    const requestedRole = String(metadata.role || 'operator').toLowerCase()
+    const normalizedRole = ['admin', 'owner', 'operator', 'viewer'].includes(requestedRole)
+      ? requestedRole
+      : 'operator'
+
+    // Only seat-count operators (not admins invited as co-owners — rare case).
+    const countsAgainstSeats = normalizedRole === 'operator' || normalizedRole === 'viewer'
+
+    if (!isGlobalAdmin && countsAgainstSeats) {
+      // Check workspace exists + seat availability using service_role client.
+      const { data: ws, error: wsErr } = await admin
+        .from('workspaces')
+        .select('id, seats_allowed, plan, status')
+        .eq('id', workspaceId)
+        .single()
+
+      if (wsErr || !ws) {
+        return json({ error: 'No encontramos tu workspace. Cerrá sesión e ingresá de nuevo.' }, 400)
+      }
+      if (ws.status !== 'active') {
+        return json({ error: `Workspace ${ws.status}. Contactá al administrador.` }, 403)
+      }
+
+      const { count: used, error: cntErr } = await admin
+        .from('memberships')
+        .select('id', { count: 'exact', head: true })
+        .eq('workspace_id', workspaceId)
+        .neq('role', 'owner')
+        .in('status', ['active', 'invited'])
+
+      if (cntErr) return json({ error: 'No se pudo verificar cupo de equipo.' }, 500)
+
+      const seatsUsed = used || 0
+      const seatsAllowed = ws.seats_allowed || 0
+
+      if (seatsUsed >= seatsAllowed) {
+        return json({
+          error: `Llegaste al límite de tu plan (${seatsAllowed} operador${seatsAllowed === 1 ? '' : 'es'}). Actualizá tu plan o eliminá un miembro inactivo.`,
+          code: 'SEAT_LIMIT',
+          seatsUsed,
+          seatsAllowed,
+          plan: ws.plan,
+        }, 402)
+      }
+    }
+
+    // Compose metadata — inject workspace + inviter info.
+    const finalMetadata = {
+      ...metadata,
+      role: normalizedRole,
+      invited_to_workspace: workspaceId,
+      invited_by_user: user.id,
+      invited_by: user.email || user.id,
+      invited_at: new Date().toISOString(),
+    }
+
     const { data, error } = await admin.auth.admin.inviteUserByEmail(email, {
       redirectTo,
-      data: { ...metadata, invited_by: user.email || user.id, invited_at: new Date().toISOString() },
+      data: finalMetadata,
     })
 
     if (error) return json({ error: error.message }, 400)
