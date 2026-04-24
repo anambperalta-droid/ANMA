@@ -752,34 +752,27 @@ export default function Presupuesto() {
             </div>
             {(mpCfg.enabled || bankCfg.enabled) ? (
               <div className="cp-pay-group">
-                <div className="cp-pay-group-lbl"><i className="fa fa-money-check-dollar" /> Métodos de cobro</div>
-                {mpCfg.enabled && (
-                  <button className="cp-pay-btn mp" onClick={generateMP} disabled={mpLoading}>
-                    <div className="pay-btn-ico"><i className="fa fa-credit-card" /></div>
-                    <div className="pay-btn-txt">
-                      <div className="t">{mpLoading ? 'Generando link...' : 'Link Mercado Pago'}</div>
-                      <div className="s">Tarjeta · QR · Dinero en cuenta</div>
-                    </div>
-                  </button>
-                )}
-                {bankCfg.enabled && (
-                  <button className="cp-pay-btn bk" onClick={copyBankInfo}>
-                    <div className="pay-btn-ico"><i className="fa fa-building-columns" /></div>
-                    <div className="pay-btn-txt">
-                      <div className="t">Copiar CBU / Alias</div>
-                      <div className="s">Datos para transferencia bancaria</div>
-                    </div>
-                  </button>
-                )}
-                {bankCfg.enabled && (
-                  <button className="cp-pay-btn bk-wa" onClick={copyBankWithBudget}>
-                    <div className="pay-btn-ico"><i className="fa-brands fa-whatsapp" /></div>
-                    <div className="pay-btn-txt">
-                      <div className="t">WhatsApp + datos bancarios</div>
-                      <div className="s">Mensaje completo con CBU/Alias</div>
-                    </div>
-                  </button>
-                )}
+                <div className="cp-pay-group-lbl" style={{ fontSize: 10, marginBottom: 6 }}><i className="fa fa-money-check-dollar" /> Métodos de cobro</div>
+                <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+                  {mpCfg.enabled && (
+                    <button onClick={generateMP} disabled={mpLoading}
+                      style={{ flex: '1 1 auto', display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 10px', background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.14)', borderRadius: 8, color: '#fff', cursor: 'pointer', fontSize: 11, fontWeight: 600 }}>
+                      <i className="fa fa-credit-card" />{mpLoading ? 'Generando...' : 'MP Link'}
+                    </button>
+                  )}
+                  {bankCfg.enabled && (
+                    <button onClick={copyBankInfo}
+                      style={{ flex: '1 1 auto', display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 10px', background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.14)', borderRadius: 8, color: '#fff', cursor: 'pointer', fontSize: 11, fontWeight: 600 }}>
+                      <i className="fa fa-building-columns" />Copiar CBU
+                    </button>
+                  )}
+                  {bankCfg.enabled && (
+                    <button onClick={copyBankWithBudget}
+                      style={{ flex: '1 1 auto', display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 10px', background: 'rgba(37,211,102,.12)', border: '1px solid rgba(37,211,102,.24)', borderRadius: 8, color: '#6ee37f', cursor: 'pointer', fontSize: 11, fontWeight: 600 }}>
+                      <i className="fa-brands fa-whatsapp" />WA + Banco
+                    </button>
+                  )}
+                </div>
               </div>
             ) : (
               <div className="cp-pay-empty">

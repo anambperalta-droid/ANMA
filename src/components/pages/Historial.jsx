@@ -143,33 +143,6 @@ function SeguimientoCard({ b, onEdit, onWA, onResend }) {
           <i className="fa fa-calendar" style={{ marginRight: 4 }} />Creado: {fmtDate(b.date)}
           {b.deliveryDate && ` · Entrega: ${fmtDate(b.deliveryDate)}`}
         </div>
-        {b.date && b.deliveryDate && (() => {
-          const sentDate = new Date(b.date)
-          const delivDate = new Date(b.deliveryDate + 'T00:00')
-          const nowD = new Date()
-          const total = delivDate - sentDate
-          const elapsed = nowD - sentDate
-          const progress = total > 0 ? Math.min(100, Math.max(0, (elapsed / total) * 100)) : 50
-          const overdue = progress >= 100
-          return (
-            <div style={{ marginTop: 6, fontSize: 10 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--txt4)', marginBottom: 3 }}>
-                <span>Enviado</span>
-                <span style={{ color: overdue ? 'var(--red)' : 'var(--amber)', fontWeight: 700 }}>Hoy</span>
-                <span>Entrega</span>
-              </div>
-              <div style={{ position: 'relative', height: 6, background: 'var(--surface2)', borderRadius: 4, overflow: 'hidden' }}>
-                <div style={{
-                  position: 'absolute', left: 0, top: 0, height: '100%',
-                  width: `${progress}%`,
-                  background: overdue ? 'var(--red)' : progress > 70 ? '#EA580C' : 'var(--amber)',
-                  borderRadius: 4,
-                  transition: 'width .5s ease'
-                }} />
-              </div>
-            </div>
-          )
-        })()}
       </div>
       <div className="seg-meta">
         <div className="seg-days">
@@ -263,7 +236,7 @@ function StatusDonut({ statuses, budgets }) {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-      <svg width="88" height="88" viewBox="0 0 90 90" style={{ flexShrink: 0 }}>
+      <svg width="108" height="108" viewBox="0 0 90 90" style={{ flexShrink: 0 }}>
         <circle cx="45" cy="45" r={radius} fill="none" stroke="var(--surface2)" strokeWidth="10" />
         {segments.map((s, i) => (
           <circle key={i} cx="45" cy="45" r={radius} fill="none" stroke={s.c} strokeWidth="10"
@@ -722,8 +695,8 @@ export default function Historial() {
               <KpiCard label="Presupuestos" value={String(periodBudgets.length)} />
 
               {/* ── Bar chart 65% + Panel derecho 35% ── */}
-              <div className="bento-wide" style={{ display: 'flex', gap: 14, gridColumn: '1 / -1', flexWrap: 'wrap' }}>
-                <div className="bento-chart" style={{ flex: '1 1 55%', minWidth: 300, boxSizing: 'border-box' }}>
+              <div className="bento-wide" style={{ display: 'flex', gap: 14, gridColumn: '1 / -1', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+                <div className="bento-chart" style={{ flex: '1 1 55%', minWidth: 300, boxSizing: 'border-box', alignSelf: 'flex-start' }}>
                   <div className="card-header">
                     <span className="card-title"><i className="fa fa-chart-bar" style={{ color: 'var(--brand)', marginRight: 7 }} />Ingresos cobrados — {isDaily ? 'día a día · ' : ''}{PERIODS.find(p => p.key === period)?.label}</span>
                   </div>
