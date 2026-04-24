@@ -134,11 +134,47 @@ export function AuthProvider({ children }) {
 
   const isGlobalAdmin = isGlobalAdminEmail(user?.email)
 
+  // ── Role resolution ──────────────────────────────────────────────
+  // - Admin global (email en GLOBAL_ADMINS) → 'owner' siempre.
+  // - Si user_metadata.role === 'operator' → 'operator' (acceso reducido).
+  // - Caso default (usuarios legacy sin role definido) → 'owner' (no rompe nada).
+  const metaRole = (user?.user_metadata?.role || '').toLowerCase()
+  const role = isGlobalAdmin ? 'owner' : (metaRole === 'operator' ? 'operator' : 'owner')
+
+  // Permisos del rol operator. Owner tiene '*' implícito.
+  const OPERATOR_PERMS = new Set([
+    'dashboard.view',
+    'pedido.view', 'pedido.create', 'pedido.edit', 'pedido.status', 'pedido.payment',
+    'cliente.view', 'cliente.create', 'cliente.edit',
+    'proveedor.view',
+    'catalogo.view',
+    'insumo.view',
+    'logistica.view', 'logistica.edit',
+    'mensajes.view', 'mensajes.send',
+    'historial.view',
+  ])
+
+  const can = useCallback((perm) => {
+    if (!perm) return true
+    if (role === 'owner') return true
+    return OPERATOR_PERMS.has(perm)
+  }, [role])
+
   return (
-    <Ctx.Provider value={{ authed, loading, user, login, logout, siteBlocked, isGlobalAdmin, changePassword, resetPassword }}>
+    <Ctx.Provider value={{ authed, loading, user, login, logout, siteBlocked, isGlobalAdmin, changePassword, resetPassword, role, can }}>
       {children}
     </Ctx.Provider>
   )
 }
 
 export const useAuth = () => useContext(Ctx)
+
+/**
+ * Guard declarativo. Renderiza children solo si el rol actual tiene el permiso.
+ * Si no, muestra `fallback` (default: null, ocultar silenciosamente).
+ * Útil para ocultar botones/secciones dentro de una página.
+ */
+export function RequirePerm({ perm, fallback = null, children }) {
+  const { can } = useContext(Ctx)
+  return can(perm) ? children : fallback
+}

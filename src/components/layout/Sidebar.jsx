@@ -2,26 +2,28 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useData } from '../../context/DataContext'
 
+// `perm` define quién ve cada entrada (owner ve todo, operator solo los que coincidan).
+// `ownerOnly: true` = oculto para operator siempre.
 const NAV = [
   { section: 'Ventas' },
-  { path: '/', icon: 'fa-chart-line', label: 'Dashboard', chipKey: 'budgets' },
-  { path: '/presupuesto', icon: 'fa-file-invoice-dollar', label: 'Nuevo pedido' },
-  { path: '/clientes', icon: 'fa-users', label: 'Clientes', chipKey: 'clients' },
+  { path: '/', icon: 'fa-chart-line', label: 'Dashboard', chipKey: 'budgets', perm: 'dashboard.view' },
+  { path: '/presupuesto', icon: 'fa-file-invoice-dollar', label: 'Nuevo pedido', perm: 'pedido.create' },
+  { path: '/clientes', icon: 'fa-users', label: 'Clientes', chipKey: 'clients', perm: 'cliente.view' },
   { section: 'Inventario' },
-  { path: '/catalogo', icon: 'fa-cube', label: 'Productos', chipKey: 'products' },
-  { path: '/insumos', icon: 'fa-boxes-stacked', label: 'Insumos', chipKey: 'insumos' },
-  { path: '/proveedores', icon: 'fa-industry', label: 'Proveedores', chipKey: 'suppliers' },
+  { path: '/catalogo', icon: 'fa-cube', label: 'Productos', chipKey: 'products', perm: 'catalogo.view' },
+  { path: '/insumos', icon: 'fa-boxes-stacked', label: 'Insumos', chipKey: 'insumos', perm: 'insumo.view' },
+  { path: '/proveedores', icon: 'fa-industry', label: 'Proveedores', chipKey: 'suppliers', perm: 'proveedor.view' },
   { section: 'Operaciones' },
-  { path: '/logistica', icon: 'fa-truck-fast', label: 'Logística' },
-  { path: '/mensajes', icon: 'fa-brands fa-whatsapp', label: 'Mensajes WA' },
-  { section: 'Sistema' },
-  { path: '/config', icon: 'fa-gear', label: 'Configuración' },
+  { path: '/logistica', icon: 'fa-truck-fast', label: 'Logística', perm: 'logistica.view' },
+  { path: '/mensajes', icon: 'fa-brands fa-whatsapp', label: 'Mensajes WA', perm: 'mensajes.view' },
+  { section: 'Sistema', ownerOnly: true },
+  { path: '/config', icon: 'fa-gear', label: 'Configuración', ownerOnly: true },
 ]
 
 export default function Sidebar({ open, onClose }) {
   const loc = useLocation()
   const nav = useNavigate()
-  const { logout } = useAuth()
+  const { logout, role, can } = useAuth()
   const { get, config } = useData()
   const c = config()
   const name = c.businessName || 'ANMA'
@@ -53,6 +55,11 @@ export default function Sidebar({ open, onClose }) {
       </div>
       <nav className="sb-nav">
         {NAV.map((item, i) => {
+          // Operator: ocultar entradas ownerOnly o sin permiso
+          if (role === 'operator') {
+            if (item.ownerOnly) return null
+            if (item.perm && !can(item.perm)) return null
+          }
           if (item.section) return <div key={i} className="sb-sec">{item.section}</div>
           const active = loc.pathname === item.path || (item.path === '/presupuesto' && loc.pathname.startsWith('/presupuesto'))
           return (
@@ -62,12 +69,14 @@ export default function Sidebar({ open, onClose }) {
             </div>
           )
         })}
-        <div className="sb-item" onClick={doBackup}><i className="fa fa-cloud-arrow-down" />Backup</div>
+        {role === 'owner' && (
+          <div className="sb-item" onClick={doBackup}><i className="fa fa-cloud-arrow-down" />Backup</div>
+        )}
       </nav>
       <div className="sb-foot">
         <div className="sb-user" onClick={logout}>
           <div className="sb-ava">{(userName[0] || 'A').toUpperCase()}</div>
-          <div><div className="sb-uname">{userName}</div><div className="sb-urole">Cerrar sesión</div></div>
+          <div><div className="sb-uname">{userName}</div><div className="sb-urole">{role === 'operator' ? 'Operador · Cerrar sesión' : 'Cerrar sesión'}</div></div>
           <i className="fa fa-right-from-bracket" style={{ marginLeft: 'auto', color: 'rgba(255,255,255,.25)', fontSize: 13 }} />
         </div>
       </div>
