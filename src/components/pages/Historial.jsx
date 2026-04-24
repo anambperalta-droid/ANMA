@@ -310,6 +310,7 @@ export default function Historial() {
   const [bulkStatus, setBulkStatus] = useState('')
   const [openMenuId, setOpenMenuId] = useState(null)
   const [carouselSlide, setCarouselSlide] = useState(0)
+  const [quickFilter, setQuickFilter] = useState('')
   const { hidden, money } = usePrivacy()
 
   const budgets = get('budgets')
@@ -503,6 +504,15 @@ export default function Historial() {
 
   // días hasta entrega
   const deliveryDays = (iso) => { if (!iso) return null; const t = new Date(); t.setHours(0,0,0,0); const d = new Date(iso + 'T00:00'); return Math.ceil((d - t) / 86400000) }
+  if (quickFilter === 'atrasados') {
+    filteredBudgets = filteredBudgets.filter(b => { const dd = deliveryDays(b.deliveryDate); return dd !== null && dd <= 0 && !['confirmed', 'lost'].includes(b.status) })
+  } else if (quickFilter === 'sin_cobrar') {
+    filteredBudgets = filteredBudgets.filter(b => b.status === 'confirmed' && (!b.payStatus || b.payStatus === 'pending'))
+  } else if (quickFilter === 'alta_ganancia') {
+    const gs = [...periodBudgets].filter(b => (b.totalGain || 0) > 0).sort((a, b) => (b.totalGain || 0) - (a.totalGain || 0))
+    const cutoff = gs[Math.floor(gs.length / 3)]?.totalGain || 0
+    if (cutoff > 0) filteredBudgets = filteredBudgets.filter(b => (b.totalGain || 0) >= cutoff)
+  }
 
   // Seguimiento: ALL pending budgets (sent/negotiating), grouped by tier
   const seguimiento = useMemo(() => {
@@ -875,11 +885,19 @@ export default function Historial() {
       {tab === 'lista' && (
         <>
           <style>{`
-            .hist-tbl table{border-collapse:collapse}
-            .hist-tbl th{padding:9px 10px 10px;font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;border-bottom:1.5px solid #F3F4F6;white-space:nowrap;border-right:none}
-            .hist-tbl td{padding:11px 10px;border-bottom:1px solid #F3F4F6;vertical-align:middle;border-right:none}
+            .hist-tbl{overflow-x:auto}
+            .hist-tbl table{border-collapse:collapse;min-width:860px}
+            .hist-tbl th{padding:9px 10px 10px;font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.06em;border-bottom:1.5px solid #F3F4F6;white-space:nowrap;background:var(--surface2)}
+            .hist-tbl td{padding:11px 10px;border-bottom:1px solid #F3F4F6;vertical-align:middle;background:var(--surface)}
             .hist-tbl tr:last-child td{border-bottom:none}
             .hist-tbl tbody tr:hover td{background:#F9FAFB}
+            .hist-tbl tbody tr.selected td{background:var(--brand-xlt)}
+            .hist-tbl thead th:nth-child(1){position:sticky;left:0;z-index:3}
+            .hist-tbl thead th:nth-child(2){position:sticky;left:32px;z-index:3;box-shadow:2px 0 5px -2px rgba(0,0,0,.08)}
+            .hist-tbl thead th:last-child{position:sticky;right:0;z-index:3;box-shadow:-2px 0 5px -2px rgba(0,0,0,.08)}
+            .hist-tbl tbody td:nth-child(1){position:sticky;left:0;z-index:2}
+            .hist-tbl tbody td:nth-child(2){position:sticky;left:32px;z-index:2;box-shadow:2px 0 5px -2px rgba(0,0,0,.08)}
+            .hist-tbl tbody td:last-child{position:sticky;right:0;z-index:2;box-shadow:-2px 0 5px -2px rgba(0,0,0,.08)}
             .hist-act{color:#D1D5DB;background:none;border:none;border-radius:6px;width:28px;height:28px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:color .15s ease,opacity .15s ease}
             .hist-act:hover{background:none}
             .hist-act i{opacity:.5;transition:opacity .15s ease}
@@ -899,6 +917,20 @@ export default function Historial() {
               ))}
             </div>
           </div>
+          <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
+            {[
+              { key: 'atrasados', label: 'Atrasados', icon: 'fa-fire', color: '#DC2626' },
+              { key: 'sin_cobrar', label: 'Sin cobrar', icon: 'fa-hourglass-half', color: '#D97706' },
+              { key: 'alta_ganancia', label: 'Alta ganancia', icon: 'fa-trophy', color: '#16A34A' },
+            ].map(chip => (
+              <button key={chip.key}
+                onClick={() => setQuickFilter(q => q === chip.key ? '' : chip.key)}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 11px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s', border: `1.5px solid ${quickFilter === chip.key ? chip.color : 'var(--border)'}`, background: quickFilter === chip.key ? chip.color + '12' : 'transparent', color: quickFilter === chip.key ? chip.color : 'var(--txt3)' }}>
+                <i className={`fa ${chip.icon}`} style={{ fontSize: 10 }} />
+                {chip.label}
+              </button>
+            ))}
+          </div>
           {selectedIds.size > 0 && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: 'var(--brand-xlt)', border: '1.5px solid var(--brand)', borderRadius: 10, marginBottom: 10, flexWrap: 'wrap' }}>
               <b style={{ color: 'var(--brand)', fontSize: 12 }}>{selectedIds.size} seleccionados</b>
@@ -911,7 +943,7 @@ export default function Historial() {
               <button className="btn btn-ghost btn-sm" onClick={() => setSelectedIds(new Set())}><i className="fa fa-xmark" /> Quitar selección</button>
             </div>
           )}
-          <div className="tbl-card hist-tbl">
+          <div className="tbl-card hist-tbl" style={{ overflowX: 'auto' }}>
             <table>
               <thead><tr>
                 <th style={{ width: 32 }}>
@@ -934,9 +966,9 @@ export default function Historial() {
                   const dDays = deliveryDays(b.deliveryDate)
                   const overdue = dDays !== null && dDays <= 0 && !['confirmed', 'lost'].includes(b.status)
                   return (
-                    <tr key={b.id} style={selectedIds.has(b.id) ? { background: 'var(--brand-xlt)' } : undefined}>
+                    <tr key={b.id} className={selectedIds.has(b.id) ? 'selected' : ''} style={selectedIds.has(b.id) ? { background: 'var(--brand-xlt)' } : undefined}>
                       <td><input type="checkbox" checked={selectedIds.has(b.id)} onChange={() => toggleSelect(b.id)} /></td>
-                      <td><b>{b.num || '—'}</b></td>
+                      <td style={{ fontVariantNumeric: 'tabular-nums', letterSpacing: '-.01em' }}><b>{b.num || '—'}</b></td>
                       <td>{fmtDate(b.date)}</td>
                       <td>{b.contact || '—'}</td>
                       <td style={{ color: 'var(--blue)', cursor: 'pointer' }} onClick={() => { setSearch(b.company || ''); setFilter('all') }}>{b.company || '—'}</td>
