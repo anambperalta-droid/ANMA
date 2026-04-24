@@ -236,8 +236,8 @@ export default function Catalogo() {
   }
 
   /* Selection helpers */
-  const toggleSelect = (id) => setSelectedIds(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n })
-  const toggleSelectAll = () => setSelectedIds(prev => prev.size === filtered.length && filtered.every(p => prev.has(p.id)) ? new Set() : new Set(filtered.map(p => p.id)))
+  const toggleSelect = (id) => { if (id == null) return; setSelectedIds(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n }) }
+  const toggleSelectAll = () => setSelectedIds(prev => prev.size === filtered.length && filtered.every(p => prev.has(p.id)) ? new Set() : new Set(filtered.map(p => p.id).filter(Boolean)))
 
   const doBulkDelete = () => {
     if (!selectedIds.size) return
