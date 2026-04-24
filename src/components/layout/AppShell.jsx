@@ -18,6 +18,7 @@ import Logistica from '../pages/Logistica'
 import Mensajes from '../pages/Mensajes'
 import Insumos from '../pages/Insumos'
 import Config from '../pages/Config'
+import Admin from '../pages/Admin'
 
 const PRIORITIES = [
   { key: 'today',    label: 'Urgente hoy',  color: '#DC2626', bg: '#FEF2F2' },
@@ -239,6 +240,11 @@ function Guard({ perm, children }) {
   return can(perm) ? children : <NoAccess />
 }
 
+function AdminGuard({ children }) {
+  const { isGlobalAdmin } = useAuth()
+  return isGlobalAdmin ? children : <NoAccess />
+}
+
 function AppShellInner() {
   const { config } = useData()
   const { focusMode } = useTaskFab()
@@ -277,6 +283,7 @@ function AppShellInner() {
             <Route path="/logistica" element={<Guard perm="logistica.view"><Logistica /></Guard>} />
             <Route path="/mensajes" element={<Guard perm="mensajes.view"><Mensajes /></Guard>} />
             <Route path="/config" element={<Guard perm="config.access"><Config /></Guard>} />
+            <Route path="/admin" element={<AdminGuard><Admin /></AdminGuard>} />
           </Routes>
         </div>
       </div>
