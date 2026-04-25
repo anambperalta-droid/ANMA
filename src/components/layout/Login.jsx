@@ -171,8 +171,10 @@ export default function Login() {
           margin:0 auto 28px;
           animation:lp-logo-in .65s cubic-bezier(.34,1.56,.64,1) forwards,
                     lp-breathe 3.2s ease-in-out 1.2s infinite;
-          opacity:0;
+          opacity:0;cursor:pointer;text-decoration:none;
+          transition:transform .25s ease,border-color .25s ease;
         }
+        .lp2-logo-wrap:hover { transform:scale(1.06);border-color:rgba(255,255,255,.45); }
 
         .lp2-h1 {
           font-size:33px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1.15;
@@ -359,7 +361,7 @@ export default function Login() {
           <div className="lp2-orb lp2-orb3" />
 
           <div className="lp2-hero">
-            <div className="lp2-logo-wrap"><AnmaLogo /></div>
+            <a href="/landing.html" className="lp2-logo-wrap" title="Conocer más sobre ANMA"><AnmaLogo /></a>
             <h1 className="lp2-h1">ANMA <em>El centro de mando</em><br />de tu negocio</h1>
             <p className="lp2-sub">
               Presupuestos, seguimiento y resultados<br />
