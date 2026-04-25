@@ -4,8 +4,8 @@ import { useAuth } from '../../context/AuthContext'
 const APP_VERSION = 'v1.4'
 const APP_YEAR = new Date().getFullYear()
 const LS_EMAIL_KEY = 'anma_last_email'
+const LS_LAST_LOGIN = 'anma_last_login'
 
-// Mapea mensajes técnicos de Supabase a copy amigable en español.
 function friendlyAuthError(raw) {
   if (!raw) return ''
   const m = String(raw).toLowerCase()
@@ -17,31 +17,26 @@ function friendlyAuthError(raw) {
   return raw
 }
 
-const SOLUTIONS = [
-  {
-    icon: 'fa-file-invoice-dollar',
-    title: 'Presupuestos que convierten',
-    desc: 'Diseñá y enviá propuestas profesionales en segundos, desde cualquier dispositivo.',
-  },
-  {
-    icon: 'fa-users',
-    title: 'Relaciones impecables',
-    desc: 'Centralizá el historial de tus clientes y proveedores para una gestión sin errores.',
-  },
-  {
-    icon: 'fa-layer-group',
-    title: 'Control total de procesos',
-    desc: 'Supervisá cada etapa de tu operativa y asegurate de que nada se quede en el camino.',
-  },
-  {
-    icon: 'fa-chart-line',
-    title: 'Métricas para crecer',
-    desc: 'Visualizá la salud de tu negocio con reportes de rentabilidad e ingresos en tiempo real.',
-  },
-]
+function greeting() {
+  const h = new Date().getHours()
+  if (h < 6) return 'Trabajando tarde'
+  if (h < 13) return 'Buen día'
+  if (h < 19) return 'Buenas tardes'
+  return 'Buenas noches'
+}
+
+function relativeDays(iso) {
+  if (!iso) return null
+  const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000)
+  if (days < 1) return 'hoy'
+  if (days < 2) return 'ayer'
+  if (days < 7) return `hace ${days} días`
+  if (days < 30) return `hace ${Math.floor(days / 7)} sem.`
+  return `hace ${Math.floor(days / 30)} m.`
+}
 
 const AnmaLogo = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46">
+  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="38" fill="none" viewBox="0 0 48 46">
     <path fill="white" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z"/>
   </svg>
 )
@@ -57,14 +52,13 @@ export default function Login() {
   const [capsOn, setCapsOn] = useState(false)
   const { login, resetPassword } = useAuth()
 
-  // Persistir email cada vez que cambia (sólo si tiene formato razonable).
+  const lastLogin = (() => { try { return localStorage.getItem(LS_LAST_LOGIN) } catch { return null } })()
+  const lastLoginRel = relativeDays(lastLogin)
+
   useEffect(() => {
-    try {
-      if (email && email.includes('@')) localStorage.setItem(LS_EMAIL_KEY, email)
-    } catch { /* ignorar */ }
+    try { if (email && email.includes('@')) localStorage.setItem(LS_EMAIL_KEY, email) } catch { /* ignorar */ }
   }, [email])
 
-  // Forgot password state
   const [forgotModal, setForgotModal] = useState(false)
   const [resetEmail, setResetEmail] = useState('')
   const [resetSending, setResetSending] = useState(false)
@@ -75,7 +69,8 @@ export default function Login() {
     if (!email || !pass) { setErr('Completá email y contraseña para continuar.'); return }
     setSubmitting(true); setErr('')
     const result = await login(email, pass)
-    if (result) { setErr(friendlyAuthError(result)); setSubmitting(false) }
+    if (result) { setErr(friendlyAuthError(result)); setSubmitting(false); return }
+    try { localStorage.setItem(LS_LAST_LOGIN, new Date().toISOString()) } catch { /* ignorar */ }
   }
 
   const handleKey = (e) => {
@@ -83,405 +78,314 @@ export default function Login() {
     if (e.key === 'Enter') handleLogin()
   }
 
-  const openForgot = () => {
-    setResetEmail(email)
-    setResetSent(false)
-    setResetErr('')
-    setForgotModal(true)
-  }
+  const openForgot = () => { setResetEmail(email); setResetSent(false); setResetErr(''); setForgotModal(true) }
 
   const handleReset = async () => {
     if (!resetEmail) { setResetErr('Ingresá tu email.'); return }
     setResetSending(true); setResetErr('')
-    try {
-      await resetPassword(resetEmail)
-      setResetSent(true)
-    } catch (e) {
-      setResetErr(e.message || 'Error al enviar. Verificá el email.')
-    }
+    try { await resetPassword(resetEmail); setResetSent(true) }
+    catch (e) { setResetErr(e.message || 'Error al enviar. Verificá el email.') }
     setResetSending(false)
   }
+
+  // Saludo personalizado: si recordamos el email, sacar primer nombre antes del @
+  const knownName = (() => {
+    if (!email || !email.includes('@')) return null
+    const local = email.split('@')[0].split('.')[0].split('+')[0]
+    if (!local || local.length < 2) return null
+    return local.charAt(0).toUpperCase() + local.slice(1).toLowerCase()
+  })()
 
   return (
     <>
       <style>{`
-        @keyframes lp-breathe {
-          0%,100% { box-shadow:0 0 0 0 rgba(139,92,246,0),0 8px 32px rgba(0,0,0,.35); }
-          50%      { box-shadow:0 0 44px 14px rgba(167,139,250,.38),0 8px 32px rgba(0,0,0,.35); }
+        @keyframes lp-orb-a { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-32px,24px) scale(1.08)} }
+        @keyframes lp-orb-b { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(28px,-22px) scale(1.12)} }
+        @keyframes lp-orb-c { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,18px) scale(1.06)} }
+        @keyframes lp-card-in {
+          0%   { opacity:0; transform:translateY(18px) scale(.985); filter:blur(6px) }
+          100% { opacity:1; transform:none; filter:blur(0) }
         }
-        @keyframes lp-logo-in {
-          from { opacity:0; transform:scale(.55); }
-          to   { opacity:1; transform:scale(1); }
+        @keyframes lp-fade { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+        @keyframes lp-ring { 0%{box-shadow:0 0 0 0 rgba(167,139,250,.55)} 70%{box-shadow:0 0 0 16px rgba(167,139,250,0)} 100%{box-shadow:0 0 0 0 rgba(167,139,250,0)} }
+
+        .lp-wrap{
+          position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+          padding:24px;font-family:'Inter',system-ui,sans-serif;
+          background:radial-gradient(1200px 800px at 20% 10%,#3b1078 0%,transparent 60%),
+                     radial-gradient(900px 700px at 80% 90%,#0f7a55 0%,transparent 55%),
+                     linear-gradient(135deg,#0e0524 0%,#1a0636 35%,#2d0a57 70%,#1a1233 100%);
+          overflow:hidden;
         }
-        @keyframes lp-fade-up {
-          from { opacity:0; transform:translateY(20px); }
-          to   { opacity:1; transform:translateY(0); }
-        }
-        @keyframes lp-slide-in {
-          from { opacity:0; transform:translateX(-28px); }
-          to   { opacity:1; transform:translateX(0); }
-        }
-        @keyframes lp-orb-float-a {
-          0%,100% { transform:translate(0,0) scale(1); }
-          50%     { transform:translate(-22px,18px) scale(1.05); }
-        }
-        @keyframes lp-orb-float-b {
-          0%,100% { transform:translate(0,0) scale(1); }
-          50%     { transform:translate(18px,-14px) scale(1.08); }
-        }
-        @keyframes lp-orb-float-c {
-          0%,100% { transform:translate(0,0) scale(1); }
-          50%     { transform:translate(14px,12px) scale(1.04); }
+        .lp-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px)}
+        .lp-orb1{width:520px;height:520px;top:-160px;right:-140px;background:radial-gradient(circle,rgba(124,58,237,.45) 0%,transparent 70%);animation:lp-orb-a 16s ease-in-out infinite}
+        .lp-orb2{width:380px;height:380px;bottom:-120px;left:-90px;background:radial-gradient(circle,rgba(5,150,105,.35) 0%,transparent 70%);animation:lp-orb-b 20s ease-in-out infinite}
+        .lp-orb3{width:240px;height:240px;top:48%;left:18%;background:radial-gradient(circle,rgba(236,72,153,.20) 0%,transparent 70%);animation:lp-orb-c 22s ease-in-out infinite}
+        @media (prefers-reduced-motion:reduce){.lp-orb1,.lp-orb2,.lp-orb3{animation:none}}
+
+        .lp-grain{position:absolute;inset:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;
+          background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+
+        .lp-card{
+          position:relative;z-index:1;width:100%;max-width:420px;
+          background:rgba(255,255,255,.06);
+          backdrop-filter:blur(28px) saturate(180%);
+          -webkit-backdrop-filter:blur(28px) saturate(180%);
+          border:1px solid rgba(255,255,255,.12);
+          border-radius:24px;padding:36px 34px 28px;
+          box-shadow:0 24px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08);
+          animation:lp-card-in .6s cubic-bezier(.2,.7,.2,1) both;
         }
 
-        .lp2-wrap {
-          position:fixed;inset:0;z-index:9999;display:flex;min-height:100vh;
+        .lp-top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+        .lp-logo{
+          width:46px;height:46px;border-radius:13px;flex-shrink:0;
+          background:linear-gradient(135deg,#7c3aed 0%,#a855f7 60%,#ec4899 100%);
+          display:flex;align-items:center;justify-content:center;
+          box-shadow:0 8px 24px rgba(124,58,237,.4);
+          animation:lp-ring 2.6s ease-out 1.2s 1;
+        }
+        .lp-brand-txt{display:flex;flex-direction:column;line-height:1}
+        .lp-brand-name{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px}
+        .lp-brand-tag{font-size:11px;color:rgba(255,255,255,.5);margin-top:3px;letter-spacing:.3px}
+
+        .lp-greet{
+          font-size:24px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2;
+          margin-bottom:6px;animation:lp-fade .5s .15s ease both
+        }
+        .lp-greet em{font-style:normal;background:linear-gradient(90deg,#a78bfa,#ec4899);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .lp-sub{
+          font-size:13px;color:rgba(255,255,255,.6);margin-bottom:22px;line-height:1.55;
+          animation:lp-fade .5s .25s ease both
+        }
+        .lp-sub b{color:rgba(255,255,255,.85);font-weight:600}
+
+        .lp-fg{margin-bottom:14px}
+        .lp-lbl{
+          display:flex;justify-content:space-between;align-items:center;
+          font-size:10.5px;font-weight:700;color:rgba(255,255,255,.7);
+          margin-bottom:7px;letter-spacing:.7px;text-transform:uppercase
+        }
+        .lp-inp{
+          width:100%;padding:13px 15px;box-sizing:border-box;
+          background:rgba(255,255,255,.07);
+          border:1.5px solid rgba(255,255,255,.12);
+          border-radius:12px;font-size:14px;color:#fff;outline:none;
+          transition:border-color .2s,background .2s,box-shadow .2s;
           font-family:'Inter',sans-serif;
         }
+        .lp-inp::placeholder{color:rgba(255,255,255,.3)}
+        .lp-inp:focus{
+          border-color:rgba(167,139,250,.6);
+          background:rgba(255,255,255,.10);
+          box-shadow:0 0 0 4px rgba(167,139,250,.12);
+        }
+        .lp-pw{position:relative}
+        .lp-eye{
+          position:absolute;right:12px;top:50%;transform:translateY(-50%);
+          background:none;border:none;color:rgba(255,255,255,.45);
+          font-size:13px;padding:6px;cursor:pointer;transition:color .2s;
+        }
+        .lp-eye:hover{color:rgba(255,255,255,.85)}
 
-        /* ── LEFT ── */
-        .lp2-left {
-          flex:1;min-width:0;
-          background:linear-gradient(145deg,#1a0636 0%,#2d0a57 25%,#4c1d95 60%,#6d28d9 85%,#7c3aed 100%);
-          display:flex;flex-direction:column;align-items:center;justify-content:center;
-          padding:52px 56px;position:relative;overflow:hidden;
+        .lp-forgot{
+          background:none;border:none;color:#a78bfa;font-size:11px;font-weight:600;
+          cursor:pointer;padding:0;font-family:inherit;letter-spacing:.2px;
+          transition:color .15s;text-transform:none
         }
-        .lp2-orb { position:absolute;border-radius:50%;pointer-events:none; }
-        .lp2-orb1 { width:560px;height:560px;top:-200px;right:-200px;
-          background:radial-gradient(circle,rgba(124,58,237,.28) 0%,transparent 68%);
-          animation:lp-orb-float-a 18s ease-in-out infinite; }
-        .lp2-orb2 { width:320px;height:320px;bottom:-100px;left:-80px;
-          background:radial-gradient(circle,rgba(5,150,105,.18) 0%,transparent 68%);
-          animation:lp-orb-float-b 22s ease-in-out infinite; }
-        .lp2-orb3 { width:180px;height:180px;top:42%;left:8%;
-          background:radial-gradient(circle,rgba(167,139,250,.14) 0%,transparent 68%);
-          animation:lp-orb-float-c 16s ease-in-out infinite; }
-        @media (prefers-reduced-motion:reduce){
-          .lp2-orb1,.lp2-orb2,.lp2-orb3 { animation:none; }
-        }
+        .lp-forgot:hover{color:#c4b5fd;text-decoration:underline}
 
-        .lp2-hero { position:relative;z-index:1;text-align:center;max-width:560px;width:100%; }
+        .lp-err{
+          background:rgba(220,38,38,.12);border:1.5px solid rgba(252,165,165,.4);border-radius:11px;
+          color:#fca5a5;font-size:12px;padding:10px 13px;margin-bottom:14px;
+          display:flex;align-items:center;gap:8px;animation:lp-fade .25s ease both;
+        }
+        .lp-caps{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:10.5px;color:#fbbf24;font-weight:600}
 
-        .lp2-logo-wrap {
-          width:96px;height:96px;border-radius:24px;
-          background:rgba(255,255,255,.13);
-          backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-          border:1.5px solid rgba(255,255,255,.26);
-          display:flex;align-items:center;justify-content:center;
-          margin:0 auto 28px;
-          animation:lp-logo-in .65s cubic-bezier(.34,1.56,.64,1) forwards,
-                    lp-breathe 3.2s ease-in-out 1.2s infinite;
-          opacity:0;cursor:pointer;text-decoration:none;
-          transition:transform .25s ease,border-color .25s ease;
+        .lp-btn{
+          width:100%;padding:14px;margin-top:8px;
+          background:linear-gradient(135deg,#059669 0%,#10b981 100%);
+          color:#fff;border:none;border-radius:12px;
+          font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;
+          box-shadow:0 8px 24px rgba(5,150,105,.4),inset 0 1px 0 rgba(255,255,255,.18);
+          transition:transform .15s,box-shadow .25s,filter .2s;
+          display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.2px;
         }
-        .lp2-logo-wrap:hover { transform:scale(1.06);border-color:rgba(255,255,255,.45); }
+        .lp-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 30px rgba(5,150,105,.55)}
+        .lp-btn:active:not(:disabled){transform:translateY(0)}
+        .lp-btn:disabled{opacity:.65;cursor:not-allowed}
 
-        .lp2-h1 {
-          font-size:33px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1.15;
-          margin-bottom:14px;
-          animation:lp-fade-up .5s ease forwards;animation-delay:.32s;opacity:0;
+        .lp-divider{
+          display:flex;align-items:center;gap:10px;
+          margin:18px 0 12px;font-size:10.5px;color:rgba(255,255,255,.35);
+          text-transform:uppercase;letter-spacing:1.2px;font-weight:600
         }
-        .lp2-h1 em { font-style:normal;color:#c4b5fd; }
+        .lp-divider::before,.lp-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.10)}
 
-        .lp2-sub {
-          font-size:14.5px;color:rgba(255,255,255,.65);line-height:1.7;
-          margin-bottom:34px;font-weight:400;
-          animation:lp-fade-up .5s ease forwards;animation-delay:.52s;opacity:0;
-        }
-
-        .lp2-cards { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
-
-        .lp2-card {
-          display:flex;flex-direction:column;align-items:flex-start;gap:12px;
-          background:rgba(255,255,255,.08);
-          backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-          border:1px solid rgba(255,255,255,.13);
-          border-radius:16px;padding:18px;text-align:left;
-          transition:transform .22s ease,background .22s ease,border-color .22s ease;
-          opacity:0;
-        }
-        .lp2-card:hover {
-          transform:translateY(-4px);
-          background:rgba(255,255,255,.14);
-          border-color:rgba(255,255,255,.24);
-        }
-        .lp2-card:nth-child(1){animation:lp-slide-in .45s ease forwards;animation-delay:.72s}
-        .lp2-card:nth-child(2){animation:lp-slide-in .45s ease forwards;animation-delay:.92s}
-        .lp2-card:nth-child(3){animation:lp-slide-in .45s ease forwards;animation-delay:1.12s}
-        .lp2-card:nth-child(4){animation:lp-slide-in .45s ease forwards;animation-delay:1.32s}
-
-        .lp2-card-icon {
-          width:44px;height:44px;border-radius:12px;flex-shrink:0;
-          background:rgba(5,150,105,.22);
-          border:1px solid rgba(5,150,105,.3);
-          display:flex;align-items:center;justify-content:center;
-          font-size:17px;color:#6ee7b7;
-          transition:background .22s,box-shadow .22s;
-        }
-        .lp2-card:hover .lp2-card-icon {
-          background:rgba(5,150,105,.34);
-          box-shadow:0 0 20px rgba(52,211,153,.34);
-        }
-        .lp2-card-t { font-size:14.5px;font-weight:700;color:#fff;margin-bottom:4px;letter-spacing:-.2px; }
-        .lp2-card-s { font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.6; }
-
-        /* ── RIGHT ── */
-        .lp2-right {
-          width:460px;flex-shrink:0;
-          display:flex;align-items:center;justify-content:center;
-          padding:52px 52px;background:#ffffff;
-        }
-        .lp2-form-wrap { width:100%;max-width:340px; }
-
-        .lp2-brand { margin-bottom:36px; }
-        .lp2-brand h2 { font-size:26px;font-weight:800;color:#111827;letter-spacing:-.6px;margin-bottom:6px; }
-        .lp2-brand p  { font-size:14px;color:#6b7280; }
-
-        .lp2-lbl {
-          display:block;font-size:10.5px;font-weight:700;color:#374151;
-          margin-bottom:6px;letter-spacing:.7px;text-transform:uppercase;
-        }
-        .lp2-inp {
-          width:100%;padding:12px 14px;box-sizing:border-box;
-          background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:11px;
-          font-size:14px;color:#111827;outline:none;
-          transition:border-color .2s,box-shadow .2s;font-family:'Inter',sans-serif;
-        }
-        .lp2-inp:focus { border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.1); }
-        .lp2-inp::placeholder { color:#9ca3af; }
-        .lp2-fg  { margin-bottom:16px; }
-        .lp2-pw  { position:relative; }
-        .lp2-eye {
-          position:absolute;right:11px;top:50%;transform:translateY(-50%);
-          background:none;border:none;color:#9ca3af;font-size:13px;padding:4px;cursor:pointer;
-          transition:color .2s;
-        }
-        .lp2-eye:hover { color:#374151; }
-
-        .lp2-forgot {
-          display:block;text-align:right;font-size:11px;color:#7c3aed;
-          margin-top:5px;background:none;border:none;cursor:pointer;
-          padding:0;font-family:'Inter',sans-serif;text-decoration:none;
-          transition:color .15s;
-        }
-        .lp2-forgot:hover { color:#5b21b6;text-decoration:underline; }
-
-        .lp2-err {
-          background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;
-          color:#dc2626;font-size:12px;padding:9px 12px;margin-bottom:16px;
-          display:flex;align-items:center;gap:7px;
-        }
-
-        .lp2-btn {
-          width:100%;padding:13px;margin-top:6px;
-          background:#059669;color:#fff;border:none;border-radius:11px;
-          font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;
-          box-shadow:0 4px 14px rgba(5,150,105,.28);
-          transition:box-shadow .25s,transform .2s,background .2s;
-          display:flex;align-items:center;justify-content:center;gap:8px;
-        }
-        .lp2-btn:hover:not(:disabled) {
-          background:#047857;
-          box-shadow:0 8px 26px rgba(5,150,105,.42);
-          transform:translateY(-1px);
-        }
-        .lp2-btn:disabled { opacity:.6;cursor:not-allowed; }
-
-        .lp2-sec {
+        .lp-cta{
           display:flex;align-items:center;justify-content:center;gap:6px;
-          margin-top:22px;font-size:11px;color:#9ca3af;
+          width:100%;padding:11px;border:1.5px solid rgba(255,255,255,.14);
+          background:rgba(255,255,255,.04);border-radius:11px;
+          color:rgba(255,255,255,.85);font-size:12.5px;font-weight:600;
+          text-decoration:none;transition:background .2s,border-color .2s,transform .15s;
         }
-        .lp2-sec i { color:#059669;font-size:11px; }
+        .lp-cta:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.28);transform:translateY(-1px)}
+        .lp-cta-pill{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+          background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:2px 7px;border-radius:8px;margin-right:4px}
 
-        .lp2-caps {
-          display:flex;align-items:center;gap:6px;margin-top:6px;
-          font-size:11px;color:#b45309;font-weight:600;
+        .lp-foot{
+          margin-top:20px;text-align:center;font-size:10.5px;color:rgba(255,255,255,.32);
+          letter-spacing:.4px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap
         }
-        .lp2-caps i { font-size:11px; }
+        .lp-foot i{color:#10b981}
+        .lp-foot b{color:rgba(255,255,255,.5);font-weight:600}
+        .lp-foot a{color:rgba(255,255,255,.5);text-decoration:none}
+        .lp-foot a:hover{color:#a78bfa}
+        .lp-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.2);display:inline-block}
 
-        .lp2-foot {
-          margin-top:20px;text-align:center;font-size:10.5px;color:#cbd5e1;
-          letter-spacing:.3px;
+        /* MODAL FORGOT */
+        .lp-modal-bg{position:fixed;inset:0;z-index:10000;background:rgba(10,5,30,.72);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+        .lp-modal{
+          background:rgba(20,15,40,.85);backdrop-filter:blur(28px);
+          border:1px solid rgba(255,255,255,.12);
+          border-radius:20px;padding:30px 26px;width:100%;max-width:380px;
+          box-shadow:0 24px 64px rgba(0,0,0,.55);animation:lp-card-in .35s ease both;
         }
-        .lp2-foot b { color:#94a3b8;font-weight:600; }
+        .lp-modal h3{font-size:17px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.3px}
+        .lp-modal p{font-size:13px;color:rgba(255,255,255,.6);margin:0 0 20px;line-height:1.6}
+        .lp-modal-ok{background:rgba(16,185,129,.12);border:1.5px solid rgba(110,231,183,.4);border-radius:12px;padding:14px;text-align:center;color:#86efac;font-size:13px;font-weight:600;line-height:1.6}
+        .lp-modal-ok i{color:#10b981;font-size:18px;display:block;margin-bottom:6px}
+        .lp-modal-row{display:flex;gap:8px;margin-top:16px}
+        .lp-modal-cancel{flex:1;padding:11px;border:1.5px solid rgba(255,255,255,.14);border-radius:10px;background:transparent;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+        .lp-modal-cancel:hover{background:rgba(255,255,255,.04)}
+        .lp-modal-send{flex:2;padding:11px;border:none;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
+        .lp-modal-send:disabled{opacity:.6;cursor:not-allowed}
 
-        /* ── FORGOT MODAL ── */
-        .lp2-modal-bg {
-          position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.45);
-          display:flex;align-items:center;justify-content:center;padding:20px;
-          backdrop-filter:blur(4px);
-        }
-        .lp2-modal {
-          background:#fff;border-radius:18px;padding:32px 28px;
-          width:100%;max-width:380px;
-          box-shadow:0 24px 64px rgba(0,0,0,.18);
-          animation:lp-fade-up .25s ease both;
-        }
-        .lp2-modal h3 { font-size:18px;font-weight:800;color:#111827;margin:0 0 6px;letter-spacing:-.4px; }
-        .lp2-modal p  { font-size:13px;color:#6b7280;margin:0 0 22px;line-height:1.6; }
-        .lp2-modal-ok {
-          background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;
-          padding:14px;text-align:center;color:#166534;font-size:13px;font-weight:600;line-height:1.6;
-        }
-        .lp2-modal-ok i { color:#16a34a;font-size:18px;display:block;margin-bottom:6px; }
-        .lp2-modal-row { display:flex;gap:8px;margin-top:18px; }
-        .lp2-modal-cancel {
-          flex:1;padding:11px;border:1.5px solid #e5e7eb;border-radius:10px;
-          background:#fff;color:#374151;font-size:14px;font-weight:600;
-          cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;
-        }
-        .lp2-modal-cancel:hover { background:#f9fafb; }
-        .lp2-modal-send {
-          flex:2;padding:11px;border:none;border-radius:10px;
-          background:#7c3aed;color:#fff;font-size:14px;font-weight:700;
-          cursor:pointer;font-family:'Inter',sans-serif;
-          transition:background .2s,box-shadow .2s;
-          display:flex;align-items:center;justify-content:center;gap:7px;
-        }
-        .lp2-modal-send:hover:not(:disabled) { background:#5b21b6;box-shadow:0 4px 14px rgba(124,58,237,.35); }
-        .lp2-modal-send:disabled { opacity:.6;cursor:not-allowed; }
-
-        /* ── RESPONSIVE ── */
-        @media(max-width:920px){
-          .lp2-left { display:none; }
-          .lp2-right { width:100%;padding:36px 28px; }
-        }
         @media(max-width:480px){
-          .lp2-right { padding:28px 20px; }
-          .lp2-cards { grid-template-columns:1fr; }
+          .lp-card{padding:30px 24px 24px;border-radius:20px}
+          .lp-greet{font-size:21px}
         }
       `}</style>
 
-      <div className="lp2-wrap">
+      <div className="lp-wrap">
+        <div className="lp-orb lp-orb1" />
+        <div className="lp-orb lp-orb2" />
+        <div className="lp-orb lp-orb3" />
+        <div className="lp-grain" />
 
-        {/* ── LADO IZQUIERDO ── */}
-        <div className="lp2-left">
-          <div className="lp2-orb lp2-orb1" />
-          <div className="lp2-orb lp2-orb2" />
-          <div className="lp2-orb lp2-orb3" />
-
-          <div className="lp2-hero">
-            <a href="/landing.html" className="lp2-logo-wrap" title="Conocer más sobre ANMA"><AnmaLogo /></a>
-            <h1 className="lp2-h1">ANMA <em>El centro de mando</em><br />de tu negocio</h1>
-            <p className="lp2-sub">
-              Presupuestos, seguimiento y resultados<br />
-              Toda tu operativa bajo control, en un solo lugar
-            </p>
-            <div className="lp2-cards">
-              {SOLUTIONS.map((s) => (
-                <div className="lp2-card" key={s.title}>
-                  <div className="lp2-card-icon"><i className={`fa ${s.icon}`} /></div>
-                  <div>
-                    <div className="lp2-card-t">{s.title}</div>
-                    <div className="lp2-card-s">{s.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="lp2-foot">
-              ANMA · <b>{APP_VERSION}</b> · {APP_YEAR}
+        <form className="lp-card" onSubmit={e => { e.preventDefault(); handleLogin() }}>
+          <div className="lp-top">
+            <div className="lp-logo"><AnmaLogo /></div>
+            <div className="lp-brand-txt">
+              <span className="lp-brand-name">ANMA</span>
+              <span className="lp-brand-tag">Centro de mando</span>
             </div>
           </div>
-        </div>
 
-        {/* ── LADO DERECHO ── */}
-        <div className="lp2-right">
-          <div className="lp2-form-wrap">
-            <div className="lp2-brand">
-              <h2>Bienvenido de vuelta</h2>
-              <p>Ingresá a tu cuenta ANMA</p>
+          <div className="lp-greet">
+            {greeting()}{knownName ? <>, <em>{knownName}</em></> : <em> 👋</em>}
+          </div>
+          <div className="lp-sub">
+            {lastLoginRel
+              ? <>Tu último ingreso fue <b>{lastLoginRel}</b>. Todo te está esperando.</>
+              : <>Ingresá para retomar tu operación donde la dejaste.</>}
+          </div>
+
+          {err && (
+            <div className="lp-err">
+              <i className="fa fa-circle-exclamation" /><span>{err}</span>
             </div>
+          )}
 
-            {err && (
-              <div className="lp2-err">
-                <i className="fa fa-circle-exclamation" /><span>{err}</span>
-              </div>
-            )}
+          <div className="lp-fg">
+            <label className="lp-lbl">Email</label>
+            <input type="email" className="lp-inp" placeholder="tu@email.com"
+              value={email} onChange={e => setEmail(e.target.value)}
+              onKeyDown={handleKey} autoComplete="email" autoFocus={!email} />
+          </div>
 
-            <div className="lp2-fg">
-              <label className="lp2-lbl">Email</label>
-              <input type="email" className="lp2-inp" placeholder="tu@email.com"
-                value={email} onChange={e => setEmail(e.target.value)}
-                onKeyDown={handleKey} autoComplete="email" />
-            </div>
-
-            <div className="lp2-fg">
-              <label className="lp2-lbl">Contraseña</label>
-              <div className="lp2-pw">
-                <input
-                  type={showPwd ? 'text' : 'password'}
-                  className="lp2-inp"
-                  placeholder="••••••••"
-                  value={pass}
-                  onChange={e => setPass(e.target.value)}
-                  onKeyDown={handleKey}
-                  autoComplete="current-password"
-                  style={{ paddingRight: 42 }}
-                />
-                <button className="lp2-eye" type="button" onClick={() => setShowPwd(!showPwd)} title={showPwd ? 'Ocultar' : 'Mostrar'}>
-                  <i className={`fa ${showPwd ? 'fa-eye-slash' : 'fa-eye'}`} />
-                </button>
-              </div>
-              {capsOn && (
-                <div className="lp2-caps">
-                  <i className="fa fa-arrow-up" />
-                  <span>Bloq Mayús está activado</span>
-                </div>
-              )}
-              <button className="lp2-forgot" type="button" onClick={openForgot}>
-                ¿Olvidaste tu contraseña?
+          <div className="lp-fg">
+            <label className="lp-lbl">
+              <span>Contraseña</span>
+              <button type="button" className="lp-forgot" onClick={openForgot}>¿La olvidaste?</button>
+            </label>
+            <div className="lp-pw">
+              <input
+                type={showPwd ? 'text' : 'password'}
+                className="lp-inp"
+                placeholder="••••••••"
+                value={pass}
+                onChange={e => setPass(e.target.value)}
+                onKeyDown={handleKey}
+                autoComplete="current-password"
+                style={{ paddingRight: 42 }}
+                autoFocus={!!email}
+              />
+              <button className="lp-eye" type="button" onClick={() => setShowPwd(!showPwd)} title={showPwd ? 'Ocultar' : 'Mostrar'}>
+                <i className={`fa ${showPwd ? 'fa-eye-slash' : 'fa-eye'}`} />
               </button>
             </div>
-
-            <button className="lp2-btn" onClick={handleLogin} disabled={submitting}>
-              {submitting
-                ? <><i className="fa fa-spinner fa-spin" /> Ingresando...</>
-                : <><i className="fa fa-arrow-right-to-bracket" /> Ingresar</>
-              }
-            </button>
-
-            <div className="lp2-sec">
-              <i className="fa fa-lock" />
-              <span>Conexión segura cifrada de punto a punto</span>
-            </div>
+            {capsOn && (
+              <div className="lp-caps">
+                <i className="fa fa-arrow-up" /><span>Bloq Mayús está activado</span>
+              </div>
+            )}
           </div>
-        </div>
+
+          <button type="submit" className="lp-btn" disabled={submitting}>
+            {submitting
+              ? <><i className="fa fa-spinner fa-spin" /> Ingresando...</>
+              : <><i className="fa fa-arrow-right-to-bracket" /> Entrar a ANMA</>}
+          </button>
+
+          <div className="lp-divider">o</div>
+
+          <a className="lp-cta" href="/landing.html">
+            <span className="lp-cta-pill">Nuevo</span>
+            ¿Todavía no usás ANMA? Conocelo en 60 segundos
+            <i className="fa fa-arrow-right" style={{ fontSize: 11, marginLeft: 2 }} />
+          </a>
+
+          <div className="lp-foot">
+            <span><i className="fa fa-lock" /> Cifrado E2E</span>
+            <span className="lp-dot" />
+            <span>ANMA <b>{APP_VERSION}</b></span>
+            <span className="lp-dot" />
+            <a href="/landing.html#planes">Planes</a>
+          </div>
+        </form>
       </div>
 
-      {/* ── MODAL RECUPERAR CONTRASEÑA ── */}
       {forgotModal && (
-        <div className="lp2-modal-bg" onClick={e => { if (e.target === e.currentTarget) setForgotModal(false) }}>
-          <div className="lp2-modal">
-            <h3><i className="fa fa-key" style={{ color: '#7c3aed', marginRight: 8, fontSize: 16 }} />Recuperar contraseña</h3>
+        <div className="lp-modal-bg" onClick={e => { if (e.target === e.currentTarget) setForgotModal(false) }}>
+          <div className="lp-modal">
+            <h3><i className="fa fa-key" style={{ color: '#a78bfa', marginRight: 8, fontSize: 15 }} />Recuperar contraseña</h3>
             {resetSent ? (
               <>
-                <div className="lp2-modal-ok">
+                <div className="lp-modal-ok">
                   <i className="fa fa-circle-check" />
-                  Email enviado a <b>{resetEmail}</b>.<br />
-                  Revisá tu bandeja y seguí el enlace para crear una nueva contraseña.
+                  Listo. Te enviamos un enlace a <b style={{ color: '#fff' }}>{resetEmail}</b>.<br />
+                  Revisá tu bandeja (incluso spam) para crear una nueva contraseña.
                 </div>
-                <div className="lp2-modal-row">
-                  <button className="lp2-modal-cancel" style={{ flex: 1 }} onClick={() => setForgotModal(false)}>Cerrar</button>
+                <div className="lp-modal-row">
+                  <button className="lp-modal-cancel" style={{ flex: 1 }} onClick={() => setForgotModal(false)}>Cerrar</button>
                 </div>
               </>
             ) : (
               <>
-                <p>Ingresá tu email y te enviaremos un enlace para restablecer tu contraseña.</p>
-                <label className="lp2-lbl">Email</label>
-                <input
-                  type="email" className="lp2-inp" placeholder="tu@email.com"
+                <p>Te enviamos un enlace para restablecerla. Llega en menos de un minuto.</p>
+                <label className="lp-lbl">Email</label>
+                <input type="email" className="lp-inp" placeholder="tu@email.com"
                   value={resetEmail} onChange={e => setResetEmail(e.target.value)}
-                  onKeyDown={e => { if (e.key === 'Enter') handleReset() }}
-                  autoFocus
-                />
+                  onKeyDown={e => { if (e.key === 'Enter') handleReset() }} autoFocus />
                 {resetErr && (
-                  <div className="lp2-err" style={{ marginTop: 10, marginBottom: 0 }}>
+                  <div className="lp-err" style={{ marginTop: 10, marginBottom: 0 }}>
                     <i className="fa fa-circle-exclamation" /><span>{resetErr}</span>
                   </div>
                 )}
-                <div className="lp2-modal-row">
-                  <button className="lp2-modal-cancel" onClick={() => setForgotModal(false)}>Cancelar</button>
-                  <button className="lp2-modal-send" onClick={handleReset} disabled={resetSending}>
+                <div className="lp-modal-row">
+                  <button className="lp-modal-cancel" onClick={() => setForgotModal(false)}>Cancelar</button>
+                  <button className="lp-modal-send" onClick={handleReset} disabled={resetSending}>
                     {resetSending ? <><i className="fa fa-spinner fa-spin" /> Enviando...</> : <><i className="fa fa-paper-plane" /> Enviar enlace</>}
                   </button>
                 </div>
