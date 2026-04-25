@@ -302,8 +302,8 @@ export default function Login() {
             <div className="lp2-logo-wrap"><AnmaLogo /></div>
             <h1 className="lp2-h1">ANMA <em>El centro de mando</em><br />de tu negocio</h1>
             <p className="lp2-sub">
-              Presupuestos, seguimiento y resultados.<br />
-              Toda tu operativa bajo control, en un solo lugar.
+              Presupuestos, seguimiento y resultados<br />
+              Toda tu operativa bajo control, en un solo lugar
             </p>
             <div className="lp2-cards">
               {SOLUTIONS.map((s) => (
