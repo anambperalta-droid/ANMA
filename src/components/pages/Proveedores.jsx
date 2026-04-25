@@ -12,7 +12,15 @@ export default function Proveedores() {
   const [detailSupplier, setDetailSupplier] = useState(null)
   const [detailTab, setDetailTab] = useState('info')
   const [viewMode, setViewMode] = useState('table')
-  const [showLastUse, setShowLastUse] = useState(false)
+  const [dismissed, setDismissed] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('anma_prov_alerts_dismissed') || '{}') } catch { return {} }
+  })
+  const persistDismissed = (next) => {
+    setDismissed(next)
+    try { localStorage.setItem('anma_prov_alerts_dismissed', JSON.stringify(next)) } catch { /* ignorar */ }
+  }
+  const dismissAlert = (key) => persistDismissed({ ...dismissed, [key]: Date.now() })
+  const restoreAlerts = () => persistDismissed({})
   const [loading, setLoading] = useState(true)
   const [form, setForm] = useState({ name: '', contact: '', wa: '', rubro: '', email: '', notes: '', cuit: '', ivaCondition: '', paymentTerm: '', cbu: '', leadTime: '' })
   const [newNote, setNewNote] = useState('')
@@ -294,17 +302,30 @@ export default function Proveedores() {
         </div>
       </div>
 
-      {totalLowStock > 0 && (
+      {(dismissed.reorder || dismissed.concentration) && (
+        <button onClick={restoreAlerts}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 11px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', border: '1.5px solid var(--border)', background: 'transparent', color: 'var(--txt3)', marginBottom: 10 }}
+          title="Volver a mostrar alertas que ocultaste">
+          <i className="fa fa-bell" style={{ fontSize: 10 }} /> Mostrar alertas ocultas
+        </button>
+      )}
+
+      {totalLowStock > 0 && !dismissed.reorder && (
         <div style={{ background: 'rgba(220,38,38,.06)', border: '1px solid rgba(220,38,38,.25)', borderRadius: 10, marginBottom: 10, overflow: 'hidden' }}>
-          <div onClick={() => setReorderOpen(v => !v)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', cursor: 'pointer', fontSize: 12 }}>
-            <i className="fa fa-bell" style={{ color: '#DC2626', fontSize: 14 }} />
-            <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', fontSize: 12 }}>
+            <i className="fa fa-bell" style={{ color: '#DC2626', fontSize: 14, cursor: 'pointer' }} onClick={() => setReorderOpen(v => !v)} />
+            <div style={{ flex: 1, cursor: 'pointer' }} onClick={() => setReorderOpen(v => !v)}>
               <b style={{ color: '#DC2626' }}>{totalLowStock} producto{totalLowStock !== 1 ? 's' : ''} para re-ordenar</b>
               <span style={{ color: 'var(--txt3)', marginLeft: 6 }}>
                 · {allLowStockBySupplier.length} proveedor{allLowStockBySupplier.length !== 1 ? 'es' : ''} involucrado{allLowStockBySupplier.length !== 1 ? 's' : ''}
               </span>
             </div>
-            <i className={`fa fa-chevron-${reorderOpen ? 'up' : 'down'}`} style={{ color: 'var(--txt3)', fontSize: 11 }} />
+            <i className={`fa fa-chevron-${reorderOpen ? 'up' : 'down'}`} style={{ color: 'var(--txt3)', fontSize: 11, cursor: 'pointer' }} onClick={() => setReorderOpen(v => !v)} />
+            <button onClick={() => dismissAlert('reorder')}
+              title="Ocultar alerta"
+              style={{ background: 'transparent', border: 'none', color: 'var(--txt3)', cursor: 'pointer', padding: '0 2px', fontSize: 14, lineHeight: 1 }}>
+              <i className="fa fa-xmark" />
+            </button>
           </div>
           {reorderOpen && (
             <div style={{ padding: '0 14px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -340,13 +361,17 @@ export default function Proveedores() {
         </div>
       )}
 
-      {concentration && concentration.topPct >= 50 && (
+      {concentration && concentration.topPct >= 50 && !dismissed.concentration && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: concentration.topPct >= 70 ? 'rgba(220,38,38,.08)' : 'rgba(217,119,6,.08)', border: `1px solid ${concentration.topPct >= 70 ? 'rgba(220,38,38,.25)' : 'rgba(217,119,6,.25)'}`, borderRadius: 10, marginBottom: 10, fontSize: 12 }}>
           <i className="fa fa-triangle-exclamation" style={{ color: concentration.topPct >= 70 ? '#DC2626' : '#D97706', fontSize: 14 }} />
           <div style={{ flex: 1 }}>
             <b>Riesgo de concentración:</b> el {concentration.topPct.toFixed(0)}% de tus productos depende de <b>{concentration.topName}</b>.
             Top 3 proveedores concentran el {concentration.top3Pct.toFixed(0)}%. Considerá diversificar.
           </div>
+          <button onClick={() => dismissAlert('concentration')} title="Ocultar alerta"
+            style={{ background: 'transparent', border: 'none', color: 'var(--txt3)', cursor: 'pointer', padding: '0 2px', fontSize: 14, lineHeight: 1 }}>
+            <i className="fa fa-xmark" />
+          </button>
         </div>
       )}
 
@@ -355,24 +380,12 @@ export default function Proveedores() {
           <table>
             <thead><tr>
               <th>Proveedor / Contacto</th><th>WhatsApp</th><th>Rubro</th><th>Email</th>
-              <th>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  Productos
-                  <button
-                    title={showLastUse ? 'Ocultar último pedido' : 'Mostrar último pedido'}
-                    onClick={e => { e.stopPropagation(); setShowLastUse(v => !v) }}
-                    style={{ background: showLastUse ? 'var(--brand)' : 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 6, color: showLastUse ? '#fff' : 'var(--txt3)', fontSize: 9, padding: '2px 6px', cursor: 'pointer', fontWeight: 700, transition: 'all .2s' }}
-                  >
-                    <i className="fa fa-clock" /> últ. pedido
-                  </button>
-                </span>
-              </th>
-              {showLastUse && <th>Últ. pedido</th>}
+              <th>Productos</th>
               <th>Acciones</th>
             </tr></thead>
             <tbody>
               {loading ? [1,2,3,4,5].map(i => (
-                <tr key={i}><td colSpan={showLastUse ? 7 : 6}><div className="sk sk-text" style={{ height: 16, width: `${55 + Math.random() * 35}%` }} /></td></tr>
+                <tr key={i}><td colSpan={6}><div className="sk sk-text" style={{ height: 16, width: `${55 + Math.random() * 35}%` }} /></td></tr>
               )) : filtered.length ? filtered.map(s => (
                 <tr key={s.id} style={{ cursor: 'pointer' }} onClick={() => openDetail(s)}>
                   <td>
@@ -393,23 +406,13 @@ export default function Proveedores() {
                   </td>
                   <td>{s.rubro}</td><td>{s.email}</td>
                   <td><span className="badge b-sent">{supplierProducts(s).length}</span></td>
-                  {showLastUse && (
-                  <td style={{ fontSize: 11 }}>
-                    {(() => {
-                      const days = supplierLastActivity(s)
-                      if (days === null) return <span style={{ color: 'var(--txt4)' }}>—</span>
-                      const color = days > 90 ? '#DC2626' : days > 30 ? '#D97706' : '#16A34A'
-                      return <span style={{ color, fontWeight: 600 }}>{days === 0 ? 'Hoy' : days === 1 ? 'Ayer' : `hace ${days}d`}</span>
-                    })()}
-                  </td>
-                  )}
                   <td><div className="acts" style={{ gap: 8 }} onClick={e => e.stopPropagation()}>
                     <button className="act edit" onClick={() => openEdit(s)}><i className="fa fa-pen" /></button>
                     <div style={{ width: 1, height: 18, background: 'var(--border)' }} />
                     <button className="act del" onClick={() => del(s.id)}><i className="fa fa-trash" /></button>
                   </div></td>
                 </tr>
-              )) : <tr><td colSpan={showLastUse ? 7 : 6}><div className="empty"><div className="ico"><i className="fa fa-industry" /></div><h4>Sin proveedores</h4><p>Agregá tu primer proveedor</p></div></td></tr>}
+              )) : <tr><td colSpan={6}><div className="empty"><div className="ico"><i className="fa fa-industry" /></div><h4>Sin proveedores</h4><p>Agregá tu primer proveedor</p></div></td></tr>}
             </tbody>
           </table>
         </div>
@@ -452,7 +455,7 @@ export default function Proveedores() {
       {/* MODAL EDITAR */}
       {modal && (
         <div className="modal-bg open" style={{ zIndex: 250 }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal">
+          <div className="modal" onKeyDown={e => { if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && form.name && form.name.trim()) save() }}>
             <div className="mh"><h3>{form.id ? 'Editar' : 'Agregar'} proveedor</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
             <div className="grid2">
               <div className="fg"><label>Nombre *</label><input type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Proveedor S.A." /></div>
