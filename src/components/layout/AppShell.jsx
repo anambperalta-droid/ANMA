@@ -259,7 +259,18 @@ function AppShellInner() {
   useEffect(() => {
     const handler = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setCmdOpen(true) }
-      if (e.key === 'Escape' && cmdOpen) { setCmdOpen(false) }
+      if (e.key === 'Escape') {
+        if (cmdOpen) { setCmdOpen(false); return }
+        // Cierra modal abierto más arriba en el DOM (último = topmost)
+        const opens = document.querySelectorAll('.modal-bg.open')
+        if (opens.length) {
+          const top = opens[opens.length - 1]
+          const closeBtn = top.querySelector('.mclose')
+          if (closeBtn) { closeBtn.click(); return }
+          // fallback: click background to trigger onClick handler
+          top.click()
+        }
+      }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
