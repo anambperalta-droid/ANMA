@@ -9,18 +9,91 @@ function Badge({ status }) {
   return <span className={`badge ${STATUS_CLS[status] || 'b-draft'}`}>{STATUS_MAP[status] || 'Borrador'}</span>
 }
 
-function KpiCard({ label, value, delta, isKey }) {
+function Sparkline({ data, color = 'var(--brand)' }) {
+  if (!data || data.length < 2) return null
+  const max = Math.max(...data, 1)
+  const min = Math.min(...data, 0)
+  const range = max - min || 1
+  const W = 60, H = 18
+  const step = W / (data.length - 1)
+  const points = data.map((v, i) => `${(i * step).toFixed(1)},${(H - ((v - min) / range) * H).toFixed(1)}`).join(' ')
+  return (
+    <svg width={W} height={H} style={{ position: 'absolute', right: 10, top: 10, opacity: .55 }}>
+      <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function KpiCard({ label, value, delta, isKey, sparkData, sparkColor }) {
   const hasDelta = delta !== null && delta !== undefined
   const base = { position: 'relative', padding: '12px 14px 10px' }
   return (
     <div className="bento-kpi" style={isKey ? { ...base, borderLeft: '3px solid var(--green)', paddingLeft: 14 } : base}>
       <div style={{ fontSize: 9.5, fontWeight: 700, color: '#B0B8C9', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{label}</div>
       <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-0.03em', lineHeight: 1.05, fontVariantNumeric: 'tabular-nums' }}>{value}</div>
+      {sparkData && <Sparkline data={sparkData} color={sparkColor || 'var(--brand)'} />}
       {hasDelta && (
         <span style={{ position: 'absolute', right: 10, bottom: 8, fontSize: 11, fontWeight: 700, color: delta >= 0 ? '#16A34A' : '#DC2626', background: delta >= 0 ? 'rgba(22,163,74,.10)' : 'rgba(220,38,38,.10)', padding: '2px 7px', borderRadius: 6, lineHeight: 1.2, whiteSpace: 'nowrap' }}>
           {delta >= 0 ? '↑' : '↓'}{Math.abs(delta)}%
         </span>
       )}
+    </div>
+  )
+}
+
+/* ── Modal motivo de pérdida ── */
+function LossReasonModal({ onSave, onClose }) {
+  const [reason, setReason] = useState('')
+  const [other, setOther] = useState('')
+  const REASONS = [
+    { k: 'price', l: '💰 Precio muy alto' },
+    { k: 'time', l: '⏰ No llegábamos con los tiempos' },
+    { k: 'competitor', l: '🏃 Eligió a un competidor' },
+    { k: 'no_response', l: '🔇 Cliente nunca respondió' },
+    { k: 'budget', l: '💸 Cliente no tenía presupuesto' },
+    { k: 'other', l: '📝 Otro motivo' },
+  ]
+  const finalReason = reason === 'other' ? other.trim() : (REASONS.find(r => r.k === reason)?.l.replace(/^\S+ /, '') || '')
+  return (
+    <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div className="modal" style={{ maxWidth: 460 }}>
+        <div className="mh">
+          <h3><i className="fa fa-circle-xmark" style={{ color: 'var(--red)', marginRight: 8 }} />¿Por qué se perdió?</h3>
+          <button className="mclose" onClick={onClose}><i className="fa fa-xmark" /></button>
+        </div>
+        <p style={{ fontSize: 12, color: 'var(--txt3)', margin: '0 0 14px', lineHeight: 1.5 }}>
+          Capturar el motivo te ayuda a ver patrones y mejorar tu tasa de cierre. Quedará en el histórico del presupuesto.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 10 }}>
+          {REASONS.map(r => (
+            <button key={r.k} onClick={() => setReason(r.k)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '10px 12px', borderRadius: 10,
+                border: `1.5px solid ${reason === r.k ? 'var(--brand)' : 'var(--border)'}`,
+                background: reason === r.k ? 'var(--brand-xlt)' : 'var(--surface)',
+                color: reason === r.k ? 'var(--brand)' : 'var(--txt2)',
+                fontSize: 13, fontWeight: reason === r.k ? 700 : 500,
+                cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
+                transition: 'all .12s'
+              }}>{r.l}</button>
+          ))}
+        </div>
+        {reason === 'other' && (
+          <div className="fg" style={{ marginBottom: 10 }}>
+            <input type="text" value={other} onChange={e => setOther(e.target.value)}
+              placeholder="Describí brevemente..." autoFocus
+              style={{ width: '100%', padding: '10px 12px', border: '1.5px solid var(--border)', borderRadius: 10, fontSize: 13, fontFamily: 'inherit', boxSizing: 'border-box' }} />
+          </div>
+        )}
+        <div className="mfooter">
+          <button className="btn btn-secondary" onClick={onClose}>Cancelar</button>
+          <button className="btn btn-primary" onClick={() => onSave(finalReason)} disabled={!finalReason}
+            style={{ background: 'var(--red)', borderColor: 'var(--red)' }}>
+            <i className="fa fa-floppy-disk" /> Guardar y marcar como perdido
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
@@ -220,7 +293,7 @@ function ResendModal({ budget, onClose, onSend }) {
 }
 
 /* ── Status Donut ── */
-function StatusDonut({ statuses, budgets }) {
+function StatusDonut({ statuses, budgets, onSegmentClick }) {
   const total = budgets.length || 1
   let cumulative = 0
   const segments = statuses.map(s => {
@@ -233,6 +306,7 @@ function StatusDonut({ statuses, budgets }) {
 
   const radius = 36
   const circumference = 2 * Math.PI * radius
+  const clickable = !!onSegmentClick
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
@@ -242,7 +316,11 @@ function StatusDonut({ statuses, budgets }) {
           <circle key={i} cx="45" cy="45" r={radius} fill="none" stroke={s.c} strokeWidth="10"
             strokeDasharray={`${s.pct / 100 * circumference} ${circumference}`}
             strokeDashoffset={-s.start / 100 * circumference}
-            transform="rotate(-90 45 45)" strokeLinecap="round" style={{ transition: 'all .6s ease' }} />
+            transform="rotate(-90 45 45)" strokeLinecap="round"
+            style={{ transition: 'all .6s ease', cursor: clickable ? 'pointer' : 'default' }}
+            onClick={clickable ? () => onSegmentClick(s.k) : undefined}>
+            <title>{`${s.l}: ${s.n} (${Math.round(s.pct)}%) — click para filtrar`}</title>
+          </circle>
         ))}
         <text x="45" y="50" textAnchor="middle" fontSize="16" fontWeight="800" fill="var(--txt)">{budgets.length}</text>
       </svg>
@@ -253,7 +331,11 @@ function StatusDonut({ statuses, budgets }) {
           const n = budgets.filter(b => b.status === s.k).length
           const pct = Math.round(n / total * 100)
           return (
-            <div key={s.k} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div key={s.k}
+              onClick={clickable ? () => onSegmentClick(s.k) : undefined}
+              style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: clickable ? 'pointer' : 'default', padding: '2px 4px', borderRadius: 6, transition: 'background .15s' }}
+              onMouseEnter={e => { if (clickable) e.currentTarget.style.background = 'var(--surface2)' }}
+              onMouseLeave={e => { if (clickable) e.currentTarget.style.background = 'transparent' }}>
               <div style={{ width: 8, height: 8, borderRadius: '50%', background: s.c, flexShrink: 0 }} />
               <span style={{ fontSize: 12, color: 'var(--txt2)', flex: 1 }}>{s.l}</span>
               <span style={{ fontSize: 10, fontWeight: 700, color: s.c, background: s.c + '15', padding: '1px 5px', borderRadius: 6, flexShrink: 0 }}>{pct}%</span>
@@ -287,7 +369,15 @@ export default function Historial() {
   const [openMenuId, setOpenMenuId] = useState(null)
   const [carouselSlide, setCarouselSlide] = useState(0)
   const [quickFilter, setQuickFilter] = useState('')
+  const [pendingLossId, setPendingLossId] = useState(null) // budget id en proceso de marcar como perdido
   const { hidden, money } = usePrivacy()
+
+  // Drill-down desde el donut: filtrar lista por estado
+  const drillDownToStatus = (statusKey) => {
+    setFilter(statusKey)
+    setQuickFilter('')
+    setTab('lista')
+  }
 
   const budgets = get('budgets')
   const products = get('products')
@@ -371,6 +461,53 @@ export default function Historial() {
   const prevTotCobrado = prevPagados.reduce((s, b) => s + cobrado(b), 0)
   const deltaBrutas = prevTotBudgeted > 0 ? Math.round((totBudgeted - prevTotBudgeted) / prevTotBudgeted * 100) : null
   const deltaCaja = prevTotCobrado > 0 ? Math.round((totCobrado - prevTotCobrado) / prevTotCobrado * 100) : null
+
+  // ── Sparklines: últimos 14 días para Ventas Brutas e Ingresos Caja ──
+  const sparkBrutas = (() => {
+    const arr = []
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0)
+      const ds = d.toISOString().slice(0, 10)
+      arr.push(budgets.filter(b => b.date === ds).reduce((s, b) => s + (b.total || 0), 0))
+    }
+    return arr
+  })()
+  const sparkCaja = (() => {
+    const arr = []
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0)
+      const ds = d.toISOString().slice(0, 10)
+      arr.push(budgets.filter(b => b.date === ds).reduce((s, b) => s + cobrado(b), 0))
+    }
+    return arr
+  })()
+  const sparkTicket = (() => {
+    const arr = []
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0)
+      const ds = d.toISOString().slice(0, 10)
+      const dayBs = budgets.filter(b => b.date === ds)
+      arr.push(dayBs.length ? dayBs.reduce((s, b) => s + (b.total || 0), 0) / dayBs.length : 0)
+    }
+    return arr
+  })()
+
+  // ── MODO HOY: cobros vencidos, entregas hoy, presupuestos a confirmar ──
+  const today = new Date(); today.setHours(0,0,0,0)
+  const todayStr = today.toISOString().slice(0, 10)
+  const cobrosVencidos = budgets.filter(b => {
+    if (b.status !== 'confirmed') return false
+    if (b.payStatus === 'paid') return false
+    if (!b.deliveryDate) return false
+    return new Date(b.deliveryDate + 'T00:00') <= today
+  })
+  const cobrosVencidosMonto = cobrosVencidos.reduce((s, b) => s + ((b.total || 0) - cobrado(b)), 0)
+  const entregasHoy = budgets.filter(b => b.deliveryDate === todayStr && !['lost'].includes(b.status))
+  const aConfirmar = budgets.filter(b => {
+    if (!['sent', 'negotiating'].includes(b.status)) return false
+    const days = b.date ? Math.floor((today - new Date(b.date + 'T00:00')) / 86400000) : 0
+    return days >= 3
+  })
 
   // Insight banner
   const insightIcon = deltaBrutas !== null && deltaBrutas > 20 ? 'fa-rocket' : deltaBrutas !== null && deltaBrutas > 0 ? 'fa-chart-line' : deltaBrutas !== null && deltaBrutas < -20 ? 'fa-triangle-exclamation' : deltaBrutas !== null && deltaBrutas < 0 ? 'fa-arrow-trend-down' : convRate !== '—' && parseInt(convRate) >= 60 ? 'fa-star' : periodBudgets.length === 0 ? 'fa-circle-info' : 'fa-chart-bar'
@@ -545,7 +682,23 @@ export default function Historial() {
     deleteBudget(b.id); toast('Presupuesto eliminado', 'in')
     setSelectedIds(prev => { const n = new Set(prev); n.delete(b.id); return n })
   }
-  const handleStatusChange = (id, status) => { updateBudgetStatus(id, status); toast('Estado actualizado', 'ok') }
+  const handleStatusChange = (id, status) => {
+    if (status === 'lost') {
+      // Pedir motivo antes de marcar como perdido
+      setPendingLossId(id)
+      return
+    }
+    updateBudgetStatus(id, status); toast('Estado actualizado', 'ok')
+  }
+  const confirmLoss = (reason) => {
+    if (!pendingLossId) return
+    const b = budgets.find(x => x.id === pendingLossId)
+    if (b) {
+      saveBudget({ ...b, status: 'lost', lossReason: reason, lossDate: new Date().toISOString().slice(0, 10) })
+      toast(`Marcado como perdido · ${reason}`, 'in')
+    }
+    setPendingLossId(null)
+  }
   const STATUS_COLORS = {
     draft:       { bg: '#F1F5F9', color: '#475569', border: '#CBD5E1' },
     pending:     { bg: '#EFF6FF', color: '#1D4ED8', border: '#93C5FD' },
@@ -617,6 +770,122 @@ export default function Historial() {
     a.download = `presupuestos_${new Date().toISOString().slice(0, 10)}.csv`; a.click()
   }
 
+  // ── INSIGHTS auto-generados (pestaña Análisis) ──
+  const insights = useMemo(() => {
+    const out = []
+
+    // 1) Concentración de ventas (top cliente)
+    if (topClients.length > 0 && totBudgeted > 0) {
+      const topPct = Math.round((topClients[0][1] / Math.max(1, confirmed.reduce((s, b) => s + (b.total || 0), 0))) * 100)
+      if (topPct >= 60) {
+        out.push({
+          tone: 'warning',
+          icon: 'fa-triangle-exclamation',
+          title: `Riesgo de concentración: ${topPct}% en un solo cliente`,
+          desc: `${topClients[0][0]} concentra el ${topPct}% de tus ventas confirmadas. Si pierde el contrato, te golpea fuerte. Pensá en diversificar.`,
+        })
+      } else if (topPct >= 40) {
+        out.push({
+          tone: 'info',
+          icon: 'fa-circle-info',
+          title: `${topClients[0][0]} es tu cliente más fuerte (${topPct}%)`,
+          desc: `Cuidalo bien — representa ${topPct}% de tus ventas confirmadas en el período.`,
+        })
+      }
+    }
+
+    // 2) Tendencia de ventas (delta brutas)
+    if (deltaBrutas !== null) {
+      if (deltaBrutas >= 25) {
+        out.push({
+          tone: 'success',
+          icon: 'fa-rocket',
+          title: `Crecimiento fuerte: +${deltaBrutas}% vs período anterior`,
+          desc: `Estás vendiendo ${deltaBrutas}% más que el período anterior. Identificá qué cambió y duplicá esa apuesta.`,
+        })
+      } else if (deltaBrutas <= -20) {
+        out.push({
+          tone: 'warning',
+          icon: 'fa-arrow-trend-down',
+          title: `Caída de ${Math.abs(deltaBrutas)}% vs período anterior`,
+          desc: `Las ventas bajaron ${Math.abs(deltaBrutas)}%. Revisá la cartera de seguimiento — puede haber leads tibios sin recordatorio.`,
+        })
+      }
+    }
+
+    // 3) Tasa de conversión
+    if (periodBudgets.length >= 5) {
+      const cr = Math.round(confirmed.length / periodBudgets.length * 100)
+      if (cr >= 60) {
+        out.push({
+          tone: 'success',
+          icon: 'fa-bullseye',
+          title: `Conversión excelente: ${cr}%`,
+          desc: `Cerrás ${cr} de cada 100 presupuestos enviados. Por encima del promedio del rubro (35–55%).`,
+        })
+      } else if (cr <= 25) {
+        out.push({
+          tone: 'warning',
+          icon: 'fa-funnel-dollar',
+          title: `Conversión baja: ${cr}%`,
+          desc: `Cerrás solo ${cr}% de los presupuestos. Considerá: precio competitivo, tiempos de respuesta, calidad del seguimiento.`,
+        })
+      }
+    }
+
+    // 4) Razones de pérdida más frecuentes
+    const lostWithReason = budgets.filter(b => b.status === 'lost' && b.lossReason)
+    if (lostWithReason.length >= 3) {
+      const reasonCount = {}
+      lostWithReason.forEach(b => { reasonCount[b.lossReason] = (reasonCount[b.lossReason] || 0) + 1 })
+      const top = Object.entries(reasonCount).sort((a, b) => b[1] - a[1])[0]
+      const pct = Math.round(top[1] / lostWithReason.length * 100)
+      if (pct >= 40) {
+        out.push({
+          tone: 'info',
+          icon: 'fa-magnifying-glass-chart',
+          title: `${pct}% de las pérdidas: "${top[0]}"`,
+          desc: `Es el motivo más frecuente. Atacarlo puede recuperar muchas oportunidades.`,
+        })
+      }
+    }
+
+    // 5) Cobros pendientes alto
+    if (cobrosVencidos.length >= 3) {
+      out.push({
+        tone: 'warning',
+        icon: 'fa-hand-holding-dollar',
+        title: `${cobrosVencidos.length} cobros vencidos · ${money(cobrosVencidosMonto)}`,
+        desc: `Hay dinero pendiente que ya debería estar en caja. Empezá por los más antiguos.`,
+      })
+    }
+
+    // 6) Ticket promedio (vs anterior)
+    if (period === 'thismonth' && prevPeriodBudgets.length > 0 && periodBudgets.length > 0) {
+      const prevAvg = Math.round(prevTotBudgeted / prevPeriodBudgets.length)
+      if (prevAvg > 0) {
+        const ticketDelta = Math.round((avgTicket - prevAvg) / prevAvg * 100)
+        if (ticketDelta >= 20) {
+          out.push({
+            tone: 'success',
+            icon: 'fa-arrow-up-right-dots',
+            title: `Ticket promedio creció ${ticketDelta}%`,
+            desc: `Pasaste de ${money(prevAvg)} a ${money(avgTicket)}. Estás vendiendo más por venta — buen pricing o más up-sell.`,
+          })
+        } else if (ticketDelta <= -20) {
+          out.push({
+            tone: 'warning',
+            icon: 'fa-arrow-trend-down',
+            title: `Ticket promedio cayó ${Math.abs(ticketDelta)}%`,
+            desc: `Estás vendiendo más chico (${money(avgTicket)} vs ${money(prevAvg)}). ¿Cambió el mix de productos?`,
+          })
+        }
+      }
+    }
+
+    return out
+  }, [budgets, periodBudgets, prevPeriodBudgets, deltaBrutas, topClients, confirmed, cobrosVencidos, avgTicket, period, prevTotBudgeted, totBudgeted])
+
   const openWADirect = (b) => {
     if (!b.wa) { copyWA(b); return }
     const num = b.wa.replace(/\D/g, '')
@@ -681,6 +950,66 @@ export default function Historial() {
       {/* ═══ RESUMEN / DASHBOARD ═══ */}
       {tab === 'resumen' && (
         <>
+          {/* ── MODO HOY: 3 acciones inmediatas ── */}
+          {!loading && !filterLoading && (cobrosVencidos.length + entregasHoy.length + aConfirmar.length) > 0 && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10, marginBottom: 16 }}>
+              {cobrosVencidos.length > 0 && (
+                <div onClick={() => { setQuickFilter('sin_cobrar'); setTab('lista') }}
+                  style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(220,38,38,.06), rgba(220,38,38,.02))', border: '1.5px solid rgba(220,38,38,.25)', borderRadius: 14, padding: '14px 16px', transition: 'transform .15s, box-shadow .2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(220,38,38,.12)' }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 10, background: '#DC2626', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-hand-holding-dollar" /></div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: '#DC2626', textTransform: 'uppercase', letterSpacing: '.06em' }}>Cobros vencidos</div>
+                      <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)', lineHeight: 1.1 }}>{cobrosVencidos.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{cobrosVencidos.length === 1 ? 'pedido' : 'pedidos'}</span></div>
+                    </div>
+                    <i className="fa fa-arrow-right" style={{ color: '#DC2626', fontSize: 12 }} />
+                  </div>
+                  <div style={{ fontSize: 11.5, color: 'var(--txt2)', lineHeight: 1.4 }}>
+                    <b style={{ color: '#DC2626', fontVariantNumeric: 'tabular-nums' }}>{money(cobrosVencidosMonto)}</b> sin cobrar · entrega ya pasó
+                  </div>
+                </div>
+              )}
+              {entregasHoy.length > 0 && (
+                <div onClick={() => setTab('lista')}
+                  style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(217,119,6,.07), rgba(217,119,6,.02))', border: '1.5px solid rgba(217,119,6,.25)', borderRadius: 14, padding: '14px 16px', transition: 'transform .15s, box-shadow .2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(217,119,6,.12)' }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 10, background: '#D97706', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-truck-fast" /></div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: '#D97706', textTransform: 'uppercase', letterSpacing: '.06em' }}>Entregas hoy</div>
+                      <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)', lineHeight: 1.1 }}>{entregasHoy.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{entregasHoy.length === 1 ? 'pedido' : 'pedidos'}</span></div>
+                    </div>
+                    <i className="fa fa-arrow-right" style={{ color: '#D97706', fontSize: 12 }} />
+                  </div>
+                  <div style={{ fontSize: 11.5, color: 'var(--txt2)', lineHeight: 1.4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {entregasHoy.slice(0, 2).map(b => b.contact || b.company || b.num).filter(Boolean).join(', ') || '—'}{entregasHoy.length > 2 ? ` +${entregasHoy.length - 2}` : ''}
+                  </div>
+                </div>
+              )}
+              {aConfirmar.length > 0 && (
+                <div onClick={() => setTab('seguimiento')}
+                  style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(124,58,237,.06), rgba(124,58,237,.02))', border: '1.5px solid var(--brand)', borderRadius: 14, padding: '14px 16px', transition: 'transform .15s, box-shadow .2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(124,58,237,.15)' }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 10, background: 'var(--brand)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-comments" /></div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.06em' }}>A confirmar</div>
+                      <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)', lineHeight: 1.1 }}>{aConfirmar.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>seguimientos</span></div>
+                    </div>
+                    <i className="fa fa-arrow-right" style={{ color: 'var(--brand)', fontSize: 12 }} />
+                  </div>
+                  <div style={{ fontSize: 11.5, color: 'var(--txt2)', lineHeight: 1.4 }}>
+                    Enviados hace 3+ días — recordales antes de que se enfríen
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {(loading || filterLoading) ? (
             <div className="bento">
               <div className="sk sk-kpi" /><div className="sk sk-kpi" /><div className="sk sk-kpi" /><div className="sk sk-kpi" />
@@ -689,9 +1018,9 @@ export default function Historial() {
             </div>
           ) : (
             <div className="bento sk-fade-in">
-              <KpiCard label="Ventas Brutas" value={money(totBudgeted)} delta={hidden ? undefined : deltaBrutas} />
-              <KpiCard label="Ingresos Caja" value={money(totCobrado)} delta={hidden ? undefined : deltaCaja} isKey />
-              <KpiCard label="Ticket Promedio" value={avgTicket > 0 ? money(avgTicket) : '—'} />
+              <KpiCard label="Ventas Brutas" value={money(totBudgeted)} delta={hidden ? undefined : deltaBrutas} sparkData={hidden ? null : sparkBrutas} sparkColor="var(--brand)" />
+              <KpiCard label="Ingresos Caja" value={money(totCobrado)} delta={hidden ? undefined : deltaCaja} sparkData={hidden ? null : sparkCaja} sparkColor="var(--green)" isKey />
+              <KpiCard label="Ticket Promedio" value={avgTicket > 0 ? money(avgTicket) : '—'} sparkData={hidden ? null : sparkTicket} />
               <KpiCard label="Presupuestos" value={String(periodBudgets.length)} />
 
               {/* ── Bar chart 65% + Panel derecho 35% ── */}
@@ -709,7 +1038,8 @@ export default function Historial() {
                     <div className="card-header" style={{ marginBottom: 6 }}>
                       <span className="card-title"><i className="fa fa-chart-pie" style={{ color: 'var(--brand)', marginRight: 7 }} />Estado de pedidos</span>
                     </div>
-                    <StatusDonut statuses={statuses} budgets={periodBudgets} />
+                    <StatusDonut statuses={statuses} budgets={periodBudgets} onSegmentClick={drillDownToStatus} />
+                    <div style={{ fontSize: 9.5, color: 'var(--txt4)', textAlign: 'center', marginTop: 6 }}>Click en un estado para filtrar la lista</div>
                   </div>
 
                   {/* Carousel: Seguimiento / Alertas de stock */}
@@ -1036,6 +1366,36 @@ export default function Historial() {
 
       {/* ═══ ANÁLISIS ═══ */}
       {tab === 'analisis' && (
+        <>
+          {/* ── Insights auto-generados ── */}
+          {insights.length > 0 && (
+            <div className="card" style={{ marginBottom: 16 }}>
+              <div className="card-header" style={{ marginBottom: 10 }}>
+                <span className="card-title"><i className="fa fa-lightbulb" style={{ color: '#F59E0B', marginRight: 7 }} />Insights del período</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt4)', background: 'var(--surface2)', padding: '2px 8px', borderRadius: 10, marginLeft: 'auto' }}>{insights.length}</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {insights.map((ins, i) => {
+                  const palette = ins.tone === 'success'
+                    ? { bg: 'rgba(22,163,74,.06)', border: 'rgba(22,163,74,.25)', icon: '#16A34A' }
+                    : ins.tone === 'warning'
+                      ? { bg: 'rgba(220,38,38,.05)', border: 'rgba(220,38,38,.25)', icon: '#DC2626' }
+                      : { bg: 'var(--brand-xlt)', border: 'var(--brand)', icon: 'var(--brand)' }
+                  return (
+                    <div key={i} style={{ display: 'flex', gap: 12, padding: '12px 14px', background: palette.bg, border: `1px solid ${palette.border}`, borderRadius: 10 }}>
+                      <div style={{ width: 32, height: 32, borderRadius: 8, background: palette.icon, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 13 }}>
+                        <i className={`fa ${ins.icon}`} />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--txt)', marginBottom: 2 }}>{ins.title}</div>
+                        <div style={{ fontSize: 12, color: 'var(--txt2)', lineHeight: 1.5 }}>{ins.desc}</div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
         <div className="analysis-grid">
           <div className="card">
             <div className="card-header"><span className="card-title"><i className="fa fa-chart-pie" style={{ color: 'var(--brand)', marginRight: 6 }} />Métricas globales</span></div>
@@ -1074,13 +1434,14 @@ export default function Historial() {
           </div>
           <div className="card">
             <div className="card-header"><span className="card-title"><i className="fa fa-funnel" style={{ color: 'var(--green)', marginRight: 6 }} />Conversión por estado</span></div>
-            <StatusDonut statuses={statuses} budgets={periodBudgets} />
+            <StatusDonut statuses={statuses} budgets={periodBudgets} onSegmentClick={drillDownToStatus} />
           </div>
           <div className="card">
             <div className="card-header"><span className="card-title"><i className="fa fa-coins" style={{ color: 'var(--amber)', marginRight: 6 }} />Ganancia por mes</span></div>
             <BarChart data={gainData} type="gain" />
           </div>
         </div>
+        </>
       )}
 
       {/* ═══ SEGUIMIENTO ACTIVO — Grouped by urgency tier ═══ */}
@@ -1122,6 +1483,14 @@ export default function Historial() {
       {/* ═══ Resend Modal ═══ */}
       {resendBudget && (
         <ResendModal budget={resendBudget} onClose={() => setResendBudget(null)} onSend={handleResendSent} />
+      )}
+
+      {/* ═══ Loss Reason Modal ═══ */}
+      {pendingLossId && (
+        <LossReasonModal
+          onSave={confirmLoss}
+          onClose={() => setPendingLossId(null)}
+        />
       )}
     </div>
   )
