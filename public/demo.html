@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ANMA — Demo en vivo</title>
+<meta name="description" content="Demo interactivo de ANMA con datos ficticios. Recorré el dashboard, los presupuestos, el seguimiento y las métricas.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:'Inter',sans-serif;background:#f8fafc;color:#0F172A;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+/* DEMO BANNER (top) */
+.demo-top{background:linear-gradient(135deg,#7c3aed,#059669);color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;flex-wrap:wrap}
+.demo-top .info{display:flex;align-items:center;gap:10px}
+.demo-top .badge{background:rgba(255,255,255,.2);padding:3px 10px;border-radius:99px;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.demo-top .actions{display:flex;gap:8px;align-items:center}
+.demo-top .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:700;font-family:inherit;border:none;cursor:pointer;transition:transform .15s,background .2s}
+.demo-top .btn-light{background:rgba(255,255,255,.95);color:#7c3aed}
+.demo-top .btn-light:hover{background:#fff;transform:translateY(-1px)}
+.demo-top .btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3)}
+.demo-top .btn-outline:hover{background:rgba(255,255,255,.1)}
+
+/* APP SHELL */
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 42px)}
+
+/* SIDEBAR */
+.sb{background:linear-gradient(180deg,#1e1b4b,#312e81);color:rgba(255,255,255,.75);padding:18px 14px;border-right:1px solid #c7d2fe}
+.sb-logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:16px;letter-spacing:-.4px;color:#fff;margin-bottom:6px;padding:0 6px}
+.sb-logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#a78bfa,#34d399);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+.sb-sub{font-size:11px;color:rgba(255,255,255,.45);padding:0 6px;margin-bottom:24px}
+.sb-section{font-size:9.5px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:8px 6px 4px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.78);margin-bottom:1px;transition:background .15s,color .15s}
+.sb-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.sb-item.active{background:rgba(167,139,250,.22);color:#fff;font-weight:700}
+.sb-item i{width:18px;font-size:13px;color:#a78bfa}
+.sb-item .chip{margin-left:auto;background:rgba(255,255,255,.1);font-size:10px;padding:1px 7px;border-radius:99px;font-weight:700}
+
+/* TOP BAR */
+.tb{display:flex;align-items:center;gap:14px;padding:12px 28px;background:#fff;border-bottom:1px solid #e5e7eb}
+.tb-title{font-size:15px;font-weight:800;color:#0F172A}
+.tb-search{flex:1;max-width:380px;display:flex;align-items:center;gap:8px;padding:7px 12px;background:#f1f5f9;border-radius:9px;color:#64748b;font-size:12.5px}
+.tb-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.tb-btn{width:34px;height:34px;border-radius:9px;background:#fff7ed;color:#d97706;display:flex;align-items:center;justify-content:center;font-size:13px;border:none;cursor:pointer;position:relative}
+.tb-btn .dot{position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:#dc2626}
+.tb-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#059669);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:12px}
+
+/* CONTENT */
+.content{padding:24px 28px}
+.page-h{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;gap:14px;flex-wrap:wrap}
+.page-h h1{font-size:24px;font-weight:900;letter-spacing:-.6px;margin:0}
+.page-h p{font-size:13px;color:#64748b;margin:3px 0 0}
+.page-h .btn-add{display:inline-flex;align-items:center;gap:7px;background:#16a34a;color:#fff;padding:9px 16px;border-radius:9px;font-weight:700;font-size:13px;border:none;cursor:pointer}
+
+/* MODO HOY */
+.today{margin-bottom:18px}
+.today-h{display:flex;align-items:center;gap:7px;margin-bottom:10px;font-size:11px;font-weight:800;color:#0F172A;text-transform:uppercase;letter-spacing:.6px}
+.today-h .count{background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:10px;font-size:10px;margin-left:auto;font-weight:700}
+.today-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.today-card{background:linear-gradient(135deg,rgba(220,38,38,.06),rgba(220,38,38,.02));border:1.5px solid rgba(220,38,38,.25);border-radius:12px;padding:13px 16px;cursor:pointer;transition:transform .15s,box-shadow .2s}
+.today-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(220,38,38,.12)}
+.today-card.amber{background:linear-gradient(135deg,rgba(217,119,6,.07),rgba(217,119,6,.02));border-color:rgba(217,119,6,.25)}
+.today-card.amber:hover{box-shadow:0 8px 20px rgba(217,119,6,.12)}
+.today-card.purple{background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(124,58,237,.02));border-color:#7c3aed}
+.today-card.purple:hover{box-shadow:0 8px 20px rgba(124,58,237,.15)}
+.today-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.today-icon{width:30px;height:30px;border-radius:9px;background:#dc2626;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+.today-card.amber .today-icon{background:#d97706}
+.today-card.purple .today-icon{background:#7c3aed}
+.today-info{flex:1}
+.today-info .lbl{font-size:9.5px;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.5px}
+.today-card.amber .today-info .lbl{color:#d97706}
+.today-card.purple .today-info .lbl{color:#7c3aed}
+.today-info .v{font-size:17px;font-weight:800;color:#0F172A;line-height:1.1}
+.today-info .v small{font-size:11px;color:#64748b;font-weight:500}
+.today-desc{font-size:11px;color:#475569;line-height:1.4}
+
+/* BENTO */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.kpi{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px 16px}
+.kpi.key{border-left:3px solid #16a34a}
+.kpi-l{font-size:9.5px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.kpi-vrow{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.kpi-v{font-size:22px;font-weight:800;letter-spacing:-.6px;color:#0F172A;font-variant-numeric:tabular-nums}
+.kpi-d{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;color:#16a34a;background:rgba(22,163,74,.1)}
+.kpi-d.down{color:#dc2626;background:rgba(220,38,38,.1)}
+.kpi-spark{margin-top:6px}
+
+/* ROW: Chart + Donut */
+.bento-wide{grid-column:1/-1;display:grid;grid-template-columns:1.7fr 1fr;gap:12px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.card-h{display:flex;align-items:center;gap:6px;margin-bottom:14px;font-size:13px;font-weight:800;color:#0F172A}
+.card-h i{color:#7c3aed}
+.bar-chart{display:flex;align-items:flex-end;gap:5px;height:130px}
+.bar-chart .bc{flex:1;display:flex;justify-content:center}
+.bar-chart .bb{width:100%;max-width:22px;background:#7c3aed;opacity:.5;border-radius:4px 4px 0 0;transition:opacity .2s}
+.bar-chart .bb:hover{opacity:.9}
+.bar-labels{display:flex;gap:5px;margin-top:5px}
+.bar-labels .l{flex:1;text-align:center;font-size:10px;color:#94a3b8;font-weight:600}
+
+/* DONUT */
+.donut-wrap{display:flex;align-items:center;gap:14px}
+.donut-leg{display:flex;flex-direction:column;gap:5px;flex:1}
+.donut-leg-row{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#475569;cursor:pointer;padding:2px 4px;border-radius:5px;transition:background .15s}
+.donut-leg-row:hover{background:#f1f5f9}
+.donut-leg-row .d{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.donut-leg-row .pct{font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:5px}
+.donut-leg-row .n{font-size:11px;font-weight:800;background:#f1f5f9;padding:1px 6px;border-radius:6px;color:#0F172A;margin-left:auto}
+
+/* TABLE */
+.tbl-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.tbl-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.tbl-h h3{margin:0;font-size:14px;font-weight:800;color:#0F172A}
+.tbl-h a{font-size:12px;font-weight:600;color:#7c3aed}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{text-align:left;padding:8px 10px;border-bottom:1.5px solid #f1f5f9;font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+tbody td{padding:11px 10px;border-bottom:1px solid #f8fafc;color:#334155}
+tbody tr:hover td{background:#f9fafb}
+.tbl-num{font-weight:800;color:#0F172A}
+.tbl-amt{font-weight:700;color:#059669;font-variant-numeric:tabular-nums;text-align:right}
+.tbl-st{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:8px;font-size:10.5px;font-weight:700}
+.st-confirmed{background:#dcfce7;color:#15803d}
+.st-sent{background:#dbeafe;color:#1d4ed8}
+.st-negotiating{background:#fef3c7;color:#92400e}
+.st-paid{background:#dcfce7;color:#15803d}
+.st-pending{background:#fee2e2;color:#991b1b}
+.st-partial{background:#fef3c7;color:#92400e}
+
+/* INSIGHTS */
+.insight-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;margin-top:18px}
+.insight-h{display:flex;align-items:center;gap:6px;margin-bottom:12px;font-size:13px;font-weight:800;color:#0F172A}
+.insight-h i{color:#f59e0b}
+.insight-h .count{background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-left:auto}
+.insight-list{display:flex;flex-direction:column;gap:8px}
+.insight{display:flex;gap:11px;padding:11px 13px;border-radius:10px;border:1px solid}
+.insight.success{background:rgba(22,163,74,.06);border-color:rgba(22,163,74,.25)}
+.insight.warning{background:rgba(220,38,38,.05);border-color:rgba(220,38,38,.25)}
+.insight.info{background:#f5f3ff;border-color:#7c3aed}
+.insight-icon{width:30px;height:30px;border-radius:8px;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
+.insight.success .insight-icon{background:#16a34a}
+.insight.warning .insight-icon{background:#dc2626}
+.insight.info .insight-icon{background:#7c3aed}
+.insight-body{flex:1;min-width:0}
+.insight-body b{font-size:13px;font-weight:700;color:#0F172A;display:block;margin-bottom:2px}
+.insight-body p{font-size:12px;color:#475569;margin:0;line-height:1.5}
+
+@media(max-width:920px){
+  .shell{grid-template-columns:1fr}
+  .sb{display:none}
+  .bento{grid-template-columns:1fr 1fr}
+  .bento-wide{grid-template-columns:1fr}
+  .today-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- DEMO BANNER -->
+<div class="demo-top">
+  <div class="info">
+    <span class="badge"><i class="fa-solid fa-circle-play"></i> Demo</span>
+    <span><b>Estudio Norte</b> · Pyme creativa · Datos ficticios para presentación</span>
+  </div>
+  <div class="actions">
+    <a href="/landing.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Volver al sitio</a>
+    <a href="https://anma-hub.vercel.app/login" class="btn btn-light"><i class="fa-solid fa-rocket"></i> Crear cuenta gratis</a>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sb-logo">
+      <span class="sb-logo-mark"><i class="fa-solid fa-bolt"></i></span>
+      ANMA
+    </div>
+    <div class="sb-sub">Tu negocio en un solo lugar</div>
+
+    <div class="sb-section">Gestión</div>
+    <div class="sb-item active"><i class="fa-solid fa-chart-line"></i> Dashboard <span class="chip">14</span></div>
+    <div class="sb-item"><i class="fa-solid fa-file-invoice-dollar"></i> Nuevo pedido</div>
+    <div class="sb-item"><i class="fa-solid fa-users"></i> Clientes <span class="chip">38</span></div>
+
+    <div class="sb-section">Catálogo</div>
+    <div class="sb-item"><i class="fa-solid fa-cube"></i> Productos <span class="chip">52</span></div>
+    <div class="sb-item"><i class="fa-solid fa-boxes-stacked"></i> Insumos <span class="chip">18</span></div>
+    <div class="sb-item"><i class="fa-solid fa-industry"></i> Proveedores <span class="chip">7</span></div>
+
+    <div class="sb-section">Operación</div>
+    <div class="sb-item"><i class="fa-solid fa-truck-fast"></i> Logística</div>
+    <div class="sb-item"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
+
+    <div class="sb-section">Sistema</div>
+    <div class="sb-item"><i class="fa-solid fa-gear"></i> Configuración</div>
+  </aside>
+
+  <main>
+    <!-- TOPBAR -->
+    <div class="tb">
+      <div class="tb-title">Dashboard</div>
+      <div class="tb-search"><i class="fa-solid fa-magnifying-glass"></i> Buscá pedido, cliente, producto…</div>
+      <div class="tb-actions">
+        <button class="tb-btn"><i class="fa-solid fa-eye"></i></button>
+        <button class="tb-btn"><i class="fa-solid fa-bell"></i><span class="dot"></span></button>
+        <button class="tb-btn" style="background:#f5f3ff;color:#7c3aed"><i class="fa-solid fa-brain"></i></button>
+        <div class="tb-avatar">AP</div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="page-h">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Pedidos, ventas y análisis del negocio</p>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;border-radius:9px;padding:8px 14px;font-size:12.5px;color:#475569;cursor:pointer"><i class="fa-solid fa-calendar"></i> Este mes</button>
+          <button style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;border-radius:9px;padding:8px 14px;font-size:12.5px;color:#475569;cursor:pointer"><i class="fa-solid fa-download"></i> Exportar</button>
+          <button class="btn-add"><i class="fa-solid fa-plus"></i> Nuevo pedido</button>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div style="display:flex;gap:2px;background:#f1f5f9;padding:3px;border-radius:9px;margin-bottom:18px;width:fit-content">
+        <span style="padding:6px 14px;background:#fff;border-radius:7px;font-size:12.5px;font-weight:700;color:#0F172A;box-shadow:0 1px 2px rgba(0,0,0,.04)">Resumen</span>
+        <span style="padding:6px 14px;font-size:12.5px;color:#64748b;font-weight:500;cursor:pointer">Pedidos</span>
+        <span style="padding:6px 14px;font-size:12.5px;color:#64748b;font-weight:500;cursor:pointer">Análisis</span>
+        <span style="padding:6px 14px;font-size:12.5px;color:#64748b;font-weight:500;cursor:pointer">Seguimiento (5)</span>
+      </div>
+
+      <!-- MODO HOY -->
+      <div class="today">
+        <div class="today-h">
+          <i class="fa-solid fa-bolt" style="color:#f59e0b"></i> Hoy importa
+          <span class="count">12</span>
+        </div>
+        <div class="today-grid">
+          <div class="today-card">
+            <div class="today-row">
+              <div class="today-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+              <div class="today-info">
+                <div class="lbl">Cobros vencidos</div>
+                <div class="v">3 <small>pedidos</small></div>
+              </div>
+              <i class="fa-solid fa-arrow-right" style="color:#dc2626;font-size:11px"></i>
+            </div>
+            <div class="today-desc"><b style="color:#dc2626;font-variant-numeric:tabular-nums">$ 184.500</b> sin cobrar · entrega ya pasó</div>
+          </div>
+          <div class="today-card amber">
+            <div class="today-row">
+              <div class="today-icon"><i class="fa-solid fa-truck-fast"></i></div>
+              <div class="today-info">
+                <div class="lbl">Entregas hoy</div>
+                <div class="v">4 <small>pedidos</small></div>
+              </div>
+              <i class="fa-solid fa-arrow-right" style="color:#d97706;font-size:11px"></i>
+            </div>
+            <div class="today-desc">Sofía Ramos, Estudio Cromo, Luz & Forma +1</div>
+          </div>
+          <div class="today-card purple">
+            <div class="today-row">
+              <div class="today-icon"><i class="fa-solid fa-comments"></i></div>
+              <div class="today-info">
+                <div class="lbl">A confirmar</div>
+                <div class="v">5 <small>seguimientos</small></div>
+              </div>
+              <i class="fa-solid fa-arrow-right" style="color:#7c3aed;font-size:11px"></i>
+            </div>
+            <div class="today-desc">Enviados hace 3+ días — recordales antes de que se enfríen</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPIs + CHARTS -->
+      <div class="bento">
+        <div class="kpi">
+          <div class="kpi-l">Ventas Brutas</div>
+          <div class="kpi-vrow"><div class="kpi-v">$1.245.800</div><span class="kpi-d">↑18%</span></div>
+          <svg class="kpi-spark" viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="22"><polyline points="0,18 8,16 16,14 24,15 32,12 40,11 48,9 56,10 64,7 72,8 80,5 88,4 96,2 100,3" fill="none" stroke="#7c3aed" stroke-width="1.2" opacity=".45"/></svg>
+        </div>
+        <div class="kpi key">
+          <div class="kpi-l">Ingresos Caja</div>
+          <div class="kpi-vrow"><div class="kpi-v">$845.200</div><span class="kpi-d">↑12%</span></div>
+          <svg class="kpi-spark" viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="22"><polyline points="0,16 8,15 16,12 24,14 32,10 40,9 48,11 56,8 64,7 72,9 80,6 88,4 96,3 100,2" fill="none" stroke="#16a34a" stroke-width="1.2" opacity=".45"/></svg>
+        </div>
+        <div class="kpi">
+          <div class="kpi-l">Ticket Promedio</div>
+          <div class="kpi-vrow"><div class="kpi-v">$ 38.900</div><span class="kpi-d">↑6%</span></div>
+          <svg class="kpi-spark" viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="22"><polyline points="0,12 8,13 16,11 24,12 32,10 40,11 48,9 56,10 64,8 72,9 80,7 88,8 96,6 100,7" fill="none" stroke="#7c3aed" stroke-width="1.2" opacity=".45"/></svg>
+        </div>
+        <div class="kpi">
+          <div class="kpi-l">Pedidos</div>
+          <div class="kpi-vrow"><div class="kpi-v">32</div></div>
+          <svg class="kpi-spark" viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="22"><polyline points="0,16 8,14 16,12 24,14 32,11 40,10 48,12 56,9 64,10 72,8 80,7 88,9 96,6 100,7" fill="none" stroke="#7c3aed" stroke-width="1.2" opacity=".45"/></svg>
+        </div>
+
+        <!-- WIDE: Chart + Donut -->
+        <div class="bento-wide">
+          <div class="card">
+            <div class="card-h"><i class="fa-solid fa-chart-bar"></i> Ingresos cobrados — día a día · Este mes</div>
+            <div class="bar-chart">
+              <div class="bc"><div class="bb" style="height:18%"></div></div>
+              <div class="bc"><div class="bb" style="height:32%"></div></div>
+              <div class="bc"><div class="bb" style="height:12%"></div></div>
+              <div class="bc"><div class="bb" style="height:0%"></div></div>
+              <div class="bc"><div class="bb" style="height:0%"></div></div>
+              <div class="bc"><div class="bb" style="height:45%"></div></div>
+              <div class="bc"><div class="bb" style="height:62%"></div></div>
+              <div class="bc"><div class="bb" style="height:38%"></div></div>
+              <div class="bc"><div class="bb" style="height:24%"></div></div>
+              <div class="bc"><div class="bb" style="height:0%"></div></div>
+              <div class="bc"><div class="bb" style="height:0%"></div></div>
+              <div class="bc"><div class="bb" style="height:78%"></div></div>
+              <div class="bc"><div class="bb" style="height:55%"></div></div>
+              <div class="bc"><div class="bb" style="height:42%"></div></div>
+              <div class="bc"><div class="bb" style="height:88%"></div></div>
+              <div class="bc"><div class="bb" style="height:96%" title="Mejor día"></div></div>
+              <div class="bc"><div class="bb" style="height:32%"></div></div>
+              <div class="bc"><div class="bb" style="height:0%"></div></div>
+              <div class="bc"><div class="bb" style="height:0%"></div></div>
+              <div class="bc"><div class="bb" style="height:54%"></div></div>
+              <div class="bc"><div class="bb" style="height:68%"></div></div>
+              <div class="bc"><div class="bb" style="height:42%"></div></div>
+              <div class="bc"><div class="bb" style="height:36%"></div></div>
+              <div class="bc"><div class="bb" style="height:75%"></div></div>
+              <div class="bc"><div class="bb" style="height:60%"></div></div>
+            </div>
+            <div class="bar-labels">
+              <span class="l">1</span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l">5</span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l">10</span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l">15</span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l">20</span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l">25</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-h"><i class="fa-solid fa-chart-pie"></i> Estado de pedidos</div>
+            <div class="donut-wrap">
+              <svg width="100" height="100" viewBox="0 0 90 90">
+                <circle cx="45" cy="45" r="36" fill="none" stroke="#f1f5f9" stroke-width="10"/>
+                <circle cx="45" cy="45" r="36" fill="none" stroke="#16a34a" stroke-width="10" stroke-dasharray="135 226" stroke-dashoffset="0" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+                <circle cx="45" cy="45" r="36" fill="none" stroke="#3b82f6" stroke-width="10" stroke-dasharray="55 226" stroke-dashoffset="-135" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+                <circle cx="45" cy="45" r="36" fill="none" stroke="#d97706" stroke-width="10" stroke-dasharray="22 226" stroke-dashoffset="-190" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+                <circle cx="45" cy="45" r="36" fill="none" stroke="#dc2626" stroke-width="10" stroke-dasharray="14 226" stroke-dashoffset="-212" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+                <text x="45" y="50" text-anchor="middle" font-size="16" font-weight="800" fill="#0F172A">32</text>
+              </svg>
+              <div class="donut-leg">
+                <div class="donut-leg-row"><span class="d" style="background:#16a34a"></span>Confirmado <span class="pct" style="color:#16a34a;background:rgba(22,163,74,.12)">60%</span><span class="n">19</span></div>
+                <div class="donut-leg-row"><span class="d" style="background:#3b82f6"></span>Enviado <span class="pct" style="color:#3b82f6;background:rgba(59,130,246,.12)">25%</span><span class="n">8</span></div>
+                <div class="donut-leg-row"><span class="d" style="background:#d97706"></span>Negociando <span class="pct" style="color:#d97706;background:rgba(217,119,6,.12)">10%</span><span class="n">3</span></div>
+                <div class="donut-leg-row"><span class="d" style="background:#dc2626"></span>Perdido <span class="pct" style="color:#dc2626;background:rgba(220,38,38,.12)">6%</span><span class="n">2</span></div>
+              </div>
+            </div>
+            <div style="font-size:9.5px;color:#94a3b8;text-align:center;margin-top:8px">Click en un estado para filtrar la lista</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LATEST ORDERS -->
+      <div class="tbl-card">
+        <div class="tbl-h"><h3>Últimos pedidos</h3><a href="#">Ver todos →</a></div>
+        <table>
+          <thead><tr><th>N°</th><th>Cliente</th><th>Empresa</th><th>Entrega</th><th>Estado</th><th>Pago</th><th style="text-align:right">Total</th></tr></thead>
+          <tbody>
+            <tr><td class="tbl-num">P-0042</td><td>Sofía Ramos</td><td>Luz & Forma</td><td>25/04</td><td><span class="tbl-st st-confirmed">● Confirmado</span></td><td><span class="tbl-st st-paid">● Pagado</span></td><td class="tbl-amt">$ 48.500</td></tr>
+            <tr><td class="tbl-num">P-0041</td><td>Martina Gómez</td><td>Diseño Austral</td><td>24/04</td><td><span class="tbl-st st-confirmed">● Confirmado</span></td><td><span class="tbl-st st-partial">● Seña</span></td><td class="tbl-amt">$ 138.700</td></tr>
+            <tr><td class="tbl-num">P-0040</td><td>Lucas Méndez</td><td>BioVerde</td><td>26/04</td><td><span class="tbl-st st-sent">● Enviado</span></td><td><span class="tbl-st st-pending">● Pendiente</span></td><td class="tbl-amt">$ 92.000</td></tr>
+            <tr><td class="tbl-num">P-0039</td><td>Carla Méndez</td><td>Estudio Cromo</td><td>27/04</td><td><span class="tbl-st st-negotiating">● Negociando</span></td><td><span class="tbl-st st-pending">● Pendiente</span></td><td class="tbl-amt">$ 22.150</td></tr>
+            <tr><td class="tbl-num">P-0038</td><td>Diego Pérez</td><td>Mayorista 360</td><td>23/04</td><td><span class="tbl-st st-confirmed">● Confirmado</span></td><td><span class="tbl-st st-paid">● Pagado</span></td><td class="tbl-amt">$ 215.300</td></tr>
+            <tr><td class="tbl-num">P-0037</td><td>Florencia Acosta</td><td>Diseño Industrial</td><td>22/04</td><td><span class="tbl-st st-confirmed">● Confirmado</span></td><td><span class="tbl-st st-partial">● Seña</span></td><td class="tbl-amt">$ 64.200</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- INSIGHTS -->
+      <div class="insight-card">
+        <div class="insight-h"><i class="fa-solid fa-lightbulb"></i> Insights del período <span class="count">3</span></div>
+        <div class="insight-list">
+          <div class="insight success">
+            <div class="insight-icon"><i class="fa-solid fa-rocket"></i></div>
+            <div class="insight-body">
+              <b>Crecimiento fuerte: +18% vs período anterior</b>
+              <p>Estás vendiendo 18% más que el mes pasado. Identificá qué cambió y duplicá esa apuesta.</p>
+            </div>
+          </div>
+          <div class="insight info">
+            <div class="insight-icon"><i class="fa-solid fa-circle-info"></i></div>
+            <div class="insight-body">
+              <b>Mayorista 360 es tu cliente más fuerte (42%)</b>
+              <p>Cuidalo bien — representa 42% de tus ventas confirmadas en el período.</p>
+            </div>
+          </div>
+          <div class="insight success">
+            <div class="insight-icon"><i class="fa-solid fa-bullseye"></i></div>
+            <div class="insight-body">
+              <b>Conversión excelente: 68%</b>
+              <p>Cerrás 68 de cada 100 presupuestos enviados. Por encima del promedio del rubro (35–55%).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;padding:32px 0 16px;color:#64748b;font-size:12px">
+        Esta es una vista demo con datos ficticios · <a href="https://anma-hub.vercel.app/login" style="color:#7c3aed;font-weight:700">Crear cuenta gratis →</a>
+      </div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

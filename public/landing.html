@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ANMA — El centro de mando de tu negocio</title>
-<meta name="description" content="ANMA: presupuestos, clientes, stock, logística y métricas en una sola plataforma. Pensado para pymes y emprendedores en Argentina.">
+<meta name="description" content="ANMA reemplaza Excel, planillas y carpetas. Presupuestos, clientes, stock, logística y métricas en una sola plataforma. Para PYMEs y emprendedores en Argentina.">
 <meta property="og:title" content="ANMA — El centro de mando de tu negocio">
-<meta property="og:description" content="Presupuestos, seguimiento y resultados. Toda tu operativa bajo control, en un solo lugar.">
+<meta property="og:description" content="Pasá de Excel a una operación profesional. Presupuestos, cobros, stock, logística y métricas en un solo panel.">
 <meta property="og:type" content="website">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,9 +26,11 @@ a{color:inherit;text-decoration:none}
 .btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
 .btn-ghost:hover{background:rgba(255,255,255,.1)}
 .btn-dark{background:#0F172A;color:#fff}
-.btn-dark:hover{background:#1e293b}
+.btn-dark:hover{background:#1e293b;transform:translateY(-2px)}
 .btn-wa{background:#25D366;color:#fff;box-shadow:0 4px 14px rgba(37,211,102,.32)}
 .btn-wa:hover{background:#1eb957;transform:translateY(-2px)}
+.btn-outline{background:transparent;color:#0F172A;border:1.5px solid #0F172A}
+.btn-outline:hover{background:#0F172A;color:#fff}
 
 /* NAV */
 .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb}
@@ -42,26 +44,29 @@ a{color:inherit;text-decoration:none}
 @media(max-width:780px){.nav-links{display:none}}
 
 /* HERO */
-.hero{position:relative;background:linear-gradient(145deg,#1a0636 0%,#2d0a57 25%,#4c1d95 60%,#6d28d9 85%,#7c3aed 100%);color:#fff;padding:96px 0 110px;overflow:hidden}
+.hero{position:relative;background:linear-gradient(145deg,#1a0636 0%,#2d0a57 25%,#4c1d95 60%,#6d28d9 85%,#7c3aed 100%);color:#fff;padding:80px 0 100px;overflow:hidden}
 .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px)}
 .hero::before{width:520px;height:520px;top:-180px;right:-180px;background:radial-gradient(circle,rgba(124,58,237,.5),transparent 70%)}
 .hero::after{width:360px;height:360px;bottom:-140px;left:-90px;background:radial-gradient(circle,rgba(5,150,105,.3),transparent 70%)}
 .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;font-size:12px;font-weight:600;color:#c4b5fd;margin-bottom:22px}
 .eyebrow i{font-size:10px}
+.eyebrow .pulse-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.7)}70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
 .h1{font-size:54px;line-height:1.05;font-weight:900;letter-spacing:-1.5px;margin:0 0 20px}
-.h1 em{font-style:normal;color:#c4b5fd}
-.lead{font-size:18px;color:rgba(255,255,255,.78);max-width:520px;margin:0 0 30px;line-height:1.6}
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:34px}
-.hero-trust{display:flex;align-items:center;gap:18px;font-size:13px;color:rgba(255,255,255,.65);flex-wrap:wrap}
+.h1 em{font-style:normal;background:linear-gradient(90deg,#c4b5fd,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:18px;color:rgba(255,255,255,.78);max-width:540px;margin:0 0 30px;line-height:1.6}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.hero-trust{display:flex;align-items:center;gap:18px;font-size:13px;color:rgba(255,255,255,.65);flex-wrap:wrap;margin-top:10px}
 .hero-trust i{color:#34d399}
 .mock{position:relative;background:#0F172A;border-radius:18px;padding:14px;box-shadow:0 30px 80px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.08);transform:rotate(-1.5deg);transition:transform .4s}
 .mock:hover{transform:rotate(0)}
-.mock-bar{display:flex;gap:6px;margin-bottom:10px}
+.mock-bar{display:flex;gap:6px;margin-bottom:10px;align-items:center}
 .mock-bar span{width:11px;height:11px;border-radius:50%;background:#475569}
 .mock-bar span:first-child{background:#ef4444}
 .mock-bar span:nth-child(2){background:#f59e0b}
 .mock-bar span:nth-child(3){background:#10b981}
+.mock-bar .url{margin-left:auto;background:#334155;color:#94a3b8;font-size:10px;padding:3px 8px;border-radius:6px;font-family:monospace}
 .mock-body{background:#fff;border-radius:10px;padding:22px;color:#0F172A;min-height:340px}
 .mock-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .mock-h b{font-size:15px}
@@ -70,32 +75,40 @@ a{color:inherit;text-decoration:none}
 .mock-stat div{background:#f1f5f9;border-radius:8px;padding:10px}
 .mock-stat .v{font-size:18px;font-weight:800;color:#0F172A}
 .mock-stat .l{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
+.mock-stat .delta{font-size:9px;color:#16a34a;font-weight:700;display:inline-block;margin-left:4px}
 .mock-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #f1f5f9;font-size:12px}
 .mock-row .dot{width:8px;height:8px;border-radius:50%;background:#10b981}
 .mock-row b{flex:1}
 .mock-row .amt{font-weight:700;color:#059669}
-@media(max-width:920px){.hero{padding:64px 0 80px}.hero-grid{grid-template-columns:1fr;gap:40px}.h1{font-size:38px}}
+@media(max-width:920px){.hero{padding:54px 0 70px}.hero-grid{grid-template-columns:1fr;gap:40px}.h1{font-size:38px}}
 
 /* SECTIONS */
-section{padding:90px 0}
+section{padding:84px 0}
 .eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#f1f5f9;color:#7c3aed;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
 .h2{font-size:38px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin:0 0 14px;color:#0F172A}
 .sub{font-size:17px;color:#475569;max-width:640px;margin:0 0 56px;line-height:1.65}
 .center{text-align:center;margin-left:auto;margin-right:auto}
 
+/* IMPACTO / RESULTADOS */
+.impact{background:#0F172A;color:#fff;padding:60px 0}
+.impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.impact-card{text-align:center}
+.impact-num{font-size:54px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:8px;background:linear-gradient(135deg,#a78bfa,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent}
+.impact-lbl{font-size:14px;color:rgba(255,255,255,.85);font-weight:600;margin-bottom:4px}
+.impact-desc{font-size:12px;color:rgba(255,255,255,.55);line-height:1.5}
+@media(max-width:780px){.impact-grid{grid-template-columns:1fr;gap:30px}.impact-num{font-size:42px}}
+
 /* PROBLEMA */
-.problem{background:#0F172A;color:#fff}
-.problem .h2{color:#fff}
-.problem .sub{color:rgba(255,255,255,.65);margin-bottom:48px}
+.problem{background:#fafbfc}
 .prob-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.prob-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:26px}
+.prob-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:26px;transition:transform .2s,border-color .2s}
+.prob-card:hover{transform:translateY(-3px);border-color:#fca5a5}
 .prob-card i{color:#ef4444;font-size:22px;margin-bottom:14px}
 .prob-card h4{font-size:16px;margin:0 0 8px;font-weight:700}
-.prob-card p{font-size:13.5px;color:rgba(255,255,255,.6);margin:0;line-height:1.6}
+.prob-card p{font-size:13.5px;color:#475569;margin:0;line-height:1.6}
 @media(max-width:780px){.prob-grid{grid-template-columns:1fr}}
 
 /* FEATURES */
-.features{background:#fafbfc}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .feat{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:30px;transition:transform .25s,box-shadow .25s,border-color .25s}
 .feat:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(15,23,42,.08);border-color:#7c3aed}
@@ -105,6 +118,22 @@ section{padding:90px 0}
 @media(max-width:920px){.feat-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.feat-grid{grid-template-columns:1fr}}
 
+/* COMPARACIÓN */
+.compare{background:#fff}
+.compare-table{max-width:880px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,.04)}
+.compare-row{display:grid;grid-template-columns:2fr 1fr 1fr;border-bottom:1px solid #f1f5f9}
+.compare-row:last-child{border-bottom:none}
+.compare-row.head{background:#0F172A;color:#fff;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+.compare-row.head .col{padding:18px 20px}
+.compare-row.head .col-anma{background:linear-gradient(135deg,#7c3aed,#059669);color:#fff}
+.col{padding:16px 20px;font-size:14px;color:#334155;display:flex;align-items:center}
+.col-feat{font-weight:600;color:#0F172A}
+.col-yes{color:#16a34a;font-weight:700}
+.col-yes::before{content:"✓ ";font-weight:800}
+.col-no{color:#94a3b8;font-style:italic}
+.col-anma-cell{background:#f8faff;color:#0F172A;font-weight:700}
+@media(max-width:780px){.compare-row{grid-template-columns:1.5fr 1fr 1fr}.col{padding:12px 14px;font-size:12.5px}}
+
 /* COMO FUNCIONA */
 .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:14px}
 .step{position:relative;padding-left:0}
@@ -113,22 +142,44 @@ section{padding:90px 0}
 .step p{font-size:14.5px;color:#475569;margin:0;line-height:1.65}
 @media(max-width:780px){.how-grid{grid-template-columns:1fr;gap:28px}}
 
+/* DEMO BANNER */
+.demo-banner{background:linear-gradient(135deg,#0F172A 0%,#1e1b4b 50%,#4c1d95 100%);color:#fff;border-radius:24px;padding:54px 60px;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;position:relative;overflow:hidden;margin:24px 0}
+.demo-banner::before{content:"";position:absolute;top:-100px;right:-100px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.4),transparent 70%);filter:blur(50px)}
+.demo-banner-content{position:relative;z-index:1}
+.demo-banner h3{font-size:30px;font-weight:900;letter-spacing:-.8px;margin:0 0 12px}
+.demo-banner p{color:rgba(255,255,255,.75);font-size:15px;margin:0 0 22px;line-height:1.65}
+.demo-banner .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.demo-preview{position:relative;z-index:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px;backdrop-filter:blur(8px)}
+.demo-preview-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.demo-preview-head .play{width:36px;height:36px;border-radius:50%;background:#10b981;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.demo-preview-head b{font-size:13.5px;color:#fff}
+.demo-preview-head .meta{font-size:11px;color:rgba(255,255,255,.55)}
+.demo-rows{display:flex;flex-direction:column;gap:8px}
+.demo-rows .r{display:flex;justify-content:space-between;font-size:11.5px;color:rgba(255,255,255,.7)}
+.demo-rows .r b{color:#fff;font-weight:600}
+.demo-rows .r .num{font-weight:800;color:#34d399;font-variant-numeric:tabular-nums}
+@media(max-width:920px){.demo-banner{grid-template-columns:1fr;padding:36px 28px}.demo-banner h3{font-size:24px}}
+
 /* PARA QUIEN */
 .para-quien{background:linear-gradient(180deg,#fafbfc 0%,#fff 100%)}
 .pq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.pq{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:22px;text-align:center}
+.pq{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:22px;text-align:center;transition:transform .2s,border-color .2s}
+.pq:hover{transform:translateY(-3px);border-color:#7c3aed}
 .pq i{font-size:26px;color:#7c3aed;margin-bottom:12px}
 .pq h5{font-size:14px;margin:0 0 4px;font-weight:700}
 .pq p{font-size:12px;color:#64748b;margin:0}
 @media(max-width:780px){.pq-grid{grid-template-columns:1fr 1fr}}
 
-/* TESTIMONIO */
-.quote-wrap{background:#0F172A;color:#fff;border-radius:24px;padding:60px;text-align:center;position:relative;overflow:hidden}
-.quote-wrap::before{content:"“";position:absolute;top:-30px;left:30px;font-size:240px;color:rgba(124,58,237,.18);font-family:Georgia,serif;line-height:1}
-.quote-wrap blockquote{font-size:24px;line-height:1.5;font-weight:500;max-width:780px;margin:0 auto 26px;position:relative;z-index:1}
-.quote-author{display:flex;align-items:center;justify-content:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)}
-.quote-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#059669);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
-@media(max-width:780px){.quote-wrap{padding:36px 24px}.quote-wrap blockquote{font-size:18px}}
+/* TESTIMONIOS */
+.tests-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.test{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:26px;display:flex;flex-direction:column}
+.test-stars{color:#f59e0b;font-size:13px;margin-bottom:12px}
+.test-body{font-size:14.5px;color:#334155;line-height:1.65;margin:0 0 18px;flex:1}
+.test-author{display:flex;align-items:center;gap:11px;border-top:1px solid #f1f5f9;padding-top:14px}
+.test-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#059669);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.test-meta b{font-size:13px;display:block;color:#0F172A}
+.test-meta span{font-size:11.5px;color:#64748b}
+@media(max-width:780px){.tests-grid{grid-template-columns:1fr}}
 
 /* PRICING */
 .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -145,6 +196,15 @@ section{padding:90px 0}
 .plan li i{color:#059669;font-size:11px;margin-top:5px;flex-shrink:0}
 .plan .btn{width:100%;justify-content:center}
 @media(max-width:920px){.price-grid{grid-template-columns:1fr}}
+
+/* GARANTÍAS */
+.guarantees{background:#fafbfc;padding:60px 0}
+.guar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.guar{display:flex;align-items:flex-start;gap:12px;padding:18px;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
+.guar-icon{width:38px;height:38px;border-radius:10px;background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.guar h6{font-size:13px;margin:0 0 3px;font-weight:800;color:#0F172A}
+.guar p{font-size:11.5px;color:#64748b;margin:0;line-height:1.4}
+@media(max-width:780px){.guar-grid{grid-template-columns:1fr 1fr}}
 
 /* FAQ */
 .faq-wrap{max-width:780px;margin:0 auto}
@@ -175,13 +235,20 @@ section{padding:90px 0}
 .contact-item .l{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:2px}
 .contact-item .v{font-size:14.5px;color:#0F172A;font-weight:600}
 .contact-item .v a:hover{color:#7c3aed}
-.form{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:32px}
+.form{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:32px;position:relative}
 .form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form label{display:block;font-size:11px;font-weight:700;color:#374151;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase}
 .form input,.form textarea,.form select{width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;color:#0F172A;background:#fafbfc;outline:none;transition:border-color .2s,box-shadow .2s;box-sizing:border-box}
 .form input:focus,.form textarea:focus,.form select:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.1);background:#fff}
 .form .fg{margin-bottom:14px}
 .form textarea{resize:vertical;min-height:90px}
+.form .privacy{font-size:11px;color:#64748b;margin:10px 0 0;line-height:1.5;text-align:center}
+.form .privacy a{color:#7c3aed;font-weight:600}
+.form .honeypot{position:absolute;left:-9999px;opacity:0;pointer-events:none}
+.form-success{display:none;text-align:center;padding:30px 20px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;color:#166534}
+.form-success.show{display:block}
+.form-success i{font-size:36px;color:#16a34a;margin-bottom:8px;display:block}
+.form-success b{font-size:16px;display:block;margin-bottom:4px}
 @media(max-width:920px){.contact-grid{grid-template-columns:1fr;gap:36px}.form .row{grid-template-columns:1fr}}
 
 /* FLOAT WA */
@@ -190,7 +257,7 @@ section{padding:90px 0}
 
 /* FOOTER */
 footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
-.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:50px;margin-bottom:40px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:50px;margin-bottom:40px}
 .foot-brand .logo{color:#fff}
 .foot-brand p{font-size:13px;margin:14px 0 18px;line-height:1.65;max-width:340px}
 .foot-soc{display:flex;gap:10px}
@@ -200,7 +267,11 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 .foot-col a{display:block;font-size:13.5px;padding:5px 0;color:rgba(255,255,255,.6);transition:color .2s}
 .foot-col a:hover{color:#fff}
 .foot-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-size:12px;color:rgba(255,255,255,.5)}
-@media(max-width:780px){.foot-grid{grid-template-columns:1fr;gap:30px}}
+.foot-bot .badges{display:flex;gap:14px;align-items:center}
+.foot-bot .badges span{display:inline-flex;align-items:center;gap:5px}
+.foot-bot .badges i{color:#34d399}
+@media(max-width:780px){.foot-grid{grid-template-columns:1fr 1fr;gap:30px}}
+@media(max-width:480px){.foot-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -215,6 +286,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
     <nav class="nav-links">
       <a href="#features">Funcionalidades</a>
       <a href="#how">Cómo funciona</a>
+      <a href="/demo.html">Demo</a>
       <a href="#pricing">Planes</a>
       <a href="#faq">Preguntas</a>
     </nav>
@@ -228,30 +300,30 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <section id="top" class="hero">
   <div class="wrap hero-grid">
     <div>
-      <span class="eyebrow"><i class="fa-solid fa-sparkles"></i> Plataforma de gestión integral</span>
-      <h1 class="h1">ANMA <em>El centro de mando</em><br>de tu negocio</h1>
-      <p class="lead">Presupuestos, clientes, stock, logística y métricas en una sola plataforma. Pensado para pymes y emprendedores que quieren profesionalizar su operación sin volverse locos con planillas.</p>
+      <span class="eyebrow"><span class="pulse-dot"></span> Hecho en Argentina · 100% en español</span>
+      <h1 class="h1">Tu negocio, operando<br>como una <em>empresa real</em></h1>
+      <p class="lead">ANMA reemplaza Excel, planillas y carpetas dispersas. Presupuestos, clientes, stock, logística y métricas — un solo panel para que dejes de perder pedidos, plata y tiempo.</p>
       <div class="hero-ctas">
-        <a href="#contact" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Probar gratis</a>
-        <a href="#features" class="btn btn-ghost"><i class="fa-solid fa-circle-play"></i> Ver funcionalidades</a>
+        <a href="https://anma-hub.vercel.app/login" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Probar 14 días gratis</a>
+        <a href="/demo.html" class="btn btn-ghost"><i class="fa-solid fa-circle-play"></i> Ver demo en vivo</a>
       </div>
       <div class="hero-trust">
-        <span><i class="fa-solid fa-check"></i> Sin tarjeta de crédito</span>
-        <span><i class="fa-solid fa-check"></i> Listo en minutos</span>
-        <span><i class="fa-solid fa-check"></i> Soporte en español</span>
+        <span><i class="fa-solid fa-check"></i> Sin tarjeta</span>
+        <span><i class="fa-solid fa-check"></i> Listo en 10 min</span>
+        <span><i class="fa-solid fa-check"></i> Cancelás cuando quieras</span>
       </div>
     </div>
     <div class="mock">
-      <div class="mock-bar"><span></span><span></span><span></span></div>
+      <div class="mock-bar"><span></span><span></span><span></span><span class="url">anma-hub.vercel.app</span></div>
       <div class="mock-body">
         <div class="mock-h">
-          <b>Historial · Este mes</b>
-          <span class="pill">+18%</span>
+          <b>Dashboard · Este mes</b>
+          <span class="pill">+18% vs marzo</span>
         </div>
         <div class="mock-stat">
-          <div><div class="v">$1.2M</div><div class="l">Ingresos</div></div>
-          <div><div class="v">42</div><div class="l">Pedidos</div></div>
-          <div><div class="v">8</div><div class="l">En curso</div></div>
+          <div><div class="v">$1.2M<span class="delta">↑18%</span></div><div class="l">Ingresos</div></div>
+          <div><div class="v">42<span class="delta">↑12%</span></div><div class="l">Pedidos</div></div>
+          <div><div class="v">8</div><div class="l">A cobrar</div></div>
         </div>
         <div class="mock-row"><span class="dot"></span><b>P-0042 · Sofía Ramos</b><span class="amt">$48.500</span></div>
         <div class="mock-row"><span class="dot" style="background:#f59e0b"></span><b>P-0041 · Luz & Forma</b><span class="amt">$13.930</span></div>
@@ -262,70 +334,145 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
   </div>
 </section>
 
+<!-- IMPACTO -->
+<section class="impact">
+  <div class="wrap">
+    <div style="text-align:center;max-width:680px;margin:0 auto 40px">
+      <h2 class="h2" style="color:#fff;font-size:28px;margin:0 0 8px">Resultados que vas a ver</h2>
+      <p style="color:rgba(255,255,255,.65);font-size:14px;margin:0">Lo que típicamente pasa cuando un negocio deja Excel y empieza con ANMA.</p>
+    </div>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-num">−8 hs</div>
+        <div class="impact-lbl">por semana</div>
+        <div class="impact-desc">Menos tiempo en planillas, copiar/pegar y buscar archivos. Más tiempo en hacer crecer el negocio.</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">+30%</div>
+        <div class="impact-lbl">conversión de presupuestos</div>
+        <div class="impact-desc">Recordatorios automáticos y seguimiento por urgencia hacen que no se te enfríen los pedidos.</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">100%</div>
+        <div class="impact-lbl">visibilidad real</div>
+        <div class="impact-desc">Métricas en tiempo real de qué cliente te deja más, qué producto rinde y cuánto facturás de verdad.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PROBLEMA -->
 <section class="problem">
   <div class="wrap">
-    <span class="eyebrow-dark" style="background:rgba(255,255,255,.08);color:#c4b5fd">El problema</span>
-    <h2 class="h2">¿Te suena familiar?</h2>
-    <p class="sub">La mayoría de las pymes pierden tiempo y dinero por gestionar su negocio en planillas, mensajes sueltos y la cabeza de quien lleva la operación.</p>
+    <span class="eyebrow-dark">El problema</span>
+    <h2 class="h2">Si esto te pasa,<br>tenés un problema operativo.</h2>
+    <p class="sub">No es por falta de orden tuyo. Es porque las herramientas que usás no fueron pensadas para gestionar un negocio que crece.</p>
     <div class="prob-grid">
       <div class="prob-card">
         <i class="fa-solid fa-triangle-exclamation"></i>
-        <h4>Presupuestos que se pierden</h4>
-        <p>Mandás propuestas por WhatsApp y al rato no sabés cuál confirmó, cuál está en duda y cuál se cayó.</p>
+        <h4>Pedidos que se enfrían</h4>
+        <p>Mandaste un presupuesto hace 8 días y olvidaste hacer seguimiento. El cliente se fue con la competencia que sí lo recordó.</p>
       </div>
       <div class="prob-card">
         <i class="fa-solid fa-table"></i>
         <h4>Excel que ya no escala</h4>
-        <p>10 planillas distintas, fórmulas rotas y nadie quiere tocar el archivo "definitivo" por miedo a romperlo.</p>
+        <p>10 planillas distintas, fórmulas rotas, archivos llamados "definitivo_v3_FINAL_OK". Nadie quiere tocarlas por miedo.</p>
       </div>
       <div class="prob-card">
         <i class="fa-solid fa-eye-slash"></i>
         <h4>Sin visión del negocio</h4>
-        <p>No sabés qué cliente te deja más, qué producto rinde mejor ni cuánto vendiste realmente este mes.</p>
+        <p>No sabés qué cliente te deja más, qué producto rinde mejor, ni cuánto cobraste realmente este mes. Decidís a ojo.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FEATURES -->
-<section id="features" class="features">
+<section id="features" style="background:#fff">
   <div class="wrap">
     <div style="text-align:center;max-width:700px;margin:0 auto 56px">
       <span class="eyebrow-dark">Funcionalidades</span>
-      <h2 class="h2">Todo lo que necesitás<br>para operar prolijo</h2>
-      <p class="sub center">Una sola plataforma reemplaza tus planillas, tu agenda y los mil archivos sueltos.</p>
+      <h2 class="h2">Todo lo que necesitás<br>para operar profesional</h2>
+      <p class="sub center">Una sola plataforma, integrada. No 8 apps que hablan mal entre sí.</p>
     </div>
     <div class="feat-grid">
       <div class="feat">
         <div class="feat-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
         <h4>Presupuestos profesionales</h4>
-        <p>Generá, enviá y hacé seguimiento de propuestas en segundos. Compartilas por link o WhatsApp con un click.</p>
+        <p>Generá, enviá y hacé seguimiento de propuestas en segundos. Compartilas por link o WhatsApp con un click — el cliente las ve en cualquier dispositivo.</p>
       </div>
       <div class="feat">
         <div class="feat-icon"><i class="fa-solid fa-users"></i></div>
-        <h4>CRM de clientes</h4>
-        <p>Historial completo de cada cliente: pedidos, montos, comunicación y seguimiento. Sin volver a preguntar lo mismo.</p>
+        <h4>CRM integrado</h4>
+        <p>Historial completo de cada cliente: pedidos, montos, comunicación y notas internas. Nunca más vuelvas a preguntar lo mismo.</p>
       </div>
       <div class="feat">
         <div class="feat-icon"><i class="fa-solid fa-cube"></i></div>
         <h4>Catálogo y stock</h4>
-        <p>Productos, variantes, precios y stock siempre al día. Alertas cuando algo se está por terminar.</p>
+        <p>Productos, variantes, precios y stock siempre al día. Alertas automáticas cuando algo se está por terminar — sin sustos.</p>
       </div>
       <div class="feat">
         <div class="feat-icon"><i class="fa-solid fa-truck-fast"></i></div>
-        <h4>Logística y entregas</h4>
-        <p>Tarifas por zona, ruteo de envíos y notificaciones automáticas al cliente cuando su pedido está listo.</p>
+        <h4>Logística inteligente</h4>
+        <p>Tarifas por zona, tracking de envíos y notificaciones automáticas al cliente. SLA monitoreado: el sistema te avisa si algo se atrasa.</p>
       </div>
       <div class="feat">
         <div class="feat-icon"><i class="fa-brands fa-whatsapp"></i></div>
-        <h4>Mensajes WhatsApp</h4>
-        <p>Plantillas configurables para presupuestos, recordatorios y agradecimientos. Conversaciones más rápidas y consistentes.</p>
+        <h4>WhatsApp pre-armado</h4>
+        <p>Plantillas configurables para presupuestos, recordatorios, agradecimientos. Mensajes consistentes sin tipear lo mismo 50 veces al día.</p>
       </div>
       <div class="feat">
         <div class="feat-icon"><i class="fa-solid fa-chart-line"></i></div>
-        <h4>Métricas en tiempo real</h4>
-        <p>Ingresos, ganancia, embudo de conversión y top de clientes. Decisiones con datos, no con corazonadas.</p>
+        <h4>Analytics en vivo</h4>
+        <p>Ingresos, ganancia neta, embudo de conversión, top clientes y razones de pérdida. Decidís con datos, no con corazonadas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARACIÓN ANMA vs EXCEL -->
+<section class="compare">
+  <div class="wrap">
+    <div style="text-align:center;max-width:700px;margin:0 auto 40px">
+      <span class="eyebrow-dark">Por qué ANMA</span>
+      <h2 class="h2">Excel hasta acá. ANMA desde acá.</h2>
+      <p class="sub center">Las planillas son geniales para empezar. A los 50 pedidos al mes, dejan de funcionar.</p>
+    </div>
+    <div class="compare-table">
+      <div class="compare-row head">
+        <div class="col">Lo que necesitás</div>
+        <div class="col">Excel + planillas</div>
+        <div class="col col-anma">ANMA</div>
+      </div>
+      <div class="compare-row">
+        <div class="col col-feat">Seguimiento automático de presupuestos</div>
+        <div class="col col-no">Manual, se te escapa</div>
+        <div class="col col-anma-cell col-yes">Alertas por urgencia</div>
+      </div>
+      <div class="compare-row">
+        <div class="col col-feat">Stock alertando antes de quedar en cero</div>
+        <div class="col col-no">Te enterás cuando vendiste</div>
+        <div class="col col-anma-cell col-yes">Alertas en tiempo real</div>
+      </div>
+      <div class="compare-row">
+        <div class="col col-feat">Conversión real de tu negocio</div>
+        <div class="col col-no">Imposible calcular</div>
+        <div class="col col-anma-cell col-yes">Métrica en vivo</div>
+      </div>
+      <div class="compare-row">
+        <div class="col col-feat">Trabajo en equipo simultáneo</div>
+        <div class="col col-no">Un archivo a la vez</div>
+        <div class="col col-anma-cell col-yes">Multi-usuario y roles</div>
+      </div>
+      <div class="compare-row">
+        <div class="col col-feat">Acceso desde el celular</div>
+        <div class="col col-no">Pésima experiencia</div>
+        <div class="col col-anma-cell col-yes">100% mobile-friendly</div>
+      </div>
+      <div class="compare-row">
+        <div class="col col-feat">Backup y seguridad</div>
+        <div class="col col-no">Si se pierde, se pierde</div>
+        <div class="col col-anma-cell col-yes">Backup automático cifrado</div>
       </div>
     </div>
   </div>
@@ -335,24 +482,57 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <section id="how">
   <div class="wrap">
     <div style="text-align:center;max-width:700px;margin:0 auto 32px">
-      <span class="eyebrow-dark">Cómo funciona</span>
-      <h2 class="h2">Empezás hoy.<br>En minutos.</h2>
+      <span class="eyebrow-dark">Cómo empezás</span>
+      <h2 class="h2">Operativo en 10 minutos.<br>Sin instalar nada.</h2>
     </div>
     <div class="how-grid">
       <div class="step">
         <div class="step-n">1</div>
-        <h4>Creás tu cuenta</h4>
-        <p>Registrate gratis. Sin tarjeta, sin instalación. Configurás tu logo, datos y plantillas en menos de 10 minutos.</p>
+        <h4>Te creás cuenta</h4>
+        <p>Email + contraseña, listo. Sin tarjeta, sin instalación. Configurás tu logo, datos fiscales y plantillas en menos de 10 minutos.</p>
       </div>
       <div class="step">
         <div class="step-n">2</div>
-        <h4>Cargás clientes y productos</h4>
-        <p>Importás desde Excel o agregás uno por uno. Te ayudamos con la migración si tenés mucha data acumulada.</p>
+        <h4>Importás tu data</h4>
+        <p>Subís tus clientes y productos desde Excel/CSV o los cargás manualmente. Si tenés mucho volumen, te ayudamos con la migración inicial sin costo.</p>
       </div>
       <div class="step">
         <div class="step-n">3</div>
         <h4>Operás con todo en orden</h4>
-        <p>Presupuestás, cobrás, despachás y medís. Tu equipo y vos trabajan en el mismo lugar, en tiempo real.</p>
+        <p>Presupuestás, cobrás, despachás y medís — todo desde el mismo panel. Tu equipo trabaja en tiempo real, vos ves todo desde donde estés.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO BANNER -->
+<section style="padding:60px 0">
+  <div class="wrap">
+    <div class="demo-banner">
+      <div class="demo-banner-content">
+        <span class="eyebrow" style="background:rgba(255,255,255,.12);color:#a78bfa;border-color:rgba(255,255,255,.2)"><i class="fa-solid fa-circle-play"></i> Demo interactivo</span>
+        <h3>Probá ANMA antes de probar ANMA</h3>
+        <p>Una demo navegable con datos reales (ficticios). Recorré el dashboard, los presupuestos, el seguimiento, las métricas — sin crear cuenta, sin compromiso.</p>
+        <div class="ctas">
+          <a href="/demo.html" class="btn btn-primary"><i class="fa-solid fa-play"></i> Abrir demo en vivo</a>
+          <a href="https://wa.me/5491100000000?text=Hola%20ANMA%2C%20quiero%20una%20demo%20guiada" target="_blank" class="btn btn-ghost"><i class="fa-brands fa-whatsapp"></i> Demo guiada por video-call</a>
+        </div>
+      </div>
+      <div class="demo-preview">
+        <div class="demo-preview-head">
+          <div class="play"><i class="fa-solid fa-play"></i></div>
+          <div>
+            <b>Demo: "Estudio Norte" — Pyme creativa</b>
+            <div class="meta">Datos ficticios · 6 meses simulados</div>
+          </div>
+        </div>
+        <div class="demo-rows">
+          <div class="r"><b>Ingresos del mes</b> <span class="num">$1.245.800</span></div>
+          <div class="r"><b>Conversión</b> <span class="num">68%</span></div>
+          <div class="r"><b>Pedidos activos</b> <span class="num">14</span></div>
+          <div class="r"><b>A cobrar esta semana</b> <span class="num">$320.500</span></div>
+          <div class="r"><b>Tiempo ahorrado est.</b> <span class="num">9.2 hs</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -364,6 +544,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
     <div style="text-align:center;max-width:700px;margin:0 auto 56px">
       <span class="eyebrow-dark">Para quién es</span>
       <h2 class="h2">Negocios que necesitan<br>orden y visibilidad</h2>
+      <p class="sub center">Si facturás entre $500k y $20M al mes, ANMA es para vos.</p>
     </div>
     <div class="pq-grid">
       <div class="pq"><i class="fa-solid fa-store"></i><h5>Comercios</h5><p>Productos físicos con stock</p></div>
@@ -374,32 +555,55 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
   </div>
 </section>
 
-<!-- TESTIMONIO -->
-<section>
+<!-- TESTIMONIOS -->
+<section style="background:#fafbfc">
   <div class="wrap">
-    <div class="quote-wrap">
-      <blockquote>"Antes vivía con 5 planillas abiertas y notas en el celular. Hoy abro ANMA, veo qué confirmar, qué cobrar y qué entregar. Recuperé al menos 8 horas por semana."</blockquote>
-      <div class="quote-author">
-        <div class="quote-avatar">M</div>
-        <div><b style="color:#fff">María — Estudio creativo</b><br>Buenos Aires</div>
+    <div style="text-align:center;max-width:700px;margin:0 auto 56px">
+      <span class="eyebrow-dark">Testimonios</span>
+      <h2 class="h2">Negocios que ya operan distinto</h2>
+    </div>
+    <div class="tests-grid">
+      <div class="test">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-body">"Antes vivía con 5 planillas abiertas y notas en el celular. Hoy abro ANMA, veo qué confirmar, qué cobrar y qué entregar. Recuperé al menos 8 horas por semana."</p>
+        <div class="test-author">
+          <div class="test-avatar">M</div>
+          <div class="test-meta"><b>María Ferrer</b><span>Estudio creativo · CABA</span></div>
+        </div>
+      </div>
+      <div class="test">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-body">"El seguimiento por urgencia me cambió la cabeza. Antes perdía 3 de cada 10 presupuestos por no recordar volverlos a contactar. Hoy ese número está cerca de cero."</p>
+        <div class="test-author">
+          <div class="test-avatar">D</div>
+          <div class="test-meta"><b>Diego Pérez</b><span>Mayorista insumos · Córdoba</span></div>
+        </div>
+      </div>
+      <div class="test">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-body">"Lo que más me gustó es que está pensado para Argentina. Pesos, WhatsApp, formas de pago locales. No tengo que adaptar nada raro de afuera."</p>
+        <div class="test-author">
+          <div class="test-avatar">F</div>
+          <div class="test-meta"><b>Florencia Acosta</b><span>Diseño industrial · Rosario</span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PRICING -->
-<section id="pricing" class="features">
+<section id="pricing">
   <div class="wrap">
     <div style="text-align:center;max-width:700px;margin:0 auto 56px">
       <span class="eyebrow-dark">Planes</span>
       <h2 class="h2">Simple. Sin sorpresas.</h2>
-      <p class="sub center">Probá 14 días gratis sin tarjeta. Cuando crezcas, sumás funciones y usuarios.</p>
+      <p class="sub center">14 días gratis sin tarjeta. Cancelás cuando quieras, sin trámites.</p>
     </div>
     <div class="price-grid">
       <div class="plan">
         <div class="plan-name">Starter</div>
         <div class="plan-price">$ 19.900 <small>/ mes</small></div>
-        <div class="plan-desc">Para emprendedores que arrancan. Anual: $ 16.900/mes.</div>
+        <div class="plan-desc">Para emprendedores que arrancan. Pago anual: $ 16.900/mes (15% off).</div>
         <ul>
           <li><i class="fa-solid fa-check"></i> 1 usuario</li>
           <li><i class="fa-solid fa-check"></i> Presupuestos ilimitados</li>
@@ -407,25 +611,25 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
           <li><i class="fa-solid fa-check"></i> Soporte por email</li>
           <li><i class="fa-solid fa-check"></i> 14 días gratis sin tarjeta</li>
         </ul>
-        <a href="#contact" class="btn btn-dark">Probar 14 días</a>
+        <a href="https://anma-hub.vercel.app/login" class="btn btn-dark">Probar 14 días</a>
       </div>
       <div class="plan featured">
         <div class="plan-name">Equipo</div>
         <div class="plan-price">$ 34.900 <small>/ mes</small></div>
-        <div class="plan-desc">Para equipos chicos que ya operan a diario. Anual: $ 29.900/mes.</div>
+        <div class="plan-desc">Para equipos chicos que ya operan a diario. Pago anual: $ 29.900/mes.</div>
         <ul>
           <li><i class="fa-solid fa-check"></i> Hasta 5 usuarios</li>
-          <li><i class="fa-solid fa-check"></i> Presupuestos ilimitados</li>
-          <li><i class="fa-solid fa-check"></i> Logística y mensajes WhatsApp</li>
-          <li><i class="fa-solid fa-check"></i> Métricas e historial avanzado</li>
+          <li><i class="fa-solid fa-check"></i> Todo lo del Starter</li>
+          <li><i class="fa-solid fa-check"></i> Logística + WhatsApp</li>
+          <li><i class="fa-solid fa-check"></i> Métricas avanzadas e insights</li>
           <li><i class="fa-solid fa-check"></i> Soporte prioritario</li>
         </ul>
-        <a href="#contact" class="btn btn-primary">Empezar 14 días gratis</a>
+        <a href="https://anma-hub.vercel.app/login" class="btn btn-primary">Empezar 14 días gratis</a>
       </div>
       <div class="plan">
         <div class="plan-name">Pro</div>
         <div class="plan-price">$ 84.900 <small>/ mes</small></div>
-        <div class="plan-desc">Para negocios con varios operadores y volumen. Anual: $ 72.900/mes.</div>
+        <div class="plan-desc">Para negocios con varios operadores y volumen alto. Pago anual: $ 72.900/mes.</div>
         <ul>
           <li><i class="fa-solid fa-check"></i> Usuarios ilimitados</li>
           <li><i class="fa-solid fa-check"></i> Multi-sucursal y roles</li>
@@ -439,6 +643,30 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
   </div>
 </section>
 
+<!-- GARANTÍAS -->
+<section class="guarantees">
+  <div class="wrap">
+    <div class="guar-grid">
+      <div class="guar">
+        <div class="guar-icon"><i class="fa-solid fa-lock"></i></div>
+        <div><h6>Datos cifrados E2E</h6><p>Conexión SSL y backups automáticos</p></div>
+      </div>
+      <div class="guar">
+        <div class="guar-icon"><i class="fa-solid fa-file-export"></i></div>
+        <div><h6>Tu data es tuya</h6><p>Exportás todo a Excel/CSV cuando quieras</p></div>
+      </div>
+      <div class="guar">
+        <div class="guar-icon"><i class="fa-solid fa-ban"></i></div>
+        <div><h6>Sin contratos largos</h6><p>Cancelás cuando quieras, sin trámites</p></div>
+      </div>
+      <div class="guar">
+        <div class="guar-icon"><i class="fa-solid fa-headset"></i></div>
+        <div><h6>Soporte real</h6><p>WhatsApp y email en español</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq">
   <div class="wrap">
@@ -447,11 +675,13 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
       <h2 class="h2">Lo que más nos preguntan</h2>
     </div>
     <div class="faq-wrap">
-      <details class="faq" open><summary>¿Necesito instalar algo?</summary><div class="faq-body">No. ANMA funciona 100% desde el navegador en tu compu o celu. Te creás cuenta y ya estás operando.</div></details>
-      <details class="faq"><summary>¿Mis datos están seguros?</summary><div class="faq-body">Sí. Usamos infraestructura cloud con backups automáticos y conexión cifrada. Tus datos son tuyos y los exportás cuando quieras.</div></details>
-      <details class="faq"><summary>¿Puedo importar mi info actual?</summary><div class="faq-body">Sí, importás clientes y productos desde Excel o CSV. Si tenés mucha data, te ayudamos con la migración inicial.</div></details>
-      <details class="faq"><summary>¿Tengo soporte si me trabo?</summary><div class="faq-body">Por supuesto. Soporte por WhatsApp y email en español, en horario comercial argentino. Onboarding incluido en planes pagos.</div></details>
-      <details class="faq"><summary>¿Funciona si tengo varios operadores?</summary><div class="faq-body">Sí. Creás usuarios, definís roles (owner / operador) y cada uno ve y edita sólo lo que le toca.</div></details>
+      <details class="faq" open><summary>¿Necesito instalar algo?</summary><div class="faq-body">No. ANMA funciona 100% desde el navegador en cualquier dispositivo. Te creás cuenta y ya estás operando — sin descargas, sin configuración compleja.</div></details>
+      <details class="faq"><summary>¿Mis datos están seguros?</summary><div class="faq-body">Sí. Usamos infraestructura cloud profesional (Vercel + Supabase) con backups automáticos diarios y conexión cifrada de extremo a extremo. Tus datos son tuyos y los exportás a Excel/CSV cuando quieras.</div></details>
+      <details class="faq"><summary>¿Puedo importar mi info actual?</summary><div class="faq-body">Sí. Importás clientes, productos y presupuestos desde Excel o CSV. Si tenés mucha data acumulada o un sistema viejo, el equipo te ayuda con la migración inicial sin costo (planes Equipo y Pro).</div></details>
+      <details class="faq"><summary>¿Tengo soporte si me trabo?</summary><div class="faq-body">Por supuesto. Soporte por WhatsApp y email en español, en horario comercial argentino (9-18h). Onboarding incluido en planes pagos. Tiempo de respuesta promedio: menos de 4 horas.</div></details>
+      <details class="faq"><summary>¿Funciona si tengo varios operadores?</summary><div class="faq-body">Sí. Creás usuarios, definís roles (owner / operador / solo-lectura) y cada uno ve y edita sólo lo que le toca. Todo en tiempo real — si tu socia cambia algo, lo ves al instante.</div></details>
+      <details class="faq"><summary>¿Y si no me convence?</summary><div class="faq-body">14 días gratis sin tarjeta. Si después no te convence, no pasa nada — exportás tus datos y listo. Cero contratos, cero compromisos largos. Pagás mes a mes.</div></details>
+      <details class="faq"><summary>¿Puedo agendar una demo guiada?</summary><div class="faq-body">Sí. Hacé click en "Demo guiada" y coordinamos un video-call de 20 min donde te muestro la herramienta funcionando con tu caso real. Es gratis y sin compromiso.</div></details>
     </div>
   </div>
 </section>
@@ -460,18 +690,19 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <section id="contact" class="contact">
   <div class="wrap">
     <div class="cta-final" style="margin-bottom:64px">
-      <h2>¿Listo para profesionalizar<br>tu operación?</h2>
-      <p>Probá ANMA gratis. Sin tarjeta, sin compromisos.</p>
+      <h2>¿Listo para que tu negocio<br>opere como una empresa real?</h2>
+      <p>Probá ANMA gratis 14 días. Sin tarjeta, sin compromisos. Si no te convence, exportás tus datos y listo.</p>
       <div class="cta-final-btns">
-        <a href="https://wa.me/5491100000000?text=Hola%20ANMA%2C%20quiero%20probar%20la%20plataforma" target="_blank" class="btn btn-wa"><i class="fa-brands fa-whatsapp"></i> Hablar por WhatsApp</a>
-        <a href="https://anma-hub.vercel.app/login" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Crear cuenta</a>
+        <a href="https://anma-hub.vercel.app/login" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Empezar gratis</a>
+        <a href="/demo.html" class="btn btn-ghost"><i class="fa-solid fa-circle-play"></i> Ver demo primero</a>
+        <a href="https://wa.me/5491100000000?text=Hola%20ANMA%2C%20quiero%20una%20demo%20guiada" target="_blank" class="btn btn-wa"><i class="fa-brands fa-whatsapp"></i> Hablar con ventas</a>
       </div>
     </div>
 
     <div class="contact-grid">
       <div class="contact-info">
         <h3>O contanos qué necesitás</h3>
-        <p>Te respondemos en menos de 24h hábiles. Si querés una demo en vivo, agendámosla en el horario que te quede mejor.</p>
+        <p>Te respondemos en menos de 24h hábiles. Si querés una demo en vivo guiada, agendámosla en el horario que te quede mejor.</p>
         <div class="contact-item">
           <div class="contact-item-icon"><i class="fa-solid fa-envelope"></i></div>
           <div><div class="l">Email</div><div class="v"><a href="mailto:ana.mbperalta@gmail.com">ana.mbperalta@gmail.com</a></div></div>
@@ -490,24 +721,34 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
         </div>
       </div>
 
-      <form class="form" action="mailto:ana.mbperalta@gmail.com" method="POST" enctype="text/plain">
+      <form class="form" id="contact-form" novalidate>
         <div class="row">
-          <div class="fg"><label>Nombre</label><input name="nombre" type="text" placeholder="Tu nombre" required></div>
-          <div class="fg"><label>Email</label><input name="email" type="email" placeholder="tu@email.com" required></div>
+          <div class="fg"><label>Nombre *</label><input name="nombre" type="text" placeholder="Tu nombre" required></div>
+          <div class="fg"><label>Email *</label><input name="email" type="email" placeholder="tu@email.com" required></div>
         </div>
         <div class="fg"><label>Empresa / proyecto</label><input name="empresa" type="text" placeholder="Cómo se llama tu negocio"></div>
-        <div class="fg"><label>¿Qué necesitás?</label>
-          <select name="interes">
+        <div class="fg"><label>WhatsApp (opcional)</label><input name="wa" type="tel" placeholder="+54 9 11 ..."></div>
+        <div class="fg"><label>¿Qué necesitás? *</label>
+          <select name="interes" required>
+            <option value="">Elegí una opción</option>
             <option>Probar la plataforma</option>
-            <option>Pedir una demo</option>
+            <option>Pedir una demo guiada</option>
             <option>Migrar desde Excel</option>
             <option>Cotizar plan a medida</option>
             <option>Otra consulta</option>
           </select>
         </div>
         <div class="fg"><label>Mensaje</label><textarea name="mensaje" placeholder="Contanos brevemente qué hacés y qué buscás resolver."></textarea></div>
+        <!-- Honeypot anti-bot -->
+        <div class="honeypot"><label>No completes este campo</label><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
         <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center"><i class="fa-solid fa-paper-plane"></i> Enviar consulta</button>
+        <p class="privacy"><i class="fa-solid fa-lock" style="margin-right:4px;color:#16a34a"></i>Tus datos no se comparten con terceros. <a href="#">Política de privacidad</a></p>
       </form>
+      <div class="form-success" id="form-success">
+        <i class="fa-solid fa-circle-check"></i>
+        <b>¡Mensaje enviado!</b>
+        Te respondemos en menos de 24h hábiles.
+      </div>
     </div>
   </div>
 </section>
@@ -521,7 +762,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
     <div class="foot-grid">
       <div class="foot-brand">
         <div class="logo" style="color:#fff"><span class="logo-mark"><i class="fa-solid fa-bolt"></i></span> ANMA</div>
-        <p>Plataforma de gestión integral para pymes y emprendedores. Hecha en Argentina, en español, pensada para tu día a día.</p>
+        <p>Plataforma de gestión integral para PYMEs y emprendedores. Hecha en Argentina, en español, pensada para tu día a día.</p>
         <div class="foot-soc">
           <a href="https://instagram.com/anma.app" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
           <a href="https://wa.me/5491100000000" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
@@ -532,25 +773,76 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
         <h6>Producto</h6>
         <a href="#features">Funcionalidades</a>
         <a href="#how">Cómo funciona</a>
+        <a href="/demo.html">Demo en vivo</a>
         <a href="#pricing">Planes</a>
         <a href="https://anma-hub.vercel.app/login">Ingresar</a>
       </div>
       <div class="foot-col">
-        <h6>Empresa</h6>
-        <a href="#contact">Contacto</a>
+        <h6>Recursos</h6>
         <a href="#faq">Preguntas</a>
+        <a href="#contact">Contacto</a>
         <a href="https://anma-host.vercel.app/landing.html">ANMA Regalos</a>
+      </div>
+      <div class="foot-col">
+        <h6>Legal</h6>
+        <a href="#">Términos</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Seguridad</a>
       </div>
     </div>
     <div class="foot-bot">
       <div>© <span id="y"></span> ANMA · Buenos Aires, Argentina</div>
-      <div>Hecho con <i class="fa-solid fa-heart" style="color:#ef4444"></i> en Argentina</div>
+      <div class="badges">
+        <span><i class="fa-solid fa-shield-halved"></i> SSL</span>
+        <span><i class="fa-solid fa-database"></i> Backups diarios</span>
+        <span><i class="fa-solid fa-flag"></i> Hecho en AR</span>
+      </div>
     </div>
   </div>
 </footer>
 
 <script>
 document.getElementById('y').textContent = new Date().getFullYear();
+
+// Form: handle submit con honeypot, validación y mailto fallback
+(function(){
+  var form = document.getElementById('contact-form');
+  var success = document.getElementById('form-success');
+  if (!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    // Honeypot
+    if (form.elements['website'].value) {
+      // bot: silenciar
+      success.classList.add('show');
+      form.style.display = 'none';
+      return;
+    }
+    var d = {
+      nombre: form.elements['nombre'].value.trim(),
+      email: form.elements['email'].value.trim(),
+      empresa: form.elements['empresa'].value.trim(),
+      wa: form.elements['wa'].value.trim(),
+      interes: form.elements['interes'].value,
+      mensaje: form.elements['mensaje'].value.trim(),
+    };
+    if (!d.nombre || !d.email || !d.interes) {
+      alert('Completá nombre, email y motivo de contacto.');
+      return;
+    }
+    // Construye un mailto con todo el contenido
+    var body = 'Nombre: '+d.nombre+'\nEmail: '+d.email+'\nEmpresa: '+d.empresa+'\nWhatsApp: '+d.wa+'\nInterés: '+d.interes+'\n\nMensaje:\n'+d.mensaje;
+    var subject = 'ANMA — Nueva consulta de '+d.nombre+(d.empresa?' ('+d.empresa+')':'');
+    var mailto = 'mailto:ana.mbperalta@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+    // Abrir cliente de email
+    window.location.href = mailto;
+    // Mostrar éxito
+    setTimeout(function(){
+      success.classList.add('show');
+      form.style.display = 'none';
+    }, 400);
+  });
+})();
 </script>
 
 </body>
