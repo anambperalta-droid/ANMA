@@ -3,7 +3,8 @@ import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { fmt, MOVE_TYPES, MOVE_CLS } from '../../lib/storage'
 
-const EMPTY = { name: '', cat: '', unit: 'unidad', cost: '', stock: 0, minStock: 0, supplierId: '', notes: '' }
+const EMPTY = { name: '', cat: '', unit: 'unidad', cost: '', stock: '', minStock: '', supplierId: '', notes: '' }
+const numFocus = e => e.target.select()
 
 export default function Insumos() {
   const { get, config, saveEntity, deleteEntity, recordStockMove } = useData()
@@ -178,7 +179,14 @@ export default function Insumos() {
                       <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 600 }}>{fmt((item.stock || 0) * (Number(item.cost) || 0))}</td>
                       <td>
                         <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
-                          <button className="act" title="Movimiento de stock" onClick={() => openMove(item)}><i className="fa fa-arrows-rotate" /></button>
+                          <button className="act" title="Ingreso rápido de stock (+1)" style={{ color: '#16A34A', background: '#DCFCE7' }}
+                            onClick={() => {
+                              saveEntity('insumos', { ...item, stock: (item.stock || 0) + 1 })
+                              toast(`+1 ${item.unit || 'ud.'} → ${item.name}`, 'ok')
+                            }}>
+                            <i className="fa fa-plus" style={{ fontSize: 10 }} />
+                          </button>
+                          <button className="act" title="Registrar movimiento de stock" onClick={() => openMove(item)}><i className="fa fa-arrows-rotate" /></button>
                           <button className="act" title="Editar" onClick={() => openEdit(item)}><i className="fa fa-pen" /></button>
                           <button className="act del" title="Eliminar" onClick={() => remove(item.id)}><i className="fa fa-trash" /></button>
                         </div>
@@ -239,14 +247,14 @@ export default function Insumos() {
                   {cats.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
-              <div className="fg"><label>Costo unitario</label><input type="number" value={form.cost} onChange={e => setF('cost', e.target.value)} placeholder="0" /></div>
+              <div className="fg"><label>Costo unitario</label><input type="number" value={form.cost} onChange={e => setF('cost', e.target.value)} onFocus={numFocus} placeholder="0" /></div>
               <div className="fg"><label>Unidad de medida</label>
                 <select value={form.unit} onChange={e => setF('unit', e.target.value)}>
                   {units.map(u => <option key={u} value={u}>{u}</option>)}
                 </select>
               </div>
-              <div className="fg"><label>Stock actual</label><input type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} placeholder="0" /></div>
-              <div className="fg"><label>Stock mínimo (alerta)</label><input type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} placeholder="0" /></div>
+              <div className="fg"><label>Stock actual</label><input type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} onFocus={numFocus} placeholder="0" /></div>
+              <div className="fg"><label>Stock mínimo (alerta)</label><input type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} onFocus={numFocus} placeholder="0" /></div>
               <div className="fg" style={{ gridColumn: 'span 2' }}><label>Proveedor</label>
                 <select value={form.supplierId || ''} onChange={e => setF('supplierId', e.target.value ? Number(e.target.value) : '')}>
                   <option value="">Sin proveedor asignado</option>
@@ -284,7 +292,7 @@ export default function Insumos() {
                   <option value="return">Devolución (+)</option>
                 </select>
               </div>
-              <div className="fg"><label>Cantidad</label><input type="number" value={moveForm.qty} onChange={e => setMoveForm(p => ({ ...p, qty: e.target.value }))} placeholder="0" min="0" /></div>
+              <div className="fg"><label>Cantidad</label><input type="number" value={moveForm.qty} onChange={e => setMoveForm(p => ({ ...p, qty: e.target.value }))} onFocus={numFocus} placeholder="0" min="0" /></div>
             </div>
             <div className="fg"><label>Nota / Referencia</label><input type="text" value={moveForm.note} onChange={e => setMoveForm(p => ({ ...p, note: e.target.value }))} placeholder="Ej: Compra a proveedor X" /></div>
             <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 16 }}>
