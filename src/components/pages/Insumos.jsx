@@ -139,18 +139,18 @@ export default function Insumos() {
           </div>
 
           {/* Table */}
-          <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+          <div className="card tbl-card" style={{ padding: 0, overflow: 'hidden' }}>
             <table className="tbl">
               <thead>
                 <tr>
                   <th>Insumo</th>
-                  <th>Categoría</th>
-                  <th>Proveedor</th>
+                  <th className="col-hide-mobile">Categoría</th>
+                  <th className="col-hide-mobile">Proveedor</th>
                   <th style={{ textAlign: 'right' }}>Costo</th>
                   <th style={{ textAlign: 'center' }}>Stock</th>
-                  <th style={{ textAlign: 'center' }}>Mín.</th>
-                  <th style={{ textAlign: 'center' }}>Unidad</th>
-                  <th style={{ textAlign: 'right' }}>Valor</th>
+                  <th className="col-hide-mobile" style={{ textAlign: 'center' }}>Mín.</th>
+                  <th className="col-hide-mobile" style={{ textAlign: 'center' }}>Unidad</th>
+                  <th className="col-hide-mobile" style={{ textAlign: 'right' }}>Valor</th>
                   <th></th>
                 </tr>
               </thead>
@@ -166,16 +166,16 @@ export default function Insumos() {
                   return (
                     <tr key={item.id} style={isLow ? { background: 'var(--red-lt)' } : undefined}>
                       <td style={{ fontWeight: 600 }}>{item.name}</td>
-                      <td><span className="badge b-draft">{item.cat || '—'}</span></td>
-                      <td style={{ fontSize: 11 }}>{supplierName(item.supplierId)}</td>
+                      <td className="col-hide-mobile"><span className="badge b-draft">{item.cat || '—'}</span></td>
+                      <td className="col-hide-mobile" style={{ fontSize: 11 }}>{supplierName(item.supplierId)}</td>
                       <td style={{ textAlign: 'right' }}>{fmt(item.cost)}</td>
                       <td style={{ textAlign: 'center', fontWeight: 700, color: isLow ? 'var(--red)' : 'var(--txt)' }}>
                         {item.stock || 0}
                         {isLow && <i className="fa fa-triangle-exclamation" style={{ color: 'var(--red)', marginLeft: 4, fontSize: 10 }} />}
                       </td>
-                      <td style={{ textAlign: 'center', color: 'var(--txt3)' }}>{item.minStock || '—'}</td>
-                      <td style={{ textAlign: 'center', fontSize: 11 }}>{item.unit || 'unidad'}</td>
-                      <td style={{ textAlign: 'right', fontWeight: 600 }}>{fmt((item.stock || 0) * (Number(item.cost) || 0))}</td>
+                      <td className="col-hide-mobile" style={{ textAlign: 'center', color: 'var(--txt3)' }}>{item.minStock || '—'}</td>
+                      <td className="col-hide-mobile" style={{ textAlign: 'center', fontSize: 11 }}>{item.unit || 'unidad'}</td>
+                      <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 600 }}>{fmt((item.stock || 0) * (Number(item.cost) || 0))}</td>
                       <td>
                         <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
                           <button className="act" title="Movimiento de stock" onClick={() => openMove(item)}><i className="fa fa-arrows-rotate" /></button>

@@ -355,8 +355,8 @@ export default function Catalogo() {
                 <input type="checkbox" checked={isAllSelected} onChange={toggleSelectAll} style={{ cursor: 'pointer' }} />
               </th>
               <th>Producto</th>
-              <th>Categoría</th>
-              <th>Proveedor</th>
+              <th className="col-hide-mobile">Categoría</th>
+              <th className="col-hide-mobile">Proveedor</th>
               <th style={{ textAlign: 'right' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'flex-end' }}>
                   Costo
@@ -366,10 +366,10 @@ export default function Catalogo() {
                   </button>
                 </span>
               </th>
-              <th style={{ textAlign: 'right' }}>P. Público</th>
-              <th style={{ textAlign: 'right' }}>P. Mayorista</th>
-              <th style={{ textAlign: 'center' }}>% Margen</th>
-              {showCostInfo && <th>Últ. actualización</th>}
+              <th style={{ textAlign: 'right' }} className="col-hide-mobile">P. Público</th>
+              <th style={{ textAlign: 'right' }} className="col-hide-mobile">P. Mayorista</th>
+              <th style={{ textAlign: 'center' }} className="col-hide-mobile">% Margen</th>
+              {showCostInfo && <th className="col-hide-mobile">Últ. actualización</th>}
               <th style={{ textAlign: 'right' }}>Stock</th>
               <th>Acciones</th>
             </tr></thead>
@@ -394,16 +394,16 @@ export default function Catalogo() {
                         </div>
                       </div>
                     </td>
-                    <td><span style={{ display: 'inline-flex', alignItems: 'center', background: cc.bg, color: cc.color, fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, whiteSpace: 'nowrap' }}>{p.cat || '—'}</span></td>
-                    <td style={{ fontSize: 11 }}>{supplierName(p.supplierId)}</td>
+                    <td className="col-hide-mobile"><span style={{ display: 'inline-flex', alignItems: 'center', background: cc.bg, color: cc.color, fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, whiteSpace: 'nowrap' }}>{p.cat || '—'}</span></td>
+                    <td className="col-hide-mobile" style={{ fontSize: 11 }}>{supplierName(p.supplierId)}</td>
                     <td style={{ textAlign: 'right' }}>{fmt(p.cost)}</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2B || autoPrice(p.cost).b2b)}</td>
-                    <td style={{ textAlign: 'center' }}>
+                    <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>
+                    <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2B || autoPrice(p.cost).b2b)}</td>
+                    <td className="col-hide-mobile" style={{ textAlign: 'center' }}>
                       {mp !== null ? <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 800, color: marginColor(mp), background: marginColor(mp) + '18', padding: '2px 8px', borderRadius: 10 }}>{mp}%</span> : <span style={{ color: 'var(--txt4)', fontSize: 11 }}>—</span>}
                     </td>
                     {showCostInfo && (
-                      <td style={{ fontSize: 11 }}>
+                      <td className="col-hide-mobile" style={{ fontSize: 11 }}>
                         {p.updatedAt ? (
                           <span style={{ color: (() => { const d = Math.floor((Date.now() - new Date(p.updatedAt)) / 86400000); return d > 180 ? '#DC2626' : d > 60 ? '#D97706' : '#16A34A' })(), fontWeight: 600 }}>
                             {(() => { const d = Math.floor((Date.now() - new Date(p.updatedAt)) / 86400000); if (d === 0) return 'Hoy'; if (d === 1) return 'Ayer'; if (d < 30) return `hace ${d}d`; if (d < 365) return `hace ${Math.floor(d/30)}m`; return `hace ${Math.floor(d/365)}a` })()}
