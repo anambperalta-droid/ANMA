@@ -20,6 +20,13 @@ export default function Insumos() {
   const [form, setForm] = useState({ ...EMPTY })
   const [moveForm, setMoveForm] = useState({ type: 'in', qty: '', note: '' })
   const [tab, setTab] = useState('list') // list | moves
+  const [alertDismissed, setAlertDismissed] = useState(() => {
+    try { return sessionStorage.getItem('insumos_low_dismissed') === '1' } catch { return false }
+  })
+  const dismissLowAlert = () => {
+    try { sessionStorage.setItem('insumos_low_dismissed', '1') } catch { }
+    setAlertDismissed(true)
+  }
 
   const insumos = get('insumos', [])
   const suppliers = get('suppliers', [])
@@ -108,10 +115,11 @@ export default function Insumos() {
       </div>
 
       {/* Low stock alert */}
-      {lowStock.length > 0 && (
+      {lowStock.length > 0 && !alertDismissed && (
         <div style={{ background: 'var(--red-lt)', border: '1.5px solid #FCA5A5', borderRadius: 10, padding: '10px 16px', marginBottom: 14, fontSize: 12, color: 'var(--red)', display: 'flex', alignItems: 'center', gap: 8 }}>
           <i className="fa fa-triangle-exclamation" />
-          <span><b>{lowStock.length} insumo{lowStock.length > 1 ? 's' : ''}</b> con stock bajo o agotado: {lowStock.slice(0, 5).map(x => x.name).join(', ')}{lowStock.length > 5 ? '...' : ''}</span>
+          <span style={{ flex: 1 }}><b>{lowStock.length} insumo{lowStock.length > 1 ? 's' : ''}</b> con stock bajo o agotado: {lowStock.slice(0, 5).map(x => x.name).join(', ')}{lowStock.length > 5 ? '...' : ''}</span>
+          <button onClick={dismissLowAlert} title="Cerrar alerta" style={{ background: 'none', border: 'none', color: '#DC2626', cursor: 'pointer', padding: '2px 4px', borderRadius: 4, fontSize: 14, flexShrink: 0, opacity: 0.7 }}><i className="fa fa-xmark" /></button>
         </div>
       )}
 
@@ -181,7 +189,7 @@ export default function Insumos() {
                         <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
                           <button className="act" title="Ingreso rápido de stock (+1)" style={{ color: '#16A34A', background: '#DCFCE7' }}
                             onClick={() => {
-                              saveEntity('insumos', { ...item, stock: (item.stock || 0) + 1 })
+                              recordStockMove({ type: 'in', insumoId: item.id, qty: 1, ref: item.name, note: '+1 rápido' })
                               toast(`+1 ${item.unit || 'ud.'} → ${item.name}`, 'ok')
                             }}>
                             <i className="fa fa-plus" style={{ fontSize: 10 }} />
@@ -201,37 +209,64 @@ export default function Insumos() {
       )}
 
       {tab === 'moves' && (
-        <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-          <table className="tbl">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Tipo</th>
-                <th>Insumo / Producto</th>
-                <th style={{ textAlign: 'center' }}>Cantidad</th>
-                <th>Nota</th>
-              </tr>
-            </thead>
-            <tbody>
-              {insumoMoves.length === 0 && (
-                <tr><td colSpan={5} style={{ textAlign: 'center', padding: 40, color: 'var(--txt3)' }}>
-                  Sin movimientos registrados
-                </td></tr>
-              )}
-              {insumoMoves.map(m => (
-                <tr key={m.id}>
-                  <td style={{ fontSize: 11 }}>{m.date}</td>
-                  <td><span className={`badge ${MOVE_CLS[m.type] || 'b-draft'}`}>{MOVE_TYPES[m.type] || m.type}</span></td>
-                  <td style={{ fontWeight: 600 }}>{m.ref || '—'}</td>
-                  <td style={{ textAlign: 'center', fontWeight: 700, color: (m.type === 'in' || m.type === 'return') ? 'var(--green)' : 'var(--red)' }}>
-                    {(m.type === 'in' || m.type === 'return') ? '+' : '-'}{m.qty}
-                  </td>
-                  <td style={{ fontSize: 11, color: 'var(--txt3)' }}>{m.note || '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 12, color: 'var(--txt3)' }}>{insumoMoves.length} movimiento{insumoMoves.length !== 1 ? 's' : ''} registrado{insumoMoves.length !== 1 ? 's' : ''}</span>
+            <button className="btn btn-ghost btn-sm" style={{ marginLeft: 'auto' }} onClick={() => setTab('list')}>
+              <i className="fa fa-arrow-left" style={{ marginRight: 4 }} />Volver a inventario
+            </button>
+          </div>
+          {insumoMoves.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '52px 24px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12 }}>
+              <i className="fa fa-arrows-rotate" style={{ fontSize: 32, color: 'var(--txt4)', marginBottom: 12, display: 'block' }} />
+              <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--txt2)', marginBottom: 6 }}>Sin movimientos registrados</div>
+              <div style={{ fontSize: 12, color: 'var(--txt4)', lineHeight: 1.6, maxWidth: 340, margin: '0 auto 16px' }}>
+                Los ingresos, egresos y ajustes de stock aparecerán acá.<br />Usá el botón <b>+1</b> o <i className="fa fa-arrows-rotate" style={{ fontSize: 10 }} /> en cada insumo para registrar movimientos.
+              </div>
+              <button className="btn btn-primary btn-sm" onClick={() => setTab('list')}>
+                <i className="fa fa-boxes-stacked" style={{ marginRight: 6 }} />Ir a inventario
+              </button>
+            </div>
+          ) : (
+            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <table className="tbl">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Insumo</th>
+                    <th style={{ textAlign: 'center' }}>Cantidad</th>
+                    <th className="col-hide-mobile">Nota</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {insumoMoves.map(m => {
+                    const isIn = m.type === 'in' || m.type === 'return'
+                    const isAdjust = m.type === 'adjust'
+                    const insumo = insumos.find(x => x.id === m.insumoId)
+                    return (
+                      <tr key={m.id}>
+                        <td style={{ fontSize: 11, color: 'var(--txt3)', whiteSpace: 'nowrap' }}>{m.date}</td>
+                        <td><span className={`badge ${MOVE_CLS[m.type] || 'b-draft'}`}>{MOVE_TYPES[m.type] || m.type}</span></td>
+                        <td>
+                          <div style={{ fontWeight: 600, fontSize: 12 }}>{m.ref || insumo?.name || '—'}</div>
+                          {insumo?.cat && <div style={{ fontSize: 10, color: 'var(--txt4)' }}>{insumo.cat}</div>}
+                        </td>
+                        <td style={{ textAlign: 'center' }}>
+                          <span style={{ fontWeight: 800, fontSize: 13, color: isAdjust ? 'var(--brand)' : isIn ? '#16A34A' : '#DC2626', fontFamily: 'ui-monospace,SFMono-Regular,monospace' }}>
+                            {isAdjust ? '=' : isIn ? '+' : '−'}{m.qty}
+                          </span>
+                          {insumo?.unit && <span style={{ fontSize: 10, color: 'var(--txt4)', marginLeft: 3 }}>{insumo.unit}</span>}
+                        </td>
+                        <td className="col-hide-mobile" style={{ fontSize: 11, color: 'var(--txt3)' }}>{m.note || '—'}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
       )}
 
       {/* Modal: crear/editar insumo */}
