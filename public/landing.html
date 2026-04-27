@@ -186,7 +186,7 @@ section{padding:84px 0}
 .plan{background:#fff;border:1.5px solid #e5e7eb;border-radius:18px;padding:32px;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
 .plan:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(15,23,42,.08)}
 .plan.featured{border-color:#7c3aed;box-shadow:0 14px 40px rgba(124,58,237,.18);position:relative}
-.plan.featured::before{content:"Más elegido";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7c3aed;color:#fff;font-size:11px;font-weight:700;padding:5px 14px;border-radius:99px;letter-spacing:.5px}
+.plan.featured::before{content:"Mejor valor";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7c3aed;color:#fff;font-size:11px;font-weight:700;padding:5px 14px;border-radius:99px;letter-spacing:.5px}
 .plan-name{font-size:14px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
 .plan-price{font-size:38px;font-weight:900;color:#0F172A;letter-spacing:-1px;margin-bottom:4px}
 .plan-price small{font-size:14px;font-weight:500;color:#64748b}
@@ -595,49 +595,36 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <section id="pricing">
   <div class="wrap">
     <div style="text-align:center;max-width:700px;margin:0 auto 56px">
-      <span class="eyebrow-dark">Planes</span>
+      <span class="eyebrow-dark">Precio</span>
       <h2 class="h2">Simple. Sin sorpresas.</h2>
-      <p class="sub center">14 días gratis sin tarjeta. Cancelás cuando quieras, sin trámites.</p>
+      <p class="sub center">Elegí la modalidad que mejor se adapta a tu negocio. Sin contratos ni trámites.</p>
     </div>
-    <div class="price-grid">
+    <div class="price-grid" style="grid-template-columns:repeat(2,1fr);max-width:780px;margin:0 auto">
       <div class="plan">
-        <div class="plan-name">Starter</div>
-        <div class="plan-price">$ 19.900 <small>/ mes</small></div>
-        <div class="plan-desc">Para emprendedores que arrancan. Pago anual: $ 16.900/mes (15% off).</div>
+        <div class="plan-name">Mensual</div>
+        <div class="plan-price">$ 30.000 <small>/ mes</small></div>
+        <div class="plan-desc">Acceso completo a todas las funciones. Cancelás cuando quieras.</div>
         <ul>
-          <li><i class="fa-solid fa-check"></i> 1 usuario</li>
           <li><i class="fa-solid fa-check"></i> Presupuestos ilimitados</li>
-          <li><i class="fa-solid fa-check"></i> Catálogo y clientes</li>
-          <li><i class="fa-solid fa-check"></i> Soporte por email</li>
-          <li><i class="fa-solid fa-check"></i> 14 días gratis sin tarjeta</li>
+          <li><i class="fa-solid fa-check"></i> Catálogo, clientes y proveedores</li>
+          <li><i class="fa-solid fa-check"></i> Seguimiento y métricas</li>
+          <li><i class="fa-solid fa-check"></i> Logística y mensajes WhatsApp</li>
+          <li><i class="fa-solid fa-check"></i> Soporte por WhatsApp y email</li>
         </ul>
-        <a href="https://anma-hub.vercel.app/login" class="btn btn-dark">Probar 14 días</a>
+        <a href="https://anma-hub.vercel.app/login" class="btn btn-dark">Empezar ahora</a>
       </div>
       <div class="plan featured">
-        <div class="plan-name">Equipo</div>
-        <div class="plan-price">$ 34.900 <small>/ mes</small></div>
-        <div class="plan-desc">Para equipos chicos que ya operan a diario. Pago anual: $ 29.900/mes.</div>
+        <div class="plan-name">Pago único</div>
+        <div class="plan-price">$ 600.000 <small>una sola vez</small></div>
+        <div class="plan-desc">Pagás una vez y es tuyo para siempre. Sin pagos adicionales.</div>
         <ul>
-          <li><i class="fa-solid fa-check"></i> Hasta 5 usuarios</li>
-          <li><i class="fa-solid fa-check"></i> Todo lo del Starter</li>
-          <li><i class="fa-solid fa-check"></i> Logística + WhatsApp</li>
-          <li><i class="fa-solid fa-check"></i> Métricas avanzadas e insights</li>
+          <li><i class="fa-solid fa-check"></i> Todo del plan mensual</li>
+          <li><i class="fa-solid fa-check"></i> Actualizaciones incluidas</li>
+          <li><i class="fa-solid fa-check"></i> Configuración personalizada</li>
           <li><i class="fa-solid fa-check"></i> Soporte prioritario</li>
+          <li><i class="fa-solid fa-check"></i> Acceso de por vida</li>
         </ul>
-        <a href="https://anma-hub.vercel.app/login" class="btn btn-primary">Empezar 14 días gratis</a>
-      </div>
-      <div class="plan">
-        <div class="plan-name">Pro</div>
-        <div class="plan-price">$ 84.900 <small>/ mes</small></div>
-        <div class="plan-desc">Para negocios con varios operadores y volumen alto. Pago anual: $ 72.900/mes.</div>
-        <ul>
-          <li><i class="fa-solid fa-check"></i> Usuarios ilimitados</li>
-          <li><i class="fa-solid fa-check"></i> Multi-sucursal y roles</li>
-          <li><i class="fa-solid fa-check"></i> Auditoría y backups</li>
-          <li><i class="fa-solid fa-check"></i> API e integraciones</li>
-          <li><i class="fa-solid fa-check"></i> Onboarding dedicado</li>
-        </ul>
-        <a href="#contact" class="btn btn-dark">Hablar con ventas</a>
+        <a href="https://anma-hub.vercel.app/login" class="btn btn-primary">Obtener acceso total</a>
       </div>
     </div>
   </div>
