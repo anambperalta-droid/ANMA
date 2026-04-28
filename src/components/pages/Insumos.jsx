@@ -87,7 +87,6 @@ export default function Insumos() {
       <div className="ph">
         <div className="ph-left">
           <h2>Insumos y Materias Primas</h2>
-          <p>{insumos.length} insumos · Valor total en stock: {fmt(totalValue)}</p>
         </div>
         <div className="ph-right">
           <button className="btn btn-primary btn-sm" onClick={openNew}><i className="fa fa-plus" /> Nuevo insumo</button>
@@ -96,21 +95,22 @@ export default function Insumos() {
 
       {/* KPIs */}
       <div className="bento" style={{ gridTemplateColumns: 'repeat(4,1fr)', marginBottom: 16 }}>
-        <div className="bento-kpi">
-          <div className="bk-label">Total insumos</div>
-          <div className="bk-val">{insumos.length}</div>
+        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--brand)', paddingLeft: 14 }}>
+          <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Total insumos</div>
+          <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.05 }}>{insumos.length}</div>
         </div>
-        <div className="bento-kpi">
-          <div className="bk-label">Valor en stock</div>
-          <div className="bk-val">{fmt(totalValue)}</div>
+        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--green)', paddingLeft: 14 }}>
+          <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Valor en stock</div>
+          <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.05 }}>{fmt(totalValue)}</div>
         </div>
-        <div className="bento-kpi">
-          <div className="bk-label">Stock bajo</div>
-          <div className="bk-val" style={{ color: lowStock.length > 0 ? 'var(--red)' : 'var(--green)' }}>{lowStock.length}</div>
+        <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : 'var(--green)'}`, paddingLeft: 14 }}>
+          <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Stock bajo</div>
+          <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.05, color: lowStock.length > 0 ? 'var(--red)' : 'var(--green)' }}>{lowStock.length}</div>
+          {lowStock.length === 0 && <div style={{ fontSize: 10, color: 'var(--txt4)', marginTop: 3 }}>Todo OK</div>}
         </div>
-        <div className="bento-kpi">
-          <div className="bk-label">Categorías</div>
-          <div className="bk-val">{cats.length}</div>
+        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--amber)', paddingLeft: 14 }}>
+          <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Categorías</div>
+          <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.05 }}>{cats.length}</div>
         </div>
       </div>
 
