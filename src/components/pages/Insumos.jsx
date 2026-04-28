@@ -94,23 +94,23 @@ export default function Insumos() {
       </div>
 
       {/* KPIs */}
-      <div className="bento" style={{ gridTemplateColumns: 'repeat(4,1fr)', marginBottom: 16 }}>
-        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--brand)', paddingLeft: 14 }}>
-          <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Total insumos</div>
-          <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.05 }}>{insumos.length}</div>
+      <div className="bento" style={{ gridTemplateColumns: 'repeat(4,1fr)', marginBottom: 14 }}>
+        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--brand)', padding: '12px 14px 10px', paddingLeft: 14 }}>
+          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Total insumos</div>
+          <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{insumos.length}</div>
         </div>
-        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--green)', paddingLeft: 14 }}>
-          <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Valor en stock</div>
-          <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.05 }}>{fmt(totalValue)}</div>
+        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--green)', padding: '12px 14px 10px', paddingLeft: 14 }}>
+          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Valor en stock</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{fmt(totalValue)}</div>
         </div>
-        <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : 'var(--green)'}`, paddingLeft: 14 }}>
-          <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Stock bajo</div>
-          <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.05, color: lowStock.length > 0 ? 'var(--red)' : 'var(--green)' }}>{lowStock.length}</div>
-          {lowStock.length === 0 && <div style={{ fontSize: 10, color: 'var(--txt4)', marginTop: 3 }}>Todo OK</div>}
+        <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : 'var(--green)'}`, padding: '12px 14px 10px', paddingLeft: 14 }}>
+          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Stock bajo</div>
+          <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.1, color: lowStock.length > 0 ? 'var(--red)' : 'var(--green)' }}>{lowStock.length}</div>
+          {lowStock.length === 0 && <div style={{ fontSize: 9.5, color: 'var(--txt4)', marginTop: 2 }}>Todo OK</div>}
         </div>
-        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--amber)', paddingLeft: 14 }}>
-          <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Categorías</div>
-          <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.05 }}>{cats.length}</div>
+        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--amber)', padding: '12px 14px 10px', paddingLeft: 14 }}>
+          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Categorías</div>
+          <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{cats.length}</div>
         </div>
       </div>
 
