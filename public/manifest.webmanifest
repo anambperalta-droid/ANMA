@@ -1,0 +1,20 @@
+{
+  "name": "ANMA Pro — Gestión de Negocios",
+  "short_name": "ANMA Pro",
+  "description": "Pedidos, clientes, productos e insumos en un solo lugar",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0F0C3C",
+  "theme_color": "#7C3AED",
+  "lang": "es-AR",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Nuevo pedido", "url": "/presupuesto", "icons": [{ "src": "/favicon.svg", "sizes": "any" }] },
+    { "name": "Dashboard",    "url": "/",            "icons": [{ "src": "/favicon.svg", "sizes": "any" }] }
+  ]
+}
