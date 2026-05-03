@@ -18,12 +18,32 @@ export default function PortalProveedor() {
       const d = params.get('d')
       if (!d) { setError('Link inválido o vencido'); return }
       const json = decodeURIComponent(escape(atob(d.replace(/-/g, '+').replace(/_/g, '/'))))
-      const parsed = JSON.parse(json)
-      if (parsed.exp && Date.now() > parsed.exp) {
+      const raw = JSON.parse(json)
+      const exp = raw.e || raw.exp || 0
+      if (exp && Date.now() > exp) {
         setError('Este link ya venció. Pedí uno nuevo a tu cliente.')
         return
       }
-      setData(parsed)
+      // Normaliza payload v2 (keys cortas) y v1 (keys largas — backward compat)
+      const norm = {
+        supplierName: raw.s || raw.supplierName || '',
+        contact:      raw.c || raw.contact || '',
+        paymentTerm:  raw.pt || raw.paymentTerm || '',
+        leadTime:     raw.lt || raw.leadTime || '',
+        ownerName:    raw.o || raw.ownerName || '',
+        ownerWa:      raw.w || raw.ownerWa || '',
+        brandColor:   raw.bc || raw.brandColor || '',
+        exp:          exp,
+        products: (raw.p || raw.products || []).map(pr => ({
+          name:     pr.n  || pr.name || '',
+          cost:     pr.c  ?? pr.cost ?? 0,
+          stock:    pr.st ?? pr.stock ?? 0,
+          minStock: pr.m  ?? pr.minStock ?? 0,
+          reorder:  pr.r === 1 || pr.reorder === true,
+        })),
+        priceHistory: raw.ph || raw.priceHistory || [],
+      }
+      setData(norm)
     } catch (e) {
       setError('No se pudo abrir el link. Verificá que esté completo.')
     }
@@ -164,24 +184,25 @@ export default function PortalProveedor() {
                 <thead>
                   <tr style={S.thead}>
                     <th style={S.th}>Producto</th>
-                    <th style={{ ...S.th, textAlign: 'center' }}>Estado</th>
-                    <th style={{ ...S.th, textAlign: 'right' }}>Precio acordado</th>
+                    <th style={{ ...S.th, textAlign: 'center', width: 100 }}>Cantidad (u.)</th>
+                    <th style={{ ...S.th, textAlign: 'right', width: 130 }}>Precio u.</th>
+                    <th style={{ ...S.th, textAlign: 'right', width: 130 }}>Subtotal</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((p, i) => (
+                  {products.map((p, i) => {
+                    const qty = Math.max(1, p.stock || 0)
+                    return (
                     <tr key={i} className="pp-row" style={S.tr}>
                       <td style={S.td}>
                         <div style={{ fontWeight: 600, color: '#1E1B4B' }}>{p.name}</div>
                       </td>
-                      <td style={{ ...S.td, textAlign: 'center' }}>
-                        {p.reorder
-                          ? <span style={S.statusReorder}>RE-ORDEN</span>
-                          : <span style={S.statusOk}>OK</span>}
-                      </td>
-                      <td style={{ ...S.td, textAlign: 'right', fontWeight: 700, color: '#7C3AED', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</td>
+                      <td style={{ ...S.td, textAlign: 'center', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{qty}</td>
+                      <td style={{ ...S.td, textAlign: 'right', color: '#374151', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</td>
+                      <td style={{ ...S.td, textAlign: 'right', fontWeight: 700, color: '#7C3AED', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost * qty)}</td>
                     </tr>
-                  ))}
+                    )
+                  })}
                 </tbody>
               </table>
             </div>

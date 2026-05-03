@@ -269,34 +269,33 @@ export default function Proveedores() {
 
   const openDetail = (s) => { setDetailSupplier(s); setDetailTab('info') }
 
-  /* ── Generar link de portal para el proveedor ── */
+  /* ── Generar link de portal para el proveedor (payload corto v2) ── */
   const sharePortalLink = (s) => {
     if (!s) return
     const prods = supplierProducts(s)
-    let ownerName = ''
-    let ownerWa = ''
-    try {
-      const cfg = JSON.parse(localStorage.getItem('config') || '{}')
-      ownerName = cfg.companyName || cfg.userName || ''
-      ownerWa = cfg.wa || cfg.phone || ''
-    } catch { /* ignorar */ }
+    const c = cfg()
+    const brandColor = c.brandColor || ''
+    // Payload v2 — keys abreviadas para URL corta
     const payload = {
-      supplierName: s.name,
-      contact: s.contact || '',
-      paymentTerm: s.paymentTerm || '',
-      leadTime: s.leadTime || '',
-      ownerName,
-      ownerWa,
-      exp: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 días
-      products: prods.map(p => ({
-        name: p.name,
-        cost: p.cost,
-        stock: p.stock || 0,
-        minStock: p.minStock || 0,
-        reorder: p.minStock > 0 && (p.stock || 0) <= p.minStock
-      })),
-      priceHistory: (s.priceHistory || []).slice(-12).reverse()
+      v: 2,
+      s: s.name,
+      e: Date.now() + 30 * 86400000,
+      p: prods.map(pp => {
+        const o = { n: pp.name, c: Number(pp.cost) || 0 }
+        if (pp.stock)    o.st = pp.stock
+        if (pp.minStock) o.m  = pp.minStock
+        if (pp.minStock > 0 && (pp.stock || 0) <= pp.minStock) o.r = 1
+        return o
+      }),
     }
+    if (s.contact)    payload.c  = s.contact
+    if (s.paymentTerm) payload.pt = s.paymentTerm
+    if (s.leadTime)   payload.lt = s.leadTime
+    if (c.businessName || c.companyName) payload.o = c.businessName || c.companyName
+    if (c.wa || c.phone) payload.w = c.wa || c.phone
+    if (brandColor)   payload.bc = brandColor
+    const ph = (s.priceHistory || []).slice(-8).reverse()
+    if (ph.length)    payload.ph = ph
     const json = JSON.stringify(payload)
     const b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
     const url = `${window.location.origin}/portal-proveedor?d=${b64}`
