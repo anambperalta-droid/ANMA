@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
-import { fmt } from '../../lib/storage'
+import { fmt, db, dbW } from '../../lib/storage'
 
 export default function Proveedores() {
   const { get, saveEntity, deleteEntity } = useData()
@@ -32,19 +32,61 @@ export default function Proveedores() {
 
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
 
-  // Auto-fix: rubro/email invertidos (one-time migration)
+  // Auto-fix: dedupe + corrige rubro/email invertidos (one-time migration, idempotente)
   useEffect(() => {
     const list = get('suppliers') || []
+    if (list.length === 0) return
     const looksLikeEmail = (v) => typeof v === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())
-    let fixedCount = 0
-    list.forEach(s => {
-      if (looksLikeEmail(s.rubro) && !looksLikeEmail(s.email)) {
-        const tmp = s.rubro
-        saveEntity('suppliers', { ...s, rubro: s.email || '', email: tmp })
-        fixedCount++
+    const sigOf = (s) => `${(s.name||'').trim().toLowerCase()}|${(s.contact||'').trim().toLowerCase()}|${(s.wa||'').replace(/\D/g,'')}`
+
+    const groups = {}
+    list.forEach(s => { const k = sigOf(s); (groups[k] ||= []).push(s) })
+
+    let dedupedList = []
+    let dupesRemoved = 0
+    let swapsApplied = 0
+
+    Object.values(groups).forEach(grp => {
+      if (grp.length === 1) {
+        const s = grp[0]
+        if (looksLikeEmail(s.rubro) && !looksLikeEmail(s.email)) {
+          dedupedList.push({ ...s, rubro: s.email || '', email: s.rubro })
+          swapsApplied++
+        } else dedupedList.push(s)
+      } else {
+        const ranked = grp.slice().sort((a, b) => {
+          const aBad = looksLikeEmail(a.rubro) ? 1 : 0
+          const bBad = looksLikeEmail(b.rubro) ? 1 : 0
+          if (aBad !== bBad) return aBad - bBad
+          return Object.values(b).filter(Boolean).length - Object.values(a).filter(Boolean).length
+        })
+        let merged = { ...ranked[0] }
+        if (looksLikeEmail(merged.rubro)) {
+          const wr = grp.find(x => x !== ranked[0] && !looksLikeEmail(x.rubro) && x.rubro)
+          if (wr) merged.rubro = wr.rubro
+          else if (!looksLikeEmail(merged.email)) {
+            const t = merged.rubro; merged.rubro = merged.email || ''; merged.email = t
+            swapsApplied++
+          }
+        }
+        if (!merged.email) {
+          const we = grp.find(x => looksLikeEmail(x.email))
+          if (we) merged.email = we.email
+        }
+        dedupedList.push(merged)
+        dupesRemoved += grp.length - 1
       }
     })
-    if (fixedCount > 0) toast(`Se corrigieron ${fixedCount} proveedor${fixedCount !== 1 ? 'es' : ''} con rubro/email invertidos`, 'ok')
+
+    if (dupesRemoved > 0 || swapsApplied > 0) {
+      const finalList = dedupedList.map((s, i) => ({ ...s, id: s.id || (Date.now() + i) }))
+      dbW('suppliers', finalList)
+      setTimeout(() => window.location.reload(), 600)
+      const msgs = []
+      if (dupesRemoved > 0) msgs.push(`${dupesRemoved} duplicado${dupesRemoved !== 1 ? 's' : ''} eliminado${dupesRemoved !== 1 ? 's' : ''}`)
+      if (swapsApplied > 0) msgs.push(`${swapsApplied} con rubro/email corregido${swapsApplied !== 1 ? 's' : ''}`)
+      toast(`Proveedores reparados: ${msgs.join(' · ')}`, 'ok')
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
