@@ -10,14 +10,29 @@ function collectData() {
   return out
 }
 
-let _uid = null         // current auth user id
-let _wsId = null        // workspace id (owner's user id) — resolved from memberships
-let _role = null        // role in that workspace: 'owner' | 'operator' | 'viewer'
-let _timer = null
+/**
+ * Merge two arrays by `id`.
+ * – Cloud items are authoritative (used as-is).
+ * – Local-only items (id not present in cloud) are appended.
+ * This guarantees we NEVER lose a record that exists locally.
+ */
+function mergeArraysById(local, remote) {
+  if (!Array.isArray(remote)) return Array.isArray(local) ? local : []
+  if (!Array.isArray(local) || local.length === 0) return remote
+  const remoteIds = new Set(
+    remote.map(x => (x?.id != null ? String(x.id) : null)).filter(Boolean)
+  )
+  const localOnly = local.filter(x => x?.id != null && !remoteIds.has(String(x.id)))
+  return localOnly.length > 0 ? [...remote, ...localOnly] : remote
+}
+
+let _uid    = null   // current auth user id
+let _wsId   = null   // workspace id (owner's user_id, resolved via memberships)
+let _role   = null   // 'owner' | 'operator' | 'viewer'
+let _timer  = null
 
 /** Resolve the workspace the user belongs to.
- *  Rule: first active membership wins. Owners have their own workspace (workspace_id = user.id).
- *  Operators inherit the owner's workspace_id. */
+ *  Falls back to self-workspace (userId) for legacy / no-membership users. */
 async function resolveWorkspace(userId) {
   if (!userId) return { wsId: null, role: null }
   try {
@@ -31,8 +46,8 @@ async function resolveWorkspace(userId) {
       .maybeSingle()
 
     if (error) {
-      console.warn('[sync] membership resolve error', error.message)
       // Fallback: treat as own owner (legacy path, pre-Phase2 SQL migration).
+      console.warn('[sync] membership resolve error', error.message)
       return { wsId: userId, role: 'owner' }
     }
     if (!data) {
@@ -51,15 +66,17 @@ async function doPush() {
   // Viewers do not push.
   if (_role === 'viewer') return
   try {
-    await supabase.from('anma_user_data').upsert({
-      user_id: _wsId,              // workspace-scoped row (owner's id)
-      site_key: SITE_KEY,
-      data: collectData(),
+    const { error } = await supabase.from('anma_user_data').upsert({
+      user_id:    _wsId,              // workspace-scoped row (owner's id)
+      site_key:   SITE_KEY,
+      data:       collectData(),
       updated_at: new Date().toISOString(),
     }, { onConflict: 'user_id,site_key' })
+    if (!error) window.dispatchEvent(new CustomEvent('anma:cloud-saved'))
   } catch (e) { console.warn('[sync] push failed', e?.message) }
 }
 
+/** Call once after login. Sets up the debounced write-hook. */
 export function initSync(userId) {
   _uid = userId
   if (!userId) {
@@ -76,6 +93,16 @@ export function initSync(userId) {
   })
 }
 
+/**
+ * Pull cloud data on login/session restore.
+ *
+ * Strategy:
+ *  – If no cloud row exists   → push all local data immediately (first-time migration).
+ *  – If cloud row exists      → smart-merge: cloud wins on conflicts, local-only
+ *    records are preserved. nextNum uses the higher value to prevent duplicate
+ *    budget numbers across devices.
+ *  – If local had extra records after merge → push the merged result back to cloud.
+ */
 export async function pullFromCloud(userId) {
   if (!userId) return false
   try {
@@ -90,11 +117,50 @@ export async function pullFromCloud(userId) {
       .eq('user_id', wsId)
       .eq('site_key', SITE_KEY)
       .single()
-    if (error || !data?.data) return false
-    DATA_KEYS.forEach(k => { if (data.data[k] !== undefined) dbW(k, data.data[k]) })
+
+    if (error || !data?.data) {
+      // ── No cloud row yet ──────────────────────────────────────────
+      // Push all local data immediately so the next device gets it.
+      doPush()
+      return false
+    }
+
+    // ── Smart merge ───────────────────────────────────────────────
+    const cloud = data.data
+    let needsPushBack = false   // true if local had records not in cloud
+
+    DATA_KEYS.forEach(k => {
+      if (cloud[k] === undefined) return
+      const local = db(k, k === 'cfg' ? {} : [])
+
+      if (k === 'cfg') {
+        // Config: cloud wins for most keys; nextNum uses the higher value
+        const merged = { ...local, ...cloud[k] }
+        const localNum = Number(local.nextNum) || 1
+        const cloudNum = Number(cloud[k].nextNum) || 1
+        if (localNum > cloudNum) {
+          merged.nextNum = localNum
+          needsPushBack = true
+        }
+        dbW(k, merged)
+      } else if (Array.isArray(cloud[k]) && Array.isArray(local)) {
+        const merged = mergeArraysById(local, cloud[k])
+        if (merged.length > cloud[k].length) needsPushBack = true
+        dbW(k, merged)
+      } else {
+        dbW(k, cloud[k])
+      }
+    })
+
+    // Push merged result back so cloud has the full dataset
+    if (needsPushBack) doPush()
+
     window.dispatchEvent(new CustomEvent('anma:synced'))
     return true
-  } catch (e) { console.warn('[sync] pull failed', e?.message); return false }
+  } catch (e) {
+    console.warn('[sync] pull failed', e?.message)
+    return false
+  }
 }
 
 /** Expose current workspace context (read-only) for other modules (audit log, UI). */

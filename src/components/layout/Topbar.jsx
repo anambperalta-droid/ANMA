@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import NotificationBell from './NotificationBell'
 import { useTaskFab } from '../../context/TaskFabContext'
 import { usePrivacy } from '../../context/PrivacyContext'
@@ -15,12 +15,34 @@ function initialTheme() {
   return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
+// Cloud sync status: 'ok' | null
+function useSyncStatus() {
+  const [status, setStatus] = useState(null)
+  const timer = useRef(null)
+  useEffect(() => {
+    const onSaved = () => {
+      setStatus('ok')
+      clearTimeout(timer.current)
+      timer.current = setTimeout(() => setStatus(null), 3000)
+    }
+    window.addEventListener('anma:cloud-saved', onSaved)
+    window.addEventListener('anma:synced', onSaved)
+    return () => {
+      window.removeEventListener('anma:cloud-saved', onSaved)
+      window.removeEventListener('anma:synced', onSaved)
+      clearTimeout(timer.current)
+    }
+  }, [])
+  return status
+}
+
 export default function Topbar({ onMenuClick }) {
   const loc = useLocation()
   const title = PAGE_NAMES[loc.pathname] || 'ANMA'
   const [theme, setTheme] = useState(initialTheme)
   const { panelOpen, setPanelOpen, activeTasks, focusMode, setFocusMode } = useTaskFab()
   const { hidden, toggle } = usePrivacy()
+  const syncStatus = useSyncStatus()
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -87,6 +109,21 @@ export default function Topbar({ onMenuClick }) {
           </span>
         )}
       </button>
+
+      {/* Cloud sync indicator */}
+      {syncStatus && (
+        <div title="Datos guardados en la nube" style={{
+          display: 'flex', alignItems: 'center', gap: 4,
+          fontSize: 11, fontWeight: 600, padding: '0 8px', height: 28,
+          borderRadius: 8, transition: 'all .3s',
+          background: '#D1FAE5', color: '#065F46',
+          border: '1px solid #A7F3D0',
+          flexShrink: 0,
+        }}>
+          <i className="fa fa-cloud-arrow-up" style={{ fontSize: 12 }} />
+          <span className="hide-xs">Guardado</span>
+        </div>
+      )}
 
       {/* Tema claro/oscuro */}
       <button
