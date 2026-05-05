@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
-import { fmt } from '../../lib/storage'
+import { fmt, cfg } from '../../lib/storage'
 
 export default function Proveedores() {
   const { get, set, saveEntity, deleteEntity } = useData()
