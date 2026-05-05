@@ -73,7 +73,7 @@ export default function Catalogo() {
   const [bulkSupplierValue, setBulkSupplierValue] = useState('')
   const [catMgmtModal, setCatMgmtModal] = useState(false)
   const [editingCat, setEditingCat] = useState(null) // { original, value }
-  const [viewMode, setViewMode] = useState('table')
+  const [viewMode, setViewMode] = useState('grid')
   const imgRef = useRef(null)
 
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
@@ -425,13 +425,15 @@ export default function Catalogo() {
         </div>
       ) : (
         /* ── GRID VIEW ── */
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(190px,1fr))', gap: 14, marginTop: 4 }}>
+        <div className="prod-grid">
           {loading ? [1,2,3,4,5,6].map(i => (
-            <div key={i} className="card" style={{ padding: 0, overflow: 'hidden' }}>
-              <div className="sk" style={{ height: 130, borderRadius: '10px 10px 0 0' }} />
-              <div style={{ padding: '10px 12px' }}>
-                <div className="sk sk-text" style={{ height: 13, width: '70%', marginBottom: 8 }} />
-                <div className="sk sk-text" style={{ height: 11, width: '45%' }} />
+            <div key={i} className="prod-card">
+              <div className="prod-card-img" style={{ background: 'var(--surface3)' }}>
+                <div className="sk-ava" style={{ width: 52, height: 52, borderRadius: 14 }} />
+              </div>
+              <div className="prod-card-body">
+                <div className="sk-line" style={{ width: '75%' }} />
+                <div className="sk-line" style={{ width: '45%', marginTop: 8 }} />
               </div>
             </div>
           )) : filtered.length ? filtered.map(p => {
@@ -439,47 +441,47 @@ export default function Catalogo() {
             const cc = catColor(p.cat)
             const isLow = p.minStock > 0 && (p.stock || 0) <= p.minStock
             return (
-              <div key={p.id} className="card" style={{ padding: 0, overflow: 'hidden', transition: 'transform .18s,box-shadow .18s' }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = 'var(--sh-lg)' }}
-                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}
-              >
-                <div style={{ height: 130, background: cc.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+              <div key={p.id} className="prod-card" onClick={() => open(p)}>
+                {/* IMAGE */}
+                <div className="prod-card-img" style={{ background: cc.bg }}>
                   {p.image
                     ? <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <i className="fa fa-box-open" style={{ fontSize: 36, color: cc.color, opacity: .5 }} />
+                    : <i className="fa fa-box-open" style={{ fontSize: 38, color: cc.color, opacity: .5 }} />
                   }
                   <input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)}
-                    style={{ position: 'absolute', top: 8, left: 8, cursor: 'pointer', width: 16, height: 16 }}
+                    style={{ position: 'absolute', top: 8, left: 8, width: 16, height: 16, cursor: 'pointer' }}
                     onClick={e => e.stopPropagation()} />
-                  {isLow && <div style={{ position: 'absolute', top: 8, right: 8, background: 'var(--red)', color: '#fff', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 6 }}>STOCK BAJO</div>}
+                  {isLow && (
+                    <div style={{ position: 'absolute', top: 8, right: 8, background: 'var(--red)', color: '#fff', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 6 }}>
+                      STOCK BAJO
+                    </div>
+                  )}
                 </div>
-                <div style={{ padding: '10px 12px' }}>
-                  <div style={{ fontWeight: 800, fontSize: 13, color: 'var(--txt)', marginBottom: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={p.name}>{p.name}</div>
-                  {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)', marginBottom: 3 }}>SKU: {p.sku}</div>}
-                  <span style={{ display: 'inline-block', padding: '1px 8px', borderRadius: 20, fontSize: 10, fontWeight: 700, background: cc.bg, color: cc.color, marginBottom: 6 }}>{p.cat || '—'}</span>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <span style={{ fontSize: 11, color: 'var(--txt3)' }}>Costo: {fmt(p.cost)}</span>
-                    <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</span>
+                {/* BODY */}
+                <div className="prod-card-body">
+                  <div className="prod-card-name" title={p.name}>{p.name}</div>
+                  {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
+                  <span className="prod-card-cat" style={{ background: cc.bg, color: cc.color }}>{p.cat || '—'}</span>
+                  <div className="prod-card-price">{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</div>
+                  <div className="prod-card-cost">Costo: {fmt(p.cost)}</div>
+                  {mp !== null && (
+                    <div className="prod-card-margin" style={{ color: marginColor(mp) }}>{mp}% margen</div>
+                  )}
+                  <div style={{ fontSize: 11, marginTop: 2, color: isLow ? 'var(--red)' : 'var(--txt3)', fontWeight: isLow ? 700 : 400 }}>
+                    <i className="fa fa-cubes" style={{ marginRight: 4 }} />Stock: {p.stock || 0}
                   </div>
-                  {mp !== null && <div style={{ fontSize: 10, fontWeight: 700, color: marginColor(mp), marginTop: 2 }}>{mp}% margen</div>}
-                  <div style={{ fontSize: 11, color: isLow ? 'var(--red)' : 'var(--txt3)', marginTop: 4, fontWeight: isLow ? 700 : 400 }}>Stock: {p.stock || 0}</div>
                 </div>
-                <div style={{ display: 'flex', borderTop: '1px solid var(--border)' }}>
-                  <button onClick={() => openMove(p)} style={{ flex: 1, padding: '7px 0', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--txt3)', fontSize: 12, fontFamily: 'inherit', transition: 'background .15s' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'var(--surface2)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'none'} title="Stock">
+                {/* FOOTER */}
+                <div className="prod-card-foot">
+                  <button className="prod-card-foot-btn" onClick={e => { e.stopPropagation(); openMove(p) }} title="Mover stock">
                     <i className="fa fa-arrows-rotate" />
                   </button>
-                  <div style={{ width: 1, background: 'var(--border)' }} />
-                  <button onClick={() => open(p)} style={{ flex: 2, padding: '7px 0', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--brand)', fontSize: 12, fontWeight: 600, fontFamily: 'inherit', transition: 'background .15s' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'var(--brand-xlt)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+                  <div className="prod-card-foot-sep" />
+                  <button className="prod-card-foot-btn" onClick={e => { e.stopPropagation(); open(p) }}>
                     <i className="fa fa-pen" /> Editar
                   </button>
-                  <div style={{ width: 1, background: 'var(--border)' }} />
-                  <button onClick={() => del(p.id)} style={{ flex: 1, padding: '7px 0', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--red)', fontSize: 12, fontFamily: 'inherit', transition: 'background .15s' }}
-                    onMouseEnter={e => e.currentTarget.style.background = '#FFF1F2'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+                  <div className="prod-card-foot-sep" />
+                  <button className="prod-card-foot-btn prod-card-foot-del" onClick={e => { e.stopPropagation(); del(p.id) }}>
                     <i className="fa fa-trash" />
                   </button>
                 </div>
@@ -487,7 +489,14 @@ export default function Catalogo() {
             )
           }) : (
             <div style={{ gridColumn: '1/-1' }}>
-              <div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>Sin productos</p></div>
+              <div className="empty-native">
+                <div className="ico"><i className="fa fa-box-open" /></div>
+                <h4>Sin productos</h4>
+                <p>Agregá tu primer producto al catálogo.</p>
+                <button className="btn btn-brand" onClick={() => setModal(true)}>
+                  <i className="fa fa-plus" /> Agregar producto
+                </button>
+              </div>
             </div>
           )}
         </div>

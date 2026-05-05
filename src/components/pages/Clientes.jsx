@@ -111,7 +111,7 @@ export default function Clientes() {
   const [importModal, setImportModal] = useState(false)
   const [detailClient, setDetailClient] = useState(null)
   const [detailTab, setDetailTab] = useState('info')
-  const [viewMode, setViewMode] = useState('table')
+  const [viewMode, setViewMode] = useState('cards')
   const [loading, setLoading] = useState(true)
   const [form, setForm] = useState({ company: '', contact: '', wa: '', email: '', rubro: '', notes: '', clientType: 'b2c' })
   const [newNote, setNewNote] = useState('')
@@ -340,36 +340,75 @@ export default function Clientes() {
           </div>
         </>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 12 }}>
-          {loading ? [1,2,3,4,5,6].map(i => (
-            <div key={i} className="card"><div className="sk sk-text" style={{ height: 16, width: '60%', marginBottom: 8 }} /><div className="sk sk-text" style={{ height: 14, width: '80%' }} /></div>
-          )) : filtered.length ? filtered.map(c => (
-            <div key={c.id} className="card" style={{ cursor: 'pointer' }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = 'var(--sh-md)' }}
-              onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}
-              onClick={() => openDetail(c)}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--grad)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 800, color: '#fff', flexShrink: 0 }}>
-                  {(c.company || '?')[0].toUpperCase()}
-                </div>
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontWeight: 800, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.company}</div>
-                  {c.contact && <div style={{ fontSize: 11, color: 'var(--txt3)' }}>{c.contact}</div>}
-                </div>
-              </div>
-              {c.rubro && <span className="badge b-purple" style={{ marginBottom: 6 }}>{c.rubro}</span>}
-              <div style={{ display: 'flex', gap: 12, fontSize: 11, color: 'var(--txt2)', marginTop: 6 }}>
-                {c.wa && <span><i className="fa-brands fa-whatsapp" style={{ marginRight: 3 }} />{c.wa}</span>}
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, paddingTop: 8, borderTop: '1px solid var(--border)' }}>
-                <span style={{ fontSize: 10, color: 'var(--txt3)' }}>{clientBudgets(c).length} presupuesto{clientBudgets(c).length !== 1 ? 's' : ''}</span>
-                <div className="acts" onClick={e => e.stopPropagation()}>
-                  <button className="act edit" onClick={() => openEdit(c)}><i className="fa fa-pen" /></button>
-                  <button className="act del" onClick={() => del(c.id)}><i className="fa fa-trash" /></button>
-                </div>
+        <div className="nc-list">
+          {loading ? [1,2,3,4,5].map(i => (
+            <div key={i} className="nc">
+              <div className="sk-ava" />
+              <div className="nc-body">
+                <div className="sk-line" style={{ width: '55%' }} />
+                <div className="sk-line" style={{ width: '35%', marginTop: 7 }} />
               </div>
             </div>
-          )) : <div className="empty" style={{ gridColumn: '1/-1' }}><div className="ico"><i className="fa fa-users" /></div><h4>Sin clientes</h4></div>}
+          )) : filtered.length ? filtered.map(c => {
+            const ps = clientPayStatus(c)
+            const dotColor = ps === 'pending' ? '#DC2626' : ps === 'partial' ? '#D97706' : ps === 'paid' ? '#16A34A' : null
+            const dotTitle = ps === 'pending' ? 'Pago pendiente' : ps === 'partial' ? 'Seña abonada' : ps === 'paid' ? 'Pagado' : null
+            const nb = clientBudgets(c).length
+            const total = clientTotalVendido(c)
+            const days = clientLastBudgetDays(c)
+            const daysLabel = days === null ? null : days === 0 ? 'hoy' : days === 1 ? 'ayer' : `hace ${days}d`
+            const daysColor = days === null ? 'var(--txt3)' : days > 90 ? '#DC2626' : days > 30 ? '#D97706' : 'var(--txt3)'
+            return (
+              <div key={c.id} className="nc" onClick={() => openDetail(c)}>
+                {/* Avatar */}
+                <div className="nc-ava nc-ava-brand" style={{ position: 'relative' }}>
+                  <span style={{ fontSize: 18, fontWeight: 800 }}>{(c.company || '?')[0].toUpperCase()}</span>
+                  {dotColor && (
+                    <span className="nc-dot" style={{ background: dotColor, border: '2px solid var(--surface)' }} title={dotTitle} />
+                  )}
+                </div>
+                {/* Body */}
+                <div className="nc-body">
+                  <div className="nc-title">{c.company}</div>
+                  <div className="nc-sub">
+                    {c.contact && <span>{c.contact}</span>}
+                    {c.contact && c.rubro && <span> · </span>}
+                    {c.rubro && <span>{c.rubro}</span>}
+                    {!c.contact && !c.rubro && <span style={{ color: 'var(--txt4)' }}>Sin datos adicionales</span>}
+                  </div>
+                  {(nb > 0 || total > 0) && (
+                    <div className="nc-meta">
+                      <i className="fa fa-file-invoice-dollar" style={{ marginRight: 4 }} />
+                      {nb} pedido{nb !== 1 ? 's' : ''}
+                      {total > 0 && <span> · <span className="nc-meta-val">{fmt(total)}</span></span>}
+                      {daysLabel && <span style={{ color: daysColor }}> · {daysLabel}</span>}
+                    </div>
+                  )}
+                </div>
+                {/* Actions */}
+                <div style={{ display: 'flex', gap: 6, flexShrink: 0 }} onClick={e => e.stopPropagation()}>
+                  {c.wa && (
+                    <a href={`https://wa.me/${c.wa.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer"
+                      className="ibtn ibtn-wa" title="WhatsApp" onClick={e => e.stopPropagation()}>
+                      <i className="fa-brands fa-whatsapp" />
+                    </a>
+                  )}
+                  <button className="ibtn ibtn-edit" onClick={() => openEdit(c)} title="Editar">
+                    <i className="fa fa-pen" />
+                  </button>
+                </div>
+              </div>
+            )
+          }) : (
+            <div className="empty-native">
+              <div className="ico"><i className="fa fa-users" /></div>
+              <h4>Sin clientes</h4>
+              <p>Agregá tu primer cliente o empresa.</p>
+              <button className="btn btn-brand" onClick={() => openEdit()}>
+                <i className="fa fa-plus" /> Agregar cliente
+              </button>
+            </div>
+          )}
         </div>
       )}
 
