@@ -100,7 +100,7 @@ export default function Insumos() {
           <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{insumos.length}</div>
         </div>
         <div className="bento-kpi" style={{ borderLeft: '3px solid var(--green)', padding: '12px 14px 10px', paddingLeft: 14 }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Valor en stock</div>
+          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Valor Total en Stock</div>
           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{fmt(totalValue)}</div>
         </div>
         <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : 'var(--green)'}`, padding: '12px 14px 10px', paddingLeft: 14 }}>
@@ -156,9 +156,9 @@ export default function Insumos() {
                   <th className="col-hide-mobile">Categoría</th>
                   <th className="col-hide-mobile">Proveedor</th>
                   <th style={{ textAlign: 'right' }}>Costo</th>
-                  <th style={{ textAlign: 'center' }}>Stock</th>
-                  <th className="col-hide-mobile" style={{ textAlign: 'center' }}>Mín.</th>
-                  <th className="col-hide-mobile" style={{ textAlign: 'center' }}>Unidad</th>
+                  <th style={{ textAlign: 'right' }}>Stock</th>
+                  <th className="col-hide-mobile" style={{ textAlign: 'right' }}>Mín.</th>
+                  <th className="col-hide-mobile" style={{ textAlign: 'right' }}>Unidad</th>
                   <th className="col-hide-mobile" style={{ textAlign: 'right' }}>Valor</th>
                   <th></th>
                 </tr>
@@ -173,17 +173,17 @@ export default function Insumos() {
                 {filtered.map(item => {
                   const isLow = item.minStock > 0 && (item.stock || 0) <= item.minStock
                   return (
-                    <tr key={item.id} style={isLow ? { background: 'var(--red-lt)' } : undefined}>
+                    <tr key={item.id} style={isLow ? { background: '#FFF7ED' } : undefined}>
                       <td style={{ fontWeight: 600 }}>{item.name}</td>
                       <td className="col-hide-mobile"><span className="badge b-draft">{item.cat || '—'}</span></td>
                       <td className="col-hide-mobile" style={{ fontSize: 11 }}>{supplierName(item.supplierId)}</td>
                       <td style={{ textAlign: 'right' }}>{fmt(item.cost)}</td>
-                      <td style={{ textAlign: 'center', fontWeight: 700, color: isLow ? 'var(--red)' : 'var(--txt)' }}>
+                      <td style={{ textAlign: 'right', fontWeight: 700, color: isLow ? '#EA580C' : 'var(--txt)' }}>
                         {item.stock || 0}
-                        {isLow && <i className="fa fa-triangle-exclamation" style={{ color: 'var(--red)', marginLeft: 4, fontSize: 10 }} />}
+                        {isLow && <i className="fa fa-triangle-exclamation" style={{ color: '#EA580C', marginLeft: 4, fontSize: 10 }} />}
                       </td>
-                      <td className="col-hide-mobile" style={{ textAlign: 'center', color: 'var(--txt3)' }}>{item.minStock || '—'}</td>
-                      <td className="col-hide-mobile" style={{ textAlign: 'center', fontSize: 11 }}>{item.unit || 'unidad'}</td>
+                      <td className="col-hide-mobile" style={{ textAlign: 'right', color: 'var(--txt3)' }}>{item.minStock || '—'}</td>
+                      <td className="col-hide-mobile" style={{ textAlign: 'right', fontSize: 11 }}>{item.unit || 'unidad'}</td>
                       <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 600 }}>{fmt((item.stock || 0) * (Number(item.cost) || 0))}</td>
                       <td>
                         <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
@@ -235,7 +235,7 @@ export default function Insumos() {
                     <th>Fecha</th>
                     <th>Tipo</th>
                     <th>Insumo</th>
-                    <th style={{ textAlign: 'center' }}>Cantidad</th>
+                    <th style={{ textAlign: 'right' }}>Cantidad</th>
                     <th className="col-hide-mobile">Nota</th>
                   </tr>
                 </thead>
@@ -252,7 +252,7 @@ export default function Insumos() {
                           <div style={{ fontWeight: 600, fontSize: 12 }}>{m.ref || insumo?.name || '—'}</div>
                           {insumo?.cat && <div style={{ fontSize: 10, color: 'var(--txt4)' }}>{insumo.cat}</div>}
                         </td>
-                        <td style={{ textAlign: 'center' }}>
+                        <td style={{ textAlign: 'right' }}>
                           <span style={{ fontWeight: 800, fontSize: 13, color: isAdjust ? 'var(--brand)' : isIn ? '#16A34A' : '#DC2626', fontFamily: 'ui-monospace,SFMono-Regular,monospace' }}>
                             {isAdjust ? '=' : isIn ? '+' : '−'}{m.qty}
                           </span>
