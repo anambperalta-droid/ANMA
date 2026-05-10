@@ -802,6 +802,8 @@ export default function Historial() {
         out.push({
           tone: 'warning',
           icon: 'fa-triangle-exclamation',
+          label: 'Concentración de ventas',
+          value: `${topPct}%`,
           title: `Riesgo de concentración: ${topPct}% en un solo cliente`,
           desc: `${topClients[0][0]} concentra el ${topPct}% de tus ventas confirmadas. Si pierde el contrato, te golpea fuerte. Pensá en diversificar.`,
         })
@@ -809,6 +811,8 @@ export default function Historial() {
         out.push({
           tone: 'info',
           icon: 'fa-circle-info',
+          label: 'Cliente principal',
+          value: `${topPct}%`,
           title: `${topClients[0][0]} es tu cliente más fuerte (${topPct}%)`,
           desc: `Cuidalo bien — representa ${topPct}% de tus ventas confirmadas en el período.`,
         })
@@ -821,6 +825,8 @@ export default function Historial() {
         out.push({
           tone: 'success',
           icon: 'fa-rocket',
+          label: 'Crecimiento del período',
+          value: `+${deltaBrutas}%`,
           title: `Crecimiento fuerte: +${deltaBrutas}% vs período anterior`,
           desc: `Estás vendiendo ${deltaBrutas}% más que el período anterior. Identificá qué cambió y duplicá esa apuesta.`,
         })
@@ -828,6 +834,8 @@ export default function Historial() {
         out.push({
           tone: 'warning',
           icon: 'fa-arrow-trend-down',
+          label: 'Caída de ventas',
+          value: `-${Math.abs(deltaBrutas)}%`,
           title: `Caída de ${Math.abs(deltaBrutas)}% vs período anterior`,
           desc: `Las ventas bajaron ${Math.abs(deltaBrutas)}%. Revisá la cartera de seguimiento — puede haber leads tibios sin recordatorio.`,
         })
@@ -841,6 +849,8 @@ export default function Historial() {
         out.push({
           tone: 'success',
           icon: 'fa-bullseye',
+          label: 'Conversión excelente',
+          value: `${cr}%`,
           title: `Conversión excelente: ${cr}%`,
           desc: `Cerrás ${cr} de cada 100 presupuestos enviados. Por encima del promedio del rubro (35–55%).`,
         })
@@ -848,6 +858,8 @@ export default function Historial() {
         out.push({
           tone: 'warning',
           icon: 'fa-funnel-dollar',
+          label: 'Conversión baja',
+          value: `${cr}%`,
           title: `Conversión baja: ${cr}%`,
           desc: `Cerrás solo ${cr}% de los presupuestos. Considerá: precio competitivo, tiempos de respuesta, calidad del seguimiento.`,
         })
@@ -865,6 +877,8 @@ export default function Historial() {
         out.push({
           tone: 'info',
           icon: 'fa-magnifying-glass-chart',
+          label: `Pérdidas: "${top[0]}"`,
+          value: `${pct}%`,
           title: `${pct}% de las pérdidas: "${top[0]}"`,
           desc: `Es el motivo más frecuente. Atacarlo puede recuperar muchas oportunidades.`,
         })
@@ -876,6 +890,8 @@ export default function Historial() {
       out.push({
         tone: 'warning',
         icon: 'fa-hand-holding-dollar',
+        label: 'Cobros vencidos',
+        value: money(cobrosVencidosMonto),
         title: `${cobrosVencidos.length} cobros vencidos · ${money(cobrosVencidosMonto)}`,
         desc: `Hay dinero pendiente que ya debería estar en caja. Empezá por los más antiguos.`,
       })
@@ -890,6 +906,8 @@ export default function Historial() {
           out.push({
             tone: 'success',
             icon: 'fa-arrow-up-right-dots',
+            label: 'Ticket promedio',
+            value: `+${ticketDelta}%`,
             title: `Ticket promedio creció ${ticketDelta}%`,
             desc: `Pasaste de ${money(prevAvg)} a ${money(avgTicket)}. Estás vendiendo más por venta — buen pricing o más up-sell.`,
           })
@@ -897,6 +915,8 @@ export default function Historial() {
           out.push({
             tone: 'warning',
             icon: 'fa-arrow-trend-down',
+            label: 'Ticket promedio',
+            value: `-${Math.abs(ticketDelta)}%`,
             title: `Ticket promedio cayó ${Math.abs(ticketDelta)}%`,
             desc: `Estás vendiendo más chico (${money(avgTicket)} vs ${money(prevAvg)}). ¿Cambió el mix de productos?`,
           })
@@ -1440,22 +1460,23 @@ export default function Historial() {
                 <span className="card-title"><i className="fa fa-lightbulb" style={{ color: '#F59E0B', marginRight: 7 }} />Insights del período</span>
                 <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt4)', background: 'var(--surface2)', padding: '2px 8px', borderRadius: 10, marginLeft: 'auto' }}>{insights.length}</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
                 {insights.map((ins, i) => {
                   const palette = ins.tone === 'success'
-                    ? { bg: 'rgba(22,163,74,.06)', border: 'rgba(22,163,74,.25)', icon: '#16A34A' }
+                    ? { bg: 'rgba(22,163,74,.06)', border: 'rgba(22,163,74,.25)', icon: '#16A34A', val: '#16A34A' }
                     : ins.tone === 'warning'
-                      ? { bg: 'rgba(220,38,38,.05)', border: 'rgba(220,38,38,.25)', icon: '#DC2626' }
-                      : { bg: 'var(--brand-xlt)', border: 'var(--brand)', icon: 'var(--brand)' }
+                      ? { bg: 'rgba(220,38,38,.05)', border: 'rgba(220,38,38,.25)', icon: '#DC2626', val: '#DC2626' }
+                      : { bg: 'var(--brand-xlt)', border: 'var(--brand)', icon: 'var(--brand)', val: 'var(--brand)' }
                   return (
-                    <div key={i} style={{ display: 'flex', gap: 12, padding: '12px 14px', background: palette.bg, border: `1px solid ${palette.border}`, borderRadius: 10 }}>
-                      <div style={{ width: 32, height: 32, borderRadius: 8, background: palette.icon, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 13 }}>
-                        <i className={`fa ${ins.icon}`} />
+                    <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '12px 14px', background: palette.bg, border: `1px solid ${palette.border}`, borderRadius: 12, boxSizing: 'border-box' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <div style={{ width: 22, height: 22, borderRadius: 6, background: palette.icon, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 10 }}>
+                          <i className={`fa ${ins.icon}`} />
+                        </div>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--txt2)', lineHeight: 1.3, flex: 1 }}>{ins.label}</span>
                       </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--txt)', marginBottom: 2 }}>{ins.title}</div>
-                        <div style={{ fontSize: 12, color: 'var(--txt2)', lineHeight: 1.5 }}>{ins.desc}</div>
-                      </div>
+                      <div style={{ fontSize: 24, fontWeight: 800, color: palette.val, lineHeight: 1, fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em' }}>{ins.value}</div>
+                      <div style={{ fontSize: 11, color: 'var(--txt3)', lineHeight: 1.45, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{ins.desc}</div>
                     </div>
                   )
                 })}
