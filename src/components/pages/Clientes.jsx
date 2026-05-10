@@ -340,67 +340,72 @@ export default function Clientes() {
           </div>
         </>
       ) : (
-        <div className="nc-list">
-          {loading ? [1,2,3,4,5].map(i => (
-            <div key={i} className="nc">
-              <div className="sk-ava" />
-              <div className="nc-body">
-                <div className="sk-line" style={{ width: '55%' }} />
-                <div className="sk-line" style={{ width: '35%', marginTop: 7 }} />
-              </div>
+        <div className="nc-grid">
+          {loading ? [1,2,3,4,5,6,7,8].map(i => (
+            <div key={i} className="nc" style={{ flexDirection: 'column', alignItems: 'center', padding: '20px 14px 14px', gap: 0 }}>
+              <div className="sk" style={{ width: 60, height: 60, borderRadius: '50%', background: 'var(--surface3)', animation: 'skPulse 1.4s ease infinite', flexShrink: 0, marginBottom: 10 }} />
+              <div className="sk-line" style={{ width: '65%', marginBottom: 6 }} />
+              <div className="sk-line" style={{ width: '40%' }} />
             </div>
           )) : filtered.length ? filtered.map(c => {
             const ps = clientPayStatus(c)
-            const dotColor = ps === 'pending' ? '#DC2626' : ps === 'partial' ? '#D97706' : ps === 'paid' ? '#16A34A' : null
-            const dotTitle = ps === 'pending' ? 'Pago pendiente' : ps === 'partial' ? 'Seña abonada' : ps === 'paid' ? 'Pagado' : null
+            const dotColor = ps === 'pending' ? '#DC2626' : ps === 'partial' ? '#D97706' : ps === 'paid' ? '#16A34A' : 'var(--border2)'
+            const dotTitle = ps === 'pending' ? 'Pago pendiente' : ps === 'partial' ? 'Seña abonada' : ps === 'paid' ? 'Pagado' : 'Sin pedidos'
             const nb = clientBudgets(c).length
             const total = clientTotalVendido(c)
             const days = clientLastBudgetDays(c)
-            const daysLabel = days === null ? null : days === 0 ? 'hoy' : days === 1 ? 'ayer' : `hace ${days}d`
+            const daysLabel = days === null ? null : days === 0 ? 'hoy' : days === 1 ? 'ayer' : `${days}d`
             const daysColor = days === null ? 'var(--txt3)' : days > 90 ? '#DC2626' : days > 30 ? '#D97706' : 'var(--txt3)'
             return (
               <div key={c.id} className="nc" onClick={() => openDetail(c)}>
-                {/* Avatar */}
-                <div className="nc-ava nc-ava-brand" style={{ position: 'relative' }}>
-                  <span style={{ fontSize: 18, fontWeight: 800 }}>{(c.company || '?')[0].toUpperCase()}</span>
-                  {dotColor && (
-                    <span className="nc-dot" style={{ background: dotColor, border: '2px solid var(--surface)' }} title={dotTitle} />
-                  )}
+                {/* Avatar centrado con dot de estado */}
+                <div className="nc-ava nc-ava-brand">
+                  {(c.company || '?')[0].toUpperCase()}
+                  <span className="nc-dot" style={{ background: dotColor, border: '2.5px solid var(--surface)' }} title={dotTitle} />
                 </div>
-                {/* Body */}
+
+                {/* Nombre e info centrada */}
                 <div className="nc-body">
                   <div className="nc-title">{c.company}</div>
                   <div className="nc-sub">
-                    {c.contact && <span>{c.contact}</span>}
-                    {c.contact && c.rubro && <span> · </span>}
-                    {c.rubro && <span>{c.rubro}</span>}
-                    {!c.contact && !c.rubro && <span style={{ color: 'var(--txt4)' }}>Sin datos adicionales</span>}
+                    {c.contact || c.rubro || <span style={{ color: 'var(--txt4)' }}>Sin datos adicionales</span>}
                   </div>
                   {(nb > 0 || total > 0) && (
                     <div className="nc-meta">
-                      <i className="fa fa-file-invoice-dollar" style={{ marginRight: 4 }} />
-                      {nb} pedido{nb !== 1 ? 's' : ''}
-                      {total > 0 && <span> · <span className="nc-meta-val">{fmt(total)}</span></span>}
-                      {daysLabel && <span style={{ color: daysColor }}> · {daysLabel}</span>}
+                      <span><i className="fa fa-file-invoice-dollar" style={{ fontSize: 10, marginRight: 3 }} />{nb}</span>
+                      {total > 0 && <span className="nc-meta-val">{fmt(total)}</span>}
+                      {daysLabel && <span style={{ color: daysColor }}>{daysLabel}</span>}
                     </div>
                   )}
                 </div>
-                {/* Actions */}
-                <div style={{ display: 'flex', gap: 6, flexShrink: 0 }} onClick={e => e.stopPropagation()}>
+
+                {/* Íconos de contacto rápido */}
+                <div className="nc-qact" onClick={e => e.stopPropagation()}>
                   {c.wa && (
-                    <a href={`https://wa.me/${c.wa.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer"
-                      className="ibtn ibtn-wa" title="WhatsApp" onClick={e => e.stopPropagation()}>
+                    <button className="ibtn ibtn-wa ibtn-sm" title={`WhatsApp · ${c.wa}`} onClick={() => openWA(c)}>
                       <i className="fa-brands fa-whatsapp" />
+                    </button>
+                  )}
+                  {c.email && (
+                    <a href={`mailto:${c.email}`} className="ibtn ibtn-email ibtn-sm" title={c.email}
+                      onClick={e => e.stopPropagation()}>
+                      <i className="fa fa-envelope" />
                     </a>
                   )}
-                  <button className="ibtn ibtn-edit" onClick={() => openEdit(c)} title="Editar">
+                  {c.wa && (
+                    <a href={`tel:${c.wa.replace(/\D/g,'')}`} className="ibtn ibtn-call ibtn-sm" title={`Llamar · ${c.wa}`}
+                      onClick={e => e.stopPropagation()}>
+                      <i className="fa fa-phone" />
+                    </a>
+                  )}
+                  <button className="ibtn ibtn-edit ibtn-sm" title="Editar cliente" onClick={() => openEdit(c)}>
                     <i className="fa fa-pen" />
                   </button>
                 </div>
               </div>
             )
           }) : (
-            <div className="empty-native">
+            <div className="empty-native" style={{ gridColumn: '1 / -1' }}>
               <div className="ico"><i className="fa fa-users" /></div>
               <h4>Sin clientes</h4>
               <p>Agregá tu primer cliente o empresa.</p>
