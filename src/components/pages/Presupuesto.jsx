@@ -725,8 +725,8 @@ export default function Presupuesto() {
               <>
                 <PaneHeader icon="fa-box-open" title="Paso 2 · Productos" subtitle="Agregá los ítems que incluye el pedido" />
                 <div style={{ overflowX: 'auto' }}>
-                  <table>
-                    <thead><tr><th style={{ width: 24 }}></th><th style={{ minWidth: 130 }}>Producto</th><th style={{ width: 88 }}>Variante</th><th style={{ width: 50 }}>Stock</th><th style={{ width: 56 }}>Cant.</th><th style={{ width: 78 }}>Costo u.</th><th style={{ width: 78 }}>Precio u.</th><th style={{ width: 82 }}>Subtotal</th><th style={{ width: 36 }}></th></tr></thead>
+                  <table style={{ tableLayout: 'fixed', width: '100%', minWidth: 580 }}>
+                    <thead><tr><th style={{ width: 24 }}></th><th>Producto</th><th style={{ width: 88 }}>Variante</th><th style={{ width: 50 }}>Stock</th><th style={{ width: 56 }}>Cant.</th><th style={{ width: 78 }}>Costo u.</th><th style={{ width: 78 }}>Precio u.</th><th style={{ width: 82 }}>Subtotal</th><th style={{ width: 36 }}></th></tr></thead>
                     <tbody>
                       {items.map((it, i) => {
                         const overStock = it.stockAvailable !== undefined && num(it.qty) > it.stockAvailable
@@ -740,21 +740,21 @@ export default function Presupuesto() {
                             </td>
                             <td>
                         <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-                          <input type="text" value={it.name} onChange={e => updateItem(i, 'name', e.target.value)} placeholder="Nombre del producto" style={{ padding: '4px 6px', fontSize: 12, flex: 1 }} />
+                          <input type="text" value={it.name} onChange={e => updateItem(i, 'name', e.target.value)} placeholder="Nombre" style={{ padding: '4px 6px', fontSize: 12, flex: 1, minWidth: 0 }} />
                           <button onClick={() => openPicker(i)} type="button" title="Elegir del catálogo"
                             style={{ width: 32, height: 32, borderRadius: 8, border: '1.5px solid var(--border)', background: 'var(--surface2)', color: 'var(--brand)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, flexShrink: 0, transition: 'background .12s' }}>
                             <i className="fa fa-list" />
                           </button>
                         </div>
                       </td>
-                            <td><input type="text" value={it.variant || ''} onChange={e => updateItem(i, 'variant', e.target.value)} placeholder="Color / talle / medida" style={{ padding: '4px 6px', fontSize: 12 }} /></td>
+                            <td><input type="text" value={it.variant || ''} onChange={e => updateItem(i, 'variant', e.target.value)} placeholder="Color / talle" style={{ padding: '4px 6px', fontSize: 12, width: '100%' }} /></td>
                             <td style={{ textAlign: 'center', fontSize: 11, color: overStock ? 'var(--red)' : 'var(--txt3)', fontWeight: overStock ? 700 : 400 }}>
                               {it.stockAvailable !== undefined ? it.stockAvailable : '—'}
                               {overStock && <i className="fa fa-triangle-exclamation" style={{ color: 'var(--red)', marginLeft: 2, fontSize: 9 }} />}
                             </td>
-                            <td><input type="number" value={it.qty} onFocus={selectOnFocus} onChange={e => updateItem(i, 'qty', e.target.value === '' ? '' : Math.max(1, Number(e.target.value) || 1))} onBlur={e => { if (e.target.value === '') updateItem(i, 'qty', 1) }} min="1" style={{ padding: '4px 6px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit' }} /></td>
-                            <td><input type="number" value={it.costUnit} onFocus={selectOnFocus} onChange={e => updateItem(i, 'costUnit', e.target.value)} onBlur={e => { if (e.target.value === '') updateItem(i, 'costUnit', 0) }} min="0" style={{ padding: '4px 6px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit' }} /></td>
-                            <td><input type="number" value={it.priceUnit} onFocus={selectOnFocus} onChange={e => updateItem(i, 'priceUnit', e.target.value)} onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }} min="0" style={{ padding: '4px 6px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit' }} /></td>
+                            <td><input type="number" value={it.qty} onFocus={selectOnFocus} onChange={e => updateItem(i, 'qty', e.target.value === '' ? '' : Math.max(1, Number(e.target.value) || 1))} onBlur={e => { if (e.target.value === '') updateItem(i, 'qty', 1) }} min="1" style={{ padding: '4px 6px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit', width: '100%' }} /></td>
+                            <td><input type="number" value={it.costUnit} onFocus={selectOnFocus} onChange={e => updateItem(i, 'costUnit', e.target.value)} onBlur={e => { if (e.target.value === '') updateItem(i, 'costUnit', 0) }} min="0" style={{ padding: '4px 6px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit', width: '100%' }} /></td>
+                            <td><input type="number" value={it.priceUnit} onFocus={selectOnFocus} onChange={e => updateItem(i, 'priceUnit', e.target.value)} onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }} min="0" style={{ padding: '4px 6px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit', width: '100%' }} /></td>
                             <td style={{ fontWeight: 700, color: 'var(--money)', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit' }}>{fmt(num(it.qty) * num(it.priceUnit))}</td>
                             <td><button className="act del" onClick={() => removeItem(i)}><i className="fa fa-xmark" /></button></td>
                           </tr>
@@ -816,9 +816,9 @@ export default function Presupuesto() {
                   </div>
                 </div>
                 <div className="grid3" style={{ marginTop: 4 }}>
-                  <div className="fg"><label>Margen ganancia (%)</label><input type="number" value={form.margin} onFocus={selectOnFocus} onChange={e => setF('margin', e.target.value)} onBlur={e => { if (e.target.value === '') setF('margin', 0) }} min="0" max="100" /></div>
-                  <div className="fg"><label>Seña requerida (%)</label><input type="number" value={form.deposit} onFocus={selectOnFocus} onChange={e => setF('deposit', e.target.value)} onBlur={e => { if (e.target.value === '') setF('deposit', 0) }} min="0" max="100" /></div>
-                  <div className="fg"><label>Impresión/logo x u. ($)</label><input type="number" value={form.logoCost} onFocus={selectOnFocus} onChange={e => setF('logoCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('logoCost', 0) }} min="0" /></div>
+                  <div className="fg"><label>Margen ganancia (%)</label><input type="number" value={form.margin} onFocus={selectOnFocus} onChange={e => setF('margin', e.target.value)} onBlur={e => { if (e.target.value === '') setF('margin', 0) }} min="0" max="100" style={{ maxWidth: 120 }} /></div>
+                  <div className="fg"><label>Seña requerida (%)</label><input type="number" value={form.deposit} onFocus={selectOnFocus} onChange={e => setF('deposit', e.target.value)} onBlur={e => { if (e.target.value === '') setF('deposit', 0) }} min="0" max="100" style={{ maxWidth: 120 }} /></div>
+                  <div className="fg"><label>Impresión/logo x u. ($)</label><input type="number" value={form.logoCost} onFocus={selectOnFocus} onChange={e => setF('logoCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('logoCost', 0) }} min="0" style={{ maxWidth: 140 }} /></div>
                 </div>
                 <div className="grid2">
                   <div className="fg"><label>Nota interna</label><textarea value={form.noteInt} onChange={e => setF('noteInt', e.target.value)} rows={2} placeholder="Solo para vos..." /></div>
