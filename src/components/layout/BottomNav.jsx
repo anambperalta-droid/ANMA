@@ -2,11 +2,11 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
 const TABS = [
-  { path: '/',            icon: 'fa-house',               label: 'Inicio',    perm: 'dashboard.view' },
-  { path: '/presupuesto', icon: 'fa-plus',                label: 'Pedido',    perm: 'pedido.create',  fab: true },
-  { path: '/clientes',    icon: 'fa-users',               label: 'Clientes',  perm: 'cliente.view' },
-  { path: '/catalogo',    icon: 'fa-cube',                label: 'Productos', perm: 'catalogo.view' },
-  { path: null,           icon: 'fa-grid-2',              label: 'Más',       always: true },
+  { path: '/',            icon: 'fa-house',    label: 'Inicio',    perm: 'dashboard.view' },
+  { path: '/clientes',    icon: 'fa-users',    label: 'Clientes',  perm: 'cliente.view' },
+  { path: '/presupuesto', icon: 'fa-plus',     label: 'Pedido',    perm: 'pedido.create', fab: true },
+  { path: '/catalogo',    icon: 'fa-cube',     label: 'Productos', perm: 'catalogo.view' },
+  { path: null,           icon: 'fa-grid-2',   label: 'Más',       always: true },
 ]
 
 export default function BottomNav({ onMore }) {
