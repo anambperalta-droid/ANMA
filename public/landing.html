@@ -254,6 +254,16 @@ section{padding:84px 0}
 /* FLOAT WA */
 .fab-wa{position:fixed;bottom:24px;right:24px;width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 24px rgba(37,211,102,.5);z-index:60;transition:transform .25s}
 .fab-wa:hover{transform:scale(1.08)}
+/* Hero mock floating chips */
+.mock-wrap{position:relative}
+.mock-notify{position:absolute;top:-18px;right:24px;background:#fff;border-radius:99px;padding:8px 14px 8px 10px;display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:#0F172A;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:3;border:1px solid rgba(0,0,0,.06);white-space:nowrap;animation:floatChip 3s ease-in-out infinite}
+.mock-notify .ndot{width:8px;height:8px;border-radius:50%;background:#10b981;flex-shrink:0;box-shadow:0 0 0 3px rgba(16,185,129,.25);animation:pulse 2s infinite}
+.mock-badge{position:absolute;bottom:-16px;left:18px;background:linear-gradient(135deg,#7c3aed,#059669);border-radius:14px;padding:11px 18px;display:flex;gap:16px;z-index:3;box-shadow:0 8px 24px rgba(124,58,237,.45)}
+.mock-badge .bstat{text-align:center}
+.mock-badge .bv{font-size:16px;font-weight:800;color:#fff;line-height:1.1}
+.mock-badge .bl{font-size:9px;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.mock-badge .bdiv{width:1px;background:rgba(255,255,255,.2)}
+@keyframes floatChip{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
 /* FOOTER */
 footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
@@ -272,6 +282,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 .foot-bot .badges i{color:#34d399}
 @media(max-width:780px){.foot-grid{grid-template-columns:1fr 1fr;gap:30px}}
 @media(max-width:480px){.foot-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.mock-notify{font-size:10px;right:10px}.mock-badge{display:none}}
 </style>
 </head>
 <body>
@@ -313,22 +324,44 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
         <span><i class="fa-solid fa-check"></i> Cancelás cuando quieras</span>
       </div>
     </div>
-    <div class="mock">
-      <div class="mock-bar"><span></span><span></span><span></span><span class="url">anma-hub.vercel.app</span></div>
-      <div class="mock-body">
-        <div class="mock-h">
-          <b>Dashboard · Este mes</b>
-          <span class="pill">+18% vs marzo</span>
+    <div class="mock-wrap">
+      <!-- Floating notification chip -->
+      <div class="mock-notify">
+        <span class="ndot"></span>
+        P-0043 · Estudio Sur confirmó · $65.000
+      </div>
+
+      <div class="mock">
+        <div class="mock-bar"><span></span><span></span><span></span><span class="url">anma-hub.vercel.app</span></div>
+        <div class="mock-body">
+          <div class="mock-h">
+            <b>Dashboard · Este mes</b>
+            <span class="pill">+18% vs marzo</span>
+          </div>
+          <div class="mock-stat">
+            <div><div class="v">$1.2M<span class="delta">↑18%</span></div><div class="l">Ingresos</div></div>
+            <div><div class="v">42<span class="delta">↑12%</span></div><div class="l">Pedidos</div></div>
+            <div><div class="v">8</div><div class="l">A cobrar</div></div>
+          </div>
+          <div class="mock-row"><span class="dot"></span><b>P-0042 · Sofía Ramos</b><span class="amt">$48.500</span></div>
+          <div class="mock-row"><span class="dot" style="background:#f59e0b"></span><b>P-0041 · Luz & Forma</b><span class="amt">$13.930</span></div>
+          <div class="mock-row"><span class="dot"></span><b>P-0040 · Estudio Norte</b><span class="amt">$92.000</span></div>
+          <div class="mock-row"><span class="dot" style="background:#7c3aed"></span><b>P-0039 · Carla M.</b><span class="amt">$22.150</span></div>
+          <!-- Mini progress bar -->
+          <div style="margin-top:12px;padding-top:10px;border-top:1px solid #f1f5f9">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:#64748b;margin-bottom:5px"><span>Meta mensual</span><span style="font-weight:700;color:#059669">68% alcanzado</span></div>
+            <div style="height:5px;background:#f1f5f9;border-radius:99px;overflow:hidden"><div style="width:68%;height:100%;background:linear-gradient(90deg,#7c3aed,#059669);border-radius:99px"></div></div>
+          </div>
         </div>
-        <div class="mock-stat">
-          <div><div class="v">$1.2M<span class="delta">↑18%</span></div><div class="l">Ingresos</div></div>
-          <div><div class="v">42<span class="delta">↑12%</span></div><div class="l">Pedidos</div></div>
-          <div><div class="v">8</div><div class="l">A cobrar</div></div>
-        </div>
-        <div class="mock-row"><span class="dot"></span><b>P-0042 · Sofía Ramos</b><span class="amt">$48.500</span></div>
-        <div class="mock-row"><span class="dot" style="background:#f59e0b"></span><b>P-0041 · Luz & Forma</b><span class="amt">$13.930</span></div>
-        <div class="mock-row"><span class="dot"></span><b>P-0040 · Estudio Norte</b><span class="amt">$92.000</span></div>
-        <div class="mock-row"><span class="dot" style="background:#7c3aed"></span><b>P-0039 · Carla M.</b><span class="amt">$22.150</span></div>
+      </div>
+
+      <!-- Floating mini-stat badge -->
+      <div class="mock-badge">
+        <div class="bstat"><div class="bv">68%</div><div class="bl">Conversión</div></div>
+        <div class="bdiv"></div>
+        <div class="bstat"><div class="bv">↑18%</div><div class="bl">vs mes ant.</div></div>
+        <div class="bdiv"></div>
+        <div class="bstat"><div class="bv">$0</div><div class="bl">Perdidos</div></div>
       </div>
     </div>
   </div>
@@ -344,21 +377,19 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
         
         <div class="impact-grid">
             <div class="impact-card">
-                <div class="impact-num">Recuperá 1 día</div>
-                <div class="impact-lbl">De trabajo a la semana</div>
-                <div class="impact-desc">Eliminamos la carga manual de datos para que te enfocues exclusivamente en vender.</div>
+                <div class="impact-num">−8 hs</div>
+                <div class="impact-lbl">por semana recuperadas</div>
+                <div class="impact-desc">Eliminamos la carga manual de datos para que te enfoques exclusivamente en vender y crecer.</div>
             </div>
-
             <div class="impact-card">
                 <div class="impact-num">+30%</div>
-                <div class="impact-lbl">Cierre de ventas</div>
-                <div class="impact-desc">Con recordatorios automáticos y seguimiento profesional, ningún cliente se queda sin respuesta.</div>
+                <div class="impact-lbl">más ventas cerradas</div>
+                <div class="impact-desc">Con seguimiento automático y alertas por urgencia, ningún presupuesto se queda sin respuesta.</div>
             </div>
-
             <div class="impact-card">
                 <div class="impact-num">100%</div>
-                <div class="impact-lbl">Claridad en tu rentabilidad</div>
-                <div class="impact-desc">Sabé exactamente cuánto ganás y quiénes son tus mejores clientes con un solo click.</div>
+                <div class="impact-lbl">claridad en tu rentabilidad</div>
+                <div class="impact-desc">Sabé exactamente cuánto ganás, quiénes son tus mejores clientes y dónde perdés plata.</div>
             </div>
         </div>
     </div>
@@ -525,7 +556,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
         <p>Una demo navegable con datos reales (ficticios). Recorré el dashboard, los presupuestos, el seguimiento, las métricas — sin crear cuenta, sin compromiso.</p>
         <div class="ctas">
           <a href="/demo.html" class="btn btn-primary"><i class="fa-solid fa-play"></i> Abrir demo en vivo</a>
-          <a href="https://wa.me/5491100000000?text=Hola%20ANMA%2C%20quiero%20una%20demo%20guiada" target="_blank" class="btn btn-ghost"><i class="fa-brands fa-whatsapp"></i> Demo guiada por video-call</a>
+          <a href="https://wa.me/5491169456863?text=Hola%20ANMA%2C%20quiero%20una%20demo%20guiada" target="_blank" class="btn btn-ghost"><i class="fa-brands fa-whatsapp"></i> Demo guiada por video-call</a>
         </div>
       </div>
       <div class="demo-preview">
@@ -719,7 +750,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
       <div class="cta-final-btns">
         <a href="https://anma-hub.vercel.app/login" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Empezar gratis</a>
         <a href="/demo.html" class="btn btn-ghost"><i class="fa-solid fa-circle-play"></i> Ver demo primero</a>
-        <a href="https://wa.me/5491100000000?text=Hola%20ANMA%2C%20quiero%20una%20demo%20guiada" target="_blank" class="btn btn-wa"><i class="fa-brands fa-whatsapp"></i> Hablar con ventas</a>
+        <a href="https://wa.me/5491169456863?text=Hola%20ANMA%2C%20quiero%20una%20demo%20guiada" target="_blank" class="btn btn-wa"><i class="fa-brands fa-whatsapp"></i> Hablar con ventas</a>
       </div>
     </div>
 
@@ -734,10 +765,6 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
         <div class="contact-item">
           <div class="contact-item-icon"><i class="fa-brands fa-whatsapp"></i></div>
           <div><div class="l">WhatsApp</div><div class="v"><a href="https://wa.me/5491169456863" target="_blank">+54 9 11 6945-6863</a></div></div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-item-icon"><i class="fa-brands fa-instagram"></i></div>
-          <div><div class="l">Instagram</div><div class="v"><a href="https://instagram.com/anma.app" target="_blank">@anma.app</a></div></div>
         </div>
         <div class="contact-item">
           <div class="contact-item-icon"><i class="fa-solid fa-location-dot"></i></div>
@@ -778,7 +805,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 </section>
 
 <!-- WA FLOAT -->
-<a href="https://wa.me/5491100000000?text=Hola%20ANMA" target="_blank" class="fab-wa" title="Chatear por WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+<a href="https://wa.me/5491169456863?text=Hola%20ANMA" target="_blank" class="fab-wa" title="Chatear por WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
 
 <!-- FOOTER -->
 <footer>
@@ -788,8 +815,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
         <div class="logo" style="color:#fff"><span class="logo-mark"><i class="fa-solid fa-bolt"></i></span> ANMA</div>
         <p>Plataforma de gestión integral para tu negocio. Hecha en Argentina, pensada para tu día a día.</p>
         <div class="foot-soc">
-          <a href="https://instagram.com/anma.app" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://wa.me/5491100000000" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://wa.me/5491169456863" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
           <a href="mailto:ana.mbperalta@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
         </div>
       </div>
