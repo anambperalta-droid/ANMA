@@ -308,7 +308,6 @@ export default function Catalogo() {
       <div className="ph">
         <div className="ph-left">
           <h2>Productos</h2>
-          <p>{products.length} productos · Valor en stock: {fmt(totalValue)}</p>
         </div>
         <div className="ph-right">
           <button className="btn btn-ghost btn-sm" onClick={() => { setPriceSupplier('all'); setPricePct(''); setPriceUpdateModal(true) }}>
