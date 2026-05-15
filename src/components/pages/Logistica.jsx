@@ -455,67 +455,87 @@ export default function Logistica() {
             )}
           </div>
 
-          {/* ── DESKTOP TABLE (≥768px) ── */}
+          {/* ── DESKTOP TABLE (≥768px) — 7 columnas ── */}
           <div className="logi-desk-only">
             <div className="tbl-card logistica-tbl">
               <table>
                 <thead>
                   <tr>
-                    <th>Remito / Fecha</th><th>Cliente / Ciudad</th>
-                    <th>Presupuesto</th><th>Empresa</th><th>Servicio</th><th>Bultos</th><th>Peso</th>
-                    <th>Costo</th><th>Paga</th><th>Estado</th><th>Acciones</th>
+                    <th>Envío</th>
+                    <th>Destinatario</th>
+                    <th>Carga</th>
+                    <th>Estado</th>
+                    <th style={{ textAlign: 'right' }}>Costo</th>
+                    <th>Paga</th>
+                    <th style={{ textAlign: 'right' }}>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredShips.length ? filteredShips.map(s => {
-                    const bud = budgets.find(b => b.id === s.budgetId)
                     const late = isLate(s)
                     const days = daysSince(s.date)
                     const notifyLink = notifyStatusChange(s, s.status)
+                    const cargaTxt = [s.bulks > 0 ? `${s.bulks} bulto${s.bulks !== 1 ? 's' : ''}` : null, s.weight ? `${s.weight} kg` : null].filter(Boolean).join(' / ')
                     return (
-                      <tr key={s.id} style={late ? { background: 'rgba(220,38,38,.04)' } : undefined}>
-                        <td>
-                          <div style={{ fontWeight: 700 }}>{s.remito || '—'}</div>
-                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1, display: 'flex', alignItems: 'center', gap: 3 }}>
-                            {s.date}
+                      <tr key={s.id} style={{ ...(late ? { background: 'rgba(220,38,38,.04)' } : {}), verticalAlign: 'middle' }}>
+
+                        {/* ENVÍO: remito + fecha + LED atraso */}
+                        <td style={{ paddingTop: 10, paddingBottom: 10 }}>
+                          <div style={{ fontWeight: 700, fontSize: 13 }}>{s.remito || <span style={{ color: 'var(--txt4)', fontWeight: 400 }}>Sin remito</span>}</div>
+                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 2, display: 'flex', alignItems: 'center', gap: 4 }}>
+                            {s.date || '—'}
                             {['Despachado', 'En tránsito'].includes(s.status) && days > 0 && (
-                              <span style={{ color: late ? '#DC2626' : 'var(--txt3)', fontWeight: late ? 700 : 500, marginLeft: 4, display: 'inline-flex', alignItems: 'center', gap: 2 }}>
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, color: late ? '#DC2626' : 'var(--txt3)', fontWeight: late ? 700 : 400 }}>
+                                ·
                                 {late && <span className="ins-led-pulse" style={{ width: 5, height: 5, borderRadius: '50%', background: '#DC2626', display: 'inline-block', flexShrink: 0 }} />}
-                                {late && <i className="fa fa-triangle-exclamation" style={{ marginRight: 2 }} />}
-                                hace {days}d{late ? ' · atrasado' : ''}
+                                hace {days}d{late ? ' atrasado' : ''}
                               </span>
                             )}
                           </div>
                         </td>
-                        <td>
-                          <div>{s.client || '—'}</div>
-                          {s.city && <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>{s.city}</div>}
+
+                        {/* DESTINATARIO: cliente + ciudad - empresa */}
+                        <td style={{ paddingTop: 10, paddingBottom: 10 }}>
+                          <div style={{ fontWeight: 600, fontSize: 13 }}>{s.client || '—'}</div>
+                          {(s.city || s.carrier) && (
+                            <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 2 }}>
+                              {[s.city, s.carrier].filter(Boolean).join(' · ')}
+                            </div>
+                          )}
                         </td>
-                        <td>{bud?.num || '—'}</td>
-                        <td>{s.carrier || '—'}</td>
-                        <td>{s.service}</td>
-                        <td>{s.bulks}</td>
-                        <td>{s.weight ? `${s.weight} kg` : '—'}</td>
-                        <td style={{ fontWeight: 700 }}>{fmt(s.freight)}</td>
-                        <td>{s.payer}</td>
+
+                        {/* CARGA: bultos + peso */}
+                        <td style={{ fontSize: 12, color: 'var(--txt2)', whiteSpace: 'nowrap' }}>
+                          {cargaTxt || '—'}
+                        </td>
+
+                        {/* ESTADO */}
                         <td>{statusBadge(s.status)}</td>
+
+                        {/* COSTO */}
+                        <td style={{ textAlign: 'right', fontWeight: 700, fontSize: 13 }}>{fmt(s.freight)}</td>
+
+                        {/* PAGA */}
+                        <td style={{ fontSize: 11, color: 'var(--txt3)', whiteSpace: 'nowrap' }}>{s.payer || '—'}</td>
+
+                        {/* ACCIONES */}
                         <td>
-                          <div className="acts">
+                          <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
                             {s.trackingUrl && (
-                              <button className="act" style={{ color: '#3B82F6' }} onClick={() => window.open(getTrackingUrl(s.carrier, s.trackingUrl), '_blank')} title="Ver seguimiento"><i className="fa fa-location-arrow" /></button>
+                              <button className="act" style={{ borderRadius: '50%', width: 28, height: 28, color: '#3B82F6' }} onClick={() => window.open(getTrackingUrl(s.carrier, s.trackingUrl), '_blank')} title="Ver seguimiento"><i className="fa fa-location-arrow" /></button>
                             )}
                             {notifyLink && (
-                              <button className="act" style={{ color: '#16A34A' }} onClick={() => window.open(notifyLink, '_blank')} title="Avisar al cliente por WhatsApp"><i className="fa-brands fa-whatsapp" /></button>
+                              <button className="act" style={{ borderRadius: '50%', width: 28, height: 28, color: '#16A34A' }} onClick={() => window.open(notifyLink, '_blank')} title="WhatsApp"><i className="fa-brands fa-whatsapp" /></button>
                             )}
-                            <button className="act edit" onClick={() => openShip(s)} title="Editar"><i className="fa fa-pen" /></button>
-                            <button className="act del" onClick={() => delShip(s.id)} title="Eliminar"><i className="fa fa-trash" /></button>
+                            <button className="act edit" style={{ borderRadius: '50%', width: 28, height: 28 }} onClick={() => openShip(s)} title="Editar"><i className="fa fa-pen" /></button>
+                            <button className="act del" style={{ borderRadius: '50%', width: 28, height: 28 }} onClick={() => delShip(s.id)} title="Eliminar"><i className="fa fa-trash" /></button>
                           </div>
                         </td>
                       </tr>
                     )
                   }) : (
                     <tr>
-                      <td colSpan={11}>
+                      <td colSpan={7}>
                         <div className="empty">
                           <div className="ico"><i className="fa fa-truck-fast" /></div>
                           <p>{search || sFilter !== 'all' ? 'Sin resultados para el filtro aplicado' : 'Sin envíos registrados'}</p>
