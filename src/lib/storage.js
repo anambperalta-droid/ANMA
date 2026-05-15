@@ -72,7 +72,7 @@ export const DEFAULTS = {
     { id: 'herramientas', label: 'Herramientas y Repuestos' },
     { id: 'promo',        label: 'Marketing y Regalos' },
   ],
-  units: ['unidad', 'kg', 'litro', 'metro', 'caja', 'pack', 'rollo'],
+  units: ['un', 'kg', 'lt', 'm', 'pack', 'caja', 'rollo'],
   clientTypes: ['B2C — Cliente final', 'B2B — Empresa'],
   pricingRules: {
     b2c: { margin: 40, minQty: 1, label: 'Precio público' },
@@ -84,7 +84,7 @@ export function ensureDefaults() {
   const c = cfg()
   if (!c.businessName) wCfg(DEFAULTS)
   if (!c.insumoCats || typeof c.insumoCats[0] === 'string') wCfg({ insumoCats: DEFAULTS.insumoCats })
-  if (!c.units) wCfg({ units: DEFAULTS.units })
+  if (!c.units || c.units[0] === 'unidad') wCfg({ units: DEFAULTS.units })
   if (!c.clientTypes) wCfg({ clientTypes: DEFAULTS.clientTypes })
   if (!c.pricingRules) wCfg({ pricingRules: DEFAULTS.pricingRules })
 }
