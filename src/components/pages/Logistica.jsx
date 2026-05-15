@@ -27,6 +27,51 @@ const STATUS_SELECT_STYLE = {
   'Con problema': { background: '#FEF2F2', color: '#991B1B', border: '1.5px solid #FCA5A5' },
 }
 
+const DONUT_COLORS = {
+  'Preparando':   '#FCD34D',
+  'Despachado':   '#60A5FA',
+  'En tránsito':  '#A78BFA',
+  'Entregado':    '#34D399',
+  'Con problema': '#F87171',
+}
+
+function DonutChart({ data, hovered }) {
+  const total = data.reduce((s, d) => s + d.count, 0)
+  const R = 32, CX = 44, CY = 44
+  const CIRC = 2 * Math.PI * R
+  if (total === 0) return (
+    <div style={{ width: 88, height: 88, borderRadius: '50%', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+      <span style={{ fontSize: 9, color: 'var(--txt4)' }}>sin datos</span>
+    </div>
+  )
+  let acc = 0
+  const segments = data.filter(d => d.count > 0).map(d => {
+    const len = (d.count / total) * CIRC
+    const startDeg = (acc / CIRC) * 360 - 90
+    acc += len
+    return { ...d, len, startDeg }
+  })
+  return (
+    <svg width={88} height={88} viewBox="0 0 88 88" style={{ flexShrink: 0 }}>
+      <circle cx={CX} cy={CY} r={R} fill="none" stroke="var(--surface2)" strokeWidth={10} />
+      {segments.map(seg => (
+        <circle
+          key={seg.label}
+          cx={CX} cy={CY} r={R}
+          fill="none"
+          stroke={DONUT_COLORS[seg.label] || '#CBD5E1'}
+          strokeWidth={hovered === seg.label ? 14 : 9}
+          strokeDasharray={`${seg.len} ${CIRC - seg.len}`}
+          transform={`rotate(${seg.startDeg} ${CX} ${CY})`}
+          style={{ transition: 'stroke-width .15s', cursor: 'pointer' }}
+        />
+      ))}
+      <text x={CX} y={CY - 5} textAnchor="middle" style={{ fontSize: 15, fontWeight: 800, fill: 'var(--txt)', fontFamily: 'inherit' }}>{total}</text>
+      <text x={CX} y={CY + 10} textAnchor="middle" style={{ fontSize: 8, fill: '#9CA3AF', fontFamily: 'inherit' }}>envíos</text>
+    </svg>
+  )
+}
+
 const getTrackingUrl = (carrier, code) => {
   if (!code) return null
   if (code.startsWith('http')) return code
@@ -48,6 +93,7 @@ export default function Logistica() {
   const [lateAlertDismissed, setLateAlertDismissed] = useState(() => {
     try { return sessionStorage.getItem('logistica_late_dismissed') === '1' } catch { return false }
   })
+  const [hoveredStatus, setHoveredStatus] = useState(null)
   const dismissLateAlert = () => {
     try { sessionStorage.setItem('logistica_late_dismissed', '1') } catch { }
     setLateAlertDismissed(true)
@@ -228,6 +274,9 @@ export default function Logistica() {
     return months
   }, [shipments])
   const maxCost = Math.max(...monthlyData.map(m => m.cost), 1)
+  const prevMonthCost = monthlyData.length >= 2 ? monthlyData[monthlyData.length - 2].cost : 0
+  const currMonthCost = monthlyData.length >= 1 ? monthlyData[monthlyData.length - 1].cost : 0
+  const trendPct = prevMonthCost > 0 ? Math.round(((currMonthCost - prevMonthCost) / prevMonthCost) * 100) : null
 
   const statusBadge = (s) => {
     const cls = { Preparando: 'b-amber', Despachado: 'b-blue', 'En tránsito': 'b-purple', Entregado: 'b-confirmed', 'Con problema': 'b-lost' }
@@ -677,54 +726,107 @@ export default function Logistica() {
       {/* ── TAB RESUMEN ────────────────────────────────────────────── */}
       {tab === 'resumen' && (
         <>
+          {/* Export button */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
+            <button className="btn btn-sm" onClick={() => window.print()}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'var(--surface2)', border: '1.5px solid var(--border)', color: 'var(--txt2)', borderRadius: 10, padding: '6px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+              <i className="fa fa-file-arrow-down" style={{ fontSize: 13 }} />
+              Descargar reporte
+            </button>
+          </div>
+
+          {/* KPI cards */}
           <div className="kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 16 }}>
-            {[
-              { label: 'Costo total envíos', val: fmt(totalShipCost), color: 'var(--money)' },
-              { label: 'Envíos este mes', val: thisMonth, color: 'var(--txt)' },
-              { label: 'Promedio por envío', val: fmt(avgCost), color: 'var(--money)' },
-              { label: 'Atrasados', val: lateShipments.length, color: lateShipments.length > 0 ? '#DC2626' : 'var(--txt)', sub: lateShipments.length > 0 ? 'Despachado/En tránsito > SLA' : 'Todo al día' },
-              { label: 'Desvíos de flete', val: varianceCount, color: varianceCount > 0 ? '#D97706' : 'var(--txt)', sub: varianceCount > 0 ? 'Real ≠ cobrado al cliente' : 'Coincide con lo cobrado' },
-            ].map(k => (
-              <div key={k.label} className="card" style={{ padding: 16 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>{k.label}</div>
-                <div style={{ fontSize: 24, fontWeight: 800, color: k.color }}>{k.val}</div>
-                {k.sub && <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 3 }}>{k.sub}</div>}
-              </div>
-            ))}
+            {/* Costo total — with trend */}
+            <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Costo total envíos</div>
+              <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--money)' }}>{fmt(totalShipCost)}</div>
+              {trendPct !== null && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 5, fontSize: 11, fontWeight: 700, color: trendPct > 0 ? '#DC2626' : '#10B981' }}>
+                  <i className={`fa fa-arrow-${trendPct > 0 ? 'up' : 'down'}`} style={{ fontSize: 9 }} />
+                  {Math.abs(trendPct)}% vs mes pasado
+                </div>
+              )}
+              {trendPct === null && <div style={{ fontSize: 10, color: 'var(--txt4)', marginTop: 5 }}>Sin datos previos</div>}
+            </div>
+
+            {/* Envíos este mes */}
+            <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Envíos este mes</div>
+              <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--txt)' }}>{thisMonth}</div>
+            </div>
+
+            {/* Promedio por envío */}
+            <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Promedio por envío</div>
+              <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--money)' }}>{fmt(avgCost)}</div>
+            </div>
+
+            {/* Atrasados */}
+            <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Atrasados</div>
+              <div style={{ fontSize: 24, fontWeight: 800, color: lateShipments.length > 0 ? '#DC2626' : 'var(--txt)' }}>{lateShipments.length}</div>
+              <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 3 }}>{lateShipments.length > 0 ? 'Despachado/En tránsito > SLA' : 'Todo al día'}</div>
+            </div>
+
+            {/* Desvíos de flete — red bg when > 0 */}
+            <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)', background: varianceCount > 0 ? '#FEF2F2' : undefined, border: varianceCount > 0 ? '1.5px solid #FCA5A5' : undefined }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: varianceCount > 0 ? '#991B1B' : 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Desvíos de flete</div>
+              <div style={{ fontSize: 24, fontWeight: 800, color: varianceCount > 0 ? '#DC2626' : 'var(--txt)' }}>{varianceCount}</div>
+              <div style={{ fontSize: 10, color: varianceCount > 0 ? '#B91C1C' : 'var(--txt3)', marginTop: 3 }}>{varianceCount > 0 ? 'Real ≠ cobrado al cliente' : 'Coincide con lo cobrado'}</div>
+            </div>
           </div>
 
           <div className="logi-summary-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <div className="card">
-              <div className="card-header"><span className="card-title">Desglose por estado</span></div>
-              {byStatus.filter(b => b.count > 0).length ? byStatus.filter(b => b.count > 0).map(b => (
-                <div key={b.label} className="metric-row">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    {statusBadge(b.label)}
-                    <span style={{ fontSize: 12, color: 'var(--txt2)' }}>{b.count} envío{b.count !== 1 ? 's' : ''}</span>
+            {/* Desglose por estado — donut + legend */}
+            <div className="card" style={{ borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)', padding: 16 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 14 }}>Desglose por estado</div>
+              {byStatus.filter(b => b.count > 0).length ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+                  <DonutChart data={byStatus.filter(b => b.count > 0)} hovered={hoveredStatus} />
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 7, flex: 1, minWidth: 0 }}>
+                    {byStatus.filter(b => b.count > 0).map(b => (
+                      <div key={b.label} onMouseEnter={() => setHoveredStatus(b.label)} onMouseLeave={() => setHoveredStatus(null)}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '5px 8px', borderRadius: 10, cursor: 'default', transition: 'background .12s', background: hoveredStatus === b.label ? 'var(--surface2)' : 'transparent' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 7, minWidth: 0 }}>
+                          <span style={{ width: 8, height: 8, borderRadius: '50%', background: DONUT_COLORS[b.label] || '#CBD5E1', flexShrink: 0, display: 'inline-block' }} />
+                          <span style={{ fontSize: 11, color: 'var(--txt2)', fontWeight: hoveredStatus === b.label ? 700 : 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{b.label}</span>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0 }}>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--money)' }}>{fmt(b.cost)}</span>
+                          <span style={{ fontSize: 10, color: 'var(--txt4)' }}>{b.count} env.</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--money)' }}>{fmt(b.cost)}</span>
                 </div>
-              )) : (
-                <div style={{ fontSize: 13, color: 'var(--txt3)', padding: 12 }}>Sin envíos registrados</div>
+              ) : (
+                <div style={{ fontSize: 13, color: 'var(--txt3)', padding: '12px 0', textAlign: 'center' }}>Sin envíos registrados</div>
               )}
             </div>
 
-            <div className="card">
-              <div className="card-header"><span className="card-title">Costo por mes (últimos 6 meses)</span></div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 4 }}>
-                {monthlyData.map(m => (
-                  <div key={m.ym}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 3 }}>
-                      <span style={{ color: 'var(--txt2)', textTransform: 'capitalize' }}>{m.label}</span>
-                      <span style={{ fontWeight: 700, color: m.cost ? 'var(--money)' : 'var(--txt3)' }}>
-                        {m.cost ? fmt(m.cost) : '—'} {m.count > 0 && <span style={{ fontWeight: 400, color: 'var(--txt3)' }}>({m.count})</span>}
-                      </span>
+            {/* Costo por mes — taller bars */}
+            <div className="card" style={{ borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)', padding: 16 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 14 }}>Costo por mes (últimos 6 meses)</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {monthlyData.map((m, idx) => {
+                  const isLast = idx === monthlyData.length - 1
+                  const pct = maxCost > 0 ? Math.min(100, Math.max(0, (m.cost / maxCost) * 100)) : 0
+                  return (
+                    <div key={m.ym}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, marginBottom: 4 }}>
+                        <span style={{ color: isLast ? 'var(--txt)' : 'var(--txt2)', fontWeight: isLast ? 700 : 500, textTransform: 'capitalize' }}>{m.label}</span>
+                        <span style={{ fontWeight: 700, color: m.cost ? 'var(--money)' : 'var(--txt4)', fontFamily: 'ui-monospace,SFMono-Regular,monospace', fontSize: 12 }}>
+                          {m.cost ? fmt(m.cost) : '—'}
+                          {m.count > 0 && <span style={{ fontWeight: 400, color: 'var(--txt4)', fontSize: 10, marginLeft: 4 }}>({m.count})</span>}
+                        </span>
+                      </div>
+                      <div style={{ height: 10, background: 'var(--surface2)', borderRadius: 6, overflow: 'hidden' }}>
+                        <div style={{ height: '100%', width: `${pct}%`, background: isLast ? 'var(--brand)' : 'var(--acento)', borderRadius: 6, transition: 'width .5s ease', minWidth: pct > 0 ? 6 : 0 }} />
+                      </div>
                     </div>
-                    <div style={{ height: 6, background: 'var(--surface2)', borderRadius: 4, overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${(m.cost / maxCost) * 100}%`, background: 'var(--acento)', borderRadius: 4, transition: 'width .5s ease' }} />
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           </div>
