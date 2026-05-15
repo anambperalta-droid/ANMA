@@ -1443,6 +1443,11 @@ td b{color:var(--txt);font-weight:600}
   .ins-mob-list{display:none!important}
   .ins-desk-view{display:block!important}
 }
+/* Stock ±1 mini buttons */
+.ins-stk-btn{width:14px;height:14px;border-radius:50%;border:1px solid #CBD5E1;background:transparent;color:#94A3B8;font-size:9px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;font-family:inherit;transition:background .12s,color .12s,border-color .12s;flex-shrink:0}
+.ins-stk-btn:hover:not(:disabled){background:#F1F5F9;color:#334155;border-color:#94A3B8}
+.ins-stk-btn:active:not(:disabled){background:#E2E8F0}
+.ins-stk-btn:disabled{opacity:.28;cursor:not-allowed}
 
 /* ── DASHBOARD CTRL BAR ── */
 .dash-ctrl-bar{display:flex;align-items:center;position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:1px solid var(--border);margin:0 -10px}

@@ -45,6 +45,18 @@ const LED_DOT = {
   ok:   null,
 }
 
+const relTime = (iso) => {
+  if (!iso) return null
+  const diff = Date.now() - new Date(iso).getTime()
+  const h = Math.floor(diff / 3600000)
+  if (h < 1) return 'hace <1h'
+  if (h < 24) return `hace ${h}h`
+  const d = Math.floor(h / 24)
+  if (d === 1) return 'ayer'
+  if (d < 7) return `hace ${d}d`
+  return new Date(iso).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })
+}
+
 export default function Insumos() {
   const { get, config, saveEntity, deleteEntity, recordStockMove } = useData()
   const toast = useToast()
@@ -159,6 +171,12 @@ export default function Insumos() {
     toast(`+1 ${item.unit || 'un'} → ${item.name}`, 'ok')
   }
 
+  const quickAdjust = (item, delta) => {
+    const newQty = Math.max(0, (item.stock || 0) + delta)
+    recordStockMove({ type: 'adjust', insumoId: item.id, qty: newQty, costAtTime: Number(item.cost) || 0, ref: item.name, note: 'Ajuste rápido desde tabla' })
+    toast(`Stock: ${newQty} ${item.unit || 'un'}`, 'ok')
+  }
+
   return (
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>
       <div className="ph">
@@ -180,7 +198,7 @@ export default function Insumos() {
           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{fmtDec(totalValue)}</div>
         </div>
 
-        <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : 'var(--green)'}`, padding: '12px 14px 10px' }}>
+        <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : 'var(--green)'}`, ...(lowStock.length === 0 ? { borderTop: '4px solid #10B981' } : {}), padding: '12px 14px 10px' }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Stock bajo</div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.1, color: lowStock.length > 0 ? 'var(--red)' : 'var(--green)' }}>{lowStock.length}</div>
           {lowStock.length === 0
@@ -261,8 +279,9 @@ export default function Insumos() {
                   }
                   <div className="ins-mob-card-body">
                     <div className="ins-mob-card-name">{item.name}</div>
-                    <div className="ins-mob-card-sub" style={{ color: item.subcat ? '#64748B' : 'transparent', userSelect: 'none' }}>
-                      {item.subcat || '·'}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 3, flexWrap: 'wrap', minHeight: 16 }}>
+                      <span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`} style={{ fontSize: 9, padding: '1px 5px' }}>{catLabel(item.cat)}</span>
+                      {item.subcat && <span style={{ fontSize: 10, color: '#64748B', lineHeight: 1.3 }}>{item.subcat}</span>}
                     </div>
                     <div className="ins-mob-card-meta">
                       Stock: <b style={{ color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt)' }}>{item.stock || 0}</b> {item.unit || 'un'}
@@ -305,12 +324,13 @@ export default function Insumos() {
                     <th style={{ textAlign: 'right' }}>Mín.</th>
                     <th style={{ textAlign: 'right' }}>Unidad</th>
                     <th style={{ textAlign: 'right' }}>Valor</th>
+                    <th style={{ textAlign: 'right', color: 'var(--txt3)', fontWeight: 500 }}>Último mov.</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.length === 0 && (
-                    <tr><td colSpan={9} style={{ textAlign: 'center', padding: 40, color: 'var(--txt3)' }}>
+                    <tr><td colSpan={10} style={{ textAlign: 'center', padding: 40, color: 'var(--txt3)' }}>
                       <i className="fa fa-box-open" style={{ fontSize: 24, marginBottom: 8, display: 'block' }} />
                       No hay insumos cargados
                     </td></tr>
@@ -322,9 +342,13 @@ export default function Insumos() {
                       <tr key={item.id} style={level === 'low' ? { borderLeft: '4px solid #DC2626' } : undefined}>
                         <td>
                           <div style={{ fontWeight: 600 }}>{item.name}</div>
-                          <div style={{ fontSize: 11, color: '#64748B', marginTop: 1, minHeight: 14 }}>{item.subcat || ''}</div>
                         </td>
-                        <td><span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`}>{catLabel(item.cat)}</span></td>
+                        <td>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                            <span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`}>{catLabel(item.cat)}</span>
+                            {item.subcat && <span style={{ fontSize: 10, color: '#64748B', lineHeight: 1.3 }}>{item.subcat}</span>}
+                          </div>
+                        </td>
                         <td style={{ fontSize: 11 }}>{supplierName(item.supplierId)}</td>
                         <td style={{ textAlign: 'right' }}>{fmtDec(item.cost)}</td>
                         <td style={{ textAlign: 'right' }}>
@@ -338,16 +362,23 @@ export default function Insumos() {
                             <span style={{ fontWeight: 700, color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt)' }}>
                               {item.stock || 0}
                             </span>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }} onClick={e => e.stopPropagation()}>
+                              <button className="ins-stk-btn" title="+1 unidad" onClick={() => quickAdjust(item, 1)}>+</button>
+                              <button className="ins-stk-btn" title="-1 unidad" onClick={() => quickAdjust(item, -1)} disabled={(item.stock || 0) <= 0}>−</button>
+                            </div>
                           </div>
                         </td>
                         <td style={{ textAlign: 'right', color: 'var(--txt3)' }}>{item.minStock || '—'}</td>
                         <td style={{ textAlign: 'right', fontSize: 11 }}>{item.unit || 'un'}</td>
                         <td style={{ textAlign: 'right', fontWeight: 600 }}>{fmtDec((item.stock || 0) * (Number(item.cost) || 0))}</td>
+                        <td style={{ textAlign: 'right', fontSize: 10, color: 'var(--txt4)', whiteSpace: 'nowrap' }}>
+                          {relTime(item.lastMove) || '—'}
+                        </td>
                         <td>
                           <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
-                            <button className="act" title="Registrar movimiento" onClick={() => openMove(item)}><i className="fa fa-arrows-rotate" /></button>
-                            <button className="act" title="Editar" onClick={() => openEdit(item)}><i className="fa fa-pen" /></button>
-                            <button className="act del" title="Eliminar" onClick={() => remove(item.id)}><i className="fa fa-trash" /></button>
+                            <button className="act" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Registrar movimiento" onClick={() => openMove(item)}><i className="fa fa-arrows-rotate" /></button>
+                            <button className="act" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Editar" onClick={() => openEdit(item)}><i className="fa fa-pen" /></button>
+                            <button className="act del" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Eliminar" onClick={() => remove(item.id)}><i className="fa fa-trash" /></button>
                           </div>
                         </td>
                       </tr>

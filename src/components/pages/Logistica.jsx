@@ -168,6 +168,12 @@ export default function Logistica() {
   }
   const lateShipments = useMemo(() => shipments.filter(isLate), [shipments, tariffs])
 
+  const todayCount = useMemo(() => {
+    const t = new Date().toISOString().slice(0, 10)
+    return shipments.filter(s => s.date === t).length
+  }, [shipments])
+  const pendingCount = useMemo(() => shipments.filter(s => s.status === 'Preparando').length, [shipments])
+
   const varianceCount = useMemo(() => {
     return shipments.filter(s => {
       if (s.payer !== 'Incluido en precio' || !s.budgetId) return false
@@ -185,6 +191,7 @@ export default function Logistica() {
     if (!phone) return null
     const link = getTrackingUrl(shipment.carrier, shipment.trackingUrl)
     const msgs = {
+      'Preparando': `Hola${shipment.client ? ' ' + shipment.client : ''}! Estamos preparando tu pedido 🎁\n\nEn cuanto esté listo, te avisamos. Gracias por tu compra!`,
       'Despachado': `Hola${shipment.client ? ' ' + shipment.client : ''}! Tu pedido fue despachado 📦${link ? `\n\nSeguilo acá:\n${link}` : ''}\n\nGracias por tu compra!`,
       'En tránsito': `Hola${shipment.client ? ' ' + shipment.client : ''}! Tu pedido está en camino 🚚${link ? `\n\nSeguilo acá:\n${link}` : ''}`,
       'Entregado': `Hola${shipment.client ? ' ' + shipment.client : ''}! Tu pedido fue entregado ✅\n\n¡Gracias! Cualquier comentario, estamos a disposición.`,
@@ -244,9 +251,9 @@ export default function Logistica() {
         .logi-pills-row{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;align-items:center;padding-bottom:1px}
         .logi-pills-row::-webkit-scrollbar{display:none}
         /* Mobile cards */
-        .logi-mob-list{display:none;flex-direction:column}
-        .logi-card{display:flex;flex-direction:column;gap:4px;border-bottom:1px solid var(--border);padding:11px 0;-webkit-tap-highlight-color:transparent;transition:background .1s;cursor:pointer}
-        .logi-card:last-child{border-bottom:none}
+        .logi-mob-list{display:none;flex-direction:column;padding:4px 0 16px}
+        .logi-card{display:flex;flex-direction:column;gap:4px;border-radius:24px;padding:13px 16px;border:1px solid var(--border);background:var(--surface);margin-bottom:8px;position:relative;-webkit-tap-highlight-color:transparent;transition:background .1s;cursor:pointer}
+        .logi-card.late{border-color:#FECACA;border-left:4px solid #DC2626}
         .logi-card:active{background:rgba(0,0,0,.025)}
         /* Fila 1: identidad (remito + cliente) | acciones */
         .logi-card-row1{display:flex;align-items:flex-start;gap:6px}
@@ -254,7 +261,7 @@ export default function Logistica() {
         .logi-card-remito{font-weight:800;font-size:13px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25}
         .logi-card-client{font-weight:600;font-size:12px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;margin-top:1px}
         .logi-card-acts{flex-shrink:0;display:flex;gap:3px;align-items:center}
-        .logi-card-act{width:28px;height:28px;border-radius:8px;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:transform .1s}
+        .logi-card-act{width:28px;height:28px;border-radius:50%;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:transform .1s}
         .logi-card-act:active{transform:scale(.88)}
         .logi-card-act-wa{background:#DCFCE7;color:#16A34A}
         .logi-card-act-trk{background:#EFF6FF;color:#2563EB}
@@ -352,6 +359,23 @@ export default function Logistica() {
             ))}
           </div>
 
+          {/* ── KPI strip ── */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+            {[
+              { label: 'Envíos hoy',  val: todayCount,          icon: 'fa-truck-fast',          color: 'var(--brand)' },
+              { label: 'Pendientes',  val: pendingCount,         icon: 'fa-box',                 color: '#D97706' },
+              { label: 'Atrasados',   val: lateShipments.length, icon: 'fa-triangle-exclamation', color: '#DC2626' },
+            ].map(k => (
+              <div key={k.label} className="card" style={{ flex: 1, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+                <i className={`fa ${k.icon}`} style={{ color: k.val > 0 ? k.color : 'var(--txt4)', fontSize: 16, flexShrink: 0 }} />
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{k.label}</div>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: k.val > 0 ? k.color : 'var(--txt)', lineHeight: 1.2 }}>{k.val}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
           {/* ── MOBILE CARD LIST (≤767px) ── */}
           <div className="logi-mob-list">
             {filteredShips.length ? filteredShips.map(s => {
@@ -363,10 +387,14 @@ export default function Logistica() {
               return (
                 <div
                   key={s.id}
-                  className="logi-card"
+                  className={`logi-card${late ? ' late' : ''}`}
                   onClick={() => openShip(s)}
-                  style={late ? { background: 'rgba(220,38,38,.03)' } : undefined}
                 >
+                  {/* Badge estado — esquina superior derecha */}
+                  <div style={{ position: 'absolute', top: 12, right: 12 }} onClick={e => e.stopPropagation()}>
+                    {statusBadge(s.status)}
+                  </div>
+
                   {/* Fila 1: Remito + Cliente | Acciones */}
                   <div className="logi-card-row1">
                     <div className="logi-card-id">
@@ -375,7 +403,7 @@ export default function Logistica() {
                       </div>
                       {s.client && <div className="logi-card-client">{s.client}</div>}
                     </div>
-                    <div className="logi-card-acts" onClick={e => e.stopPropagation()}>
+                    <div className="logi-card-acts" onClick={e => e.stopPropagation()} style={{ marginRight: 72 }}>
                       {notifyLink && (
                         <button className="logi-card-act logi-card-act-wa" title="Avisar al cliente" onClick={() => window.open(notifyLink, '_blank')}>
                           <i className="fa-brands fa-whatsapp" />
@@ -402,7 +430,7 @@ export default function Logistica() {
                     </div>
                   )}
 
-                  {/* Fila 3: Specs técnicos | Estado + Alerta */}
+                  {/* Fila 3: Specs técnicos | Alerta atrasado */}
                   <div className="logi-card-row3">
                     <div className="logi-card-specs">
                       {s.bulks > 0 && <span className="logi-card-spec">{s.bulks} bulto{s.bulks !== 1 ? 's' : ''}</span>}
@@ -410,14 +438,12 @@ export default function Logistica() {
                       <span className="logi-card-spec logi-card-spec-price">{fmt(s.freight)}</span>
                       {payerChip && <span className="logi-card-spec">{payerChip}</span>}
                     </div>
-                    <div className="logi-card-status-wrap">
-                      {late && (
-                        <span className="logi-card-late">
-                          <i className="fa fa-triangle-exclamation" /> {days}d
-                        </span>
-                      )}
-                      {statusBadge(s.status)}
-                    </div>
+                    {late && (
+                      <span className="logi-card-late">
+                        <span className="ins-led-pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#DC2626', display: 'inline-block', flexShrink: 0 }} />
+                        <i className="fa fa-triangle-exclamation" /> {days}d
+                      </span>
+                    )}
                   </div>
                 </div>
               )
@@ -435,7 +461,7 @@ export default function Logistica() {
               <table>
                 <thead>
                   <tr>
-                    <th>Remito</th><th>Fecha</th><th>Cliente</th><th>Ciudad</th>
+                    <th>Remito / Fecha</th><th>Cliente / Ciudad</th>
                     <th>Presupuesto</th><th>Empresa</th><th>Servicio</th><th>Bultos</th><th>Peso</th>
                     <th>Costo</th><th>Paga</th><th>Estado</th><th>Acciones</th>
                   </tr>
@@ -448,18 +474,23 @@ export default function Logistica() {
                     const notifyLink = notifyStatusChange(s, s.status)
                     return (
                       <tr key={s.id} style={late ? { background: 'rgba(220,38,38,.04)' } : undefined}>
-                        <td><b>{s.remito || '—'}</b></td>
                         <td>
-                          {s.date}
-                          {['Despachado', 'En tránsito'].includes(s.status) && days > 0 && (
-                            <div style={{ fontSize: 10, color: late ? '#DC2626' : 'var(--txt3)', fontWeight: late ? 700 : 500, marginTop: 1 }}>
-                              {late && <i className="fa fa-triangle-exclamation" style={{ marginRight: 3 }} />}
-                              hace {days}d{late ? ' · atrasado' : ''}
-                            </div>
-                          )}
+                          <div style={{ fontWeight: 700 }}>{s.remito || '—'}</div>
+                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1, display: 'flex', alignItems: 'center', gap: 3 }}>
+                            {s.date}
+                            {['Despachado', 'En tránsito'].includes(s.status) && days > 0 && (
+                              <span style={{ color: late ? '#DC2626' : 'var(--txt3)', fontWeight: late ? 700 : 500, marginLeft: 4, display: 'inline-flex', alignItems: 'center', gap: 2 }}>
+                                {late && <span className="ins-led-pulse" style={{ width: 5, height: 5, borderRadius: '50%', background: '#DC2626', display: 'inline-block', flexShrink: 0 }} />}
+                                {late && <i className="fa fa-triangle-exclamation" style={{ marginRight: 2 }} />}
+                                hace {days}d{late ? ' · atrasado' : ''}
+                              </span>
+                            )}
+                          </div>
                         </td>
-                        <td>{s.client || '—'}</td>
-                        <td>{s.city || '—'}</td>
+                        <td>
+                          <div>{s.client || '—'}</div>
+                          {s.city && <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>{s.city}</div>}
+                        </td>
                         <td>{bud?.num || '—'}</td>
                         <td>{s.carrier || '—'}</td>
                         <td>{s.service}</td>
@@ -484,7 +515,7 @@ export default function Logistica() {
                     )
                   }) : (
                     <tr>
-                      <td colSpan={13}>
+                      <td colSpan={11}>
                         <div className="empty">
                           <div className="ico"><i className="fa fa-truck-fast" /></div>
                           <p>{search || sFilter !== 'all' ? 'Sin resultados para el filtro aplicado' : 'Sin envíos registrados'}</p>
@@ -497,11 +528,6 @@ export default function Logistica() {
             </div>
           </div>
 
-          {filteredShips.length > 0 && (
-            <div style={{ fontSize: 11, color: 'var(--txt3)', textAlign: 'right', marginTop: 6 }}>
-              {filteredShips.length} envío{filteredShips.length !== 1 ? 's' : ''} · Total flete: <b style={{ color: 'var(--money)' }}>{fmt(filteredShips.reduce((a, s) => a + (s.freight || 0), 0))}</b>
-            </div>
-          )}
         </>
       )}
 
