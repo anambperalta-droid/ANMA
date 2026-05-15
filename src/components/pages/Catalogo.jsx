@@ -404,7 +404,7 @@ export default function Catalogo() {
                   <span className="cat-mob-item-name">{p.name}</span>
                   {p.cat && <span className="cat-mob-item-cat">{p.cat}</span>}
                 </div>
-                <span className="cat-mob-item-price">{fmt(suggestedPrice(p.cost))}</span>
+                <span className="cat-mob-item-price">{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</span>
               </div>
               <div className="cat-mob-item-acts" onClick={e => e.stopPropagation()}>
                 <button className="act edit" onClick={() => open(p)} title="Editar"><i className="fa fa-pen" /></button>
