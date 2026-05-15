@@ -180,7 +180,6 @@ export default function Insumos() {
   return (
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>
       <div className="ph">
-        <div className="ph-left"><h2>Insumos y Materias Primas</h2></div>
         <div className="ph-right">
           <button className="btn btn-primary btn-sm" onClick={openNew}><i className="fa fa-plus" /> Nuevo insumo</button>
         </div>

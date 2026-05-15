@@ -301,7 +301,6 @@ export default function Clientes() {
 
       {/* ── HEADER ── */}
       <div className="ph zt-ph">
-        <div className="ph-left cli-ph-title"><h2>Clientes</h2></div>
         <div className="ph-right" style={{ gap: 6 }}>
           <div className="cli-pill-group">
             <button className="cli-pill" onClick={() => setImportModal(true)}>
