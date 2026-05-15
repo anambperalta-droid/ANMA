@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
-import { fmt } from '../../lib/storage'
+import { fmt, fmtDate } from '../../lib/storage'
 
 const SERVICE_MULTIPLIER = {
   'Estándar': 1,
@@ -17,6 +17,14 @@ const CARRIER_TRACKING = {
   'Andreani':         c => `https://www.andreani.com/#!/rastreoenvios?codigoAndreani=${c}`,
   'OCA':              c => `https://www.oca.com.ar/rastrear/?numero=${c}`,
   'Vía Cargo':        c => `https://www.viacargo.com.ar/web/seguimiento?nro=${c}`,
+}
+
+const STATUS_SELECT_STYLE = {
+  'Preparando':   { background: '#FEF3C7', color: '#92400E', border: '1.5px solid #FCD34D' },
+  'Despachado':   { background: '#DBEAFE', color: '#1E40AF', border: '1.5px solid #93C5FD' },
+  'En tránsito':  { background: '#EDE9FE', color: '#5B21B6', border: '1.5px solid #C4B5FD' },
+  'Entregado':    { background: '#DCFCE7', color: '#14532D', border: '1.5px solid #86EFAC' },
+  'Con problema': { background: '#FEF2F2', color: '#991B1B', border: '1.5px solid #FCA5A5' },
 }
 
 const getTrackingUrl = (carrier, code) => {
@@ -293,6 +301,15 @@ export default function Logistica() {
           .logi-mob-list{display:none!important}
           .logi-mob-tabs{display:none!important}
         }
+        /* Circular action buttons — desktop table */
+        .logi-act-circ{width:28px;height:28px;border-radius:50%;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-family:inherit;background:var(--surface2);color:var(--txt2);transition:box-shadow .15s,transform .1s;flex-shrink:0}
+        .logi-act-circ:hover{box-shadow:0 2px 8px rgba(0,0,0,.14)}
+        .logi-act-circ:active{transform:scale(.88)}
+        .logi-act-circ.wa{background:#DCFCE7;color:#16A34A}
+        .logi-act-circ.trk{background:#EFF6FF;color:#2563EB}
+        .logi-act-circ.del{background:#FEF2F2;color:#DC2626}
+        /* Status quick-select */
+        .logi-status-sel{border-radius:20px;padding:3px 22px 3px 9px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-repeat:no-repeat;background-position:right 7px center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath fill='%236B7280' d='M0 0l4 5 4-5z'/%3E%3C/svg%3E")}
       `}</style>
 
       {/* Header desktop — hidden on mobile */}
@@ -475,45 +492,58 @@ export default function Logistica() {
                     const late = isLate(s)
                     const days = daysSince(s.date)
                     const notifyLink = notifyStatusChange(s, s.status)
-                    const cargaTxt = [s.bulks > 0 ? `${s.bulks} bulto${s.bulks !== 1 ? 's' : ''}` : null, s.weight ? `${s.weight} kg` : null].filter(Boolean).join(' / ')
+                    const cargaTxt = [
+                      s.bulks > 0 ? `${s.bulks} bulto${s.bulks !== 1 ? 's' : ''}` : null,
+                      s.weight ? `${s.weight} kg` : null,
+                    ].filter(Boolean).join(' / ')
                     return (
-                      <tr key={s.id} style={{ ...(late ? { background: 'rgba(220,38,38,.04)' } : {}), verticalAlign: 'middle' }}>
+                      <tr key={s.id} style={{ verticalAlign: 'middle', ...(late ? { background: 'rgba(220,38,38,.03)' } : {}) }}>
 
-                        {/* ENVÍO: remito + fecha + LED atraso */}
+                        {/* ENVÍO */}
                         <td style={{ paddingTop: 10, paddingBottom: 10 }}>
-                          <div style={{ fontWeight: 700, fontSize: 13 }}>{s.remito || <span style={{ color: 'var(--txt4)', fontWeight: 400 }}>Sin remito</span>}</div>
-                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 2, display: 'flex', alignItems: 'center', gap: 4 }}>
-                            {s.date || '—'}
-                            {['Despachado', 'En tránsito'].includes(s.status) && days > 0 && (
-                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, color: late ? '#DC2626' : 'var(--txt3)', fontWeight: late ? 700 : 400 }}>
-                                ·
-                                {late && <span className="ins-led-pulse" style={{ width: 5, height: 5, borderRadius: '50%', background: '#DC2626', display: 'inline-block', flexShrink: 0 }} />}
-                                hace {days}d{late ? ' atrasado' : ''}
-                              </span>
-                            )}
+                          <div style={{ display: 'flex', alignItems: 'baseline', gap: 7 }}>
+                            <span style={{ fontWeight: 700, fontSize: 13, fontFamily: 'ui-monospace,SFMono-Regular,monospace', letterSpacing: '-.01em' }}>
+                              {s.remito || <span style={{ color: 'var(--txt4)', fontWeight: 400, fontFamily: 'inherit' }}>Sin remito</span>}
+                            </span>
+                            <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 400 }}>{fmtDate(s.date)}</span>
                           </div>
+                          {['Despachado', 'En tránsito'].includes(s.status) && days > 0 && (
+                            <div style={{ marginTop: 3, display: 'flex', alignItems: 'center', gap: 3, fontSize: 10, color: late ? '#DC2626' : '#9CA3AF', fontWeight: late ? 700 : 400 }}>
+                              {late && <span className="ins-led-pulse" style={{ width: 5, height: 5, borderRadius: '50%', background: '#DC2626', display: 'inline-block', flexShrink: 0 }} />}
+                              hace {days}d{late ? ' · atrasado' : ''}
+                            </div>
+                          )}
                         </td>
 
-                        {/* DESTINATARIO: cliente + ciudad - empresa */}
+                        {/* DESTINATARIO */}
                         <td style={{ paddingTop: 10, paddingBottom: 10 }}>
                           <div style={{ fontWeight: 600, fontSize: 13 }}>{s.client || '—'}</div>
                           {(s.city || s.carrier) && (
-                            <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 2 }}>
+                            <div style={{ fontSize: 10, color: '#94A3B8', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                               {[s.city, s.carrier].filter(Boolean).join(' · ')}
                             </div>
                           )}
                         </td>
 
-                        {/* CARGA: bultos + peso */}
+                        {/* CARGA */}
                         <td style={{ fontSize: 12, color: 'var(--txt2)', whiteSpace: 'nowrap' }}>
                           {cargaTxt || '—'}
                         </td>
 
-                        {/* ESTADO */}
-                        <td>{statusBadge(s.status)}</td>
+                        {/* ESTADO — quick-change select */}
+                        <td onClick={e => e.stopPropagation()}>
+                          <select
+                            className="logi-status-sel"
+                            value={s.status}
+                            onChange={e => { saveEntity('shipments', { ...s, status: e.target.value }); toast('Estado actualizado', 'ok') }}
+                            style={STATUS_SELECT_STYLE[s.status] || { background: '#F9FAFB', color: '#374151', border: '1.5px solid #E5E7EB' }}
+                          >
+                            {statusList.map(st => <option key={st} value={st}>{st}</option>)}
+                          </select>
+                        </td>
 
                         {/* COSTO */}
-                        <td style={{ textAlign: 'right', fontWeight: 700, fontSize: 13 }}>{fmt(s.freight)}</td>
+                        <td style={{ textAlign: 'right', fontWeight: 700, fontSize: 13, fontFamily: 'ui-monospace,SFMono-Regular,monospace' }}>{fmt(s.freight)}</td>
 
                         {/* PAGA */}
                         <td style={{ fontSize: 11, color: 'var(--txt3)', whiteSpace: 'nowrap' }}>{s.payer || '—'}</td>
@@ -522,13 +552,13 @@ export default function Logistica() {
                         <td>
                           <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
                             {s.trackingUrl && (
-                              <button className="act" style={{ borderRadius: '50%', width: 28, height: 28, color: '#3B82F6' }} onClick={() => window.open(getTrackingUrl(s.carrier, s.trackingUrl), '_blank')} title="Ver seguimiento"><i className="fa fa-location-arrow" /></button>
+                              <button className="logi-act-circ trk" onClick={() => window.open(getTrackingUrl(s.carrier, s.trackingUrl), '_blank')} title="Ver seguimiento"><i className="fa fa-location-arrow" /></button>
                             )}
                             {notifyLink && (
-                              <button className="act" style={{ borderRadius: '50%', width: 28, height: 28, color: '#16A34A' }} onClick={() => window.open(notifyLink, '_blank')} title="WhatsApp"><i className="fa-brands fa-whatsapp" /></button>
+                              <button className="logi-act-circ wa" onClick={() => window.open(notifyLink, '_blank')} title="WhatsApp"><i className="fa-brands fa-whatsapp" /></button>
                             )}
-                            <button className="act edit" style={{ borderRadius: '50%', width: 28, height: 28 }} onClick={() => openShip(s)} title="Editar"><i className="fa fa-pen" /></button>
-                            <button className="act del" style={{ borderRadius: '50%', width: 28, height: 28 }} onClick={() => delShip(s.id)} title="Eliminar"><i className="fa fa-trash" /></button>
+                            <button className="logi-act-circ" onClick={() => openShip(s)} title="Editar"><i className="fa fa-pen" /></button>
+                            <button className="logi-act-circ del" onClick={() => delShip(s.id)} title="Eliminar"><i className="fa fa-trash" /></button>
                           </div>
                         </td>
                       </tr>
