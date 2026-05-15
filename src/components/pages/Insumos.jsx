@@ -14,12 +14,35 @@ const SUBCAT_SUGGESTIONS = {
   promo:        ['Folletos', 'Stickers', 'Muestras', 'Merchandising'],
 }
 
+const MOVE_NOTES = {
+  in:     ['Compra a proveedor', 'Devolución de cliente', 'Ajuste de inventario'],
+  out:    ['Venta', 'Merma / Desperdicio', 'Uso interno', 'Ajuste de inventario'],
+  adjust: ['Conteo físico', 'Corrección de error'],
+  return: ['Devolución a proveedor'],
+}
+
 const CAT_CLS = {
   prod_core:    'b-confirmed',
   packaging:    'b-sent',
   insumos_op:   'b-negotiating',
   herramientas: 'b-draft',
   promo:        'b-lost',
+}
+
+// LED logic: isLow = critical, isWarn = within 10% above min
+const stockLevel = (stock, minStock) => {
+  const s = stock || 0
+  const m = minStock || 0
+  if (m <= 0) return 'ok'
+  if (s <= m) return 'low'
+  if (s <= m * 1.1) return 'warn'
+  return 'ok'
+}
+
+const LED_DOT = {
+  low:  { bg: '#DC2626', pulse: true },
+  warn: { bg: '#F59E0B', pulse: false },
+  ok:   null,
 }
 
 export default function Insumos() {
@@ -54,7 +77,7 @@ export default function Insumos() {
   const filtered = useMemo(() => {
     let f = insumos
     if (catFilter !== 'all') f = f.filter(x => x.cat === catFilter)
-    if (showLowOnly) f = f.filter(x => x.minStock > 0 && (x.stock || 0) <= x.minStock)
+    if (showLowOnly) f = f.filter(x => stockLevel(x.stock, x.minStock) === 'low')
     if (search) {
       const s = search.toLowerCase()
       f = f.filter(x =>
@@ -66,7 +89,7 @@ export default function Insumos() {
     return f.sort((a, b) => (b.id || 0) - (a.id || 0))
   }, [insumos, catFilter, showLowOnly, search])
 
-  const lowStock = insumos.filter(x => x.minStock > 0 && (x.stock || 0) <= x.minStock)
+  const lowStock = useMemo(() => insumos.filter(x => stockLevel(x.stock, x.minStock) === 'low'), [insumos])
   const totalValue = insumos.reduce((s, x) => s + (x.stock || 0) * (Number(x.cost) || 0), 0)
 
   const catLabel = (id) => cats.find(cat => cat.id === id)?.label || id || '—'
@@ -90,7 +113,10 @@ export default function Insumos() {
     if (window.confirm('¿Eliminar este insumo?')) { deleteEntity('insumos', id); toast('Eliminado', 'in') }
   }
 
-  const openMove = (item) => { setMoveModal(item); setMoveForm({ type: 'in', qty: '', purchaseCost: '', note: '' }) }
+  const openMove = (item) => {
+    setMoveModal(item)
+    setMoveForm({ type: 'in', qty: '', purchaseCost: '', note: '' })
+  }
 
   const saveMove = () => {
     if (!moveForm.qty || Number(moveForm.qty) <= 0) { toast('Ingresá una cantidad válida', 'er'); return }
@@ -100,6 +126,7 @@ export default function Insumos() {
       insumoId: moveModal.id,
       qty: Number(moveForm.qty),
       purchaseCost: isIncoming && moveForm.purchaseCost ? Number(moveForm.purchaseCost) : undefined,
+      costAtTime: Number(moveModal.cost) || 0,
       note: moveForm.note || moveModal.name,
       ref: moveModal.name,
     })
@@ -128,7 +155,7 @@ export default function Insumos() {
   const supplierName = (id) => { const s = suppliers.find(x => x.id === id); return s ? s.name : '—' }
 
   const quickPlus = (item) => {
-    recordStockMove({ type: 'in', insumoId: item.id, qty: 1, ref: item.name, note: '+1 rápido' })
+    recordStockMove({ type: 'in', insumoId: item.id, qty: 1, costAtTime: Number(item.cost) || 0, ref: item.name, note: '+1 rápido' })
     toast(`+1 ${item.unit || 'un'} → ${item.name}`, 'ok')
   }
 
@@ -157,7 +184,7 @@ export default function Insumos() {
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Stock bajo</div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.1, color: lowStock.length > 0 ? 'var(--red)' : 'var(--green)' }}>{lowStock.length}</div>
           {lowStock.length === 0
-            ? <div style={{ fontSize: 9.5, color: 'var(--txt4)', marginTop: 2 }}>Todo OK</div>
+            ? <div style={{ fontSize: 9.5, color: '#16A34A', marginTop: 2, fontWeight: 600 }}>Todo en orden</div>
             : <button
                 onClick={() => { setShowLowOnly(true); setTab('list') }}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 10, fontWeight: 700, color: '#DC2626', marginTop: 5, display: 'flex', alignItems: 'center', gap: 3, lineHeight: 1 }}>
@@ -193,7 +220,6 @@ export default function Insumos() {
 
       {tab === 'list' && (
         <>
-          {/* Active low-only filter chip */}
           {showLowOnly && (
             <div style={{ background: '#FFF1F2', border: '1.5px solid #FECACA', borderRadius: 10, padding: '8px 14px', marginBottom: 10, fontSize: 12, color: '#DC2626', display: 'flex', alignItems: 'center', gap: 8 }}>
               <i className="fa fa-triangle-exclamation" style={{ fontSize: 11 }} />
@@ -216,7 +242,7 @@ export default function Insumos() {
             </select>
           </div>
 
-          {/* ── Mobile: card list ── */}
+          {/* ── Mobile: pill cards ── */}
           <div className="ins-mob-list">
             {filtered.length === 0 && (
               <div style={{ textAlign: 'center', padding: '40px 24px', color: 'var(--txt3)' }}>
@@ -225,15 +251,21 @@ export default function Insumos() {
               </div>
             )}
             {filtered.map(item => {
-              const isLow = item.minStock > 0 && (item.stock || 0) <= item.minStock
+              const level = stockLevel(item.stock, item.minStock)
+              const led = LED_DOT[level]
               return (
-                <div key={item.id} className={`ins-mob-card${isLow ? ' low' : ''}`}>
-                  <div className="ins-mob-card-dot" style={{ background: isLow ? '#DC2626' : (item.stock || 0) === 0 ? '#9CA3AF' : '#16A34A' }} />
+                <div key={item.id} className={`ins-mob-card${level === 'low' ? ' low' : ''}`}>
+                  {led
+                    ? <div className={`ins-mob-card-dot${led.pulse ? ' ins-led-pulse' : ''}`} style={{ background: led.bg }} />
+                    : <div className="ins-mob-card-dot" style={{ background: 'transparent' }} />
+                  }
                   <div className="ins-mob-card-body">
                     <div className="ins-mob-card-name">{item.name}</div>
-                    {item.subcat && <div className="ins-mob-card-sub">{item.subcat}</div>}
+                    <div className="ins-mob-card-sub" style={{ color: item.subcat ? '#64748B' : 'transparent', userSelect: 'none' }}>
+                      {item.subcat || '·'}
+                    </div>
                     <div className="ins-mob-card-meta">
-                      Stock: <b style={{ color: isLow ? '#DC2626' : 'var(--txt)' }}>{item.stock || 0}</b> {item.unit || 'un'}
+                      Stock: <b style={{ color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt)' }}>{item.stock || 0}</b> {item.unit || 'un'}
                       {item.minStock > 0 && <span style={{ color: 'var(--txt4)', marginLeft: 6 }}>· mín {item.minStock}</span>}
                     </div>
                   </div>
@@ -284,28 +316,35 @@ export default function Insumos() {
                     </td></tr>
                   )}
                   {filtered.map(item => {
-                    const isLow = item.minStock > 0 && (item.stock || 0) <= item.minStock
+                    const level = stockLevel(item.stock, item.minStock)
+                    const led = LED_DOT[level]
                     return (
-                      <tr key={item.id} style={isLow ? { borderLeft: '4px solid #DC2626', background: '#FFF1F2' } : undefined}>
+                      <tr key={item.id} style={level === 'low' ? { borderLeft: '4px solid #DC2626' } : undefined}>
                         <td>
                           <div style={{ fontWeight: 600 }}>{item.name}</div>
-                          {item.subcat && <div style={{ fontSize: 11, color: '#64748B', marginTop: 1 }}>{item.subcat}</div>}
+                          <div style={{ fontSize: 11, color: '#64748B', marginTop: 1, minHeight: 14 }}>{item.subcat || ''}</div>
                         </td>
                         <td><span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`}>{catLabel(item.cat)}</span></td>
                         <td style={{ fontSize: 11 }}>{supplierName(item.supplierId)}</td>
                         <td style={{ textAlign: 'right' }}>{fmtDec(item.cost)}</td>
-                        <td style={{ textAlign: 'right', fontWeight: 700, color: isLow ? '#DC2626' : 'var(--txt)' }}>
-                          {item.stock || 0}
-                          {isLow && <i className="fa fa-triangle-exclamation" style={{ color: '#DC2626', marginLeft: 4, fontSize: 10 }} />}
+                        <td style={{ textAlign: 'right' }}>
+                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                            {led && (
+                              <span
+                                className={led.pulse ? 'ins-led-pulse' : ''}
+                                style={{ width: 6, height: 6, borderRadius: '50%', background: led.bg, flexShrink: 0, display: 'inline-block' }}
+                              />
+                            )}
+                            <span style={{ fontWeight: 700, color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt)' }}>
+                              {item.stock || 0}
+                            </span>
+                          </div>
                         </td>
                         <td style={{ textAlign: 'right', color: 'var(--txt3)' }}>{item.minStock || '—'}</td>
                         <td style={{ textAlign: 'right', fontSize: 11 }}>{item.unit || 'un'}</td>
                         <td style={{ textAlign: 'right', fontWeight: 600 }}>{fmtDec((item.stock || 0) * (Number(item.cost) || 0))}</td>
                         <td>
                           <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
-                            <button className="act" title="Ingreso rápido (+1)" style={{ color: '#16A34A', background: '#DCFCE7' }} onClick={() => quickPlus(item)}>
-                              <i className="fa fa-plus" style={{ fontSize: 10 }} />
-                            </button>
                             <button className="act" title="Registrar movimiento" onClick={() => openMove(item)}><i className="fa fa-arrows-rotate" /></button>
                             <button className="act" title="Editar" onClick={() => openEdit(item)}><i className="fa fa-pen" /></button>
                             <button className="act del" title="Eliminar" onClick={() => remove(item.id)}><i className="fa fa-trash" /></button>
@@ -318,11 +357,6 @@ export default function Insumos() {
               </table>
             </div>
           </div>
-
-          {/* FAB — mobile only */}
-          <button className="mob-fab" onClick={openNew} style={{ background: 'var(--brand)', color: '#fff', border: 'none', cursor: 'pointer' }}>
-            <i className="fa fa-plus" />
-          </button>
         </>
       )}
 
@@ -339,7 +373,7 @@ export default function Insumos() {
               <i className="fa fa-arrows-rotate" style={{ fontSize: 32, color: 'var(--txt4)', marginBottom: 12, display: 'block' }} />
               <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--txt2)', marginBottom: 6 }}>Sin movimientos registrados</div>
               <div style={{ fontSize: 12, color: 'var(--txt4)', lineHeight: 1.6, maxWidth: 340, margin: '0 auto 16px' }}>
-                Los ingresos, egresos y ajustes de stock aparecerán acá.<br />Usá el botón <b>+1</b> o <i className="fa fa-arrows-rotate" style={{ fontSize: 10 }} /> en cada insumo para registrar movimientos.
+                Los ingresos, egresos y ajustes de stock aparecerán acá.<br />Usá el botón <i className="fa fa-arrows-rotate" style={{ fontSize: 10 }} /> en cada insumo para registrar movimientos.
               </div>
               <button className="btn btn-primary btn-sm" onClick={() => setTab('list')}>
                 <i className="fa fa-boxes-stacked" style={{ marginRight: 6 }} />Ir a inventario
@@ -353,7 +387,8 @@ export default function Insumos() {
                     <th>Fecha</th>
                     <th>Tipo</th>
                     <th>Insumo</th>
-                    <th style={{ textAlign: 'right' }}>Cantidad</th>
+                    <th style={{ textAlign: 'right' }}>Cant.</th>
+                    <th className="col-hide-mobile" style={{ textAlign: 'right' }}>Costo Total</th>
                     <th className="col-hide-mobile">Nota</th>
                   </tr>
                 </thead>
@@ -362,19 +397,23 @@ export default function Insumos() {
                     const isIn = m.type === 'in' || m.type === 'return'
                     const isAdjust = m.type === 'adjust'
                     const insumo = insumos.find(x => x.id === m.insumoId)
+                    const costoTotal = m.costAtTime ? m.qty * m.costAtTime : null
                     return (
                       <tr key={m.id}>
                         <td style={{ fontSize: 11, color: 'var(--txt3)', whiteSpace: 'nowrap' }}>{m.date}</td>
                         <td><span className={`badge ${MOVE_CLS[m.type] || 'b-draft'}`}>{MOVE_TYPES[m.type] || m.type}</span></td>
                         <td>
                           <div style={{ fontWeight: 600, fontSize: 12 }}>{m.ref || insumo?.name || '—'}</div>
-                          {insumo?.cat && <div style={{ fontSize: 10, color: 'var(--txt4)' }}>{catLabel(insumo.cat)}</div>}
+                          {insumo?.subcat && <div style={{ fontSize: 10, color: '#64748B' }}>{insumo.subcat}</div>}
                         </td>
                         <td style={{ textAlign: 'right' }}>
                           <span style={{ fontWeight: 800, fontSize: 13, color: isAdjust ? 'var(--brand)' : isIn ? '#16A34A' : '#DC2626', fontFamily: 'ui-monospace,SFMono-Regular,monospace' }}>
                             {isAdjust ? '=' : isIn ? '+' : '−'}{m.qty}
                           </span>
                           {insumo?.unit && <span style={{ fontSize: 10, color: 'var(--txt4)', marginLeft: 3 }}>{insumo.unit}</span>}
+                        </td>
+                        <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 600, fontSize: 12 }}>
+                          {costoTotal !== null ? fmtDec(costoTotal) : <span style={{ color: 'var(--txt4)' }}>—</span>}
                         </td>
                         <td className="col-hide-mobile" style={{ fontSize: 11, color: 'var(--txt3)' }}>{m.note || '—'}</td>
                       </tr>
@@ -396,7 +435,6 @@ export default function Insumos() {
               <button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button>
             </div>
             <div className="grid2">
-              {/* 1. Nombre + Categoría */}
               <div className="fg">
                 <label>Nombre *</label>
                 <input type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Tela algodón 180gr" />
@@ -408,7 +446,6 @@ export default function Insumos() {
                   {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
                 </select>
               </div>
-              {/* 2. Subcategoría — span 2 */}
               <div className="fg" style={{ gridColumn: 'span 2' }}>
                 <label>Subcategoría <span style={{ fontWeight: 400, color: 'var(--txt3)', fontSize: 11 }}>(opcional)</span></label>
                 <input
@@ -425,7 +462,6 @@ export default function Insumos() {
                   </datalist>
                 )}
               </div>
-              {/* 3. Proveedor — span 2 */}
               <div className="fg" style={{ gridColumn: 'span 2' }}>
                 <label>Proveedor</label>
                 <select value={form.supplierId || ''} onChange={e => setF('supplierId', e.target.value ? Number(e.target.value) : '')}>
@@ -433,7 +469,6 @@ export default function Insumos() {
                   {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
               </div>
-              {/* 4. Stock + Mínimo */}
               <div className="fg">
                 <label>Stock actual</label>
                 <input type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} onFocus={numFocus} placeholder="0" />
@@ -442,7 +477,6 @@ export default function Insumos() {
                 <label>Stock mínimo (alerta)</label>
                 <input type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} onFocus={numFocus} placeholder="0" />
               </div>
-              {/* 5. Costo + Unidad */}
               <div className="fg">
                 <label>Costo unitario</label>
                 <input type="number" value={form.cost} onChange={e => setF('cost', e.target.value)} onFocus={numFocus} placeholder="0" />
@@ -489,7 +523,7 @@ export default function Insumos() {
             <div className="grid2">
               <div className="fg">
                 <label>Tipo de movimiento</label>
-                <select value={moveForm.type} onChange={e => setMoveForm(p => ({ ...p, type: e.target.value, purchaseCost: '' }))}>
+                <select value={moveForm.type} onChange={e => setMoveForm(p => ({ ...p, type: e.target.value, purchaseCost: '', note: '' }))}>
                   <option value="in">Ingreso (+)</option>
                   <option value="out">Egreso (-)</option>
                   <option value="adjust">Ajuste (=)</option>
@@ -525,8 +559,17 @@ export default function Insumos() {
               </div>
             )}
             <div className="fg" style={{ marginTop: 8 }}>
-              <label>Nota / Referencia</label>
-              <input type="text" value={moveForm.note} onChange={e => setMoveForm(p => ({ ...p, note: e.target.value }))} placeholder="Ej: Compra a proveedor X" />
+              <label>Motivo</label>
+              <input
+                type="text"
+                list="move-notes-list"
+                value={moveForm.note}
+                onChange={e => setMoveForm(p => ({ ...p, note: e.target.value }))}
+                placeholder="Elegí o escribí el motivo..."
+              />
+              <datalist id="move-notes-list">
+                {(MOVE_NOTES[moveForm.type] || []).map(n => <option key={n} value={n} />)}
+              </datalist>
             </div>
             <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 16 }}>
               <button className="btn btn-ghost btn-sm" onClick={() => setMoveModal(null)}>Cancelar</button>
