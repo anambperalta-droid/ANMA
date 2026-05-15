@@ -61,7 +61,7 @@ a{color:inherit;text-decoration:none}
 .section.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .page-h{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;gap:14px;flex-wrap:wrap}
-.page-h h1{font-size:24px;font-weight:900;letter-spacing:-.6px;margin:0}
+.page-h h1{font-size:26px;font-weight:900;letter-spacing:-.7px;margin:0}
 .page-h p{font-size:13px;color:#64748b;margin:3px 0 0}
 .page-h .btn-add{display:inline-flex;align-items:center;gap:7px;background:#16a34a;color:#fff;padding:9px 16px;border-radius:9px;font-weight:700;font-size:13px;border:none;cursor:pointer;font-family:inherit}
 .page-h .btn-2{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;border-radius:9px;padding:8px 14px;font-size:12.5px;color:#475569;cursor:pointer;font-family:inherit}
@@ -95,7 +95,7 @@ a{color:inherit;text-decoration:none}
 
 /* BENTO */
 .bento{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
-.kpi{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px 16px}
+.kpi{background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:14px 16px;box-shadow:0 1px 4px rgba(15,23,42,.05)}
 .kpi.key{border-left:3px solid #16a34a}
 .kpi-l{font-size:9.5px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
 .kpi-vrow{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
@@ -105,7 +105,7 @@ a{color:inherit;text-decoration:none}
 .kpi-spark{margin-top:6px}
 
 .bento-wide{grid-column:1/-1;display:grid;grid-template-columns:1.7fr 1fr;gap:12px}
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.card{background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(15,23,42,.05)}
 .card-h{display:flex;align-items:center;gap:6px;margin-bottom:14px;font-size:13px;font-weight:800;color:#0F172A}
 .card-h i{color:#7c3aed}
 .bar-chart{display:flex;align-items:flex-end;gap:5px;height:130px}
@@ -123,7 +123,7 @@ a{color:inherit;text-decoration:none}
 .donut-leg-row .n{font-size:11px;font-weight:800;background:#f1f5f9;padding:1px 6px;border-radius:6px;color:#0F172A;margin-left:auto}
 
 /* TABLE */
-.tbl-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;overflow-x:auto}
+.tbl-card{background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:16px;overflow-x:auto;box-shadow:0 1px 4px rgba(15,23,42,.05)}
 .tbl-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
 .tbl-h h3{margin:0;font-size:14px;font-weight:800;color:#0F172A}
 .tbl-h a,.tbl-h .more{font-size:12px;font-weight:600;color:#7c3aed;cursor:pointer}
@@ -144,6 +144,8 @@ tbody tr:hover td{background:#f9fafb}
 .st-low{background:#fef3c7;color:#92400e}
 .st-ok{background:#dcfce7;color:#15803d}
 .st-out{background:#fee2e2;color:#991b1b}
+.st-b2b{background:#16a34a;color:#fff;font-weight:700}
+.st-b2c{background:#dbeafe;color:#1d4ed8;font-weight:700}
 .row-act{display:inline-flex;gap:5px}
 .row-act button{width:26px;height:26px;border-radius:6px;border:none;background:#f1f5f9;color:#475569;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
 .row-act button:hover{background:#e2e8f0;color:#0F172A}
@@ -169,10 +171,10 @@ tbody tr:hover td{background:#f9fafb}
 
 /* FORM (Nuevo pedido) */
 .form-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}
-.form-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px}
+.form-card{background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:18px;box-shadow:0 1px 4px rgba(15,23,42,.05)}
 .fg{margin-bottom:12px}
 .fg label{display:block;font-size:10.5px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:13px;font-family:inherit;color:#0F172A;background:#fafbfc;outline:none}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1.5px solid #e8ecf0;border-radius:8px;font-size:13px;font-family:inherit;color:#0F172A;background:#f8fafc;outline:none}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#7c3aed;background:#fff}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .calc-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #e5e7eb;font-size:13px;color:#475569}
@@ -455,14 +457,14 @@ tbody tr:hover td{background:#f9fafb}
           <table>
             <thead><tr><th>Empresa / Contacto</th><th>Tipo</th><th>WhatsApp</th><th>Rubro</th><th>Pedidos</th><th>Acciones</th></tr></thead>
             <tbody>
-              <tr><td><b>Mayorista 360</b><div style="font-size:11px;color:#64748b">Diego Pérez</div></td><td><span class="tbl-st st-confirmed">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Distribución</td><td><b>14</b> · 3d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Diseño Austral</b><div style="font-size:11px;color:#64748b">Martina Gómez</div></td><td><span class="tbl-st st-confirmed">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Diseño</td><td><b>9</b> · 1d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Luz & Forma</b><div style="font-size:11px;color:#64748b">Sofía Ramos</div></td><td><span class="tbl-st st-sent">B2C</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Iluminación</td><td><b>6</b> · 2d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>BioVerde</b><div style="font-size:11px;color:#64748b">Lucas Méndez</div></td><td><span class="tbl-st st-confirmed">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Sustentabilidad</td><td><b>4</b> · 5d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Estudio Cromo</b><div style="font-size:11px;color:#64748b">Carla Méndez</div></td><td><span class="tbl-st st-sent">B2C</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Diseño</td><td><b>3</b> · 7d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Diseño Industrial</b><div style="font-size:11px;color:#64748b">Florencia Acosta</div></td><td><span class="tbl-st st-confirmed">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Industria</td><td><b>5</b> · 9d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Café del Sol</b><div style="font-size:11px;color:#64748b">Julián Pérez</div></td><td><span class="tbl-st st-sent">B2C</span></td><td>—</td><td>Gastronomía</td><td><b>2</b> · 21d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Taller de Ideas</b><div style="font-size:11px;color:#64748b">Elena Ferreyra</div></td><td><span class="tbl-st st-sent">B2C</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Educación</td><td><b>1</b> · 32d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+              <tr><td><b>Mayorista 360</b><div style="font-size:11px;color:#64748b">Diego Pérez</div></td><td><span class="tbl-st st-b2b">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Distribución</td><td><b>14</b> · 3d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+              <tr><td><b>Diseño Austral</b><div style="font-size:11px;color:#64748b">Martina Gómez</div></td><td><span class="tbl-st st-b2b">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Diseño</td><td><b>9</b> · 1d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+              <tr><td><b>Luz & Forma</b><div style="font-size:11px;color:#64748b">Sofía Ramos</div></td><td><span class="tbl-st st-b2c">B2C</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Iluminación</td><td><b>6</b> · 2d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+              <tr><td><b>BioVerde</b><div style="font-size:11px;color:#64748b">Lucas Méndez</div></td><td><span class="tbl-st st-b2b">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Sustentabilidad</td><td><b>4</b> · 5d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+              <tr><td><b>Estudio Cromo</b><div style="font-size:11px;color:#64748b">Carla Méndez</div></td><td><span class="tbl-st st-b2c">B2C</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Diseño</td><td><b>3</b> · 7d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+              <tr><td><b>Diseño Industrial</b><div style="font-size:11px;color:#64748b">Florencia Acosta</div></td><td><span class="tbl-st st-b2b">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Industria</td><td><b>5</b> · 9d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+              <tr><td><b>Café del Sol</b><div style="font-size:11px;color:#64748b">Julián Pérez</div></td><td><span class="tbl-st st-b2c">B2C</span></td><td>—</td><td>Gastronomía</td><td><b>2</b> · 21d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+              <tr><td><b>Taller de Ideas</b><div style="font-size:11px;color:#64748b">Elena Ferreyra</div></td><td><span class="tbl-st st-b2c">B2C</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Educación</td><td><b>1</b> · 32d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
             </tbody>
           </table>
         </div>
