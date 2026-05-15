@@ -3,8 +3,16 @@ import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { fmt, fmtDec, MOVE_TYPES, MOVE_CLS } from '../../lib/storage'
 
-const EMPTY = { name: '', cat: '', unit: 'unidad', cost: '', stock: '', minStock: '', supplierId: '', notes: '' }
+const EMPTY = { name: '', cat: '', subcat: '', unit: 'unidad', cost: '', stock: '', minStock: '', supplierId: '', notes: '' }
 const numFocus = e => e.target.select()
+
+const SUBCAT_SUGGESTIONS = {
+  prod_core:    ['Textiles', 'Químicos', 'Madera', 'Metales', 'Papel/Cartón'],
+  packaging:    ['Cajas', 'Bolsas', 'Papel de seda', 'Cintas', 'Tarjetas'],
+  insumos_op:   ['Limpieza', 'Librería', 'Etiquetas de envío', 'Precintos'],
+  herramientas: ['Agujas', 'Lubricantes', 'Brocas', 'Filtros'],
+  promo:        ['Folletos', 'Stickers', 'Muestras', 'Merchandising'],
+}
 
 const CAT_CLS = {
   prod_core:    'b-confirmed',
@@ -47,7 +55,7 @@ export default function Insumos() {
     if (catFilter !== 'all') f = f.filter(x => x.cat === catFilter)
     if (search) {
       const s = search.toLowerCase()
-      f = f.filter(x => x.name.toLowerCase().includes(s) || (x.cat || '').toLowerCase().includes(s))
+      f = f.filter(x => x.name.toLowerCase().includes(s) || (x.cat || '').toLowerCase().includes(s) || (x.subcat || '').toLowerCase().includes(s))
     }
     return f.sort((a, b) => (b.id || 0) - (a.id || 0))
   }, [insumos, catFilter, search])
@@ -203,7 +211,10 @@ export default function Insumos() {
                     : undefined
                   return (
                     <tr key={item.id} style={rowStyle}>
-                      <td style={{ fontWeight: 600 }}>{item.name}</td>
+                      <td>
+                        <div style={{ fontWeight: 600 }}>{item.name}</div>
+                        {item.subcat && <div style={{ fontSize: 11, color: '#64748B', marginTop: 1 }}>{item.subcat}</div>}
+                      </td>
                       <td className="col-hide-mobile">
                         <span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`}>
                           {catLabel(item.cat)}
@@ -310,10 +321,25 @@ export default function Insumos() {
             <div className="grid2">
               <div className="fg"><label>Nombre *</label><input type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Tela algodón 180gr" /></div>
               <div className="fg"><label>Categoría</label>
-                <select value={form.cat} onChange={e => setF('cat', e.target.value)}>
+                <select value={form.cat} onChange={e => { setF('cat', e.target.value); setF('subcat', '') }}>
                   <option value="">Sin categoría</option>
                   {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
                 </select>
+              </div>
+              <div className="fg" style={{ gridColumn: 'span 2' }}><label>Subcategoría <span style={{ fontWeight: 400, color: 'var(--txt3)', fontSize: 11 }}>(opcional)</span></label>
+                <input
+                  type="text"
+                  list={`subcat-list-${form.cat}`}
+                  value={form.subcat || ''}
+                  onChange={e => setF('subcat', e.target.value)}
+                  placeholder={form.cat ? 'Elegí una sugerencia o escribí libremente...' : 'Seleccioná una categoría primero'}
+                  disabled={!form.cat}
+                />
+                {form.cat && (
+                  <datalist id={`subcat-list-${form.cat}`}>
+                    {(SUBCAT_SUGGESTIONS[form.cat] || []).map(s => <option key={s} value={s} />)}
+                  </datalist>
+                )}
               </div>
               <div className="fg"><label>Costo unitario</label><input type="number" value={form.cost} onChange={e => setF('cost', e.target.value)} onFocus={numFocus} placeholder="0" /></div>
               <div className="fg"><label>Unidad de medida</label>
