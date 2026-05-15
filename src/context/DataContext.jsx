@@ -128,7 +128,13 @@ export function DataProvider({ children }) {
       if (idx > -1) {
         const qty = Number(move.qty) || 0
         if (move.type === 'in' || move.type === 'return') {
-          insumos[idx].stock = (insumos[idx].stock || 0) + qty
+          const currentStock = insumos[idx].stock || 0
+          const currentCost = Number(insumos[idx].cost) || 0
+          const purchaseCost = Number(move.purchaseCost)
+          if (!isNaN(purchaseCost) && purchaseCost > 0 && currentStock + qty > 0) {
+            insumos[idx].cost = ((currentStock * currentCost) + (qty * purchaseCost)) / (currentStock + qty)
+          }
+          insumos[idx].stock = currentStock + qty
         } else if (move.type === 'out' || move.type === 'sale') {
           insumos[idx].stock = Math.max(0, (insumos[idx].stock || 0) - qty)
         } else if (move.type === 'adjust') {

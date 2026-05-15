@@ -56,12 +56,17 @@ function NewListCreator({ onCreate }) {
 function ListEditor({ label, icon = 'fa-list', accentColor = 'var(--brand)', items, onAdd, onRemove, onDelete }) {
   const [val, setVal] = useState('')
   const [dupErr, setDupErr] = useState(false)
+  const itemStr = (i) => typeof i === 'object' && i !== null ? (i.label || '') : String(i)
   const add = () => {
     if (!val.trim()) return
-    if (items.some(i => i.toLowerCase() === val.trim().toLowerCase())) {
+    if (items.some(i => itemStr(i).toLowerCase() === val.trim().toLowerCase())) {
       setDupErr(true); setTimeout(() => setDupErr(false), 2500); return
     }
-    onAdd(val.trim()); setVal('')
+    const isObjList = items.length > 0 && typeof items[0] === 'object'
+    const newItem = isObjList
+      ? { id: val.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''), label: val.trim() }
+      : val.trim()
+    onAdd(newItem); setVal('')
   }
   return (
     <div className="card" style={{ borderTop: `3px solid ${accentColor}`, padding: '16px 18px' }}>
@@ -99,7 +104,7 @@ function ListEditor({ label, icon = 'fa-list', accentColor = 'var(--brand)', ite
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: accentColor, flexShrink: 0 }} />
-              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item}</span>
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{itemStr(item)}</span>
             </div>
             <button className="act del" onClick={() => onRemove(i)} style={{ flexShrink: 0 }}>
               <i className="fa fa-xmark" />

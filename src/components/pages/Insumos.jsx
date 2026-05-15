@@ -1,10 +1,18 @@
 import { useState, useMemo } from 'react'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
-import { fmt, MOVE_TYPES, MOVE_CLS } from '../../lib/storage'
+import { fmt, fmtDec, MOVE_TYPES, MOVE_CLS } from '../../lib/storage'
 
 const EMPTY = { name: '', cat: '', unit: 'unidad', cost: '', stock: '', minStock: '', supplierId: '', notes: '' }
 const numFocus = e => e.target.select()
+
+const CAT_CLS = {
+  prod_core:    'b-confirmed',
+  packaging:    'b-sent',
+  insumos_op:   'b-negotiating',
+  herramientas: 'b-draft',
+  promo:        'b-lost',
+}
 
 export default function Insumos() {
   const { get, config, saveEntity, deleteEntity, recordStockMove } = useData()
@@ -16,10 +24,10 @@ export default function Insumos() {
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('all')
   const [modal, setModal] = useState(false)
-  const [moveModal, setMoveModal] = useState(null) // insumo for stock movement
+  const [moveModal, setMoveModal] = useState(null)
   const [form, setForm] = useState({ ...EMPTY })
-  const [moveForm, setMoveForm] = useState({ type: 'in', qty: '', note: '' })
-  const [tab, setTab] = useState('list') // list | moves
+  const [moveForm, setMoveForm] = useState({ type: 'in', qty: '', purchaseCost: '', note: '' })
+  const [tab, setTab] = useState('list')
   const [alertDismissed, setAlertDismissed] = useState(() => {
     try { return sessionStorage.getItem('insumos_low_dismissed') === '1' } catch { return false }
   })
@@ -47,7 +55,9 @@ export default function Insumos() {
   const lowStock = insumos.filter(x => x.minStock > 0 && (x.stock || 0) <= x.minStock)
   const totalValue = insumos.reduce((s, x) => s + (x.stock || 0) * (Number(x.cost) || 0), 0)
 
-  const openNew = () => { setForm({ ...EMPTY, cat: cats[0] || '' }); setModal(true) }
+  const catLabel = (id) => cats.find(cat => cat.id === id)?.label || id || '—'
+
+  const openNew = () => { setForm({ ...EMPTY, cat: cats[0]?.id || '' }); setModal(true) }
   const openEdit = (item) => { setForm({ ...item }); setModal(true) }
 
   const save = () => {
@@ -61,20 +71,36 @@ export default function Insumos() {
     if (window.confirm('¿Eliminar este insumo?')) { deleteEntity('insumos', id); toast('Eliminado', 'in') }
   }
 
-  const openMove = (item) => { setMoveModal(item); setMoveForm({ type: 'in', qty: '', note: '' }) }
+  const openMove = (item) => { setMoveModal(item); setMoveForm({ type: 'in', qty: '', purchaseCost: '', note: '' }) }
 
   const saveMove = () => {
     if (!moveForm.qty || Number(moveForm.qty) <= 0) { toast('Ingresá una cantidad válida', 'er'); return }
+    const isIncoming = moveForm.type === 'in' || moveForm.type === 'return'
     recordStockMove({
       type: moveForm.type,
       insumoId: moveModal.id,
       qty: Number(moveForm.qty),
+      purchaseCost: isIncoming && moveForm.purchaseCost ? Number(moveForm.purchaseCost) : undefined,
       note: moveForm.note || moveModal.name,
       ref: moveModal.name,
     })
     setMoveModal(null)
     toast('Movimiento registrado', 'ok')
   }
+
+  const cppPreview = useMemo(() => {
+    if (!moveModal) return null
+    const isIncoming = moveForm.type === 'in' || moveForm.type === 'return'
+    if (!isIncoming) return null
+    const qty = Number(moveForm.qty)
+    const purchaseCost = Number(moveForm.purchaseCost)
+    if (!qty || !purchaseCost) return null
+    const currentStock = moveModal.stock || 0
+    const currentCost = Number(moveModal.cost) || 0
+    const newTotal = currentStock + qty
+    if (newTotal <= 0) return null
+    return ((currentStock * currentCost) + (qty * purchaseCost)) / newTotal
+  }, [moveModal, moveForm])
 
   const insumoMoves = useMemo(() => {
     return stockMoves.filter(m => m.insumoId).sort((a, b) => (b.id || 0) - (a.id || 0)).slice(0, 100)
@@ -101,7 +127,7 @@ export default function Insumos() {
         </div>
         <div className="bento-kpi" style={{ borderLeft: '3px solid var(--green)', padding: '12px 14px 10px', paddingLeft: 14 }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Valor Total en Stock</div>
-          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{fmt(totalValue)}</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{fmtDec(totalValue)}</div>
         </div>
         <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : 'var(--green)'}`, padding: '12px 14px 10px', paddingLeft: 14 }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Stock bajo</div>
@@ -141,9 +167,9 @@ export default function Insumos() {
               <i className="fa fa-magnifying-glass" />
               <input type="text" placeholder="Buscar insumo..." value={search} onChange={e => setSearch(e.target.value)} />
             </div>
-            <select className="f-inp" style={{ maxWidth: 200 }} value={catFilter} onChange={e => setCatFilter(e.target.value)}>
+            <select className="f-inp" style={{ maxWidth: 220 }} value={catFilter} onChange={e => setCatFilter(e.target.value)}>
               <option value="all">Todas las categorías</option>
-              {cats.map(c => <option key={c} value={c}>{c}</option>)}
+              {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
             </select>
           </div>
 
@@ -172,19 +198,26 @@ export default function Insumos() {
                 )}
                 {filtered.map(item => {
                   const isLow = item.minStock > 0 && (item.stock || 0) <= item.minStock
+                  const rowStyle = isLow
+                    ? { borderLeft: '4px solid #DC2626', background: '#FFF1F2' }
+                    : undefined
                   return (
-                    <tr key={item.id} style={isLow ? { background: '#FFF7ED' } : undefined}>
+                    <tr key={item.id} style={rowStyle}>
                       <td style={{ fontWeight: 600 }}>{item.name}</td>
-                      <td className="col-hide-mobile"><span className="badge b-draft">{item.cat || '—'}</span></td>
+                      <td className="col-hide-mobile">
+                        <span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`}>
+                          {catLabel(item.cat)}
+                        </span>
+                      </td>
                       <td className="col-hide-mobile" style={{ fontSize: 11 }}>{supplierName(item.supplierId)}</td>
-                      <td style={{ textAlign: 'right' }}>{fmt(item.cost)}</td>
-                      <td style={{ textAlign: 'right', fontWeight: 700, color: isLow ? '#EA580C' : 'var(--txt)' }}>
+                      <td style={{ textAlign: 'right' }}>{fmtDec(item.cost)}</td>
+                      <td style={{ textAlign: 'right', fontWeight: 700, color: isLow ? '#DC2626' : 'var(--txt)' }}>
                         {item.stock || 0}
-                        {isLow && <i className="fa fa-triangle-exclamation" style={{ color: '#EA580C', marginLeft: 4, fontSize: 10 }} />}
+                        {isLow && <i className="fa fa-triangle-exclamation" style={{ color: '#DC2626', marginLeft: 4, fontSize: 10 }} />}
                       </td>
                       <td className="col-hide-mobile" style={{ textAlign: 'right', color: 'var(--txt3)' }}>{item.minStock || '—'}</td>
                       <td className="col-hide-mobile" style={{ textAlign: 'right', fontSize: 11 }}>{item.unit || 'unidad'}</td>
-                      <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 600 }}>{fmt((item.stock || 0) * (Number(item.cost) || 0))}</td>
+                      <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 600 }}>{fmtDec((item.stock || 0) * (Number(item.cost) || 0))}</td>
                       <td>
                         <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
                           <button className="act" title="Ingreso rápido de stock (+1)" style={{ color: '#16A34A', background: '#DCFCE7' }}
@@ -250,7 +283,7 @@ export default function Insumos() {
                         <td><span className={`badge ${MOVE_CLS[m.type] || 'b-draft'}`}>{MOVE_TYPES[m.type] || m.type}</span></td>
                         <td>
                           <div style={{ fontWeight: 600, fontSize: 12 }}>{m.ref || insumo?.name || '—'}</div>
-                          {insumo?.cat && <div style={{ fontSize: 10, color: 'var(--txt4)' }}>{insumo.cat}</div>}
+                          {insumo?.cat && <div style={{ fontSize: 10, color: 'var(--txt4)' }}>{catLabel(insumo.cat)}</div>}
                         </td>
                         <td style={{ textAlign: 'right' }}>
                           <span style={{ fontWeight: 800, fontSize: 13, color: isAdjust ? 'var(--brand)' : isIn ? '#16A34A' : '#DC2626', fontFamily: 'ui-monospace,SFMono-Regular,monospace' }}>
@@ -279,7 +312,7 @@ export default function Insumos() {
               <div className="fg"><label>Categoría</label>
                 <select value={form.cat} onChange={e => setF('cat', e.target.value)}>
                   <option value="">Sin categoría</option>
-                  {cats.map(c => <option key={c} value={c}>{c}</option>)}
+                  {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
                 </select>
               </div>
               <div className="fg"><label>Costo unitario</label><input type="number" value={form.cost} onChange={e => setF('cost', e.target.value)} onFocus={numFocus} placeholder="0" /></div>
@@ -315,12 +348,15 @@ export default function Insumos() {
               <i className="fa fa-box" style={{ color: 'var(--brand)' }} />
               <div>
                 <div style={{ fontWeight: 700, fontSize: 13 }}>{moveModal.name}</div>
-                <div style={{ fontSize: 11, color: 'var(--txt3)' }}>Stock actual: <b>{moveModal.stock || 0}</b> {moveModal.unit || 'unidad'}</div>
+                <div style={{ fontSize: 11, color: 'var(--txt3)' }}>
+                  Stock actual: <b>{moveModal.stock || 0}</b> {moveModal.unit || 'unidad'}
+                  {moveModal.cost > 0 && <> · Costo actual: <b>{fmtDec(moveModal.cost)}</b></>}
+                </div>
               </div>
             </div>
             <div className="grid2">
               <div className="fg"><label>Tipo de movimiento</label>
-                <select value={moveForm.type} onChange={e => setMoveForm(p => ({ ...p, type: e.target.value }))}>
+                <select value={moveForm.type} onChange={e => setMoveForm(p => ({ ...p, type: e.target.value, purchaseCost: '' }))}>
                   <option value="in">Ingreso (+)</option>
                   <option value="out">Egreso (-)</option>
                   <option value="adjust">Ajuste (=)</option>
@@ -329,7 +365,29 @@ export default function Insumos() {
               </div>
               <div className="fg"><label>Cantidad</label><input type="number" value={moveForm.qty} onChange={e => setMoveForm(p => ({ ...p, qty: e.target.value }))} onFocus={numFocus} placeholder="0" min="0" /></div>
             </div>
-            <div className="fg"><label>Nota / Referencia</label><input type="text" value={moveForm.note} onChange={e => setMoveForm(p => ({ ...p, note: e.target.value }))} placeholder="Ej: Compra a proveedor X" /></div>
+            {(moveForm.type === 'in' || moveForm.type === 'return') && (
+              <div className="fg">
+                <label>Costo de compra por unidad <span style={{ fontWeight: 400, color: 'var(--txt3)', fontSize: 11 }}>(actualiza CPP)</span></label>
+                <input
+                  type="number"
+                  value={moveForm.purchaseCost}
+                  onChange={e => setMoveForm(p => ({ ...p, purchaseCost: e.target.value }))}
+                  onFocus={numFocus}
+                  placeholder={`Actual: ${fmtDec(moveModal.cost || 0)}`}
+                  min="0"
+                />
+              </div>
+            )}
+            {cppPreview !== null && (
+              <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 8, padding: '8px 12px', marginTop: 4, fontSize: 12, color: '#15803D', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <i className="fa fa-calculator" style={{ fontSize: 11 }} />
+                Nuevo costo promedio ponderado: <b style={{ marginLeft: 4 }}>{fmtDec(cppPreview)}</b> / {moveModal.unit || 'unidad'}
+              </div>
+            )}
+            <div className="fg" style={{ marginTop: 8 }}>
+              <label>Nota / Referencia</label>
+              <input type="text" value={moveForm.note} onChange={e => setMoveForm(p => ({ ...p, note: e.target.value }))} placeholder="Ej: Compra a proveedor X" />
+            </div>
             <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 16 }}>
               <button className="btn btn-ghost btn-sm" onClick={() => setMoveModal(null)}>Cancelar</button>
               <button className="btn btn-primary btn-sm" onClick={saveMove}><i className="fa fa-check" /> Registrar</button>

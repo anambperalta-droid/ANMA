@@ -66,11 +66,11 @@ export const DEFAULTS = {
     'Servicio',
   ],
   insumoCats: [
-    'Materia prima',
-    'Empaque / Packaging',
-    'Etiquetas / Stickers',
-    'Insumos de producción',
-    'Otros',
+    { id: 'prod_core',    label: 'Materia Prima / Producción' },
+    { id: 'packaging',    label: 'Packaging y Experiencia' },
+    { id: 'insumos_op',   label: 'Insumos Operativos' },
+    { id: 'herramientas', label: 'Herramientas y Repuestos' },
+    { id: 'promo',        label: 'Marketing y Regalos' },
   ],
   units: ['unidad', 'kg', 'litro', 'metro', 'caja', 'pack', 'rollo'],
   clientTypes: ['B2C — Cliente final', 'B2B — Empresa'],
@@ -83,7 +83,7 @@ export const DEFAULTS = {
 export function ensureDefaults() {
   const c = cfg()
   if (!c.businessName) wCfg(DEFAULTS)
-  if (!c.insumoCats) wCfg({ insumoCats: DEFAULTS.insumoCats })
+  if (!c.insumoCats || typeof c.insumoCats[0] === 'string') wCfg({ insumoCats: DEFAULTS.insumoCats })
   if (!c.units) wCfg({ units: DEFAULTS.units })
   if (!c.clientTypes) wCfg({ clientTypes: DEFAULTS.clientTypes })
   if (!c.pricingRules) wCfg({ pricingRules: DEFAULTS.pricingRules })
@@ -94,6 +94,13 @@ export const fmt = (v) => {
   const cur = c.currency || '$'
   const locale = c.numberFormat || 'es-AR'
   return cur + (Number(v) || 0).toLocaleString(locale, { maximumFractionDigits: 0 })
+}
+
+export const fmtDec = (v) => {
+  const c = cfg()
+  const cur = c.currency || '$'
+  const locale = c.numberFormat || 'es-AR'
+  return cur + (Number(v) || 0).toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
 export const fmtDate = (iso) => {
