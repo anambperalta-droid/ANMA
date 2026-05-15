@@ -51,7 +51,6 @@ export default function Logistica() {
   const clients = get('clients') || []
   const statusList = ['Preparando', 'Despachado', 'En tránsito', 'Entregado', 'Con problema']
 
-  // ── Filtros ──────────────────────────────────────────────────────────
   const filteredShips = useMemo(() => {
     let s = shipments
     if (sFilter !== 'all') s = s.filter(x => x.status === sFilter)
@@ -67,7 +66,6 @@ export default function Logistica() {
     return s
   }, [shipments, sFilter, search])
 
-  // ── Form helpers ─────────────────────────────────────────────────────
   const setF = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
   const openShip = (s) => {
@@ -80,7 +78,6 @@ export default function Logistica() {
     setModal(true)
   }
 
-  // Auto-fill desde presupuesto — siempre sobreescribe con datos del presupuesto
   const onBudgetChange = (budgetId) => {
     if (!budgetId) { setF('budgetId', ''); return }
     const bud = budgets.find(b => b.id === Number(budgetId))
@@ -94,7 +91,6 @@ export default function Logistica() {
     }))
   }
 
-  // Sugerencia de flete según ciudad/zona + multiplicador de servicio
   const fleteEstimado = useMemo(() => {
     if (!form.city || !form.weight) return null
     const q = form.city.toLowerCase()
@@ -105,7 +101,6 @@ export default function Logistica() {
     return Math.round(base * mult)
   }, [form.city, form.weight, form.service, tariffs])
 
-  // Fecha estimada de llegada (días hábiles de la tarifa + fecha del envío)
   const estimatedArrival = useMemo(() => {
     if (!form.city || !form.date) return null
     const q = form.city.toLowerCase()
@@ -115,10 +110,8 @@ export default function Logistica() {
     return d.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
   }, [form.city, form.date, tariffs])
 
-  // URL de seguimiento computada según empresa + código
   const trackingLink = useMemo(() => getTrackingUrl(form.carrier, form.trackingUrl), [form.carrier, form.trackingUrl])
 
-  // Ganancia neta del presupuesto descontando el flete (solo si "Incluido en precio")
   const marginImpact = useMemo(() => {
     if (form.payer !== 'Incluido en precio' || !form.budgetId || !form.freight) return null
     const bud = budgets.find(b => b.id === form.budgetId)
@@ -126,7 +119,6 @@ export default function Logistica() {
     return (bud.totalGain || 0) - (form.freight || 0)
   }, [form.payer, form.budgetId, form.freight, budgets])
 
-  // Enviar link de seguimiento por WA
   const sendTrackingWA = () => {
     const bud = budgets.find(b => b.id === form.budgetId)
     const phone = bud?.wa || ''
@@ -144,7 +136,6 @@ export default function Logistica() {
     if (window.confirm('¿Eliminar envío?')) { deleteEntity('shipments', id); toast('Envío eliminado', 'in') }
   }
 
-  // ── Tarifas ───────────────────────────────────────────────────────────
   const addTariff = () => {
     if (!tzForm.zone) { toast('Ingresá la zona.', 'er'); return }
     saveEntity('tariffs', { ...tzForm, ppkg: Number(tzForm.ppkg), min: Number(tzForm.min), days: Number(tzForm.days) })
@@ -159,15 +150,11 @@ export default function Logistica() {
     return Math.max(t.min || 0, (t.ppkg || 0) * Number(calcKg))
   }
 
-  // ── Resumen ───────────────────────────────────────────────────────────
   const totalShipCost = shipments.reduce((s, x) => s + (x.freight || 0), 0)
   const nowYM = new Date().toISOString().slice(0, 7)
   const thisMonth = shipments.filter(s => s.date?.startsWith(nowYM)).length
   const avgCost = shipments.length ? Math.round(totalShipCost / shipments.length) : 0
 
-  // ── SLA / Envíos atrasados ────────────────────────────────────────────
-  // Un envío se considera atrasado si está "Despachado" o "En tránsito" hace más de 7 días
-  // (o más de leadTime de la zona si está configurado).
   const SLA_DEFAULT = 7
   const daysSince = (iso) => iso ? Math.floor((Date.now() - new Date(iso).getTime()) / 86400000) : 0
   const isLate = (s) => {
@@ -175,13 +162,12 @@ export default function Logistica() {
     const limit = (() => {
       if (!s.city) return SLA_DEFAULT
       const t = tariffs.find(x => x.zone.toLowerCase().includes(s.city.toLowerCase()) || s.city.toLowerCase().includes(x.zone.toLowerCase()))
-      return t?.days ? t.days + 2 : SLA_DEFAULT // tolerancia +2 días sobre lead time
+      return t?.days ? t.days + 2 : SLA_DEFAULT
     })()
     return daysSince(s.date) > limit
   }
   const lateShipments = useMemo(() => shipments.filter(isLate), [shipments, tariffs])
 
-  // Variance: presupuestos con flete real ≠ flete cobrado al cliente (pista de ganancia perdida)
   const varianceCount = useMemo(() => {
     return shipments.filter(s => {
       if (s.payer !== 'Incluido en precio' || !s.budgetId) return false
@@ -189,11 +175,10 @@ export default function Logistica() {
       if (!bud) return false
       const cobrado = Number(bud.shipCost) || 0
       const real = Number(s.freight) || 0
-      return Math.abs(cobrado - real) > 100 // diferencia >$100
+      return Math.abs(cobrado - real) > 100
     }).length
   }, [shipments, budgets])
 
-  // Notificación automática WA al cambiar estado
   const notifyStatusChange = (shipment, newStatus) => {
     const bud = budgets.find(b => b.id === shipment.budgetId)
     const phone = (bud?.wa || '').replace(/\D/g, '')
@@ -210,14 +195,12 @@ export default function Logistica() {
     return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`
   }
 
-  // Desglose por estado
   const byStatus = useMemo(() => statusList.map(st => ({
     label: st,
     count: shipments.filter(s => s.status === st).length,
     cost:  shipments.filter(s => s.status === st).reduce((a, s) => a + (s.freight || 0), 0),
   })), [shipments])
 
-  // Últimos 6 meses
   const monthlyData = useMemo(() => {
     const months = []
     for (let i = 5; i >= 0; i--) {
@@ -231,7 +214,6 @@ export default function Logistica() {
   }, [shipments])
   const maxCost = Math.max(...monthlyData.map(m => m.cost), 1)
 
-  // ── Badge ─────────────────────────────────────────────────────────────
   const statusBadge = (s) => {
     const cls = { Preparando: 'b-amber', Despachado: 'b-blue', 'En tránsito': 'b-purple', Entregado: 'b-confirmed', 'Con problema': 'b-lost' }
     return <span className={`badge ${cls[s] || 'b-draft'}`}>{s}</span>
@@ -239,22 +221,75 @@ export default function Logistica() {
 
   return (
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>
-      <style>{`.ship-modal .grid2{grid-template-columns:1fr!important;gap:0}`}</style>
-      <div className="ph">
-        <div className="ph-left">
-          <h2>Logística</h2>
-        </div>
+      <style>{`
+        .ship-modal .grid2{grid-template-columns:1fr!important;gap:0}
+        /* ── ADAPTIVE LOGÍSTICA ── */
+        .logi-tab-add{display:none;align-items:center;gap:4px;padding:6px 11px;background:var(--brand);border:none;border-radius:9px;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#fff;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;flex-shrink:0;transition:opacity .15s}
+        .logi-tab-add:active{opacity:.76}
+        .logi-tab-add i{font-size:11px}
+        .logi-pills-row{display:flex;gap:6px;flex-wrap:wrap;margin:0;align-items:center}
+        /* Mobile cards */
+        .logi-mob-list{display:none;flex-direction:column}
+        .logi-card{border-bottom:1px solid var(--border);padding:11px 0;-webkit-tap-highlight-color:transparent;transition:background .1s;cursor:pointer}
+        .logi-card:last-child{border-bottom:none}
+        .logi-card:active{background:rgba(0,0,0,.025)}
+        .logi-card-row1{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+        .logi-card-remito{font-weight:800;font-size:13px;color:var(--txt);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+        .logi-card-bud{font-size:11px;color:var(--brand);font-weight:700;flex-shrink:0;white-space:nowrap}
+        .logi-card-acts{flex-shrink:0;display:flex;gap:3px;align-items:center}
+        .logi-card-act{width:30px;height:30px;border-radius:8px;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:transform .1s}
+        .logi-card-act:active{transform:scale(.88)}
+        .logi-card-act-wa{background:#DCFCE7;color:#16A34A}
+        .logi-card-act-trk{background:#EFF6FF;color:#2563EB}
+        .logi-card-act-edit{background:var(--surface2);color:var(--txt2)}
+        .logi-card-act-del{background:#FEF2F2;color:#DC2626}
+        .logi-card-row2{display:flex;align-items:baseline;gap:4px;margin-bottom:5px;min-width:0;overflow:hidden}
+        .logi-card-client{font-weight:600;font-size:12px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+        .logi-card-sep{font-size:10px;color:var(--txt4);flex-shrink:0}
+        .logi-card-city{font-size:11px;color:var(--txt3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:1;max-width:100px}
+        .logi-card-carrier{font-size:11px;color:var(--txt2);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;max-width:120px;margin-left:auto}
+        .logi-card-row3{display:flex;align-items:center;gap:4px;overflow:hidden;min-width:0;flex-wrap:nowrap}
+        .logi-chip{display:inline-flex;align-items:center;padding:2px 6px;background:var(--surface2);border-radius:6px;font-size:10.5px;font-weight:600;color:var(--txt3);white-space:nowrap;line-height:1.5;flex-shrink:0}
+        .logi-chip-cost{background:rgba(22,163,74,.09)!important;color:#16A34A!important}
+        .logi-card-status-wrap{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:5px}
+        .logi-card-late{font-size:10px;color:#DC2626;font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:2px}
+        @media(max-width:767px){
+          .logi-ph{display:none!important}
+          .logi-tab-add{display:inline-flex}
+          .logi-tab-bar-scroll{overflow-x:auto;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+          .logi-tab-bar-scroll::-webkit-scrollbar{display:none}
+          .logi-tab-bar-scroll .tab-btn{flex-shrink:0;font-size:11px!important;white-space:nowrap}
+          .logi-pills-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+          .logi-pills-row::-webkit-scrollbar{display:none}
+          .logi-desk-only{display:none!important}
+          .logi-mob-list{display:flex}
+          .logi-tariff-grid{grid-template-columns:1fr!important}
+          .logi-summary-grid{grid-template-columns:1fr!important}
+        }
+        @media(min-width:768px){
+          .logi-mob-list{display:none!important}
+        }
+      `}</style>
+
+      {/* Header — hidden on mobile (topbar shows page title) */}
+      <div className="ph logi-ph">
+        <div className="ph-left"><h2>Logística</h2></div>
         <button className="btn btn-primary btn-sm" onClick={() => openShip()}>
           <i className="fa fa-plus" /> Registrar envío
         </button>
       </div>
 
-      <div className="tab-bar">
+      {/* Tab bar — on mobile becomes a scrollable row that includes the "+ Envío" pill */}
+      <div className="tab-bar logi-tab-bar-scroll" style={{ gap: 0 }}>
         {['envios', 'tarifas', 'resumen'].map(t => (
           <div key={t} className={`tab-btn ${tab === t ? 'active' : ''}`} onClick={() => setTab(t)}>
-            {t === 'envios' ? 'Envíos registrados' : t === 'tarifas' ? 'Tarifas y zonas' : 'Resumen de costos'}
+            {t === 'envios' ? 'Envíos' : t === 'tarifas' ? 'Tarifas' : 'Resumen'}
           </div>
         ))}
+        {/* Mobile-only "+ Envío" pill inside the tab bar */}
+        <button className="logi-tab-add" onClick={() => openShip()}>
+          <i className="fa fa-plus" /> Envío
+        </button>
       </div>
 
       {/* ── TAB ENVÍOS ─────────────────────────────────────────────── */}
@@ -271,6 +306,8 @@ export default function Logistica() {
               <button onClick={dismissLateAlert} title="Cerrar alerta" style={{ background: 'none', border: 'none', color: '#DC2626', cursor: 'pointer', padding: '2px 6px', borderRadius: 4, fontSize: 14, opacity: 0.7 }}><i className="fa fa-xmark" /></button>
             </div>
           )}
+
+          {/* Search + status pills */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, flexWrap: 'wrap' }}>
             <div className="search-row" style={{ flex: 1, maxWidth: 340 }}>
               <i className="fa fa-magnifying-glass" style={{ color: 'var(--txt3)', fontSize: 13 }} />
@@ -281,7 +318,7 @@ export default function Logistica() {
               />
               {search && <i className="fa fa-xmark" style={{ cursor: 'pointer', color: 'var(--txt3)' }} onClick={() => setSearch('')} />}
             </div>
-            <div className="pill-row" style={{ margin: 0 }}>
+            <div className="logi-pills-row">
               <div className={`pill ${sFilter === 'all' ? 'active' : ''}`} onClick={() => setSFilter('all')}>Todos</div>
               {statusList.map(s => (
                 <div key={s} className={`pill ${sFilter === s ? 'active' : ''}`} onClick={() => setSFilter(s)}>{s}</div>
@@ -289,70 +326,154 @@ export default function Logistica() {
             </div>
           </div>
 
-          <div className="tbl-card logistica-tbl">
-            <table>
-              <thead>
-                <tr>
-                  <th>Remito</th><th>Fecha</th><th>Cliente</th><th className="col-hide-mobile">Ciudad</th>
-                  <th className="col-hide-mobile">Presupuesto</th><th>Empresa</th><th className="col-hide-mobile">Servicio</th><th className="col-hide-mobile">Bultos</th><th className="col-hide-mobile">Peso</th>
-                  <th>Costo</th><th className="col-hide-mobile">Paga</th><th>Estado</th><th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredShips.length ? filteredShips.map(s => {
-                  const bud = budgets.find(b => b.id === s.budgetId)
-                  const late = isLate(s)
-                  const days = daysSince(s.date)
-                  const notifyLink = notifyStatusChange(s, s.status)
-                  return (
-                    <tr key={s.id} style={late ? { background: 'rgba(220,38,38,.04)' } : undefined}>
-                      <td><b>{s.remito || '—'}</b></td>
-                      <td>
-                        {s.date}
-                        {['Despachado', 'En tránsito'].includes(s.status) && days > 0 && (
-                          <div style={{ fontSize: 10, color: late ? '#DC2626' : 'var(--txt3)', fontWeight: late ? 700 : 500, marginTop: 1 }}>
-                            {late && <i className="fa fa-triangle-exclamation" style={{ marginRight: 3 }} />}
-                            hace {days}d{late ? ' · atrasado' : ''}
+          {/* ── MOBILE CARD LIST (≤767px) ── */}
+          <div className="logi-mob-list">
+            {filteredShips.length ? filteredShips.map(s => {
+              const bud = budgets.find(b => b.id === s.budgetId)
+              const late = isLate(s)
+              const days = daysSince(s.date)
+              const notifyLink = notifyStatusChange(s, s.status)
+              const payerChip = s.payer === 'El cliente' ? 'Cliente paga' : s.payer === 'Incluido en precio' ? 'Incluido' : null
+              return (
+                <div
+                  key={s.id}
+                  className="logi-card"
+                  onClick={() => openShip(s)}
+                  style={late ? { background: 'rgba(220,38,38,.03)' } : undefined}
+                >
+                  {/* Fila 1: Remito | Presupuesto | Acciones */}
+                  <div className="logi-card-row1">
+                    <div className="logi-card-remito">
+                      {s.remito || <span style={{ color: 'var(--txt3)', fontWeight: 500 }}>Sin remito</span>}
+                    </div>
+                    {bud?.num && <div className="logi-card-bud">{bud.num}</div>}
+                    <div className="logi-card-acts" onClick={e => e.stopPropagation()}>
+                      {notifyLink && (
+                        <button className="logi-card-act logi-card-act-wa" title="Avisar al cliente" onClick={() => window.open(notifyLink, '_blank')}>
+                          <i className="fa-brands fa-whatsapp" />
+                        </button>
+                      )}
+                      {s.trackingUrl && (
+                        <button className="logi-card-act logi-card-act-trk" title="Ver seguimiento" onClick={() => window.open(getTrackingUrl(s.carrier, s.trackingUrl), '_blank')}>
+                          <i className="fa fa-location-arrow" />
+                        </button>
+                      )}
+                      <button className="logi-card-act logi-card-act-edit" title="Editar" onClick={() => openShip(s)}>
+                        <i className="fa fa-pen" />
+                      </button>
+                      <button className="logi-card-act logi-card-act-del" title="Eliminar" onClick={() => delShip(s.id)}>
+                        <i className="fa fa-trash" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Fila 2: Cliente · Ciudad | Empresa · Servicio */}
+                  <div className="logi-card-row2">
+                    <div className="logi-card-client">{s.client || '—'}</div>
+                    {s.city && (
+                      <>
+                        <span className="logi-card-sep">·</span>
+                        <div className="logi-card-city">{s.city}</div>
+                      </>
+                    )}
+                    {(s.carrier || s.service) && (
+                      <div className="logi-card-carrier">{s.carrier || s.service}</div>
+                    )}
+                  </div>
+
+                  {/* Fila 3: Chips de datos duros | Estado | Atraso */}
+                  <div className="logi-card-row3">
+                    {(s.bulks > 0) && <span className="logi-chip">{s.bulks} bulto{s.bulks !== 1 ? 's' : ''}</span>}
+                    {s.weight && <span className="logi-chip">{s.weight} kg</span>}
+                    <span className="logi-chip logi-chip-cost">{fmt(s.freight)}</span>
+                    {payerChip && <span className="logi-chip">{payerChip}</span>}
+                    <div className="logi-card-status-wrap">
+                      {late && (
+                        <span className="logi-card-late">
+                          <i className="fa fa-triangle-exclamation" /> {days}d
+                        </span>
+                      )}
+                      {statusBadge(s.status)}
+                    </div>
+                  </div>
+                </div>
+              )
+            }) : (
+              <div className="empty">
+                <div className="ico"><i className="fa fa-truck-fast" /></div>
+                <p>{search || sFilter !== 'all' ? 'Sin resultados para el filtro aplicado' : 'Sin envíos registrados'}</p>
+              </div>
+            )}
+          </div>
+
+          {/* ── DESKTOP TABLE (≥768px) ── */}
+          <div className="logi-desk-only">
+            <div className="tbl-card logistica-tbl">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Remito</th><th>Fecha</th><th>Cliente</th><th>Ciudad</th>
+                    <th>Presupuesto</th><th>Empresa</th><th>Servicio</th><th>Bultos</th><th>Peso</th>
+                    <th>Costo</th><th>Paga</th><th>Estado</th><th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredShips.length ? filteredShips.map(s => {
+                    const bud = budgets.find(b => b.id === s.budgetId)
+                    const late = isLate(s)
+                    const days = daysSince(s.date)
+                    const notifyLink = notifyStatusChange(s, s.status)
+                    return (
+                      <tr key={s.id} style={late ? { background: 'rgba(220,38,38,.04)' } : undefined}>
+                        <td><b>{s.remito || '—'}</b></td>
+                        <td>
+                          {s.date}
+                          {['Despachado', 'En tránsito'].includes(s.status) && days > 0 && (
+                            <div style={{ fontSize: 10, color: late ? '#DC2626' : 'var(--txt3)', fontWeight: late ? 700 : 500, marginTop: 1 }}>
+                              {late && <i className="fa fa-triangle-exclamation" style={{ marginRight: 3 }} />}
+                              hace {days}d{late ? ' · atrasado' : ''}
+                            </div>
+                          )}
+                        </td>
+                        <td>{s.client || '—'}</td>
+                        <td>{s.city || '—'}</td>
+                        <td>{bud?.num || '—'}</td>
+                        <td>{s.carrier || '—'}</td>
+                        <td>{s.service}</td>
+                        <td>{s.bulks}</td>
+                        <td>{s.weight ? `${s.weight} kg` : '—'}</td>
+                        <td style={{ fontWeight: 700 }}>{fmt(s.freight)}</td>
+                        <td>{s.payer}</td>
+                        <td>{statusBadge(s.status)}</td>
+                        <td>
+                          <div className="acts">
+                            {s.trackingUrl && (
+                              <button className="act" style={{ color: '#3B82F6' }} onClick={() => window.open(getTrackingUrl(s.carrier, s.trackingUrl), '_blank')} title="Ver seguimiento"><i className="fa fa-location-arrow" /></button>
+                            )}
+                            {notifyLink && (
+                              <button className="act" style={{ color: '#16A34A' }} onClick={() => window.open(notifyLink, '_blank')} title="Avisar al cliente por WhatsApp"><i className="fa-brands fa-whatsapp" /></button>
+                            )}
+                            <button className="act edit" onClick={() => openShip(s)} title="Editar"><i className="fa fa-pen" /></button>
+                            <button className="act del" onClick={() => delShip(s.id)} title="Eliminar"><i className="fa fa-trash" /></button>
                           </div>
-                        )}
-                      </td>
-                      <td>{s.client || '—'}</td>
-                      <td className="col-hide-mobile">{s.city || '—'}</td>
-                      <td className="col-hide-mobile">{bud?.num || '—'}</td>
-                      <td>{s.carrier || '—'}</td>
-                      <td className="col-hide-mobile">{s.service}</td>
-                      <td className="col-hide-mobile">{s.bulks}</td>
-                      <td className="col-hide-mobile">{s.weight ? `${s.weight} kg` : '—'}</td>
-                      <td style={{ fontWeight: 700 }}>{fmt(s.freight)}</td>
-                      <td className="col-hide-mobile">{s.payer}</td>
-                      <td>{statusBadge(s.status)}</td>
-                      <td>
-                        <div className="acts">
-                          {s.trackingUrl && (
-                            <button className="act" style={{ color: '#3B82F6' }} onClick={() => window.open(getTrackingUrl(s.carrier, s.trackingUrl), '_blank')} title="Ver seguimiento"><i className="fa fa-location-arrow" /></button>
-                          )}
-                          {notifyLink && (
-                            <button className="act" style={{ color: '#16A34A' }} onClick={() => window.open(notifyLink, '_blank')} title="Avisar al cliente por WhatsApp"><i className="fa-brands fa-whatsapp" /></button>
-                          )}
-                          <button className="act edit" onClick={() => openShip(s)} title="Editar"><i className="fa fa-pen" /></button>
-                          <button className="act del" onClick={() => delShip(s.id)} title="Eliminar"><i className="fa fa-trash" /></button>
+                        </td>
+                      </tr>
+                    )
+                  }) : (
+                    <tr>
+                      <td colSpan={13}>
+                        <div className="empty">
+                          <div className="ico"><i className="fa fa-truck-fast" /></div>
+                          <p>{search || sFilter !== 'all' ? 'Sin resultados para el filtro aplicado' : 'Sin envíos registrados'}</p>
                         </div>
                       </td>
                     </tr>
-                  )
-                }) : (
-                  <tr>
-                    <td colSpan={13}>
-                      <div className="empty">
-                        <div className="ico"><i className="fa fa-truck-fast" /></div>
-                        <p>{search || sFilter !== 'all' ? 'Sin resultados para el filtro aplicado' : 'Sin envíos registrados'}</p>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
+
           {filteredShips.length > 0 && (
             <div style={{ fontSize: 11, color: 'var(--txt3)', textAlign: 'right', marginTop: 6 }}>
               {filteredShips.length} envío{filteredShips.length !== 1 ? 's' : ''} · Total flete: <b style={{ color: 'var(--money)' }}>{fmt(filteredShips.reduce((a, s) => a + (s.freight || 0), 0))}</b>
@@ -364,7 +485,7 @@ export default function Logistica() {
       {/* ── TAB TARIFAS ────────────────────────────────────────────── */}
       {tab === 'tarifas' && (
         <>
-          <div className="grid2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div className="logi-tariff-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             <div className="card">
               <div className="card-header"><span className="card-title">Agregar tarifa / zona</span></div>
               <div className="grid2">
@@ -425,7 +546,6 @@ export default function Logistica() {
             </div>
           </div>
 
-          {/* Calculadora */}
           <div className="card" style={{ marginTop: 16 }}>
             <div className="card-header">
               <span className="card-title"><i className="fa fa-calculator" style={{ color: 'var(--brand)', marginRight: 6 }} />Calculadora de flete</span>
@@ -458,8 +578,7 @@ export default function Logistica() {
       {/* ── TAB RESUMEN ────────────────────────────────────────────── */}
       {tab === 'resumen' && (
         <>
-          {/* KPIs */}
-          <div className="kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 16 }}>
+          <div className="kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 16 }}>
             {[
               { label: 'Costo total envíos', val: fmt(totalShipCost), color: 'var(--money)' },
               { label: 'Envíos este mes', val: thisMonth, color: 'var(--txt)' },
@@ -475,8 +594,7 @@ export default function Logistica() {
             ))}
           </div>
 
-          <div className="grid2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            {/* Desglose por estado */}
+          <div className="logi-summary-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             <div className="card">
               <div className="card-header"><span className="card-title">Desglose por estado</span></div>
               {byStatus.filter(b => b.count > 0).length ? byStatus.filter(b => b.count > 0).map(b => (
@@ -492,7 +610,6 @@ export default function Logistica() {
               )}
             </div>
 
-            {/* Últimos 6 meses */}
             <div className="card">
               <div className="card-header"><span className="card-title">Costo por mes (últimos 6 meses)</span></div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 4 }}>
@@ -526,7 +643,6 @@ export default function Logistica() {
             </div>
             <div style={{ flex: 1, overflowY: 'auto', padding: '14px 22px' }}>
 
-            {/* ── BLOQUE 1: Datos del envío ── */}
             <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>
                 <i className="fa fa-file-lines" style={{ marginRight: 6, color: 'var(--brand)' }} />Datos del envío
@@ -580,7 +696,6 @@ export default function Logistica() {
               </div>
             </div>
 
-            {/* ── BLOQUE 2: Destinatario ── */}
             <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <i className="fa fa-location-dot" style={{ color: 'var(--brand)' }} />Destinatario
@@ -608,7 +723,6 @@ export default function Logistica() {
               )}
             </div>
 
-            {/* ── BLOQUE 3: Paquete ── */}
             <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>
                 <i className="fa fa-box" style={{ marginRight: 6, color: 'var(--brand)' }} />Paquete
@@ -625,7 +739,6 @@ export default function Logistica() {
               </div>
             </div>
 
-            {/* ── BLOQUE 4: Finanzas ── */}
             <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>
                 <i className="fa fa-dollar-sign" style={{ marginRight: 6, color: 'var(--brand)' }} />Finanzas
