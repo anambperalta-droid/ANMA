@@ -181,7 +181,7 @@ export default function Insumos() {
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>
       <div className="ph">
         <div className="ph-right">
-          <button className="btn btn-primary btn-sm" onClick={openNew}><i className="fa fa-plus" /> Nuevo insumo</button>
+          <button className="btn btn-primary" onClick={openNew} style={{minHeight:44}}><i className="fa fa-plus" /> Nuevo insumo</button>
         </div>
       </div>
 
