@@ -78,6 +78,9 @@ export default function Catalogo() {
   const [editingCat, setEditingCat] = useState(null) // { original, value }
   const [viewMode, setViewMode] = useState(() => localStorage.getItem('anma_product_view_mode') || 'grid')
   const switchView = (mode) => { setViewMode(mode); localStorage.setItem('anma_product_view_mode', mode) }
+  const [productMode, setProductMode] = useState('buy')
+  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [marginInput, setMarginInput] = useState('')
   const imgRef = useRef(null)
 
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
@@ -137,20 +140,41 @@ export default function Catalogo() {
   }
 
   const open = (p) => {
+    setProductMode('buy')
+    setShowAdvanced(false)
     if (p) {
       setForm({ ...EMPTY, ...p, cat: p.cat ?? '', image: p.image || '' })
+      const c = num(p.cost); const pr = num(p.priceB2C)
+      setMarginInput(c > 0 && pr > 0 ? String(Math.round((pr - c) / c * 100)) : String(rules.b2c?.margin || 40))
     } else {
+      const m = rules.b2c?.margin || 40
+      setMarginInput(String(m))
       const prices = autoPrice(0)
       setForm({ ...EMPTY, cat: cats[0] || '', priceB2C: prices.b2c, priceB2B: prices.b2b })
     }
     setModal(true)
   }
 
-  const handleCostChange = (val) => {
-    setF('cost', val)
-    const prices = autoPrice(val)
-    if (!form.priceB2C || form.priceB2C === autoPrice(form.cost).b2c) setF('priceB2C', prices.b2c)
-    if (!form.priceB2B || form.priceB2B === autoPrice(form.cost).b2b) setF('priceB2B', prices.b2b)
+  const onCostChange = (v) => {
+    setF('cost', v)
+    const c = parseFloat(v)
+    const m = parseFloat(marginInput)
+    if (!isNaN(c) && c > 0 && !isNaN(m) && marginInput !== '') {
+      setF('priceB2C', Math.round(c * (1 + m / 100)))
+      setF('priceB2B', Math.round(c * (1 + (rules.b2b?.margin || 25) / 100)))
+    }
+  }
+  const onMarginChange = (v) => {
+    setMarginInput(v)
+    const c = num(form.cost)
+    const m = parseFloat(v)
+    if (c > 0 && !isNaN(m)) setF('priceB2C', Math.round(c * (1 + m / 100)))
+  }
+  const onPriceChange = (v) => {
+    setF('priceB2C', v)
+    const c = num(form.cost)
+    const p = parseFloat(v)
+    if (c > 0 && !isNaN(p) && p > 0) setMarginInput(String(Math.round((p - c) / c * 100)))
   }
 
   const save = () => {
@@ -620,86 +644,162 @@ export default function Catalogo() {
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
           <div className="modal" style={{ maxWidth: 740 }}>
             <div className="mh"><h3>{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
-            <div className="grid2">
-              <div className="fg"><label>Nombre *</label><input autoFocus tabIndex={1} type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Remera algodón premium" /></div>
-              <div className="fg"><label>SKU / Código</label><input tabIndex={2} type="text" value={form.sku || ''} onChange={e => setF('sku', e.target.value)} placeholder="Opcional" /></div>
-              <div className="fg"><label>Categoría</label>
-                <select value={form.cat} onChange={e => setF('cat', e.target.value)}>
-                  <option value="">Sin categoría</option>
-                  {cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                  {form.cat && !cats.includes(form.cat) && (
-                    <option value={form.cat}>{form.cat}</option>
-                  )}
-                </select>
-              </div>
-              <div className="fg"><label>Unidad</label>
-                <select value={form.unit || 'unidad'} onChange={e => setF('unit', e.target.value)}>
-                  {units.map(u => <option key={u} value={u}>{u}</option>)}
-                </select>
-              </div>
-            </div>
-            <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginTop: 8, marginBottom: 8, border: '1.5px solid var(--border)' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', letterSpacing: '.6px', textTransform: 'uppercase', marginBottom: 10 }}>Precios</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
-                <div className="fg"><label>Costo</label><input tabIndex={5} type="number" value={form.cost} onChange={e => handleCostChange(e.target.value)} placeholder="0" min="0" /></div>
-                <div className="fg"><label>Precio B2C (público)</label><input tabIndex={6} type="number" value={form.priceB2C} onChange={e => setF('priceB2C', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--green)', borderWidth: 2 }} /></div>
-                <div className="fg"><label>Precio B2B (mayorista)</label><input tabIndex={7} type="number" value={form.priceB2B} onChange={e => setF('priceB2B', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--brand)', borderWidth: 2 }} /></div>
-              </div>
-            </div>
-            <div className="grid2" style={{ marginTop: 8 }}>
-              <div className="fg"><label>Stock actual</label><input tabIndex={8} type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} placeholder="0" /></div>
-              <div className="fg"><label>Stock mínimo (alerta)</label><input tabIndex={9} type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} placeholder="0" /></div>
-            </div>
-            <div className="fg"><label>Proveedor</label>
-              <select value={form.supplierId || ''} onChange={e => setF('supplierId', e.target.value)}>
-                <option value="">Sin asignar</option>
-                {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-              </select>
-            </div>
-            <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginTop: 8, border: '1.5px solid var(--border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', letterSpacing: '.6px', textTransform: 'uppercase' }}>Composición (insumos necesarios)</div>
-                <button className="btn btn-ghost btn-xs" onClick={addInsumo}><i className="fa fa-plus" /> Agregar</button>
-              </div>
-              {(form.insumos || []).length === 0 && <div style={{ fontSize: 11, color: 'var(--txt3)', textAlign: 'center', padding: '8px 0' }}>Sin insumos asociados (opcional)</div>}
-              {(form.insumos || []).map((ins, idx) => (
-                <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 80px 32px', gap: 8, marginBottom: 6, alignItems: 'end' }}>
-                  <div className="fg" style={{ marginBottom: 0 }}>
-                    <select value={ins.insumoId || ''} onChange={e => updateInsumo(idx, 'insumoId', e.target.value)}>
-                      <option value="">Seleccionar insumo</option>
-                      {insumosList.map(i => <option key={i.id} value={i.id}>{i.name} ({i.stock || 0} {i.unit || 'un'})</option>)}
-                    </select>
-                  </div>
-                  <div className="fg" style={{ marginBottom: 0 }}>
-                    <input type="number" value={ins.qtyNeeded} onChange={e => updateInsumo(idx, 'qtyNeeded', e.target.value)} placeholder="Cant." min="0" step="0.1" />
-                  </div>
-                  <button className="act del" onClick={() => removeInsumo(idx)} style={{ height: 34 }}><i className="fa fa-xmark" /></button>
-                </div>
+
+            {/* ── TIPO DE OPERACIÓN ── */}
+            <div style={{ display: 'flex', gap: 6, marginBottom: 16, background: 'var(--surface2)', borderRadius: 12, padding: 5, border: '1px solid var(--border)' }}>
+              {[['buy', 'fa-box', 'Compro Producto Terminado'], ['make', 'fa-screwdriver-wrench', 'Fabrico / Armo el Producto']].map(([m, icon, label]) => (
+                <button key={m} onClick={() => setProductMode(m)}
+                  style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '9px 12px', borderRadius: 9, border: 'none', fontFamily: 'inherit', fontSize: 12, fontWeight: 700, cursor: 'pointer', transition: 'all .15s', background: productMode === m ? 'var(--brand)' : 'transparent', color: productMode === m ? '#fff' : 'var(--txt3)' }}>
+                  <i className={`fa ${icon}`} style={{ fontSize: 13 }} />{label}
+                </button>
               ))}
             </div>
-            <div className="fg" style={{ marginTop: 8 }}><label>Notas</label><textarea value={form.notes || ''} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones internas..." /></div>
-            <div className="fg" style={{ marginTop: 8 }}>
-              <label>Imagen del producto <span style={{ fontWeight: 400, color: 'var(--txt3)' }}>(opcional)</span></label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                {form.image
-                  ? <img src={form.image} alt="preview" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, border: '1.5px solid var(--border)', flexShrink: 0 }} />
-                  : <div style={{ width: 60, height: 60, borderRadius: 8, border: '1.5px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <i className="fa fa-image" style={{ color: 'var(--txt4)', fontSize: 20 }} />
-                    </div>
-                }
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <input ref={imgRef} type="file" accept="image/*" onChange={handleImgUpload} style={{ display: 'none' }} />
-                  <button className="btn btn-ghost btn-sm" type="button" onClick={() => imgRef.current?.click()}>
-                    <i className="fa fa-upload" /> {form.image ? 'Cambiar imagen' : 'Subir imagen'}
-                  </button>
-                  {form.image && (
-                    <button className="btn btn-ghost btn-sm" type="button" style={{ color: 'var(--red)' }} onClick={() => setF('image', '')}>
-                      <i className="fa fa-trash" /> Quitar
-                    </button>
-                  )}
+
+            {/* ── CARD 1: Datos del producto ── */}
+            <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '14px 16px', marginBottom: 12, border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.7px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <i className="fa fa-tag" /> Datos del producto
+              </div>
+              <div className="grid2">
+                <div className="fg"><label>Nombre *</label><input autoFocus tabIndex={1} type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Remera algodón premium" /></div>
+                <div className="fg"><label>SKU / Código</label><input tabIndex={2} type="text" value={form.sku || ''} onChange={e => setF('sku', e.target.value)} placeholder="Opcional" /></div>
+                <div className="fg"><label>Categoría</label>
+                  <select value={form.cat} onChange={e => setF('cat', e.target.value)}>
+                    <option value="">Sin categoría</option>
+                    {cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                    {form.cat && !cats.includes(form.cat) && <option value={form.cat}>{form.cat}</option>}
+                  </select>
+                </div>
+                <div className="fg"><label>Proveedor</label>
+                  <select value={form.supplierId || ''} onChange={e => setF('supplierId', e.target.value)}>
+                    <option value="">Sin asignar</option>
+                    {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                  </select>
                 </div>
               </div>
             </div>
+
+            {/* ── CARD 2: Costo · Margen · Precio ── */}
+            <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '14px 16px', marginBottom: 12, border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.7px', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <i className="fa fa-coins" /> Costo · Margen · Precio
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 28px 1fr 28px 1fr', gap: '0 6px', alignItems: 'end' }}>
+                <div className="fg" style={{ marginBottom: 0 }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <i className="fa fa-arrow-trend-down" style={{ color: 'var(--txt3)', fontSize: 10 }} />
+                    {productMode === 'buy' ? 'Precio de Compra' : 'Costo de Fabricación'}
+                  </label>
+                  <input tabIndex={5} type="number" value={form.cost} onChange={e => onCostChange(e.target.value)} placeholder="0" min="0" />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 2, color: 'var(--txt4)', fontSize: 14, fontWeight: 700 }}>→</div>
+                <div className="fg" style={{ marginBottom: 0 }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <i className="fa fa-percent" style={{ color: 'var(--txt3)', fontSize: 10 }} />
+                    Margen deseado (%)
+                  </label>
+                  <input tabIndex={6} type="number" value={marginInput} onChange={e => onMarginChange(e.target.value)} placeholder="%" min="0" />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 2, color: 'var(--txt4)', fontSize: 14, fontWeight: 700 }}>→</div>
+                <div className="fg" style={{ marginBottom: 0 }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <i className="fa fa-tag" style={{ color: 'var(--green)', fontSize: 10 }} />
+                    Precio de Venta (B2C)
+                  </label>
+                  <input tabIndex={7} type="number" value={form.priceB2C} onChange={e => onPriceChange(e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--green)', borderWidth: 2 }} />
+                </div>
+              </div>
+              {num(form.cost) > 0 && num(form.priceB2C) > 0 && (
+                <div style={{ marginTop: 10, padding: '8px 12px', borderRadius: 8, background: num(form.priceB2C) > num(form.cost) ? 'rgba(16,185,129,.1)' : 'rgba(239,68,68,.1)', border: `1px solid ${num(form.priceB2C) > num(form.cost) ? 'rgba(16,185,129,.3)' : 'rgba(239,68,68,.3)'}`, fontSize: 12, color: num(form.priceB2C) > num(form.cost) ? 'var(--green)' : 'var(--red)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <i className={`fa fa-arrow-${num(form.priceB2C) > num(form.cost) ? 'trend-up' : 'trend-down'}`} />
+                  Ganancia por unidad: ${(num(form.priceB2C) - num(form.cost)).toLocaleString('es-AR')} · Margen real: {marginInput || 0}%
+                </div>
+              )}
+              <div className="fg" style={{ marginTop: 10, marginBottom: 0 }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <i className="fa fa-handshake" style={{ color: 'var(--brand)', fontSize: 10 }} />
+                  Precio Mayorista (B2B)
+                </label>
+                <input tabIndex={8} type="number" value={form.priceB2B} onChange={e => setF('priceB2B', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--brand)', borderWidth: 2 }} />
+              </div>
+            </div>
+
+            {/* ── CARD 3: Stock ── */}
+            <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '14px 16px', marginBottom: 12, border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.7px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <i className="fa fa-boxes-stacked" /> Inventario
+              </div>
+              <div className="grid2">
+                <div className="fg" style={{ marginBottom: 0 }}><label>Stock actual</label><input tabIndex={9} type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} placeholder="0" /></div>
+                <div className="fg" style={{ marginBottom: 0 }}><label>Stock mínimo (alerta)</label><input tabIndex={10} type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} placeholder="0" /></div>
+              </div>
+            </div>
+
+            {/* ── CARD 4: Composición de insumos (solo modo Fabrico) ── */}
+            {productMode === 'make' && (
+              <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '14px 16px', marginBottom: 12, border: '1.5px solid var(--brand)', borderStyle: 'dashed' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.7px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <i className="fa fa-flask" /> Receta / Composición de insumos
+                  </div>
+                  <button className="btn btn-ghost btn-xs" onClick={addInsumo}><i className="fa fa-plus" /> Agregar</button>
+                </div>
+                {(form.insumos || []).length === 0 && <div style={{ fontSize: 11, color: 'var(--txt3)', textAlign: 'center', padding: '8px 0' }}>Sin insumos asociados — agregá los materiales necesarios</div>}
+                {(form.insumos || []).map((ins, idx) => (
+                  <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 80px 32px', gap: 8, marginBottom: 6, alignItems: 'end' }}>
+                    <div className="fg" style={{ marginBottom: 0 }}>
+                      <select value={ins.insumoId || ''} onChange={e => updateInsumo(idx, 'insumoId', e.target.value)}>
+                        <option value="">Seleccionar insumo</option>
+                        {insumosList.map(i => <option key={i.id} value={i.id}>{i.name} ({i.stock || 0} {i.unit || 'un'})</option>)}
+                      </select>
+                    </div>
+                    <div className="fg" style={{ marginBottom: 0 }}>
+                      <input type="number" value={ins.qtyNeeded} onChange={e => updateInsumo(idx, 'qtyNeeded', e.target.value)} placeholder="Cant." min="0" step="0.1" />
+                    </div>
+                    <button className="act del" onClick={() => removeInsumo(idx)} style={{ height: 34 }}><i className="fa fa-xmark" /></button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* ── ACORDEÓN: Configuración avanzada ── */}
+            <button onClick={() => setShowAdvanced(s => !s)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, fontWeight: 700, color: 'var(--txt2)', marginBottom: showAdvanced ? 0 : 4 }}>
+              <span><i className="fa fa-sliders" style={{ marginRight: 6, color: 'var(--brand)' }} />Configuración avanzada y logística</span>
+              <i className={`fa fa-chevron-${showAdvanced ? 'up' : 'down'}`} style={{ fontSize: 11 }} />
+            </button>
+            {showAdvanced && (
+              <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderTop: 'none', borderRadius: '0 0 10px 10px', padding: '14px 16px', marginBottom: 4 }}>
+                <div className="fg"><label>Unidad</label>
+                  <select value={form.unit || 'unidad'} onChange={e => setF('unit', e.target.value)}>
+                    {units.map(u => <option key={u} value={u}>{u}</option>)}
+                  </select>
+                </div>
+                <div className="fg"><label>Notas internas</label><textarea value={form.notes || ''} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones internas..." /></div>
+                <div className="fg" style={{ marginBottom: 0 }}>
+                  <label>Imagen del producto <span style={{ fontWeight: 400, color: 'var(--txt3)' }}>(opcional)</span></label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    {form.image
+                      ? <img src={form.image} alt="preview" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, border: '1.5px solid var(--border)', flexShrink: 0 }} />
+                      : <div style={{ width: 60, height: 60, borderRadius: 8, border: '1.5px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <i className="fa fa-image" style={{ color: 'var(--txt4)', fontSize: 20 }} />
+                        </div>
+                    }
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                      <input ref={imgRef} type="file" accept="image/*" onChange={handleImgUpload} style={{ display: 'none' }} />
+                      <button className="btn btn-ghost btn-sm" type="button" onClick={() => imgRef.current?.click()}>
+                        <i className="fa fa-upload" /> {form.image ? 'Cambiar imagen' : 'Subir imagen'}
+                      </button>
+                      {form.image && (
+                        <button className="btn btn-ghost btn-sm" type="button" style={{ color: 'var(--red)' }} onClick={() => setF('image', '')}>
+                          <i className="fa fa-trash" /> Quitar
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="mfooter"><button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button><button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar</button></div>
           </div>
         </div>
