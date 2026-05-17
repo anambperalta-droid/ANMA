@@ -72,6 +72,7 @@ export default function Insumos() {
   const [form, setForm] = useState({ ...EMPTY })
   const [moveForm, setMoveForm] = useState({ type: 'in', qty: '', purchaseCost: '', note: '' })
   const [tab, setTab] = useState('list')
+  const [showAdvancedModal, setShowAdvancedModal] = useState(false)
   const [alertDismissed, setAlertDismissed] = useState(() => {
     try { return sessionStorage.getItem('insumos_low_dismissed') === '1' } catch { return false }
   })
@@ -106,8 +107,8 @@ export default function Insumos() {
 
   const catLabel = (id) => cats.find(cat => cat.id === id)?.label || id || '—'
 
-  const openNew = () => { setForm({ ...EMPTY, cat: cats[0]?.id || '' }); setModal(true) }
-  const openEdit = (item) => { setForm({ ...item }); setModal(true) }
+  const openNew = () => { setShowAdvancedModal(false); setForm({ ...EMPTY, cat: cats[0]?.id || '' }); setModal(true) }
+  const openEdit = (item) => { setShowAdvancedModal(false); setForm({ ...item }); setModal(true) }
 
   const save = () => {
     if (!form.name) { toast('Ingresá un nombre', 'er'); return }
@@ -181,7 +182,7 @@ export default function Insumos() {
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>
       <div className="ph">
         <div className="ph-right">
-          <button className="btn btn-primary" onClick={openNew} style={{minHeight:44}}><i className="fa fa-plus" /> Nuevo insumo</button>
+          <button className="btn btn-primary" onClick={openNew} style={{ minHeight: 44 }}><i className="fa fa-plus" /> Nuevo insumo</button>
         </div>
       </div>
 
@@ -191,12 +192,10 @@ export default function Insumos() {
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Total insumos</div>
           <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{insumos.length}</div>
         </div>
-
         <div className="bento-kpi" style={{ borderLeft: '3px solid var(--green)', padding: '12px 14px 10px' }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Valor Total en Stock</div>
           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{fmtDec(totalValue)}</div>
         </div>
-
         <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : 'var(--green)'}`, ...(lowStock.length === 0 ? { borderTop: '4px solid #10B981' } : {}), padding: '12px 14px 10px' }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Stock bajo</div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.1, color: lowStock.length > 0 ? 'var(--red)' : 'var(--green)' }}>{lowStock.length}</div>
@@ -209,7 +208,6 @@ export default function Insumos() {
               </button>
           }
         </div>
-
         <div className="bento-kpi" style={{ borderLeft: '3px solid var(--amber)', padding: '12px 14px 10px' }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Categorías</div>
           <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{cats.length}</div>
@@ -235,161 +233,206 @@ export default function Insumos() {
         </div>
       </div>
 
+      {/* ── TAB: Inventario ── */}
       {tab === 'list' && (
-        <>
-          {showLowOnly && (
-            <div style={{ background: '#FFF1F2', border: '1.5px solid #FECACA', borderRadius: 10, padding: '8px 14px', marginBottom: 10, fontSize: 12, color: '#DC2626', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <i className="fa fa-triangle-exclamation" style={{ fontSize: 11 }} />
-              <span style={{ flex: 1 }}>Mostrando solo insumos con stock bajo</span>
-              <button onClick={() => setShowLowOnly(false)} style={{ background: 'none', border: '1px solid #FECACA', cursor: 'pointer', color: '#DC2626', fontWeight: 700, fontSize: 11, padding: '2px 8px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
-                <i className="fa fa-xmark" /> Limpiar
-              </button>
-            </div>
-          )}
+        <div className="ins-layout">
 
-          {/* Filters */}
-          <div style={{ display: 'flex', gap: 10, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-            <div className="search-row" style={{ maxWidth: 280 }}>
-              <i className="fa fa-magnifying-glass" />
-              <input type="text" placeholder="Buscar insumo o subcategoría..." value={search} onChange={e => setSearch(e.target.value)} />
-            </div>
-            <select className="f-inp" style={{ maxWidth: 220 }} value={catFilter} onChange={e => setCatFilter(e.target.value)}>
-              <option value="all">Todas las categorías</option>
-              {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
-            </select>
-          </div>
-
-          {/* ── Mobile: pill cards ── */}
-          <div className="ins-mob-list">
-            {filtered.length === 0 && (
-              <div style={{ textAlign: 'center', padding: '40px 24px', color: 'var(--txt3)' }}>
-                <i className="fa fa-box-open" style={{ fontSize: 24, marginBottom: 8, display: 'block' }} />
-                No hay insumos cargados
+          {/* ── LEFT: tabla principal ── */}
+          <div className="ins-main">
+            {showLowOnly && (
+              <div style={{ background: '#FFF1F2', border: '1.5px solid #FECACA', borderRadius: 10, padding: '8px 14px', marginBottom: 10, fontSize: 12, color: '#DC2626', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <i className="fa fa-triangle-exclamation" style={{ fontSize: 11 }} />
+                <span style={{ flex: 1 }}>Mostrando solo insumos con stock bajo</span>
+                <button onClick={() => setShowLowOnly(false)} style={{ background: 'none', border: '1px solid #FECACA', cursor: 'pointer', color: '#DC2626', fontWeight: 700, fontSize: 11, padding: '2px 8px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <i className="fa fa-xmark" /> Limpiar
+                </button>
               </div>
             )}
-            {filtered.map(item => {
-              const level = stockLevel(item.stock, item.minStock)
-              const led = LED_DOT[level]
-              return (
-                <div key={item.id} className={`ins-mob-card${level === 'low' ? ' low' : ''}`}>
-                  {led
-                    ? <div className={`ins-mob-card-dot${led.pulse ? ' ins-led-pulse' : ''}`} style={{ background: led.bg }} />
-                    : <div className="ins-mob-card-dot" style={{ background: 'transparent' }} />
-                  }
-                  <div className="ins-mob-card-body">
-                    <div className="ins-mob-card-name">{item.name}</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 3, flexWrap: 'wrap', minHeight: 16 }}>
-                      <span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`} style={{ fontSize: 9, padding: '1px 5px' }}>{catLabel(item.cat)}</span>
-                      {item.subcat && <span style={{ fontSize: 10, color: '#64748B', lineHeight: 1.3 }}>{item.subcat}</span>}
-                    </div>
-                    <div className="ins-mob-card-meta">
-                      Stock: <b style={{ color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt)' }}>{item.stock || 0}</b> {item.unit || 'un'}
-                      {item.minStock > 0 && <span style={{ color: 'var(--txt4)', marginLeft: 6 }}>· mín {item.minStock}</span>}
-                    </div>
-                  </div>
-                  <div className="ins-mob-card-right">
-                    <div>
-                      <div className="ins-mob-card-price">{fmtDec(item.cost)}</div>
-                      <div className="ins-mob-card-unit">/{item.unit || 'un'}</div>
-                    </div>
-                    <div className="ins-mob-card-acts">
-                      <button className="ins-mob-card-btn green" title="+1 stock" onClick={() => quickPlus(item)}>
-                        <i className="fa fa-plus" />
-                      </button>
-                      <button className="ins-mob-card-btn" title="Editar" onClick={() => openEdit(item)}>
-                        <i className="fa fa-pen" />
-                      </button>
-                      <button className="ins-mob-card-btn red" title="Eliminar" onClick={() => remove(item.id)}>
-                        <i className="fa fa-trash" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
 
-          {/* ── Desktop: table ── */}
-          <div className="ins-desk-view">
-            <div className="card tbl-card" style={{ padding: 0, overflow: 'hidden' }}>
-              <table className="tbl">
-                <thead>
-                  <tr>
-                    <th>Insumo</th>
-                    <th>Categoría</th>
-                    <th>Proveedor</th>
-                    <th style={{ textAlign: 'right' }}>Costo</th>
-                    <th style={{ textAlign: 'right' }}>Stock</th>
-                    <th style={{ textAlign: 'right' }}>Mín.</th>
-                    <th style={{ textAlign: 'right' }}>Unidad</th>
-                    <th style={{ textAlign: 'right' }}>Valor</th>
-                    <th style={{ textAlign: 'right', color: 'var(--txt3)', fontWeight: 500 }}>Último mov.</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.length === 0 && (
-                    <tr><td colSpan={10} style={{ textAlign: 'center', padding: 40, color: 'var(--txt3)' }}>
-                      <i className="fa fa-box-open" style={{ fontSize: 24, marginBottom: 8, display: 'block' }} />
-                      No hay insumos cargados
-                    </td></tr>
-                  )}
-                  {filtered.map(item => {
-                    const level = stockLevel(item.stock, item.minStock)
-                    const led = LED_DOT[level]
-                    return (
-                      <tr key={item.id} style={level === 'low' ? { borderLeft: '4px solid #DC2626' } : undefined}>
-                        <td>
-                          <div style={{ fontWeight: 600 }}>{item.name}</div>
-                        </td>
-                        <td>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                            <span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`}>{catLabel(item.cat)}</span>
-                            {item.subcat && <span style={{ fontSize: 10, color: '#64748B', lineHeight: 1.3 }}>{item.subcat}</span>}
-                          </div>
-                        </td>
-                        <td style={{ fontSize: 11 }}>{supplierName(item.supplierId)}</td>
-                        <td style={{ textAlign: 'right' }}>{fmtDec(item.cost)}</td>
-                        <td style={{ textAlign: 'right' }}>
-                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                            {led && (
-                              <span
-                                className={led.pulse ? 'ins-led-pulse' : ''}
-                                style={{ width: 6, height: 6, borderRadius: '50%', background: led.bg, flexShrink: 0, display: 'inline-block' }}
-                              />
-                            )}
-                            <span style={{ fontWeight: 700, color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt)' }}>
-                              {item.stock || 0}
-                            </span>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }} onClick={e => e.stopPropagation()}>
-                              <button className="ins-stk-btn" title="+1 unidad" onClick={() => quickAdjust(item, 1)}>+</button>
-                              <button className="ins-stk-btn" title="-1 unidad" onClick={() => quickAdjust(item, -1)} disabled={(item.stock || 0) <= 0}>−</button>
+            {/* Filters */}
+            <div style={{ display: 'flex', gap: 10, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center' }}>
+              <div className="search-row" style={{ maxWidth: 280 }}>
+                <i className="fa fa-magnifying-glass" />
+                <input type="text" placeholder="Buscar insumo o subcategoría..." value={search} onChange={e => setSearch(e.target.value)} />
+              </div>
+              <select className="f-inp" style={{ maxWidth: 220 }} value={catFilter} onChange={e => setCatFilter(e.target.value)}>
+                <option value="all">Todas las categorías</option>
+                {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
+              </select>
+            </div>
+
+            {/* ── Mobile: pill cards ── */}
+            <div className="ins-mob-list">
+              {filtered.length === 0 && (
+                <div style={{ textAlign: 'center', padding: '40px 24px', color: 'var(--txt3)' }}>
+                  <i className="fa fa-box-open" style={{ fontSize: 24, marginBottom: 8, display: 'block' }} />
+                  No hay insumos cargados
+                </div>
+              )}
+              {filtered.map(item => {
+                const level = stockLevel(item.stock, item.minStock)
+                const led = LED_DOT[level]
+                return (
+                  <div key={item.id} className={`ins-mob-card${level === 'low' ? ' low' : ''}`}>
+                    {led
+                      ? <div className={`ins-mob-card-dot${led.pulse ? ' ins-led-pulse' : ''}`} style={{ background: led.bg }} />
+                      : <div className="ins-mob-card-dot" style={{ background: 'transparent' }} />
+                    }
+                    <div className="ins-mob-card-body">
+                      <div className="ins-mob-card-name">{item.name}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 3, flexWrap: 'wrap', minHeight: 16 }}>
+                        <span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`} style={{ fontSize: 9, padding: '1px 5px' }}>{catLabel(item.cat)}</span>
+                        {item.subcat && <span style={{ fontSize: 10, color: '#64748B', lineHeight: 1.3 }}>{item.subcat}</span>}
+                      </div>
+                      <div className="ins-mob-card-meta">
+                        Stock: <b style={{ color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt)' }}>{item.stock || 0}</b> {item.unit || 'un'}
+                        {item.minStock > 0 && <span style={{ color: 'var(--txt4)', marginLeft: 6 }}>· mín {item.minStock}</span>}
+                      </div>
+                    </div>
+                    <div className="ins-mob-card-right">
+                      <div>
+                        <div className="ins-mob-card-price">{fmtDec(item.cost)}</div>
+                        <div className="ins-mob-card-unit">/{item.unit || 'un'}</div>
+                      </div>
+                      <div className="ins-mob-card-acts">
+                        <button className="ins-mob-card-btn green" title="+1 stock" onClick={() => quickPlus(item)}>
+                          <i className="fa fa-plus" />
+                        </button>
+                        <button className="ins-mob-card-btn" title="Editar" onClick={() => openEdit(item)}>
+                          <i className="fa fa-pen" />
+                        </button>
+                        <button className="ins-mob-card-btn red" title="Eliminar" onClick={() => remove(item.id)}>
+                          <i className="fa fa-trash" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* ── Desktop: tabla compacta premium (6 cols) ── */}
+            <div className="ins-desk-view">
+              <div className="card tbl-card" style={{ padding: 0, overflow: 'hidden' }}>
+                <table className="tbl">
+                  <thead>
+                    <tr>
+                      <th>Insumo</th>
+                      <th>Unidad</th>
+                      <th style={{ textAlign: 'right' }}>Costo U.</th>
+                      <th>Proveedor</th>
+                      <th style={{ textAlign: 'right', color: 'var(--txt3)', fontWeight: 500 }}>Última act.</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.length === 0 && (
+                      <tr><td colSpan={6} style={{ textAlign: 'center', padding: 40, color: 'var(--txt3)' }}>
+                        <i className="fa fa-box-open" style={{ fontSize: 24, marginBottom: 8, display: 'block' }} />
+                        No hay insumos cargados
+                      </td></tr>
+                    )}
+                    {filtered.map(item => {
+                      const level = stockLevel(item.stock, item.minStock)
+                      const led = LED_DOT[level]
+                      return (
+                        <tr key={item.id} style={level === 'low' ? { borderLeft: '3px solid #DC2626' } : undefined}>
+                          <td>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                              {led
+                                ? <span className={led.pulse ? 'ins-led-pulse' : ''} style={{ width: 7, height: 7, borderRadius: '50%', background: led.bg, flexShrink: 0, display: 'inline-block', marginTop: 5 }} />
+                                : <span style={{ width: 7, height: 7, flexShrink: 0, display: 'inline-block' }} />
+                              }
+                              <div>
+                                <div style={{ fontWeight: 600, fontSize: 13 }}>{item.name}</div>
+                                <div style={{ fontSize: 10.5, marginTop: 1, display: 'flex', alignItems: 'center', gap: 6 }}>
+                                  <span style={{ color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt3)', fontWeight: level !== 'ok' ? 700 : 400 }}>
+                                    {item.stock || 0} en stock
+                                  </span>
+                                  {item.minStock > 0 && <span style={{ color: 'var(--txt4)' }}>· mín {item.minStock}</span>}
+                                  <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 1 }} onClick={e => e.stopPropagation()}>
+                                    <button className="ins-stk-btn" title="+1 unidad" onClick={() => quickAdjust(item, 1)}>+</button>
+                                    <button className="ins-stk-btn" title="-1 unidad" onClick={() => quickAdjust(item, -1)} disabled={(item.stock || 0) <= 0}>−</button>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                        <td style={{ textAlign: 'right', color: 'var(--txt3)' }}>{item.minStock || '—'}</td>
-                        <td style={{ textAlign: 'right', fontSize: 11 }}>{item.unit || 'un'}</td>
-                        <td style={{ textAlign: 'right', fontWeight: 600 }}>{fmtDec((item.stock || 0) * (Number(item.cost) || 0))}</td>
-                        <td style={{ textAlign: 'right', fontSize: 10, color: 'var(--txt4)', whiteSpace: 'nowrap' }}>
-                          {relTime(item.lastMove) || '—'}
-                        </td>
-                        <td>
-                          <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
-                            <button className="act" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Registrar movimiento" onClick={() => openMove(item)}><i className="fa fa-arrows-rotate" /></button>
-                            <button className="act" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Editar" onClick={() => openEdit(item)}><i className="fa fa-pen" /></button>
-                            <button className="act del" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Eliminar" onClick={() => remove(item.id)}><i className="fa fa-trash" /></button>
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+                          </td>
+                          <td style={{ fontSize: 12, color: 'var(--txt3)' }}>{item.unit || 'un'}</td>
+                          <td style={{ textAlign: 'right' }}>{fmtDec(item.cost)}</td>
+                          <td style={{ fontSize: 11 }}>{supplierName(item.supplierId)}</td>
+                          <td style={{ textAlign: 'right', fontSize: 10, color: 'var(--txt4)', whiteSpace: 'nowrap' }}>
+                            {relTime(item.lastMove) || '—'}
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
+                              <button className="act" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Registrar movimiento" onClick={() => openMove(item)}><i className="fa fa-arrows-rotate" /></button>
+                              <button className="act" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Editar" onClick={() => openEdit(item)}><i className="fa fa-pen" /></button>
+                              <button className="act del" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Eliminar" onClick={() => remove(item.id)}><i className="fa fa-trash" /></button>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </>
+
+          {/* ── RIGHT: panel lateral (desktop only) ── */}
+          <div className="ins-panel">
+
+            {/* Resumen stats */}
+            <div className="card" style={{ padding: '14px 16px' }}>
+              <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 5 }}>
+                <i className="fa fa-chart-simple" /> Resumen
+              </div>
+              <div className="ins-pstat">
+                <span><i className="fa fa-boxes-stacked" style={{ color: 'var(--brand)', marginRight: 5, fontSize: 11 }} />Total insumos</span>
+                <b>{insumos.length}</b>
+              </div>
+              <div className="ins-pstat">
+                <span><i className="fa fa-coins" style={{ color: '#F59E0B', marginRight: 5, fontSize: 11 }} />Valor stock</span>
+                <b style={{ color: 'var(--money)' }}>{fmtDec(totalValue)}</b>
+              </div>
+              <div className="ins-pstat">
+                <span><i className="fa fa-tag" style={{ color: '#64748B', marginRight: 5, fontSize: 11 }} />Categorías</span>
+                <b>{cats.length}</b>
+              </div>
+            </div>
+
+            {/* Stock crítico / Todo OK */}
+            {lowStock.length > 0 ? (
+              <div className="card" style={{ padding: '14px 16px' }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: '#DC2626', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <i className="fa fa-triangle-exclamation" /> Stock crítico ({lowStock.length})
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  {lowStock.slice(0, 7).map(item => (
+                    <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
+                      <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 600, color: 'var(--txt)', marginRight: 8 }}>{item.name}</div>
+                      <div style={{ fontSize: 11, color: '#DC2626', fontWeight: 700, flexShrink: 0 }}>
+                        {item.stock || 0}<span style={{ color: 'var(--txt4)', fontWeight: 400, marginLeft: 2 }}>{item.unit || 'un'}</span>
+                      </div>
+                    </div>
+                  ))}
+                  {lowStock.length > 7 && <div style={{ fontSize: 10, color: 'var(--txt4)', paddingTop: 6 }}>+{lowStock.length - 7} insumos más</div>}
+                </div>
+              </div>
+            ) : (
+              <div className="card" style={{ padding: '20px 16px', textAlign: 'center' }}>
+                <i className="fa fa-circle-check" style={{ color: 'var(--green)', fontSize: 24, marginBottom: 8, display: 'block' }} />
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt2)', marginBottom: 3 }}>Stock al día</div>
+                <div style={{ fontSize: 11, color: 'var(--txt3)' }}>Todos los insumos tienen stock suficiente</div>
+              </div>
+            )}
+          </div>
+
+        </div>
       )}
 
+      {/* ── TAB: Movimientos ── */}
       {tab === 'moves' && (
         <>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
@@ -456,72 +499,97 @@ export default function Insumos() {
         </>
       )}
 
-      {/* ── Modal: crear / editar insumo ── */}
+      {/* ── Modal: crear / editar insumo — FRICCION CERO ── */}
       {modal && (
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal" style={{ maxWidth: 680 }}>
+          <div className="modal" style={{ maxWidth: 460 }}>
             <div className="mh">
               <h3>{form.id ? 'Editar insumo' : 'Nuevo insumo'}</h3>
               <button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button>
             </div>
-            <div className="grid2">
+
+            {/* Fila 1: Nombre */}
+            <div className="fg">
+              <label><i className="fa fa-box" style={{ color: 'var(--brand)', fontSize: 10, marginRight: 4 }} />Nombre *</label>
+              <input type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Tela algodón 180gr" autoFocus />
+            </div>
+
+            {/* Fila 2: Costo + Unidad */}
+            <div className="grid2" style={{ marginTop: 10 }}>
               <div className="fg">
-                <label>Nombre *</label>
-                <input type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Tela algodón 180gr" />
-              </div>
-              <div className="fg">
-                <label>Categoría</label>
-                <select value={form.cat} onChange={e => { setF('cat', e.target.value); setF('subcat', '') }}>
-                  <option value="">Sin categoría</option>
-                  {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
-                </select>
-              </div>
-              <div className="fg" style={{ gridColumn: 'span 2' }}>
-                <label>Subcategoría <span style={{ fontWeight: 400, color: 'var(--txt3)', fontSize: 11 }}>(opcional)</span></label>
-                <input
-                  type="text"
-                  list={`subcat-list-${form.cat}`}
-                  value={form.subcat || ''}
-                  onChange={e => setF('subcat', e.target.value)}
-                  placeholder={form.cat ? 'Elegí una sugerencia o escribí libremente...' : 'Seleccioná una categoría primero'}
-                  disabled={!form.cat}
-                />
-                {form.cat && (
-                  <datalist id={`subcat-list-${form.cat}`}>
-                    {(SUBCAT_SUGGESTIONS[form.cat] || []).map(s => <option key={s} value={s} />)}
-                  </datalist>
-                )}
-              </div>
-              <div className="fg" style={{ gridColumn: 'span 2' }}>
-                <label>Proveedor</label>
-                <select value={form.supplierId || ''} onChange={e => setF('supplierId', e.target.value ? Number(e.target.value) : '')}>
-                  <option value="">Sin proveedor asignado</option>
-                  {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-                </select>
+                <label><i className="fa fa-coins" style={{ color: '#F59E0B', fontSize: 10, marginRight: 4 }} />Costo unitario ($)</label>
+                <input type="number" value={form.cost} onChange={e => setF('cost', e.target.value)} onFocus={numFocus} placeholder="0" min="0" />
               </div>
               <div className="fg">
-                <label>Stock actual</label>
-                <input type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} onFocus={numFocus} placeholder="0" />
-              </div>
-              <div className="fg">
-                <label>Stock mínimo (alerta)</label>
-                <input type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} onFocus={numFocus} placeholder="0" />
-              </div>
-              <div className="fg">
-                <label>Costo unitario</label>
-                <input type="number" value={form.cost} onChange={e => setF('cost', e.target.value)} onFocus={numFocus} placeholder="0" />
-              </div>
-              <div className="fg">
-                <label>Unidad de medida</label>
+                <label><i className="fa fa-ruler-combined" style={{ color: '#64748B', fontSize: 10, marginRight: 4 }} />Unidad de medida</label>
                 <select value={form.unit} onChange={e => setF('unit', e.target.value)}>
                   {units.map(u => <option key={u} value={u}>{u}</option>)}
                 </select>
               </div>
             </div>
-            <div className="fg">
-              <label>Notas</label>
-              <textarea value={form.notes || ''} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones internas..." />
+
+            {/* Fila 3: Proveedor */}
+            <div className="fg" style={{ marginTop: 10 }}>
+              <label><i className="fa fa-truck" style={{ color: '#8B5CF6', fontSize: 10, marginRight: 4 }} />Proveedor</label>
+              <select value={form.supplierId || ''} onChange={e => setF('supplierId', e.target.value ? Number(e.target.value) : '')}>
+                <option value="">Sin proveedor asignado</option>
+                {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
             </div>
+
+            {/* Acordeón: más opciones */}
+            <button
+              onClick={() => setShowAdvancedModal(p => !p)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '10px 0 2px', fontSize: 12, fontWeight: 700, color: 'var(--brand)', display: 'flex', alignItems: 'center', gap: 5, width: '100%', marginTop: 6 }}
+            >
+              <i className={`fa fa-chevron-${showAdvancedModal ? 'up' : 'down'}`} style={{ fontSize: 9 }} />
+              {showAdvancedModal ? 'Menos opciones' : 'Más opciones (categoría, stock, notas)'}
+            </button>
+
+            {showAdvancedModal && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 10, borderTop: '1px solid var(--border)', marginTop: 2 }}>
+                <div className="grid2">
+                  <div className="fg">
+                    <label>Categoría</label>
+                    <select value={form.cat} onChange={e => { setF('cat', e.target.value); setF('subcat', '') }}>
+                      <option value="">Sin categoría</option>
+                      {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
+                    </select>
+                  </div>
+                  <div className="fg">
+                    <label>Subcategoría <span style={{ fontWeight: 400, color: 'var(--txt3)', fontSize: 11 }}>(opc.)</span></label>
+                    <input
+                      type="text"
+                      list={`subcat-list-${form.cat}`}
+                      value={form.subcat || ''}
+                      onChange={e => setF('subcat', e.target.value)}
+                      placeholder={form.cat ? 'Elegí o escribí...' : 'Seleccioná categoría'}
+                      disabled={!form.cat}
+                    />
+                    {form.cat && (
+                      <datalist id={`subcat-list-${form.cat}`}>
+                        {(SUBCAT_SUGGESTIONS[form.cat] || []).map(s => <option key={s} value={s} />)}
+                      </datalist>
+                    )}
+                  </div>
+                </div>
+                <div className="grid2">
+                  <div className="fg">
+                    <label>Stock actual</label>
+                    <input type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} onFocus={numFocus} placeholder="0" />
+                  </div>
+                  <div className="fg">
+                    <label>Stock mínimo (alerta)</label>
+                    <input type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} onFocus={numFocus} placeholder="0" />
+                  </div>
+                </div>
+                <div className="fg">
+                  <label>Notas</label>
+                  <textarea value={form.notes || ''} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones internas..." />
+                </div>
+              </div>
+            )}
+
             <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 16 }}>
               <button className="btn btn-ghost btn-sm" onClick={() => setModal(false)}>Cancelar</button>
               <button className="btn btn-primary btn-sm" onClick={save}>
