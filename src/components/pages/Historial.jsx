@@ -129,7 +129,7 @@ function BarChart({ data, prevData = [], type = 'income' }) {
   const H = 104
   const barMax = 96
   return (
-    <div>
+    <div style={{ overflow: 'hidden', width: '100%' }}>
       <div className="bar-chart" style={{ height: H }}>
         {shown.map((m, i) => {
           const pct = m.val / maxV
@@ -1219,7 +1219,7 @@ export default function Historial() {
                   </div>
 
                   {/* Carousel: Seguimiento / Alertas de stock */}
-                  <div className="bento-chart" style={{ flex: 1 }}>
+                  <div className="bento-chart bento-chart-noflex">
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                       <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '0.07em', display: 'flex', alignItems: 'center', gap: 6 }}>
                         <i className={`fa ${carouselSlide === 0 ? 'fa-fire' : 'fa-triangle-exclamation'}`} style={{ color: carouselSlide === 0 ? 'var(--brand)' : 'var(--amber)' }} />
