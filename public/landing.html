@@ -44,20 +44,20 @@ a{color:inherit;text-decoration:none}
 @media(max-width:780px){.nav-links{display:none}}
 
 /* HERO */
-.hero{position:relative;background:linear-gradient(145deg,#1a0636 0%,#2d0a57 25%,#4c1d95 60%,#6d28d9 85%,#7c3aed 100%);color:#fff;padding:80px 0 100px;overflow:hidden}
+.hero{position:relative;background:linear-gradient(145deg,#1a0636 0%,#2d0a57 25%,#4c1d95 60%,#6d28d9 85%,#7c3aed 100%);color:#fff;padding:60px 0 72px;overflow:hidden}
 .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px)}
 .hero::before{width:520px;height:520px;top:-180px;right:-180px;background:radial-gradient(circle,rgba(124,58,237,.5),transparent 70%)}
 .hero::after{width:360px;height:360px;bottom:-140px;left:-90px;background:radial-gradient(circle,rgba(5,150,105,.3),transparent 70%)}
 .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;font-size:12px;font-weight:600;color:#c4b5fd;margin-bottom:22px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;font-size:12px;font-weight:600;color:#c4b5fd;margin-bottom:14px}
 .eyebrow i{font-size:10px}
 .eyebrow .pulse-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:pulse 2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.7)}70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
-.h1{font-size:54px;line-height:1.05;font-weight:900;letter-spacing:-1.5px;margin:0 0 20px}
+.h1{font-size:54px;line-height:1.05;font-weight:900;letter-spacing:-1.5px;margin:0 0 14px}
 .h1 em{font-style:normal;background:linear-gradient(90deg,#c4b5fd,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent}
-.lead{font-size:18px;color:rgba(255,255,255,.78);max-width:540px;margin:0 0 30px;line-height:1.6}
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
-.hero-trust{display:flex;align-items:center;gap:18px;font-size:13px;color:rgba(255,255,255,.65);flex-wrap:wrap;margin-top:10px}
+.lead{font-size:18px;color:rgba(255,255,255,.78);max-width:540px;margin:0 0 20px;line-height:1.6}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.hero-trust{display:flex;align-items:center;gap:18px;font-size:13px;color:rgba(255,255,255,.65);flex-wrap:wrap;margin-top:4px}
 .hero-trust i{color:#34d399}
 .mock{position:relative;background:#0F172A;border-radius:18px;padding:14px;box-shadow:0 30px 80px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.08);transform:rotate(-1.5deg);transition:transform .4s}
 .mock:hover{transform:rotate(0)}
@@ -80,17 +80,17 @@ a{color:inherit;text-decoration:none}
 .mock-row .dot{width:8px;height:8px;border-radius:50%;background:#10b981}
 .mock-row b{flex:1}
 .mock-row .amt{font-weight:700;color:#059669}
-@media(max-width:920px){.hero{padding:54px 0 70px}.hero-grid{grid-template-columns:1fr;gap:40px}.h1{font-size:38px}}
+@media(max-width:920px){.hero{padding:40px 0 52px}.hero-grid{grid-template-columns:1fr;gap:32px}.h1{font-size:38px}}
 
 /* SECTIONS */
-section{padding:84px 0}
+section{padding:52px 0}
 .eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#f1f5f9;color:#7c3aed;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
 .h2{font-size:38px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin:0 0 14px;color:#0F172A}
-.sub{font-size:17px;color:#475569;max-width:640px;margin:0 0 56px;line-height:1.65}
+.sub{font-size:17px;color:#475569;max-width:640px;margin:0 0 28px;line-height:1.65}
 .center{text-align:center;margin-left:auto;margin-right:auto}
 
 /* IMPACTO / RESULTADOS */
-.impact{background:#0F172A;color:#fff;padding:60px 0}
+.impact{background:#0F172A;color:#fff;padding:44px 0}
 .impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
 .impact-card{text-align:center}
 .impact-num{font-size:54px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:8px;background:linear-gradient(135deg,#a78bfa,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -108,14 +108,13 @@ section{padding:84px 0}
 .prob-card p{font-size:13.5px;color:#475569;margin:0;line-height:1.6}
 @media(max-width:780px){.prob-grid{grid-template-columns:1fr}}
 
-/* FEATURES */
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.feat{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:30px;transition:transform .25s,box-shadow .25s,border-color .25s}
-.feat:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(15,23,42,.08);border-color:#7c3aed}
-.feat-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#7c3aed20,#05966920);color:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px}
-.feat h4{font-size:17px;margin:0 0 8px;font-weight:800;letter-spacing:-.3px}
-.feat p{font-size:14px;color:#475569;margin:0;line-height:1.65}
-@media(max-width:920px){.feat-grid{grid-template-columns:1fr 1fr}}
+/* FEATURES — Bento 2-col */
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.feat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:20px;padding:22px 24px;transition:transform .25s,box-shadow .25s,border-color .25s}
+.feat:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(15,23,42,.07);border-color:#7c3aed}
+.feat-icon{width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,#7c3aed20,#05966920);color:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:14px}
+.feat h4{font-size:16px;margin:0 0 6px;font-weight:800;letter-spacing:-.3px}
+.feat p{font-size:13.5px;color:#475569;margin:0;line-height:1.6}
 @media(max-width:600px){.feat-grid{grid-template-columns:1fr}}
 
 /* COMPARACIÓN */
@@ -198,7 +197,7 @@ section{padding:84px 0}
 @media(max-width:920px){.price-grid{grid-template-columns:1fr}}
 
 /* GARANTÍAS */
-.guarantees{background:#fafbfc;padding:60px 0}
+.guarantees{background:#fafbfc;padding:40px 0}
 .guar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .guar{display:flex;align-items:flex-start;gap:12px;padding:18px;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
 .guar-icon{width:38px;height:38px;border-radius:10px;background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
@@ -266,8 +265,8 @@ section{padding:84px 0}
 @keyframes floatChip{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
 /* FOOTER */
-footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
-.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:50px;margin-bottom:40px}
+footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:20px}
 .foot-brand .logo{color:#fff}
 .foot-brand p{font-size:13px;margin:14px 0 18px;line-height:1.65;max-width:340px}
 .foot-soc{display:flex;gap:10px}
@@ -370,7 +369,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <!-- IMPACTO -->
 <section class="impact">
     <div class="wrap">
-        <div style="text-align:center;max-width:680px;margin:0 auto 40px">
+        <div style="text-align:center;max-width:680px;margin:0 auto 24px">
             <h2 class="h2" style="color:#fff;font-size:28px;margin:0 0 8px">Impacto inmediato en tu operación</h2>
             <p style="color:rgba(255,255,255,.65);font-size:14px;margin:0">Dejá atrás el caos de las planillas y empezá a gestionar con datos reales.</p>
         </div>
@@ -398,7 +397,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <!-- PROBLEMA -->
 <section class="problem">
     <div class="wrap">
-        <div style="text-align:center;max-width:700px;margin:0 auto 50px">
+        <div style="text-align:center;max-width:700px;margin:0 auto 28px">
             <span class="eyebrow-dark">El problema operativo</span>
             <h2 class="h2">Si esto te pasa, tu negocio<br>tiene un riesgo oculto.</h2>
             <p class="sub">No es falta de voluntad. Es que estás usando herramientas que no fueron diseñadas para gestionar el crecimiento que estás teniendo.</p>
@@ -430,11 +429,12 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <!-- FEATURES -->
 <section id="features" style="background:#fff">
   <div class="wrap">
-    <div style="text-align:center;max-width:700px;margin:0 auto 56px">
+    <div style="text-align:center;max-width:700px;margin:0 auto 20px">
       <span class="eyebrow-dark">Funcionalidades</span>
       <h2 class="h2">Todo lo que necesitás<br>para operar profesional</h2>
       <p class="sub center">Una sola plataforma, integrada. No 8 apps que hablan mal entre sí.</p>
     </div>
+    <p style="text-align:center;font-size:14px;font-weight:700;color:#7c3aed;margin:0 0 24px;letter-spacing:.5px;font-style:italic">— Menos ruido operativo. Más tiempo para lo que importa. —</p>
     <div class="feat-grid">
       <div class="feat">
         <div class="feat-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
@@ -473,7 +473,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <!-- COMPARACIÓN ANMA vs EXCEL -->
 <section class="compare">
   <div class="wrap">
-    <div style="text-align:center;max-width:700px;margin:0 auto 40px">
+    <div style="text-align:center;max-width:700px;margin:0 auto 24px">
       <span class="eyebrow-dark">Por qué ANMA</span>
       <h2 class="h2">Excel hasta acá. ANMA desde acá.</h2>
       <p class="sub center">Las planillas son geniales para empezar. A los 50 pedidos al mes, dejan de funcionar.</p>
@@ -521,7 +521,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <!-- COMO FUNCIONA -->
 <section id="how">
   <div class="wrap">
-    <div style="text-align:center;max-width:700px;margin:0 auto 32px">
+    <div style="text-align:center;max-width:700px;margin:0 auto 18px">
       <span class="eyebrow-dark">Cómo empezás</span>
       <h2 class="h2">Operativo en el dia.<br>Sin instalar nada.</h2>
     </div>
@@ -547,7 +547,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 </section>
 
 <!-- DEMO BANNER -->
-<section style="padding:60px 0">
+<section style="padding:40px 0">
   <div class="wrap">
     <div class="demo-banner">
       <div class="demo-banner-content">
@@ -582,7 +582,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <!-- PARA QUIEN -->
 <section class="para-quien">
   <div class="wrap">
-    <div style="text-align:center;max-width:700px;margin:0 auto 56px">
+    <div style="text-align:center;max-width:700px;margin:0 auto 28px">
       <span class="eyebrow-dark">Para quién es</span>
       <h2 class="h2">Negocios que necesitan<br>orden y visibilidad</h2>
       <p class="sub center">Si facturás entre $500k y $20M al mes, ANMA es para vos.</p>
@@ -599,7 +599,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <!-- TESTIMONIOS -->
 <section style="background:#fafbfc">
   <div class="wrap">
-    <div style="text-align:center;max-width:700px;margin:0 auto 56px">
+    <div style="text-align:center;max-width:700px;margin:0 auto 28px">
       <span class="eyebrow-dark">Testimonios</span>
       <h2 class="h2">Negocios que ya operan distinto</h2>
     </div>
@@ -633,10 +633,10 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 </section>
 
   <!-- Sección de Precios Ancha y Compacta -->
-<section id="pricing" style="padding: 80px 0; background: #0b0214;">
+<section id="pricing" style="padding: 52px 0; background: #0b0214;">
   <div style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
     
-    <div style="text-align: center; margin-bottom: 40px;">
+    <div style="text-align: center; margin-bottom: 24px;">
       <h2 style="color: white; font-size: 32px; font-weight: 800; margin-bottom: 12px;">Inversión para la Gestión y Escalabilidad</h2>
       <p style="color: #94a3b8; font-size: 15px;">Implementación personalizada y operativa desde el primer día.</p>
     </div>
@@ -725,7 +725,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <!-- FAQ -->
 <section id="faq">
   <div class="wrap">
-    <div style="text-align:center;max-width:700px;margin:0 auto 40px">
+    <div style="text-align:center;max-width:700px;margin:0 auto 24px">
       <span class="eyebrow-dark">Preguntas frecuentes</span>
       <h2 class="h2">Lo que más nos preguntan</h2>
     </div>
@@ -744,7 +744,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:50px 0 30px}
 <!-- CTA FINAL + CONTACTO -->
 <section id="contact" class="contact">
   <div class="wrap">
-    <div class="cta-final" style="margin-bottom:64px">
+    <div class="cta-final" style="margin-bottom:36px">
+      <p style="font-size:11px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:2px;margin:0 0 12px;position:relative">Tu negocio fluye sin fricción</p>
       <h2>¿Listo para que tu negocio<br>opere como una empresa real?</h2>
       <p>Probá ANMA gratis 7 días. Sin tarjeta, sin compromisos. Si no te convence, exportás tus datos y listo.</p>
       <div class="cta-final-btns">
