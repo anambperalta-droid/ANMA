@@ -67,7 +67,7 @@ a{color:inherit;text-decoration:none}
 .mock-bar span:nth-child(2){background:#f59e0b}
 .mock-bar span:nth-child(3){background:#10b981}
 .mock-bar .url{margin-left:auto;background:#334155;color:#94a3b8;font-size:10px;padding:3px 8px;border-radius:6px;font-family:monospace}
-.mock-body{background:#fff;border-radius:10px;padding:22px;color:#0F172A;min-height:340px}
+.mock-body{background:#fff;border-radius:10px;padding:14px;color:#0F172A;min-height:370px}
 .mock-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .mock-h b{font-size:15px}
 .mock-h .pill{background:#dcfce7;color:#15803d;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px}
@@ -260,7 +260,7 @@ section{padding:52px 0}
 .fab-wa:hover{transform:scale(1.08)}
 /* Hero mock floating chips */
 .mock-wrap{position:relative}
-.mock-notify{position:absolute;top:-18px;right:24px;background:#fff;border-radius:99px;padding:8px 14px 8px 10px;display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:#0F172A;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:3;border:1px solid rgba(0,0,0,.06);white-space:nowrap;animation:floatChip 3s ease-in-out infinite}
+.mock-notify{position:absolute;top:-18px;right:24px;background:#fff;border-radius:99px;padding:8px 18px 8px 12px;display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:#0F172A;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:3;border:1px solid rgba(0,0,0,.06);white-space:nowrap;animation:floatChip 3s ease-in-out infinite}
 .mock-notify .ndot{width:8px;height:8px;border-radius:50%;background:#10b981;flex-shrink:0;box-shadow:0 0 0 3px rgba(16,185,129,.25);animation:pulse 2s infinite}
 .mock-badge{position:absolute;bottom:-16px;left:18px;background:linear-gradient(135deg,#7c3aed,#059669);border-radius:14px;padding:11px 18px;display:flex;gap:16px;z-index:3;box-shadow:0 8px 24px rgba(124,58,237,.45)}
 .mock-badge .bstat{text-align:center}
@@ -317,7 +317,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     <div>
       <span class="eyebrow"><span class="pulse-dot"></span> Hecho en Argentina · 100% en español</span>
       <h1 class="h1">Menos caos operativo.<br>Más aire para tu <em>negocio</em>.</h1>
-      <p class="lead">Centralizá tus ventas, stock y métricas en un solo panel diseñado para ser simple. ANMA es el respiro que necesitás para dejar de gestionar en el aire y empezar a escalar con bases sólidas.</p>
+      <p class="lead">Llevá toda la gestión de tu día a día a un solo panel que se entiende a la primera. Ventas, stock y números reales organizados sin esfuerzo, para que dejes de apagar incendios operativos y recuperes el foco en lo que de verdad hace crecer tu marca.</p>
       <div class="hero-ctas">
         <a href="https://anma-hub.vercel.app/login" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Empezar hoy</a>
         <a href="/demo.html" class="btn btn-ghost"><i class="fa-solid fa-circle-play"></i> Quiero mi respiro</a>
@@ -336,26 +336,133 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
       </div>
 
       <div class="mock">
-        <div class="mock-bar"><span></span><span></span><span></span><span class="url">anma-hub.vercel.app</span></div>
-        <div class="mock-body">
-          <div class="mock-h">
-            <b>Dashboard · Este mes</b>
-            <span class="pill">+18% vs marzo</span>
+        <!-- Browser chrome — clean, no URL text -->
+        <div class="mock-bar">
+          <span></span><span></span><span></span>
+          <div style="flex:1;margin-left:10px;background:#1e293b;border-radius:5px;height:14px;display:flex;align-items:center;padding:0 8px">
+            <span style="font-size:8px;color:#475569;font-family:monospace;letter-spacing:.3px">anma-hub.vercel.app</span>
           </div>
-          <div class="mock-stat">
-            <div><div class="v">$1.2M<span class="delta">↑18%</span></div><div class="l">Ingresos</div></div>
-            <div><div class="v">42<span class="delta">↑12%</span></div><div class="l">Pedidos</div></div>
-            <div><div class="v">8</div><div class="l">A cobrar</div></div>
+        </div>
+
+        <div class="mock-body" style="padding:14px;min-height:340px">
+
+          <!-- Topbar row -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid #f1f5f9">
+            <span style="font-size:12px;font-weight:800;color:#0F172A;letter-spacing:-.3px">Dashboard</span>
+            <div style="display:flex;gap:5px">
+              <div style="width:22px;height:22px;border-radius:7px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:8px;color:#64748b"><i class="fa-regular fa-eye"></i></div>
+              <div style="width:22px;height:22px;border-radius:7px;background:#fee2e2;display:flex;align-items:center;justify-content:center;font-size:8px;color:#ef4444"><i class="fa-solid fa-bell"></i></div>
+              <div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#059669);display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:700">A</div>
+            </div>
           </div>
-          <div class="mock-row"><span class="dot"></span><b>P-0042 · Sofía Ramos</b><span class="amt">$48.500</span></div>
-          <div class="mock-row"><span class="dot" style="background:#f59e0b"></span><b>P-0041 · Luz & Forma</b><span class="amt">$13.930</span></div>
-          <div class="mock-row"><span class="dot"></span><b>P-0040 · Estudio Norte</b><span class="amt">$92.000</span></div>
-          <div class="mock-row"><span class="dot" style="background:#7c3aed"></span><b>P-0039 · Carla M.</b><span class="amt">$22.150</span></div>
-          <!-- Mini progress bar -->
-          <div style="margin-top:12px;padding-top:10px;border-top:1px solid #f1f5f9">
-            <div style="display:flex;justify-content:space-between;font-size:10px;color:#64748b;margin-bottom:5px"><span>Meta mensual</span><span style="font-weight:700;color:#059669">68% alcanzado</span></div>
-            <div style="height:5px;background:#f1f5f9;border-radius:99px;overflow:hidden"><div style="width:68%;height:100%;background:linear-gradient(90deg,#7c3aed,#059669);border-radius:99px"></div></div>
+
+          <!-- Action bar -->
+          <div style="display:flex;gap:5px;align-items:center;margin-bottom:8px">
+            <span style="font-size:8px;padding:3px 7px;border:1px solid #e2e8f0;border-radius:6px;color:#475569;font-weight:600;display:flex;align-items:center;gap:3px"><i class="fa-regular fa-calendar" style="font-size:7px"></i> Este mes</span>
+            <span style="font-size:8px;padding:3px 7px;border:1px solid #e2e8f0;border-radius:6px;color:#475569;display:flex;align-items:center;gap:3px"><i class="fa-solid fa-download" style="font-size:7px"></i> Exportar</span>
+            <span style="font-size:8px;padding:3px 9px;background:#10b981;border-radius:6px;color:#fff;font-weight:700;margin-left:auto">+ Nuevo presupuesto</span>
           </div>
+
+          <!-- Tabs -->
+          <div style="display:flex;gap:1px;margin-bottom:9px;background:#f1f5f9;border-radius:7px;padding:2px">
+            <span style="font-size:8px;padding:3px 8px;background:#fff;border-radius:5px;color:#92400e;font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.08)">Resumen</span>
+            <span style="font-size:8px;padding:3px 8px;color:#64748b">Presupuestos</span>
+            <span style="font-size:8px;padding:3px 8px;color:#64748b">Análisis</span>
+            <span style="font-size:8px;padding:3px 7px;color:#64748b">Seguimiento <span style="background:#e2e8f0;border-radius:99px;padding:0 4px;font-size:7px">2</span></span>
+          </div>
+
+          <!-- HOY IMPORTA -->
+          <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">
+            <span style="color:#f59e0b;font-size:9px">⚡</span>
+            <span style="font-size:8px;font-weight:800;color:#0F172A;text-transform:uppercase;letter-spacing:.6px">HOY IMPORTA</span>
+            <span style="font-size:7px;color:#64748b;background:#f1f5f9;padding:1px 5px;border-radius:99px;font-weight:600">6</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:9px">
+            <!-- Cobros vencidos -->
+            <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px">
+              <div style="display:flex;align-items:center;gap:4px;margin-bottom:4px">
+                <div style="width:16px;height:16px;border-radius:5px;background:#ef4444;display:flex;align-items:center;justify-content:center;font-size:6px;color:#fff;flex-shrink:0"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                <span style="font-size:6.5px;font-weight:800;color:#dc2626;text-transform:uppercase;letter-spacing:.3px">Cobros Vencidos</span>
+              </div>
+              <div style="font-size:15px;font-weight:900;color:#0F172A;line-height:1.1">4 <span style="font-size:8px;font-weight:500;color:#64748b">pedidos</span></div>
+              <div style="font-size:7px;color:#dc2626;font-weight:600;margin-top:2px">$917.305 sin cobrar</div>
+            </div>
+            <!-- A confirmar -->
+            <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px">
+              <div style="display:flex;align-items:center;gap:4px;margin-bottom:4px">
+                <div style="width:16px;height:16px;border-radius:5px;background:#92400e;display:flex;align-items:center;justify-content:center;font-size:6px;color:#fff;flex-shrink:0"><i class="fa-solid fa-comment-dots"></i></div>
+                <span style="font-size:6.5px;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:.3px">A Confirmar</span>
+              </div>
+              <div style="font-size:15px;font-weight:900;color:#0F172A;line-height:1.1">2 <span style="font-size:8px;font-weight:500;color:#64748b">seguimientos</span></div>
+              <div style="font-size:7px;color:#78716c;margin-top:2px">Enviados hace 3+ días</div>
+            </div>
+          </div>
+
+          <!-- 4 métricas -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:9px">
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:6px 5px">
+              <div style="font-size:6px;color:#94a3b8;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px">Ventas Brutas</div>
+              <div style="font-size:9.5px;font-weight:900;color:#0F172A;letter-spacing:-.3px;line-height:1.2">$2.46M</div>
+              <div style="font-size:6px;color:#10b981;font-weight:700">↑92%</div>
+            </div>
+            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:6px 5px">
+              <div style="font-size:6px;color:#94a3b8;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px">Ingresos Caja</div>
+              <div style="font-size:9.5px;font-weight:900;color:#0F172A;letter-spacing:-.3px;line-height:1.2">$1.71M</div>
+              <div style="font-size:6px;color:#10b981;font-weight:700">↑329%</div>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:6px 5px">
+              <div style="font-size:6px;color:#94a3b8;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px">Ticket Prom.</div>
+              <div style="font-size:9.5px;font-weight:900;color:#0F172A;letter-spacing:-.3px;line-height:1.2">$246k</div>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:6px 5px">
+              <div style="font-size:6px;color:#94a3b8;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px">Presupuestos</div>
+              <div style="font-size:9.5px;font-weight:900;color:#0F172A;letter-spacing:-.3px;line-height:1.2">10</div>
+            </div>
+          </div>
+
+          <!-- Gráficos inferiores -->
+          <div style="display:grid;grid-template-columns:1.45fr 1fr;gap:6px">
+            <!-- Bar chart -->
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px">
+              <div style="font-size:7.5px;font-weight:700;color:#0F172A;margin-bottom:7px;display:flex;align-items:center;gap:4px"><i class="fa-solid fa-chart-column" style="color:#7c3aed;font-size:7px"></i> Ingresos cobrados — día a día</div>
+              <div style="display:flex;align-items:flex-end;gap:2px;height:38px">
+                <div style="flex:1;background:#c9a96e;border-radius:2px 2px 0 0;height:62%"></div>
+                <div style="flex:1;background:#c9a96e;border-radius:2px 2px 0 0;height:100%"></div>
+                <div style="flex:1;background:#e8d5b0;border-radius:2px 2px 0 0;height:28%"></div>
+                <div style="flex:1;background:#e8d5b0;border-radius:2px 2px 0 0;height:12%"></div>
+                <div style="flex:1;background:#e8d5b0;border-radius:2px 2px 0 0;height:6%"></div>
+                <div style="flex:1;background:#e8d5b0;border-radius:2px 2px 0 0;height:5%"></div>
+                <div style="flex:1;background:#e8d5b0;border-radius:2px 2px 0 0;height:5%"></div>
+                <div style="flex:1;background:#e8d5b0;border-radius:2px 2px 0 0;height:18%"></div>
+                <div style="flex:1;background:#e8d5b0;border-radius:2px 2px 0 0;height:5%"></div>
+                <div style="flex:1;background:#e8d5b0;border-radius:2px 2px 0 0;height:5%"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:6px;color:#94a3b8;margin-top:4px"><span>1</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span></div>
+            </div>
+            <!-- Donut chart -->
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px">
+              <div style="font-size:7.5px;font-weight:700;color:#0F172A;margin-bottom:7px;display:flex;align-items:center;gap:4px"><i class="fa-solid fa-chart-pie" style="color:#7c3aed;font-size:7px"></i> Estado de presupuestos</div>
+              <div style="display:flex;align-items:center;gap:7px">
+                <div style="width:46px;height:46px;flex-shrink:0;position:relative">
+                  <svg viewBox="0 0 36 36" style="width:46px;height:46px;transform:rotate(-90deg)">
+                    <circle cx="18" cy="18" r="14" fill="none" stroke="#e2e8f0" stroke-width="4"/>
+                    <circle cx="18" cy="18" r="14" fill="none" stroke="#94a3b8" stroke-width="4" stroke-dasharray="8.8 79.2" stroke-dashoffset="0"/>
+                    <circle cx="18" cy="18" r="14" fill="none" stroke="#3b82f6" stroke-width="4" stroke-dasharray="8.8 79.2" stroke-dashoffset="-8.8"/>
+                    <circle cx="18" cy="18" r="14" fill="none" stroke="#10b981" stroke-width="4" stroke-dasharray="17.6 70.4" stroke-dashoffset="-17.6"/>
+                    <circle cx="18" cy="18" r="14" fill="none" stroke="#ef4444" stroke-width="4" stroke-dasharray="8.8 79.2" stroke-dashoffset="-35.2"/>
+                  </svg>
+                  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#0F172A">10</div>
+                </div>
+                <div style="font-size:7px;color:#475569;line-height:2">
+                  <div><span style="color:#94a3b8">●</span> Borrador <span style="float:right;margin-left:6px;color:#0F172A;font-weight:700">1</span></div>
+                  <div><span style="color:#3b82f6">●</span> Enviado <span style="float:right;margin-left:6px;color:#0F172A;font-weight:700">1</span></div>
+                  <div><span style="color:#10b981">●</span> Confirmado <span style="float:right;margin-left:6px;color:#0F172A;font-weight:700">2</span></div>
+                  <div><span style="color:#ef4444">●</span> Perdido <span style="float:right;margin-left:6px;color:#0F172A;font-weight:700">1</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
