@@ -328,14 +328,17 @@ export default function Presupuesto() {
     const shipCharged = form.shipCharged !== false
     // Negocio siempre paga el envío; el cliente solo si shipCharged=true
     const baseCost = totalCost + logTotal + ship
-    const total = totalRevenue + (shipCharged ? ship : 0)
+    // Descuento aplica sobre el subtotal de productos (antes del envío)
+    const discountPct = Math.min(Math.max(num(form.discount), 0), 100)
+    const discountAmt = Math.round(totalRevenue * discountPct / 100)
+    const total = totalRevenue - discountAmt + (shipCharged ? ship : 0)
     const gain = total - baseCost
     const marginReal = total > 0 ? ((gain / total) * 100).toFixed(1) : '0.0'
     const marginThreshold = num(c.marginLowThreshold) || 10
     const marginLow = total > 0 && Number(marginReal) < marginThreshold
     const depositAmt = Math.round(total * num(form.deposit) / 100)
-    return { totalCost, totalRevenue, logTotal, baseCost, total, gain, marginReal, marginLow, marginThreshold, depositAmt, totalQty }
-  }, [items, form.shipCost, form.shipCharged, form.logoCost, form.deposit, c.marginLowThreshold])
+    return { totalCost, totalRevenue, logTotal, baseCost, total, gain, marginReal, marginLow, marginThreshold, depositAmt, totalQty, discountAmt, discountPct }
+  }, [items, form.shipCost, form.shipCharged, form.logoCost, form.deposit, form.discount, c.marginLowThreshold])
 
   const budgetNum = useMemo(() => {
     if (editId) { const b = get('budgets').find(x => x.id === editId); return b?.num || '#—' }
@@ -560,6 +563,7 @@ export default function Presupuesto() {
     </table>
     <div class="totals"><div class="totals-box">
       <div class="totals-row"><span>Subtotal productos</span><span>${fmt(calc.totalRevenue)}</span></div>
+      ${calc.discountAmt > 0 ? `<div class="totals-row" style="color:#DC2626"><span>Descuento (${calc.discountPct}%)</span><span>−${fmt(calc.discountAmt)}</span></div>` : ''}
       ${showEnvioLeyenda ? `<div class="totals-row" style="font-size:10px;color:#92400E;font-style:italic"><span>🚚 Costo de envío sujeto a pesaje y despacho</span><span>A cotizar</span></div>` : ''}
       <div class="totals-row big"><span>Total</span><span>${fmt(calc.total)}</span></div>
       <div class="totals-row senia"><span>Seña (${form.deposit}%)</span><span>${fmt(calc.depositAmt)}</span></div>
@@ -932,6 +936,17 @@ export default function Presupuesto() {
             {feats.costoInterno && <div className="cp-row"><span className="cp-lbl">Costo proveedor</span><span className="cp-val">{fmt(calc.totalCost)}</span></div>}
             {calc.logTotal > 0 && <div className="cp-row"><span className="cp-lbl">Impresión</span><span className="cp-val">{fmt(calc.logTotal)}</span></div>}
             {num(form.shipCost) > 0 && <div className="cp-row"><span className="cp-lbl">Envío</span><span className="cp-val">{fmt(num(form.shipCost))}</span></div>}
+            {calc.discountAmt > 0 && (
+              <div className="cp-row" style={{ borderTop: '1px dashed rgba(255,255,255,.10)', marginTop: 2, paddingTop: 4 }}>
+                <span className="cp-lbl" style={{ color: 'rgba(255,255,255,.55)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <i className="fa fa-tag" style={{ fontSize: 9, opacity: .7 }} />
+                  Descuento ({calc.discountPct}%)
+                </span>
+                <span className="cp-val" style={{ color: '#FCA5A5', fontWeight: 700 }}>
+                  −{fmt(calc.discountAmt)}
+                </span>
+              </div>
+            )}
             {feats.margenTabla && <div className="cp-row"><span className="cp-lbl">Ganancia</span><span className="cp-val" style={{ color: '#86EFAC' }}>{fmt(calc.gain)}</span></div>}
             {feats.margenTabla && <div className="cp-row"><span className="cp-lbl">Margen real</span><span className="cp-val" style={calc.marginLow ? { color: 'var(--red)', fontWeight: 800 } : undefined}>{calc.marginReal}%{calc.marginLow && <i className="fa fa-triangle-exclamation" style={{ marginLeft: 4, fontSize: 10 }} title={`Margen bajo (< ${calc.marginThreshold}%)`} />}</span></div>}
             {feats.margenTabla && marginBudgetedSaved !== null && Math.abs(marginBudgetedSaved - Number(calc.marginReal)) >= 0.5 && (() => {
