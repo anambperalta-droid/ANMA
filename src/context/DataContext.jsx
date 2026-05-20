@@ -169,14 +169,30 @@ export function DataProvider({ children }) {
 
   /* ── Deducir stock al confirmar pedido ── */
   const deductStockForOrder = useCallback((items) => {
+    // Read product catalog once to resolve insumo associations
+    const allProducts = db('products', [])
     items.forEach(item => {
-      if (item.productId) {
-        recordStockMove({
-          type: 'sale',
-          productId: item.productId,
-          qty: item.qty,
-          ref: `Venta`,
-          note: item.name,
+      if (!item.productId) return
+      // 1. Deduct product stock
+      recordStockMove({
+        type: 'sale',
+        productId: item.productId,
+        qty: item.qty,
+        ref: 'Venta',
+        note: item.name,
+      })
+      // 2. Silently deduct associated insumo stocks (hidden from client)
+      const prod = allProducts.find(p => p.id === item.productId)
+      if (prod?.insumos?.length) {
+        prod.insumos.forEach(ins => {
+          if (!ins.insumoId || !ins.qtyNeeded) return
+          recordStockMove({
+            type: 'sale',
+            insumoId: ins.insumoId,
+            qty: Number(item.qty) * Number(ins.qtyNeeded),
+            ref: 'Venta (insumo)',
+            note: item.name,
+          })
         })
       }
     })

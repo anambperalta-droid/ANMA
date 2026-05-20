@@ -735,32 +735,74 @@ export default function Catalogo() {
               </div>
             </div>
 
-            {/* ── CARD 4: Composición de insumos (solo modo Fabrico) ── */}
-            {productMode === 'make' && (
-              <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '14px 16px', marginBottom: 12, border: '1.5px solid var(--brand)', borderStyle: 'dashed' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+            {/* ── CARD 4: Costos de Despacho / Packaging Ocultos ── */}
+            <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '14px 16px', marginBottom: 12, border: '1.5px dashed var(--brand)' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10, gap: 10 }}>
+                <div>
                   <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.7px', display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <i className="fa fa-flask" /> Receta / Composición de insumos
+                    <i className="fa fa-box" /> Costos de Despacho / Packaging Ocultos
                   </div>
-                  <button className="btn btn-ghost btn-xs" onClick={addInsumo}><i className="fa fa-plus" /> Agregar</button>
+                  <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 3, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <i className="fa fa-eye-slash" /> Invisibles para el cliente · Se suman al costo real del producto
+                  </div>
                 </div>
-                {(form.insumos || []).length === 0 && <div style={{ fontSize: 11, color: 'var(--txt3)', textAlign: 'center', padding: '8px 0' }}>Sin insumos asociados — agregá los materiales necesarios</div>}
-                {(form.insumos || []).map((ins, idx) => (
-                  <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 80px 32px', gap: 8, marginBottom: 6, alignItems: 'end' }}>
+                <button className="btn btn-ghost btn-xs" onClick={addInsumo} style={{ flexShrink: 0 }}><i className="fa fa-plus" /> Agregar</button>
+              </div>
+              {(form.insumos || []).length === 0 && (
+                <div style={{ fontSize: 11, color: 'var(--txt3)', textAlign: 'center', padding: '8px 0' }}>
+                  Sin costos ocultos — agregá packaging, etiquetas, bolsas u otros gastos operativos
+                </div>
+              )}
+              {(() => {
+                // Build grouped list from insumos DB
+                const seen = new Set()
+                const catGroups = []
+                insumosList.forEach(x => {
+                  const cat = x.insumoCat || x.cat || 'Sin categoría'
+                  if (!seen.has(cat)) { seen.add(cat); catGroups.push({ label: cat, items: [] }) }
+                  const g = catGroups.find(g => g.label === cat)
+                  if (g) g.items.push(x)
+                })
+                return (form.insumos || []).map((ins, idx) => (
+                  <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 90px 32px', gap: 8, marginBottom: 6, alignItems: 'end' }}>
                     <div className="fg" style={{ marginBottom: 0 }}>
                       <select value={ins.insumoId || ''} onChange={e => updateInsumo(idx, 'insumoId', e.target.value)}>
-                        <option value="">Seleccionar insumo</option>
-                        {insumosList.map(i => <option key={i.id} value={i.id}>{i.name} ({i.stock || 0} {i.unit || 'un'})</option>)}
+                        <option value="">— seleccionar insumo —</option>
+                        {insumosList.length === 0
+                          ? <option disabled>Sin insumos cargados en /insumos</option>
+                          : catGroups.map(g => (
+                              <optgroup key={g.label} label={g.label}>
+                                {g.items.map(i => (
+                                  <option key={i.id} value={i.id}>
+                                    {i.name} · ${Number(i.cost || 0).toLocaleString('es-AR')}/{i.unit || 'un'}
+                                  </option>
+                                ))}
+                              </optgroup>
+                            ))
+                        }
                       </select>
                     </div>
                     <div className="fg" style={{ marginBottom: 0 }}>
-                      <input type="number" value={ins.qtyNeeded} onChange={e => updateInsumo(idx, 'qtyNeeded', e.target.value)} placeholder="Cant." min="0" step="0.1" />
+                      <input type="number" value={ins.qtyNeeded} onChange={e => updateInsumo(idx, 'qtyNeeded', e.target.value)} placeholder="Cant. x u." min="0" step="0.1" title="Cantidad de este insumo por unidad de producto" />
                     </div>
                     <button className="act del" onClick={() => removeInsumo(idx)} style={{ height: 34 }}><i className="fa fa-xmark" /></button>
                   </div>
-                ))}
-              </div>
-            )}
+                ))
+              })()}
+              {(form.insumos || []).some(ins => ins.insumoId) && (() => {
+                const total = (form.insumos || []).reduce((s, ins) => {
+                  const insumo = insumosList.find(x => x.id === Number(ins.insumoId))
+                  return s + (insumo ? Number(insumo.cost || 0) * Number(ins.qtyNeeded || 0) : 0)
+                }, 0)
+                return (
+                  <div style={{ marginTop: 8, padding: '6px 10px', background: 'var(--brand-xlt)', borderRadius: 7, fontSize: 11, color: 'var(--brand)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <i className="fa fa-calculator" />
+                    Costo oculto total: <strong>{fmt(total)}</strong> / unidad
+                    <span style={{ color: 'var(--txt3)', fontWeight: 400, marginLeft: 4 }}>(no visible en presupuesto)</span>
+                  </div>
+                )
+              })()}
+            </div>
 
             {/* ── ACORDEÓN: Configuración avanzada ── */}
             <button onClick={() => setShowAdvanced(s => !s)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, fontWeight: 700, color: 'var(--txt2)', marginBottom: showAdvanced ? 0 : 4 }}>

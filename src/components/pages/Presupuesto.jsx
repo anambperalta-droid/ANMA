@@ -174,7 +174,7 @@ function ClientCombo({ clients, value, onSelect, onChange }) {
 export default function Presupuesto() {
   const { id } = useParams()
   const nav = useNavigate()
-  const { get, config, saveBudget } = useData()
+  const { get, config, saveBudget, deductStockForOrder } = useData()
   const toast = useToast()
   const c = config()
   const feats = c.features || {}
@@ -318,10 +318,23 @@ export default function Presupuesto() {
   }
 
   const calc = useMemo(() => {
+    const allProducts = get('products')
+    const allInsumos = get('insumos', [])
     let totalCost = 0, totalRevenue = 0, totalQty = 0
     items.forEach(i => {
       const q = num(i.qty), c = num(i.costUnit), p = num(i.priceUnit)
-      totalCost += q * c; totalRevenue += q * p; totalQty += q
+      let itemCost = q * c
+      // Add hidden insumo costs linked to this product (invisible to client)
+      if (i.productId) {
+        const prod = allProducts.find(pr => pr.id === i.productId)
+        if (prod?.insumos?.length) {
+          prod.insumos.forEach(ins => {
+            const insumo = allInsumos.find(x => x.id === ins.insumoId)
+            if (insumo) itemCost += q * num(ins.qtyNeeded) * num(insumo.cost)
+          })
+        }
+      }
+      totalCost += itemCost; totalRevenue += q * p; totalQty += q
     })
     const logTotal = num(form.logoCost) * totalQty
     const ship = num(form.shipCost)
@@ -338,7 +351,7 @@ export default function Presupuesto() {
     const marginLow = total > 0 && Number(marginReal) < marginThreshold
     const depositAmt = Math.round(total * num(form.deposit) / 100)
     return { totalCost, totalRevenue, logTotal, baseCost, total, gain, marginReal, marginLow, marginThreshold, depositAmt, totalQty, discountAmt, discountPct }
-  }, [items, form.shipCost, form.shipCharged, form.logoCost, form.deposit, form.discount, c.marginLowThreshold])
+  }, [items, form.shipCost, form.shipCharged, form.logoCost, form.deposit, form.discount, c.marginLowThreshold, get])
 
   const budgetNum = useMemo(() => {
     if (editId) { const b = get('budgets').find(x => x.id === editId); return b?.num || '#—' }
@@ -351,10 +364,24 @@ export default function Presupuesto() {
     if (form.wa && !isValidWA(form.wa)) { toast('El WhatsApp no tiene un formato válido. Ej: +54 351 1234567', 'er'); setWaTouched(true); return }
     const validItems = items.filter(i => i.name).map(i => ({ ...i, qty: num(i.qty), costUnit: num(i.costUnit), priceUnit: num(i.priceUnit) }))
     if (!validItems.length) { toast('Necesitás al menos un producto. Agregá uno desde "Productos".', 'er'); return }
+
+    // Capture pre-save status to detect transitions (avoid double-deduction on re-save)
+    const prevBudget = editId ? get('budgets').find(x => x.id === editId) : null
+    const prevStatus = prevBudget?.status
+    const qualifyingStatus = form.status === 'paid' || form.status === 'inprogress'
+    const wasQualifying = prevStatus === 'paid' || prevStatus === 'inprogress'
+
     const saveForm = { ...form, shipCost: 0, shipCharged: false, envioACotizar: form.envioACotizar !== false, logoCost: num(form.logoCost), margin: num(form.margin), deposit: num(form.deposit), payStatus: form.payStatus || 'pending' }
     const marginBudgeted = marginBudgetedSaved !== null ? marginBudgetedSaved : Number(calc.marginReal)
     const savedBudget = saveBudget({ ...(editId ? { id: editId } : {}), ...saveForm, items: validItems, totalCost: calc.baseCost, totalGain: calc.gain, total: calc.total, depositAmt: calc.depositAmt, marginBudgeted })
     if (!editId) setMarginBudgetedSaved(marginBudgeted)
+
+    // Silent stock deduction — only fires on first transition to a qualifying status
+    // Deducts product stock AND associated insumo quantities
+    if (qualifyingStatus && !wasQualifying) {
+      deductStockForOrder(validItems)
+    }
+
     setDraftRestored(false)
     localStorage.removeItem(DRAFT_KEY)
     toast('Presupuesto guardado', 'ok')
