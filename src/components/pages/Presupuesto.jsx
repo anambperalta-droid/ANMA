@@ -416,8 +416,17 @@ export default function Presupuesto() {
     // Capture pre-save status to detect transitions (avoid double-deduction on re-save)
     const prevBudget = editId ? get('budgets').find(x => x.id === editId) : null
     const prevStatus = prevBudget?.status
-    const qualifyingStatus = form.status === 'paid' || form.status === 'inprogress'
-    const wasQualifying = prevStatus === 'paid' || prevStatus === 'inprogress'
+    // Qualifying = order has started / is confirmed as real.
+    // Uses a Set so it handles:
+    //   - English key values (current selects: 'inprogress', 'delivered')
+    //   - Spanish label values saved by legacy versions of the app
+    //   - payStatus 'paid' (independent of order status)
+    const QUALIFYING_STATES = new Set([
+      'inprogress', 'delivered',                        // current English keys
+      'En preparación', 'En producción', 'Entregado',   // legacy Spanish label values
+    ])
+    const qualifyingStatus = QUALIFYING_STATES.has(form.status) || form.payStatus === 'paid'
+    const wasQualifying   = QUALIFYING_STATES.has(prevStatus)   || prevBudget?.payStatus === 'paid'
 
     const saveForm = { ...form, shipCost: 0, shipCharged: false, envioACotizar: form.envioACotizar !== false, logoCost: num(form.logoCost), margin: num(form.margin), deposit: num(form.deposit), payStatus: form.payStatus || 'pending' }
     const marginBudgeted = marginBudgetedSaved !== null ? marginBudgetedSaved : Number(calc.marginReal)
