@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { fmt } from '../../lib/storage'
 
-const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', insumos: [], image: '' }
+const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '' }
 
 const compressImage = (file, maxBytes = 180000) => new Promise((resolve) => {
   const reader = new FileReader()
@@ -86,7 +86,6 @@ export default function Catalogo() {
 
   const products = get('products')
   const suppliers = get('suppliers')
-  const insumosList = get('insumos', [])
   const cats = c.productCats || []
   const units = c.units || ['unidad','kg','litro','metro','caja','pack','rollo']
   const rules = c.pricingRules || { b2c: { margin: 40 }, b2b: { margin: 25 } }
@@ -211,14 +210,6 @@ export default function Catalogo() {
     if (selectedIds.size > 0) setSelectedIds(new Set())
   }
 
-  const addInsumo = () => setForm(f => ({ ...f, insumos: [...(f.insumos || []), { insumoId: '', qtyNeeded: 1 }] }))
-  const updateInsumo = (idx, field, val) => setForm(f => {
-    const ins = [...(f.insumos || [])]
-    ins[idx] = { ...ins[idx], [field]: field === 'insumoId' ? Number(val) : Number(val) }
-    return { ...f, insumos: ins }
-  })
-  const removeInsumo = (idx) => setForm(f => ({ ...f, insumos: (f.insumos || []).filter((_, i) => i !== idx) }))
-
   const doBulk = () => {
     const lines = bulkData.split('\n').filter(l => l.trim())
     let count = 0
@@ -227,7 +218,7 @@ export default function Catalogo() {
       if (parts.length >= 2) {
         const cost = Number(parts[1].trim()) || 0
         const prices = autoPrice(cost)
-        saveEntity('products', { name: parts[0].trim(), cat: bulkCat || cats[0] || '', cost, supplierId: '', stock: 0, minStock: 0, priceB2C: prices.b2c, priceB2B: prices.b2b, unit: 'unidad', insumos: [] })
+        saveEntity('products', { name: parts[0].trim(), cat: bulkCat || cats[0] || '', cost, supplierId: '', stock: 0, minStock: 0, priceB2C: prices.b2c, priceB2B: prices.b2b, unit: 'unidad' })
         count++
       }
     })
@@ -254,7 +245,7 @@ export default function Catalogo() {
   const doCsvImport = () => {
     csvPreview.forEach(p => {
       const prices = autoPrice(p.cost)
-      saveEntity('products', { ...p, cat: csvCat || cats[0] || '', stock: 0, minStock: 0, priceB2C: prices.b2c, priceB2B: prices.b2b, unit: 'unidad', insumos: [] })
+      saveEntity('products', { ...p, cat: csvCat || cats[0] || '', stock: 0, minStock: 0, priceB2C: prices.b2c, priceB2B: prices.b2b, unit: 'unidad' })
     })
     toast(`${csvPreview.length} productos importados`, 'ok')
     setCsvPreview([]); setCsvModal(false)
@@ -730,131 +721,6 @@ export default function Catalogo() {
                 <div className="fg" style={{ marginBottom: 0 }}><label>Stock actual</label><input tabIndex={9} type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} placeholder="0" /></div>
                 <div className="fg" style={{ marginBottom: 0 }}><label>Stock mínimo (alerta)</label><input tabIndex={10} type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} placeholder="0" /></div>
               </div>
-            </div>
-
-            {/* ── CARD 4: Costos de Despacho / Packaging Ocultos ── */}
-            <div style={{ borderRadius: 14, padding: '18px 22px', marginBottom: 16, border: '1.5px dashed var(--border)', background: 'var(--surface)' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14, gap: 12 }}>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ width: 26, height: 26, borderRadius: 8, background: '#F3F0FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <i className="fa fa-box" style={{ fontSize: 11, color: 'var(--brand)' }} />
-                    </span>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Costos de Despacho / Packaging</span>
-                  </div>
-                  <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 5, marginLeft: 34, display: 'flex', alignItems: 'center', gap: 5 }}>
-                    <i className="fa fa-eye-slash" style={{ fontSize: 10 }} />
-                    Ocultos para el cliente · Se descuentan de tu margen real
-                  </div>
-                </div>
-                <button className="btn btn-ghost btn-xs" onClick={addInsumo} style={{ flexShrink: 0 }}>
-                  <i className="fa fa-plus" /> Agregar
-                </button>
-              </div>
-
-              {(form.insumos || []).length === 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '18px 0 10px', gap: 7 }}>
-                  <i className="fa fa-box-open" style={{ fontSize: 20, color: 'var(--txt4)', opacity: .45 }} />
-                  <span style={{ fontSize: 12, color: 'var(--txt3)', textAlign: 'center', maxWidth: 320 }}>
-                    Sin costos ocultos — agregá packaging, etiquetas, bolsas u otros materiales de despacho
-                  </span>
-                </div>
-              )}
-
-              {(form.insumos || []).length > 0 && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 110px 32px', gap: '0 8px', marginBottom: 8, paddingBottom: 6, borderBottom: '1px solid var(--border)' }}>
-                  <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.05em', paddingLeft: 2 }}>Insumo</span>
-                  <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.05em', textAlign: 'center' }}>Cant. × unidad</span>
-                  <span />
-                </div>
-              )}
-
-              {(() => {
-                const seen = new Set()
-                const catGroups = []
-                const emojiFor = (cat) => {
-                  const c = (cat || '').toLowerCase()
-                  if (c.includes('embalaj') || c.includes('envio') || c.includes('envío') || c.includes('caja') || c.includes('pack')) return '📦'
-                  if (c.includes('protec') || c.includes('frágil') || c.includes('fragil') || c.includes('burbuja') || c.includes('foam')) return '🛡️'
-                  if (c.includes('etiquet') || c.includes('logo') || c.includes('impres') || c.includes('sticker')) return '🏷️'
-                  if (c.includes('bolsa') || c.includes('sobre') || c.includes('mailer')) return '📫'
-                  if (c.includes('cinta') || c.includes('adhesiv') || c.includes('papel')) return '📄'
-                  if (c.includes('material') || c.includes('materia')) return '🔧'
-                  return '📌'
-                }
-                insumosList.forEach(x => {
-                  const cat = x.insumoCat || x.cat || 'Sin categoría'
-                  if (!seen.has(cat)) { seen.add(cat); catGroups.push({ label: cat, items: [] }) }
-                  const g = catGroups.find(g => g.label === cat)
-                  if (g) g.items.push(x)
-                })
-                return (form.insumos || []).map((ins, idx) => {
-                  const selInsumo = insumosList.find(x => x.id === Number(ins.insumoId))
-                  const lineCost = selInsumo ? Number(selInsumo.cost || 0) * Number(ins.qtyNeeded || 0) : 0
-                  return (
-                    <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 110px 32px', gap: '0 8px', marginBottom: 10, alignItems: 'end' }}>
-                      <div className="fg" style={{ marginBottom: 0 }}>
-                        <select value={ins.insumoId || ''} onChange={e => updateInsumo(idx, 'insumoId', e.target.value)}>
-                          <option value="">— seleccionar insumo —</option>
-                          {insumosList.length === 0
-                            ? <option disabled>Sin insumos cargados — ir a /insumos</option>
-                            : catGroups.map(g => (
-                                <optgroup key={g.label} label={`${emojiFor(g.label)}  ${g.label.toUpperCase()}`}>
-                                  {g.items.map(i => (
-                                    <option key={i.id} value={i.id}>
-                                      {i.name}  ·  ${Number(i.cost || 0).toLocaleString('es-AR')} /{i.unit || 'un'}
-                                    </option>
-                                  ))}
-                                </optgroup>
-                              ))
-                          }
-                        </select>
-                        {selInsumo && lineCost > 0 && (
-                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 3, paddingLeft: 2 }}>
-                            Costo de línea: <b style={{ color: 'var(--txt)' }}>{fmt(lineCost)}</b>
-                            <span style={{ opacity: .65 }}> ({Number(ins.qtyNeeded || 0)} × {fmt(Number(selInsumo.cost || 0))})</span>
-                          </div>
-                        )}
-                      </div>
-                      <div className="fg" style={{ marginBottom: 0 }}>
-                        <input
-                          type="number"
-                          value={ins.qtyNeeded}
-                          onChange={e => updateInsumo(idx, 'qtyNeeded', e.target.value)}
-                          placeholder="1"
-                          min="0" step="0.01"
-                          title="Cantidad de este insumo por unidad de producto"
-                          style={{ textAlign: 'center' }}
-                        />
-                      </div>
-                      <button className="act del" onClick={() => removeInsumo(idx)} style={{ height: 34 }}><i className="fa fa-xmark" /></button>
-                    </div>
-                  )
-                })
-              })()}
-
-              {(form.insumos || []).some(ins => ins.insumoId) && (() => {
-                const total = (form.insumos || []).reduce((s, ins) => {
-                  const insumo = insumosList.find(x => x.id === Number(ins.insumoId))
-                  return s + (insumo ? Number(insumo.cost || 0) * Number(ins.qtyNeeded || 0) : 0)
-                }, 0)
-                return (
-                  <div style={{ marginTop: 12, padding: '11px 14px', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-                    <div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <i className="fa fa-calculator" style={{ color: 'var(--brand)', fontSize: 11 }} />
-                        Costo oculto total:
-                        <span style={{ color: 'var(--brand)', fontVariantNumeric: 'tabular-nums', fontFamily: 'monospace' }}>{fmt(total)}</span>
-                        <span style={{ fontWeight: 400, color: 'var(--txt3)', fontSize: 11 }}>/ unidad</span>
-                      </div>
-                      <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 4 }}>
-                        Este valor se descontará automáticamente de tu margen real en el presupuestador
-                      </div>
-                    </div>
-                    <i className="fa fa-eye-slash" style={{ fontSize: 15, color: 'var(--txt4)', flexShrink: 0 }} />
-                  </div>
-                )
-              })()}
             </div>
 
             {/* ── ACORDEÓN: Configuración avanzada ── */}

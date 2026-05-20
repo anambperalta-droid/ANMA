@@ -183,6 +183,7 @@ export default function Presupuesto() {
     contact: '', company: '', wa: '', clientType: 'b2c', delivery: '', deliveryDate: '',
     shipCost: 0, shipCharged: false, envioACotizar: true, status: 'draft', payStatus: 'pending', noteInt: '', noteCli: '',
     margin: c.defaultMargin || 40, deposit: c.defaultDeposit || 50, logoCost: 0, discount: 0,
+    dispatchInsumos: [], // Dynamic dispatch packaging — set per order in Step 3
   })
   const [items, setItems] = useState([emptyItem()])
   const [editId, setEditId] = useState(null)
@@ -196,6 +197,7 @@ export default function Presupuesto() {
 
   const clients = get('clients')
   const products = get('products')
+  const insumosList = get('insumos', [])
   const marginPct = c.defaultMargin || 40
 
   /* ── Draft persistence ── */
@@ -216,6 +218,7 @@ export default function Presupuesto() {
           deposit: b.deposit ?? c.defaultDeposit ?? 50,
           logoCost: b.logoCost || 0,
           discount: b.discount || 0,
+          dispatchInsumos: b.dispatchInsumos || [],
         })
         setItems(b.items?.length ? b.items : [emptyItem()])
         setEditId(b.id)
@@ -317,31 +320,76 @@ export default function Presupuesto() {
     })
   }
 
-  const calc = useMemo(() => {
+  /* ── Dispatch insumo management (Step 3 dynamic packaging) ── */
+  const addDispatchInsumo = () => setF('dispatchInsumos', [...(form.dispatchInsumos || []), { insumoId: '', qty: 1 }])
+  const updateDispatchInsumo = (idx, field, val) =>
+    setF('dispatchInsumos', (form.dispatchInsumos || []).map((d, i) => i !== idx ? d : { ...d, [field]: Number(val) }))
+  const removeDispatchInsumo = (idx) =>
+    setF('dispatchInsumos', (form.dispatchInsumos || []).filter((_, i) => i !== idx))
+
+  const loadBolsaEcommerce = () => {
+    const bolsa = insumosList.find(i => { const n = i.name.toLowerCase(); return n.includes('bolsa') || n.includes('mailer') || n.includes('sobre') || n.includes('ecommerce') })
+    if (bolsa) {
+      setF('dispatchInsumos', [...(form.dispatchInsumos || []).filter(d => d.insumoId !== bolsa.id), { insumoId: bolsa.id, qty: 1 }])
+      toast('✉️ Bolsa eCommerce cargada', 'ok')
+    } else {
+      toast('No encontré un insumo tipo bolsa. Cargá uno en /insumos.', 'er')
+    }
+  }
+  const loadCajaFragil = () => {
+    const caja = insumosList.find(i => i.name.toLowerCase().includes('caja'))
+    const protec = insumosList.find(i => { const n = i.name.toLowerCase(); return n.includes('burbuja') || n.includes('protec') || n.includes('foam') || n.includes('nylon') })
+    const preload = []
+    if (caja) preload.push({ insumoId: caja.id, qty: 1 })
+    if (protec) preload.push({ insumoId: protec.id, qty: 1 })
+    if (preload.length) { setF('dispatchInsumos', preload); toast('📦 Caja Frágil cargada', 'ok') }
+    else toast('No encontré insumos de caja o protección. Cargá en /insumos.', 'er')
+  }
+
+  /* ── Auto-suggest dispatch packaging when entering Step 3 ── */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (currentStep !== 3) return
+    if ((form.dispatchInsumos || []).length > 0) return
+    const isPickup = ['retira', 'local', 'showroom'].some(kw => (form.delivery || '').toLowerCase().includes(kw))
+    if (isPickup || !insumosList.length) return
     const allProducts = get('products')
+    const cartCats = items.filter(i => i.productId).map(i => {
+      const prod = allProducts.find(p => p.id === i.productId)
+      return (prod?.cat || '').toLowerCase()
+    })
+    if (!cartCats.length) return
+    const hasFrag = cartCats.some(cat => ['tecno', 'electro', 'decor', 'frágil', 'fragil'].some(kw => cat.includes(kw)))
+    const hasCloth = cartCats.some(cat => ['indument', 'ropa', 'textil'].some(kw => cat.includes(kw)))
+    if (hasFrag) {
+      const caja = insumosList.find(i => i.name.toLowerCase().includes('caja'))
+      const protec = insumosList.find(i => { const n = i.name.toLowerCase(); return n.includes('burbuja') || n.includes('protec') || n.includes('foam') })
+      const preload = []
+      if (caja) preload.push({ insumoId: caja.id, qty: 1 })
+      if (protec) preload.push({ insumoId: protec.id, qty: 1 })
+      if (preload.length) { setF('dispatchInsumos', preload); toast('📦 Caja Frágil sugerida por los productos del carrito', 'ok') }
+    } else if (hasCloth) {
+      const bolsa = insumosList.find(i => { const n = i.name.toLowerCase(); return n.includes('bolsa') || n.includes('mailer') || n.includes('sobre') })
+      if (bolsa) { setF('dispatchInsumos', [{ insumoId: bolsa.id, qty: 1 }]); toast('✉️ Bolsa eCommerce sugerida por los productos del carrito', 'ok') }
+    }
+  }, [currentStep])
+
+  const calc = useMemo(() => {
     const allInsumos = get('insumos', [])
     let totalCost = 0, totalRevenue = 0, totalQty = 0
     items.forEach(i => {
-      const q = num(i.qty), c = num(i.costUnit), p = num(i.priceUnit)
-      let itemCost = q * c
-      // Add hidden insumo costs linked to this product (invisible to client)
-      if (i.productId) {
-        const prod = allProducts.find(pr => pr.id === i.productId)
-        if (prod?.insumos?.length) {
-          prod.insumos.forEach(ins => {
-            const insumo = allInsumos.find(x => x.id === ins.insumoId)
-            if (insumo) itemCost += q * num(ins.qtyNeeded) * num(insumo.cost)
-          })
-        }
-      }
-      totalCost += itemCost; totalRevenue += q * p; totalQty += q
+      const q = num(i.qty), cv = num(i.costUnit), p = num(i.priceUnit)
+      totalCost += q * cv; totalRevenue += q * p; totalQty += q
     })
+    // Flat per-order dispatch packaging cost (invisible to client)
+    const dispatchCost = (form.dispatchInsumos || []).reduce((s, d) => {
+      const insumo = allInsumos.find(x => x.id === Number(d.insumoId))
+      return s + (insumo ? Number(insumo.cost || 0) * Number(d.qty || 0) : 0)
+    }, 0)
     const logTotal = num(form.logoCost) * totalQty
     const ship = num(form.shipCost)
     const shipCharged = form.shipCharged !== false
-    // Negocio siempre paga el envío; el cliente solo si shipCharged=true
-    const baseCost = totalCost + logTotal + ship
-    // Descuento aplica sobre el subtotal de productos (antes del envío)
+    const baseCost = totalCost + logTotal + ship + dispatchCost
     const discountPct = Math.min(Math.max(num(form.discount), 0), 100)
     const discountAmt = Math.round(totalRevenue * discountPct / 100)
     const total = totalRevenue - discountAmt + (shipCharged ? ship : 0)
@@ -350,8 +398,8 @@ export default function Presupuesto() {
     const marginThreshold = num(c.marginLowThreshold) || 10
     const marginLow = total > 0 && Number(marginReal) < marginThreshold
     const depositAmt = Math.round(total * num(form.deposit) / 100)
-    return { totalCost, totalRevenue, logTotal, baseCost, total, gain, marginReal, marginLow, marginThreshold, depositAmt, totalQty, discountAmt, discountPct }
-  }, [items, form.shipCost, form.shipCharged, form.logoCost, form.deposit, form.discount, c.marginLowThreshold, get])
+    return { totalCost, totalRevenue, logTotal, baseCost, total, gain, marginReal, marginLow, marginThreshold, depositAmt, totalQty, discountAmt, discountPct, dispatchCost }
+  }, [items, form.shipCost, form.shipCharged, form.logoCost, form.deposit, form.discount, form.dispatchInsumos, c.marginLowThreshold, get])
 
   const budgetNum = useMemo(() => {
     if (editId) { const b = get('budgets').find(x => x.id === editId); return b?.num || '#—' }
@@ -377,9 +425,9 @@ export default function Presupuesto() {
     if (!editId) setMarginBudgetedSaved(marginBudgeted)
 
     // Silent stock deduction — only fires on first transition to a qualifying status
-    // Deducts product stock AND associated insumo quantities
+    // Deducts product stock AND flat dispatch insumo quantities
     if (qualifyingStatus && !wasQualifying) {
-      deductStockForOrder(validItems)
+      deductStockForOrder(validItems, form.dispatchInsumos || [])
     }
 
     setDraftRestored(false)
@@ -813,7 +861,14 @@ export default function Presupuesto() {
                 <PaneHeader icon="fa-truck" title="Paso 3 · Entrega y precio" subtitle="Configurá modalidad, fechas y parámetros" />
                 <div className="grid2">
                   <div className="fg"><label>Modalidad</label>
-                    <select value={form.delivery} onChange={e => setF('delivery', e.target.value)}>
+                    <select value={form.delivery} onChange={e => {
+                      const val = e.target.value
+                      setF('delivery', val)
+                      // Auto-clear dispatch insumos when customer picks up in person
+                      if (['retira', 'local', 'showroom'].some(kw => val.toLowerCase().includes(kw))) {
+                        setF('dispatchInsumos', [])
+                      }
+                    }}>
                       <option value="">— seleccionar —</option>
                       {(c.deliveryModes || []).map(d => <option key={d} value={d}>{d}</option>)}
                     </select>
@@ -862,7 +917,95 @@ export default function Presupuesto() {
                     <input type="number" value={form.discount} onFocus={selectOnFocus} onChange={e => setF('discount', e.target.value)} onBlur={e => { if (e.target.value === '') setF('discount', 0) }} min="0" max="100" style={{ maxWidth: 120 }} />
                   </div>
                 )}
-                <div className="grid2">
+
+                {/* ─── 📦 Insumos Operativos de Despacho ─── */}
+                {!['retira', 'local', 'showroom'].some(kw => (form.delivery || '').toLowerCase().includes(kw)) && (
+                  <div style={{ marginTop: 20, padding: '18px 20px', background: 'var(--bg-card, #fff)', border: '1px solid var(--border, #E5E7EB)', borderRadius: 12 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap', gap: 8 }}>
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <span>📦</span> Insumos Operativos de Despacho
+                        </div>
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
+                          Packaging y materiales del envío — invisibles para el cliente, impactan en tu costo real
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                        <button type="button" className="btn btn-ghost btn-xs" onClick={loadBolsaEcommerce} title="Cargar Bolsa eCommerce / mailer">
+                          ✉️ Bolsa eCommerce
+                        </button>
+                        <button type="button" className="btn btn-ghost btn-xs" onClick={loadCajaFragil} title="Cargar Caja + protección para frágiles">
+                          📦 Caja Frágil
+                        </button>
+                      </div>
+                    </div>
+
+                    {insumosList.length === 0 ? (
+                      <div className="wiz-tip">
+                        <i className="fa fa-circle-info" /> Todavía no tenés insumos cargados.{' '}
+                        <a href="/insumos" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>Ir a Insumos</a> para agregar bolsas, cajas y materiales de packaging.
+                      </div>
+                    ) : (
+                      <>
+                        {(form.dispatchInsumos || []).length === 0 && (
+                          <div style={{ fontSize: 12, color: 'var(--text-muted)', padding: '6px 0', fontStyle: 'italic' }}>
+                            Sin insumos cargados para este envío.
+                          </div>
+                        )}
+                        {(form.dispatchInsumos || []).map((d, idx) => {
+                          const ins = insumosList.find(x => x.id === Number(d.insumoId))
+                          const lineCost = ins ? Number(ins.cost || 0) * Number(d.qty || 0) : 0
+                          return (
+                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
+                              <select
+                                value={d.insumoId || ''}
+                                onChange={e => updateDispatchInsumo(idx, 'insumoId', e.target.value)}
+                                style={{ flex: '1 1 180px', minWidth: 140 }}
+                              >
+                                <option value="">— insumo —</option>
+                                <option value="" disabled>── Packaging ──</option>
+                                {insumosList.filter(i => {
+                                  const n = i.name.toLowerCase()
+                                  return n.includes('bolsa') || n.includes('caja') || n.includes('mailer') || n.includes('sobre') || n.includes('burbuja') || n.includes('protec') || n.includes('foam') || n.includes('nylon') || n.includes('pack')
+                                }).map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                                <option value="" disabled>── Otros ──</option>
+                                {insumosList.filter(i => {
+                                  const n = i.name.toLowerCase()
+                                  return !n.includes('bolsa') && !n.includes('caja') && !n.includes('mailer') && !n.includes('sobre') && !n.includes('burbuja') && !n.includes('protec') && !n.includes('foam') && !n.includes('nylon') && !n.includes('pack')
+                                }).map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                              </select>
+                              <input
+                                type="number" min="1" value={d.qty}
+                                onChange={e => updateDispatchInsumo(idx, 'qty', e.target.value)}
+                                style={{ width: 64, textAlign: 'center' }}
+                                placeholder="Cant."
+                              />
+                              {ins && (
+                                <span style={{ fontSize: 11, color: 'var(--text-muted)', minWidth: 80, textAlign: 'right' }}>
+                                  {fmt(lineCost)}
+                                </span>
+                              )}
+                              <button type="button" className="btn btn-ghost btn-xs" onClick={() => removeDispatchInsumo(idx)} style={{ color: 'var(--red, #EF4444)', padding: '2px 6px' }}>
+                                <i className="fa fa-trash" />
+                              </button>
+                            </div>
+                          )
+                        })}
+                        <button type="button" className="btn btn-ghost btn-xs" style={{ marginTop: 4 }} onClick={addDispatchInsumo}>
+                          <i className="fa fa-plus" /> Agregar insumo
+                        </button>
+                        {(form.dispatchInsumos || []).length > 0 && calc.dispatchCost > 0 && (
+                          <div style={{ marginTop: 10, paddingTop: 8, borderTop: '1px dashed var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>Total packaging este envío</span>
+                            <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-primary)' }}>{fmt(calc.dispatchCost)}</span>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                )}
+
+                <div className="grid2" style={{ marginTop: 12 }}>
                   {feats.notasInternas && (
                     <div className="fg"><label>Nota interna</label><textarea value={form.noteInt} onChange={e => setF('noteInt', e.target.value)} rows={2} placeholder="Solo para vos..." /></div>
                   )}
@@ -963,6 +1106,7 @@ export default function Presupuesto() {
             {feats.costoInterno && <div className="cp-row"><span className="cp-lbl">Costo proveedor</span><span className="cp-val">{fmt(calc.totalCost)}</span></div>}
             {calc.logTotal > 0 && <div className="cp-row"><span className="cp-lbl">Impresión</span><span className="cp-val">{fmt(calc.logTotal)}</span></div>}
             {num(form.shipCost) > 0 && <div className="cp-row"><span className="cp-lbl">Envío</span><span className="cp-val">{fmt(num(form.shipCost))}</span></div>}
+            {calc.dispatchCost > 0 && <div className="cp-row"><span className="cp-lbl">📦 Despacho</span><span className="cp-val">{fmt(calc.dispatchCost)}</span></div>}
             {calc.discountAmt > 0 && (
               <div className="cp-row" style={{ borderTop: '1px dashed rgba(255,255,255,.10)', marginTop: 2, paddingTop: 4 }}>
                 <span className="cp-lbl" style={{ color: 'rgba(255,255,255,.55)', display: 'flex', alignItems: 'center', gap: 4 }}>

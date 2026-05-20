@@ -168,12 +168,10 @@ export function DataProvider({ children }) {
   }, [refresh])
 
   /* ── Deducir stock al confirmar pedido ── */
-  const deductStockForOrder = useCallback((items) => {
-    // Read product catalog once to resolve insumo associations
-    const allProducts = db('products', [])
+  const deductStockForOrder = useCallback((items, dispatchInsumos = []) => {
+    // 1. Deduct product stock for each sold item
     items.forEach(item => {
       if (!item.productId) return
-      // 1. Deduct product stock
       recordStockMove({
         type: 'sale',
         productId: item.productId,
@@ -181,20 +179,17 @@ export function DataProvider({ children }) {
         ref: 'Venta',
         note: item.name,
       })
-      // 2. Silently deduct associated insumo stocks (hidden from client)
-      const prod = allProducts.find(p => p.id === item.productId)
-      if (prod?.insumos?.length) {
-        prod.insumos.forEach(ins => {
-          if (!ins.insumoId || !ins.qtyNeeded) return
-          recordStockMove({
-            type: 'sale',
-            insumoId: ins.insumoId,
-            qty: Number(item.qty) * Number(ins.qtyNeeded),
-            ref: 'Venta (insumo)',
-            note: item.name,
-          })
-        })
-      }
+    })
+    // 2. Deduct flat per-order dispatch/packaging insumos
+    dispatchInsumos.forEach(d => {
+      if (!d.insumoId || !d.qty) return
+      recordStockMove({
+        type: 'sale',
+        insumoId: Number(d.insumoId),
+        qty: Number(d.qty),
+        ref: 'Despacho',
+        note: 'Insumo de packaging/despacho',
+      })
     })
   }, [recordStockMove])
 
