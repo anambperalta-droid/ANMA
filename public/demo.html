@@ -275,21 +275,21 @@ tbody tr:hover td{background:#f9fafb}
     <div class="sb-sub">Tu negocio en un solo lugar</div>
 
     <div class="sb-section">Gestión</div>
-    <div class="sb-item active" data-sec="dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
-    <div class="sb-item" data-sec="presupuesto"><i class="fa-solid fa-file-invoice-dollar"></i> Nuevo pedido</div>
-    <div class="sb-item" data-sec="clientes"><i class="fa-solid fa-users"></i> Clientes</div>
+    <div class="sb-item active"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
+    <div class="sb-item"><i class="fa-solid fa-file-invoice-dollar"></i> Nuevo pedido</div>
+    <div class="sb-item"><i class="fa-solid fa-users"></i> Clientes</div>
 
     <div class="sb-section">Catálogo</div>
-    <div class="sb-item" data-sec="productos"><i class="fa-solid fa-cube"></i> Productos</div>
-    <div class="sb-item" data-sec="insumos"><i class="fa-solid fa-boxes-stacked"></i> Insumos</div>
-    <div class="sb-item" data-sec="proveedores"><i class="fa-solid fa-industry"></i> Proveedores</div>
+    <div class="sb-item"><i class="fa-solid fa-cube"></i> Productos</div>
+    <div class="sb-item"><i class="fa-solid fa-boxes-stacked"></i> Insumos</div>
+    <div class="sb-item"><i class="fa-solid fa-industry"></i> Proveedores</div>
 
     <div class="sb-section">Operación</div>
-    <div class="sb-item" data-sec="logistica"><i class="fa-solid fa-truck-fast"></i> Logística</div>
-    <div class="sb-item" data-sec="mensajes"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
+    <div class="sb-item"><i class="fa-solid fa-truck-fast"></i> Logística</div>
+    <div class="sb-item"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
 
     <div class="sb-section">Sistema</div>
-    <div class="sb-item" data-sec="config"><i class="fa-solid fa-gear"></i> Configuración</div>
+    <div class="sb-item"><i class="fa-solid fa-gear"></i> Configuración</div>
   </aside>
 
   <main>
@@ -392,291 +392,6 @@ tbody tr:hover td{background:#f9fafb}
         </div>
       </section>
 
-      <!-- NUEVO PEDIDO -->
-      <section class="section" id="sec-presupuesto">
-        <div class="page-h">
-          <div><h1>Nuevo pedido</h1><p>Generá una propuesta profesional y compartila por WhatsApp en segundos</p></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-2"><i class="fa-solid fa-download"></i> Vista previa PDF</button><button class="btn-add"><i class="fa-solid fa-floppy-disk"></i> Guardar y enviar</button></div>
-        </div>
-        <div class="form-grid">
-          <div class="form-card">
-            <h4 style="margin:0 0 12px;font-size:14px;font-weight:800;color:#0F172A"><i class="fa-solid fa-user" style="color:#7c3aed;margin-right:6px"></i>Datos del cliente</h4>
-            <div class="row2">
-              <div class="fg"><label>Empresa</label><input value="Diseño Austral" /></div>
-              <div class="fg"><label>Contacto</label><input value="Martina Gómez" /></div>
-            </div>
-            <div class="row2">
-              <div class="fg"><label>WhatsApp</label><input value="+54 9 11 5523-9081" /></div>
-              <div class="fg"><label>Email</label><input value="martina@diseno-austral.com" /></div>
-            </div>
-            <div class="fg"><label>Fecha de entrega</label><input value="2026-05-08" type="date" /></div>
-
-            <h4 style="margin:18px 0 12px;font-size:14px;font-weight:800;color:#0F172A"><i class="fa-solid fa-cube" style="color:#7c3aed;margin-right:6px"></i>Productos</h4>
-            <div style="border:1px solid #e5e7eb;border-radius:10px;overflow:hidden">
-              <table style="min-width:0">
-                <thead><tr><th>Producto</th><th>Cant.</th><th>P/Unit.</th><th style="text-align:right">Subtotal</th></tr></thead>
-                <tbody>
-                  <tr><td>Branding completo</td><td>1</td><td>$ 95.000</td><td class="tbl-amt">$ 95.000</td></tr>
-                  <tr><td>Diseño web (5 secciones)</td><td>1</td><td>$ 145.000</td><td class="tbl-amt">$ 145.000</td></tr>
-                  <tr><td>Hora de consultoría</td><td>4</td><td>$ 18.500</td><td class="tbl-amt">$ 74.000</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <button style="margin-top:10px;background:#f5f3ff;border:1.5px dashed #7c3aed;color:#7c3aed;padding:9px;border-radius:9px;font-weight:700;font-size:12.5px;cursor:pointer;width:100%;font-family:inherit"><i class="fa-solid fa-plus"></i> Agregar producto</button>
-
-            <div class="fg" style="margin-top:18px"><label>Notas para el cliente</label><textarea rows="3">Plazo de entrega: 4 semanas hábiles desde la confirmación. Incluye 2 rondas de revisión por entregable.</textarea></div>
-          </div>
-
-          <div>
-            <div class="form-card" style="position:sticky;top:14px">
-              <h4 style="margin:0 0 14px;font-size:14px;font-weight:800;color:#0F172A"><i class="fa-solid fa-calculator" style="color:#7c3aed;margin-right:6px"></i>Resumen</h4>
-              <div class="calc-row"><span>Subtotal productos</span><b>$ 314.000</b></div>
-              <div class="calc-row"><span>Envío</span><b>$ 0</b></div>
-              <div class="calc-row"><span>Descuento (5%)</span><b style="color:#dc2626">−$ 15.700</b></div>
-              <div class="calc-total"><span>Total</span><span>$ 298.300</span></div>
-              <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 12px;margin-top:12px;font-size:11.5px;color:#166534">
-                <b style="display:block;margin-bottom:3px">💚 Ganancia estimada: $ 178.500 (60%)</b>
-                Calculado sobre costos cargados de cada producto/insumo
-              </div>
-              <div style="margin-top:14px;display:flex;flex-direction:column;gap:7px">
-                <button style="background:#16a34a;color:#fff;border:none;padding:11px;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px"><i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp</button>
-                <button style="background:#fff;border:1.5px solid #e5e7eb;color:#475569;padding:11px;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px"><i class="fa-solid fa-copy"></i> Copiar link</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CLIENTES -->
-      <section class="section" id="sec-clientes">
-        <div class="page-h">
-          <div><h1>Clientes</h1><p>Base de contactos del negocio</p></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-2"><i class="fa-solid fa-file-import"></i> Importar</button><button class="btn-2"><i class="fa-solid fa-download"></i> Exportar</button><button class="btn-add"><i class="fa-solid fa-plus"></i> Agregar</button></div>
-        </div>
-        <div class="tbl-card">
-          <table>
-            <thead><tr><th>Empresa / Contacto</th><th>Tipo</th><th>WhatsApp</th><th>Rubro</th><th>Pedidos</th><th>Acciones</th></tr></thead>
-            <tbody>
-              <tr><td><b>Mayorista 360</b><div style="font-size:11px;color:#64748b">Diego Pérez</div></td><td><span class="tbl-st st-b2b">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Distribución</td><td><b>14</b> · 3d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Diseño Austral</b><div style="font-size:11px;color:#64748b">Martina Gómez</div></td><td><span class="tbl-st st-b2b">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Diseño</td><td><b>9</b> · 1d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Luz & Forma</b><div style="font-size:11px;color:#64748b">Sofía Ramos</div></td><td><span class="tbl-st st-b2c">B2C</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Iluminación</td><td><b>6</b> · 2d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>BioVerde</b><div style="font-size:11px;color:#64748b">Lucas Méndez</div></td><td><span class="tbl-st st-b2b">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Sustentabilidad</td><td><b>4</b> · 5d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Estudio Cromo</b><div style="font-size:11px;color:#64748b">Carla Méndez</div></td><td><span class="tbl-st st-b2c">B2C</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Diseño</td><td><b>3</b> · 7d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Diseño Industrial</b><div style="font-size:11px;color:#64748b">Florencia Acosta</div></td><td><span class="tbl-st st-b2b">B2B</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Industria</td><td><b>5</b> · 9d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Café del Sol</b><div style="font-size:11px;color:#64748b">Julián Pérez</div></td><td><span class="tbl-st st-b2c">B2C</span></td><td>—</td><td>Gastronomía</td><td><b>2</b> · 21d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Taller de Ideas</b><div style="font-size:11px;color:#64748b">Elena Ferreyra</div></td><td><span class="tbl-st st-b2c">B2C</span></td><td><i class="fa-brands fa-whatsapp" style="color:#16a34a"></i></td><td>Educación</td><td><b>1</b> · 32d</td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- PRODUCTOS -->
-      <section class="section" id="sec-productos">
-        <div class="page-h">
-          <div><h1>Productos</h1><p>Catálogo · 52 productos · 4 con stock crítico</p></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-2"><i class="fa-solid fa-file-import"></i> Importar</button><button class="btn-add"><i class="fa-solid fa-plus"></i> Agregar</button></div>
-        </div>
-        <div class="bento">
-          <div class="kpi"><div class="kpi-l">Total productos</div><div class="kpi-v">52</div></div>
-          <div class="kpi"><div class="kpi-l">Con stock OK</div><div class="kpi-v" style="color:#16a34a">42</div></div>
-          <div class="kpi"><div class="kpi-l">Stock bajo</div><div class="kpi-v" style="color:#d97706">6</div></div>
-          <div class="kpi"><div class="kpi-l">Sin stock</div><div class="kpi-v" style="color:#dc2626">4</div></div>
-        </div>
-        <div class="tbl-card">
-          <table>
-            <thead><tr><th>Producto</th><th>SKU</th><th>Stock</th><th>Precio</th><th>Costo</th><th>Margen</th><th>Estado</th><th></th></tr></thead>
-            <tbody>
-              <tr><td><b>Branding completo</b></td><td>SRV-BRD-01</td><td>—</td><td class="tbl-amt">$ 95.000</td><td>$ 32.000</td><td style="color:#16a34a;font-weight:700">66%</td><td><span class="tbl-st st-ok">● Activo</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Diseño web (5 sec)</b></td><td>SRV-WEB-05</td><td>—</td><td class="tbl-amt">$ 145.000</td><td>$ 48.000</td><td style="color:#16a34a;font-weight:700">67%</td><td><span class="tbl-st st-ok">● Activo</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Hora consultoría</b></td><td>SRV-CON-01</td><td>—</td><td class="tbl-amt">$ 18.500</td><td>$ 6.000</td><td style="color:#16a34a;font-weight:700">68%</td><td><span class="tbl-st st-ok">● Activo</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Tarjetas premium</b></td><td>FIS-TAR-PRM</td><td>250 / 100</td><td class="tbl-amt">$ 4.500</td><td>$ 1.800</td><td style="color:#16a34a;font-weight:700">60%</td><td><span class="tbl-st st-ok">● Stock OK</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Catálogo impreso</b></td><td>FIS-CAT-A4</td><td>8 / 20</td><td class="tbl-amt">$ 12.500</td><td>$ 5.200</td><td style="color:#d97706;font-weight:700">58%</td><td><span class="tbl-st st-low">⚠ Stock bajo</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Pendrive corporativo</b></td><td>FIS-USB-32</td><td>0 / 30</td><td class="tbl-amt">$ 6.800</td><td>$ 2.900</td><td style="color:#dc2626;font-weight:700">57%</td><td><span class="tbl-st st-out">✕ Sin stock</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Bolsa de tela logo</b></td><td>FIS-BOL-LOGO</td><td>45 / 30</td><td class="tbl-amt">$ 2.200</td><td>$ 850</td><td style="color:#16a34a;font-weight:700">61%</td><td><span class="tbl-st st-ok">● Stock OK</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-              <tr><td><b>Stickers troquelados</b></td><td>FIS-STK-100</td><td>3 / 50</td><td class="tbl-amt">$ 850</td><td>$ 320</td><td style="color:#dc2626;font-weight:700">62%</td><td><span class="tbl-st st-low">⚠ Stock bajo</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button><button class="del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- INSUMOS -->
-      <section class="section" id="sec-insumos">
-        <div class="page-h">
-          <div><h1>Insumos</h1><p>Materias primas y suministros · 18 insumos · 2 alertas activas</p></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-add"><i class="fa-solid fa-plus"></i> Agregar insumo</button></div>
-        </div>
-        <div style="background:rgba(220,38,38,.06);border:1.5px solid rgba(220,38,38,.25);border-radius:12px;padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-          <i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;font-size:14px"></i>
-          <div style="flex:1;font-size:12.5px"><b style="color:#dc2626">2 insumos críticos</b> <span style="color:#64748b">· Vas a quedarte sin papel ilustración 250g y tinta cyan en menos de 7 días al ritmo actual</span></div>
-        </div>
-        <div class="tbl-card">
-          <table>
-            <thead><tr><th>Insumo</th><th>Stock actual</th><th>Mínimo</th><th>Costo unit.</th><th>Proveedor</th><th>Última compra</th><th>Estado</th></tr></thead>
-            <tbody>
-              <tr><td><b>Papel ilustración 250g</b></td><td><b>120 hojas</b></td><td>500 hojas</td><td>$ 32 / hoja</td><td>Distribuidora Gráfica</td><td>15/03/26</td><td><span class="tbl-st st-out">✕ Crítico</span></td></tr>
-              <tr><td><b>Tinta cyan (cartucho)</b></td><td><b>1 unid.</b></td><td>3 unid.</td><td>$ 18.500</td><td>Print Supply</td><td>02/04/26</td><td><span class="tbl-st st-low">⚠ Bajo</span></td></tr>
-              <tr><td><b>Tinta magenta</b></td><td>4 unid.</td><td>3 unid.</td><td>$ 18.500</td><td>Print Supply</td><td>02/04/26</td><td><span class="tbl-st st-ok">● OK</span></td></tr>
-              <tr><td><b>Tinta amarillo</b></td><td>5 unid.</td><td>3 unid.</td><td>$ 18.500</td><td>Print Supply</td><td>02/04/26</td><td><span class="tbl-st st-ok">● OK</span></td></tr>
-              <tr><td><b>Tinta negro</b></td><td>3 unid.</td><td>2 unid.</td><td>$ 22.000</td><td>Print Supply</td><td>02/04/26</td><td><span class="tbl-st st-ok">● OK</span></td></tr>
-              <tr><td><b>Cinta doble faz industrial</b></td><td>22 m</td><td>10 m</td><td>$ 280 / m</td><td>Ferretería Pro</td><td>20/03/26</td><td><span class="tbl-st st-ok">● OK</span></td></tr>
-              <tr><td><b>Cartón corrugado E</b></td><td>180 placas</td><td>100 placas</td><td>$ 145</td><td>Distribuidora Gráfica</td><td>15/03/26</td><td><span class="tbl-st st-ok">● OK</span></td></tr>
-              <tr><td><b>Bolsas kraft 30×40</b></td><td>340 unid.</td><td>200 unid.</td><td>$ 95</td><td>Eco-Pack</td><td>10/04/26</td><td><span class="tbl-st st-ok">● OK</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- PROVEEDORES -->
-      <section class="section" id="sec-proveedores">
-        <div class="page-h">
-          <div><h1>Proveedores</h1><p>Red de proveedores · 7 activos</p></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-2"><i class="fa-solid fa-share"></i> Compartir portal</button><button class="btn-add"><i class="fa-solid fa-plus"></i> Agregar</button></div>
-        </div>
-        <div style="background:rgba(220,38,38,.06);border:1.5px solid rgba(220,38,38,.25);border-radius:12px;padding:13px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
-          <i class="fa-solid fa-bell" style="color:#dc2626"></i>
-          <div style="flex:1;font-size:12.5px"><b style="color:#dc2626">2 productos para re-ordenar</b> <span style="color:#64748b">· Distribuidora Gráfica involucrada</span></div>
-          <button style="background:#16a34a;color:#fff;border:none;padding:6px 12px;border-radius:7px;font-size:11.5px;font-weight:700;cursor:pointer"><i class="fa-brands fa-whatsapp"></i> Pedir ahora</button>
-        </div>
-        <div class="grid-3">
-          <div class="cgrid"><div class="cgrid-h"><div class="av">DG</div><div><b>Distribuidora Gráfica</b><span>Papel · Cartón</span></div></div><div class="cgrid-meta"><span><i class="fa-brands fa-whatsapp"></i>+54 11 4523-9981</span><span><i class="fa-solid fa-phone"></i>(011) 4523-9981</span><span><i class="fa-solid fa-clock"></i>Lead time: 5 días</span><span><i class="fa-solid fa-credit-card"></i>30 días</span></div><div style="margin-top:10px;display:flex;gap:6px"><span class="tbl-st st-out" style="font-size:10px">2 a re-ordenar</span></div></div>
-          <div class="cgrid"><div class="cgrid-h"><div class="av" style="background:linear-gradient(135deg,#3b82f6,#06b6d4)">PS</div><div><b>Print Supply</b><span>Tintas · Toner</span></div></div><div class="cgrid-meta"><span><i class="fa-brands fa-whatsapp"></i>+54 11 6789-2345</span><span><i class="fa-solid fa-clock"></i>Lead time: 2 días</span><span><i class="fa-solid fa-credit-card"></i>15 días</span></div></div>
-          <div class="cgrid"><div class="cgrid-h"><div class="av" style="background:linear-gradient(135deg,#16a34a,#22c55e)">EP</div><div><b>Eco-Pack</b><span>Bolsas · Embalaje</span></div></div><div class="cgrid-meta"><span><i class="fa-brands fa-whatsapp"></i>+54 11 8845-1290</span><span><i class="fa-solid fa-clock"></i>Lead time: 7 días</span><span><i class="fa-solid fa-credit-card"></i>30 días</span><span><i class="fa-solid fa-leaf" style="color:#16a34a"></i>Sustentable</span></div></div>
-          <div class="cgrid"><div class="cgrid-h"><div class="av" style="background:linear-gradient(135deg,#f59e0b,#dc2626)">FP</div><div><b>Ferretería Pro</b><span>Adhesivos · Herrajes</span></div></div><div class="cgrid-meta"><span><i class="fa-brands fa-whatsapp"></i>+54 11 3398-7711</span><span><i class="fa-solid fa-clock"></i>Lead time: 1 día</span><span><i class="fa-solid fa-credit-card"></i>Contado</span></div></div>
-          <div class="cgrid"><div class="cgrid-h"><div class="av" style="background:linear-gradient(135deg,#a855f7,#ec4899)">TI</div><div><b>Textil Industrial</b><span>Telas · Bolsas</span></div></div><div class="cgrid-meta"><span><i class="fa-brands fa-whatsapp"></i>+54 11 5566-3344</span><span><i class="fa-solid fa-clock"></i>Lead time: 10 días</span><span><i class="fa-solid fa-credit-card"></i>45 días</span></div></div>
-          <div class="cgrid"><div class="cgrid-h"><div class="av" style="background:linear-gradient(135deg,#0ea5e9,#3b82f6)">DC</div><div><b>Digital Components</b><span>Pendrives · Tech</span></div></div><div class="cgrid-meta"><span><i class="fa-brands fa-whatsapp"></i>+54 11 7723-9988</span><span><i class="fa-solid fa-clock"></i>Lead time: 14 días</span><span><i class="fa-solid fa-credit-card"></i>30 días</span></div></div>
-        </div>
-      </section>
-
-      <!-- LOGÍSTICA -->
-      <section class="section" id="sec-logistica">
-        <div class="page-h">
-          <div><h1>Logística</h1><p>Gestión de envíos · costos · seguimiento</p></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-add"><i class="fa-solid fa-plus"></i> Registrar envío</button></div>
-        </div>
-        <div style="background:rgba(220,38,38,.08);border:1.5px solid rgba(220,38,38,.3);border-radius:12px;padding:11px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
-          <i class="fa-solid fa-triangle-exclamation" style="color:#dc2626"></i>
-          <div style="flex:1;font-size:12.5px"><b style="color:#dc2626">2 envíos atrasados</b> <span style="color:#64748b">· Despachado/En tránsito hace más de lo esperado</span></div>
-          <button class="btn-2">Ver atrasados</button>
-        </div>
-        <div class="tabs"><span class="act">Envíos registrados</span><span>Tarifas y zonas</span><span>Resumen de costos</span></div>
-        <div class="bento">
-          <div class="kpi"><div class="kpi-l">Costo total envíos</div><div class="kpi-v">$ 145.300</div></div>
-          <div class="kpi"><div class="kpi-l">Envíos este mes</div><div class="kpi-v">18</div></div>
-          <div class="kpi"><div class="kpi-l">Atrasados</div><div class="kpi-v" style="color:#dc2626">2</div><div style="font-size:10px;color:#94a3b8;margin-top:3px">Despachado/En tránsito > SLA</div></div>
-          <div class="kpi"><div class="kpi-l">Desvíos de flete</div><div class="kpi-v" style="color:#d97706">1</div><div style="font-size:10px;color:#94a3b8;margin-top:3px">Real ≠ cobrado al cliente</div></div>
-        </div>
-        <div class="tbl-card">
-          <table>
-            <thead><tr><th>Remito</th><th>Fecha</th><th>Cliente</th><th>Ciudad</th><th>Empresa</th><th>Bultos</th><th>Costo</th><th>Estado</th><th></th></tr></thead>
-            <tbody>
-              <tr style="background:rgba(220,38,38,.04)"><td><b>VC-001234</b></td><td>20/04<div style="font-size:10px;color:#dc2626;font-weight:700"><i class="fa-solid fa-triangle-exclamation"></i> hace 7d · atrasado</div></td><td>Mayorista 360</td><td>Córdoba Cap.</td><td>Andreani</td><td>3</td><td class="tbl-amt">$ 18.500</td><td><span class="tbl-st st-sent">● Despachado</span></td><td><div class="row-act"><button><i class="fa-solid fa-location-arrow"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
-              <tr style="background:rgba(220,38,38,.04)"><td><b>VC-001233</b></td><td>22/04<div style="font-size:10px;color:#dc2626;font-weight:700"><i class="fa-solid fa-triangle-exclamation"></i> hace 5d · atrasado</div></td><td>BioVerde</td><td>Mendoza</td><td>OCA</td><td>1</td><td class="tbl-amt">$ 8.200</td><td><span class="tbl-st" style="background:#f5f3ff;color:#7c3aed">● En tránsito</span></td><td><div class="row-act"><button><i class="fa-solid fa-location-arrow"></i></button><button class="wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
-              <tr><td><b>VC-001232</b></td><td>25/04<div style="font-size:10px;color:#64748b">hace 2d</div></td><td>Diseño Austral</td><td>CABA</td><td>En mano</td><td>2</td><td class="tbl-amt">$ 0</td><td><span class="tbl-st st-confirmed">● Entregado</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button></div></td></tr>
-              <tr><td><b>VC-001231</b></td><td>26/04</td><td>Luz & Forma</td><td>CABA</td><td>Andreani</td><td>1</td><td class="tbl-amt">$ 4.500</td><td><span class="tbl-st st-confirmed">● Entregado</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button></div></td></tr>
-              <tr><td><b>VC-001230</b></td><td>26/04</td><td>Estudio Cromo</td><td>La Plata</td><td>Correo Argentino</td><td>2</td><td class="tbl-amt">$ 6.800</td><td><span class="tbl-st" style="background:#fef3c7;color:#92400e">● Preparando</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button></div></td></tr>
-              <tr><td><b>VC-001229</b></td><td>26/04</td><td>Diseño Industrial</td><td>Rosario</td><td>Vía Cargo</td><td>1</td><td class="tbl-amt">$ 5.200</td><td><span class="tbl-st" style="background:#fef3c7;color:#92400e">● Preparando</span></td><td><div class="row-act"><button><i class="fa-solid fa-pen"></i></button></div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- MENSAJES WA -->
-      <section class="section" id="sec-mensajes">
-        <div class="page-h">
-          <div><h1>Mensajes WhatsApp</h1><p>Plantillas pre-armadas para no tipear lo mismo 50 veces al día</p></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-add"><i class="fa-solid fa-plus"></i> Nueva plantilla</button></div>
-        </div>
-        <div class="wa-grid">
-          <div class="wa-card">
-            <h5><i class="fa-brands fa-whatsapp"></i> Envío de presupuesto</h5>
-            <div class="pre">¡Hola {nombre}! 👋
-
-Te paso el presupuesto que charlamos para {empresa}.
-
-📄 Total: {total}
-📅 Validez: 15 días
-💳 Forma de pago: 50% seña, 50% contra entrega
-
-Lo abrís acá: {link}
-
-Cualquier consulta, te respondo por acá. 🙌</div>
-            <div class="meta"><span>Última edición: 12/04/26</span><span style="color:#16a34a;font-weight:700">Activa ✓</span></div>
-          </div>
-          <div class="wa-card">
-            <h5><i class="fa-brands fa-whatsapp"></i> Recordatorio de seña</h5>
-            <div class="pre">Hola {nombre}!
-
-Te recuerdo que para arrancar con tu pedido {numero} necesito la seña del 50% ({seña}).
-
-Te paso los datos:
-🏦 CBU: 0000003100015432109876
-👤 ANMA - CUIT 20-12345678-9
-
-Avisame cuando lo tengas listo y arranco. 🚀</div>
-            <div class="meta"><span>Última edición: 02/04/26</span><span style="color:#16a34a;font-weight:700">Activa ✓</span></div>
-          </div>
-          <div class="wa-card">
-            <h5><i class="fa-brands fa-whatsapp"></i> Pedido despachado</h5>
-            <div class="pre">¡Hola {nombre}! 📦
-
-Tu pedido {numero} fue despachado por {empresa_envio}.
-
-Seguilo acá: {link_tracking}
-
-Cualquier consulta, estamos a disposición. 🙌</div>
-            <div class="meta"><span>Última edición: 28/03/26</span><span style="color:#16a34a;font-weight:700">Activa ✓</span></div>
-          </div>
-          <div class="wa-card">
-            <h5><i class="fa-brands fa-whatsapp"></i> Seguimiento (3+ días sin respuesta)</h5>
-            <div class="pre">Hola {nombre}, ¿cómo va?
-
-Te escribo para darle seguimiento al presupuesto {numero} que te envié hace unos días por {total}.
-
-¿Pudiste revisarlo? Quedamos a disposición para cualquier consulta o ajuste que necesites.
-
-Saludos!</div>
-            <div class="meta"><span>Última edición: 18/03/26</span><span style="color:#16a34a;font-weight:700">Activa ✓</span></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CONFIGURACIÓN -->
-      <section class="section" id="sec-config">
-        <div class="page-h">
-          <div><h1>Configuración</h1><p>Personalizá tu cuenta, branding e integraciones</p></div>
-        </div>
-        <div class="set-grid">
-          <div class="set-card">
-            <h4><i class="fa-solid fa-building" style="color:#7c3aed;margin-right:6px"></i> Datos del negocio</h4>
-            <p>Información que aparece en presupuestos y comunicaciones</p>
-            <div class="fg"><label>Nombre comercial</label><input value="Estudio Norte" /></div>
-            <div class="row2"><div class="fg"><label>CUIT</label><input value="30-71524399-7" /></div><div class="fg"><label>Condición IVA</label><input value="Responsable Inscripto" /></div></div>
-            <div class="fg"><label>Dirección</label><input value="Av. Corrientes 1234, CABA" /></div>
-          </div>
-          <div class="set-card">
-            <h4><i class="fa-solid fa-palette" style="color:#7c3aed;margin-right:6px"></i> Branding</h4>
-            <p>Colores y logo que se aplican a tus presupuestos</p>
-            <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px"><div style="width:50px;height:50px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">EN</div><div><div style="font-weight:700;font-size:13px">Logo cargado</div><div style="font-size:11px;color:#64748b">estudio-norte-logo.png</div></div></div>
-            <div class="row2"><div class="fg"><label>Color principal</label><input value="#7C3AED" type="color" /></div><div class="fg"><label>Color de acento</label><input value="#059669" type="color" /></div></div>
-          </div>
-          <div class="set-card">
-            <h4><i class="fa-solid fa-bell" style="color:#7c3aed;margin-right:6px"></i> Notificaciones</h4>
-            <p>Cuándo querés recibir alertas</p>
-            <div class="toggle"><span>Cobros vencidos diarios</span><div class="tg on"></div></div>
-            <div class="toggle"><span>Stock crítico (semanal)</span><div class="tg on"></div></div>
-            <div class="toggle"><span>Resumen mensual por email</span><div class="tg on"></div></div>
-            <div class="toggle"><span>Notificaciones push en navegador</span><div class="tg"></div></div>
-          </div>
-          <div class="set-card">
-            <h4><i class="fa-solid fa-users" style="color:#7c3aed;margin-right:6px"></i> Equipo</h4>
-            <p>Usuarios con acceso al workspace</p>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #f1f5f9"><div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#059669);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:11px">AP</div><div style="flex:1;font-size:13px"><b>Ana Peralta</b><div style="font-size:11px;color:#64748b">ana@estudio-norte.com</div></div><span class="tbl-st st-confirmed">Owner</span></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #f1f5f9"><div style="width:30px;height:30px;border-radius:50%;background:#7c3aed;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:11px">JM</div><div style="flex:1;font-size:13px"><b>Juan Méndez</b><div style="font-size:11px;color:#64748b">juan@estudio-norte.com</div></div><span class="tbl-st st-sent">Operador</span></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #f1f5f9"><div style="width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:11px">VL</div><div style="flex:1;font-size:13px"><b>Valeria López</b><div style="font-size:11px;color:#64748b">valeria@estudio-norte.com</div></div><span class="tbl-st st-low">Solo lectura</span></div>
-          </div>
-        </div>
-      </section>
-
       <div style="text-align:center;padding:32px 0 16px;color:#64748b;font-size:12px">
         Esta es una vista demo con datos ficticios · <a href="https://anma-hub.vercel.app/login" style="color:#7c3aed;font-weight:700">Quiero mi app →</a>
       </div>
@@ -691,42 +406,8 @@ Saludos!</div>
   var sb = document.getElementById('sb');
   var ov = document.getElementById('ov');
   var burger = document.getElementById('burger');
-  var title = document.getElementById('tb-title');
-  var titles = {dashboard:'Dashboard',presupuesto:'Nuevo pedido',clientes:'Clientes',productos:'Productos',insumos:'Insumos',proveedores:'Proveedores',logistica:'Logística',mensajes:'Mensajes WA',config:'Configuración'};
-
-  document.querySelectorAll('.sb-item').forEach(function(it){
-    it.addEventListener('click', function(){
-      var sec = it.getAttribute('data-sec');
-      if (!sec) return;
-      document.querySelectorAll('.sb-item').forEach(function(x){ x.classList.remove('active') });
-      it.classList.add('active');
-      document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active') });
-      var target = document.getElementById('sec-' + sec);
-      if (target) target.classList.add('active');
-      title.textContent = titles[sec] || 'Dashboard';
-      sb.classList.remove('open');
-      ov.classList.remove('show');
-      window.scrollTo({top:0, behavior:'smooth'});
-    });
-  });
-
   if (burger) burger.addEventListener('click', function(){ sb.classList.toggle('open'); ov.classList.toggle('show') });
   if (ov) ov.addEventListener('click', function(){ sb.classList.remove('open'); ov.classList.remove('show') });
-
-  // Toggles
-  document.querySelectorAll('.tg').forEach(function(t){
-    t.addEventListener('click', function(){ t.classList.toggle('on') });
-  });
-
-  // Tabs (visual only)
-  document.querySelectorAll('.tabs').forEach(function(tabs){
-    tabs.querySelectorAll('span').forEach(function(s){
-      s.addEventListener('click', function(){
-        tabs.querySelectorAll('span').forEach(function(x){ x.classList.remove('act') });
-        s.classList.add('act');
-      });
-    });
-  });
 })();
 </script>
 
