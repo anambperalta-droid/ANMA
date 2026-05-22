@@ -306,6 +306,15 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   .dtable td,.dtable th{font-size:11px!important;padding:7px 10px!important}
   .app-tbl td,.app-tbl th{white-space:normal!important;font-size:11px!important}
   .app-topbar-actions{display:none!important}
+  /* Ocultar mock hero — muy complejo para celu */
+  .mock-wrap{display:none!important}
+  /* Centrar hero en mobile */
+  .hero-grid>div:first-child{text-align:center}
+  .hero-ctas{justify-content:center!important}
+  .hero-trust{justify-content:center!important}
+  .lead{margin-left:auto!important;margin-right:auto!important}
+  /* CTA sticky mobile */
+  .mobile-cta-bar{display:flex!important}
 }
 
 /* MOBILE 540px */
@@ -352,6 +361,13 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 .contact-email-link{display:inline-flex;align-items:center;gap:7px;margin-top:22px;font-size:13px;color:#64748b;text-decoration:none;font-weight:600;transition:color .2s}
 .contact-email-link:hover{color:#7c3aed}
 .contact-email-link i{font-size:13px}
+
+/* STICKY MOBILE CTA BAR */
+.mobile-cta-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fff;border-top:1px solid #e5e7eb;padding:12px 16px;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.1)}
+.mobile-cta-bar a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:12px;font-weight:700;font-size:14px;text-decoration:none}
+.mobile-cta-bar .mb-primary{background:#059669;color:#fff}
+.mobile-cta-bar .mb-ghost{background:#f1f5f9;color:#0F172A}
+@media(max-width:680px){body{padding-bottom:76px}.fab-wa{display:none!important}}
 </style>
 </head>
 <body>
@@ -1078,8 +1094,14 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   </a>
 </section>
 
-<!-- WA FLOAT -->
+<!-- WA FLOAT — solo desktop -->
 <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quer%C3%ADa%20hacerles%20una%20consulta." target="_blank" class="fab-wa" title="Chatear por WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+
+<!-- STICKY MOBILE CTA BAR -->
+<div class="mobile-cta-bar">
+  <a href="https://anma-hub.vercel.app/login" class="mb-primary"><i class="fa-solid fa-rocket"></i> Comenzar Ahora</a>
+  <a href="/demo.html" class="mb-ghost"><i class="fa-solid fa-play"></i> Ver Demo</a>
+</div>
 
 <!-- FOOTER -->
 <footer>
