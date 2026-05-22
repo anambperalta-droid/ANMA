@@ -180,7 +180,7 @@ export default function Presupuesto() {
   const feats = c.features || {}
 
   const [form, setForm] = useState({
-    contact: '', company: '', wa: '', clientType: 'b2c', delivery: '', deliveryDate: '',
+    contact: '', company: '', wa: '', clientEmail: '', clientType: 'b2c', delivery: '', deliveryDate: '',
     shipCost: 0, shipCharged: false, envioACotizar: true, status: 'draft', payStatus: 'pending', noteInt: '', noteCli: '',
     margin: c.defaultMargin || 40, deposit: c.defaultDeposit || 50, logoCost: 0, discount: 0,
     dispatchInsumos: [], // Dynamic dispatch packaging — set per order in Step 3
@@ -208,7 +208,7 @@ export default function Presupuesto() {
       const b = get('budgets').find(x => x.id === Number(id))
       if (b) {
         setForm({
-          contact: b.contact || '', company: b.company || '', wa: b.wa || '',
+          contact: b.contact || '', company: b.company || '', wa: b.wa || '', clientEmail: b.clientEmail || '',
           clientType: b.clientType || 'b2c', delivery: b.delivery || '', deliveryDate: b.deliveryDate || '',
           shipCost: b.shipCost || 0, shipCharged: b.shipCharged !== false,
           status: b.status || 'draft',
@@ -253,7 +253,7 @@ export default function Presupuesto() {
 
   const handleClientSelect = (client) => {
     const type = client.clientType || 'b2c'
-    setForm(f => ({ ...f, contact: client.contact || '', company: client.company || '', wa: client.wa || '', clientType: type }))
+    setForm(f => ({ ...f, contact: client.contact || '', company: client.company || '', wa: client.wa || '', clientEmail: client.email || '', clientType: type }))
     // Auto-reprice items based on client type
     const rules = c.pricingRules || { b2c: { margin: 40 }, b2b: { margin: 25 } }
     const m = (rules[type]?.margin || 40) / 100
@@ -697,12 +697,8 @@ export default function Presupuesto() {
   /* ── Enviar por email (EmailJS) ── */
   const [emailSending, setEmailSending] = useState(false)
   const sendByEmail = async () => {
-    const norm = s => (s || '').trim().toLowerCase()
-    const clientEmail = get('clients').find(cl =>
-      (norm(form.company) && norm(cl.company) === norm(form.company)) ||
-      (norm(form.contact) && norm(cl.contact) === norm(form.contact))
-    )?.email || ''
-    if (!clientEmail) { toast('Este cliente no tiene email cargado. Agregalo en Clientes.', 'er'); return }
+    const clientEmail = form.clientEmail.trim()
+    if (!clientEmail) { toast('Agregá el email del cliente en el Paso 1.', 'er'); return }
     const svc = (c.ejsServiceId || '').trim()
     const tpl = (c.ejsTemplateId || '').trim()
     const pub = (c.ejsPublicKey || '').trim()
@@ -787,6 +783,10 @@ export default function Presupuesto() {
                     {waTouched && form.wa && !isValidWA(form.wa) && (
                       <div className="fg-err"><i className="fa fa-circle-exclamation" /> Formato no válido. Ej: <b>+54 351 1234567</b> (8 a 15 dígitos)</div>
                     )}
+                  </div>
+                  <div className="fg">
+                    <label>Email del cliente</label>
+                    <input type="email" value={form.clientEmail} onChange={e => setF('clientEmail', e.target.value)} placeholder="cliente@email.com" />
                   </div>
                   <div className="fg"><label>Tipo de cliente</label>
                     <select value={form.clientType || 'b2c'} onChange={e => setF('clientType', e.target.value)}>
