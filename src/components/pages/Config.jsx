@@ -307,6 +307,7 @@ export default function Config() {
       paymentConditions: conds, legalNote: legal,
       ivaEnabled, ivaRate: Number(ivaRate), otrosImpuestosRate: Number(otrosImp),
       cuit, ptoVenta, razonSocial, condIva,
+      ejsServiceId: ejsServiceId.trim(), ejsTemplateId: ejsTemplateId.trim(), ejsPublicKey: ejsPublicKey.trim(), ejsEnabled,
     })
     applyThemeColors(bcolor, acolor)
     flushSync()
