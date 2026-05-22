@@ -283,6 +283,29 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   .pricing-right{padding-left:0!important;padding-top:24px!important}
 }
 
+/* MOBILE GLOBAL — pantallas chicas */
+@media(max-width:680px){
+  .wrap{padding:0 16px!important}
+  .feat-grid{grid-template-columns:1fr!important}
+  /* App mock: ocultar sidebar para no romper el layout en mobile */
+  .app-nav{display:none!important}
+  .app-layout{height:420px!important}
+}
+@media(max-width:920px){
+  .h1{font-size:36px!important;letter-spacing:-.8px!important}
+  .hero-grid{gap:28px!important}
+}
+@media(max-width:540px){
+  .h1{font-size:28px!important;letter-spacing:-.4px!important;line-height:1.1!important}
+  .lead{font-size:16px!important}
+  .hero{padding:36px 0 48px!important}
+  section{padding:40px 0!important}
+  .h2{font-size:26px!important;letter-spacing:-.4px!important}
+  .hero-ctas{flex-direction:column!important}
+  .hero-ctas .btn{justify-content:center!important;text-align:center!important}
+  .wa-cta-btn{font-size:15px!important;padding:16px 22px!important}
+}
+
 /* CONTACTO — nuevo bloque WA */
 .contact-wa-block{background:#fff;padding:60px 20px;text-align:center}
 .contact-wa-block h3{font-size:26px;font-weight:800;color:#0F172A;margin:0 0 10px;letter-spacing:-.4px}
@@ -758,7 +781,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     </div>
 
     <!-- Grid 6 cards -->
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:960px;margin:0 auto">
+    <div class="feat-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:960px;margin:0 auto">
 
       <!-- 1 -->
       <div style="background:#fff;border:1px solid #e8eaf0;border-radius:16px;padding:28px 28px 26px">
@@ -894,7 +917,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
           </div>
 
           <!-- CTA -->
-          <a href="https://wa.me/5491169456863?text=Hola%20ANMA%2C%20quiero%20solicitar%20implementaci%C3%B3n" target="_blank" style="display:block;background:linear-gradient(90deg,#d946ef,#8b5cf6);color:#fff;text-decoration:none;padding:13px;border-radius:12px;font-weight:800;font-size:14px;text-align:center;box-shadow:0 8px 20px rgba(217,70,239,.3)">🚀 Solicitar Implementación</a>
+          <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quer%C3%ADa%20solicitar%20la%20implementaci%C3%B3n." target="_blank" style="display:block;background:linear-gradient(90deg,#d946ef,#8b5cf6);color:#fff;text-decoration:none;padding:13px;border-radius:12px;font-weight:800;font-size:14px;text-align:center;box-shadow:0 8px 20px rgba(217,70,239,.3)">🚀 Solicitar Implementación</a>
 
           <!-- Sin contratos -->
           <p style="font-size:11.5px;color:#64748b;text-align:center;margin:0;line-height:1.5">
@@ -943,15 +966,15 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     <div style="background:rgba(26,11,46,.6);border:1px solid #2d134d;border-radius:16px;padding:14px 22px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap">
       <p style="color:#fff;font-size:13.5px;font-weight:600;margin:0">¿Necesitás funciones exclusivas?</p>
       <div style="width:1px;height:18px;background:#3d1b5c;flex-shrink:0"></div>
-      <a href="https://wa.me/5491169456863?text=Hola%20ANMA%2C%20quiero%20consultar%20personalizaci%C3%B3n" target="_blank" style="color:#a78bfa;font-size:13px;font-weight:700;text-decoration:none">Consultar personalización →</a>
+      <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Quer%C3%ADa%20consultar%20sobre%20personalizaci%C3%B3n%20de%20ANMA." target="_blank" style="color:#a78bfa;font-size:13px;font-weight:700;text-decoration:none">Consultar personalización →</a>
     </div>
 
     <!-- CTA de cierre bajo pricing -->
     <div style="text-align:center;margin-top:28px">
-      <a href="https://wa.me/5491169456863?text=Hola%20ANMA%2C%20quiero%20empezar%20con%20la%20implementaci%C3%B3n" target="_blank"
+      <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quer%C3%ADa%20hacerles%20una%20consulta." target="_blank"
          style="display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;text-decoration:none;padding:16px 32px;border-radius:14px;font-size:16px;font-weight:800;box-shadow:0 10px 28px rgba(37,211,102,.3);transition:transform .2s">
         <i class="fa-brands fa-whatsapp" style="font-size:20px"></i>
-        Hablemos por WhatsApp — Respuesta inmediata
+        Traé aire fresco a tu gestión — Hablemos ahora
       </a>
     </div>
 
@@ -1004,9 +1027,9 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   <h3>¿Listo para empezar?</h3>
   <p>Hablemos sin vueltas. Te respondemos en minutos y te mostramos la plataforma funcionando con tu caso real. Sin compromiso.</p>
 
-  <a href="https://wa.me/5491169456863?text=Hola%20ANMA%2C%20quiero%20saber%20m%C3%A1s%20sobre%20la%20plataforma" target="_blank" class="wa-cta-btn">
+  <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quer%C3%ADa%20hacerles%20una%20consulta." target="_blank" class="wa-cta-btn">
     <i class="fa-brands fa-whatsapp"></i>
-    Hablemos por WhatsApp — Respuesta inmediata
+    Traé aire fresco a tu gestión — Hablemos ahora
   </a>
 
   <br>
@@ -1016,7 +1039,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- WA FLOAT -->
-<a href="https://wa.me/5491169456863?text=Hola%20ANMA" target="_blank" class="fab-wa" title="Chatear por WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+<a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quer%C3%ADa%20hacerles%20una%20consulta." target="_blank" class="fab-wa" title="Chatear por WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
 
 <!-- FOOTER -->
 <footer>
@@ -1039,7 +1062,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
       <div class="foot-col">
         <h6>Recursos</h6>
         <a href="#faq">Preguntas</a>
-        <a href="https://wa.me/5491169456863?text=Hola%20ANMA%2C%20quiero%20una%20demo%20guiada" target="_blank">Demo guiada</a>
+        <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Quer%C3%ADa%20pedir%20una%20demo%20guiada%20de%20ANMA." target="_blank">Demo guiada</a>
         <a href="https://anma-host.vercel.app/landing.html">ANMA Regalos</a>
       </div>
       <div class="foot-col">
