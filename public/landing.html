@@ -13,6 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>window.tailwind={config:{corePlugins:{preflight:false}}}</script>
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden}
@@ -623,7 +625,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 <section style="padding:48px 0;background:#fafbfc">
   <div class="wrap">
     <div style="max-width:760px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:36px 44px">
-      <h2 style="font-size:26px;font-weight:900;color:#0F172A;margin:0 0 14px;letter-spacing:-.5px">Un respiro para tu día a día.</h2>
+      <h2 class="text-2xl md:text-3xl font-black tracking-tight mb-4" style="color:#0F172A">Un respiro para tu día a día</h2>
+      <p class="text-lg md:text-xl font-medium mb-4" style="color:#7c3aed">Tu negocio ordenado, tu cabeza libre</p>
       <p style="font-size:15.5px;color:#475569;line-height:1.75;margin:0">Manejar un negocio es estar en mil cosas a la vez: proveedores que llaman, clientes que escriben a cualquier hora, pendientes dispersos entre cuadernos, WhatsApp y notas de voz que nunca encontrás. Estar lleno de proyectos no tiene que ser sinónimo de caos. No necesitás herramientas eternas ni perder días configurando pantallas. Necesitás un espacio claro para entrar, ver lo importante, resolver y cerrar la computadora con la mente tranquila. Para eso armamos ANMA Pro.</p>
     </div>
   </div>
@@ -655,10 +658,10 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 <!-- DEMO REAL -->
 <section id="demo" style="padding:52px 0;background:#0F172A">
   <div class="wrap">
-    <div style="text-align:center;max-width:680px;margin:0 auto 32px">
-      <span style="display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:rgba(124,58,237,.18);color:#a78bfa;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;border:1px solid rgba(124,58,237,.28);margin-bottom:14px">Vista real del sistema</span>
-      <h2 style="font-size:34px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1.15;margin:0 0 12px">Así se ve ANMA Pro<br>por dentro</h2>
-      <p style="font-size:16px;color:rgba(255,255,255,.58);margin:0;line-height:1.65">Estas son las pantallas reales de la app. Lo que ves es exactamente lo que vas a usar.</p>
+    <div class="text-center max-w-2xl mx-auto px-4 mb-8">
+      <span class="inline-flex items-center gap-2 mb-4" style="padding:5px 14px;background:rgba(124,58,237,.18);color:#a78bfa;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;border:1px solid rgba(124,58,237,.28)">Vista real del sistema</span>
+      <h2 class="text-3xl md:text-4xl font-black tracking-tight leading-tight mb-3" style="color:#fff">Así se ve ANMA Pro por dentro</h2>
+      <p class="text-base md:text-lg font-medium" style="color:rgba(255,255,255,.6);line-height:1.65">Pantallas reales de la app, diseñadas para lo que usás en tu día a día</p>
     </div>
 
     <div class="app-shell-wrap">
