@@ -228,30 +228,38 @@ export default function Config() {
   const [gsShowInstructions, setGsShowInstructions] = useState(!initSheets.url)
   const [mpTesting, setMpTesting] = useState(false)
   const testResend = async () => {
-    if (!resendKey.trim() || !resendFrom.trim()) { toast('Completá API Key y email de envío primero.', 'er'); return }
+    const key   = resendKey.trim()
+    const email = resendFrom.trim()
+    if (!key || !email) { toast('Completá API Key y email de envío primero.', 'er'); return }
     setResendTesting(true)
     setResendTestResult(null)
     try {
-      const res = await fetch('https://api.resend.com/emails', {
+      // /resend-api → proxy transparente a api.resend.com (Vite en dev, Vercel en prod)
+      const res = await fetch('/resend-api/emails', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${resendKey.trim()}`, 'Content-Type': 'application/json' },
+        headers: {
+          'Authorization': `Bearer ${key}`,
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
-          from: resendFrom.trim(),
-          to: [resendFrom.trim()],
+          from: 'onboarding@resend.dev',
+          to: [email],
           subject: 'Test de conexión — ANMA Pro',
-          html: '<p>✅ La integración de email está funcionando correctamente.</p>',
+          html: '<p>✅ Conexión con Resend verificada correctamente desde ANMA Pro.</p>',
         }),
       })
+      const data = await res.json().catch(() => ({}))
       if (res.ok) {
         setResendTestResult('ok')
-        updateConfig({ resendApiKey: resendKey.trim(), resendFrom: resendFrom.trim(), resendEnabled: true })
+        updateConfig({ resendApiKey: key, resendFrom: email, resendEnabled: true })
         setResendEnabled(true)
         setResendShowInstructions(false)
       } else {
-        setResendTestResult('error')
+        const msg = data.message || data.name || data.error || `Error ${res.status}`
+        setResendTestResult(msg)
       }
-    } catch {
-      setResendTestResult('error')
+    } catch (e) {
+      setResendTestResult(e.message || 'Error de red inesperado')
     }
     setResendTesting(false)
   }
@@ -1039,9 +1047,9 @@ export default function Config() {
                     <i className="fa fa-floppy-disk" /> Guardar
                   </button>
                   {resendTestResult && (
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 20, fontSize: 11.5, fontWeight: 700, background: resendTestResult === 'ok' ? 'rgba(16,185,129,.1)' : 'rgba(220,38,38,.1)', color: resendTestResult === 'ok' ? '#059669' : 'var(--red)', border: `1.5px solid ${resendTestResult === 'ok' ? 'rgba(16,185,129,.35)' : 'rgba(220,38,38,.35)'}` }}>
-                      <i className={`fa ${resendTestResult === 'ok' ? 'fa-circle-check' : 'fa-circle-xmark'}`} />
-                      {resendTestResult === 'ok' ? 'Conexión exitosa' : 'Error de credenciales'}
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 20, fontSize: 11.5, fontWeight: 700, background: resendTestResult === 'ok' ? 'rgba(16,185,129,.1)' : 'rgba(220,38,38,.1)', color: resendTestResult === 'ok' ? '#059669' : 'var(--red)', border: `1.5px solid ${resendTestResult === 'ok' ? 'rgba(16,185,129,.35)' : 'rgba(220,38,38,.35)'}`, maxWidth: 340, whiteSpace: 'normal', lineHeight: 1.4 }}>
+                      <i className={`fa ${resendTestResult === 'ok' ? 'fa-circle-check' : 'fa-circle-xmark'}`} style={{ flexShrink: 0 }} />
+                      {resendTestResult === 'ok' ? '¡Conexión Exitosa!' : resendTestResult}
                     </div>
                   )}
                 </div>
