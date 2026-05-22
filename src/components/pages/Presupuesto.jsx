@@ -180,7 +180,7 @@ export default function Presupuesto() {
   const feats = c.features || {}
 
   const [form, setForm] = useState({
-    contact: '', company: '', wa: '', clientEmail: '', clientType: 'b2c', delivery: '', deliveryDate: '',
+    contact: '', company: '', wa: '', clientEmail: '', delivery: '', deliveryDate: '',
     shipCost: 0, shipCharged: false, envioACotizar: true, status: 'draft', payStatus: 'pending', noteInt: '', noteCli: '',
     margin: c.defaultMargin || 40, deposit: c.defaultDeposit || 50, logoCost: 0, discount: 0,
     dispatchInsumos: [], // Dynamic dispatch packaging — set per order in Step 3
@@ -209,7 +209,7 @@ export default function Presupuesto() {
       if (b) {
         setForm({
           contact: b.contact || '', company: b.company || '', wa: b.wa || '', clientEmail: b.clientEmail || '',
-          clientType: b.clientType || 'b2c', delivery: b.delivery || '', deliveryDate: b.deliveryDate || '',
+          delivery: b.delivery || '', deliveryDate: b.deliveryDate || '',
           shipCost: b.shipCost || 0, shipCharged: b.shipCharged !== false,
           status: b.status || 'draft',
           noteInt: b.noteInt || '', noteCli: b.noteCli || '',
@@ -252,16 +252,13 @@ export default function Presupuesto() {
   const setF = (key, val) => setForm(f => ({ ...f, [key]: val }))
 
   const handleClientSelect = (client) => {
-    const type = client.clientType || 'b2c'
-    setForm(f => ({ ...f, contact: client.contact || '', company: client.company || '', wa: client.wa || '', clientEmail: client.email || '', clientType: type }))
-    // Auto-reprice items based on client type
-    const rules = c.pricingRules || { b2c: { margin: 40 }, b2b: { margin: 25 } }
-    const m = (rules[type]?.margin || 40) / 100
+    setForm(f => ({ ...f, contact: client.contact || '', company: client.company || '', wa: client.wa || '', clientEmail: client.email || '' }))
+    const m = (c.defaultMargin || 40) / 100
     setItems(prev => prev.map(it => {
       if (!it.name || !it.costUnit) return it
       const match = products.find(p => p.name === it.name)
       if (match) {
-        const price = type === 'b2b' ? (match.priceB2B || Math.round(num(match.cost) * (1 + m))) : (match.priceB2C || Math.round(num(match.cost) * (1 + m)))
+        const price = match.priceB2C || Math.round(num(match.cost) * (1 + m))
         return { ...it, priceUnit: price }
       }
       return it
@@ -277,9 +274,7 @@ export default function Presupuesto() {
         if (match) {
           updated.costUnit = match.cost || 0
           updated.productId = match.id
-          updated.priceUnit = form.clientType === 'b2b'
-            ? (match.priceB2B || Math.round(num(match.cost) * 1.25))
-            : (match.priceB2C || Math.round(num(match.cost) * (1 + marginPct / 100)))
+          updated.priceUnit = match.priceB2C || Math.round(num(match.cost) * (1 + marginPct / 100))
           updated.stockAvailable = match.stock || 0
         }
       }
@@ -790,15 +785,9 @@ export default function Presupuesto() {
                     <label>Email del cliente</label>
                     <input type="email" value={form.clientEmail} onChange={e => setF('clientEmail', e.target.value)} placeholder="cliente@email.com" />
                   </div>
-                  <div className="fg"><label>Tipo de cliente</label>
-                    <select value={form.clientType || 'b2c'} onChange={e => setF('clientType', e.target.value)}>
-                      <option value="b2c">B2C — Cliente final</option>
-                      <option value="b2b">B2B — Empresa / Mayorista</option>
-                    </select>
-                  </div>
                 </div>
                 <div className="wiz-tip">
-                  <i className="fa fa-lightbulb" /> Buscá un contacto existente o creá uno nuevo escribiendo el nombre. Los precios se ajustan según el tipo de cliente (B2C o B2B).
+                  <i className="fa fa-lightbulb" /> Buscá un contacto existente o creá uno nuevo escribiendo el nombre.
                 </div>
               </>
             )}
@@ -1032,7 +1021,7 @@ export default function Presupuesto() {
                     <div className="wiz-rev-card-h"><i className="fa fa-user-tie" /> Cliente <button className="wiz-rev-edit" onClick={() => goStep(1)}>Editar</button></div>
                     <div className="wiz-rev-body">
                       <div><b>{form.contact || '—'}</b>{form.company ? ` · ${form.company}` : ''}</div>
-                      <div className="wiz-rev-meta">{form.wa || 'Sin WhatsApp'} · {form.clientType === 'b2b' ? 'B2B' : 'B2C'}</div>
+                      <div className="wiz-rev-meta">{form.wa || 'Sin WhatsApp'}</div>
                     </div>
                   </div>
                   <div className="wiz-rev-card">
