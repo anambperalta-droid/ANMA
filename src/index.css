@@ -1120,8 +1120,10 @@ td b{color:var(--txt);font-weight:600}
   background:var(--brand-xlt);color:var(--brand);
 }
 .bsheet-item-body{flex:1;min-width:0}
-.bsheet-item-title{font-size:14px;font-weight:700;color:var(--txt)}
-.bsheet-item-sub{font-size:11.5px;color:var(--txt3);margin-top:1px}
+.bsheet-item-title{font-size:14px;font-weight:800;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bsheet-item-sub{font-size:11.5px;color:var(--txt3);margin-top:1px;white-space:nowrap}
+/* ─── Mobile item cards (hidden on desktop) ─── */
+.mob-items-list{display:none}
 
 /* ═══ MOBILE UX OVERHAUL ═══ */
 
@@ -1374,28 +1376,35 @@ td b{color:var(--txt);font-weight:600}
   .calc-panel{display:none!important}
   /* Inputs/selects: full-width (excl. checkbox) */
   .wiz-pane{padding:12px 16px 220px!important}
-  .wiz-pane input:not([type=checkbox]),.wiz-pane select{min-height:46px!important;width:100%!important;box-sizing:border-box!important}
-  /* Paso 2: tabla → cards compactos (anma-app: 9 cols) */
-  .items-scroll{overflow-x:visible!important}
-  .items-scroll thead{display:none!important}
-  .items-scroll table{min-width:0!important;width:100%!important;overflow:visible!important}
-  .items-scroll tbody{display:flex!important;flex-direction:column!important;gap:0!important}
-  .items-scroll td::before{display:none!important}
-  .items-scroll tr{display:grid!important;grid-template-columns:1fr 70px 36px!important;grid-template-rows:auto auto!important;gap:6px 8px!important;padding:10px 0!important;background:transparent!important;border:none!important;border-radius:0!important;border-bottom:1px solid var(--border)!important;height:auto!important}
-  /* Ocultar: drag(1), variante(3), stock(4), costo(6), subtotal(8) */
-  .items-scroll tr td:nth-child(1),.items-scroll tr td:nth-child(3),.items-scroll tr td:nth-child(4),.items-scroll tr td:nth-child(6),.items-scroll tr td:nth-child(8){display:none!important}
-  /* Nombre: fila 1, abarca cols 1-2 */
-  .items-scroll tr td:nth-child(2){grid-column:1/3!important;grid-row:1!important;display:block!important;vertical-align:unset!important;padding:0!important}
-  .items-scroll input{width:auto!important}
-  .items-scroll tr td:nth-child(2) input{min-height:46px!important;height:46px!important;font-size:14px!important}
-  /* Cant.: fila 2, col 1 */
-  .items-scroll tr td:nth-child(5){grid-column:1!important;grid-row:2!important;display:block!important;vertical-align:unset!important;padding:0!important}
-  .items-scroll tr td:nth-child(5) input{width:70px!important;height:38px!important;min-height:38px!important;text-align:center!important;font-size:13px!important}
-  /* Precio: fila 2, col 2 */
-  .items-scroll tr td:nth-child(7){grid-column:2!important;grid-row:2!important;display:block!important;vertical-align:unset!important;padding:0!important}
-  .items-scroll tr td:nth-child(7) input{width:100%!important;height:38px!important;min-height:38px!important;font-size:13px!important}
-  /* Eliminar: col 3, ambas filas */
-  .items-scroll tr td:nth-child(9){grid-column:3!important;grid-row:1/3!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important}
+  .wiz-pane input:not([type=checkbox]):not(.mic-name-input):not(.mic-variant-input):not(.mic-qty-input):not(.mic-price-input),.wiz-pane select{min-height:46px!important;width:100%!important;box-sizing:border-box!important}
+  /* Paso 2: tabla → ocultar en mobile, usar mob-item-card */
+  .items-scroll{display:none!important}
+  /* ─── Card layout de productos en mobile ─── */
+  .mob-items-list{display:flex!important;flex-direction:column!important;gap:10px!important;margin-bottom:4px!important}
+  .mob-item-card{background:var(--surface)!important;border:1.5px solid var(--border)!important;border-radius:14px!important;padding:12px 14px!important;display:flex!important;flex-direction:column!important;gap:10px!important}
+  /* Fila 1: nombre + picker + X */
+  .mic-header{display:flex!important;align-items:center!important;gap:8px!important}
+  .mic-name-input{flex:1!important;min-width:0!important;min-height:46px!important;font-size:14px!important;font-weight:700!important;padding:0 10px!important;border-radius:10px!important;box-sizing:border-box!important;width:auto!important}
+  .mic-picker-btn{width:40px!important;height:40px!important;border-radius:10px!important;border:1.5px solid var(--border)!important;background:var(--surface2)!important;color:var(--brand)!important;cursor:pointer!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:14px!important;flex-shrink:0!important;font-family:inherit!important;-webkit-tap-highlight-color:transparent!important}
+  .mic-del-btn{width:40px!important;height:40px!important;border-radius:50%!important;border:1.5px solid #FECACA!important;background:#FEF2F2!important;color:#DC2626!important;cursor:pointer!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:16px!important;flex-shrink:0!important;font-family:inherit!important;-webkit-tap-highlight-color:transparent!important}
+  /* Fila 2: variante + stock */
+  .mic-meta-row{display:flex!important;gap:10px!important;align-items:flex-end!important}
+  .mic-meta-row .mic-field{flex:1;min-width:0}
+  .mic-variant-input{min-height:42px!important;font-size:13px!important;padding:0 8px!important;border-radius:8px!important;width:100%!important;box-sizing:border-box!important}
+  .mic-stock-field{flex-shrink:0!important;min-width:56px!important;text-align:right!important}
+  .mic-stock-val{font-size:15px!important;font-weight:700!important;color:var(--txt2)!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;min-height:42px!important}
+  /* Fila 3: cant. + precio u. + subtotal */
+  .mic-nums-row{display:flex!important;gap:8px!important;align-items:flex-end!important;padding-top:10px!important;border-top:1px solid var(--border)!important}
+  .mic-field{display:flex!important;flex-direction:column!important;gap:4px!important}
+  .mic-label{font-size:9px!important;font-weight:800!important;color:var(--txt4)!important;text-transform:uppercase!important;letter-spacing:.07em!important;line-height:1!important;display:block!important}
+  .mic-qty-input{width:68px!important;min-height:46px!important;font-size:17px!important;font-weight:800!important;text-align:center!important;border-radius:10px!important;box-sizing:border-box!important;padding:0 6px!important;min-width:0!important}
+  .mic-price-field{flex:1!important;min-width:0!important}
+  .mic-price-input{min-height:46px!important;font-size:14px!important;font-weight:700!important;text-align:right!important;border-radius:10px!important;box-sizing:border-box!important;padding:0 10px!important;width:100%!important}
+  .mic-subtotal-field{flex-shrink:0!important;display:flex!important;flex-direction:column!important;gap:4px!important;align-items:flex-end!important}
+  .mic-subtotal{font-size:18px!important;font-weight:800!important;color:var(--money)!important;white-space:nowrap!important;min-height:46px!important;display:flex!important;align-items:center!important}
+  /* bsheet picker en mobile: tap target amplio + truncado inteligente */
+  .bsheet-item{padding:14px 16px!important;min-height:64px!important}
+  .bsheet-item-title{font-size:14px!important;font-weight:800!important}
   /* + Agregar: ancho completo con borde punteado */
   .wiz-pane .btn-ghost.btn-xs{width:100%!important;min-height:46px!important;justify-content:center!important;border-radius:12px!important;font-size:13px!important;font-weight:700!important;margin-top:12px!important;border:1.5px dashed var(--border)!important;padding:0!important;flex-direction:row!important}
   /* Sticky wiz-nav: flotante encima de bottom nav */

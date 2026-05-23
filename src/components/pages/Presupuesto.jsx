@@ -856,8 +856,103 @@ export default function Presupuesto() {
                       })}
                     </tbody>
                   </table>
-                  <ProductPicker open={pickerOpen} onClose={() => setPickerOpen(false)} products={products} onSelect={handlePickProduct} />
                 </div>
+
+                {/* ─── Mobile: card list — visible only on mobile via CSS ─── */}
+                <div className="mob-items-list">
+                  {items.map((it, i) => {
+                    const overStock = it.stockAvailable !== undefined && num(it.qty) > it.stockAvailable
+                    return (
+                      <div key={i} className="mob-item-card">
+
+                        {/* Fila 1: Nombre del producto + picker + eliminar */}
+                        <div className="mic-header">
+                          <input
+                            type="text"
+                            value={it.name}
+                            onChange={e => updateItem(i, 'name', e.target.value)}
+                            placeholder="Nombre del producto"
+                            className="mic-name-input"
+                          />
+                          <button
+                            onClick={() => openPicker(i)}
+                            type="button"
+                            title="Elegir del catálogo"
+                            className="mic-picker-btn"
+                          >
+                            <i className="fa fa-list" />
+                          </button>
+                          <button
+                            onClick={() => removeItem(i)}
+                            type="button"
+                            title="Eliminar producto"
+                            className="mic-del-btn"
+                          >
+                            <i className="fa fa-xmark" />
+                          </button>
+                        </div>
+
+                        {/* Fila 2: Variante + Stock */}
+                        <div className="mic-meta-row">
+                          <div className="mic-field" style={{ flex: 1, minWidth: 0 }}>
+                            <span className="mic-label">Variante</span>
+                            <input
+                              type="text"
+                              value={it.variant || ''}
+                              onChange={e => updateItem(i, 'variant', e.target.value)}
+                              placeholder="Color / talle"
+                              className="mic-variant-input"
+                            />
+                          </div>
+                          <div className="mic-field mic-stock-field">
+                            <span className="mic-label">Stock</span>
+                            <span className="mic-stock-val" style={overStock ? { color: '#DC2626' } : {}}>
+                              {it.stockAvailable !== undefined ? it.stockAvailable : '—'}
+                              {overStock && (
+                                <i className="fa fa-triangle-exclamation" style={{ marginLeft: 5, fontSize: 11, color: '#DC2626' }} />
+                              )}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Fila 3: Cant. + Precio u. + Subtotal */}
+                        <div className="mic-nums-row">
+                          <div className="mic-field">
+                            <span className="mic-label">Cant.</span>
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              value={it.qty === '' ? '' : String(it.qty)}
+                              onFocus={selectOnFocus}
+                              onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'qty', r === '' ? '' : Math.max(1, parseInt(r) || 1)) }}
+                              onBlur={e => { if (e.target.value === '') updateItem(i, 'qty', 1) }}
+                              className="mic-qty-input"
+                            />
+                          </div>
+                          <div className="mic-field mic-price-field">
+                            <span className="mic-label">Precio u.</span>
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              value={fmtTbl(it.priceUnit)}
+                              onFocus={selectOnFocus}
+                              onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'priceUnit', r === '' ? '' : Number(r)) }}
+                              onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }}
+                              className="mic-price-input"
+                            />
+                          </div>
+                          <div className="mic-field mic-subtotal-field">
+                            <span className="mic-label">Subtotal</span>
+                            <span className="mic-subtotal">{fmt(num(it.qty) * num(it.priceUnit))}</span>
+                          </div>
+                        </div>
+
+                      </div>
+                    )
+                  })}
+                </div>
+
+                <ProductPicker open={pickerOpen} onClose={() => setPickerOpen(false)} products={products} onSelect={handlePickProduct} />
                 <button className="btn btn-ghost btn-xs" style={{ marginTop: 8 }} onClick={addItem}><i className="fa fa-plus" /> Agregar producto</button>
                 <div className="wiz-tip">
                   <i className="fa fa-lightbulb" /> Escribí el nombre del producto para autocompletar desde tu catálogo — el costo y precio se llenan solos.
