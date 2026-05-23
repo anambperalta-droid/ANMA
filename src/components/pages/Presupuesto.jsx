@@ -408,9 +408,6 @@ export default function Presupuesto() {
     const validItems = items.filter(i => i.name).map(i => ({ ...i, qty: num(i.qty), costUnit: num(i.costUnit), priceUnit: num(i.priceUnit) }))
     if (!validItems.length) { toast('Necesitás al menos un producto. Agregá uno desde "Productos".', 'er'); return }
 
-    // Capture pre-save status to detect transitions (avoid double-deduction on re-save)
-    const prevBudget = editId ? get('budgets').find(x => x.id === editId) : null
-    const prevStatus = prevBudget?.status
     // Qualifying = order has started / is confirmed as real.
     // Uses a Set so it handles:
     //   - English key values (current selects: 'inprogress', 'delivered')
@@ -421,16 +418,18 @@ export default function Presupuesto() {
       'En preparación', 'En producción', 'Entregado',   // legacy Spanish label values
     ])
     const qualifyingStatus = QUALIFYING_STATES.has(form.status) || form.payStatus === 'paid'
-    const wasQualifying   = QUALIFYING_STATES.has(prevStatus)   || prevBudget?.payStatus === 'paid'
+    // stockDeducted flag prevents double-deduction if status goes qualifying → draft → qualifying
+    const wasStockDeducted = editId ? (get('budgets').find(x => x.id === editId)?.stockDeducted === true) : false
+    const willDeductStock = qualifyingStatus && !wasStockDeducted
 
     const saveForm = { ...form, shipCost: 0, shipCharged: false, envioACotizar: form.envioACotizar !== false, logoCost: num(form.logoCost), margin: num(form.margin), deposit: num(form.deposit), payStatus: form.payStatus || 'pending' }
     const marginBudgeted = marginBudgetedSaved !== null ? marginBudgetedSaved : Number(calc.marginReal)
-    const savedBudget = saveBudget({ ...(editId ? { id: editId } : {}), ...saveForm, items: validItems, totalCost: calc.baseCost, totalGain: calc.gain, total: calc.total, depositAmt: calc.depositAmt, marginBudgeted })
+    const savedBudget = saveBudget({ ...(editId ? { id: editId } : {}), ...saveForm, items: validItems, totalCost: calc.baseCost, totalGain: calc.gain, total: calc.total, depositAmt: calc.depositAmt, marginBudgeted, stockDeducted: wasStockDeducted || willDeductStock })
     if (!editId) setMarginBudgetedSaved(marginBudgeted)
 
     // Silent stock deduction — only fires on first transition to a qualifying status
     // Deducts product stock AND flat dispatch insumo quantities
-    if (qualifyingStatus && !wasQualifying) {
+    if (willDeductStock) {
       deductStockForOrder(validItems, form.dispatchInsumos || [])
     }
 

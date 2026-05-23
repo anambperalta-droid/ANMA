@@ -18,7 +18,7 @@ const MOVE_NOTES = {
   in:     ['Compra a proveedor', 'Devolución de cliente', 'Ajuste de inventario'],
   out:    ['Venta', 'Merma / Desperdicio', 'Uso interno', 'Ajuste de inventario'],
   adjust: ['Conteo físico', 'Corrección de error'],
-  return: ['Devolución a proveedor'],
+  return: ['Devolución de cliente', 'Reposición de proveedor'],
 }
 
 const CAT_CLS = {
