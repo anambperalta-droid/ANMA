@@ -1471,21 +1471,39 @@ td b{color:var(--txt);font-weight:600}
 @keyframes ins-led-pulse{0%,100%{opacity:1}50%{opacity:.25}}
 .ins-led-pulse{animation:ins-led-pulse 1.4s ease-in-out infinite}
 .ins-mob-list{display:flex;flex-direction:column;gap:8px;padding:10px 0 16px}
-.ins-mob-card{border-radius:24px;padding:13px 16px;display:flex;align-items:center;gap:12px;border:1px solid var(--border);background:var(--surface);transition:box-shadow .15s}
-.ins-mob-card.low{border-color:#FECACA;border-left:4px solid #DC2626}
-.ins-mob-card-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;align-self:flex-start;margin-top:3px}
-.ins-mob-card-body{flex:1;min-width:0}
-.ins-mob-card-name{font-size:13px;font-weight:700;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ins-mob-card-sub{font-size:10px;color:#64748B;margin-top:1px}
-.ins-mob-card-meta{font-size:11px;color:var(--txt3);margin-top:3px}
-.ins-mob-card-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.ins-mob-card-price{font-size:13px;font-weight:800;color:var(--money);white-space:nowrap;text-align:right}
-.ins-mob-card-unit{font-size:9px;color:var(--txt4);text-align:right}
-.ins-mob-card-acts{display:flex;gap:5px}
-.ins-mob-card-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--txt2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:opacity .1s,transform .1s}
-.ins-mob-card-btn:active{opacity:.7;transform:scale(.93)}
+/* Card: flex-col en mobile → flex-row en ≥641px (tabla desktop toma el relevo) */
+.ins-mob-card{border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;border:1px solid var(--border);background:var(--surface);transition:box-shadow .15s}
+.ins-mob-card.low{border-color:#FECACA;border-left:3px solid #DC2626}
+/* Fila 1 — dot + nombre + badges */
+.ins-mob-card-row1{display:flex;align-items:center;gap:8px;min-width:0}
+.ins-mob-card-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ins-mob-card-info{flex:1;min-width:0}
+.ins-mob-card-name{font-size:13.5px;font-weight:700;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
+.ins-mob-card-badges{display:flex;align-items:center;gap:5px;margin-top:2px;flex-wrap:wrap}
+/* Fila 2 — stock compacto */
+.ins-mob-card-meta{font-size:11px;color:var(--txt3);padding-left:15px}
+/* Fila 3 — precio izq | acciones der */
+.ins-mob-card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ins-mob-card-price-block{display:flex;align-items:baseline;gap:3px}
+.ins-mob-card-price{font-size:14px;font-weight:800;color:var(--money);white-space:nowrap}
+.ins-mob-card-unit{font-size:10px;color:var(--txt4)}
+/* Botones: visualmente 32px (w-8), área táctil ~44px via ::before */
+.ins-mob-card-acts{display:flex;align-items:center;gap:2px}
+.ins-mob-card-btn{position:relative;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--txt2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:opacity .12s,transform .12s;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.ins-mob-card-btn::before{content:'';position:absolute;top:-6px;right:-6px;bottom:-6px;left:-6px}
+.ins-mob-card-btn:active{opacity:.7;transform:scale(.91)}
 .ins-mob-card-btn.green{background:#DCFCE7;border-color:#86EFAC;color:#16A34A}
 .ins-mob-card-btn.red{background:#FFF1F2;border-color:#FECACA;color:#DC2626}
+/* ── Filtro unificado: buscador + select misma altura y radio ── */
+.ins-filter-bar{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.ins-filter-bar .search-row{max-width:100%!important;flex:auto}
+.ins-filter-bar .ins-filter-sel{height:var(--touch);border-radius:10px;border:1.5px solid var(--border);background:var(--surface2);color:var(--txt);font-size:13px;padding:0 10px;outline:none;font-family:inherit;cursor:pointer;width:100%;transition:border-color var(--tr);appearance:none;-webkit-appearance:none}
+.ins-filter-bar .ins-filter-sel:focus{border-color:var(--brand)}
+@media(min-width:641px){
+  .ins-filter-bar{flex-direction:row;align-items:center;gap:10px}
+  .ins-filter-bar .search-row{max-width:280px!important;flex:1}
+  .ins-filter-bar .ins-filter-sel{width:auto;max-width:220px}
+}
 .ins-desk-view{display:none}
 @media(min-width:641px){
   .ins-mob-list{display:none!important}

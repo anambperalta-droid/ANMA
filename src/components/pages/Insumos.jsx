@@ -42,7 +42,7 @@ const stockLevel = (stock, minStock) => {
 const LED_DOT = {
   low:  { bg: '#DC2626', pulse: true },
   warn: { bg: '#F59E0B', pulse: false },
-  ok:   null,
+  ok:   { bg: '#10B981', pulse: false },
 }
 
 const relTime = (iso) => {
@@ -250,12 +250,12 @@ export default function Insumos() {
             )}
 
             {/* Filters */}
-            <div style={{ display: 'flex', gap: 10, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-              <div className="search-row" style={{ maxWidth: 280 }}>
+            <div className="ins-filter-bar">
+              <div className="search-row">
                 <i className="fa fa-magnifying-glass" />
                 <input type="text" placeholder="Buscar insumo o subcategoría..." value={search} onChange={e => setSearch(e.target.value)} />
               </div>
-              <select className="f-inp" style={{ maxWidth: 220 }} value={catFilter} onChange={e => setCatFilter(e.target.value)}>
+              <select className="ins-filter-sel" value={catFilter} onChange={e => setCatFilter(e.target.value)}>
                 <option value="all">Todas las categorías</option>
                 {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
               </select>
@@ -274,23 +274,25 @@ export default function Insumos() {
                 const led = LED_DOT[level]
                 return (
                   <div key={item.id} className={`ins-mob-card${level === 'low' ? ' low' : ''}`}>
-                    {led
-                      ? <div className={`ins-mob-card-dot${led.pulse ? ' ins-led-pulse' : ''}`} style={{ background: led.bg }} />
-                      : <div className="ins-mob-card-dot" style={{ background: 'transparent' }} />
-                    }
-                    <div className="ins-mob-card-body">
-                      <div className="ins-mob-card-name">{item.name}</div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 3, flexWrap: 'wrap', minHeight: 16 }}>
-                        <span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`} style={{ fontSize: 9, padding: '1px 5px' }}>{catLabel(item.cat)}</span>
-                        {item.subcat && <span style={{ fontSize: 10, color: '#64748B', lineHeight: 1.3 }}>{item.subcat}</span>}
-                      </div>
-                      <div className="ins-mob-card-meta">
-                        Stock: <b style={{ color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt)' }}>{item.stock || 0}</b> {item.unit || 'un'}
-                        {item.minStock > 0 && <span style={{ color: 'var(--txt4)', marginLeft: 6 }}>· mín {item.minStock}</span>}
+                    {/* Row 1: dot + name + badges */}
+                    <div className="ins-mob-card-row1">
+                      <div className={`ins-mob-card-dot${led.pulse ? ' ins-led-pulse' : ''}`} style={{ background: led.bg }} />
+                      <div className="ins-mob-card-info">
+                        <div className="ins-mob-card-name">{item.name}</div>
+                        <div className="ins-mob-card-badges">
+                          <span className={`badge ${CAT_CLS[item.cat] || 'b-draft'}`} style={{ fontSize: 9, padding: '1px 5px' }}>{catLabel(item.cat)}</span>
+                          {item.subcat && <span style={{ fontSize: 10, color: '#64748B', lineHeight: 1.3 }}>{item.subcat}</span>}
+                        </div>
                       </div>
                     </div>
-                    <div className="ins-mob-card-right">
-                      <div>
+                    {/* Row 2: stock meta */}
+                    <div className="ins-mob-card-meta">
+                      Stock: <b style={{ color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt)' }}>{item.stock || 0}</b> {item.unit || 'un'}
+                      {item.minStock > 0 && <span style={{ color: 'var(--txt4)', marginLeft: 6 }}>· mín {item.minStock}</span>}
+                    </div>
+                    {/* Row 3: price + actions */}
+                    <div className="ins-mob-card-footer">
+                      <div className="ins-mob-card-price-block">
                         <div className="ins-mob-card-price">{fmtDec(item.cost)}</div>
                         <div className="ins-mob-card-unit">/{item.unit || 'un'}</div>
                       </div>
@@ -339,10 +341,7 @@ export default function Insumos() {
                         <tr key={item.id} style={level === 'low' ? { borderLeft: '3px solid #DC2626' } : undefined}>
                           <td>
                             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                              {led
-                                ? <span className={led.pulse ? 'ins-led-pulse' : ''} style={{ width: 7, height: 7, borderRadius: '50%', background: led.bg, flexShrink: 0, display: 'inline-block', marginTop: 5 }} />
-                                : <span style={{ width: 7, height: 7, flexShrink: 0, display: 'inline-block' }} />
-                              }
+                              <span className={led.pulse ? 'ins-led-pulse' : ''} style={{ width: 7, height: 7, borderRadius: '50%', background: led.bg, flexShrink: 0, display: 'inline-block', marginTop: 5 }} />
                               <div>
                                 <div style={{ fontWeight: 600, fontSize: 13 }}>{item.name}</div>
                                 <div style={{ fontSize: 10.5, marginTop: 1, display: 'flex', alignItems: 'center', gap: 6 }}>
