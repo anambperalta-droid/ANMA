@@ -463,10 +463,11 @@ export default function Clientes() {
         .cli-mob-ci-mail{background:#EFF6FF;color:#2563EB}
         .cli-mob-ci-ph{display:inline-block;width:28px;height:28px}
         .cli-mob-date{font-size:10.5px;font-variant-numeric:tabular-nums;line-height:1;text-align:center}
-        .cli-mob-acts{flex-shrink:0;display:flex;gap:4px;align-items:center}
-        .cli-mob-act{width:34px;height:34px;border-radius:9px;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:transform .1s,background .12s}
-        .cli-mob-act:active{transform:scale(0.88)}
-        .cli-mob-act-del{background:#FEF2F2!important;color:#DC2626!important}
+        .cli-mob-acts{flex-shrink:0;display:flex;gap:2px;align-items:center}
+        .cli-mob-act{position:relative;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--txt2);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:opacity .12s,transform .12s;flex-shrink:0}
+        .cli-mob-act::before{content:'';position:absolute;top:-7px;right:-7px;bottom:-7px;left:-7px}
+        .cli-mob-act:active{opacity:.7;transform:scale(.9)}
+        .cli-mob-act-del{background:#FEF2F2!important;border-color:#FECACA!important;color:#DC2626!important}
 
         @media(max-width:640px){
           .cli-desk-only{display:none!important}

@@ -239,7 +239,8 @@ tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:var(--surface2)}
 td b{color:var(--txt);font-weight:600}
 .acts{display:flex;gap:4px}
-.act{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border2);background:var(--surface2);color:var(--txt2);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+.act{position:relative;width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border2);background:var(--surface2);color:var(--txt2);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+.act::before{content:'';position:absolute;top:-7px;right:-7px;bottom:-7px;left:-7px}
 .act:hover{background:var(--surface2);color:var(--txt);border-color:var(--border2)}
 .act.edit:hover{background:var(--blue-lt);color:var(--blue);border-color:var(--blue)}
 .act.del:hover{background:var(--red-lt);color:var(--red);border-color:var(--red)}
@@ -932,7 +933,7 @@ td b{color:var(--txt);font-weight:600}
 .nc-acts{display:flex;gap:6px;flex-shrink:0}
 
 /* ── Icon buttons (touch-safe 40×40) ───────────────────────────*/
-.ibtn{width:40px;height:40px;border-radius:12px;border:none;display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;transition:all var(--tr);-webkit-tap-highlight-color:transparent;flex-shrink:0;font-family:inherit}
+.ibtn{position:relative;width:36px;height:36px;border-radius:11px;border:none;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:all var(--tr);-webkit-tap-highlight-color:transparent;flex-shrink:0;font-family:inherit}
 .ibtn-wa{background:#DCFCE7;color:#16A34A}
 .ibtn-wa:hover,.ibtn-wa:active{background:#16A34A;color:#fff}
 .ibtn-call{background:#EFF6FF;color:#2563EB}
@@ -945,7 +946,8 @@ td b{color:var(--txt);font-weight:600}
 .ibtn-brand:hover,.ibtn-brand:active{background:var(--brand);color:var(--brand-text)}
 .ibtn-acento{background:var(--acento-xlt);color:var(--acento);border:1.5px solid var(--acento-dim)}
 .ibtn-acento:hover,.ibtn-acento:active{background:var(--acento);color:var(--acento-text)}
-.ibtn-sm{width:34px;height:34px;border-radius:10px;font-size:14px}
+.ibtn-sm{width:30px;height:30px;border-radius:9px;font-size:12px;position:relative}
+.ibtn-sm::before{content:'';position:absolute;top:-7px;right:-7px;bottom:-7px;left:-7px}
 
 /* ── Product card (grid de productos) ──────────────────────────*/
 .prod-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--sh);display:flex;flex-direction:column;transition:box-shadow var(--tr),transform var(--tr);cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
