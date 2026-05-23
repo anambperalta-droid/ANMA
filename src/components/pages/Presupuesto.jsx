@@ -374,14 +374,19 @@ export default function Presupuesto() {
     let totalCost = 0, totalRevenue = 0, totalQty = 0
     items.forEach(i => {
       const q = num(i.qty), cv = num(i.costUnit), p = num(i.priceUnit)
-      totalCost += q * cv; totalRevenue += q * p; totalQty += q
+      // Round per-item to avoid floating-point accumulation across many lines
+      totalCost    += Math.round(q * cv)
+      totalRevenue += Math.round(q * p)
+      totalQty     += q
     })
     // Flat per-order dispatch packaging cost (invisible to client)
-    const dispatchCost = (form.dispatchInsumos || []).reduce((s, d) => {
+    // Uses live insumo costs — frozen at save time when stockDeducted becomes true
+    const dispatchCost = Math.round((form.dispatchInsumos || []).reduce((s, d) => {
       const insumo = allInsumos.find(x => x.id === Number(d.insumoId))
-      return s + (insumo ? Number(insumo.cost || 0) * Number(d.qty || 0) : 0)
-    }, 0)
-    const logTotal = num(form.logoCost) * totalQty
+      const cost = insumo ? Number(insumo.cost) || 0 : 0
+      return s + cost * (Number(d.qty) || 0)
+    }, 0))
+    const logTotal = Math.round(num(form.logoCost) * totalQty)
     const ship = num(form.shipCost)
     const shipCharged = form.shipCharged !== false
     const baseCost = totalCost + logTotal + ship + dispatchCost
@@ -419,18 +424,38 @@ export default function Presupuesto() {
     ])
     const qualifyingStatus = QUALIFYING_STATES.has(form.status) || form.payStatus === 'paid'
     // stockDeducted flag prevents double-deduction if status goes qualifying → draft → qualifying
-    const wasStockDeducted = editId ? (get('budgets').find(x => x.id === editId)?.stockDeducted === true) : false
+    const prevBudget = editId ? get('budgets').find(x => x.id === editId) : null
+    const wasStockDeducted = prevBudget?.stockDeducted === true
     const willDeductStock = qualifyingStatus && !wasStockDeducted
+
+    // ── Cost freeze ──────────────────────────────────────────────────────────────
+    // Once stock is deducted, the COST side is frozen to the values at confirmation
+    // time. This prevents retroactive gain changes if insumo/dispatch costs change
+    // later. Revenue (total) and depositAmt always reflect the current form so
+    // payment tracking stays accurate.
+    const frozenTotalCost = wasStockDeducted ? (prevBudget.totalCost ?? calc.baseCost) : calc.baseCost
+    const totalGain       = calc.total - frozenTotalCost
 
     const saveForm = { ...form, shipCost: 0, shipCharged: false, envioACotizar: form.envioACotizar !== false, logoCost: num(form.logoCost), margin: num(form.margin), deposit: num(form.deposit), payStatus: form.payStatus || 'pending' }
     const marginBudgeted = marginBudgetedSaved !== null ? marginBudgetedSaved : Number(calc.marginReal)
-    const savedBudget = saveBudget({ ...(editId ? { id: editId } : {}), ...saveForm, items: validItems, totalCost: calc.baseCost, totalGain: calc.gain, total: calc.total, depositAmt: calc.depositAmt, marginBudgeted, stockDeducted: wasStockDeducted || willDeductStock })
+    const savedBudget = saveBudget({
+      ...(editId ? { id: editId } : {}), ...saveForm,
+      items: validItems,
+      totalCost: frozenTotalCost,
+      totalGain,
+      total: calc.total,
+      depositAmt: calc.depositAmt,
+      marginBudgeted,
+      stockDeducted: wasStockDeducted || willDeductStock,
+      // Snapshot frozen on first confirmation — immutable audit record of costs at sale time
+      ...(willDeductStock ? { costSnapshot: { date: new Date().toISOString().slice(0, 10), baseCost: calc.baseCost, dispatchCost: calc.dispatchCost } } : {}),
+    })
     if (!editId) setMarginBudgetedSaved(marginBudgeted)
 
     // Silent stock deduction — only fires on first transition to a qualifying status
     // Deducts product stock AND flat dispatch insumo quantities
     if (willDeductStock) {
-      deductStockForOrder(validItems, form.dispatchInsumos || [])
+      deductStockForOrder(validItems, form.dispatchInsumos || [], savedBudget?.num || '')
     }
 
     setDraftRestored(false)

@@ -219,17 +219,51 @@ export function DataProvider({ children }) {
     return move
   }, [refresh])
 
-  /* ── Deducir stock al confirmar pedido ── */
-  const deductStockForOrder = useCallback((items, dispatchInsumos = []) => {
+  /* ── Deducir stock al confirmar pedido (batch — una sola ventana de escritura) ──
+     Lee todos los stores una vez, aplica todos los cambios en memoria, escribe todo
+     junto. Minimiza el riesgo de estado parcial si el proceso se interrumpe. */
+  const deductStockForOrder = useCallback((items, dispatchInsumos = [], budgetRef = '') => {
+    const today    = new Date().toISOString().slice(0, 10)
+    const moves    = db('stockMoves', [])
+    const products = db('products', [])
+    const insumos  = db('insumos', [])
+
     items.forEach(item => {
       if (!item.productId) return
-      recordStockMove({ type: 'sale', productId: item.productId, qty: item.qty, ref: 'Venta', note: item.name })
+      const qty = Number(item.qty) || 0
+      if (!qty) return
+      moves.push({
+        id: nextId(), type: 'sale', date: today,
+        productId: item.productId, qty,
+        costUnit: Number(item.costUnit) || 0,
+        ref: budgetRef || 'Venta', note: item.name,
+      })
+      const idx = products.findIndex(x => x.id === item.productId)
+      if (idx > -1) {
+        products[idx] = { ...products[idx], stock: Math.max(0, (products[idx].stock || 0) - qty), lastMove: today, updatedAt: Date.now() }
+      }
     })
+
     dispatchInsumos.forEach(d => {
       if (!d.insumoId || !d.qty) return
-      recordStockMove({ type: 'sale', insumoId: Number(d.insumoId), qty: Number(d.qty), ref: 'Despacho', note: 'Insumo de packaging/despacho' })
+      const qty = Number(d.qty)
+      if (!qty) return
+      moves.push({
+        id: nextId(), type: 'sale', date: today,
+        insumoId: Number(d.insumoId), qty,
+        ref: budgetRef || 'Despacho', note: 'Insumo de despacho',
+      })
+      const idx = insumos.findIndex(x => x.id === Number(d.insumoId))
+      if (idx > -1) {
+        insumos[idx] = { ...insumos[idx], stock: Math.max(0, (insumos[idx].stock || 0) - qty), lastMove: today, updatedAt: Date.now() }
+      }
     })
-  }, [recordStockMove])
+
+    dbW('stockMoves', moves)
+    dbW('products', products)
+    dbW('insumos', insumos)
+    refresh()
+  }, [refresh])
 
   return (
     <Ctx.Provider value={{
