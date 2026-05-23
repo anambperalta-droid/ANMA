@@ -116,7 +116,7 @@ export function DataProvider({ children }) {
   const recordStockMove = useCallback((move) => {
     // Save the movement record
     const moves = db('stockMoves', [])
-    if (!move.id) move.id = Date.now() + Math.floor(Math.random() * 99991)
+    if (!move.id) move.id = nextId()
     move.date = move.date || new Date().toISOString().slice(0, 10)
     moves.push(move)
     dbW('stockMoves', moves)

@@ -61,7 +61,7 @@ async function resolveWorkspace(userId) {
   }
 }
 
-async function doPush() {
+async function doPush(retryCount = 0) {
   if (!_uid || !_wsId) return
   // Viewers do not push.
   if (_role === 'viewer') return
@@ -72,8 +72,17 @@ async function doPush() {
       data:       collectData(),
       updated_at: new Date().toISOString(),
     }, { onConflict: 'user_id,site_key' })
-    if (!error) window.dispatchEvent(new CustomEvent('anma:cloud-saved'))
-  } catch (e) { console.warn('[sync] push failed', e?.message) }
+    if (error) {
+      // One automatic retry after 4 s to recover from transient network errors.
+      if (retryCount < 1) setTimeout(() => doPush(retryCount + 1), 4000)
+      else console.warn('[sync] push failed after retry', error.message)
+      return
+    }
+    window.dispatchEvent(new CustomEvent('anma:cloud-saved'))
+  } catch (e) {
+    if (retryCount < 1) setTimeout(() => doPush(retryCount + 1), 4000)
+    else console.warn('[sync] push failed', e?.message)
+  }
 }
 
 /** Call once after login. Sets up the debounced write-hook. */
@@ -89,7 +98,10 @@ export function initSync(userId) {
   resolveWorkspace(userId).then(({ wsId, role }) => {
     _wsId = wsId
     _role = role
-    setWriteHook(() => { clearTimeout(_timer); _timer = setTimeout(doPush, 1500) })
+    // Viewers can read but never push — skip the write hook entirely.
+    if (role !== 'viewer') {
+      setWriteHook(() => { clearTimeout(_timer); _timer = setTimeout(doPush, 1500) })
+    }
   })
 }
 
