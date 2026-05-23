@@ -365,9 +365,18 @@ export default function Insumos() {
                           </td>
                           <td>
                             <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
-                              <button className="act" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Registrar movimiento" onClick={() => openMove(item)}><i className="fa fa-arrows-rotate" /></button>
-                              <button className="act" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Editar" onClick={() => openEdit(item)}><i className="fa fa-pen" /></button>
-                              <button className="act del" style={{ borderRadius: '50%', width: 28, height: 28 }} title="Eliminar" onClick={() => remove(item.id)}><i className="fa fa-trash" /></button>
+                              <button title="Registrar movimiento" onClick={() => openMove(item)}
+                                style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
+                                <i className="fa fa-arrows-rotate" />
+                              </button>
+                              <button title="Editar" onClick={() => openEdit(item)}
+                                style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
+                                <i className="fa fa-pen" />
+                              </button>
+                              <button title="Eliminar" onClick={() => remove(item.id)}
+                                style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid #FECACA',background:'#FEF2F2',color:'#DC2626',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
+                                <i className="fa fa-trash" />
+                              </button>
                             </div>
                           </td>
                         </tr>

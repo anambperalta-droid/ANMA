@@ -227,9 +227,18 @@ function SeguimientoCard({ b, onEdit, onWA, onResend }) {
         </div>
         <div className="seg-total">{money(b.total)}</div>
         <div className="seg-actions">
-          <button className="act edit" onClick={() => onEdit(b.id)} title="Editar"><i className="fa fa-pen" /></button>
-          <button className="act wa" onClick={() => onWA(b)} title="WhatsApp"><i className="fa-brands fa-whatsapp" /></button>
-          <button className="act resend" onClick={() => onResend(b)} title="Re-enviar presupuesto"><i className="fa fa-paper-plane" /></button>
+          <button onClick={() => onEdit(b.id)} title="Editar"
+            style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
+            <i className="fa fa-pen" />
+          </button>
+          <button onClick={() => onWA(b)} title="WhatsApp"
+            style={{ width:28,height:28,borderRadius:'50%',border:'none',background:'#DCFCE7',color:'#16A34A',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
+            <i className="fa-brands fa-whatsapp" />
+          </button>
+          <button onClick={() => onResend(b)} title="Re-enviar presupuesto"
+            style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--acento-dim)',background:'var(--acento-xlt)',color:'var(--acento)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
+            <i className="fa fa-paper-plane" />
+          </button>
         </div>
       </div>
     </div>
@@ -1183,10 +1192,9 @@ export default function Historial() {
                               <td className="c-est"><DotBadge status={b.status} /></td>
                               <td className="c-act" style={{ position: 'relative' }}>
                                 <button
-                                  className="act"
-                                  style={{ width: 28, height: 28 }}
                                   onClick={e => { e.stopPropagation(); setOpenMenuId(openMenuId === b.id ? null : b.id) }}
                                   title="Acciones"
+                                  style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}
                                 >
                                   <i className="fa fa-ellipsis-vertical" />
                                 </button>
