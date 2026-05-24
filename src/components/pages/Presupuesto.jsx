@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
-import { fmt } from '../../lib/storage'
+import { fmt, db, dbW, dbDel } from '../../lib/storage'
 import { getMPConfig, createPaymentLink, getBankConfig, buildBankInfoText } from '../../lib/mercadopago'
 import { pushBudget, getSheetsConfig } from '../../lib/sheets'
 
@@ -201,7 +201,7 @@ export default function Presupuesto() {
   const marginPct = c.defaultMargin || 40
 
   /* ── Draft persistence ── */
-  const DRAFT_KEY = 'anma_pro_presup_draft'
+  const DRAFT_KEY = 'presupDraft'  // user-scoped via dbW/db/dbDel
 
   useEffect(() => {
     if (id) {
@@ -226,17 +226,15 @@ export default function Presupuesto() {
       }
     } else {
       // Restaurar borrador si existe
-      try {
-        const saved = localStorage.getItem(DRAFT_KEY)
-        if (saved) {
-          const { f, it, step } = JSON.parse(saved)
-          if (f) setForm(prev => ({ ...prev, ...f }))
-          if (it?.length) setItems(it)
-          if (step) setCurrentStep(step)
-          setDraftRestored(true)
-          toast('Borrador restaurado — tus datos anteriores están cargados', 'ok')
-        }
-      } catch {}
+      const saved = db(DRAFT_KEY, null)
+      if (saved) {
+        const { f, it, step } = saved
+        if (f) setForm(prev => ({ ...prev, ...f }))
+        if (it?.length) setItems(it)
+        if (step) setCurrentStep(step)
+        setDraftRestored(true)
+        toast('Borrador restaurado — tus datos anteriores están cargados', 'ok')
+      }
     }
   }, [id]) // eslint-disable-line
 
@@ -245,7 +243,7 @@ export default function Presupuesto() {
     if (id) return
     const hasSomeData = form.contact || form.company || items.some(i => i.name)
     if (hasSomeData) {
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({ f: form, it: items, step: currentStep }))
+      dbW(DRAFT_KEY, { f: form, it: items, step: currentStep })
     }
   }, [form, items, currentStep]) // eslint-disable-line
 
@@ -459,7 +457,7 @@ export default function Presupuesto() {
     }
 
     setDraftRestored(false)
-    localStorage.removeItem(DRAFT_KEY)
+    dbDel(DRAFT_KEY)
     toast('Presupuesto guardado', 'ok')
     // ─── Auto-sync a Google Sheets (fire-and-forget) ───
     const gs = getSheetsConfig()
@@ -762,7 +760,7 @@ export default function Presupuesto() {
             <span style={{ background: '#F5F3FF', color: '#7C3AED', border: '1px solid #DDD6FE', borderRadius: 9999, padding: '2px 9px', fontSize: 11, fontWeight: 700, lineHeight: 1.5, whiteSpace: 'nowrap' }}>Borrador</span>
           )}
         </div>
-        <div className="ph-right"><button className="btn btn-ghost btn-sm" onClick={() => { localStorage.removeItem(DRAFT_KEY); setDraftRestored(false); nav('/') }}><i className="fa fa-xmark" /><span className="desc-txt"> Descartar</span></button></div>
+        <div className="ph-right"><button className="btn btn-ghost btn-sm" onClick={() => { dbDel(DRAFT_KEY); setDraftRestored(false); nav('/') }}><i className="fa fa-xmark" /><span className="desc-txt"> Descartar</span></button></div>
       </div>
 
 

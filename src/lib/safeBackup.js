@@ -3,10 +3,11 @@
    Mirror localStorage anma4_* keys to IndexedDB
    so accidental clears of localStorage don't lose all data.
 ═══════════════════════════════════════ */
+import { STORAGE_BASE } from './storage'
 
 const DB_NAME = 'anma_safe_backup'
 const STORE = 'snapshots'
-const PREFIX = 'anma4_'
+const PREFIX = STORAGE_BASE  // single source of truth — no duplicate string
 const KEEP = 7 // keep last 7 snapshots
 
 function openDB() {

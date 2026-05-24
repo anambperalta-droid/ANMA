@@ -3,7 +3,7 @@ import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
-import { fmt } from '../../lib/storage'
+import { fmt, db, dbW } from '../../lib/storage'
 
 const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '' }
 
@@ -78,8 +78,8 @@ export default function Catalogo() {
   const [bulkSupplierValue, setBulkSupplierValue] = useState('')
   const [catMgmtModal, setCatMgmtModal] = useState(false)
   const [editingCat, setEditingCat] = useState(null) // { original, value }
-  const [viewMode, setViewMode] = useState(() => localStorage.getItem('anma_product_view_mode') || 'grid')
-  const switchView = (mode) => { setViewMode(mode); localStorage.setItem('anma_product_view_mode', mode) }
+  const [viewMode, setViewMode] = useState(() => db('productViewMode', 'grid'))
+  const switchView = (mode) => { setViewMode(mode); dbW('productViewMode', mode) }
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [marginInput, setMarginInput] = useState('')
   const imgRef = useRef(null)
