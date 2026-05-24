@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
+import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, fmtDec, MOVE_TYPES, MOVE_CLS } from '../../lib/storage'
 
 const EMPTY = { name: '', cat: '', subcat: '', unit: 'un', cost: '', stock: '', minStock: '', supplierId: '', notes: '' }
@@ -59,7 +60,8 @@ const relTime = (iso) => {
 
 export default function Insumos() {
   const { get, config, saveEntity, deleteEntity, recordStockMove } = useData()
-  const toast = useToast()
+  const toast   = useToast()
+  const confirm = useConfirm()
   const c = config()
   const cats = c.insumoCats || []
   const units = c.units || ['un', 'kg', 'lt', 'm', 'pack', 'caja', 'rollo']
@@ -122,9 +124,7 @@ export default function Insumos() {
     toast(form.id ? 'Insumo actualizado' : 'Insumo creado', 'ok')
   }
 
-  const remove = (id) => {
-    if (window.confirm('¿Eliminar este insumo?')) { deleteEntity('insumos', id); toast('Eliminado', 'in') }
-  }
+  const remove = (id) => confirm('¿Eliminar este insumo?', () => { deleteEntity('insumos', id); toast('Eliminado', 'in') })
 
   const openMove = (item) => {
     setMoveModal(item)

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
+import { useConfirm } from '../../context/ConfirmContext'
 import { fmt } from '../../lib/storage'
 
 const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '' }
@@ -44,7 +45,8 @@ const CAT_PALETTE = [
 
 export default function Catalogo() {
   const { get, config, updateConfig, saveEntity, deleteEntity, recordStockMove } = useData()
-  const toast = useToast()
+  const toast   = useToast()
+  const confirm = useConfirm()
   const c = config()
   const { role } = useAuth()
   const opHideCosts = role === 'operator' && c.opShowCosts === false
@@ -180,7 +182,7 @@ export default function Catalogo() {
     saveEntity('products', data); setModal(false); toast('Producto guardado', 'ok')
   }
 
-  const del = (id) => { if (window.confirm('¿Eliminar producto?')) { deleteEntity('products', id); toast('Producto eliminado', 'in') } }
+  const del = (id) => confirm('¿Eliminar producto?', () => { deleteEntity('products', id); toast('Producto eliminado', 'in') })
   const supplierName = (id) => { const s = suppliers.find(x => x.id === Number(id)); return s?.name || '—' }
 
   const openMove = (item) => { setMoveModal(item); setMoveForm({ type: 'in', qty: '', note: '' }) }
@@ -258,10 +260,11 @@ export default function Catalogo() {
 
   const doBulkDelete = () => {
     if (!selectedIds.size) return
-    if (!window.confirm(`¿Eliminar ${selectedIds.size} producto${selectedIds.size !== 1 ? 's' : ''}? Esta acción no se puede deshacer.`)) return
-    selectedIds.forEach(id => deleteEntity('products', id))
-    toast(`${selectedIds.size} productos eliminados`, 'in')
-    setSelectedIds(new Set())
+    confirm({ body: `¿Eliminar ${selectedIds.size} producto${selectedIds.size !== 1 ? 's' : ''}? Esta acción no se puede deshacer.`, danger: true, confirmLabel: 'Eliminar' }, () => {
+      selectedIds.forEach(id => deleteEntity('products', id))
+      toast(`${selectedIds.size} productos eliminados`, 'in')
+      setSelectedIds(new Set())
+    })
   }
 
   const doBulkCat = () => {
@@ -294,10 +297,11 @@ export default function Catalogo() {
 
   const doDeleteCat = (cat) => {
     const affected = products.filter(p => p.cat === cat).length
-    if (!window.confirm(`¿Eliminar categoría "${cat}"?${affected > 0 ? `\n${affected} producto${affected !== 1 ? 's' : ''} quedarán sin categoría.` : ''}`)) return
-    updateConfig({ productCats: cats.filter(c => c !== cat) })
-    products.filter(p => p.cat === cat).forEach(p => saveEntity('products', { ...p, cat: '' }))
-    toast(`Categoría eliminada`, 'in')
+    confirm({ body: `¿Eliminar categoría "${cat}"?${affected > 0 ? `\n${affected} producto${affected !== 1 ? 's' : ''} quedarán sin categoría.` : ''}`, danger: true, confirmLabel: 'Eliminar' }, () => {
+      updateConfig({ productCats: cats.filter(c => c !== cat) })
+      products.filter(p => p.cat === cat).forEach(p => saveEntity('products', { ...p, cat: '' }))
+      toast(`Categoría eliminada`, 'in')
+    })
   }
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
+import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, fmtDate, MONTHS, STATUS_MAP, STATUS_CLS, PAY_STATUS_MAP, PAY_STATUS_CLS } from '../../lib/storage'
 import { usePrivacy } from '../../context/PrivacyContext'
 
@@ -362,7 +363,8 @@ function StatusDonut({ statuses, budgets, onSegmentClick }) {
 
 export default function Historial() {
   const { get, config, updateBudgetStatus, saveBudget, deleteBudget, deductStockForOrder } = useData()
-  const toast = useToast()
+  const toast   = useToast()
+  const confirm = useConfirm()
   const nav = useNavigate()
   const [tab, setTab] = useState('resumen')
   const [filter, setFilter] = useState('all')
@@ -712,11 +714,16 @@ export default function Historial() {
   }
   const handleDelete = (b) => {
     const label = b.num || `#${b.id}`
-    if (!window.confirm(`⚠ ELIMINAR ${label}?\n\nCliente: ${b.contact || b.company || '—'}\nTotal: ${fmt(b.total)}\n\nEsta acción no se puede deshacer.`)) return
-    const confirm2 = window.prompt(`Para confirmar, escribí ELIMINAR (en mayúsculas):`)
-    if (confirm2 !== 'ELIMINAR') { toast('Eliminación cancelada', 'in'); return }
-    deleteBudget(b.id); toast('Presupuesto eliminado', 'in')
-    setSelectedIds(prev => { const n = new Set(prev); n.delete(b.id); return n })
+    confirm({
+      body: `⚠ ELIMINAR ${label}\n\nCliente: ${b.contact || b.company || '—'}\nTotal: ${fmt(b.total)}\n\nEsta acción no se puede deshacer.`,
+      danger: true,
+      requireText: 'ELIMINAR',
+      confirmLabel: 'Eliminar definitivamente',
+    }, () => {
+      deleteBudget(b.id)
+      toast('Presupuesto eliminado', 'in')
+      setSelectedIds(prev => { const n = new Set(prev); n.delete(b.id); return n })
+    })
   }
   const QUALIFYING_STATES = new Set(['inprogress', 'delivered', 'En preparación', 'En producción', 'Entregado'])
   const handleStatusChange = (id, status) => {
@@ -795,14 +802,28 @@ export default function Historial() {
     toast(`${selectedIds.size} presupuestos actualizados`, 'ok')
     setSelectedIds(new Set()); setBulkStatus('')
   }
+  const csvEsc = (v) => { const s = String(v ?? ''); return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s }
+  const CSV_HEADERS = ['N°','Fecha','Cliente','Empresa','Estado','Pago','Total','Costo','Ganancia','Margen%','Seña','Stock descontado','Fecha costo']
+  const budgetToRow = (b) => [
+    b.num, b.date,
+    csvEsc(b.contact || ''), csvEsc(b.company || ''),
+    csvEsc(STATUS_MAP[b.status] || b.status || ''),
+    csvEsc(PAY_STATUS_MAP[b.payStatus] || b.payStatus || ''),
+    b.total ?? '', b.totalCost ?? '', b.totalGain ?? '',
+    b.marginBudgeted != null ? `${b.marginBudgeted}%` : '',
+    b.depositAmt ?? '',
+    b.stockDeducted ? 'Sí' : 'No',
+    b.costSnapshot?.date || '',
+  ].join(',')
+  const downloadCSV = (rows, filename) => {
+    const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' })
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
+    a.download = filename; a.click()
+  }
   const bulkExportCSV = () => {
     if (!selectedIds.size) return
     const sel = budgets.filter(b => selectedIds.has(b.id))
-    const rows = [['N°', 'Fecha', 'Cliente', 'Empresa', 'Total', 'Ganancia', 'Estado'].join(',')]
-    sel.forEach(b => rows.push([b.num, b.date, b.contact, b.company, b.total, b.totalGain, STATUS_MAP[b.status]].join(',')))
-    const blob = new Blob([rows.join('\n')], { type: 'text/csv' })
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
-    a.download = `presupuestos_sel_${new Date().toISOString().slice(0,10)}.csv`; a.click()
+    downloadCSV([CSV_HEADERS.join(','), ...sel.map(budgetToRow)], `pedidos_sel_${new Date().toISOString().slice(0,10)}.csv`)
   }
 
   /* ── ESC cierra modales ── */
@@ -829,11 +850,7 @@ export default function Historial() {
   const handleResendSent = () => { toast('Mensaje copiado / enviado', 'ok'); setResendBudget(null) }
 
   const exportCSV = () => {
-    const rows = [['N°', 'Fecha', 'Cliente', 'Empresa', 'Total', 'Ganancia', 'Estado'].join(',')]
-    budgets.forEach(b => rows.push([b.num, b.date, b.contact, b.company, b.total, b.totalGain, STATUS_MAP[b.status]].join(',')))
-    const blob = new Blob([rows.join('\n')], { type: 'text/csv' })
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
-    a.download = `presupuestos_${new Date().toISOString().slice(0, 10)}.csv`; a.click()
+    downloadCSV([CSV_HEADERS.join(','), ...budgets.map(budgetToRow)], `pedidos_${new Date().toISOString().slice(0,10)}.csv`)
   }
 
   // ── INSIGHTS auto-generados (pestaña Análisis) ──
