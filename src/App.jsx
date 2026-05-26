@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext'
 import Login from './components/layout/Login'
 import AppShell from './components/layout/AppShell'
 import Bienvenida from './components/pages/Bienvenida'
+import Registro from './components/pages/Registro'
 import PortalProveedor from './components/pages/PortalProveedor'
 import ErrorBoundary from './components/layout/ErrorBoundary'
 
@@ -32,6 +33,7 @@ export default function App() {
         {/* Ruta pública sin auth: portal de proveedor con datos en URL */}
         <Route path="/portal-proveedor" element={<PortalProveedor />} />
         <Route path="/bienvenida" element={<Bienvenida />} />
+        <Route path="/registro" element={authed ? <Navigate to="/" /> : <Registro />} />
         <Route path="/login" element={
           hasAuthParams ? <Navigate to={'/bienvenida' + search + hash} replace /> :
           authed ? <Navigate to="/" /> : <Login />
