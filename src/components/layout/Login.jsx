@@ -264,6 +264,8 @@ export default function Login() {
         @media(max-width:480px){
           .lp-card{padding:30px 24px 24px;border-radius:20px}
           .lp-greet{font-size:21px}
+          /* iOS zoom prevention: inputs necesitan font-size ≥16px */
+          .lp-inp{font-size:16px!important;padding:14px 15px!important}
         }
       `}</style>
 
