@@ -163,6 +163,69 @@ export function DataProvider({ children }) {
     logAudit('delete', key, id, existing ? { name: existing.name || existing.title || null } : null)
   }, [refresh])
 
+  /**
+   * Importación masiva upsert para una clave de localStorage.
+   * Deduplicación por nombre (normStr) dentro del workspace del usuario.
+   *
+   * @param {string}  key           Clave de localStorage: 'clients'|'suppliers'|'products'|'insumos'
+   * @param {Array}   filas         Filas parseadas por importParser (incluyen _status, _row, _raw)
+   * @param {object}  [opts]
+   * @param {Array}   [opts.supplierList]  Lista de proveedores ya insertados para resolver supplierId
+   * @returns {{ nuevos, actualizados, omitidos, total, listaActualizada }}
+   */
+  const importarEntidades = useCallback((key, filas, { supplierList } = {}) => {
+    const nameKey   = key === 'clients' ? 'company' : 'name'
+    const list      = db(key, [])
+    const ts        = Date.now()
+    let nuevos = 0, actualizados = 0, omitidos = 0
+
+    // Índice por nombre normalizado para dedup O(1)
+    const byName = new Map(list.map(x => [String(x[nameKey] || '').toLowerCase().trim(), x]))
+    // Índice de proveedores por nombre normalizado para resolver supplierId
+    const supplierByName = supplierList
+      ? new Map(supplierList.map(s => [String(s.name || '').toLowerCase().trim(), s]))
+      : null
+
+    const updated = [...list]
+
+    for (const fila of filas) {
+      if (fila._status === 'empty') { omitidos++; continue }
+
+      // Extraer datos — quitar campos de metadata del parser
+      const { _row, _raw, _status, supplierName, ...datos } = fila
+      datos.updatedAt = ts
+
+      // Resolver supplierId desde nombre si hay mapa de proveedores
+      if (supplierName && supplierByName) {
+        const match = supplierByName.get(String(supplierName).toLowerCase().trim())
+        if (match) datos.supplierId = match.id
+      }
+
+      const norm = String(datos[nameKey] || '').toLowerCase().trim()
+      if (!norm) { omitidos++; continue }
+
+      const existing = byName.get(norm)
+      if (existing) {
+        // UPDATE: preserve id + merge data
+        const idx = updated.findIndex(x => x.id === existing.id)
+        if (idx > -1) updated[idx] = { ...updated[idx], ...datos, id: existing.id }
+        byName.set(norm, updated[idx > -1 ? idx : 0])  // mantener índice actualizado
+        actualizados++
+      } else {
+        // INSERT: nuevo registro con id único
+        const newItem = { ...datos, id: nextId() }
+        updated.push(newItem)
+        byName.set(norm, newItem)
+        nuevos++
+      }
+    }
+
+    dbW(key, updated)
+    refresh()
+    logAudit('import', key, null, { nuevos, actualizados, omitidos })
+    return { nuevos, actualizados, omitidos, total: filas.length, listaActualizada: updated }
+  }, [refresh])
+
   /* ── Stock: movimientos de inventario ── */
   const recordStockMove = useCallback((move) => {
     const moves = db('stockMoves', [])
@@ -269,7 +332,7 @@ export function DataProvider({ children }) {
     <Ctx.Provider value={{
       get, set, config, updateConfig, refresh, tick,
       saveBudget, deleteBudget, updateBudgetStatus,
-      saveEntity, deleteEntity,
+      saveEntity, deleteEntity, importarEntidades,
       recordStockMove, deductStockForOrder,
     }}>
       {children}
