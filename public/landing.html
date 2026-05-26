@@ -343,6 +343,10 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   .demo-section{padding:36px 0!important}
 }
 
+/* TESTIMONIOS responsive */
+@media(max-width:860px){.testi-grid{grid-template-columns:1fr!important}}
+@media(min-width:540px) and (max-width:860px){.testi-grid{grid-template-columns:1fr 1fr!important}}
+
 /* MOBILE 400px */
 @media(max-width:400px){
   .h1{font-size:24px!important}
@@ -388,6 +392,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
       <a href="#faq">Preguntas</a>
     </nav>
     <div class="nav-cta">
+      <a href="/registro" class="btn btn-primary" style="padding:9px 16px;font-size:13px"><i class="fa-solid fa-rocket"></i> Probar gratis</a>
       <a href="https://anma-hub.vercel.app/login" class="btn btn-dark"><i class="fa-solid fa-arrow-right-to-bracket"></i> Ingresar</a>
     </div>
   </div>
@@ -397,9 +402,9 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 <section id="top" class="hero">
   <div class="wrap hero-grid">
     <div>
-      <span class="eyebrow"><span class="pulse-dot"></span> ANMA Pro · Hecho en Argentina</span>
-      <h1 class="h1">El centro de control<br>para tu negocio<br><em>El respiro que necesitás</em></h1>
-      <p class="lead">Ordená tus tareas, gestioná tus proyectos y bajá el desorden del día a día a un solo lugar. Una interfaz limpia y rápida diseñada para que resuelvas con claridad, avances y recuperes tu tiempo.</p>
+      <span class="eyebrow"><span class="pulse-dot"></span> ANMA Pro · Hecho en Argentina · <strong style="color:#34d399">+15 negocios activos</strong></span>
+      <h1 class="h1">De los presupuestos<br>al cobro, todo<br><em>en un solo lugar</em></h1>
+      <p class="lead">Sin Excel, sin papeles, sin caos. Gestioná clientes, pedidos y stock desde una sola pantalla diseñada para negocios reales que necesitan moverse rápido.</p>
       <div class="hero-ctas">
         <a href="/registro" class="btn btn-primary hero-cta-btn"><i class="fa-solid fa-rocket"></i> Probar gratis por 7 días</a>
         <div class="hero-demo-group">
@@ -414,6 +419,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
         <span><i class="fa-solid fa-check"></i> 7 días gratis</span>
         <span><i class="fa-solid fa-check"></i> Sin tarjeta de crédito</span>
         <span><i class="fa-solid fa-check"></i> Cancelás cuando quieras</span>
+        <span><i class="fa-solid fa-users"></i> +15 negocios ya lo usan</span>
       </div>
     </div>
     <div class="mock-wrap">
@@ -623,6 +629,20 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     </div>
   </div>
 </section>
+
+<!-- BARRA SOCIAL PROOF -->
+<div style="background:#f8fafc;border-bottom:1px solid #e5e7eb;padding:14px 0">
+  <div class="wrap" style="display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap">
+    <span style="font-size:12px;color:#94a3b8;font-weight:600;white-space:nowrap">Usado por negocios en todo el país:</span>
+    <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:center">
+      <span style="font-size:13px;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-store" style="color:#7c3aed;font-size:12px"></i> Distribuidoras</span>
+      <span style="font-size:13px;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-screwdriver-wrench" style="color:#7c3aed;font-size:12px"></i> Talleres</span>
+      <span style="font-size:13px;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-laptop" style="color:#7c3aed;font-size:12px"></i> Estudios creativos</span>
+      <span style="font-size:13px;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-handshake" style="color:#7c3aed;font-size:12px"></i> Servicios B2B</span>
+      <span style="font-size:13px;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-box-open" style="color:#7c3aed;font-size:12px"></i> E-commerce</span>
+    </div>
+  </div>
+</div>
 
 <!-- EMPATÍA -->
 <section style="padding:48px 0;background:#fafbfc">
@@ -915,6 +935,79 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   </div>
 </section>
 
+<!-- TESTIMONIOS -->
+<section style="padding:56px 0;background:#fafbfc">
+  <div class="wrap">
+    <div style="text-align:center;max-width:680px;margin:0 auto 36px">
+      <span class="eyebrow-dark">Lo que dicen nuestros clientes</span>
+      <h2 class="h2">Negocios reales, resultados reales</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:980px;margin:0 auto" class="testi-grid">
+
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:28px 26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,.04)">
+        <div style="display:flex;gap:3px">
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+        </div>
+        <p style="font-size:14.5px;color:#334155;line-height:1.7;margin:0;font-style:italic">"Antes tardaba 40 minutos en armar un presupuesto. Ahora lo hago en 5. El cliente lo recibe por WhatsApp y ya está. No puedo creer que funcionara con Excel todo este tiempo."</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:14px;border-top:1px solid #f1f5f9">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0">M</div>
+          <div>
+            <div style="font-size:13.5px;font-weight:800;color:#0F172A">Marcos D.</div>
+            <div style="font-size:11.5px;color:#64748b">Distribuidora · Buenos Aires</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:28px 26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,.04);border-color:#7c3aed;border-width:1.5px">
+        <div style="display:flex;gap:3px">
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+        </div>
+        <p style="font-size:14.5px;color:#334155;line-height:1.7;margin:0;font-style:italic">"Tenía todo en cuadernos y mensajes de WhatsApp perdidos. Con ANMA arranco el lunes y en 10 minutos sé exactamente qué cobré, qué falta y qué cliente necesito llamar. Me cambió la cabeza."</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:14px;border-top:1px solid #f1f5f9">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#d946ef,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0">V</div>
+          <div>
+            <div style="font-size:13.5px;font-weight:800;color:#0F172A">Valeria R.</div>
+            <div style="font-size:11.5px;color:#64748b">Estudio de diseño · Córdoba</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:28px 26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,.04)">
+        <div style="display:flex;gap:3px">
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+        </div>
+        <p style="font-size:14.5px;color:#334155;line-height:1.7;margin:0;font-style:italic">"Lo que más me sorprendió fue el soporte. Tengo una duda, mando un mensaje por WhatsApp y en menos de una hora lo resuelvo. Nunca tuve eso con ningún sistema."</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:14px;border-top:1px solid #f1f5f9">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#059669,#0d9488);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0">G</div>
+          <div>
+            <div style="font-size:13.5px;font-weight:800;color:#0F172A">Gustavo P.</div>
+            <div style="font-size:11.5px;color:#64748b">Taller de producción · Rosario</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA intermedio -->
+    <div style="text-align:center;margin-top:36px">
+      <a href="/registro" class="btn btn-primary" style="padding:14px 30px;font-size:15px"><i class="fa-solid fa-rocket"></i> Probalo gratis — sin tarjeta de crédito</a>
+      <p style="font-size:12px;color:#94a3b8;margin:10px 0 0">7 días de prueba completa. Sin compromiso.</p>
+    </div>
+  </div>
+</section>
+
 <!-- PARA QUIÉN -->
 <section id="para-quien" class="para-quien" style="padding:48px 0">
   <div class="wrap">
@@ -931,9 +1024,47 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   </div>
 </section>
 
+<!-- ROI BLOCK -->
+<section style="padding:48px 0;background:#fff">
+  <div class="wrap">
+    <div style="max-width:860px;margin:0 auto;background:linear-gradient(135deg,#0F172A,#1e1b4b);border-radius:22px;padding:40px 44px;display:flex;flex-wrap:wrap;gap:32px;align-items:center;justify-content:space-between">
+      <div style="flex:1;min-width:240px">
+        <span style="display:inline-block;background:rgba(52,211,153,.15);color:#34d399;font-size:10px;font-weight:800;text-transform:uppercase;padding:4px 12px;border-radius:20px;letter-spacing:1px;margin-bottom:14px">Tu tiempo vale plata</span>
+        <h3 style="color:#fff;font-size:24px;font-weight:900;letter-spacing:-.5px;margin:0 0 10px">¿Cuántas horas por semana perdés en WhatsApp, Excel y papeles sueltos?</h3>
+        <p style="color:rgba(255,255,255,.65);font-size:14px;line-height:1.7;margin:0">Los negocios que usan ANMA reportan ahorrar entre <strong style="color:#34d399">6 y 10 horas semanales</strong> en tareas administrativas. Eso es tiempo real para vender, producir o descansar.</p>
+      </div>
+      <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:12px;min-width:200px">
+        <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border-radius:12px;padding:14px 18px">
+          <i class="fa-solid fa-clock" style="color:#a78bfa;font-size:20px;flex-shrink:0"></i>
+          <div>
+            <div style="color:#fff;font-size:22px;font-weight:900;line-height:1">-8 hs</div>
+            <div style="color:rgba(255,255,255,.5);font-size:11px">por semana en admin</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border-radius:12px;padding:14px 18px">
+          <i class="fa-solid fa-chart-line" style="color:#34d399;font-size:20px;flex-shrink:0"></i>
+          <div>
+            <div style="color:#fff;font-size:22px;font-weight:900;line-height:1">+30%</div>
+            <div style="color:rgba(255,255,255,.5);font-size:11px">en seguimiento de cobros</div>
+          </div>
+        </div>
+        <a href="/registro" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#059669;color:#fff;text-decoration:none;padding:13px;border-radius:12px;font-weight:800;font-size:13.5px;box-shadow:0 8px 20px rgba(5,150,105,.35)"><i class="fa-solid fa-rocket"></i> Empezar ahora gratis</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- INVERSIÓN / PRECIO -->
 <section id="pricing" style="padding:36px 0;background:#0b0214">
   <div style="max-width:960px;margin:0 auto;padding:0 20px">
+
+    <!-- Urgencia -->
+    <div style="text-align:center;margin-bottom:16px">
+      <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(217,70,239,.15);border:1px solid rgba(217,70,239,.3);color:#d946ef;font-size:12px;font-weight:700;padding:6px 16px;border-radius:99px">
+        <span style="width:7px;height:7px;border-radius:50%;background:#d946ef;display:inline-block;animation:pulse 2s infinite"></span>
+        Solo incorporamos nuevos negocios de forma limitada para garantizar el soporte personalizado
+      </span>
+    </div>
 
     <!-- Encabezado -->
     <div style="text-align:center;margin-bottom:22px">
@@ -985,6 +1116,14 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
           <p style="font-size:11.5px;color:#64748b;text-align:center;margin:0;line-height:1.5">
             <i class="fa-solid fa-circle-check" style="color:#34d399;margin-right:4px"></i>Sin contratos de permanencia. Cancelá cuando quieras.
           </p>
+
+          <!-- Trial gratuito -->
+          <div style="text-align:center;padding-top:6px;border-top:1px solid rgba(255,255,255,.06)">
+            <p style="color:#94a3b8;font-size:11.5px;margin:0 0 6px">¿Querés probar antes de hablar?</p>
+            <a href="/registro" style="display:inline-flex;align-items:center;gap:7px;color:#a78bfa;font-size:13px;font-weight:700;text-decoration:none;transition:color .2s">
+              <i class="fa-solid fa-rocket" style="font-size:11px"></i> Probá gratis 7 días sin tarjeta →
+            </a>
+          </div>
 
         </div>
 
@@ -1079,25 +1218,49 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
         <summary>¿Puedo agendar una demo guiada?</summary>
         <div class="faq-body">Sí. Escribinos por WhatsApp y coordinamos un video-call de 20 min donde te mostramos la herramienta funcionando con tu caso real. Es gratis y sin compromiso.</div>
       </details>
+      <details class="faq">
+        <summary>¿El precio de $30.000/mes es mucho para mi negocio?</summary>
+        <div class="faq-body">Pensalo así: si ANMA te ahorra 8 horas semanales de trabajo administrativo, eso son 32 horas al mes que podés usar para vender, producir o crecer. ¿Cuánto vale una hora de tu tiempo? Además, el primer mes está cubierto dentro del pago de ingreso. Probalo sin riesgo — si no te convence, los datos son tuyos y no pagás nada más.</div>
+      </details>
     </div>
   </div>
 </section>
 
-<!-- CONTACTO -->
-<section id="contact" class="contact contact-wa-block">
-  <span class="eyebrow-dark" style="color:#7c3aed;display:block;margin-bottom:14px">Contacto directo</span>
-  <h3>¿Listo para empezar?</h3>
-  <p>Hablemos sin vueltas. Te respondemos en minutos y te mostramos la plataforma funcionando con tu caso real. Sin compromiso.</p>
+<!-- CTA FINAL -->
+<section id="contact" style="padding:64px 0;background:linear-gradient(145deg,#1a0636 0%,#2d0a57 40%,#4c1d95 100%)">
+  <div class="wrap" style="text-align:center;max-width:680px;margin:0 auto">
 
-  <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quer%C3%ADa%20hacerles%20una%20consulta." target="_blank" class="wa-cta-btn">
-    <i class="fa-brands fa-whatsapp"></i>
-    Traé aire fresco a tu gestión — Hablemos ahora
-  </a>
+    <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;font-size:12px;font-weight:600;color:#c4b5fd;padding:6px 16px;margin-bottom:20px">
+      <span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;animation:pulse 2s infinite"></span>
+      Contestamos en menos de 1 hora
+    </span>
 
-  <br>
-  <a href="mailto:ana.mbperalta@gmail.com" class="contact-email-link">
-    <i class="fa-solid fa-envelope"></i> ana.mbperalta@gmail.com
-  </a>
+    <h2 style="color:#fff;font-size:38px;font-weight:900;letter-spacing:-.8px;margin:0 0 14px;line-height:1.15">Tu negocio ordenado<br>empieza hoy</h2>
+    <p style="color:rgba(255,255,255,.65);font-size:16px;line-height:1.7;margin:0 0 32px">Probá gratis 7 días sin tarjeta. O si preferís hablar primero, estamos en WhatsApp ahora mismo.</p>
+
+    <!-- Dos opciones claras -->
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
+      <a href="/registro" style="display:inline-flex;align-items:center;gap:10px;background:#059669;color:#fff;text-decoration:none;padding:16px 28px;border-radius:14px;font-size:16px;font-weight:800;box-shadow:0 12px 32px rgba(5,150,105,.4)">
+        <i class="fa-solid fa-rocket"></i> Probar gratis — 7 días
+      </a>
+      <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quer%C3%ADa%20hacerles%20una%20consulta." target="_blank" class="wa-cta-btn" style="padding:16px 28px;font-size:16px">
+        <i class="fa-brands fa-whatsapp"></i>
+        Traé aire fresco a tu gestión — Hablemos ahora
+      </a>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.45)">
+      <span><i class="fa-solid fa-lock" style="color:#34d399;margin-right:5px"></i>Sin tarjeta de crédito</span>
+      <span><i class="fa-solid fa-check" style="color:#34d399;margin-right:5px"></i>Datos seguros</span>
+      <span><i class="fa-solid fa-check" style="color:#34d399;margin-right:5px"></i>Cancelás cuando quieras</span>
+      <span><i class="fa-solid fa-flag" style="color:#34d399;margin-right:5px"></i>Hecho en Argentina</span>
+    </div>
+
+    <a href="mailto:ana.mbperalta@gmail.com" class="contact-email-link" style="margin-top:20px;color:rgba(255,255,255,.35)">
+      <i class="fa-solid fa-envelope"></i> ana.mbperalta@gmail.com
+    </a>
+
+  </div>
 </section>
 
 <!-- WA FLOAT — solo desktop -->
