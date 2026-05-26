@@ -4,6 +4,8 @@ import { useToast } from './ToastContext'
 import { CURRENT_SITE } from '../lib/invites'
 import { setStorageUser } from '../lib/storage'
 import { initSync, pullFromCloud } from '../lib/sync'
+import { getTrialStatus } from '../lib/trial'
+import { injectSeedData } from '../lib/seedData'
 
 const Ctx = createContext()
 
@@ -87,9 +89,33 @@ export function AuthProvider({ children }) {
       setUser(session?.user ?? null)
       setStorageUser(session?.user?.id ?? null)
       initSync(session?.user?.id ?? null)
-      if (_event === 'SIGNED_IN' && session?.user?.id) {
+
+      if (_event === 'SIGNED_IN' && session?.user) {
         pullFromCloud(session.user.id)
+
+        const meta    = session.user.user_metadata || {}
+        const isNew   = !meta.trial_started_at && !meta.invited_to_site && !meta.subscribed
+        const isOAuth = session.user.app_metadata?.provider !== 'email'
+
+        if (isNew && isOAuth) {
+          // Usuario nuevo vía Google/OAuth: inyectar trial metadata + seed data
+          const trialStart = new Date().toISOString()
+          supabase.auth.updateUser({
+            data: {
+              trial_started_at: trialStart,
+              is_trial:         true,
+              business_name:    meta.full_name || meta.name || '',
+              allowed_sites:    ['hub'],
+            },
+          }).then(() => {
+            injectSeedData(session.user.id, meta.full_name || meta.name || '')
+          })
+        } else if (meta.is_trial) {
+          // Seed data para usuario email (si no fue inyectado aún)
+          injectSeedData(session.user.id, meta.business_name || '')
+        }
       }
+
       if (_event === 'SIGNED_OUT') {
         setStorageUser(null)
         toast('Sesion cerrada.', 'in')
@@ -133,6 +159,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const isGlobalAdmin = isGlobalAdminEmail(user?.email)
+  const trial         = getTrialStatus(user)
 
   // ── Role resolution ──────────────────────────────────────────────
   // - Admin global (email en GLOBAL_ADMINS) → 'owner' siempre.
@@ -161,7 +188,7 @@ export function AuthProvider({ children }) {
   }, [role])
 
   return (
-    <Ctx.Provider value={{ authed, loading, user, login, logout, siteBlocked, isGlobalAdmin, changePassword, resetPassword, role, can }}>
+    <Ctx.Provider value={{ authed, loading, user, login, logout, siteBlocked, isGlobalAdmin, changePassword, resetPassword, role, can, trial }}>
       {children}
     </Ctx.Provider>
   )

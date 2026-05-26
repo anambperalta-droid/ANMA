@@ -4,6 +4,7 @@ import Login from './components/layout/Login'
 import AppShell from './components/layout/AppShell'
 import Bienvenida from './components/pages/Bienvenida'
 import Registro from './components/pages/Registro'
+import TrialExpirado from './components/pages/TrialExpirado'
 import PortalProveedor from './components/pages/PortalProveedor'
 import ErrorBoundary from './components/layout/ErrorBoundary'
 
@@ -19,7 +20,7 @@ function AuthRedirect() {
 }
 
 export default function App() {
-  const { authed, loading } = useAuth()
+  const { authed, loading, trial } = useAuth()
   const loc = useLocation()
   const hash = loc.hash || ''
   const search = loc.search || ''
@@ -39,8 +40,10 @@ export default function App() {
           authed ? <Navigate to="/" /> : <Login />
         } />
         <Route path="/*" element={
-          hasAuthParams ? <Navigate to={'/bienvenida' + search + hash} replace /> :
-          authed ? <AppShell /> : <Navigate to="/login" />
+          hasAuthParams    ? <Navigate to={'/bienvenida' + search + hash} replace /> :
+          !authed          ? <Navigate to="/login" /> :
+          trial?.expired   ? <TrialExpirado /> :
+          <AppShell />
         } />
       </Routes>
     </ErrorBoundary>
