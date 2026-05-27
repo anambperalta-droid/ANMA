@@ -252,7 +252,7 @@ export default function Proveedores() {
   const handleFileSelect = (e) => processFile(e.target.files?.[0])
 
   const downloadTemplate = () => {
-    const csv = 'Nombre,Contacto,WhatsApp,Email,Rubro,Notas\n"Mi Proveedor S.A.","Juan García","1112345678","juan@proveedor.com","Textiles","Sin notas"'
+    const csv = 'sep=,\nNombre,Contacto,WhatsApp,Email,Rubro,Notas\n"Mi Proveedor S.A.","Juan García","1112345678","juan@proveedor.com","Textiles","Sin notas"\n"Otro Proveedor","Ana Martínez","1187654321","ana@proveedor.com","Packaging",""'
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a'); a.href = url; a.download = 'plantilla-proveedores.csv'; a.click()
