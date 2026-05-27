@@ -650,8 +650,8 @@ export default function Catalogo() {
 
       {/* Modal producto */}
       {modal && (
-        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal" style={{ maxWidth: 740, display: 'flex', flexDirection: 'column', maxHeight: 'calc(100dvh - 40px)', padding: 0, overflow: 'hidden' }}>
+        <div className="modal-bg open" style={{ alignItems: 'flex-start', padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
+          <div className="modal" style={{ maxWidth: 740, width: 'calc(100vw - 28px)', display: 'flex', flexDirection: 'column', maxHeight: 'calc(100dvh - 28px)', padding: 0, overflow: 'hidden' }}>
             <div className="mh" style={{ flexShrink: 0 }}><h3>{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
             <div style={{ flex: 1, overflowY: 'auto', padding: '18px 22px 4px' }}>
 
@@ -896,8 +896,8 @@ export default function Catalogo() {
 
       {/* Bulk modal */}
       {bulkModal && (
-        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setBulkModal(false) }}>
-          <div className="modal" style={{ maxWidth: 580, display: 'flex', flexDirection: 'column', maxHeight: 'calc(100dvh - 40px)', padding: 0, overflow: 'hidden' }}>
+        <div className="modal-bg open" style={{ alignItems: 'flex-start', padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) setBulkModal(false) }}>
+          <div className="modal" style={{ maxWidth: 580, width: 'calc(100vw - 28px)', display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 28px)', padding: 0, overflow: 'hidden' }}>
             <div className="mh" style={{ flexShrink: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ width: 28, height: 28, borderRadius: 8, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
