@@ -26,6 +26,7 @@ export default function Proveedores() {
   const [newNote, setNewNote] = useState('')
   const fileRef = useRef(null)
   const [csvPreview, setCsvPreview] = useState([])
+  const [isDragging, setIsDragging] = useState(false)
   const [priceModal, setPriceModal] = useState(null) // { product } cuando está abierto
   const [priceForm, setPriceForm] = useState({ newCost: '', note: '' })
   const [reorderOpen, setReorderOpen] = useState(false)
@@ -230,8 +231,7 @@ export default function Proveedores() {
 
   const supplierLastActivity = (s) => lastActivityBySupplierId.get(s.id) ?? null
 
-  const handleFileSelect = (e) => {
-    const file = e.target.files?.[0]
+  const processFile = (file) => {
     if (!file) return
     const reader = new FileReader()
     reader.onload = (ev) => {
@@ -247,7 +247,16 @@ export default function Proveedores() {
       }
       setCsvPreview(parsed)
     }
-    reader.readAsText(file)
+    reader.readAsText(file, 'UTF-8')
+  }
+  const handleFileSelect = (e) => processFile(e.target.files?.[0])
+
+  const downloadTemplate = () => {
+    const csv = 'Nombre,Contacto,WhatsApp,Email,Rubro,Notas\n"Mi Proveedor S.A.","Juan García","1112345678","juan@proveedor.com","Textiles","Sin notas"'
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a'); a.href = url; a.download = 'plantilla-proveedores.csv'; a.click()
+    URL.revokeObjectURL(url)
   }
 
   const doImport = () => {
@@ -1107,40 +1116,67 @@ export default function Proveedores() {
 
       {/* MODAL IMPORTAR CSV */}
       {importModal && (
-        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) { setImportModal(false); setCsvPreview([]) } }}>
-          <div className="modal" style={{ maxWidth: 680 }}>
-            <div className="mh"><h3>Importar proveedores desde CSV</h3><button className="mclose" onClick={() => { setImportModal(false); setCsvPreview([]) }}><i className="fa fa-xmark" /></button></div>
-            <div style={{ background: 'var(--surface2)', borderRadius: 8, padding: '10px 14px', marginBottom: 12, fontSize: 11, color: 'var(--txt2)' }}>
-              <b>Formato:</b> Nombre, Contacto, WhatsApp, Email, Rubro, Notas
-            </div>
-            <div className="fg">
-              <label>Archivo CSV</label>
-              <input ref={fileRef} type="file" accept=".csv,.txt" onChange={handleFileSelect}
-                style={{ padding: '8px 12px', border: '1.5px dashed var(--border)', borderRadius: 8, width: '100%', cursor: 'pointer', fontSize: 12 }} />
-            </div>
-            {csvPreview.length > 0 && (
-              <>
-                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt)', margin: '8px 0 6px' }}>
-                  Vista previa ({csvPreview.length} registros)
+        <div className="modal-bg open" style={{ padding: '10px 14px' }} onClick={e => { if (e.target === e.currentTarget) { setImportModal(false); setCsvPreview([]) } }}>
+          <div className="modal" style={{ maxWidth: 620, width: 'calc(100vw - 28px)', display: 'flex', flexDirection: 'column', maxHeight: 'calc(100dvh - 20px)', padding: 0, overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)', fontSize: 16 }}><i className="fa fa-truck" /></div>
+                <div>
+                  <div style={{ fontSize: 15, fontWeight: 800 }}>Importar proveedores</div>
+                  <div style={{ fontSize: 11, color: 'var(--txt3)' }}>Desde planilla CSV · Excel · Google Sheets</div>
                 </div>
-                <div style={{ maxHeight: 180, overflow: 'auto', border: '1px solid var(--border)', borderRadius: 6 }}>
-                  <table style={{ fontSize: 11 }}>
-                    <thead><tr><th>Nombre</th><th>Contacto</th><th>WA</th><th>Rubro</th><th>Email</th></tr></thead>
-                    <tbody>
-                      {csvPreview.slice(0, 10).map((s, i) => (
-                        <tr key={i}><td>{s.name}</td><td>{s.contact}</td><td>{s.wa}</td><td>{s.rubro}</td><td>{s.email}</td></tr>
-                      ))}
-                      {csvPreview.length > 10 && <tr><td colSpan={5} style={{ textAlign: 'center', color: 'var(--txt3)' }}>...y {csvPreview.length - 10} más</td></tr>}
-                    </tbody>
-                  </table>
+              </div>
+              <button className="mclose" onClick={() => { setImportModal(false); setCsvPreview([]) }}><i className="fa fa-xmark" /></button>
+            </div>
+            <div style={{ flex: 1, overflowY: 'auto', padding: '18px 20px' }}>
+              {csvPreview.length === 0 && (
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center', padding: '12px 14px', background: 'var(--brand-xlt)', borderRadius: 10, border: '1px solid var(--brand-dim)', marginBottom: 16 }}>
+                  <i className="fa fa-table" style={{ color: 'var(--brand)', fontSize: 18, flexShrink: 0 }} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 2 }}>¿Primera vez? Usá nuestra plantilla</div>
+                    <div style={{ fontSize: 11, color: 'var(--txt3)' }}>Completá en Excel o Google Sheets y subí el archivo acá.</div>
+                  </div>
+                  <button className="btn btn-secondary btn-sm" onClick={downloadTemplate} style={{ flexShrink: 0 }}><i className="fa fa-download" /> Plantilla</button>
                 </div>
-              </>
-            )}
-            <div className="mfooter">
+              )}
+              {csvPreview.length === 0 && (
+                <>
+                  <div onDragOver={e => { e.preventDefault(); setIsDragging(true) }} onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget)) setIsDragging(false) }} onDrop={e => { e.preventDefault(); setIsDragging(false); processFile(e.dataTransfer.files[0]) }} onClick={() => fileRef.current?.click()}
+                    style={{ border: `2px dashed ${isDragging ? 'var(--brand)' : 'var(--border)'}`, background: isDragging ? 'var(--brand-xlt)' : 'var(--surface2)', borderRadius: 12, padding: '32px 20px', textAlign: 'center', cursor: 'pointer', transition: 'all .2s' }}>
+                    <i className="fa fa-cloud-arrow-up" style={{ fontSize: 36, color: isDragging ? 'var(--brand)' : 'var(--txt4)', display: 'block', marginBottom: 10 }} />
+                    <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--txt2)', marginBottom: 4 }}>{isDragging ? '¡Soltá el archivo acá!' : 'Arrastrá tu archivo CSV acá'}</div>
+                    <div style={{ fontSize: 12, color: 'var(--txt3)' }}>o hacé clic para seleccionar · .csv y .txt</div>
+                    <input ref={fileRef} type="file" accept=".csv,.txt" onChange={handleFileSelect} style={{ display: 'none' }} />
+                  </div>
+                  <div style={{ marginTop: 10, padding: '8px 12px', background: 'var(--surface2)', borderRadius: 8, fontSize: 11, color: 'var(--txt3)' }}>
+                    <b style={{ color: 'var(--txt2)' }}>Columnas:</b> Nombre · Contacto · WhatsApp · Email · Rubro · Notas
+                  </div>
+                </>
+              )}
+              {csvPreview.length > 0 && (
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ background: '#059669', color: '#fff', fontSize: 11, fontWeight: 800, padding: '3px 10px', borderRadius: 20 }}>{csvPreview.length} registros</span>
+                      <span style={{ fontSize: 12, color: 'var(--txt3)' }}>listos para importar</span>
+                    </div>
+                    <button className="btn btn-ghost btn-xs" style={{ color: 'var(--txt3)' }} onClick={() => { setCsvPreview([]); if (fileRef.current) fileRef.current.value = '' }}><i className="fa fa-arrow-left" /> Cambiar</button>
+                  </div>
+                  <div style={{ overflowX: 'auto', border: '1px solid var(--border)', borderRadius: 10, maxHeight: 340, overflowY: 'auto' }}>
+                    <table style={{ fontSize: 11, minWidth: 480 }}>
+                      <thead><tr><th style={{ width: 28 }}>#</th><th>Nombre</th><th>Contacto</th><th>WA</th><th>Rubro</th><th>Email</th></tr></thead>
+                      <tbody>
+                        {csvPreview.slice(0, 20).map((s, i) => (<tr key={i}><td style={{ color: 'var(--txt4)', textAlign: 'center' }}>{i+1}</td><td><b>{s.name}</b></td><td>{s.contact}</td><td>{s.wa}</td><td>{s.rubro}</td><td>{s.email}</td></tr>))}
+                        {csvPreview.length > 20 && <tr><td colSpan={6} style={{ textAlign: 'center', color: 'var(--txt3)', padding: '8px', fontStyle: 'italic' }}>…y {csvPreview.length - 20} más</td></tr>}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="mfooter" style={{ flexShrink: 0, borderTop: '1px solid var(--border)', padding: '12px 20px' }}>
               <button className="btn btn-secondary" onClick={() => { setImportModal(false); setCsvPreview([]) }}>Cancelar</button>
-              <button className="btn btn-primary" onClick={doImport} disabled={!csvPreview.length}>
-                <i className="fa fa-file-import" /> Importar {csvPreview.length}
-              </button>
+              <button className="btn btn-primary" onClick={doImport} disabled={!csvPreview.length}><i className="fa fa-file-import" /> {csvPreview.length > 0 ? `Importar ${csvPreview.length} proveedores` : 'Importar'}</button>
             </div>
           </div>
         </div>
