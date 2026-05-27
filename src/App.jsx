@@ -6,6 +6,7 @@ import Bienvenida from './components/pages/Bienvenida'
 import Registro from './components/pages/Registro'
 import TrialExpirado from './components/pages/TrialExpirado'
 import PortalProveedor from './components/pages/PortalProveedor'
+import Alta from './components/pages/Alta'
 import ErrorBoundary from './components/layout/ErrorBoundary'
 
 function AuthRedirect() {
@@ -31,8 +32,9 @@ export default function App() {
   return (
     <ErrorBoundary>
       <Routes>
-        {/* Ruta pública sin auth: portal de proveedor con datos en URL */}
+        {/* Rutas públicas sin auth */}
         <Route path="/portal-proveedor" element={<PortalProveedor />} />
+        <Route path="/alta" element={<Alta appName="ANMA Pro" />} />
         <Route path="/bienvenida" element={<Bienvenida />} />
         <Route path="/registro" element={authed ? <Navigate to="/" /> : <Registro />} />
         <Route path="/login" element={

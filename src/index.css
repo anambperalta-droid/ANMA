@@ -170,7 +170,7 @@ input,select,textarea{font-family:inherit}
 .tb-search i{color:var(--txt3);font-size:12px;flex-shrink:0}
 .tb-btn{width:34px;height:34px;border-radius:8px;background:var(--surface2);border:1.5px solid var(--border);color:var(--txt2);font-size:13px;display:flex;align-items:center;justify-content:center;transition:all var(--tr);cursor:pointer}
 .tb-btn:hover{background:var(--acento-xlt);border-color:var(--acento);color:var(--acento)}
-.content{padding:14px 16px;flex:1;overflow-y:auto;overflow-x:hidden}
+.content{padding:14px 16px;flex:1;overflow-y:auto;overflow-x:clip}
 
 /* ─── COMMON COMPONENTS ─── */
 .ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:10px}

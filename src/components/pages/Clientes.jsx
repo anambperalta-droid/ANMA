@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
@@ -186,14 +186,31 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
   )
 }
 
+/* ── Parser de texto libre → contacto ── */
+const parseContactText = (text) => {
+  const r = {}
+  const emailM = text.match(/[\w._%+\-]+@[\w.\-]+\.[a-zA-Z]{2,}/)
+  if (emailM) r.email = emailM[0]
+  const phoneM = text.match(/(?:\+?(?:549?|54\s?9?)\s*)?(?:\d[\d\s\-]{7,13}\d)/)
+  if (phoneM) r.wa = phoneM[0].replace(/[\s\-()]/g, '').replace(/^00/, '+')
+  const nameM = text.match(/(?:nombre|contacto|name|contact)[:\s]+([^\n,@\d\\/<>]{3,40})/i)
+    || text.match(/^([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)+)/m)
+  if (nameM) r.contact = nameM[1].trim()
+  const coM = text.match(/(?:empresa|company|org(?:anización)?|negocio)[:\s]+([^\n,]{2,50})/i)
+  if (coM) r.company = coM[1].trim()
+  return r
+}
+
 export default function Clientes() {
   const { get, saveEntity, deleteEntity, config } = useData()
   const toast   = useToast()
   const confirm = useConfirm()
   const nav = useNavigate()
+  const location = useLocation()
   const [search, setSearch] = useState('')
   const [modal, setModal] = useState(false)
   const [importModal, setImportModal] = useState(false)
+  const [regFormModal, setRegFormModal] = useState(false)
   const [detailClient, setDetailClient] = useState(null)
   const [detailTab, setDetailTab] = useState('info')
   const [viewMode, setViewMode] = useState('table')
@@ -207,8 +224,26 @@ export default function Clientes() {
   const [revinculModal, setRevinculModal] = useState(null)
   const [revinculMsg, setRevinculMsg] = useState('')
   const [selectedIds, setSelectedIds] = useState(new Set())
+  const [pasteMode, setPasteMode] = useState(false)
+  const [pasteText, setPasteText] = useState('')
+  const [formRegUrl, setFormRegUrl] = useState('')
 
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
+
+  /* ── Deep link: ?cn=Nombre&co=Empresa&cw=WhatsApp&ce=Email ── */
+  useEffect(() => {
+    const p = new URLSearchParams(location.search)
+    const cn = p.get('cn') || p.get('nombre') || p.get('name') || ''
+    const co = p.get('co') || p.get('empresa') || p.get('company') || ''
+    const cw = (p.get('cw') || p.get('wa') || p.get('tel') || p.get('telefono') || '').replace(/\s/g, '')
+    const ce = p.get('ce') || p.get('email') || ''
+    if (cn || cw || co) {
+      setForm(f => ({ ...f, contact: cn, company: co || cn, wa: cw, email: ce }))
+      setModal(true)
+      nav('/clientes', { replace: true })
+      toast('📥 Nuevo contacto recibido — revisá los datos y guardá', 'ok')
+    }
+  }, []) // eslint-disable-line
 
   const clients = get('clients')
   const budgets = get('budgets')
@@ -240,7 +275,7 @@ export default function Clientes() {
   }, [clients, search])
 
   const setF = (k, v) => setForm(f => ({ ...f, [k]: v }))
-  const openEdit = (c) => { setForm(c || { company: '', contact: '', wa: '', email: '', rubro: '', notes: '', discount: 0 }); setModal(true) }
+  const openEdit = (c) => { setForm(c || { company: '', contact: '', wa: '', email: '', rubro: '', notes: '', discount: 0, cuit: '', razonSocial: '', ivaCondition: '' }); setModal(true); setPasteMode(false); setPasteText('') }
   const save = () => {
     if (!form.company) { toast('Ingresá el nombre de la empresa.', 'er'); return }
     saveEntity('clients', form); setModal(false); toast('Cliente guardado', 'ok')
@@ -274,6 +309,22 @@ export default function Clientes() {
     }).filter(c => c.company || c.contact)
   }
 
+  /* ── Detecta y parsea chat exportado de WhatsApp (.txt) ── */
+  const parseWaChat = (text) => {
+    const lineRe = /(?:\[[\d/.,\s:AMP]+\]|-)\s*([^:]{3,60}):/g
+    const participants = new Map()
+    let m
+    while ((m = lineRe.exec(text)) !== null) {
+      const raw = m[1].trim()
+      const phoneRe = /^[+\d][\d\s\-().]{6,20}$/
+      if (phoneRe.test(raw)) {
+        const clean = raw.replace(/[\s\-().]/g, '')
+        participants.set(clean, { wa: clean, contact: '', company: '' })
+      }
+    }
+    return [...participants.values()].filter(p => p.wa.length >= 8)
+  }
+
   const processFile = (file) => {
     if (!file) return
     const reader = new FileReader()
@@ -281,6 +332,11 @@ export default function Clientes() {
       const content = ev.target.result
       if (file.name.endsWith('.vcf') || content.includes('BEGIN:VCARD')) {
         setCsvPreview(parseVcf(content)); return
+      }
+      const isWaChat = /(\[[\d/., :APM]+\]|^\d{1,2}\/\d{1,2}\/\d{2,4},\s*\d)/m.test(content) && content.includes(' - ')
+      if (isWaChat || (file.name.toLowerCase().includes('whatsapp') && file.name.endsWith('.txt'))) {
+        const contacts = parseWaChat(content)
+        if (contacts.length > 0) { setCsvPreview(contacts); return }
       }
       const lines = content.split('\n').filter(l => l.trim())
       const header = lines[0].toLowerCase()
@@ -431,6 +487,9 @@ export default function Clientes() {
             </button>
             <button className="cli-pill" onClick={exportCSV}>
               <i className="fa fa-download" /><span>Exportar</span>
+            </button>
+            <button className="cli-pill" onClick={() => setRegFormModal(true)}>
+              <i className="fa fa-qrcode" /><span>Formulario</span>
             </button>
           </div>
           <button className="cli-pill-new" onClick={() => openEdit()}>
@@ -832,17 +891,63 @@ export default function Clientes() {
       {/* MODAL EDITAR */}
       {modal && (
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal">
+          <div className="modal" style={{ maxWidth: 680 }}>
             <div className="mh"><h3>{form.id ? 'Editar' : 'Agregar'} cliente</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
+
+            {/* ── Extraer datos de texto ── */}
+            <div style={{ marginBottom: 14, borderRadius: 10, border: `1.5px solid ${pasteMode ? 'rgba(37,211,102,.4)' : 'var(--border)'}`, overflow: 'hidden', transition: 'border-color .2s' }}>
+              <button type="button"
+                onClick={() => { setPasteMode(m => !m); if (pasteMode) setPasteText('') }}
+                style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 8, background: pasteMode ? 'rgba(37,211,102,.06)' : 'var(--surface2)', border: 'none', padding: '9px 13px', cursor: 'pointer', fontFamily: 'inherit', transition: 'background .2s' }}>
+                <i className="fa-brands fa-whatsapp" style={{ color: '#25D366', fontSize: 15 }} />
+                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--txt2)', flex: 1, textAlign: 'left' }}>Extraer datos de un mensaje (WA, email, tarjeta...)</span>
+                <i className={`fa fa-chevron-${pasteMode ? 'up' : 'down'}`} style={{ fontSize: 10, color: 'var(--txt4)' }} />
+              </button>
+              {pasteMode && (
+                <div style={{ padding: '0 13px 12px', borderTop: '1px solid var(--border)', background: 'var(--surface)' }}>
+                  <div style={{ fontSize: 10, color: 'var(--txt3)', padding: '8px 0 5px' }}>Pegá cualquier texto con datos del cliente — mensaje de WA, email, tarjeta:</div>
+                  <textarea value={pasteText} onChange={e => setPasteText(e.target.value)} rows={3}
+                    placeholder={'Ej: Hola! Soy María López de Tech SA\nCelular: 11 5555-1234\nEmail: maria@tech.com'}
+                    style={{ width: '100%', resize: 'none', fontFamily: 'inherit', fontSize: 12, padding: '7px 10px', border: '1.5px solid var(--border)', borderRadius: 7, boxSizing: 'border-box', lineHeight: 1.5, color: 'var(--txt)', background: 'var(--surface)', outline: 'none' }}
+                  />
+                  {pasteText.trim() && (() => {
+                    const r = parseContactText(pasteText)
+                    const found = Object.keys(r).length > 0
+                    return (
+                      <div style={{ marginTop: 6, display: 'flex', gap: 5, alignItems: 'center', flexWrap: 'wrap' }}>
+                        {found ? (
+                          <>
+                            {r.contact && <span style={{ fontSize: 10, background: '#DCFCE7', color: '#15803D', padding: '2px 9px', borderRadius: 20, fontWeight: 600 }}>👤 {r.contact}</span>}
+                            {r.company && <span style={{ fontSize: 10, background: 'var(--brand-xlt)', color: 'var(--brand)', padding: '2px 9px', borderRadius: 20, fontWeight: 600 }}>🏢 {r.company}</span>}
+                            {r.wa && <span style={{ fontSize: 10, background: '#DCFCE7', color: '#059669', padding: '2px 9px', borderRadius: 20, fontWeight: 600 }}>📱 {r.wa}</span>}
+                            {r.email && <span style={{ fontSize: 10, background: '#DBEAFE', color: '#2563EB', padding: '2px 9px', borderRadius: 20, fontWeight: 600 }}>✉️ {r.email}</span>}
+                            <button className="btn btn-primary btn-xs" style={{ marginLeft: 'auto' }}
+                              onClick={() => {
+                                setForm(f => ({ ...f, ...(r.contact ? { contact: r.contact } : {}), ...(r.company ? { company: r.company } : {}), ...(r.wa ? { wa: r.wa } : {}), ...(r.email ? { email: r.email } : {}) }))
+                                setPasteMode(false); setPasteText(''); toast('Datos aplicados al formulario', 'ok')
+                              }}>
+                              <i className="fa fa-check" /> Aplicar
+                            </button>
+                          </>
+                        ) : (
+                          <span style={{ fontSize: 11, color: 'var(--txt4)', fontStyle: 'italic' }}>No se reconocieron datos. Probá con más texto...</span>
+                        )}
+                      </div>
+                    )
+                  })()}
+                </div>
+              )}
+            </div>
+
+            {/* Datos de contacto */}
+            <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Datos de contacto</div>
             <div className="grid2">
-              <div className="fg"><label>Empresa *</label><input type="text" value={form.company} onChange={e => setF('company', e.target.value)} placeholder="Empresa S.A." /></div>
-              <div className="fg"><label>Contacto</label><input type="text" value={form.contact} onChange={e => setF('contact', e.target.value)} placeholder="Nombre" /></div>
+              <div className="fg"><label>Empresa *</label><input type="text" value={form.company} onChange={e => setF('company', e.target.value)} placeholder="Empresa S.A." autoFocus /></div>
+              <div className="fg"><label>Contacto</label><input type="text" value={form.contact} onChange={e => setF('contact', e.target.value)} placeholder="Nombre y apellido" /></div>
               <div className="fg"><label>WhatsApp</label><input type="text" value={form.wa} onChange={e => setF('wa', e.target.value)} placeholder="+54 ..." /></div>
               <div className="fg"><label>Email</label><input type="email" value={form.email} onChange={e => setF('email', e.target.value)} /></div>
-            </div>
-            <div className="grid2">
               <div className="fg" style={!config().features?.descuentoCliente ? { gridColumn: '1 / -1' } : undefined}>
-                <label>Rubro</label><input type="text" value={form.rubro} onChange={e => setF('rubro', e.target.value)} placeholder="Tecnología, Salud..." />
+                <label>Rubro</label><input type="text" value={form.rubro} onChange={e => setF('rubro', e.target.value)} placeholder="Tecnología, Salud, Eventos..." />
               </div>
               {config().features?.descuentoCliente && (
                 <div className="fg">
@@ -851,7 +956,37 @@ export default function Clientes() {
                 </div>
               )}
             </div>
-            <div className="fg"><label>Notas</label><textarea value={form.notes} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones..." /></div>
+
+            {/* Datos fiscales */}
+            <div style={{ borderTop: '1px solid var(--border)', margin: '14px 0 10px', paddingTop: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+                <i className="fa fa-landmark" style={{ color: 'var(--brand)', fontSize: 11 }} />
+                <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.08em' }}>Datos Fiscales (Facturación)</span>
+              </div>
+              <div className="grid2">
+                <div className="fg">
+                  <label>CUIT / CUIL</label>
+                  <input type="text" value={form.cuit || ''} onChange={e => setF('cuit', e.target.value)} placeholder="20-12345678-9" maxLength={13} />
+                </div>
+                <div className="fg">
+                  <label>Condición frente al IVA</label>
+                  <select value={form.ivaCondition || ''} onChange={e => setF('ivaCondition', e.target.value)}>
+                    <option value="">— seleccionar —</option>
+                    <option value="Responsable Inscripto">Responsable Inscripto</option>
+                    <option value="Monotributista">Monotributista</option>
+                    <option value="Exento">Exento</option>
+                    <option value="No Responsable">No Responsable</option>
+                    <option value="Consumidor Final">Consumidor Final</option>
+                  </select>
+                </div>
+                <div className="fg" style={{ gridColumn: '1 / -1' }}>
+                  <label>Razón Social</label>
+                  <input type="text" value={form.razonSocial || ''} onChange={e => setF('razonSocial', e.target.value)} placeholder="Razón social completa según AFIP" />
+                </div>
+              </div>
+            </div>
+
+            <div className="fg"><label>Notas</label><textarea value={form.notes} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones internas..." /></div>
             <div className="mfooter"><button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button><button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar</button></div>
           </div>
         </div>
@@ -1024,15 +1159,20 @@ export default function Clientes() {
             </div>
             <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
               {csvPreview.length === 0 && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 14 }}>
                   <div style={{ padding: '10px 12px', borderRadius: 10, background: 'rgba(37,211,102,.07)', border: '1.5px solid rgba(37,211,102,.3)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 12, marginBottom: 5 }}><i className="fa-brands fa-whatsapp" style={{ color: '#25D366', fontSize: 15 }} /> Desde el celular</div>
-                    <div style={{ fontSize: 11, color: 'var(--txt2)', lineHeight: 1.5 }}>Exportá tus contactos como <b>.vcf</b> desde Contactos del teléfono. Importa nombre, celular y email.</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 12, marginBottom: 5 }}><i className="fa-brands fa-whatsapp" style={{ color: '#25D366', fontSize: 15 }} /> Contactos</div>
+                    <div style={{ fontSize: 11, color: 'var(--txt2)', lineHeight: 1.5 }}>Exportá tus contactos como <b>.vcf</b> desde Contactos del teléfono.</div>
                     <div style={{ marginTop: 6, fontSize: 10, color: '#059669', fontWeight: 600 }}><i className="fa fa-circle-check" style={{ marginRight: 4 }} />iPhone y Android</div>
                   </div>
+                  <div style={{ padding: '10px 12px', borderRadius: 10, background: 'rgba(37,211,102,.05)', border: '1.5px solid rgba(37,211,102,.2)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 12, marginBottom: 5 }}><i className="fa-brands fa-whatsapp" style={{ color: '#25D366', fontSize: 15 }} /> Chat WA</div>
+                    <div style={{ fontSize: 11, color: 'var(--txt2)', lineHeight: 1.5 }}>Exportá un chat desde WA y subí el <b>.txt</b>. Extrae participantes.</div>
+                    <div style={{ marginTop: 6, fontSize: 10, color: '#059669', fontWeight: 600 }}><i className="fa fa-circle-check" style={{ marginRight: 4 }} />WA → ⋮ → Más → Exportar chat</div>
+                  </div>
                   <div style={{ padding: '10px 12px', borderRadius: 10, background: 'var(--surface2)', border: '1px solid var(--border)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 12, marginBottom: 5 }}><i className="fa fa-file-csv" style={{ color: '#0F9D58', fontSize: 15 }} /> Desde planilla</div>
-                    <div style={{ fontSize: 11, color: 'var(--txt2)', lineHeight: 1.5 }}>Completá en Excel o Google Sheets con la plantilla y subila acá.</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 12, marginBottom: 5 }}><i className="fa fa-file-csv" style={{ color: '#0F9D58', fontSize: 15 }} /> Planilla CSV</div>
+                    <div style={{ fontSize: 11, color: 'var(--txt2)', lineHeight: 1.5 }}>Completá en Excel o Google Sheets con la plantilla y subila.</div>
                     <button className="btn btn-ghost btn-xs" style={{ marginTop: 6, color: 'var(--brand)' }} onClick={downloadTemplate}><i className="fa fa-download" /> Descargar plantilla</button>
                   </div>
                 </div>
@@ -1088,6 +1228,61 @@ export default function Clientes() {
           onEdit={() => { setPreviewBudget(null); setDetailClient(null); nav(`/presupuesto/${previewBudget.id}`) }}
         />
       )}
+
+      {/* MODAL FORMULARIO DE ALTA — link directo, sin setup externo */}
+      {regFormModal && (() => {
+        const cfg = config()
+        const adminWa = (cfg.wa || '').replace(/\D/g, '')
+        const neg = cfg.businessName || 'ANMA Pro'
+        const intakeUrl = `${window.location.origin}/alta?neg=${encodeURIComponent(neg)}${adminWa ? `&admin=${adminWa}` : ''}`
+        const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(intakeUrl)}`
+        return (
+          <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setRegFormModal(false) }}>
+            <div className="modal" style={{ maxWidth: 500 }} onClick={e => e.stopPropagation()}>
+              <div className="mh">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 9, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)', fontSize: 17, flexShrink: 0 }}><i className="fa fa-qrcode" /></div>
+                  <div><h3 style={{ margin: 0, fontSize: 15 }}>Formulario de alta de clientes</h3><div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>Sin setup · listo para compartir ahora</div></div>
+                </div>
+                <button className="mclose" onClick={() => setRegFormModal(false)}><i className="fa fa-xmark" /></button>
+              </div>
+              <div style={{ background: 'linear-gradient(120deg,rgba(124,58,237,.07),rgba(37,211,102,.05))', border: '1px solid rgba(124,58,237,.18)', borderRadius: 10, padding: '10px 13px', marginBottom: 16, fontSize: 11, color: 'var(--txt2)', lineHeight: 1.6 }}>
+                <b style={{ color: 'var(--txt)' }}>¿Cómo funciona?</b> El cliente escanea el QR → completa sus datos → te lo manda por WhatsApp → abrís el link y ANMA pre-carga el formulario. <b>Un clic para guardar.</b>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, padding: '16px', background: 'var(--surface2)', borderRadius: 12, border: '1px solid var(--border)', marginBottom: 14 }}>
+                <img src={qrSrc} alt="QR alta" width={192} height={192} style={{ borderRadius: 10, border: '4px solid #fff', boxShadow: '0 2px 12px rgba(0,0,0,.12)', display: 'block' }} />
+                <div style={{ fontSize: 11, color: 'var(--txt3)', textAlign: 'center' }}><i className="fa fa-mobile-screen-button" style={{ marginRight: 4 }} />Tus clientes escanean este QR y se registran</div>
+                <button className="btn btn-ghost btn-xs" onClick={() => { const a = document.createElement('a'); a.href = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(intakeUrl)}&download=1`; a.download = 'qr-registro-clientes.png'; a.click() }}>
+                  <i className="fa fa-download" /> Descargar QR
+                </button>
+              </div>
+              <div style={{ marginBottom: 14 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', marginBottom: 5 }}>LINK DEL FORMULARIO</div>
+                <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                  <div style={{ flex: 1, background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px', fontSize: 11, fontFamily: 'monospace', color: 'var(--txt2)', wordBreak: 'break-all', lineHeight: 1.5 }}>{intakeUrl}</div>
+                  <button className="btn btn-ghost btn-xs" style={{ flexShrink: 0 }} onClick={() => { navigator.clipboard.writeText(intakeUrl); toast('Link copiado', 'ok') }}><i className="fa fa-copy" /> Copiar</button>
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 4 }}>
+                {[{ icon:'fa-brands fa-whatsapp',bg:'#DCFCE7',col:'#16A34A',label:'Story de WA' },{ icon:'fa fa-print',bg:'#EDE9FE',col:'#7C3AED',label:'Impreso' },{ icon:'fa fa-envelope',bg:'#DBEAFE',col:'#2563EB',label:'Email / web' }].map(it => (
+                  <div key={it.label} style={{ textAlign:'center',padding:'10px 8px',background:it.bg+'66',borderRadius:8,border:`1px solid ${it.bg}` }}>
+                    <i className={it.icon} style={{ fontSize:18,color:it.col,display:'block',marginBottom:5 }} /><div style={{ fontSize:10,fontWeight:600,color:'var(--txt2)' }}>{it.label}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="mfooter" style={{ marginTop: 14 }}>
+                <button className="btn btn-secondary" onClick={() => setRegFormModal(false)}>Cerrar</button>
+                {adminWa && (
+                  <button className="btn btn-primary" style={{ background:'#16A34A',borderColor:'#16A34A' }}
+                    onClick={() => { const text = `¡Hola! Para registrarte como cliente de ${neg}, completá: ${intakeUrl}`; window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank') }}>
+                    <i className="fa-brands fa-whatsapp" /> Compartir por WA
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )
+      })()}
 
       {/* MODAL RE-VINCULAR */}
       {revinculModal && (
