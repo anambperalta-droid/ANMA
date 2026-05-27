@@ -62,6 +62,29 @@ a{color:inherit;text-decoration:none}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;font-size:12px;font-weight:600;color:#c4b5fd;margin-bottom:14px}
 .eyebrow .pulse-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:pulse 2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.7)}70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+@keyframes ctaGlow{0%,100%{box-shadow:0 8px 32px rgba(5,150,105,.45)}50%{box-shadow:0 10px 44px rgba(5,150,105,.72),0 0 80px rgba(5,150,105,.18)}}
+
+/* CTA hero — dominancia visual */
+.cta-primary-btn{display:inline-flex;align-items:center;gap:13px;background:linear-gradient(135deg,#059669 0%,#047857 100%);color:#fff;padding:19px 36px;border-radius:15px;font-size:17px;font-weight:800;text-decoration:none;letter-spacing:-.3px;transition:transform .2s,box-shadow .2s;animation:ctaGlow 3.5s ease-in-out infinite;white-space:nowrap}
+.cta-primary-btn:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(5,150,105,.65)!important;animation:none}
+.cta-secondary-btn{display:inline-flex;align-items:center;gap:10px;color:rgba(255,255,255,.7);font-size:14.5px;font-weight:600;text-decoration:none;transition:color .15s;white-space:nowrap}
+.cta-secondary-btn:hover{color:#fff}
+.cta-play-circle{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,border-color .15s}
+.cta-secondary-btn:hover .cta-play-circle{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5)}
+
+/* Social proof chips */
+.sp-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:12px 20px;transition:border-color .2s,transform .2s,box-shadow .2s}
+.sp-chip:hover{border-color:#7c3aed;transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,58,237,.1)}
+.sp-chip-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sp-chip-icon i{color:#7c3aed;font-size:15px}
+.sp-chip span{font-size:14px;font-weight:700;color:#1e293b}
+
+@media(max-width:640px){
+  .cta-primary-btn{width:100%;justify-content:center;font-size:16px;padding:17px 28px}
+  .cta-secondary-btn{font-size:13.5px}
+  .sp-chip{padding:10px 14px}
+  .sp-chip span{font-size:13px}
+}
 .h1{font-size:54px;line-height:1.05;font-weight:900;letter-spacing:-1.5px;margin:0 0 14px}
 .h1 em{font-style:normal;background:linear-gradient(90deg,#c4b5fd,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{font-size:18px;color:rgba(255,255,255,.78);max-width:540px;margin:0 0 20px;line-height:1.6}
@@ -415,21 +438,34 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
       <span class="eyebrow"><span class="pulse-dot"></span> ANMA Pro · Hecho en Argentina · <strong style="color:#34d399">+15 negocios activos</strong></span>
       <h1 class="h1">De los presupuestos<br>al cobro, todo<br><em>en un solo lugar</em></h1>
       <p class="lead">Sin Excel, sin papeles, sin caos. Gestioná clientes, pedidos y stock desde una sola pantalla diseñada para negocios reales que necesitan moverse rápido.</p>
-      <div class="hero-ctas">
-        <a href="/registro" class="btn btn-primary hero-cta-btn"><i class="fa-solid fa-rocket"></i> Probar gratis por 7 días</a>
-        <div class="hero-demo-group">
-          <span class="hero-demo-tag">Trae aire fresco a tu gestión</span>
-          <a href="/demo.html" class="btn btn-ghost hero-cta-btn"><i class="fa-solid fa-play"></i> Ver Demo</a>
-        </div>
+      <!-- CTA principal (dominante) -->
+      <div style="margin-bottom:16px">
+        <a href="/registro" class="cta-primary-btn">
+          <i class="fa-solid fa-rocket" style="font-size:20px"></i>
+          <span>Empezar gratis — 7 días sin costo</span>
+          <span style="font-size:22px;opacity:.65;font-weight:400;margin-left:4px">→</span>
+        </a>
       </div>
-      <p style="font-size:12px;color:rgba(255,255,255,.45);margin:6px 0 12px;letter-spacing:.2px">
-        <i class="fa-solid fa-lock" style="color:#34d399;margin-right:4px"></i>Sin tarjetas de crédito. Registro en 30 segundos.
-      </p>
+
+      <!-- CTA secundario + trust en la misma línea -->
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:22px">
+        <a href="/demo.html" class="cta-secondary-btn">
+          <span class="cta-play-circle"><i class="fa-solid fa-play" style="font-size:10px;margin-left:2px"></i></span>
+          Ver demo en vivo
+        </a>
+        <span style="color:rgba(255,255,255,.15);font-size:18px;line-height:1">|</span>
+        <a href="https://api.whatsapp.com/send?phone=5491169456863&text=Hola%2C%20quiero%20hablar%20con%20ventas%20de%20ANMA%20Pro" target="_blank" class="cta-secondary-btn">
+          <i class="fa-brands fa-whatsapp" style="color:#4ade80;font-size:16px"></i>
+          Hablar con ventas
+        </a>
+      </div>
+
+      <!-- Trust strip limpio sin redundancias -->
       <div class="hero-trust">
-        <span><i class="fa-solid fa-check"></i> 7 días gratis</span>
-        <span><i class="fa-solid fa-check"></i> Sin tarjeta de crédito</span>
+        <span><i class="fa-solid fa-lock"></i> Sin tarjeta de crédito</span>
         <span><i class="fa-solid fa-check"></i> Cancelás cuando quieras</span>
-        <span><i class="fa-solid fa-users"></i> +15 negocios ya lo usan</span>
+        <span><i class="fa-solid fa-flag"></i> Hecho en Argentina</span>
+        <span><i class="fa-solid fa-users"></i> +15 negocios activos</span>
       </div>
     </div>
     <div class="mock-wrap">
@@ -640,16 +676,37 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   </div>
 </section>
 
-<!-- BARRA SOCIAL PROOF -->
-<div style="background:#f8fafc;border-bottom:1px solid #e5e7eb;padding:14px 0">
-  <div class="wrap" style="display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap">
-    <span style="font-size:12px;color:#94a3b8;font-weight:600;white-space:nowrap">Usado por negocios en todo el país:</span>
-    <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:center">
-      <span style="font-size:13px;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-store" style="color:#7c3aed;font-size:12px"></i> Distribuidoras</span>
-      <span style="font-size:13px;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-screwdriver-wrench" style="color:#7c3aed;font-size:12px"></i> Talleres</span>
-      <span style="font-size:13px;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-laptop" style="color:#7c3aed;font-size:12px"></i> Estudios creativos</span>
-      <span style="font-size:13px;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-handshake" style="color:#7c3aed;font-size:12px"></i> Servicios B2B</span>
-      <span style="font-size:13px;font-weight:700;color:#475569;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-box-open" style="color:#7c3aed;font-size:12px"></i> E-commerce</span>
+<!-- SOCIAL PROOF STRIP — prominente -->
+<div style="background:#fff;border-bottom:2px solid #f1f5f9;padding:32px 0 28px">
+  <div class="wrap">
+    <div style="text-align:center;margin-bottom:20px">
+      <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#94a3b8;margin:0">Elegido por negocios de todo el país</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+      <div class="sp-chip">
+        <div class="sp-chip-icon"><i class="fa-solid fa-store"></i></div>
+        <span>Distribuidoras</span>
+      </div>
+      <div class="sp-chip">
+        <div class="sp-chip-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+        <span>Talleres</span>
+      </div>
+      <div class="sp-chip">
+        <div class="sp-chip-icon"><i class="fa-solid fa-laptop-code"></i></div>
+        <span>Estudios creativos</span>
+      </div>
+      <div class="sp-chip">
+        <div class="sp-chip-icon"><i class="fa-solid fa-handshake"></i></div>
+        <span>Servicios B2B</span>
+      </div>
+      <div class="sp-chip">
+        <div class="sp-chip-icon"><i class="fa-solid fa-box-open"></i></div>
+        <span>E-commerce</span>
+      </div>
+      <div class="sp-chip" style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-color:#c4b5fd">
+        <div class="sp-chip-icon" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)"><i class="fa-solid fa-plus" style="color:#fff;font-size:13px"></i></div>
+        <span style="color:#7c3aed">Y más rubros</span>
+      </div>
     </div>
   </div>
 </div>
@@ -1519,8 +1576,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 
 <!-- STICKY MOBILE CTA BAR -->
 <div class="mobile-cta-bar">
-  <a href="/registro" class="mb-primary"><i class="fa-solid fa-rocket"></i> Probar gratis por 7 días</a>
-  <a href="/demo.html" class="mb-ghost"><i class="fa-solid fa-play"></i> Ver Demo</a>
+  <a href="/registro" class="mb-primary"><i class="fa-solid fa-rocket"></i> Empezar gratis — 7 días</a>
+  <a href="/demo.html" class="mb-ghost"><i class="fa-solid fa-play"></i> Demo</a>
 </div>
 
 <!-- FOOTER -->
