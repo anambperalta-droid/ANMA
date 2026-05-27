@@ -1129,14 +1129,32 @@ export default function Proveedores() {
               <button className="mclose" onClick={() => { setImportModal(false); setCsvPreview([]) }}><i className="fa fa-xmark" /></button>
             </div>
             <div style={{ flex: 1, overflowY: 'auto', padding: '18px 20px' }}>
+              {/* Pasos */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 0, marginBottom: 20 }}>
+                {[
+                  { n: 1, label: 'Descargá la plantilla', done: false },
+                  { n: 2, label: 'Completá en Excel / Sheets', done: false },
+                  { n: 3, label: 'Subí el archivo', done: csvPreview.length > 0 },
+                ].map((s, idx) => (
+                  <div key={s.n} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, position: 'relative' }}>
+                    {idx < 2 && <div style={{ position: 'absolute', top: 13, left: '50%', right: '-50%', height: 2, background: 'var(--border)', zIndex: 0 }} />}
+                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: s.done ? '#059669' : csvPreview.length === 0 ? 'var(--brand)' : 'var(--surface2)', color: s.done ? '#fff' : csvPreview.length === 0 ? '#fff' : 'var(--txt3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800, zIndex: 1, border: `2px solid ${s.done ? '#059669' : 'var(--brand)'}`, flexShrink: 0 }}>
+                      {s.done ? <i className="fa fa-check" /> : s.n}
+                    </div>
+                    <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--txt3)', textAlign: 'center', lineHeight: 1.3 }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Banner plantilla */}
               {csvPreview.length === 0 && (
                 <div style={{ display: 'flex', gap: 12, alignItems: 'center', padding: '12px 14px', background: 'var(--brand-xlt)', borderRadius: 10, border: '1px solid var(--brand-dim)', marginBottom: 16 }}>
                   <i className="fa fa-table" style={{ color: 'var(--brand)', fontSize: 18, flexShrink: 0 }} />
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 2 }}>¿Primera vez? Usá nuestra plantilla</div>
-                    <div style={{ fontSize: 11, color: 'var(--txt3)' }}>Completá en Excel o Google Sheets y subí el archivo acá.</div>
+                    <div style={{ fontSize: 11, color: 'var(--txt3)' }}>Abrila en Excel o Google Sheets, completá tus proveedores y subí el archivo.</div>
                   </div>
-                  <button className="btn btn-secondary btn-sm" onClick={downloadTemplate} style={{ flexShrink: 0 }}><i className="fa fa-download" /> Plantilla</button>
+                  <button className="btn btn-secondary btn-sm" onClick={downloadTemplate} style={{ flexShrink: 0 }}><i className="fa fa-download" /> Descargar</button>
                 </div>
               )}
               {csvPreview.length === 0 && (
