@@ -709,31 +709,32 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
       <!-- chrome bar -->
       <div class="app-chrome-bar">
         <div class="app-chrome-dots"><span></span><span></span><span></span></div>
-        <div class="app-chrome-url">app.anmapro.com · Panel de gestión</div>
+        <div class="app-chrome-url">anma-hub.vercel.app · Panel de gestión</div>
         <div style="width:60px"></div>
       </div>
 
       <!-- app layout: sidebar + main -->
       <div class="app-layout">
 
-        <!-- ── SIDEBAR (estático, solo visual) ── -->
+        <!-- ── SIDEBAR (espejo real de la app) ── -->
         <nav class="app-nav">
           <div class="app-nav-logo">
             <div class="app-nav-logo-mark"><i class="fa-solid fa-bolt"></i></div>
             <span>ANMA Pro</span>
           </div>
-          <div class="app-nav-item nav-active"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
-          <div class="app-nav-item"><i class="fa-solid fa-plus"></i> Nuevo pedido</div>
-          <div class="app-nav-item"><i class="fa-solid fa-users"></i> Clientes</div>
-          <div class="app-nav-section">Catálogo</div>
-          <div class="app-nav-item"><i class="fa-solid fa-box"></i> Productos</div>
-          <div class="app-nav-item"><i class="fa-solid fa-layer-group"></i> Insumos</div>
-          <div class="app-nav-item"><i class="fa-solid fa-truck"></i> Proveedores</div>
-          <div class="app-nav-section">Operación</div>
-          <div class="app-nav-item"><i class="fa-solid fa-route"></i> Logística</div>
-          <div class="app-nav-item"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
+          <div class="app-nav-section">Ventas</div>
+          <div class="app-nav-item nav-active" id="nav-dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
+          <div class="app-nav-item" id="nav-presupuesto"><i class="fa-solid fa-file-invoice-dollar"></i> Nuevo pedido</div>
+          <div class="app-nav-item" id="nav-clientes"><i class="fa-solid fa-users"></i> Clientes</div>
+          <div class="app-nav-section">Inventario</div>
+          <div class="app-nav-item" id="nav-catalogo"><i class="fa-solid fa-cube"></i> Productos</div>
+          <div class="app-nav-item" id="nav-insumos"><i class="fa-solid fa-boxes-stacked"></i> Insumos</div>
+          <div class="app-nav-item" id="nav-proveedores"><i class="fa-solid fa-industry"></i> Proveedores</div>
+          <div class="app-nav-section">Operaciones</div>
+          <div class="app-nav-item" id="nav-logistica"><i class="fa-solid fa-truck-fast"></i> Logística</div>
+          <div class="app-nav-item" id="nav-mensajes"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
           <div class="app-nav-section">Sistema</div>
-          <div class="app-nav-item"><i class="fa-solid fa-gear"></i> Configuración</div>
+          <div class="app-nav-item" id="nav-config"><i class="fa-solid fa-gear"></i> Configuración</div>
         </nav>
 
         <!-- ── MAIN: vistas con tabs ── -->
@@ -1568,14 +1569,27 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 document.getElementById('y').textContent = new Date().getFullYear();
 
 
+// Tab → sidebar nav item mapping (según rutas reales de la app)
+var tabNavMap = {
+  dashboard: 'nav-dashboard',
+  presupuestos: 'nav-presupuesto',
+  clientes: 'nav-clientes',
+  catalogo: 'nav-catalogo'
+};
 document.querySelectorAll('.demo-tab').forEach(function(tab){
   tab.addEventListener('click', function(){
     var target = this.dataset.tab;
+    // Tabs
     document.querySelectorAll('.demo-tab').forEach(function(t){ t.classList.remove('active'); });
-    document.querySelectorAll('.app-main .app-view').forEach(function(p){ p.classList.remove('av-active'); });
     this.classList.add('active');
+    // Panels
+    document.querySelectorAll('.app-main .app-view').forEach(function(p){ p.classList.remove('av-active'); });
     var el = document.getElementById('panel-' + target);
     if (el) el.classList.add('av-active');
+    // Sidebar sync
+    document.querySelectorAll('.app-nav .app-nav-item').forEach(function(n){ n.classList.remove('nav-active'); });
+    var navId = tabNavMap[target];
+    if (navId){ var ni = document.getElementById(navId); if(ni) ni.classList.add('nav-active'); }
   });
 });
 
