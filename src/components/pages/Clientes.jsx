@@ -1168,48 +1168,63 @@ export default function Clientes() {
 
       {/* MODAL IMPORTAR CSV */}
       {importModal && (
-        <div className="modal-bg open" style={{ alignItems: 'flex-start', padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) { setImportModal(false); setCsvPreview([]) } }}>
-          <div className="modal" style={{ maxWidth: 620, width: 'calc(100vw - 28px)', display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 28px)', padding: 0, overflow: 'hidden' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+        <div className="modal-bg open" style={{ alignItems: 'flex-end', padding: 0 }} onClick={e => { if (e.target === e.currentTarget) { setImportModal(false); setCsvPreview([]) } }}>
+          <div style={{ width: '100%', maxWidth: 640, background: 'var(--surface)', borderRadius: '20px 20px 0 0', display: 'flex', flexDirection: 'column', maxHeight: '92dvh', overflow: 'hidden', boxShadow: '0 -8px 40px rgba(0,0,0,.18)', animation: 'slideUp .25s cubic-bezier(.32,.72,0,1) both' }}>
+            {/* Handle */}
+            <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 10, paddingBottom: 4, flexShrink: 0 }}>
+              <div style={{ width: 36, height: 4, borderRadius: 4, background: 'var(--border2)' }} />
+            </div>
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 20px 12px', flexShrink: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div style={{ width: 34, height: 34, borderRadius: 10, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)', fontSize: 15 }}><i className="fa fa-users" /></div>
+                <div style={{ width: 38, height: 38, borderRadius: 12, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)', fontSize: 17 }}><i className="fa fa-users" /></div>
                 <div>
-                  <div style={{ fontSize: 15, fontWeight: 800 }}>Importar clientes</div>
-                  <div style={{ fontSize: 11, color: 'var(--txt3)' }}>Desde contactos del celular (.vcf) o planilla CSV</div>
+                  <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-.3px' }}>Importar clientes</div>
+                  <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>Subí un archivo de contactos o planilla CSV</div>
                 </div>
               </div>
               <button className="mclose" onClick={() => { setImportModal(false); setCsvPreview([]) }}><i className="fa fa-xmark" /></button>
             </div>
-            <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
+            {/* Body — scrollable, SIN altura fija */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '4px 20px 8px', WebkitOverflowScrolling: 'touch' }}>
+              {/* Tips compactos */}
               {csvPreview.length === 0 && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 14 }}>
-                  <div style={{ padding: '10px 12px', borderRadius: 10, background: 'rgba(37,211,102,.07)', border: '1.5px solid rgba(37,211,102,.3)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 12, marginBottom: 5 }}><i className="fa-brands fa-whatsapp" style={{ color: '#25D366', fontSize: 15 }} /> Contactos</div>
-                    <div style={{ fontSize: 11, color: 'var(--txt2)', lineHeight: 1.5 }}>Exportá tus contactos como <b>.vcf</b> desde Contactos del teléfono.</div>
-                    <div style={{ marginTop: 6, fontSize: 10, color: '#059669', fontWeight: 600 }}><i className="fa fa-circle-check" style={{ marginRight: 4 }} />iPhone y Android</div>
-                  </div>
-                  <div style={{ padding: '10px 12px', borderRadius: 10, background: 'rgba(37,211,102,.05)', border: '1.5px solid rgba(37,211,102,.2)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 12, marginBottom: 5 }}><i className="fa-brands fa-whatsapp" style={{ color: '#25D366', fontSize: 15 }} /> Chat WA</div>
-                    <div style={{ fontSize: 11, color: 'var(--txt2)', lineHeight: 1.5 }}>Abrí el chat → tocá <b>⋮ Más → Exportar chat</b>. Sube el <b>.txt</b>. Extrae nombres y números.</div>
-                    <div style={{ marginTop: 6, fontSize: 10, color: '#059669', fontWeight: 600 }}><i className="fa fa-circle-check" style={{ marginRight: 4 }} />WA personal y WA Business</div>
-                  </div>
-                  <div style={{ padding: '10px 12px', borderRadius: 10, background: 'var(--surface2)', border: '1px solid var(--border)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 12, marginBottom: 5 }}><i className="fa fa-file-csv" style={{ color: '#0F9D58', fontSize: 15 }} /> Planilla CSV</div>
-                    <div style={{ fontSize: 11, color: 'var(--txt2)', lineHeight: 1.5 }}>Completá en Excel o Google Sheets con la plantilla y subila.</div>
-                    <button className="btn btn-ghost btn-xs" style={{ marginTop: 6, color: 'var(--brand)' }} onClick={downloadTemplate}><i className="fa fa-download" /> Descargar plantilla</button>
-                  </div>
+                <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+                  {[
+                    { icon: 'fa-brands fa-whatsapp', icoColor: '#25D366', bg: 'rgba(37,211,102,.07)', border: 'rgba(37,211,102,.25)', label: 'Contactos .vcf', sub: 'App Contactos → Compartir' },
+                    { icon: 'fa-brands fa-whatsapp', icoColor: '#25D366', bg: 'rgba(37,211,102,.05)', border: 'rgba(37,211,102,.18)', label: 'Chat WA .txt', sub: '⋮ Más → Exportar chat' },
+                    { icon: 'fa-file-csv', icoColor: '#0F9D58', bg: 'var(--surface2)', border: 'var(--border)', label: 'Planilla CSV', action: downloadTemplate },
+                  ].map((t, i) => (
+                    <div key={i} onClick={t.action || undefined} style={{ flex: '1 1 130px', display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 10, background: t.bg, border: `1px solid ${t.border}`, cursor: t.action ? 'pointer' : 'default', transition: 'opacity .15s' }}
+                      onMouseEnter={e => t.action && (e.currentTarget.style.opacity = '.8')} onMouseLeave={e => t.action && (e.currentTarget.style.opacity = '1')}>
+                      <div style={{ width: 32, height: 32, borderRadius: 9, background: `${t.icoColor}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <i className={t.icon} style={{ color: t.icoColor, fontSize: 15 }} />
+                      </div>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.label}</div>
+                        <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>{t.action ? '⬇ Descargar plantilla' : t.sub}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
               {csvPreview.length === 0 && (
                 <>
                   <div onDragOver={e => { e.preventDefault(); setIsDragging(true) }} onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget)) setIsDragging(false) }} onDrop={e => { e.preventDefault(); setIsDragging(false); processFile(e.dataTransfer.files[0]) }} onClick={() => fileRef.current?.click()}
-                    style={{ border: `2px dashed ${isDragging ? 'var(--brand)' : 'var(--border)'}`, background: isDragging ? 'var(--brand-xlt)' : 'var(--surface2)', borderRadius: 12, padding: '32px 20px', textAlign: 'center', cursor: 'pointer', transition: 'all .2s', flex: 1 }}>
-                    <i className="fa fa-cloud-arrow-up" style={{ fontSize: 38, color: isDragging ? 'var(--brand)' : 'var(--txt4)', display: 'block', marginBottom: 10 }} />
-                    <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--txt2)', marginBottom: 4 }}>{isDragging ? '¡Soltá el archivo acá!' : 'Arrastrá tu archivo acá'}</div>
-                    <div style={{ fontSize: 12, color: 'var(--txt3)' }}>o hacé clic · .vcf · .csv · .txt</div>
+                    style={{ border: `2px dashed ${isDragging ? 'var(--brand)' : 'var(--border)'}`, background: isDragging ? 'var(--brand-xlt)' : 'var(--surface2)', borderRadius: 14, padding: '36px 20px', textAlign: 'center', cursor: 'pointer', transition: 'all .2s', marginBottom: 10 }}>
+                    <div style={{ width: 56, height: 56, borderRadius: '50%', background: isDragging ? 'var(--brand-dim)' : 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+                      <i className="fa fa-cloud-arrow-up" style={{ fontSize: 22, color: isDragging ? 'var(--brand)' : 'var(--txt3)' }} />
+                    </div>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--txt)', marginBottom: 5 }}>{isDragging ? '¡Soltá el archivo acá!' : 'Arrastrá tu archivo acá'}</div>
+                    <div style={{ fontSize: 12, color: 'var(--txt3)', marginBottom: 14 }}>o hacé clic para seleccionar</div>
+                    <div style={{ display: 'inline-flex', gap: 6 }}>
+                      {['.vcf', '.csv', '.txt'].map(ext => (
+                        <span key={ext} style={{ fontSize: 11, fontWeight: 700, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 6, padding: '3px 8px', color: 'var(--txt2)' }}>{ext}</span>
+                      ))}
+                    </div>
                     <input ref={fileRef} type="file" accept=".csv,.txt,.vcf" onChange={handleFileSelect} style={{ display: 'none' }} />
                   </div>
-                  <div style={{ marginTop: 10, padding: '8px 12px', background: 'var(--surface2)', borderRadius: 8, fontSize: 11, color: 'var(--txt3)' }}>
+                  <div style={{ padding: '8px 12px', background: 'var(--surface2)', borderRadius: 8, fontSize: 11, color: 'var(--txt3)' }}>
                     <b style={{ color: 'var(--txt2)' }}>Columnas CSV:</b> Empresa · Contacto · WhatsApp · Email · Rubro · Notas
                   </div>
                 </>
