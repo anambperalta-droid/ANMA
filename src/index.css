@@ -1562,4 +1562,7 @@ td b{color:var(--txt);font-weight:600}
 .bento-chart-noflex{flex:1}
 @media(max-width:640px){.bento-chart-noflex{flex:none!important;height:auto!important;min-height:0!important}}
 /* Bar chart always clips to container */
+/* ── Modal con header/body/footer fijos — overrides mobile bottom-sheet !important ── */
+.modal-hbf{overflow:hidden!important;padding:0!important}
+.modal-hbf>.mhbf-foot{position:sticky!important;bottom:0;flex-shrink:0;z-index:5;background:var(--surface)}
 .bar-chart{overflow:hidden}
