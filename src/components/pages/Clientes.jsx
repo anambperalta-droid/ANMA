@@ -914,8 +914,16 @@ export default function Clientes() {
       {/* MODAL EDITAR */}
       {modal && (
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal" style={{ maxWidth: 680 }}>
-            <div className="mh"><h3>{form.id ? 'Editar' : 'Agregar'} cliente</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
+          <div className="modal" style={{ maxWidth: 680, padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column', maxHeight: 'min(780px, calc(100dvh - 32px))' }}>
+            {/* Header fijo */}
+            <div style={{ padding: '18px 28px 14px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+              <div className="mh" style={{ margin: 0, paddingBottom: 0, borderBottom: 'none' }}>
+                <h3>{form.id ? 'Editar' : 'Agregar'} cliente</h3>
+                <button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button>
+              </div>
+            </div>
+            {/* Body scrollable */}
+            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '18px 28px 4px', WebkitOverflowScrolling: 'touch' }}>
 
             {/* ── Extraer datos de texto ── */}
             <div style={{ marginBottom: 14, borderRadius: 10, border: `1.5px solid ${pasteMode ? 'rgba(37,211,102,.4)' : 'var(--border)'}`, overflow: 'hidden', transition: 'border-color .2s' }}>
@@ -1009,8 +1017,13 @@ export default function Clientes() {
               </div>
             </div>
 
-            <div className="fg"><label>Notas</label><textarea value={form.notes} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones internas..." /></div>
-            <div className="mfooter"><button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button><button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar</button></div>
+            <div className="fg"><label>Notas internas</label><textarea value={form.notes} onChange={e => setF('notes', e.target.value)} rows={3} placeholder="Preferencias, condiciones especiales, recordatorios..." /></div>
+            </div>{/* /body scrollable */}
+            {/* Footer fijo */}
+            <div style={{ flexShrink: 0, borderTop: '1px solid var(--border)', padding: '14px 28px 20px', background: 'var(--surface)', display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+              <button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button>
+              <button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar</button>
+            </div>
           </div>
         </div>
       )}
