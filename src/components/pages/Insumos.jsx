@@ -4,7 +4,7 @@ import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, fmtDec, MOVE_TYPES, MOVE_CLS } from '../../lib/storage'
 
-const EMPTY = { name: '', cat: '', subcat: '', unit: 'un', cost: '', stock: '', minStock: '', supplierId: '', notes: '' }
+const EMPTY = { name: '', cat: '', subcat: '', unit: 'un', cost: '', stock: '', minStock: '', supplierId: '', notes: '', packCost: '', packQty: '', qtyPerGift: '', shippingCost: '' }
 const numFocus = e => e.target.select()
 
 const SUBCAT_SUGGESTIONS = {
@@ -75,6 +75,7 @@ export default function Insumos() {
   const [moveForm, setMoveForm] = useState({ type: 'in', qty: '', purchaseCost: '', note: '' })
   const [tab, setTab] = useState('list')
   const [showAdvancedModal, setShowAdvancedModal] = useState(false)
+  const [showCalc, setShowCalc] = useState(false)
   const [alertDismissed, setAlertDismissed] = useState(() => {
     try { return sessionStorage.getItem('insumos_low_dismissed') === '1' } catch { return false }
   })
@@ -146,6 +147,15 @@ export default function Insumos() {
     setMoveModal(null)
     toast('Movimiento registrado', 'ok')
   }
+
+  const costPerGift = useMemo(() => {
+    const pc = parseFloat(form.packCost)
+    const pq = parseFloat(form.packQty)
+    const qpg = parseFloat(form.qtyPerGift)
+    const sc = parseFloat(form.shippingCost) || 0
+    if (!pc || !pq || !qpg || pq <= 0 || qpg <= 0) return null
+    return ((pc + sc) / pq) * qpg
+  }, [form.packCost, form.packQty, form.qtyPerGift, form.shippingCost])
 
   const cppPreview = useMemo(() => {
     if (!moveModal) return null
@@ -510,100 +520,188 @@ export default function Insumos() {
       {/* ── Modal: crear / editar insumo — FRICCION CERO ── */}
       {modal && (
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal" style={{ maxWidth: 460 }}>
-            <div className="mh">
-              <h3>{form.id ? 'Editar insumo' : 'Nuevo insumo'}</h3>
+          <div className="modal-form-card" style={{ maxWidth: 560 }}>
+
+            {/* Header fijo */}
+            <div style={{ padding: '16px 22px 12px', borderBottom: '1px solid var(--border)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div>
+                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>{form.id ? 'Editar insumo' : 'Nuevo insumo'}</h3>
+                <div style={{ fontSize: 10, color: 'var(--txt4)', marginTop: 2 }}>Materias primas, packaging, herramientas, materiales operativos…</div>
+              </div>
               <button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button>
             </div>
 
-            {/* Fila 1: Nombre */}
-            <div className="fg">
-              <label><i className="fa fa-box" style={{ color: 'var(--brand)', fontSize: 10, marginRight: 4 }} />Nombre *</label>
-              <input type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Tela algodón 180gr" autoFocus />
-            </div>
+            {/* Body scrollable */}
+            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '16px 22px 8px', WebkitOverflowScrolling: 'touch' }}>
 
-            {/* Fila 2: Costo + Unidad */}
-            <div className="grid2" style={{ marginTop: 10 }}>
+              {/* Fila 1: Nombre */}
               <div className="fg">
-                <label><i className="fa fa-coins" style={{ color: '#F59E0B', fontSize: 10, marginRight: 4 }} />Costo unitario ($)</label>
-                <input type="number" value={form.cost} onChange={e => setF('cost', e.target.value)} onFocus={numFocus} placeholder="0" min="0" />
+                <label><i className="fa fa-box" style={{ color: 'var(--brand)', fontSize: 10, marginRight: 4 }} />Nombre *</label>
+                <input type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Tela algodón 180gr" autoFocus />
               </div>
-              <div className="fg">
-                <label><i className="fa fa-ruler-combined" style={{ color: '#64748B', fontSize: 10, marginRight: 4 }} />Unidad de medida</label>
-                <select value={form.unit} onChange={e => setF('unit', e.target.value)}>
-                  {units.map(u => <option key={u} value={u}>{u}</option>)}
-                </select>
-              </div>
-            </div>
 
-            {/* Fila 3: Proveedor */}
-            <div className="fg" style={{ marginTop: 10 }}>
-              <label><i className="fa fa-truck" style={{ color: '#8B5CF6', fontSize: 10, marginRight: 4 }} />Proveedor</label>
-              <select value={form.supplierId || ''} onChange={e => setF('supplierId', e.target.value ? Number(e.target.value) : '')}>
-                <option value="">Sin proveedor asignado</option>
-                {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-              </select>
-            </div>
-
-            {/* Acordeón: más opciones */}
-            <button
-              onClick={() => setShowAdvancedModal(p => !p)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '10px 0 2px', fontSize: 12, fontWeight: 700, color: 'var(--brand)', display: 'flex', alignItems: 'center', gap: 5, width: '100%', marginTop: 6 }}
-            >
-              <i className={`fa fa-chevron-${showAdvancedModal ? 'up' : 'down'}`} style={{ fontSize: 9 }} />
-              {showAdvancedModal ? 'Menos opciones' : 'Más opciones (categoría, stock, notas)'}
-            </button>
-
-            {showAdvancedModal && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 10, borderTop: '1px solid var(--border)', marginTop: 2 }}>
-                <div className="grid2">
-                  <div className="fg">
-                    <label>Categoría</label>
-                    <select value={form.cat} onChange={e => { setF('cat', e.target.value); setF('subcat', '') }}>
-                      <option value="">Sin categoría</option>
-                      {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
-                    </select>
-                  </div>
-                  <div className="fg">
-                    <label>Subcategoría <span style={{ fontWeight: 400, color: 'var(--txt3)', fontSize: 11 }}>(opc.)</span></label>
-                    <input
-                      type="text"
-                      list={`subcat-list-${form.cat}`}
-                      value={form.subcat || ''}
-                      onChange={e => setF('subcat', e.target.value)}
-                      placeholder={form.cat ? 'Elegí o escribí...' : 'Seleccioná categoría'}
-                      disabled={!form.cat}
-                    />
-                    {form.cat && (
-                      <datalist id={`subcat-list-${form.cat}`}>
-                        {(SUBCAT_SUGGESTIONS[form.cat] || []).map(s => <option key={s} value={s} />)}
-                      </datalist>
-                    )}
-                  </div>
-                </div>
-                <div className="grid2">
-                  <div className="fg">
-                    <label>Stock actual</label>
-                    <input type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} onFocus={numFocus} placeholder="0" />
-                  </div>
-                  <div className="fg">
-                    <label>Stock mínimo (alerta)</label>
-                    <input type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} onFocus={numFocus} placeholder="0" />
-                  </div>
+              {/* Fila 2: Costo + Unidad */}
+              <div className="grid2" style={{ marginTop: 10 }}>
+                <div className="fg">
+                  <label><i className="fa fa-coins" style={{ color: '#F59E0B', fontSize: 10, marginRight: 4 }} />Costo unitario ($)</label>
+                  <input type="number" value={form.cost} onChange={e => setF('cost', e.target.value)} onFocus={numFocus} placeholder="0" min="0" />
                 </div>
                 <div className="fg">
-                  <label>Notas</label>
-                  <textarea value={form.notes || ''} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones internas..." />
+                  <label><i className="fa fa-ruler-combined" style={{ color: '#64748B', fontSize: 10, marginRight: 4 }} />Unidad de medida</label>
+                  <select value={form.unit} onChange={e => setF('unit', e.target.value)}>
+                    {units.map(u => <option key={u} value={u}>{u}</option>)}
+                  </select>
                 </div>
               </div>
-            )}
 
-            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 16 }}>
+              {/* ── Calculadora de fraccionamiento ── */}
+              <button
+                onClick={() => setShowCalc(p => !p)}
+                style={{ background: showCalc ? 'rgba(99,102,241,.08)' : 'var(--surface2)', border: `1.5px solid ${showCalc ? 'rgba(99,102,241,.3)' : 'var(--border)'}`, borderRadius: 8, cursor: 'pointer', padding: '7px 12px', fontSize: 11.5, fontWeight: 700, color: showCalc ? 'var(--brand)' : 'var(--txt3)', display: 'flex', alignItems: 'center', gap: 6, width: '100%', marginTop: 10, transition: 'all .15s' }}
+              >
+                <i className="fa fa-calculator" style={{ fontSize: 10 }} />
+                {showCalc ? 'Ocultar calculadora de fraccionamiento' : '🧮 Calcular costo por unidad desde un pack'}
+                <i className={`fa fa-chevron-${showCalc ? 'up' : 'down'}`} style={{ marginLeft: 'auto', fontSize: 9, opacity: .6 }} />
+              </button>
+
+              {showCalc && (
+                <div style={{ background: 'rgba(99,102,241,.05)', border: '1.5px solid rgba(99,102,241,.18)', borderRadius: 10, padding: '14px 14px 10px', marginTop: 8 }}>
+                  <div style={{ fontSize: 10, fontWeight: 800, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <i className="fa fa-calculator" style={{ fontSize: 9 }} /> Fraccionamiento de pack
+                  </div>
+                  <div className="grid2" style={{ marginBottom: 10 }}>
+                    <div className="fg">
+                      <label style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <i className="fa fa-tag" style={{ color: 'var(--brand)', fontSize: 10 }} />
+                        Costo del pack ($)
+                      </label>
+                      <input type="number" value={form.packCost || ''} onChange={e => setF('packCost', e.target.value)} onFocus={numFocus} placeholder="0" min="0" />
+                    </div>
+                    <div className="fg">
+                      <label style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <i className="fa fa-cubes" style={{ color: '#10B981', fontSize: 10 }} />
+                        Unidades en el pack
+                      </label>
+                      <input type="number" value={form.packQty || ''} onChange={e => setF('packQty', e.target.value)} onFocus={numFocus} placeholder="0" min="1" />
+                    </div>
+                  </div>
+                  <div className="fg" style={{ marginBottom: 10 }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <i className="fa fa-truck" style={{ color: '#8B5CF6', fontSize: 10 }} />
+                      Envío del pedido ($)
+                      <span style={{ fontWeight: 400, color: 'var(--txt4)', fontSize: 10 }}>(opcional — se suma al costo total)</span>
+                    </label>
+                    <input type="number" value={form.shippingCost || ''} onChange={e => setF('shippingCost', e.target.value)} onFocus={numFocus} placeholder="0" min="0" />
+                  </div>
+                  <div className="fg" style={{ marginBottom: 10 }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <i className="fa fa-cube" style={{ color: '#F59E0B', fontSize: 10 }} />
+                      Unidades que usás por insumo / regalo
+                    </label>
+                    <input type="number" value={form.qtyPerGift || ''} onChange={e => setF('qtyPerGift', e.target.value)} onFocus={numFocus} placeholder="1" min="0" step="0.1" />
+                  </div>
+                  {costPerGift !== null && (
+                    <div style={{ background: 'rgba(99,102,241,.12)', borderRadius: 8, padding: '10px 14px', marginTop: 4 }}>
+                      <div style={{ fontSize: 10, color: 'var(--brand)', fontWeight: 700, marginBottom: 2, textTransform: 'uppercase', letterSpacing: '.06em' }}>
+                        <i className="fa fa-equals" style={{ marginRight: 4 }} />Costo por unidad calculado
+                      </div>
+                      <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--brand)', letterSpacing: '-.03em', lineHeight: 1.1 }}>
+                        {fmtDec(costPerGift)}
+                        <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--txt3)', marginLeft: 5 }}>/ {form.unit || 'un'}</span>
+                      </div>
+                      <div style={{ fontSize: 10, color: 'rgba(99,102,241,.7)', marginTop: 3 }}>
+                        {fmtDec((parseFloat(form.packCost) || 0) + (parseFloat(form.shippingCost) || 0))} ÷ {form.packQty} × {form.qtyPerGift} {form.unit || 'un'}
+                        {parseFloat(form.shippingCost) > 0 && (
+                          <span style={{ display: 'block', color: '#8B5CF6', marginTop: 1 }}>
+                            <i className="fa fa-truck" style={{ marginRight: 3 }} />
+                            incl. {fmtDec(parseFloat(form.shippingCost))} de envío ({fmtDec((parseFloat(form.shippingCost) / (parseFloat(form.packQty) || 1)) * (parseFloat(form.qtyPerGift) || 1))} por unidad)
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        className="btn btn-primary btn-sm"
+                        style={{ marginTop: 10, fontSize: 11, padding: '5px 12px' }}
+                        onClick={() => setF('cost', costPerGift.toFixed(4))}
+                      >
+                        <i className="fa fa-arrow-down" /> Usar como costo unitario
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Fila 3: Proveedor */}
+              <div className="fg" style={{ marginTop: 10 }}>
+                <label><i className="fa fa-truck" style={{ color: '#8B5CF6', fontSize: 10, marginRight: 4 }} />Proveedor</label>
+                <select value={form.supplierId || ''} onChange={e => setF('supplierId', e.target.value ? Number(e.target.value) : '')}>
+                  <option value="">Sin proveedor asignado</option>
+                  {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                </select>
+              </div>
+
+              {/* Acordeón: más opciones */}
+              <button
+                onClick={() => setShowAdvancedModal(p => !p)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '10px 0 2px', fontSize: 12, fontWeight: 700, color: 'var(--brand)', display: 'flex', alignItems: 'center', gap: 5, width: '100%', marginTop: 6 }}
+              >
+                <i className={`fa fa-chevron-${showAdvancedModal ? 'up' : 'down'}`} style={{ fontSize: 9 }} />
+                {showAdvancedModal ? 'Menos opciones' : 'Más opciones (categoría, stock, notas)'}
+              </button>
+
+              {showAdvancedModal && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 10, borderTop: '1px solid var(--border)', marginTop: 2 }}>
+                  <div className="grid2">
+                    <div className="fg">
+                      <label>Categoría</label>
+                      <select value={form.cat} onChange={e => { setF('cat', e.target.value); setF('subcat', '') }}>
+                        <option value="">Sin categoría</option>
+                        {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
+                      </select>
+                    </div>
+                    <div className="fg">
+                      <label>Subcategoría <span style={{ fontWeight: 400, color: 'var(--txt3)', fontSize: 11 }}>(opc.)</span></label>
+                      <input
+                        type="text"
+                        list={`subcat-list-${form.cat}`}
+                        value={form.subcat || ''}
+                        onChange={e => setF('subcat', e.target.value)}
+                        placeholder={form.cat ? 'Elegí o escribí...' : 'Seleccioná categoría'}
+                        disabled={!form.cat}
+                      />
+                      {form.cat && (
+                        <datalist id={`subcat-list-${form.cat}`}>
+                          {(SUBCAT_SUGGESTIONS[form.cat] || []).map(s => <option key={s} value={s} />)}
+                        </datalist>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid2">
+                    <div className="fg">
+                      <label>Stock actual</label>
+                      <input type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} onFocus={numFocus} placeholder="0" />
+                    </div>
+                    <div className="fg">
+                      <label>Stock mínimo (alerta)</label>
+                      <input type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} onFocus={numFocus} placeholder="0" />
+                    </div>
+                  </div>
+                  <div className="fg">
+                    <label>Notas</label>
+                    <textarea value={form.notes || ''} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones internas..." />
+                  </div>
+                </div>
+              )}
+
+            </div>{/* /body scrollable */}
+
+            {/* Footer fijo */}
+            <div style={{ flexShrink: 0, position: 'sticky', bottom: 0, borderTop: '1px solid var(--border)', padding: '12px 22px 18px', background: 'var(--surface)', display: 'flex', gap: 8, justifyContent: 'flex-end', zIndex: 5 }}>
               <button className="btn btn-ghost btn-sm" onClick={() => setModal(false)}>Cancelar</button>
               <button className="btn btn-primary btn-sm" onClick={save}>
-                <i className="fa fa-floppy-disk" /> {form.id ? 'Guardar' : 'Crear insumo'}
+                <i className="fa fa-floppy-disk" /> {form.id ? 'Guardar cambios' : 'Crear insumo'}
               </button>
             </div>
+
           </div>
         </div>
       )}
