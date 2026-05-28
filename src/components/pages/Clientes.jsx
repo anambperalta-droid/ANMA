@@ -309,20 +309,39 @@ export default function Clientes() {
     }).filter(c => c.company || c.contact)
   }
 
-  /* ── Detecta y parsea chat exportado de WhatsApp (.txt) ── */
+  /* ── Parser de chat exportado de WhatsApp — WA personal y WA Business ──────
+     Formatos soportados:
+       iOS/WA Business iOS:     [DD/MM/YYYY, HH:MM:SS AM] Participante: mensaje
+       Android/WA Business:     DD/MM/YY, HH:MM - Participante: mensaje
+     Captura tanto números de teléfono como nombres de contactos guardados.     */
   const parseWaChat = (text) => {
-    const lineRe = /(?:\[[\d/.,\s:AMP]+\]|-)\s*([^:]{3,60}):/g
+    // Normalizar: quitar BOM UTF-8/UTF-16, unificar saltos de línea
+    const s = text.replace(/^﻿/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+    // Timestamp iOS:     [DD/MM/YYYY, HH:MM:SS] o [DD/MM/YYYY, HH:MM:SS AM]
+    // Timestamp Android: DD/MM/YY, HH:MM - o DD/MM/YYYY, HH:MM AM -
+    const lineRe = /^(?:\[\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4},?\s+\d{1,2}:\d{2}(?::\d{2})?(?:\s*[aApPmM]{2})?\]\s+|\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4},\s*\d{1,2}:\d{2}(?::\d{2})?(?:\s*[aApPmM]{2})?\s+-\s+)([^:\n\r]{1,80}):/gm
+    // Mensajes de sistema a ignorar (no son contactos)
+    const SYS = /^(Messages and calls|Los mensajes y llamadas|Este chat|<Media omitted>|image omitted|video omitted|audio omitted|sticker omitted|document omitted|GIF omitted|Contact card omitted|null|~)/i
     const participants = new Map()
     let m
-    while ((m = lineRe.exec(text)) !== null) {
+    while ((m = lineRe.exec(s)) !== null) {
       const raw = m[1].trim()
-      const phoneRe = /^[+\d][\d\s\-().]{6,20}$/
-      if (phoneRe.test(raw)) {
-        const clean = raw.replace(/[\s\-().]/g, '')
-        participants.set(clean, { wa: clean, contact: '', company: '' })
+      if (!raw || raw.length < 2 || SYS.test(raw)) continue
+      if (/^[+\d][\d\s\-().]{5,20}$/.test(raw)) {
+        // Es un número de teléfono → guardar como WA
+        const phone = raw.replace(/[\s\-().]/g, '')
+        if (phone.length >= 7 && !participants.has(phone)) {
+          participants.set(phone, { wa: phone, contact: '', company: '' })
+        }
+      } else {
+        // Es un nombre (contacto guardado o perfil de WA Business)
+        const key = raw.toLowerCase()
+        if (!participants.has(key)) {
+          participants.set(key, { wa: '', contact: raw, company: raw })
+        }
       }
     }
-    return [...participants.values()].filter(p => p.wa.length >= 8)
+    return [...participants.values()]
   }
 
   const processFile = (file) => {
@@ -333,10 +352,14 @@ export default function Clientes() {
       if (file.name.endsWith('.vcf') || content.includes('BEGIN:VCARD')) {
         setCsvPreview(parseVcf(content)); return
       }
-      const isWaChat = /(\[[\d/., :APM]+\]|^\d{1,2}\/\d{1,2}\/\d{2,4},\s*\d)/m.test(content) && content.includes(' - ')
+      // Detectar export de WhatsApp (iOS, Android, WA Business)
+      const isWaChat = /^\[?\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}[,\s]/m.test(content) &&
+        (content.includes('] ') || /\d\s*-\s+[A-Z+~À-ɏ\u{1F300}-\u{1FAFF}]/mu.test(content))
       if (isWaChat || (file.name.toLowerCase().includes('whatsapp') && file.name.endsWith('.txt'))) {
         const contacts = parseWaChat(content)
         if (contacts.length > 0) { setCsvPreview(contacts); return }
+        toast('No se encontraron contactos en el chat. Verificá que el archivo sea una exportación de WA.', 'in')
+        return
       }
       const lines = content.split('\n').filter(l => l.trim())
       const header = lines[0].toLowerCase()
@@ -1167,8 +1190,8 @@ export default function Clientes() {
                   </div>
                   <div style={{ padding: '10px 12px', borderRadius: 10, background: 'rgba(37,211,102,.05)', border: '1.5px solid rgba(37,211,102,.2)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 12, marginBottom: 5 }}><i className="fa-brands fa-whatsapp" style={{ color: '#25D366', fontSize: 15 }} /> Chat WA</div>
-                    <div style={{ fontSize: 11, color: 'var(--txt2)', lineHeight: 1.5 }}>Exportá un chat desde WA y subí el <b>.txt</b>. Extrae participantes.</div>
-                    <div style={{ marginTop: 6, fontSize: 10, color: '#059669', fontWeight: 600 }}><i className="fa fa-circle-check" style={{ marginRight: 4 }} />WA → ⋮ → Más → Exportar chat</div>
+                    <div style={{ fontSize: 11, color: 'var(--txt2)', lineHeight: 1.5 }}>Abrí el chat → tocá <b>⋮ Más → Exportar chat</b>. Sube el <b>.txt</b>. Extrae nombres y números.</div>
+                    <div style={{ marginTop: 6, fontSize: 10, color: '#059669', fontWeight: 600 }}><i className="fa fa-circle-check" style={{ marginRight: 4 }} />WA personal y WA Business</div>
                   </div>
                   <div style={{ padding: '10px 12px', borderRadius: 10, background: 'var(--surface2)', border: '1px solid var(--border)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 12, marginBottom: 5 }}><i className="fa fa-file-csv" style={{ color: '#0F9D58', fontSize: 15 }} /> Planilla CSV</div>
