@@ -3,413 +3,1097 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ANMA — Demo en vivo</title>
-<meta name="description" content="Demo interactivo de ANMA con datos ficticios. Recorré todas las secciones: dashboard, pedidos, clientes, productos y más.">
+<title>ANMA Pro — Demo en vivo</title>
+<meta name="description" content="Demo interactivo de ANMA Pro con datos ficticios. Explorá todas las secciones del sistema de distribución.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-*,*::before,*::after{box-sizing:border-box}
-body{margin:0;font-family:'Inter',sans-serif;background:#f8fafc;color:#0F172A;line-height:1.5;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-/* BROWSER CHROME */
-.bc{background:#e8eaed;border-bottom:1px solid #c8cacd;position:sticky;top:0;z-index:100}
-.bc-bar{display:flex;align-items:center;gap:10px;padding:10px 16px}
-.bc-tl{display:flex;gap:5px;align-items:center;flex-shrink:0}
-.bc-dot{display:inline-block;width:12px;height:12px;border-radius:50%;cursor:default}
-.bc-r{background:#ff5f57}.bc-y{background:#febc2e}.bc-g{background:#28c840}
-.bc-nav{display:flex;gap:2px;align-items:center;flex-shrink:0}
-.bc-nav-btn{width:24px;height:24px;border:none;background:none;color:#777;font-size:15px;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;padding:0;font-family:'Inter',sans-serif;line-height:1}
-.bc-nav-btn:hover{background:rgba(0,0,0,.08)}
-.bc-url-bar{flex:1;max-width:500px;background:#fff;border:1px solid #c8cacd;border-radius:22px;padding:5px 14px;display:flex;align-items:center;gap:7px;margin:0 auto;cursor:text;transition:border-color .15s}
-.bc-url-bar:hover{border-color:#aaa}
-.bc-url-bar i{font-size:10px;color:#188038;flex-shrink:0}
-.bc-url-text{flex:1;text-align:center;font-size:13px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bc-ext{display:flex;gap:8px;align-items:center;flex-shrink:0;margin-left:auto}
-.bc-back{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;font-size:12px;font-weight:600;color:#555;background:rgba(0,0,0,.07);text-decoration:none;transition:background .15s}
-.bc-back:hover{background:rgba(0,0,0,.12)}
-.bc-cta{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:7px;font-size:12px;font-weight:700;color:#fff;background:#7c3aed;text-decoration:none;transition:background .15s,transform .1s;white-space:nowrap}
-.bc-cta:hover{background:#6d28d9;transform:translateY(-1px)}
-/* DEMO FLOAT BADGE */
-.demo-float{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:rgba(255,255,255,.7);font-size:11.5px;border-radius:99px;padding:8px 18px;z-index:300;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.22);pointer-events:none;letter-spacing:.02em}
+/* ── Design tokens — exact match to src/index.css ── */
+:root{
+  --brand:#7C3AED;--brand-dark:#6D28D9;--brand-xlt:rgba(124,58,237,.08);--brand-dim:rgba(124,58,237,.12);
+  --grad:linear-gradient(135deg,#7C3AED 0%,#6366F1 100%);
+  --panel-grad:linear-gradient(160deg,#1E1B4B 0%,#312E81 50%,#4C1D95 100%);
+  --acento:#059669;--acento-dark:#047857;--acento-xlt:rgba(5,150,105,.08);--acento-dim:rgba(5,150,105,.12);
+  --acento-grad:linear-gradient(135deg,#059669 0%,#10B981 100%);
+  --sidebar-bg:#1E1B4B;
+  --bg:#F8F9FA;--surface:#FFFFFF;--surface2:#F3F4F6;--surface3:#EDEFF3;
+  --border:#E5E7EB;--border2:#D1D5DB;
+  --txt:#111827;--txt2:#374151;--txt3:#6B7280;--txt4:#9CA3AF;--money:#000000;
+  --green:#059669;--green-lt:rgba(5,150,105,.07);
+  --red:#DC2626;--red-lt:#FEF2F2;--red-dim:rgba(220,38,38,.12);
+  --amber:#D97706;--amber-lt:#FFFBEB;--amber-dim:rgba(217,119,6,.12);
+  --blue:#2563EB;--blue-lt:#EFF6FF;--blue-dim:rgba(37,99,235,.12);
+  --sw:268px;--r:10px;--r-lg:16px;
+  --sh:0 1px 3px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.03);
+  --sh-md:0 4px 12px rgba(0,0,0,.07),0 1px 3px rgba(0,0,0,.04);
+  --tr:.18s cubic-bezier(.4,0,.2,1);
+}
+
+html{font-size:14px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit}
+
+/* ── BROWSER CHROME ── */
+.brow{background:#e8eaed;border-bottom:1px solid #c8cacd;position:sticky;top:0;z-index:200}
+.brow-bar{display:flex;align-items:center;gap:10px;padding:9px 16px}
+.brow-tl{display:flex;gap:5px;align-items:center;flex-shrink:0}
+.brow-dot{display:inline-block;width:12px;height:12px;border-radius:50%}
+.brow-r{background:#ff5f57}.brow-y{background:#febc2e}.brow-g{background:#28c840}
+.brow-nav{display:flex;gap:2px;flex-shrink:0}
+.brow-nav-btn{width:24px;height:24px;border:none;background:none;color:#777;font-size:16px;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;padding:0;line-height:1}
+.brow-nav-btn:hover{background:rgba(0,0,0,.08)}
+.brow-url{flex:1;max-width:500px;background:#fff;border:1px solid #c8cacd;border-radius:22px;padding:5px 14px;display:flex;align-items:center;gap:7px;margin:0 auto}
+.brow-url i{font-size:10px;color:#188038;flex-shrink:0}
+.brow-url span{flex:1;text-align:center;font-size:13px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brow-ext{display:flex;gap:8px;align-items:center;margin-left:auto}
+.brow-back{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;font-size:12px;font-weight:600;color:#555;background:rgba(0,0,0,.07)}
+.brow-back:hover{background:rgba(0,0,0,.12)}
+.brow-cta{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:7px;font-size:12px;font-weight:700;color:#fff;background:var(--brand);white-space:nowrap;transition:background .15s}
+.brow-cta:hover{background:var(--brand-dark)}
+
+/* ── DEMO FLOAT BADGE ── */
+.demo-float{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(30,27,75,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:rgba(255,255,255,.7);font-size:11.5px;border-radius:99px;padding:8px 18px;z-index:300;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.22);pointer-events:none;letter-spacing:.02em}
 .demo-float strong{color:#fff;font-weight:700}
 
-.shell{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 46px)}
-.sb{background:linear-gradient(180deg,#1e1b4b,#312e81);color:rgba(255,255,255,.75);padding:18px 14px;border-right:1px solid #c7d2fe}
-.sb-logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:16px;letter-spacing:-.4px;color:#fff;margin-bottom:6px;padding:0 6px}
-.sb-logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#a78bfa,#34d399);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
-.sb-sub{font-size:11px;color:rgba(255,255,255,.45);padding:0 6px;margin-bottom:24px}
-.sb-section{font-size:9.5px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:8px 6px 4px}
-.sb-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.78);margin-bottom:1px;transition:background .15s,color .15s}
-.sb-item:hover{background:rgba(255,255,255,.06);color:#fff}
-.sb-item.active{background:rgba(167,139,250,.22);color:#fff;font-weight:700}
-.sb-item i{width:18px;font-size:13px;color:#a78bfa}
-
-.tb{display:flex;align-items:center;gap:14px;padding:12px 28px;background:#fff;border-bottom:1px solid #e5e7eb}
-.tb-burger{display:none;width:34px;height:34px;border:none;background:#f1f5f9;border-radius:9px;cursor:pointer;font-size:14px;color:#475569}
-.tb-title{font-size:15px;font-weight:800;color:#0F172A}
-.tb-search{flex:1;max-width:380px;display:flex;align-items:center;gap:8px;padding:7px 12px;background:#f1f5f9;border-radius:9px;color:#64748b;font-size:12.5px}
-.tb-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
-.tb-btn{width:34px;height:34px;border-radius:9px;background:#fff7ed;color:#d97706;display:flex;align-items:center;justify-content:center;font-size:13px;border:none;cursor:pointer;position:relative}
-.tb-btn .dot{position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:#dc2626}
-.tb-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#059669);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:12px}
-
-.content{padding:24px 28px}
-.section{display:none;animation:fadeIn .25s ease both}
-.section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.page-h{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;gap:14px;flex-wrap:wrap}
-.page-h h1{font-size:26px;font-weight:900;letter-spacing:-.7px;margin:0}
-.page-h p{font-size:13px;color:#64748b;margin:3px 0 0}
-.page-h .btn-add{display:inline-flex;align-items:center;gap:7px;background:#16a34a;color:#fff;padding:9px 16px;border-radius:9px;font-weight:700;font-size:13px;border:none;cursor:pointer;font-family:inherit}
-.page-h .btn-2{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;border-radius:9px;padding:8px 14px;font-size:12.5px;color:#475569;cursor:pointer;font-family:inherit}
-
-.tabs{display:flex;gap:2px;background:#f1f5f9;padding:3px;border-radius:9px;margin-bottom:18px;width:fit-content}
-.tabs span{padding:6px 14px;font-size:12.5px;color:#64748b;font-weight:500;cursor:pointer;border-radius:7px}
-.tabs span.act{background:#fff;font-weight:700;color:#0F172A;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-
-/* TODAY */
-.today{margin-bottom:18px}
-.today-h{display:flex;align-items:center;gap:7px;margin-bottom:10px;font-size:11px;font-weight:800;color:#0F172A;text-transform:uppercase;letter-spacing:.6px}
-.today-h .count{background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:10px;font-size:10px;margin-left:auto;font-weight:700}
-.today-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.today-card{background:linear-gradient(135deg,rgba(220,38,38,.06),rgba(220,38,38,.02));border:1.5px solid rgba(220,38,38,.25);border-radius:12px;padding:13px 16px;cursor:pointer;transition:transform .15s,box-shadow .2s}
-.today-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(220,38,38,.12)}
-.today-card.amber{background:linear-gradient(135deg,rgba(217,119,6,.07),rgba(217,119,6,.02));border-color:rgba(217,119,6,.25)}
-.today-card.amber:hover{box-shadow:0 8px 20px rgba(217,119,6,.12)}
-.today-card.purple{background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(124,58,237,.02));border-color:#7c3aed}
-.today-card.purple:hover{box-shadow:0 8px 20px rgba(124,58,237,.15)}
-.today-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.today-icon{width:30px;height:30px;border-radius:9px;background:#dc2626;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
-.today-card.amber .today-icon{background:#d97706}
-.today-card.purple .today-icon{background:#7c3aed}
-.today-info{flex:1}
-.today-info .lbl{font-size:9.5px;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.5px}
-.today-card.amber .today-info .lbl{color:#d97706}
-.today-card.purple .today-info .lbl{color:#7c3aed}
-.today-info .v{font-size:17px;font-weight:800;color:#0F172A;line-height:1.1}
-.today-info .v small{font-size:11px;color:#64748b;font-weight:500}
-.today-desc{font-size:11px;color:#475569;line-height:1.4}
-
-/* BENTO */
-.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
-.kpi{background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:14px 16px;box-shadow:0 1px 4px rgba(15,23,42,.05)}
-.kpi.key{border-left:3px solid #16a34a}
-.kpi-l{font-size:9.5px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
-.kpi-vrow{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-.kpi-v{font-size:22px;font-weight:800;letter-spacing:-.6px;color:#0F172A;font-variant-numeric:tabular-nums}
-.kpi-d{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;color:#16a34a;background:rgba(22,163,74,.1)}
-.kpi-d.down{color:#dc2626;background:rgba(220,38,38,.1)}
-.kpi-spark{margin-top:6px}
-
-.bento-wide{grid-column:1/-1;display:grid;grid-template-columns:1.7fr 1fr;gap:12px}
-.card{background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(15,23,42,.05)}
-.card-h{display:flex;align-items:center;gap:6px;margin-bottom:14px;font-size:13px;font-weight:800;color:#0F172A}
-.card-h i{color:#7c3aed}
-.bar-chart{display:flex;align-items:flex-end;gap:5px;height:130px}
-.bar-chart .bc{flex:1;display:flex;justify-content:center}
-.bar-chart .bb{width:100%;max-width:22px;background:#7c3aed;opacity:.5;border-radius:4px 4px 0 0;transition:opacity .2s}
-.bar-chart .bb:hover{opacity:.9}
-.bar-labels{display:flex;gap:5px;margin-top:5px}
-.bar-labels .l{flex:1;text-align:center;font-size:10px;color:#94a3b8;font-weight:600}
-.donut-wrap{display:flex;align-items:center;gap:14px}
-.donut-leg{display:flex;flex-direction:column;gap:5px;flex:1}
-.donut-leg-row{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#475569;cursor:pointer;padding:2px 4px;border-radius:5px;transition:background .15s}
-.donut-leg-row:hover{background:#f1f5f9}
-.donut-leg-row .d{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.donut-leg-row .pct{font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:5px}
-.donut-leg-row .n{font-size:11px;font-weight:800;background:#f1f5f9;padding:1px 6px;border-radius:6px;color:#0F172A;margin-left:auto}
-
-/* TABLE */
-.tbl-card{background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:16px;overflow-x:auto;box-shadow:0 1px 4px rgba(15,23,42,.05)}
-.tbl-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.tbl-h h3{margin:0;font-size:14px;font-weight:800;color:#0F172A}
-.tbl-h a,.tbl-h .more{font-size:12px;font-weight:600;color:#7c3aed;cursor:pointer}
-table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px}
-thead th{text-align:left;padding:8px 10px;border-bottom:1.5px solid #f1f5f9;font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;font-weight:700;white-space:nowrap}
-tbody td{padding:11px 10px;border-bottom:1px solid #f8fafc;color:#334155;vertical-align:middle}
-tbody tr:hover td{background:#f9fafb}
-.tbl-num{font-weight:800;color:#0F172A}
-.tbl-amt{font-weight:700;color:#059669;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
-.tbl-st{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:8px;font-size:10.5px;font-weight:700;white-space:nowrap}
-.st-confirmed{background:#dcfce7;color:#15803d}
-.st-sent{background:#dbeafe;color:#1d4ed8}
-.st-negotiating{background:#fef3c7;color:#92400e}
-.st-paid{background:#dcfce7;color:#15803d}
-.st-pending{background:#fee2e2;color:#991b1b}
-.st-partial{background:#fef3c7;color:#92400e}
-.st-lost{background:#f1f5f9;color:#64748b}
-.st-low{background:#fef3c7;color:#92400e}
-.st-ok{background:#dcfce7;color:#15803d}
-.st-out{background:#fee2e2;color:#991b1b}
-.st-b2b{background:#16a34a;color:#fff;font-weight:700}
-.st-b2c{background:#dbeafe;color:#1d4ed8;font-weight:700}
-.row-act{display:inline-flex;gap:5px}
-.row-act button{width:26px;height:26px;border-radius:6px;border:none;background:#f1f5f9;color:#475569;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
-.row-act button:hover{background:#e2e8f0;color:#0F172A}
-.row-act button.wa{background:#dcfce7;color:#16a34a}
-.row-act button.del{background:#fee2e2;color:#dc2626}
-
-/* INSIGHTS */
-.insight-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;margin-top:18px}
-.insight-h{display:flex;align-items:center;gap:6px;margin-bottom:12px;font-size:13px;font-weight:800;color:#0F172A}
-.insight-h i{color:#f59e0b}
-.insight-h .count{background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-left:auto}
-.insight-list{display:flex;flex-direction:column;gap:8px}
-.insight{display:flex;gap:11px;padding:11px 13px;border-radius:10px;border:1px solid}
-.insight.success{background:rgba(22,163,74,.06);border-color:rgba(22,163,74,.25)}
-.insight.warning{background:rgba(220,38,38,.05);border-color:rgba(220,38,38,.25)}
-.insight.info{background:#f5f3ff;border-color:#7c3aed}
-.insight-icon{width:30px;height:30px;border-radius:8px;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
-.insight.success .insight-icon{background:#16a34a}
-.insight.warning .insight-icon{background:#dc2626}
-.insight.info .insight-icon{background:#7c3aed}
-.insight-body b{font-size:13px;font-weight:700;color:#0F172A;display:block;margin-bottom:2px}
-.insight-body p{font-size:12px;color:#475569;margin:0;line-height:1.5}
-
-/* FORM (Nuevo pedido) */
-.form-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}
-.form-card{background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:18px;box-shadow:0 1px 4px rgba(15,23,42,.05)}
-.fg{margin-bottom:12px}
-.fg label{display:block;font-size:10.5px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1.5px solid #e8ecf0;border-radius:8px;font-size:13px;font-family:inherit;color:#0F172A;background:#f8fafc;outline:none}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#7c3aed;background:#fff}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.calc-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #e5e7eb;font-size:13px;color:#475569}
-.calc-row b{color:#0F172A;font-weight:700}
-.calc-total{display:flex;justify-content:space-between;padding-top:12px;margin-top:8px;border-top:2px solid #0F172A;font-size:18px;font-weight:800;color:#0F172A}
-.calc-total span:last-child{color:#16a34a}
-
-/* CARDS GRID */
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.cgrid{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;transition:transform .15s,box-shadow .2s,border-color .2s}
-.cgrid:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,.06);border-color:#7c3aed}
-.cgrid-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.cgrid-h .av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#059669);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
-.cgrid-h b{font-size:13px;color:#0F172A;display:block}
-.cgrid-h span{font-size:11px;color:#64748b}
-.cgrid-meta{font-size:11px;color:#475569;line-height:1.5;display:flex;flex-direction:column;gap:3px}
-.cgrid-meta i{color:#94a3b8;width:14px}
-
-/* SETTINGS */
-.set-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.set-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px}
-.set-card h4{margin:0 0 4px;font-size:14px;font-weight:800;color:#0F172A}
-.set-card p{margin:0 0 12px;font-size:12px;color:#64748b}
-.toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid #f1f5f9;font-size:13px}
-.toggle:first-of-type{border-top:none}
-.tg{width:34px;height:20px;background:#cbd5e1;border-radius:99px;position:relative;cursor:pointer;transition:background .2s}
-.tg.on{background:#7c3aed}
-.tg::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s}
-.tg.on::after{transform:translateX(14px)}
-
-/* WA TEMPLATES */
-.wa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.wa-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
-.wa-card h5{margin:0 0 6px;font-size:13px;font-weight:800;display:flex;align-items:center;gap:6px;color:#0F172A}
-.wa-card h5 i{color:#16a34a}
-.wa-card .pre{background:#f0fdf4;border:1px solid #86efac;border-radius:9px;padding:10px 12px;font-size:12px;color:#166534;line-height:1.55;white-space:pre-line}
-.wa-card .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:11px;color:#64748b}
-
-/* OVERLAY for mobile sidebar */
-.sb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40}
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sw);background:var(--sidebar-bg);display:flex;flex-direction:column;position:fixed;top:46px;left:0;bottom:0;z-index:100;overflow-y:auto;transition:transform var(--tr)}
+.sidebar::-webkit-scrollbar{width:0}
+.sb-top{padding:18px 14px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-logo-row{display:flex;align-items:center;gap:10px}
+.sb-logo{width:36px;height:36px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(124,58,237,.35)}
+.sb-logo-txt .n{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.sb-logo-txt .s{font-size:10.5px;color:rgba(255,255,255,.4);margin-top:2px}
+.sb-nav{flex:1;padding:10px}
+.sb-sec{font-size:10px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:1.2px;text-transform:uppercase;padding:14px 12px 5px}
+.sb-item{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:9px;cursor:pointer;color:rgba(255,255,255,.55);font-size:13px;font-weight:500;margin-bottom:2px;position:relative;transition:all var(--tr);user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85)}
+.sb-item.active{background:linear-gradient(90deg,var(--acento-dim),rgba(255,255,255,.04));color:#fff}
+.sb-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;border-radius:0 2px 2px 0;background:var(--acento-grad)}
+.sb-item i{width:16px;font-size:13px;text-align:center;flex-shrink:0}
+.sb-chip{margin-left:auto;background:var(--acento);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;min-width:18px;text-align:center}
+.sb-foot{padding:10px 8px;border-top:1px solid rgba(255,255,255,.06)}
+.sb-user{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background var(--tr)}
+.sb-user:hover{background:rgba(255,255,255,.07)}
+.sb-ava{width:32px;height:32px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;flex-shrink:0}
+.sb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90}
 .sb-ov.show{display:block}
 
-@media(max-width:920px){
-  .shell{grid-template-columns:1fr}
-  .sb{position:fixed;top:0;left:0;bottom:0;width:240px;transform:translateX(-100%);transition:transform .25s ease;z-index:50;box-shadow:0 10px 40px rgba(0,0,0,.35)}
-  .sb.open{transform:translateX(0)}
-  .tb-burger{display:flex;align-items:center;justify-content:center}
-  .bento{grid-template-columns:1fr 1fr}
-  .bento-wide{grid-template-columns:1fr}
-  .today-grid{grid-template-columns:1fr}
+/* ── MAIN AREA ── */
+.main{margin-left:var(--sw);display:flex;flex-direction:column;min-height:calc(100vh - 46px)}
+.topbar{height:60px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 22px;gap:12px;position:sticky;top:46px;z-index:50;flex-shrink:0}
+.tb-burger{display:none;width:34px;height:34px;border:1.5px solid var(--border);background:var(--surface2);border-radius:8px;color:var(--txt2);font-size:14px;align-items:center;justify-content:center}
+.tb-page-title{font-size:17px;font-weight:800;color:var(--txt);letter-spacing:-.4px;white-space:nowrap}
+.tb-search{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:6px 12px;width:210px;cursor:pointer;transition:border-color var(--tr)}
+.tb-search:hover{border-color:var(--acento)}
+.tb-search input{background:transparent;border:none;outline:none;font-size:12px;color:var(--txt);width:100%;font-family:inherit;cursor:pointer}
+.tb-search i{color:var(--txt3);font-size:12px;flex-shrink:0}
+.tb-btn{width:34px;height:34px;border-radius:8px;background:var(--surface2);border:1.5px solid var(--border);color:var(--txt2);font-size:13px;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+.tb-btn:hover{background:var(--acento-xlt);border-color:var(--acento);color:var(--acento)}
+.tb-ava{width:32px;height:32px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff;flex-shrink:0}
+.content{padding:16px 20px;flex:1}
+.sec{display:none;animation:fadeIn .2s ease both}
+.sec.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ── PAGE HEADER ── */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:10px}
+.ph-left h2{font-size:18px;font-weight:800;color:var(--txt);letter-spacing:-.4px}
+.ph-left p{font-size:12px;color:var(--txt3);margin-top:2px}
+.ph-right{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9999px;font-size:12px;font-weight:600;border:none;cursor:pointer;transition:all var(--tr);white-space:nowrap;font-family:inherit}
+.btn:active{transform:scale(.95)}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:0 4px 14px var(--brand-dim)}
+.btn-primary:hover{background:var(--brand-dark);transform:translateY(-1px)}
+.btn-secondary{background:var(--surface);border:1.5px solid var(--border);color:var(--txt2)}
+.btn-secondary:hover{background:var(--brand-xlt);border-color:var(--brand);color:var(--brand)}
+.btn-acento{background:var(--acento);color:#fff}
+.btn-acento:hover{background:var(--acento-dark)}
+.btn-sm{padding:5px 12px;font-size:11px}
+
+/* ── TABS ── */
+.tab-bar{display:flex;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:16px;width:fit-content}
+.tab-btn{padding:0 14px;min-height:32px;display:inline-flex;align-items:center;gap:5px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;color:var(--txt3);background:none;border:1px solid transparent;transition:all var(--tr);white-space:nowrap;font-family:inherit}
+.tab-btn.active{background:var(--brand-xlt);color:var(--brand);border-color:var(--brand-dim);font-weight:700}
+.tab-btn:hover:not(.active){color:var(--brand);background:var(--brand-xlt)}
+
+/* ── BENTO KPI GRID ── */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.bento-kpi{background:var(--surface);border-radius:16px;padding:20px 22px 18px;box-shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);position:relative;overflow:hidden;transition:box-shadow .2s}
+.bento-kpi:hover{box-shadow:0 4px 20px rgba(0,0,0,.10)}
+.kpi-icon-wrap{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px}
+.kpi-label{font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px}
+.kpi-val{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px;line-height:1;color:var(--money)}
+.kpi-foot{font-size:11px;color:var(--txt3)}
+.kpi-delta{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;color:var(--green);background:var(--green-lt)}
+.kpi-delta.neg{color:var(--red);background:var(--red-lt)}
+.bento-chart{background:var(--surface);border-radius:16px;padding:22px 22px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);grid-column:span 2;transition:box-shadow .2s}
+.bento-chart:hover{box-shadow:0 4px 20px rgba(0,0,0,.10)}
+.bento-chart-title{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:16px;display:flex;align-items:center;gap:7px}
+.bento-chart-title i{color:var(--brand);font-size:12px}
+
+/* ── BAR CHART ── */
+.bar-chart{display:flex;align-items:flex-end;gap:5px;height:100px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bb{width:100%;border-radius:5px 5px 0 0;min-height:3px;cursor:pointer;transition:filter var(--tr)}
+.bb:hover{filter:brightness(1.1)}
+.bl{font-size:9px;color:var(--txt3)}
+
+/* ── DONUT ── */
+.donut-wrap{display:flex;align-items:center;gap:16px}
+.donut-leg{display:flex;flex-direction:column;gap:6px;flex:1}
+.donut-row{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt2)}
+.donut-row .dd{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.donut-row .pct{font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:5px;margin-left:auto}
+.donut-n{font-size:11px;font-weight:800;background:var(--surface2);padding:1px 6px;border-radius:6px;color:var(--txt);margin-left:4px;flex-shrink:0}
+
+/* ── URGENCY CARDS ── */
+.today-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.today-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;position:relative;overflow:hidden;box-shadow:var(--sh);transition:box-shadow var(--tr),transform var(--tr)}
+.today-card:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
+.today-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.today-card.red::before{background:var(--red)}
+.today-card.amber::before{background:var(--amber)}
+.today-card.brand::before{background:var(--brand)}
+.today-top{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.today-ico{width:32px;height:32px;border-radius:9px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.today-card.red .today-ico{background:var(--red)}
+.today-card.amber .today-ico{background:var(--amber)}
+.today-card.brand .today-ico{background:var(--brand)}
+.today-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:1px}
+.today-card.red .today-lbl{color:var(--red)}
+.today-card.amber .today-lbl{color:var(--amber)}
+.today-card.brand .today-lbl{color:var(--brand)}
+.today-val{font-size:17px;font-weight:800;color:var(--txt);line-height:1.1}
+.today-val small{font-size:11px;color:var(--txt3);font-weight:500}
+.today-arr{margin-left:auto;font-size:11px}
+.today-card.red .today-arr{color:var(--red)}
+.today-card.amber .today-arr{color:var(--amber)}
+.today-card.brand .today-arr{color:var(--brand)}
+.today-desc{font-size:11px;color:var(--txt3);line-height:1.4}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.badge::before{content:'●';font-size:7px}
+.b-confirmed{background:var(--green-lt);color:var(--green)}
+.b-sent{background:var(--blue-lt);color:var(--blue)}
+.b-negotiating{background:var(--amber-lt);color:var(--amber)}
+.b-lost{background:var(--red-lt);color:var(--red)}
+.b-draft{background:var(--surface2);color:var(--txt3);border:1px solid var(--border)}
+.b-purple{background:var(--brand-xlt);color:var(--brand)}
+.b-paid{background:var(--green-lt);color:var(--green)}
+.b-pending{background:var(--red-lt);color:var(--red)}
+.b-partial{background:var(--amber-lt);color:var(--amber)}
+.tag-b2b{background:#1E1B4B;color:#fff;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700}
+.tag-b2c{background:var(--blue-lt);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700}
+
+/* ── TABLES ── */
+.tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh)}
+.tbl-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+.tbl-hdr-title{font-size:13px;font-weight:700;color:var(--txt)}
+.tbl-link{font-size:11px;font-weight:600;color:var(--acento);cursor:pointer}
+table{width:100%;border-collapse:collapse}
+thead th{padding:8px 12px;text-align:left;font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:1px;text-transform:uppercase;background:var(--surface2);border-bottom:1px solid var(--border);white-space:nowrap}
+tbody td{padding:9px 12px;font-size:12px;color:var(--txt2);border-bottom:1px solid var(--border);vertical-align:middle;font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--surface2)}
+td b{color:var(--txt);font-weight:600}
+.td-num{font-weight:700;color:var(--txt)}
+.td-amt{font-weight:700;color:var(--money);text-align:right;white-space:nowrap}
+.acts{display:flex;gap:4px}
+.act{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border2);background:var(--surface2);color:var(--txt2);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+.act:hover{color:var(--txt)}
+.act.edit:hover{background:var(--blue-lt);color:var(--blue);border-color:var(--blue)}
+.act.del:hover{background:var(--red-lt);color:var(--red);border-color:var(--red)}
+.act.wa:hover{background:#DCFCE7;color:#16A34A;border-color:#16A34A}
+
+/* ── CARDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;box-shadow:var(--sh)}
+.card-title{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.card-title i{color:var(--acento);font-size:12px}
+
+/* ── INSIGHTS ── */
+.insight-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;margin-top:18px;box-shadow:var(--sh)}
+.insight-hdr{display:flex;align-items:center;gap:7px;margin-bottom:12px;font-size:13px;font-weight:700;color:var(--txt)}
+.insight-hdr i{color:var(--amber)}
+.insight-chip{background:var(--surface2);color:var(--txt3);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-left:auto;border:1px solid var(--border)}
+.insights{display:flex;flex-direction:column;gap:8px}
+.insight{display:flex;gap:11px;padding:11px 13px;border-radius:10px;border:1px solid}
+.insight.suc{background:rgba(5,150,105,.05);border-color:rgba(5,150,105,.2)}
+.insight.inf{background:var(--brand-xlt);border-color:var(--brand-dim)}
+.insight.war{background:var(--red-lt);border-color:rgba(220,38,38,.2)}
+.insight-ico{width:30px;height:30px;border-radius:8px;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
+.insight.suc .insight-ico{background:var(--green)}
+.insight.inf .insight-ico{background:var(--brand)}
+.insight.war .insight-ico{background:var(--red)}
+.insight-body b{font-size:12px;font-weight:700;color:var(--txt);display:block;margin-bottom:2px}
+.insight-body p{font-size:11px;color:var(--txt3);line-height:1.5}
+
+/* ── FORM ── */
+.fg{margin-bottom:13px}
+.fg label{display:block;font-size:10px;font-weight:700;color:var(--txt2);margin-bottom:5px;letter-spacing:.6px;text-transform:uppercase}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;font-size:12px;color:var(--txt);outline:none;transition:border-color var(--tr),box-shadow var(--tr);font-family:inherit}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--acento);box-shadow:0 0 0 3px var(--acento-dim)}
+.fg textarea{resize:vertical;min-height:68px;line-height:1.55}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.form-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}
+.calc-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--border);font-size:12px;color:var(--txt3)}
+.calc-row b{color:var(--txt);font-weight:700}
+.calc-total{display:flex;justify-content:space-between;padding-top:12px;margin-top:8px;border-top:2px solid var(--txt);font-size:17px;font-weight:800;color:var(--txt)}
+.calc-total span:last-child{color:var(--brand)}
+
+/* ── PROVIDER / CLIENT CARDS ── */
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.prov-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;transition:box-shadow var(--tr),transform var(--tr)}
+.prov-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
+.prov-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.prov-ava{width:38px;height:38px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
+.prov-info b{font-size:13px;color:var(--txt);display:block}
+.prov-info span{font-size:11px;color:var(--txt3)}
+.prov-meta{font-size:11px;color:var(--txt3);line-height:1.7;display:flex;flex-direction:column;gap:1px}
+.prov-meta i{width:14px;color:var(--txt4);font-size:11px}
+
+/* ── ALERT BANNER ── */
+.alert{display:flex;align-items:center;gap:10px;border-radius:12px;padding:11px 16px;margin-bottom:14px;flex-wrap:wrap}
+.alert.red{background:rgba(220,38,38,.06);border:1.5px solid rgba(220,38,38,.25)}
+.alert.amber{background:var(--amber-lt);border:1.5px solid rgba(217,119,6,.25)}
+.alert i.ico{font-size:14px;flex-shrink:0}
+.alert.red .ico{color:var(--red)}
+.alert.amber .ico{color:var(--amber)}
+.alert-body{flex:1;font-size:12px;color:var(--txt3)}
+.alert-body b{color:var(--txt)}
+
+/* ── WA MESSAGES ── */
+.wa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.wa-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px}
+.wa-card h5{margin-bottom:8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;color:var(--txt)}
+.wa-card h5 i{color:#25D366;font-size:14px}
+.wa-pre{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:10px 12px;font-size:11px;color:var(--txt2);line-height:1.65;white-space:pre-line}
+.wa-meta{display:flex;justify-content:space-between;align-items:center;margin-top:9px;font-size:10.5px;color:var(--txt3)}
+
+/* ── CONFIG ── */
+.cfg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cfg-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px}
+.cfg-card h4{font-size:14px;font-weight:800;color:var(--txt);margin-bottom:3px;display:flex;align-items:center;gap:7px}
+.cfg-card h4 i{color:var(--brand);font-size:13px}
+.cfg-card > p{font-size:11.5px;color:var(--txt3);margin-bottom:14px}
+.toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border);font-size:12.5px;color:var(--txt2)}
+.tg{width:36px;height:20px;background:var(--surface2);border:1.5px solid var(--border);border-radius:99px;position:relative;cursor:pointer;transition:background .2s,border-color .2s;flex-shrink:0}
+.tg.on{background:var(--acento);border-color:var(--acento)}
+.tg::after{content:"";position:absolute;top:1.5px;left:1.5px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tg.on::after{transform:translateX(16px)}
+
+/* ── PROGRESS BAR ── */
+.prog-item{margin-bottom:10px}
+.prog-item:last-child{margin-bottom:0}
+.prog-head{display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px;color:var(--txt2)}
+.prog-head b{color:var(--txt);font-weight:600}
+.prog-track{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .tb-burger{display:flex}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .bento-chart{grid-column:span 4}
   .form-grid{grid-template-columns:1fr}
-  .grid-3,.set-grid,.wa-grid{grid-template-columns:1fr}
-  .content{padding:18px 16px}
-  .tb{padding:10px 16px}
-  .page-h h1{font-size:20px}
+  .cgrid,.wa-grid,.cfg-grid{grid-template-columns:1fr 1fr}
+  .today-grid{grid-template-columns:1fr}
 }
-@media(max-width:520px){
-  .bc-nav{display:none}
-  .bc-bar{padding:8px 10px;gap:7px}
-  .bc-url-bar{flex:1;min-width:0}
-  .bc-back span,.bc-cta span{display:none}
-  .bc-ext{gap:6px}
+@media(max-width:600px){
+  .brow-nav{display:none}
+  .brow-bar{padding:8px 10px;gap:7px}
+  .brow-back span,.brow-cta span{display:none}
   .bento{grid-template-columns:1fr}
-  .demo-float{font-size:10.5px;padding:7px 14px;bottom:10px}
+  .cgrid,.wa-grid,.cfg-grid{grid-template-columns:1fr}
+  .tb-search{display:none}
+  .topbar{padding:0 14px;gap:8px}
+  .content{padding:12px 14px}
+  .demo-float{font-size:10px;padding:7px 14px;bottom:10px}
 }
 </style>
 </head>
 <body>
 
-<div class="bc">
-  <div class="bc-bar">
-    <div class="bc-tl">
-      <span class="bc-dot bc-r"></span>
-      <span class="bc-dot bc-y"></span>
-      <span class="bc-dot bc-g"></span>
+<!-- BROWSER CHROME -->
+<div class="brow">
+  <div class="brow-bar">
+    <div class="brow-tl">
+      <span class="brow-dot brow-r"></span>
+      <span class="brow-dot brow-y"></span>
+      <span class="brow-dot brow-g"></span>
     </div>
-    <div class="bc-nav">
-      <button class="bc-nav-btn" style="opacity:.35;cursor:default" title="Atrás">‹</button>
-      <button class="bc-nav-btn" style="opacity:.35;cursor:default" title="Adelante">›</button>
+    <div class="brow-nav">
+      <button class="brow-nav-btn" style="opacity:.35;cursor:default" title="Atrás">‹</button>
+      <button class="brow-nav-btn" style="opacity:.35;cursor:default" title="Adelante">›</button>
     </div>
-    <div class="bc-url-bar">
+    <div class="brow-url">
       <i class="fa-solid fa-lock"></i>
-      <span class="bc-url-text">anma-hub.vercel.app</span>
+      <span>anma-hub.vercel.app</span>
     </div>
-    <div class="bc-ext">
-      <a href="/landing.html" class="bc-back"><i class="fa-solid fa-arrow-left"></i> <span>Volver</span></a>
-      <a href="https://anma-hub.vercel.app/login" class="bc-cta"><i class="fa-solid fa-rocket"></i> <span>Quiero mi app</span></a>
+    <div class="brow-ext">
+      <a href="/landing.html" class="brow-back"><i class="fa-solid fa-arrow-left"></i> <span>Volver</span></a>
+      <a href="https://anma-hub.vercel.app/login" class="brow-cta"><i class="fa-solid fa-rocket"></i> <span>Quiero mi app</span></a>
     </div>
   </div>
 </div>
 
 <div class="sb-ov" id="ov"></div>
 
-<div class="shell">
-
-  <aside class="sb" id="sb">
-    <div class="sb-logo"><span class="sb-logo-mark"><i class="fa-solid fa-bolt"></i></span> ANMA</div>
-    <div class="sb-sub">Tu negocio en un solo lugar</div>
-
-    <div class="sb-section">Gestión</div>
-    <div class="sb-item active"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
-    <div class="sb-item"><i class="fa-solid fa-file-invoice-dollar"></i> Nuevo pedido</div>
-    <div class="sb-item"><i class="fa-solid fa-users"></i> Clientes</div>
-
-    <div class="sb-section">Catálogo</div>
-    <div class="sb-item"><i class="fa-solid fa-cube"></i> Productos</div>
-    <div class="sb-item"><i class="fa-solid fa-boxes-stacked"></i> Insumos</div>
-    <div class="sb-item"><i class="fa-solid fa-industry"></i> Proveedores</div>
-
-    <div class="sb-section">Operación</div>
-    <div class="sb-item"><i class="fa-solid fa-truck-fast"></i> Logística</div>
-    <div class="sb-item"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
-
-    <div class="sb-section">Sistema</div>
-    <div class="sb-item"><i class="fa-solid fa-gear"></i> Configuración</div>
-  </aside>
-
-  <main>
-    <div class="tb">
-      <button class="tb-burger" id="burger"><i class="fa-solid fa-bars"></i></button>
-      <div class="tb-title" id="tb-title">Dashboard</div>
-      <div class="tb-search"><i class="fa-solid fa-magnifying-glass"></i> Buscá pedido, cliente, producto…</div>
-      <div class="tb-actions">
-        <button class="tb-btn"><i class="fa-solid fa-eye"></i></button>
-        <button class="tb-btn"><i class="fa-solid fa-bell"></i><span class="dot"></span></button>
-        <button class="tb-btn" style="background:#f5f3ff;color:#7c3aed"><i class="fa-solid fa-brain"></i></button>
-        <div class="tb-avatar">AP</div>
+<!-- ─── SIDEBAR ─── -->
+<aside class="sidebar" id="sb">
+  <div class="sb-top">
+    <div class="sb-logo-row">
+      <div class="sb-logo"><i class="fa-solid fa-bolt"></i></div>
+      <div class="sb-logo-txt">
+        <div class="n">ANMA Pro</div>
+        <div class="s">Distribuidora Norte</div>
       </div>
     </div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-sec">Gestión</div>
+    <div class="sb-item active" data-sec="dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
+    <div class="sb-item" data-sec="pedido"><i class="fa-solid fa-file-invoice-dollar"></i> Nuevo pedido</div>
+    <div class="sb-item" data-sec="clientes"><i class="fa-solid fa-users"></i> Clientes <span class="sb-chip">83</span></div>
 
-    <div class="content">
+    <div class="sb-sec">Catálogo</div>
+    <div class="sb-item" data-sec="productos"><i class="fa-solid fa-cube"></i> Productos</div>
+    <div class="sb-item" data-sec="insumos"><i class="fa-solid fa-boxes-stacked"></i> Insumos</div>
+    <div class="sb-item" data-sec="proveedores"><i class="fa-solid fa-industry"></i> Proveedores</div>
 
-      <!-- DASHBOARD -->
-      <section class="section active" id="sec-dashboard">
-        <div class="page-h">
-          <div><h1>Dashboard</h1><p>Pedidos, ventas y análisis del negocio</p></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn-2"><i class="fa-solid fa-calendar"></i> Este mes</button>
-            <button class="btn-2"><i class="fa-solid fa-download"></i> Exportar</button>
-            <button class="btn-add"><i class="fa-solid fa-plus"></i> Nuevo pedido</button>
-          </div>
-        </div>
-        <div class="tabs"><span class="act">Resumen</span><span>Pedidos</span><span>Análisis</span><span>Seguimiento (5)</span></div>
+    <div class="sb-sec">Operación</div>
+    <div class="sb-item" data-sec="logistica"><i class="fa-solid fa-truck-fast"></i> Logística</div>
+    <div class="sb-item" data-sec="mensajes"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
 
-        <div class="today">
-          <div class="today-h"><i class="fa-solid fa-bolt" style="color:#f59e0b"></i> Hoy importa <span class="count">12</span></div>
-          <div class="today-grid">
-            <div class="today-card">
-              <div class="today-row"><div class="today-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div><div class="today-info"><div class="lbl">Cobros vencidos</div><div class="v">3 <small>pedidos</small></div></div><i class="fa-solid fa-arrow-right" style="color:#dc2626;font-size:11px"></i></div>
-              <div class="today-desc"><b style="color:#dc2626;font-variant-numeric:tabular-nums">$ 184.500</b> sin cobrar · entrega ya pasó</div>
-            </div>
-            <div class="today-card amber">
-              <div class="today-row"><div class="today-icon"><i class="fa-solid fa-truck-fast"></i></div><div class="today-info"><div class="lbl">Entregas hoy</div><div class="v">4 <small>pedidos</small></div></div><i class="fa-solid fa-arrow-right" style="color:#d97706;font-size:11px"></i></div>
-              <div class="today-desc">Sofía Ramos, Estudio Cromo, Luz & Forma +1</div>
-            </div>
-            <div class="today-card purple">
-              <div class="today-row"><div class="today-icon"><i class="fa-solid fa-comments"></i></div><div class="today-info"><div class="lbl">A confirmar</div><div class="v">5 <small>seguimientos</small></div></div><i class="fa-solid fa-arrow-right" style="color:#7c3aed;font-size:11px"></i></div>
-              <div class="today-desc">Enviados hace 3+ días — recordales antes de que se enfríen</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bento">
-          <div class="kpi"><div class="kpi-l">Ventas Brutas</div><div class="kpi-vrow"><div class="kpi-v">$1.245.800</div><span class="kpi-d">↑18%</span></div><svg class="kpi-spark" viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="22"><polyline points="0,18 8,16 16,14 24,15 32,12 40,11 48,9 56,10 64,7 72,8 80,5 88,4 96,2 100,3" fill="none" stroke="#7c3aed" stroke-width="1.2" opacity=".45"/></svg></div>
-          <div class="kpi key"><div class="kpi-l">Ingresos Caja</div><div class="kpi-vrow"><div class="kpi-v">$845.200</div><span class="kpi-d">↑12%</span></div><svg class="kpi-spark" viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="22"><polyline points="0,16 8,15 16,12 24,14 32,10 40,9 48,11 56,8 64,7 72,9 80,6 88,4 96,3 100,2" fill="none" stroke="#16a34a" stroke-width="1.2" opacity=".45"/></svg></div>
-          <div class="kpi"><div class="kpi-l">Ticket Promedio</div><div class="kpi-vrow"><div class="kpi-v">$ 38.900</div><span class="kpi-d">↑6%</span></div><svg class="kpi-spark" viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="22"><polyline points="0,12 8,13 16,11 24,12 32,10 40,11 48,9 56,10 64,8 72,9 80,7 88,8 96,6 100,7" fill="none" stroke="#7c3aed" stroke-width="1.2" opacity=".45"/></svg></div>
-          <div class="kpi"><div class="kpi-l">Pedidos</div><div class="kpi-vrow"><div class="kpi-v">32</div></div><svg class="kpi-spark" viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="22"><polyline points="0,16 8,14 16,12 24,14 32,11 40,10 48,12 56,9 64,10 72,8 80,7 88,9 96,6 100,7" fill="none" stroke="#7c3aed" stroke-width="1.2" opacity=".45"/></svg></div>
-
-          <div class="bento-wide">
-            <div class="card">
-              <div class="card-h"><i class="fa-solid fa-chart-bar"></i> Ingresos cobrados — día a día · Este mes</div>
-              <div class="bar-chart">
-                <div class="bc"><div class="bb" style="height:18%"></div></div><div class="bc"><div class="bb" style="height:32%"></div></div><div class="bc"><div class="bb" style="height:12%"></div></div><div class="bc"><div class="bb" style="height:0%"></div></div><div class="bc"><div class="bb" style="height:0%"></div></div><div class="bc"><div class="bb" style="height:45%"></div></div><div class="bc"><div class="bb" style="height:62%"></div></div><div class="bc"><div class="bb" style="height:38%"></div></div><div class="bc"><div class="bb" style="height:24%"></div></div><div class="bc"><div class="bb" style="height:0%"></div></div><div class="bc"><div class="bb" style="height:0%"></div></div><div class="bc"><div class="bb" style="height:78%"></div></div><div class="bc"><div class="bb" style="height:55%"></div></div><div class="bc"><div class="bb" style="height:42%"></div></div><div class="bc"><div class="bb" style="height:88%"></div></div><div class="bc"><div class="bb" style="height:96%"></div></div><div class="bc"><div class="bb" style="height:32%"></div></div><div class="bc"><div class="bb" style="height:0%"></div></div><div class="bc"><div class="bb" style="height:0%"></div></div><div class="bc"><div class="bb" style="height:54%"></div></div><div class="bc"><div class="bb" style="height:68%"></div></div><div class="bc"><div class="bb" style="height:42%"></div></div><div class="bc"><div class="bb" style="height:36%"></div></div><div class="bc"><div class="bb" style="height:75%"></div></div><div class="bc"><div class="bb" style="height:60%"></div></div>
-              </div>
-              <div class="bar-labels"><span class="l">1</span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l">5</span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l">10</span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l">15</span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l">20</span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l"></span><span class="l">25</span></div>
-            </div>
-            <div class="card">
-              <div class="card-h"><i class="fa-solid fa-chart-pie"></i> Estado de pedidos</div>
-              <div class="donut-wrap">
-                <svg width="100" height="100" viewBox="0 0 90 90"><circle cx="45" cy="45" r="36" fill="none" stroke="#f1f5f9" stroke-width="10"/><circle cx="45" cy="45" r="36" fill="none" stroke="#16a34a" stroke-width="10" stroke-dasharray="135 226" stroke-dashoffset="0" transform="rotate(-90 45 45)" stroke-linecap="round"/><circle cx="45" cy="45" r="36" fill="none" stroke="#3b82f6" stroke-width="10" stroke-dasharray="55 226" stroke-dashoffset="-135" transform="rotate(-90 45 45)" stroke-linecap="round"/><circle cx="45" cy="45" r="36" fill="none" stroke="#d97706" stroke-width="10" stroke-dasharray="22 226" stroke-dashoffset="-190" transform="rotate(-90 45 45)" stroke-linecap="round"/><circle cx="45" cy="45" r="36" fill="none" stroke="#dc2626" stroke-width="10" stroke-dasharray="14 226" stroke-dashoffset="-212" transform="rotate(-90 45 45)" stroke-linecap="round"/><text x="45" y="50" text-anchor="middle" font-size="16" font-weight="800" fill="#0F172A">32</text></svg>
-                <div class="donut-leg">
-                  <div class="donut-leg-row"><span class="d" style="background:#16a34a"></span>Confirmado <span class="pct" style="color:#16a34a;background:rgba(22,163,74,.12)">60%</span><span class="n">19</span></div>
-                  <div class="donut-leg-row"><span class="d" style="background:#3b82f6"></span>Enviado <span class="pct" style="color:#3b82f6;background:rgba(59,130,246,.12)">25%</span><span class="n">8</span></div>
-                  <div class="donut-leg-row"><span class="d" style="background:#d97706"></span>Negociando <span class="pct" style="color:#d97706;background:rgba(217,119,6,.12)">10%</span><span class="n">3</span></div>
-                  <div class="donut-leg-row"><span class="d" style="background:#dc2626"></span>Perdido <span class="pct" style="color:#dc2626;background:rgba(220,38,38,.12)">6%</span><span class="n">2</span></div>
-                </div>
-              </div>
-              <div style="font-size:9.5px;color:#94a3b8;text-align:center;margin-top:8px">Click en un estado para filtrar la lista</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tbl-card">
-          <div class="tbl-h"><h3>Últimos pedidos</h3><a class="more">Ver todos →</a></div>
-          <table>
-            <thead><tr><th>N°</th><th>Cliente</th><th>Empresa</th><th>Entrega</th><th>Estado</th><th>Pago</th><th style="text-align:right">Total</th></tr></thead>
-            <tbody>
-              <tr><td class="tbl-num">P-0042</td><td>Sofía Ramos</td><td>Luz & Forma</td><td>25/04</td><td><span class="tbl-st st-confirmed">● Confirmado</span></td><td><span class="tbl-st st-paid">● Pagado</span></td><td class="tbl-amt">$ 48.500</td></tr>
-              <tr><td class="tbl-num">P-0041</td><td>Martina Gómez</td><td>Diseño Austral</td><td>27/04</td><td><span class="tbl-st st-confirmed">● Confirmado</span></td><td><span class="tbl-st st-partial">● Seña</span></td><td class="tbl-amt">$ 138.700</td></tr>
-              <tr><td class="tbl-num">P-0040</td><td>Lucas Méndez</td><td>BioVerde</td><td>28/04</td><td><span class="tbl-st st-sent">● Enviado</span></td><td><span class="tbl-st st-pending">● Pendiente</span></td><td class="tbl-amt">$ 92.000</td></tr>
-              <tr><td class="tbl-num">P-0039</td><td>Carla Méndez</td><td>Estudio Cromo</td><td>29/04</td><td><span class="tbl-st st-negotiating">● Negociando</span></td><td><span class="tbl-st st-pending">● Pendiente</span></td><td class="tbl-amt">$ 22.150</td></tr>
-              <tr><td class="tbl-num">P-0038</td><td>Diego Pérez</td><td>Mayorista 360</td><td>23/04</td><td><span class="tbl-st st-confirmed">● Confirmado</span></td><td><span class="tbl-st st-paid">● Pagado</span></td><td class="tbl-amt">$ 215.300</td></tr>
-              <tr><td class="tbl-num">P-0037</td><td>Florencia Acosta</td><td>Diseño Industrial</td><td>22/04</td><td><span class="tbl-st st-confirmed">● Confirmado</span></td><td><span class="tbl-st st-partial">● Seña</span></td><td class="tbl-amt">$ 64.200</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="insight-card">
-          <div class="insight-h"><i class="fa-solid fa-lightbulb"></i> Insights del período <span class="count">3</span></div>
-          <div class="insight-list">
-            <div class="insight success"><div class="insight-icon"><i class="fa-solid fa-rocket"></i></div><div class="insight-body"><b>Crecimiento fuerte: +18% vs período anterior</b><p>Estás vendiendo 18% más que el mes pasado. Identificá qué cambió y duplicá esa apuesta.</p></div></div>
-            <div class="insight info"><div class="insight-icon"><i class="fa-solid fa-circle-info"></i></div><div class="insight-body"><b>Mayorista 360 es tu cliente más fuerte (42%)</b><p>Cuidalo bien — representa 42% de tus ventas confirmadas en el período.</p></div></div>
-            <div class="insight success"><div class="insight-icon"><i class="fa-solid fa-bullseye"></i></div><div class="insight-body"><b>Conversión excelente: 68%</b><p>Cerrás 68 de cada 100 presupuestos enviados. Por encima del promedio del rubro (35–55%).</p></div></div>
-          </div>
-        </div>
-      </section>
-
-      <div style="text-align:center;padding:32px 0 16px;color:#64748b;font-size:12px">
-        Esta es una vista demo con datos ficticios · <a href="https://anma-hub.vercel.app/login" style="color:#7c3aed;font-weight:700">Quiero mi app →</a>
+    <div class="sb-sec">Sistema</div>
+    <div class="sb-item" data-sec="config"><i class="fa-solid fa-gear"></i> Configuración</div>
+  </nav>
+  <div class="sb-foot">
+    <div class="sb-user">
+      <div class="sb-ava">AP</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Ariel Paz</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4)">Pro · Distribuidora Norte</div>
       </div>
     </div>
-  </main>
-</div>
+  </div>
+</aside>
 
-<div class="demo-float"><strong>Demo</strong> · Estudio Norte · datos ficticios</div>
+<!-- ─── MAIN ─── -->
+<div class="main">
+  <div class="topbar">
+    <button class="tb-burger" id="burger"><i class="fa-solid fa-bars"></i></button>
+    <span class="tb-page-title" id="tb-title">Dashboard</span>
+    <div style="flex:1"></div>
+    <div class="tb-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input placeholder="Buscá pedido, cliente, producto…" readonly>
+    </div>
+    <button class="tb-btn"><i class="fa-regular fa-bell"></i></button>
+    <button class="tb-btn" style="background:var(--brand-xlt);border-color:var(--brand-dim);color:var(--brand)"><i class="fa-solid fa-brain"></i></button>
+    <div class="tb-ava">AP</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <section class="sec active" id="sec-dashboard">
+      <div class="ph">
+        <div class="ph-left">
+          <h2>Dashboard</h2>
+          <p>Facturación, pedidos y métricas de distribución · Mayo 2026</p>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-calendar"></i> Este mes</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-download"></i> Exportar</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo pedido</button>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active">Resumen</button>
+        <button class="tab-btn">Pedidos</button>
+        <button class="tab-btn">Análisis</button>
+        <button class="tab-btn">Seguimiento <span style="background:var(--acento);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px">5</span></button>
+      </div>
+
+      <!-- Hoy importa -->
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;font-size:11px;font-weight:800;color:var(--txt);text-transform:uppercase;letter-spacing:.6px">
+        <i class="fa-solid fa-bolt" style="color:var(--amber)"></i> Hoy importa
+        <span style="background:var(--surface2);border:1px solid var(--border);color:var(--txt3);padding:1px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-left:auto">9</span>
+      </div>
+      <div class="today-grid">
+        <div class="today-card red">
+          <div class="today-top">
+            <div class="today-ico"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+            <div><div class="today-lbl">Cuentas a cobrar</div><div class="today-val">5 <small>facturas</small></div></div>
+            <i class="fa-solid fa-chevron-right today-arr"></i>
+          </div>
+          <div class="today-desc"><b style="color:var(--red);font-variant-numeric:tabular-nums">$ 284.500</b> vencidas · más de 15 días</div>
+        </div>
+        <div class="today-card amber">
+          <div class="today-top">
+            <div class="today-ico"><i class="fa-solid fa-truck-fast"></i></div>
+            <div><div class="today-lbl">Despachos hoy</div><div class="today-val">8 <small>rutas</small></div></div>
+            <i class="fa-solid fa-chevron-right today-arr"></i>
+          </div>
+          <div class="today-desc">CABA Norte, GBA Oeste, Rosario — confirmados</div>
+        </div>
+        <div class="today-card brand">
+          <div class="today-top">
+            <div class="today-ico"><i class="fa-solid fa-comments"></i></div>
+            <div><div class="today-lbl">Seguimientos</div><div class="today-val">5 <small>presupuestos</small></div></div>
+            <i class="fa-solid fa-chevron-right today-arr"></i>
+          </div>
+          <div class="today-desc">Enviados hace 4+ días sin respuesta</div>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="bento">
+        <div class="bento-kpi">
+          <div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-chart-line"></i></div>
+          <div class="kpi-label">Facturación bruta</div>
+          <div class="kpi-val">$ 2.184.600</div>
+          <div class="kpi-foot"><span class="kpi-delta">↑ 18%</span> vs mes anterior</div>
+        </div>
+        <div class="bento-kpi">
+          <div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
+          <div class="kpi-label">Cobrado</div>
+          <div class="kpi-val">$ 1.730.200</div>
+          <div class="kpi-foot"><span class="kpi-delta">↑ 12%</span> vs mes anterior</div>
+        </div>
+        <div class="bento-kpi">
+          <div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-box-open"></i></div>
+          <div class="kpi-label">Pedidos del mes</div>
+          <div class="kpi-val">147</div>
+          <div class="kpi-foot">128 entregados · 19 en camino</div>
+        </div>
+        <div class="bento-kpi">
+          <div class="kpi-icon-wrap" style="background:var(--blue-lt);color:var(--blue)"><i class="fa-solid fa-ticket"></i></div>
+          <div class="kpi-label">Pedido promedio</div>
+          <div class="kpi-val">$ 14.860</div>
+          <div class="kpi-foot"><span class="kpi-delta">↑ 5%</span> vs mes anterior</div>
+        </div>
+
+        <!-- Bar chart -->
+        <div class="bento-chart">
+          <div class="bento-chart-title"><i class="fa-solid fa-chart-bar"></i> Facturación cobrada — este mes</div>
+          <div class="bar-chart">
+            <div class="bc"><div class="bb" style="height:25%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:40%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:18%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:55%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:72%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:45%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:30%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:85%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:68%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:52%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:94%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:100%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:42%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:62%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:76%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:55%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:48%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:82%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:70%;background:var(--grad)"></div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:5px">
+            <span class="bl">1</span><span class="bl">5</span><span class="bl">10</span><span class="bl">15</span><span class="bl">20</span><span class="bl">25</span>
+          </div>
+        </div>
+
+        <!-- Donut chart -->
+        <div class="bento-chart">
+          <div class="bento-chart-title"><i class="fa-solid fa-chart-pie"></i> Estado de pedidos</div>
+          <div class="donut-wrap">
+            <svg width="100" height="100" viewBox="0 0 90 90" style="flex-shrink:0">
+              <circle cx="45" cy="45" r="36" fill="none" stroke="#F3F4F6" stroke-width="10"/>
+              <circle cx="45" cy="45" r="36" fill="none" stroke="#059669" stroke-width="10" stroke-dasharray="148 226" stroke-dashoffset="0" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+              <circle cx="45" cy="45" r="36" fill="none" stroke="#2563EB" stroke-width="10" stroke-dasharray="48 226" stroke-dashoffset="-148" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+              <circle cx="45" cy="45" r="36" fill="none" stroke="#D97706" stroke-width="10" stroke-dasharray="18 226" stroke-dashoffset="-196" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+              <circle cx="45" cy="45" r="36" fill="none" stroke="#DC2626" stroke-width="10" stroke-dasharray="12 226" stroke-dashoffset="-214" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+              <text x="45" y="47" text-anchor="middle" font-size="13" font-weight="800" fill="#111827">147</text>
+              <text x="45" y="57" text-anchor="middle" font-size="7" fill="#6B7280">pedidos</text>
+            </svg>
+            <div class="donut-leg">
+              <div class="donut-row"><span class="dd" style="background:#059669"></span> Entregado <span class="pct" style="color:#059669;background:rgba(5,150,105,.1)">65%</span><span class="donut-n">96</span></div>
+              <div class="donut-row"><span class="dd" style="background:#2563EB"></span> En camino <span class="pct" style="color:#2563EB;background:#EFF6FF">21%</span><span class="donut-n">31</span></div>
+              <div class="donut-row"><span class="dd" style="background:#D97706"></span> Preparando <span class="pct" style="color:#D97706;background:#FFFBEB">8%</span><span class="donut-n">12</span></div>
+              <div class="donut-row"><span class="dd" style="background:#DC2626"></span> Cancelado <span class="pct" style="color:#DC2626;background:#FEF2F2">5%</span><span class="donut-n">8</span></div>
+            </div>
+          </div>
+          <div style="font-size:9.5px;color:var(--txt4);text-align:center;margin-top:10px">Click en un estado para filtrar la lista</div>
+        </div>
+      </div>
+
+      <!-- Top clientes -->
+      <div class="tbl-card" style="margin-bottom:16px">
+        <div class="tbl-hdr">
+          <span class="tbl-hdr-title">Últimos pedidos</span>
+          <a class="tbl-link">Ver todos →</a>
+        </div>
+        <table>
+          <thead>
+            <tr><th>N°</th><th>Cliente</th><th>Productos</th><th>Entrega</th><th>Estado</th><th>Pago</th><th style="text-align:right">Total</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-num">PED-0892</td><td><b>Supermercado El Cruce</b><div style="font-size:11px;color:var(--txt3)">Luján, GBA Oeste</div></td><td style="font-size:11.5px">Aceite × 48, Arroz × 120</td><td>27/05</td><td><span class="badge b-confirmed">Entregado</span></td><td><span class="badge b-paid">Pagado</span></td><td class="td-amt">$ 68.400</td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
+            <tr><td class="td-num">PED-0891</td><td><b>Almacén Norte S.A.</b><div style="font-size:11px;color:var(--txt3)">CABA, Villa Urquiza</div></td><td style="font-size:11.5px">Yerba × 200, Azúcar × 100</td><td style="color:var(--red);font-weight:700">HOY</td><td><span class="badge b-negotiating">En camino</span></td><td><span class="badge b-partial">Seña</span></td><td class="td-amt">$ 124.800</td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
+            <tr><td class="td-num">PED-0890</td><td><b>Cooperativa La Unión</b><div style="font-size:11px;color:var(--txt3)">Rosario, SF</div></td><td style="font-size:11.5px">Mix surtido × 500 bultos</td><td>28/05</td><td><span class="badge b-sent">Preparando</span></td><td><span class="badge b-pending">Pendiente</span></td><td class="td-amt">$ 342.000</td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
+            <tr><td class="td-num">PED-0889</td><td><b>Kiosco Central Srl</b><div style="font-size:11px;color:var(--txt3)">La Plata, BA</div></td><td style="font-size:11.5px">Golosinas × 80, Fiambre × 20</td><td>26/05</td><td><span class="badge b-confirmed">Entregado</span></td><td><span class="badge b-paid">Pagado</span></td><td class="td-amt">$ 28.600</td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
+            <tr><td class="td-num">PED-0888</td><td><b>Ferretería Central</b><div style="font-size:11px;color:var(--txt3)">Córdoba Capital</div></td><td style="font-size:11.5px">Limpieza × 60 cajas</td><td>25/05</td><td><span class="badge b-confirmed">Entregado</span></td><td><span class="badge b-partial">CC 30d</span></td><td class="td-amt">$ 89.200</td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Insights -->
+      <div class="insight-card">
+        <div class="insight-hdr"><i class="fa-solid fa-lightbulb"></i> Insights del período <span class="insight-chip">3</span></div>
+        <div class="insights">
+          <div class="insight suc"><div class="insight-ico"><i class="fa-solid fa-rocket"></i></div><div class="insight-body"><b>Facturación creció 18% vs mes anterior</b><p>El aumento proviene principalmente de Cooperativa La Unión y nuevos clientes del GBA Oeste. Conviene reforzar esa zona.</p></div></div>
+          <div class="insight war"><div class="insight-ico"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="insight-body"><b>$ 284.500 en cuentas vencidas a +15 días</b><p>5 clientes superaron su plazo de pago. Priorizar contacto hoy: Almacén Norte (mayor monto) y Kiosco Sur.</p></div></div>
+          <div class="insight inf"><div class="insight-ico"><i class="fa-solid fa-circle-info"></i></div><div class="insight-body"><b>Ruta GBA Oeste tiene el costo por entrega más bajo</b><p>$ 890 por parada vs $ 1.420 promedio. Evaluar concentrar más clientes en esa zona para mejorar el margen.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ NUEVO PEDIDO ═══ -->
+    <section class="sec" id="sec-pedido">
+      <div class="ph">
+        <div class="ph-left">
+          <h2>Nuevo pedido</h2>
+          <p>Cargá el pedido y generá la remito en segundos</p>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-download"></i> Vista previa</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Confirmar pedido</button>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-building"></i> Cliente</div>
+          <div class="grid2">
+            <div class="fg"><label>Razón social</label><input value="Supermercado El Cruce"></div>
+            <div class="fg"><label>CUIT</label><input value="30-71234567-8"></div>
+          </div>
+          <div class="grid2">
+            <div class="fg"><label>Contacto</label><input value="Marcela Torres"></div>
+            <div class="fg"><label>WhatsApp</label><input value="+54 9 11 5678-9012"></div>
+          </div>
+          <div class="fg"><label>Dirección de entrega</label><input value="Rivadavia 1450, Luján, GBA Oeste"></div>
+          <div class="grid2">
+            <div class="fg"><label>Fecha de entrega</label><input value="2026-06-03" type="date"></div>
+            <div class="fg"><label>Condición de pago</label><select><option selected>Cuenta corriente 30d</option><option>Contado</option><option>Cheque a 45d</option><option>Seña 50%</option></select></div>
+          </div>
+
+          <div class="card-title" style="margin-top:16px"><i class="fa-solid fa-boxes-stacked"></i> Productos del pedido</div>
+          <div class="tbl-card" style="margin-bottom:10px">
+            <table>
+              <thead><tr><th>Producto</th><th>Unid.</th><th>Bultos</th><th style="text-align:right">P/Bulto</th><th style="text-align:right">Subtotal</th></tr></thead>
+              <tbody>
+                <tr><td>Aceite de girasol 1L</td><td>12×</td><td>4</td><td class="td-amt">$ 8.400</td><td class="td-amt">$ 33.600</td></tr>
+                <tr><td>Arroz largo fino 1kg</td><td>20×</td><td>6</td><td class="td-amt">$ 5.800</td><td class="td-amt">$ 34.800</td></tr>
+                <tr><td>Yerba compuesta 500g</td><td>10×</td><td>10</td><td class="td-amt">$ 3.200</td><td class="td-amt">$ 32.000</td></tr>
+                <tr><td>Azúcar blanca 1kg</td><td>25×</td><td>4</td><td class="td-amt">$ 4.600</td><td class="td-amt">$ 18.400</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <button style="background:var(--surface2);border:1.5px dashed var(--brand);color:var(--brand);padding:9px;border-radius:9px;font-weight:700;font-size:12px;cursor:pointer;width:100%;font-family:inherit"><i class="fa-solid fa-plus"></i> Agregar producto</button>
+
+          <div class="fg" style="margin-top:16px"><label>Observaciones internas</label><textarea rows="2" placeholder="Ej: horario de descarga, contacto en portería, indicaciones del chofer…"></textarea></div>
+        </div>
+
+        <div>
+          <div class="card" style="position:sticky;top:120px">
+            <div class="card-title"><i class="fa-solid fa-calculator"></i> Resumen del pedido</div>
+            <div class="calc-row"><span>Subtotal mercadería</span><b>$ 118.800</b></div>
+            <div class="calc-row"><span>Descuento cliente (5%)</span><b style="color:var(--green)">− $ 5.940</b></div>
+            <div class="calc-row"><span>Costo de flete</span><b>$ 4.200</b></div>
+            <div class="calc-row"><span>IVA (21%)</span><b>$ 24.393</b></div>
+            <div class="calc-total"><span>Total c/IVA</span><span>$ 141.453</span></div>
+            <div style="background:var(--green-lt);border:1px solid rgba(5,150,105,.2);border-radius:10px;padding:10px 12px;margin-top:12px;font-size:11.5px">
+              <b style="display:block;margin-bottom:3px;color:var(--green)">Margen estimado: $ 32.800 (27%)</b>
+              <span style="color:var(--txt3)">Sobre costo de compra + flete + carga/descarga</span>
+            </div>
+            <div style="margin-top:14px;display:flex;flex-direction:column;gap:7px">
+              <button class="btn btn-acento" style="width:100%;justify-content:center;border-radius:9px;padding:11px 16px"><i class="fa-solid fa-file-invoice"></i> Generar remito PDF</button>
+              <button class="btn btn-secondary" style="width:100%;justify-content:center;border-radius:9px;padding:11px 16px"><i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CLIENTES ═══ -->
+    <section class="sec" id="sec-clientes">
+      <div class="ph">
+        <div class="ph-left">
+          <h2>Clientes</h2>
+          <p>Base de clientes distribución · 83 activos · CABA, GBA, Interior</p>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-download"></i> Exportar</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Agregar</button>
+        </div>
+      </div>
+      <div class="tbl-card">
+        <table>
+          <thead>
+            <tr><th>Empresa / Contacto</th><th>Zona</th><th>Cond. pago</th><th>Pedidos</th><th style="text-align:right">Facturado</th><th>Estado</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Cooperativa La Unión</b><div style="font-size:11px;color:var(--txt3)">Miguel Solano · (0341) 4612-0033</div></td><td style="font-size:11.5px;color:var(--txt3)">Rosario, SF</td><td style="font-size:11.5px;color:var(--txt3)">CC 45d</td><td><b>38</b></td><td class="td-amt" style="text-align:right">$ 1.240.800</td><td><span class="badge b-confirmed">Al día</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Supermercado El Cruce</b><div style="font-size:11px;color:var(--txt3)">Marcela Torres · +54 9 11 5678-9012</div></td><td style="font-size:11.5px;color:var(--txt3)">Luján, GBA</td><td style="font-size:11.5px;color:var(--txt3)">CC 30d</td><td><b>29</b></td><td class="td-amt" style="text-align:right">$ 892.400</td><td><span class="badge b-confirmed">Al día</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Almacén Norte S.A.</b><div style="font-size:11px;color:var(--txt3)">Jorge Rivas · +54 9 11 4422-8877</div></td><td style="font-size:11.5px;color:var(--txt3)">CABA</td><td style="font-size:11.5px;color:var(--txt3)">Contado</td><td><b>22</b></td><td class="td-amt" style="text-align:right">$ 568.200</td><td><span class="badge b-negotiating">Vencido 15d</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Ferretería Central</b><div style="font-size:11px;color:var(--txt3)">Paula Ibáñez · +54 9 351 6677-4499</div></td><td style="font-size:11.5px;color:var(--txt3)">Córdoba</td><td style="font-size:11.5px;color:var(--txt3)">Cheque 45d</td><td><b>18</b></td><td class="td-amt" style="text-align:right">$ 421.600</td><td><span class="badge b-confirmed">Al día</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Kiosco Central Srl</b><div style="font-size:11px;color:var(--txt3)">Ramón Gutiérrez · +54 9 221 5544-2211</div></td><td style="font-size:11.5px;color:var(--txt3)">La Plata</td><td style="font-size:11.5px;color:var(--txt3)">CC 15d</td><td><b>15</b></td><td class="td-amt" style="text-align:right">$ 228.400</td><td><span class="badge b-confirmed">Al día</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Minimarket Sol</b><div style="font-size:11px;color:var(--txt3)">Claudia Ramos · +54 9 11 2233-4455</div></td><td style="font-size:11.5px;color:var(--txt3)">GBA Norte</td><td style="font-size:11.5px;color:var(--txt3)">CC 30d</td><td><b>11</b></td><td class="td-amt" style="text-align:right">$ 184.300</td><td><span class="badge b-lost">Vencido 30d</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══ PRODUCTOS ═══ -->
+    <section class="sec" id="sec-productos">
+      <div class="ph">
+        <div class="ph-left">
+          <h2>Productos</h2>
+          <p>Catálogo de distribución · 124 SKUs · 8 con stock crítico</p>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar lista</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Agregar</button>
+        </div>
+      </div>
+      <div class="bento">
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-cube"></i></div><div class="kpi-label">Total SKUs</div><div class="kpi-val">124</div><div class="kpi-foot">en catálogo activo</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-circle-check"></i></div><div class="kpi-label">Stock OK</div><div class="kpi-val" style="color:var(--green)">108</div><div class="kpi-foot">sobre el mínimo</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="kpi-label">Stock bajo</div><div class="kpi-val" style="color:var(--amber)">8</div><div class="kpi-foot">reposición próxima</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--red-lt);color:var(--red)"><i class="fa-solid fa-ban"></i></div><div class="kpi-label">Sin stock</div><div class="kpi-val" style="color:var(--red)">8</div><div class="kpi-foot">reposición urgente</div></div>
+      </div>
+      <div class="tbl-card">
+        <table>
+          <thead><tr><th>Producto</th><th>Categoría</th><th>Stock (bultos)</th><th style="text-align:right">P. venta</th><th style="text-align:right">P. costo</th><th>Margen</th><th>Estado</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><b>Aceite de girasol 1L (12u)</b></td><td style="font-size:11px;color:var(--txt3)">Aceites</td><td>148 / 50</td><td class="td-amt">$ 8.400</td><td class="td-amt">$ 6.200</td><td style="color:var(--green);font-weight:700">26%</td><td><span class="badge b-confirmed">Stock OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Arroz largo fino 1kg (20u)</b></td><td style="font-size:11px;color:var(--txt3)">Secos</td><td>92 / 30</td><td class="td-amt">$ 5.800</td><td class="td-amt">$ 4.400</td><td style="color:var(--green);font-weight:700">24%</td><td><span class="badge b-confirmed">Stock OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Yerba compuesta 500g (10u)</b></td><td style="font-size:11px;color:var(--txt3)">Infusiones</td><td>18 / 20</td><td class="td-amt">$ 3.200</td><td class="td-amt">$ 2.400</td><td style="color:var(--amber);font-weight:700">25%</td><td><span class="badge b-negotiating">Stock bajo</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Azúcar blanca 1kg (25u)</b></td><td style="font-size:11px;color:var(--txt3)">Secos</td><td>0 / 40</td><td class="td-amt">$ 4.600</td><td class="td-amt">$ 3.500</td><td style="color:var(--red);font-weight:700">24%</td><td><span class="badge b-lost">Sin stock</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Detergente liq. 1L (12u)</b></td><td style="font-size:11px;color:var(--txt3)">Limpieza</td><td>65 / 20</td><td class="td-amt">$ 6.100</td><td class="td-amt">$ 4.700</td><td style="color:var(--green);font-weight:700">23%</td><td><span class="badge b-confirmed">Stock OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Fideos spaghetti 500g (20u)</b></td><td style="font-size:11px;color:var(--txt3)">Pastas</td><td>8 / 30</td><td class="td-amt">$ 4.200</td><td class="td-amt">$ 3.200</td><td style="color:var(--amber);font-weight:700">24%</td><td><span class="badge b-negotiating">Stock bajo</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══ INSUMOS ═══ -->
+    <section class="sec" id="sec-insumos">
+      <div class="ph">
+        <div class="ph-left">
+          <h2>Insumos</h2>
+          <p>Materiales operativos · pallets, embalajes, cintas, EPP · 32 ítems</p>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Agregar</button>
+        </div>
+      </div>
+      <div class="bento">
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-boxes-stacked"></i></div><div class="kpi-label">Total insumos</div><div class="kpi-val">32</div><div class="kpi-foot">ítems registrados</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-circle-check"></i></div><div class="kpi-label">Disponibles</div><div class="kpi-val" style="color:var(--green)">26</div><div class="kpi-foot">stock suficiente</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--red-lt);color:var(--red)"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="kpi-label">A reponer</div><div class="kpi-val" style="color:var(--red)">6</div><div class="kpi-foot">solicitar esta semana</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-dollar-sign"></i></div><div class="kpi-label">Costo mensual</div><div class="kpi-val">$ 48.200</div><div class="kpi-foot">estimado en insumos</div></div>
+      </div>
+      <div class="tbl-card">
+        <table>
+          <thead><tr><th>Insumo</th><th>Categoría</th><th>Stock</th><th>Mínimo</th><th style="text-align:right">Costo unit.</th><th>Estado</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><b>Pallet de madera 120×100</b></td><td style="font-size:11px;color:var(--txt3)">Paletería</td><td>48 un.</td><td>20 un.</td><td class="td-amt">$ 3.200</td><td><span class="badge b-confirmed">OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Film stretch 500m</b></td><td style="font-size:11px;color:var(--txt3)">Embalaje</td><td>12 rollos</td><td>10 rollos</td><td class="td-amt">$ 890</td><td><span class="badge b-confirmed">OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Cinta de embalar (36u)</b></td><td style="font-size:11px;color:var(--txt3)">Embalaje</td><td>3 cajas</td><td>8 cajas</td><td class="td-amt">$ 2.400</td><td><span class="badge b-lost">A reponer</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Guantes de trabajo (par)</b></td><td style="font-size:11px;color:var(--txt3)">EPP</td><td>22 pares</td><td>15 pares</td><td class="td-amt">$ 480</td><td><span class="badge b-confirmed">OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Caja de cartón 60×40×40</b></td><td style="font-size:11px;color:var(--txt3)">Embalaje</td><td>0 un.</td><td>200 un.</td><td class="td-amt">$ 320</td><td><span class="badge b-lost">Sin stock</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr><td><b>Etiquetas térmicas (500u)</b></td><td style="font-size:11px;color:var(--txt3)">Identificación</td><td>4 rollos</td><td>10 rollos</td><td class="td-amt">$ 1.200</td><td><span class="badge b-negotiating">Stock bajo</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══ PROVEEDORES ═══ -->
+    <section class="sec" id="sec-proveedores">
+      <div class="ph">
+        <div class="ph-left">
+          <h2>Proveedores</h2>
+          <p>Red de proveedores · 12 activos · 4 con pedidos pendientes</p>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-share"></i> Portal proveedores</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Agregar</button>
+        </div>
+      </div>
+      <div class="alert red">
+        <i class="fa-solid fa-bell ico"></i>
+        <div class="alert-body"><b>4 órdenes de compra pendientes de confirmación</b> · Molinos Río, Arcor y Central Logística sin respuesta</div>
+        <button class="btn btn-acento btn-sm"><i class="fa-brands fa-whatsapp"></i> Recordar ahora</button>
+      </div>
+      <div class="cgrid">
+        <div class="prov-card">
+          <div class="prov-top">
+            <div class="prov-ava" style="background:linear-gradient(135deg,#7C3AED,#4F46E5)">MR</div>
+            <div class="prov-info"><b>Molinos Río de la Plata</b><span>Aceites · Harinas · Secos</span></div>
+          </div>
+          <div class="prov-meta">
+            <span><i class="fa-solid fa-phone"></i> (011) 4321-7890</span>
+            <span><i class="fa-solid fa-clock"></i> Lead time: 5 días hábiles</span>
+            <span><i class="fa-solid fa-credit-card"></i> Cheque a 60 días</span>
+          </div>
+          <div style="margin-top:10px"><span class="badge b-negotiating">OC pendiente</span></div>
+        </div>
+        <div class="prov-card">
+          <div class="prov-top">
+            <div class="prov-ava" style="background:linear-gradient(135deg,#D97706,#EA580C)">AR</div>
+            <div class="prov-info"><b>Arcor S.A.</b><span>Golosinas · Galletitas · Bebidas</span></div>
+          </div>
+          <div class="prov-meta">
+            <span><i class="fa-solid fa-phone"></i> 0800-222-7267</span>
+            <span><i class="fa-solid fa-clock"></i> Lead time: 3 días</span>
+            <span><i class="fa-solid fa-credit-card"></i> CC 30 días</span>
+          </div>
+          <div style="margin-top:10px"><span class="badge b-negotiating">OC pendiente</span></div>
+        </div>
+        <div class="prov-card">
+          <div class="prov-top">
+            <div class="prov-ava" style="background:linear-gradient(135deg,#059669,#10B981)">CL</div>
+            <div class="prov-info"><b>Central Logística</b><span>Pallets · Embalajes · EPP</span></div>
+          </div>
+          <div class="prov-meta">
+            <span><i class="fa-solid fa-phone"></i> (011) 5555-4433</span>
+            <span><i class="fa-solid fa-clock"></i> Lead time: 2 días</span>
+            <span><i class="fa-solid fa-credit-card"></i> Contado</span>
+          </div>
+          <div style="margin-top:10px"><span class="badge b-confirmed">Entregado</span></div>
+        </div>
+        <div class="prov-card">
+          <div class="prov-top">
+            <div class="prov-ava" style="background:linear-gradient(135deg,#2563EB,#06B6D4)">LA</div>
+            <div class="prov-info"><b>La Anónima Distrib.</b><span>Lácteos · Fiambres · Congelados</span></div>
+          </div>
+          <div class="prov-meta">
+            <span><i class="fa-solid fa-phone"></i> (011) 4567-8901</span>
+            <span><i class="fa-solid fa-clock"></i> Lead time: 4 días</span>
+            <span><i class="fa-solid fa-credit-card"></i> CC 45 días</span>
+          </div>
+          <div style="margin-top:10px"><span class="badge b-confirmed">Al día</span></div>
+        </div>
+        <div class="prov-card">
+          <div class="prov-top">
+            <div class="prov-ava" style="background:linear-gradient(135deg,#4F46E5,#7C3AED)">UC</div>
+            <div class="prov-info"><b>Unilever Argentina</b><span>Higiene · Limpieza · Cuidado</span></div>
+          </div>
+          <div class="prov-meta">
+            <span><i class="fa-solid fa-phone"></i> 0800-888-5555</span>
+            <span><i class="fa-solid fa-clock"></i> Lead time: 7 días hábiles</span>
+            <span><i class="fa-solid fa-credit-card"></i> Cheque a 30 días</span>
+          </div>
+          <div style="margin-top:10px"><span class="badge b-confirmed">Al día</span></div>
+        </div>
+        <div class="prov-card">
+          <div class="prov-top">
+            <div class="prov-ava" style="background:linear-gradient(135deg,#059669,#6366F1)">MN</div>
+            <div class="prov-info"><b>Mastellone Hnos.</b><span>Lácteos · La Serenísima</span></div>
+          </div>
+          <div class="prov-meta">
+            <span><i class="fa-solid fa-phone"></i> 0800-333-7878</span>
+            <span><i class="fa-solid fa-clock"></i> Lead time: 2 días</span>
+            <span><i class="fa-solid fa-credit-card"></i> CC 15 días</span>
+          </div>
+          <div style="margin-top:10px"><span class="badge b-confirmed">Al día</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ LOGÍSTICA ═══ -->
+    <section class="sec" id="sec-logistica">
+      <div class="ph">
+        <div class="ph-left">
+          <h2>Logística</h2>
+          <p>Rutas de entrega · flota · seguimiento de despachos</p>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-route"></i> Planificar ruta</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Registrar envío</button>
+        </div>
+      </div>
+      <div class="alert amber">
+        <i class="fa-solid fa-triangle-exclamation ico"></i>
+        <div class="alert-body"><b>2 envíos atrasados</b> · OCA y transporte propio superaron el SLA de 48h · Ruta GBA Norte</div>
+        <button class="btn btn-secondary btn-sm">Ver atrasados</button>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active">Despachos activos</button>
+        <button class="tab-btn">Rutas y flota</button>
+        <button class="tab-btn">Costos del mes</button>
+      </div>
+
+      <div class="bento">
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-truck"></i></div><div class="kpi-label">Costo flete mes</div><div class="kpi-val">$ 284.600</div><div class="kpi-foot">todos los transportes</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-box-open"></i></div><div class="kpi-label">Despachos mes</div><div class="kpi-val">147</div><div class="kpi-foot">128 entregados</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--red-lt);color:var(--red)"><i class="fa-solid fa-clock-rotate-left"></i></div><div class="kpi-label">Atrasados</div><div class="kpi-val" style="color:var(--red)">2</div><div class="kpi-foot">superan SLA 48h</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-coins"></i></div><div class="kpi-label">Costo x despacho</div><div class="kpi-val">$ 1.936</div><div class="kpi-foot">promedio del mes</div></div>
+      </div>
+
+      <div class="tbl-card">
+        <table>
+          <thead><tr><th>Remito</th><th>Fecha</th><th>Cliente</th><th>Destino</th><th>Transporte</th><th style="text-align:right">Costo</th><th>Estado</th><th></th></tr></thead>
+          <tbody>
+            <tr style="background:rgba(220,38,38,.03)">
+              <td class="td-num">R-008821</td>
+              <td>23/05<div style="font-size:10px;color:var(--red);font-weight:700"><i class="fa-solid fa-triangle-exclamation"></i> 4d atrasado</div></td>
+              <td>Almacén Norte S.A.</td><td>CABA</td><td>OCA</td>
+              <td class="td-amt">$ 4.800</td>
+              <td><span class="badge b-purple">En tránsito</span></td>
+              <td><div class="acts"><button class="act"><i class="fa-solid fa-location-arrow"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td>
+            </tr>
+            <tr><td class="td-num">R-008820</td><td>HOY<div style="font-size:10px;color:var(--amber);font-weight:700">en camino</div></td><td>Supermercado El Cruce</td><td>Luján</td><td>Transporte propio</td><td class="td-amt">$ 0</td><td><span class="badge b-negotiating">En ruta</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
+            <tr><td class="td-num">R-008819</td><td>HOY</td><td>Cooperativa La Unión</td><td>Rosario</td><td>Andreani</td><td class="td-amt">$ 12.400</td><td><span class="badge b-sent">En camino</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
+            <tr><td class="td-num">R-008818</td><td>26/05</td><td>Ferretería Central</td><td>Córdoba</td><td>Andreani</td><td class="td-amt">$ 9.600</td><td><span class="badge b-confirmed">Entregado</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td></tr>
+            <tr><td class="td-num">R-008817</td><td>25/05</td><td>Kiosco Central Srl</td><td>La Plata</td><td>OCA</td><td class="td-amt">$ 3.200</td><td><span class="badge b-confirmed">Entregado</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td></tr>
+            <tr><td class="td-num">R-008816</td><td>24/05</td><td>Minimarket Sol</td><td>GBA Norte</td><td>Transporte propio</td><td class="td-amt">$ 0</td><td><span class="badge b-confirmed">Entregado</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══ MENSAJES WA ═══ -->
+    <section class="sec" id="sec-mensajes">
+      <div class="ph">
+        <div class="ph-left">
+          <h2>Mensajes WhatsApp</h2>
+          <p>Plantillas de comunicación con clientes y proveedores</p>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nueva plantilla</button>
+        </div>
+      </div>
+      <div class="wa-grid">
+        <div class="wa-card">
+          <h5><i class="fa-brands fa-whatsapp"></i> Confirmación de pedido</h5>
+          <div class="wa-pre">Hola {contacto}, buen día! 👋
+
+Te confirmo el pedido N° {numero} de Distribuidora Norte:
+
+📦 {detalle_productos}
+🚚 Entrega estimada: {fecha_entrega}
+💰 Total c/IVA: {total}
+📝 Condición: {cond_pago}
+
+Te mandamos el remito en PDF. Cualquier consulta, por este medio. ¡Gracias! ✅</div>
+          <div class="wa-meta"><span>Última edición: 10/04/26</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        </div>
+        <div class="wa-card">
+          <h5><i class="fa-brands fa-whatsapp"></i> Aviso de despacho</h5>
+          <div class="wa-pre">Hola {contacto}! 🚛
+
+Tu pedido N° {numero} ya fue despachado.
+
+📦 Transportista: {transporte}
+🔎 Tracking: {link_tracking}
+⏰ Llegada estimada: {fecha_estimada}
+
+Ante cualquier novedad en la entrega, avisanos. ¡Saludos!</div>
+          <div class="wa-meta"><span>Última edición: 02/04/26</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        </div>
+        <div class="wa-card">
+          <h5><i class="fa-brands fa-whatsapp"></i> Recordatorio de pago</h5>
+          <div class="wa-pre">Hola {contacto}, buenos días!
+
+Te recuerdo que la factura N° {nro_factura} por $ {monto} vence el {fecha_vencimiento}.
+
+🏦 CBU: 0720035688000012345678
+👤 Distribuidora Norte S.A.
+CUIT: 30-71234567-8
+
+Ante cualquier consulta, a las órdenes. ¡Gracias!</div>
+          <div class="wa-meta"><span>Última edición: 20/03/26</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        </div>
+        <div class="wa-card">
+          <h5><i class="fa-brands fa-whatsapp"></i> Lista de precios actualizada</h5>
+          <div class="wa-pre">Hola {contacto}! 📋
+
+Te compartimos la lista de precios actualizada al {fecha}:
+👉 {link_lista}
+
+Los precios tienen vigencia hasta el {fecha_vigencia}.
+
+Para hacer tu pedido respondé este mensaje o llamanos al (011) 4321-7890.
+
+¡Gracias por elegirnos! 🙏</div>
+          <div class="wa-meta"><span>Última edición: 01/05/26</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CONFIGURACIÓN ═══ -->
+    <section class="sec" id="sec-config">
+      <div class="ph">
+        <div class="ph-left">
+          <h2>Configuración</h2>
+          <p>Empresa, facturación, integraciones y equipo</p>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+        </div>
+      </div>
+      <div class="cfg-grid">
+        <div class="cfg-card">
+          <h4><i class="fa-solid fa-building"></i> Datos de la empresa</h4>
+          <p>Información fiscal que aparece en facturas y remitos</p>
+          <div class="fg"><label>Razón social</label><input value="Distribuidora Norte S.A."></div>
+          <div class="grid2">
+            <div class="fg"><label>CUIT</label><input value="30-71234567-8"></div>
+            <div class="fg"><label>Condición IVA</label><select><option selected>Responsable Inscripto</option><option>Monotributo</option><option>Exento</option></select></div>
+          </div>
+          <div class="fg"><label>Domicilio fiscal</label><input value="Av. San Martín 4560, Haedo, GBA Oeste"></div>
+          <div class="grid2">
+            <div class="fg"><label>Teléfono</label><input value="(011) 4321-7890"></div>
+            <div class="fg"><label>Email</label><input value="admin@distribuidoranorte.com.ar"></div>
+          </div>
+        </div>
+        <div class="cfg-card">
+          <h4><i class="fa-solid fa-file-invoice"></i> Facturación</h4>
+          <p>Configuración de AFIP y puntos de venta</p>
+          <div class="fg"><label>Punto de venta AFIP</label><input value="0001"></div>
+          <div class="grid2">
+            <div class="fg"><label>Tipo de comprobante</label><select><option selected>Factura A</option><option>Factura B</option><option>Factura C</option></select></div>
+            <div class="fg"><label>Próximo N° de factura</label><input value="000001248"></div>
+          </div>
+          <div class="fg"><label>Clave AFIP (almacenada segura)</label><input type="password" value="**********"></div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;flex-shrink:0"></span>
+            <span style="font-size:11px;color:var(--green);font-weight:600">Conectado a AFIP — última sincronización hace 2h</span>
+          </div>
+        </div>
+        <div class="cfg-card">
+          <h4><i class="fa-solid fa-bell"></i> Notificaciones</h4>
+          <p>Alertas de cobranzas, stock y operación</p>
+          <div class="toggle"><span>Cuentas a cobrar vencidas (diario)</span><div class="tg on"></div></div>
+          <div class="toggle"><span>Stock crítico de productos</span><div class="tg on"></div></div>
+          <div class="toggle"><span>Envíos atrasados (en tiempo real)</span><div class="tg on"></div></div>
+          <div class="toggle"><span>Resumen semanal de rendimiento</span><div class="tg on"></div></div>
+          <div class="toggle"><span>Alertas de seguimiento (cada 4 días)</span><div class="tg on"></div></div>
+          <div class="toggle"><span>Notificaciones push en navegador</span><div class="tg"></div></div>
+        </div>
+        <div class="cfg-card">
+          <h4><i class="fa-solid fa-users"></i> Equipo</h4>
+          <p>Usuarios con acceso al workspace</p>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 0">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--grad);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">AP</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--txt)">Ariel Paz</div><div style="font-size:11px;color:var(--txt3)">ariel@distribuidoranorte.com.ar</div></div>
+            <span class="badge b-confirmed">Owner</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--border)">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--acento);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">MR</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--txt)">María Rodríguez</div><div style="font-size:11px;color:var(--txt3)">maria@distribuidoranorte.com.ar</div></div>
+            <span class="badge b-sent">Admin</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--border)">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--amber);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">JL</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--txt)">Juan López</div><div style="font-size:11px;color:var(--txt3)">juan@distribuidoranorte.com.ar</div></div>
+            <span class="badge b-draft">Operador</span>
+          </div>
+          <button class="btn btn-secondary btn-sm" style="margin-top:12px;width:100%;justify-content:center"><i class="fa-solid fa-plus"></i> Invitar usuario</button>
+        </div>
+      </div>
+    </section>
+
+    <div style="text-align:center;padding:32px 0 16px;color:var(--txt3);font-size:12px">
+      Esta es una vista demo con datos ficticios · <a href="https://anma-hub.vercel.app/login" style="color:var(--acento);font-weight:700">Quiero mi app →</a>
+    </div>
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<div class="demo-float"><strong>Demo</strong> · Distribuidora Norte · datos ficticios</div>
 
 <script>
 (function(){
-  var sb = document.getElementById('sb');
-  var ov = document.getElementById('ov');
+  var sb     = document.getElementById('sb');
+  var ov     = document.getElementById('ov');
   var burger = document.getElementById('burger');
-  if (burger) burger.addEventListener('click', function(){ sb.classList.toggle('open'); ov.classList.toggle('show') });
-  if (ov) ov.addEventListener('click', function(){ sb.classList.remove('open'); ov.classList.remove('show') });
+  var title  = document.getElementById('tb-title');
+  var titles = {
+    dashboard:  'Dashboard',
+    pedido:     'Nuevo pedido',
+    clientes:   'Clientes',
+    productos:  'Productos',
+    insumos:    'Insumos',
+    proveedores:'Proveedores',
+    logistica:  'Logística',
+    mensajes:   'Mensajes WA',
+    config:     'Configuración'
+  };
+
+  /* SPA navigation */
+  document.querySelectorAll('.sb-item[data-sec]').forEach(function(it){
+    it.addEventListener('click', function(){
+      var sec = it.getAttribute('data-sec');
+      document.querySelectorAll('.sb-item').forEach(function(x){ x.classList.remove('active') });
+      it.classList.add('active');
+      document.querySelectorAll('.sec').forEach(function(s){ s.classList.remove('active') });
+      var target = document.getElementById('sec-' + sec);
+      if (target) target.classList.add('active');
+      if (title) title.textContent = titles[sec] || sec;
+      if (window.innerWidth <= 960){ sb.classList.remove('open'); ov.classList.remove('show'); }
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  /* Mobile sidebar */
+  if (burger) burger.addEventListener('click', function(){
+    sb.classList.toggle('open'); ov.classList.toggle('show');
+  });
+  if (ov) ov.addEventListener('click', function(){
+    sb.classList.remove('open'); ov.classList.remove('show');
+  });
+
+  /* Toggle switches */
+  document.querySelectorAll('.tg').forEach(function(t){
+    t.addEventListener('click', function(){ t.classList.toggle('on') });
+  });
+
+  /* Tab bars */
+  document.querySelectorAll('.tab-bar').forEach(function(bar){
+    bar.querySelectorAll('.tab-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        bar.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active') });
+        btn.classList.add('active');
+      });
+    });
+  });
 })();
 </script>
-
 </body>
 </html>
