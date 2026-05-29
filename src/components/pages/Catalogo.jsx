@@ -83,6 +83,9 @@ export default function Catalogo() {
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [marginInput, setMarginInput] = useState('')
   const imgRef = useRef(null)
+  const bodyRef = useRef(null)
+  const [hasDraft, setHasDraft] = useState(null)
+  const DRAFT_KEY = 'anma_prod_draft'
 
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
 
@@ -141,6 +144,7 @@ export default function Catalogo() {
 
   const open = (p) => {
     setShowAdvanced(false)
+    setHasDraft(null)
     if (p) {
       setForm({ ...EMPTY, ...p, cat: p.cat ?? '', image: p.image || '' })
       const c = num(p.cost); const pr = num(p.priceB2C)
@@ -150,6 +154,14 @@ export default function Catalogo() {
       setMarginInput(String(m))
       const prices = autoPrice(0)
       setForm({ ...EMPTY, cat: cats[0] || '', priceB2C: prices.b2c, priceB2B: prices.b2b })
+      try {
+        const raw = localStorage.getItem(DRAFT_KEY)
+        if (raw) {
+          const d = JSON.parse(raw)
+          if (d._ts && (Date.now() - d._ts) < 86400000) setHasDraft(d)
+          else localStorage.removeItem(DRAFT_KEY)
+        }
+      } catch {}
     }
     setModal(true)
   }
@@ -179,6 +191,8 @@ export default function Catalogo() {
   const save = () => {
     if (!form.name) { toast('Ingresá el nombre del producto.', 'er'); return }
     const data = { ...form, cat: form.cat ?? '', cost: num(form.cost), stock: num(form.stock), minStock: num(form.minStock), priceB2C: num(form.priceB2C), priceB2B: num(form.priceB2B), updatedAt: new Date().toISOString().slice(0,10) }
+    try { localStorage.removeItem(DRAFT_KEY) } catch {}
+    setHasDraft(null)
     saveEntity('products', data); setModal(false); toast('Producto guardado', 'ok')
   }
 
@@ -320,6 +334,13 @@ export default function Catalogo() {
     window.addEventListener('keydown', handleEsc)
     return () => window.removeEventListener('keydown', handleEsc)
   }, [catMgmtModal, bulkCatModal, bulkSupplierModal, priceUpdateModal, moveModal, csvModal, bulkModal, modal])
+
+  /* Auto-guardar borrador mientras el modal está abierto */
+  useEffect(() => {
+    if (!modal) return
+    const draft = { form, marginInput, _ts: Date.now() }
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)) } catch {}
+  }, [form, marginInput, modal]) // eslint-disable-line
 
   return (
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>
@@ -653,7 +674,25 @@ export default function Catalogo() {
         <div className="modal-bg open" style={{ alignItems: 'flex-start', padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
           <div className="modal-form-card" style={{ maxWidth: 740, width: 'calc(100vw - 28px)', maxHeight: 'calc(100dvh - 28px)' }}>
             <div className="mh" style={{ flexShrink: 0 }}><h3>{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
-            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '18px 22px 4px' }}>
+            {/* Banner borrador */}
+            {hasDraft && (
+              <div style={{ flexShrink: 0, background: '#FFFBEB', borderBottom: '1px solid #FDE68A', padding: '9px 16px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
+                <i className="fa fa-clock-rotate-left" style={{ color: '#D97706' }} />
+                <span style={{ flex: 1, color: '#92400E' }}>
+                  Borrador guardado: <strong>{hasDraft.form?.name || 'sin nombre'}</strong>
+                  {hasDraft._ts ? ` · hace ${Math.round((Date.now() - hasDraft._ts) / 60000)} min` : ''}
+                </span>
+                <button className="btn btn-ghost btn-sm" style={{ padding: '3px 10px', fontSize: 11 }} onClick={() => {
+                  const d = hasDraft
+                  setForm({ ...EMPTY, ...d.form })
+                  setMarginInput(d.marginInput || '')
+                  setHasDraft(null)
+                }}>Restaurar</button>
+                <button className="btn btn-ghost btn-sm" style={{ padding: '3px 10px', fontSize: 11, color: 'var(--txt3)' }} onClick={() => { try { localStorage.removeItem(DRAFT_KEY) } catch {}; setHasDraft(null) }}>Descartar</button>
+                <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--txt4)', fontSize: 14, lineHeight: 1, padding: 2 }} onClick={() => setHasDraft(null)}>×</button>
+              </div>
+            )}
+            <div ref={bodyRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '18px 22px 4px' }}>
 
             {/* ── CARD 1: Datos del producto ── */}
             <div style={{ background: 'var(--surface2)', borderRadius: 14, padding: '18px 22px', marginBottom: 16, border: '1px solid var(--border)' }}>
