@@ -672,7 +672,7 @@ export default function Catalogo() {
       {/* Modal producto */}
       {modal && (
         <div className="modal-bg open" style={{ alignItems: 'flex-start', padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal-form-card" style={{ maxWidth: 740, width: 'calc(100vw - 28px)', maxHeight: 'calc(100dvh - 28px)' }}>
+          <div className="modal-form-card" style={{ maxWidth: 740, width: 'calc(100vw - 28px)' }}>
             <div className="mh" style={{ flexShrink: 0 }}><h3>{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
             {/* Banner borrador */}
             {hasDraft && (
