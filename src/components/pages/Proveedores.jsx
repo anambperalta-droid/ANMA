@@ -1158,7 +1158,7 @@ export default function Proveedores() {
               <button className="mclose" onClick={() => { setImportModal(false); setCsvPreview([]) }}><i className="fa fa-xmark" /></button>
             </div>
             {/* Body — scrollable, SIN altura fija */}
-            <div style={{ flex: 1, overflowY: 'auto', padding: '4px 20px 8px', WebkitOverflowScrolling: 'touch' }}>
+            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '4px 20px 8px', WebkitOverflowScrolling: 'touch' }}>
               {/* Tips compactos */}
               {csvPreview.length === 0 && (
                 <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>

@@ -70,7 +70,7 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
         </div>
 
         {/* ── Content ── */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '20px 18px', background: '#fff' }}>
+        <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '20px 18px', background: '#fff' }}>
 
           {/* Cabecera del comprobante */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 14, borderBottom: `3px solid ${brandColor}`, marginBottom: 16, gap: 12 }}>
@@ -1204,7 +1204,7 @@ export default function Clientes() {
               <button className="mclose" onClick={() => { setImportModal(false); setCsvPreview([]) }}><i className="fa fa-xmark" /></button>
             </div>
             {/* Body — scrollable, SIN altura fija */}
-            <div style={{ flex: 1, overflowY: 'auto', padding: '4px 20px 8px', WebkitOverflowScrolling: 'touch' }}>
+            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '4px 20px 8px', WebkitOverflowScrolling: 'touch' }}>
               {/* Tips compactos */}
               {csvPreview.length === 0 && (
                 <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
