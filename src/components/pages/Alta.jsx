@@ -14,7 +14,7 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-export default function Alta({ appName = 'ANMA Regalos' }) {
+export default function Alta({ appName = 'ANMA Pro' }) {
   const [params] = useSearchParams()
   const adminWa  = (params.get('admin') || params.get('a') || '').replace(/\D/g, '')
   const negocio  = params.get('neg')   || params.get('n') || appName
@@ -65,7 +65,7 @@ export default function Alta({ appName = 'ANMA Regalos' }) {
   const s = {
     page: { minHeight: '100vh', background: 'linear-gradient(140deg,#F5F3FF 0%,#EFF6FF 60%,#F0FDF4 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px 16px', fontFamily: "'Inter',system-ui,sans-serif" },
     card: { width: '100%', maxWidth: 440, background: '#fff', borderRadius: 24, padding: '28px 26px 24px', boxShadow: '0 6px 40px rgba(0,0,0,.1),0 1px 4px rgba(0,0,0,.06)', border: '1px solid rgba(0,0,0,.05)' },
-    logo: { width: 56, height: 56, borderRadius: 16, background: 'linear-gradient(135deg,#7C3AED,#9D5CF5)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px', fontSize: 26, boxShadow: '0 8px 24px rgba(124,58,237,.28)' },
+    logo: { width: 56, height: 56, borderRadius: 16, background: 'linear-gradient(135deg,#7C3AED,#9D5CF5)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px', fontSize: 24, fontWeight: 800, color: '#fff', letterSpacing: '-.5px', boxShadow: '0 8px 24px rgba(124,58,237,.28)' },
     title: { fontSize: 21, fontWeight: 800, color: '#1E1B4B', margin: '0 0 3px', letterSpacing: '-.5px', textAlign: 'center' },
     sub: { fontSize: 13, color: '#6B7280', margin: '0 0 22px', textAlign: 'center' },
     label: { display: 'block', fontSize: 11, fontWeight: 700, color: '#374151', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 5 },
@@ -82,9 +82,9 @@ export default function Alta({ appName = 'ANMA Regalos' }) {
       <div style={{ width: '100%', maxWidth: 440 }}>
         {/* Encabezado */}
         <div style={{ textAlign: 'center', marginBottom: 18 }}>
-          <div style={s.logo}>🎁</div>
+          <div style={s.logo}>{negocio.charAt(0).toUpperCase()}</div>
           <h1 style={s.title}>{negocio}</h1>
-          <p style={s.sub}>Formulario de registro de clientes</p>
+          <p style={s.sub}>Registrá tus datos para empezar a trabajar juntos</p>
         </div>
 
         <div style={s.card}>

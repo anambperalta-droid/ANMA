@@ -247,7 +247,7 @@ export default function Logistica() {
     if (!phone) return null
     const link = getTrackingUrl(shipment.carrier, shipment.trackingUrl)
     const msgs = {
-      'Preparando': `Hola${shipment.client ? ' ' + shipment.client : ''}! Estamos preparando tu pedido 🎁\n\nEn cuanto esté listo, te avisamos. Gracias por tu compra!`,
+      'Preparando': `Hola${shipment.client ? ' ' + shipment.client : ''}! Estamos preparando tu pedido 📦\n\nEn cuanto esté listo, te avisamos. ¡Gracias por tu compra!`,
       'Despachado': `Hola${shipment.client ? ' ' + shipment.client : ''}! Tu pedido fue despachado 📦${link ? `\n\nSeguilo acá:\n${link}` : ''}\n\nGracias por tu compra!`,
       'En tránsito': `Hola${shipment.client ? ' ' + shipment.client : ''}! Tu pedido está en camino 🚚${link ? `\n\nSeguilo acá:\n${link}` : ''}`,
       'Entregado': `Hola${shipment.client ? ' ' + shipment.client : ''}! Tu pedido fue entregado ✅\n\n¡Gracias! Cualquier comentario, estamos a disposición.`,
