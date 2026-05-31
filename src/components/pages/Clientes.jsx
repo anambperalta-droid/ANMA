@@ -694,16 +694,16 @@ export default function Clientes() {
                           <button
                             title={isCold ? 'Recontactar — sin actividad >30d' : 'Re-vincular por WhatsApp'}
                             onClick={e => openRevincul(c, e)}
-                            style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:isCold?'#FEF9C3':'var(--surface2)',color:isCold?'#EAB308':'var(--txt3)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
+                            style={{ width:32,height:32,borderRadius:'50%',border:'1.5px solid var(--border2)',background:isCold?'#FEF9C3':'var(--surface2)',color:isCold?'#EAB308':'var(--txt3)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
                             <i className="fa fa-bolt" />
                           </button>
                         )}
                         <button title="Editar" onClick={() => openEdit(c)}
-                          style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
+                          style={{ width:32,height:32,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
                           <i className="fa fa-pen" />
                         </button>
                         <button title="Eliminar" onClick={() => del(c.id)}
-                          style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid #FECACA',background:'#FEF2F2',color:'#DC2626',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
+                          style={{ width:32,height:32,borderRadius:'50%',border:'1.5px solid #FECACA',background:'#FEF2F2',color:'#DC2626',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
                           <i className="fa fa-trash" />
                         </button>
                       </div>
@@ -854,21 +854,21 @@ export default function Clientes() {
               </div>
 
               {/* SECTOR DERECHO: action bar */}
-              <div style={{ flexShrink:0,display:'flex',gap:4,alignItems:'center' }} onClick={e => e.stopPropagation()}>
+              <div style={{ flexShrink:0,display:'flex',gap:6,alignItems:'center' }} onClick={e => e.stopPropagation()}>
                 {c.wa && (
                   <button
                     title={isCold ? 'Recontactar — sin actividad >30d' : 'Re-vincular por WhatsApp'}
                     onClick={e => openRevincul(c, e)}
-                    style={{ width:30,height:30,borderRadius:'50%',border:'1.5px solid var(--border2)',background:isCold?'#FEF9C3':'var(--surface2)',color:isCold?'#EAB308':'var(--txt3)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0,padding:0,WebkitTapHighlightColor:'transparent' }}>
+                    style={{ width:40,height:40,borderRadius:'50%',border:'1.5px solid var(--border2)',background:isCold?'#FEF9C3':'var(--surface2)',color:isCold?'#EAB308':'var(--txt3)',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0,padding:0,WebkitTapHighlightColor:'transparent',touchAction:'manipulation' }}>
                     <i className="fa fa-bolt" />
                   </button>
                 )}
                 <button title="Editar" onClick={() => openEdit(c)}
-                  style={{ width:30,height:30,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0,padding:0,WebkitTapHighlightColor:'transparent' }}>
+                  style={{ width:40,height:40,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0,padding:0,WebkitTapHighlightColor:'transparent',touchAction:'manipulation' }}>
                   <i className="fa fa-pen" />
                 </button>
                 <button title="Eliminar" onClick={() => del(c.id)}
-                  style={{ width:30,height:30,borderRadius:'50%',border:'1.5px solid #FECACA',background:'#FEF2F2',color:'#DC2626',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0,padding:0,WebkitTapHighlightColor:'transparent' }}>
+                  style={{ width:40,height:40,borderRadius:'50%',border:'1.5px solid #FECACA',background:'#FEF2F2',color:'#DC2626',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0,padding:0,WebkitTapHighlightColor:'transparent',touchAction:'manipulation' }}>
                   <i className="fa fa-trash" />
                 </button>
               </div>
