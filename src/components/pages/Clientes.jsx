@@ -914,7 +914,7 @@ export default function Clientes() {
       {/* MODAL EDITAR */}
       {modal && (
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal-form-card" style={{ maxWidth: 680, maxHeight: 'min(780px, calc(100svh - 32px))' }}>
+          <div className="modal-form-card" style={{ maxWidth: 680 }}>
             {/* Header fijo */}
             <div style={{ padding: '18px 28px 14px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
               <div className="mh" style={{ margin: 0, paddingBottom: 0, borderBottom: 'none' }}>
@@ -1031,7 +1031,7 @@ export default function Clientes() {
       {/* FICHA DETALLE */}
       {detailClient && (
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setDetailClient(null) }}>
-          <div className="modal-form-card" style={{ maxWidth: 860, height: 'min(880px, 96dvh)' }} onClick={e => e.stopPropagation()}>
+          <div className="modal-form-card" style={{ maxWidth: 860 }} onClick={e => e.stopPropagation()}>
 
             {/* Header */}
             <div style={{ padding: '20px 24px 16px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
