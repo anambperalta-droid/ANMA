@@ -330,20 +330,39 @@ export default function Presupuesto() {
   }
 
   /* ── Cálculo de precio desde margen ────────────────────────────────────
-     Fórmula: price = cost / (1 - m/100)  →  margen sobre precio de venta.
-     Garantiza que si ponés 35% en el input, "Margen real" en el panel = 35%. */
+     price = cost / (1 - m/100) — margen sobre precio de venta.
+     Si ponés 35% en el input, "Margen real" mostrado dará exactamente 35%. */
   const priceFromMargin = (cost, marginPct) => {
     const m = Math.min(99, Math.max(0, num(marginPct))) / 100
     return Math.round(num(cost) / (1 - m))
   }
 
-  /* ── Margen: cambiar el % recalcula priceUnit en vivo desde costUnit ── */
+  /* ── Margen: recalcula priceUnit en TODOS los ítems distribuyendo costos fijos
+     (envío cargado + dispatch packaging + logística/comisionista) pro-rata según
+     el costo total de cada ítem. Así "Margen real" = % ingresado, exacto. */
   const setMarginAndReprice = (val) => {
     setF('margin', val)
-    setItems(prev => prev.map(it => {
-      const cu = num(it.costUnit)
-      return cu > 0 ? { ...it, priceUnit: priceFromMargin(cu, val) } : it
-    }))
+    setItems(prev => {
+      // Costos fijos del presupuesto (no escalan con qty del ítem individual)
+      const shipCharged = form.shipCharged !== false
+      const dispatchCost = (form.dispatchInsumos || []).reduce((s, d) => {
+        const ins = get('insumos', []).find(x => x.id === Number(d.insumoId))
+        return s + (ins ? Math.max(0, Number(ins.cost) || 0) : 0) * Math.max(0, Number(d.qty) || 0)
+      }, 0)
+      const viajesCost = (form.logisticaParadas || []).reduce((s, p) => s + Math.max(0, num(p.costo)), 0)
+      const sharedFixed = Math.max(0, num(form.shipCost)) * (shipCharged ? 1 : 0) + dispatchCost + viajesCost
+      const totalItemsBaseCost = prev.reduce((s, it) => s + Math.max(0, num(it.costUnit)) * Math.max(0, num(it.qty)), 0)
+      return prev.map(it => {
+        const ownCost = Math.max(0, num(it.costUnit))
+        const qty = Math.max(1, num(it.qty))
+        if (ownCost <= 0) return it
+        const share = (totalItemsBaseCost > 0 && sharedFixed > 0)
+          ? ((ownCost * qty) / totalItemsBaseCost) * sharedFixed
+          : 0
+        const effCost = ownCost + (share / qty)
+        return { ...it, priceUnit: priceFromMargin(effCost, val) }
+      })
+    })
   }
 
   /* ── Logística / Comisionista — paradas atribuidas a ESTE presupuesto ── */
