@@ -282,9 +282,15 @@ export default function Presupuesto() {
         if (match) {
           updated.costUnit = match.cost || 0
           updated.productId = match.id
-          updated.priceUnit = match.priceB2C || Math.round(num(match.cost) * (1 + marginPct / 100))
+          // Si el producto tiene priceB2C usalo (precio de catálogo); si no, calcular con margen actual
+          updated.priceUnit = match.priceB2C || (num(match.cost) > 0 ? priceFromMargin(num(match.cost), form.margin) : 0)
           updated.stockAvailable = match.stock || 0
         }
+      }
+      // Cambiar costUnit dispara reprice automático para que priceUnit no quede stale
+      if (key === 'costUnit') {
+        const cu = num(val)
+        if (cu > 0) updated.priceUnit = priceFromMargin(cu, form.margin)
       }
       return updated
     }))
@@ -323,14 +329,20 @@ export default function Presupuesto() {
     })
   }
 
-  /* ── Margen: cambiar el % recalcula precios = costo × (1 + margen/100) en vivo ── */
+  /* ── Cálculo de precio desde margen ────────────────────────────────────
+     Fórmula: price = cost / (1 - m/100)  →  margen sobre precio de venta.
+     Garantiza que si ponés 35% en el input, "Margen real" en el panel = 35%. */
+  const priceFromMargin = (cost, marginPct) => {
+    const m = Math.min(99, Math.max(0, num(marginPct))) / 100
+    return Math.round(num(cost) / (1 - m))
+  }
+
+  /* ── Margen: cambiar el % recalcula priceUnit en vivo desde costUnit ── */
   const setMarginAndReprice = (val) => {
     setF('margin', val)
-    const m = num(val) / 100
-    if (!Number.isFinite(m) || m < 0) return
     setItems(prev => prev.map(it => {
       const cu = num(it.costUnit)
-      return cu > 0 ? { ...it, priceUnit: Math.round(cu * (1 + m)) } : it
+      return cu > 0 ? { ...it, priceUnit: priceFromMargin(cu, val) } : it
     }))
   }
 
