@@ -80,6 +80,156 @@ const getTrackingUrl = (carrier, code) => {
   return fn ? fn(encodeURIComponent(code)) : `https://www.google.com/search?q=${encodeURIComponent(`${carrier || ''} ${code} seguimiento envio`)}`
 }
 
+/* ── Pestaña Viajes / Comisionista ──────────────────────────────────────
+   Lista global de viajes con paradas (insumos/mercaderia/entrega). Cada
+   parada puede estar atribuida a un presupuesto (budgetId) — esa atribución
+   se crea desde el bloque "Logística / Comisionista" del Presupuesto. Editar
+   un viaje desde acá impacta directamente en el costo del presupuesto asociado.
+*/
+const PARADA_TIPO_LBL = { insumos: '📥 Insumos', mercaderia: '📦 Mercadería', entrega: '🚚 Entrega' }
+function ViajesTab({ get, saveEntity, deleteEntity, toast, confirm }) {
+  const viajes  = get('viajes', [])
+  const budgets = get('budgets', [])
+  const [modal, setModal] = useState(false)
+  const [edit, setEdit]   = useState(null) // viaje en edición o null = nuevo
+  const sorted = [...viajes].sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''))
+
+  const openNew = () => { setEdit({ fecha: new Date().toISOString().slice(0,10), comisionista: '', paradas: [], notas: '' }); setModal(true) }
+  const openEdit = (v) => { setEdit({ ...v, paradas: [...(v.paradas || [])] }); setModal(true) }
+  const close = () => { setModal(false); setEdit(null) }
+
+  const setField = (k, val) => setEdit(e => ({ ...e, [k]: val }))
+  const updParada = (i, k, val) => setEdit(e => ({ ...e, paradas: e.paradas.map((p, idx) => idx !== i ? p : { ...p, [k]: val }) }))
+  const addParada = () => setEdit(e => ({ ...e, paradas: [...(e.paradas || []), { tipo: 'entrega', descripcion: '', costo: 0, budgetId: null }] }))
+  const delParada = (i) => setEdit(e => ({ ...e, paradas: e.paradas.filter((_, idx) => idx !== i) }))
+
+  const save = () => {
+    if (!edit) return
+    const paradas = (edit.paradas || []).map(p => ({
+      tipo: p.tipo || 'entrega',
+      descripcion: p.descripcion || '',
+      costo: Math.max(0, Number(p.costo) || 0),
+      budgetId: p.budgetId || null,
+      budgetNum: p.budgetNum || (p.budgetId ? (budgets.find(b => b.id === p.budgetId)?.num || '') : ''),
+    }))
+    const total = paradas.reduce((s, p) => s + p.costo, 0)
+    const budgetIds = Array.from(new Set(paradas.map(p => p.budgetId).filter(Boolean)))
+    saveEntity('viajes', { ...edit, paradas, total, budgetIds })
+    toast('Viaje guardado', 'ok')
+    close()
+  }
+
+  const del = async (v) => {
+    if (!(await confirm(`¿Eliminar el viaje del ${v.fecha || '—'}?`))) return
+    deleteEntity('viajes', v.id)
+    toast('Viaje eliminado', 'ok')
+  }
+
+  return (
+    <div style={{ marginTop: 8 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, flexWrap: 'wrap', gap: 8 }}>
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 800 }}>Control de Viajes</div>
+          <div style={{ fontSize: 11, color: 'var(--txt3)' }}>Un viaje puede tener múltiples paradas (insumos, mercadería, entregas). Las paradas con presupuesto asociado impactan en el costo de ese pedido.</div>
+        </div>
+        <button className="btn btn-primary btn-sm" onClick={openNew}><i className="fa fa-plus" /> Nuevo viaje</button>
+      </div>
+
+      {sorted.length === 0 ? (
+        <div className="card" style={{ padding: 24, textAlign: 'center', color: 'var(--txt3)' }}>
+          <i className="fa fa-truck" style={{ fontSize: 28, opacity: .4, display: 'block', marginBottom: 8 }} />
+          Todavía no registraste viajes. Cargá uno acá o desde el Presupuesto.
+        </div>
+      ) : (
+        <div className="card" style={{ padding: 0, overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead><tr style={{ background: 'var(--surface2)' }}>
+              <th style={{ textAlign: 'left', padding: '8px 12px' }}>Fecha</th>
+              <th style={{ textAlign: 'left', padding: '8px 12px' }}>Comisionista</th>
+              <th style={{ textAlign: 'center', padding: '8px 12px' }}>Paradas</th>
+              <th style={{ textAlign: 'left', padding: '8px 12px' }}>Presupuestos</th>
+              <th style={{ textAlign: 'right', padding: '8px 12px' }}>Total</th>
+              <th style={{ width: 90 }}></th>
+            </tr></thead>
+            <tbody>
+              {sorted.map(v => {
+                const conteo = (v.paradas || []).reduce((acc, p) => { acc[p.tipo] = (acc[p.tipo] || 0) + 1; return acc }, {})
+                const budgetNums = Array.from(new Set((v.paradas || []).map(p => p.budgetNum).filter(Boolean)))
+                return (
+                  <tr key={v.id} style={{ borderTop: '1px solid var(--border)' }}>
+                    <td style={{ padding: '8px 12px', whiteSpace: 'nowrap' }}>{v.fecha ? fmtDate(v.fecha) : '—'}</td>
+                    <td style={{ padding: '8px 12px' }}>{v.comisionista || <span style={{ color: 'var(--txt3)' }}>—</span>}</td>
+                    <td style={{ padding: '8px 12px', textAlign: 'center' }}>
+                      <span style={{ fontWeight: 700 }}>{(v.paradas || []).length}</span>
+                      <span style={{ color: 'var(--txt3)', fontSize: 10, marginLeft: 4 }}>
+                        {conteo.insumos ? `· ${conteo.insumos} ins` : ''}{conteo.mercaderia ? ` · ${conteo.mercaderia} mer` : ''}{conteo.entrega ? ` · ${conteo.entrega} ent` : ''}
+                      </span>
+                    </td>
+                    <td style={{ padding: '8px 12px', fontSize: 11, color: 'var(--txt3)' }}>{budgetNums.length ? budgetNums.join(', ') : '—'}</td>
+                    <td style={{ padding: '8px 12px', textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(v.total || 0)}</td>
+                    <td style={{ padding: '8px 12px', textAlign: 'right' }}>
+                      <button className="btn btn-ghost btn-xs" onClick={() => openEdit(v)} title="Editar"><i className="fa fa-pen" /></button>
+                      <button className="btn btn-ghost btn-xs" onClick={() => del(v)} title="Eliminar" style={{ color: 'var(--red)' }}><i className="fa fa-trash" /></button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {modal && edit && (
+        <>
+          <div className="modal-overlay" onClick={close} />
+          <div className="modal-form-card" style={{ maxWidth: 720 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <h3 style={{ margin: 0 }}>{edit.id ? `Editar viaje #${edit.id}` : 'Nuevo viaje'}</h3>
+              <button className="btn btn-ghost btn-sm" onClick={close}><i className="fa fa-xmark" /></button>
+            </div>
+            <div className="grid2">
+              <div className="fg"><label>Fecha</label><input type="date" value={edit.fecha || ''} onChange={e => setField('fecha', e.target.value)} /></div>
+              <div className="fg"><label>Comisionista</label><input type="text" value={edit.comisionista || ''} onChange={e => setField('comisionista', e.target.value)} placeholder="Nombre" /></div>
+            </div>
+            <div style={{ marginTop: 12 }}>
+              <div style={{ fontWeight: 700, fontSize: 12, marginBottom: 6 }}>Paradas</div>
+              {(edit.paradas || []).length === 0 && <div style={{ fontSize: 12, color: 'var(--txt3)', fontStyle: 'italic', padding: '4px 0' }}>Sin paradas.</div>}
+              {(edit.paradas || []).map((p, i) => (
+                <div key={i} style={{ display: 'flex', gap: 6, marginBottom: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+                  <select value={p.tipo} onChange={e => updParada(i, 'tipo', e.target.value)} style={{ flex: '0 0 150px' }}>
+                    <option value="insumos">📥 Insumos</option>
+                    <option value="mercaderia">📦 Mercadería</option>
+                    <option value="entrega">🚚 Entrega</option>
+                  </select>
+                  <input type="text" value={p.descripcion || ''} onChange={e => updParada(i, 'descripcion', e.target.value)} placeholder="Descripción" style={{ flex: '1 1 160px', minWidth: 120 }} />
+                  <select value={p.budgetId || ''} onChange={e => { const id = Number(e.target.value) || null; const b = budgets.find(x => x.id === id); updParada(i, 'budgetId', id); updParada(i, 'budgetNum', b?.num || '') }} style={{ flex: '0 0 140px' }} title="Presupuesto asociado (opcional)">
+                    <option value="">— sin asociar —</option>
+                    {budgets.map(b => <option key={b.id} value={b.id}>{b.num || `#${b.id}`} · {b.contact || b.company || ''}</option>)}
+                  </select>
+                  <input type="number" min="0" value={p.costo || 0} onChange={e => updParada(i, 'costo', e.target.value)} placeholder="Costo" style={{ width: 90, textAlign: 'right' }} />
+                  <button className="btn btn-ghost btn-xs" onClick={() => delParada(i)} style={{ color: 'var(--red)' }}><i className="fa fa-trash" /></button>
+                </div>
+              ))}
+              <button className="btn btn-ghost btn-sm" onClick={addParada} style={{ marginTop: 4 }}><i className="fa fa-plus" /> Agregar parada</button>
+            </div>
+            <div className="fg" style={{ marginTop: 12 }}>
+              <label>Notas</label>
+              <textarea rows={2} value={edit.notas || ''} onChange={e => setField('notas', e.target.value)} placeholder="Observaciones del viaje..." />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 14, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+              <div style={{ fontSize: 13, fontWeight: 700 }}>Total: {fmt((edit.paradas || []).reduce((s, p) => s + (Number(p.costo) || 0), 0))}</div>
+              <div style={{ display: 'flex', gap: 6 }}>
+                <button className="btn btn-ghost" onClick={close}>Cancelar</button>
+                <button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar viaje</button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 export default function Logistica() {
   const { get, saveEntity, deleteEntity, config } = useData()
   const cfg = config()
@@ -383,9 +533,9 @@ export default function Logistica() {
       <div className="ph logi-ph" style={{ alignItems: 'center' }}>
         <div className="ph-right" style={{ gap: 6 }}>
           <div className="logi-cli-pill-group">
-            {['envios', 'cotizar', 'resumen'].map(t => (
+            {['envios', 'viajes', 'cotizar', 'resumen'].map(t => (
               <button key={t} className={`logi-cli-pill${tab === t ? ' active' : ''}`} onClick={() => setTab(t)}>
-                {t === 'envios' ? 'Envíos' : t === 'cotizar' ? 'Cotizar' : 'Resumen'}
+                {t === 'envios' ? 'Envíos' : t === 'viajes' ? 'Viajes' : t === 'cotizar' ? 'Cotizar' : 'Resumen'}
               </button>
             ))}
           </div>
@@ -397,7 +547,7 @@ export default function Logistica() {
 
       {/* Tab bar — solo mobile: scrollable con "+ Envío" al final */}
       <div className="tab-bar logi-tab-bar-scroll logi-mob-tabs" style={{ gap: 0 }}>
-        {['envios', 'cotizar', 'resumen'].map(t => (
+        {['envios', 'viajes', 'cotizar', 'resumen'].map(t => (
           <div key={t} className={`tab-btn ${tab === t ? 'active' : ''}`} onClick={() => setTab(t)}>
             {t === 'envios' ? 'Envíos' : t === 'cotizar' ? 'Cotizar' : 'Resumen'}
           </div>
@@ -646,6 +796,9 @@ export default function Logistica() {
 
         </>
       )}
+
+      {/* ── TAB VIAJES (Comisionista) ──────────────────────────────── */}
+      {tab === 'viajes' && <ViajesTab get={get} saveEntity={saveEntity} deleteEntity={deleteEntity} toast={toast} confirm={confirm} />}
 
       {/* ── TAB COTIZAR ────────────────────────────────────────────── */}
       {tab === 'cotizar' && (
