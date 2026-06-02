@@ -1070,6 +1070,29 @@ export default function Presupuesto() {
         border-color:var(--brand)!important;background:#fff!important;outline:none;
         box-shadow:0 0 0 3px rgba(124,58,237,.08);
       }
+      /* Fila de parada de Logística — grid 4 col limpio, coherente con kit-tbl */
+      .logi-parada-row{
+        display:grid;grid-template-columns:170px 1fr 110px 26px;
+        gap:8px;align-items:center;padding:8px 4px;
+        border-bottom:1px solid #F3F4F6;background:transparent;
+      }
+      .logi-parada-row:last-child{border-bottom:none}
+      .logi-parada-row select,.logi-parada-row input[type=text],.logi-parada-row input[type=number]{
+        border:1px solid transparent!important;background:transparent!important;
+        padding:8px 10px!important;font-size:12.5px!important;
+        transition:border-color .15s,background .15s;
+      }
+      .logi-parada-row select:hover,.logi-parada-row input:hover{background:rgba(0,0,0,.025)!important}
+      .logi-parada-row select:focus,.logi-parada-row input:focus{
+        border-color:var(--brand)!important;background:#fff!important;outline:none;
+        box-shadow:0 0 0 3px rgba(124,58,237,.08);
+      }
+      @media(max-width:640px){
+        .logi-parada-row{display:flex;flex-wrap:wrap;padding:10px 4px}
+        .logi-parada-row > select{flex:1 1 60%}
+        .logi-parada-row > input[type=text]{flex:1 1 100%}
+        .logi-parada-row > input[type=number]{flex:1 1 50%}
+      }
       /* Botón Agregar minimalista */
       .tbl-add-btn{
         display:inline-flex;align-items:center;gap:6px;
@@ -1524,7 +1547,7 @@ export default function Presupuesto() {
                   ) : (
                     <div className="kit-tbl">
                       {(form.logisticaParadas || []).map((p, idx) => (
-                        <div key={idx} className="kit-tbl-row" style={{ gridTemplateColumns: '160px 1fr 100px 26px' }}>
+                        <div key={idx} className="logi-parada-row">
                           <select value={p.tipo} onChange={e => updateParada(idx, 'tipo', e.target.value)} title={PARADA_TIPOS.find(t => t.val === p.tipo)?.hint || ''}>
                             {PARADA_TIPOS.map(t => <option key={t.val} value={t.val}>{t.lbl}</option>)}
                           </select>
