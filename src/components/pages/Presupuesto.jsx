@@ -1039,6 +1039,48 @@ export default function Presupuesto() {
 
   return (
     <div className="page active" style={{ animation: 'pgIn .2s ease both' }}>
+    <style>{`
+      /* ── Lavado visual unificado (Pro · estética coherente con Regalos) ── */
+      .tbl-card{background:#FAFAFB;border:1px solid #ECECF1;border-radius:12px;padding:6px 12px 10px;margin-top:2px}
+      /* Headers de tabla nativos — tipografía secundaria gris */
+      .items-scroll table thead th{
+        font-size:9.5px!important;font-weight:600!important;color:#9CA3AF!important;
+        text-transform:uppercase;letter-spacing:.08em;
+        background:transparent!important;border-bottom:1px solid #F3F4F6!important;
+        padding:8px 6px 10px!important;
+      }
+      /* Filas — aire vertical, divisor sutil entre filas */
+      .items-scroll table tbody tr{
+        background:transparent!important;border-bottom:1px solid #F3F4F6!important;
+      }
+      .items-scroll table tbody tr:last-child{border-bottom:none!important}
+      .items-scroll table tbody td{
+        padding:10px 6px!important;border:none!important;
+      }
+      /* Inputs limpios dentro de la tabla: transparentes en reposo */
+      .items-scroll table tbody input[type=text],
+      .items-scroll table tbody input[type=number]{
+        border:1px solid transparent!important;background:transparent!important;
+        transition:border-color .15s,background .15s;
+      }
+      .items-scroll table tbody input[type=text]:hover,
+      .items-scroll table tbody input[type=number]:hover{background:rgba(0,0,0,.025)!important}
+      .items-scroll table tbody input[type=text]:focus,
+      .items-scroll table tbody input[type=number]:focus{
+        border-color:var(--brand)!important;background:#fff!important;outline:none;
+        box-shadow:0 0 0 3px rgba(124,58,237,.08);
+      }
+      /* Botón Agregar minimalista */
+      .tbl-add-btn{
+        display:inline-flex;align-items:center;gap:6px;
+        background:transparent;border:1px dashed #D1D5DB;border-radius:8px;
+        padding:7px 12px;margin-top:8px;
+        font-family:inherit;font-size:11.5px;font-weight:600;color:#6B7280;
+        cursor:pointer;transition:all .15s;
+      }
+      .tbl-add-btn:hover{border-color:var(--brand);color:var(--brand);background:rgba(124,58,237,.04)}
+      .tbl-add-btn i{font-size:11px}
+    `}</style>
       <div className="ph ph-pres">
         <div className="ph-left" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span style={{ fontSize: 17, fontWeight: 800, letterSpacing: '.01em', color: 'var(--txt)' }}>{budgetNum}</span>
@@ -1117,7 +1159,7 @@ export default function Presupuesto() {
             {currentStep === 2 && (
               <>
                 <PaneHeader icon="fa-box-open" title="Paso 2 · Productos" subtitle="Agregá los ítems que incluye el pedido" />
-                <div className="items-scroll" style={{ overflowX: 'auto' }}>
+                <div className="tbl-card items-scroll" style={{ overflowX: 'auto' }}>
                   <table style={{ tableLayout: 'fixed', width: '100%', minWidth: 720 }}>
                     <thead><tr>
                       <th style={{ width: 24 }}></th>
@@ -1275,14 +1317,8 @@ export default function Presupuesto() {
                 </div>
 
                 {/* ProductPicker modal removido — el autocomplete predictivo lo reemplaza */}
-                <button onClick={addItem}
-                  style={{ marginTop: 8, width: '100%', padding: '9px 14px', fontSize: 12.5, fontWeight: 600,
-                           border: '1.5px dashed var(--brand)', borderRadius: 8, background: 'var(--brand-xlt, #F5F3FF)',
-                           color: 'var(--brand)', cursor: 'pointer', display: 'flex', alignItems: 'center',
-                           justifyContent: 'center', gap: 6, transition: 'all .15s' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'var(--brand)'; e.currentTarget.style.color = '#fff' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'var(--brand-xlt, #F5F3FF)'; e.currentTarget.style.color = 'var(--brand)' }}>
-                  <i className="fa fa-plus-circle" style={{ fontSize: 13 }} /> Agregar producto
+                <button className="tbl-add-btn" onClick={addItem}>
+                  <i className="fa fa-plus" /> Agregar producto
                 </button>
                 <div className="wiz-tip">
                   <i className="fa fa-lightbulb" /> Escribí el nombre del producto para autocompletar desde tu catálogo — el costo y precio se llenan solos.
