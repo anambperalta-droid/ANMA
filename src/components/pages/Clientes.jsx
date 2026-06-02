@@ -4,6 +4,7 @@ import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, STATUS_MAP, STATUS_CLS } from '../../lib/storage'
+import { getClientVocab } from '../../lib/voice'
 
 /* ── Modal de vista previa de presupuesto (solo lectura, mobile-first) ── */
 function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
@@ -207,6 +208,9 @@ export default function Clientes() {
   const confirm = useConfirm()
   const nav = useNavigate()
   const location = useLocation()
+  // Vocabulario adaptado al modelo comercial del usuario (minorista/mayorista/ambos)
+  const _cfg = config()
+  const vocab = getClientVocab(_cfg.tipoVenta)
   const [search, setSearch] = useState('')
   const [modal, setModal] = useState(false)
   const [importModal, setImportModal] = useState(false)
@@ -277,7 +281,12 @@ export default function Clientes() {
   const setF = (k, v) => setForm(f => ({ ...f, [k]: v }))
   const openEdit = (c) => { setForm(c || { company: '', contact: '', wa: '', email: '', rubro: '', notes: '', discount: 0, cuit: '', razonSocial: '', ivaCondition: '' }); setModal(true); setPasteMode(false); setPasteText('') }
   const save = () => {
-    if (!form.company) { toast('Ingresá el nombre de la empresa.', 'er'); return }
+    // Validación adaptada: minorista NO requiere empresa; mayorista/ambos sí (o
+     // al menos algo). Para minorista pedimos contacto en su lugar.
+    if (vocab.primaryReq && !form.company) { toast(vocab.missingMsg, 'er'); return }
+    if (!vocab.primaryReq && !form.company && !form.contact) {
+      toast(vocab.missingMsg, 'er'); return
+    }
     saveEntity('clients', form); setModal(false); toast('Cliente guardado', 'ok')
     if (detailClient && form.id === detailClient.id) setDetailClient({ ...detailClient, ...form })
   }
@@ -526,7 +535,7 @@ export default function Clientes() {
       <div className="pill-row">
         <div className="search-row zt-search-row">
           <i className="fa fa-magnifying-glass" />
-          <input type="text" placeholder="Buscar empresa, contacto, rubro..." value={search} onChange={e => setSearch(e.target.value)} />
+          <input type="text" placeholder={vocab.searchPh} value={search} onChange={e => setSearch(e.target.value)} />
         </div>
         <div className="cli-view-toggle" style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
           <button className={`pill ${viewMode === 'table' ? 'active' : ''}`} onClick={() => setViewMode('table')}><i className="fa fa-table-list" /></button>
@@ -710,7 +719,7 @@ export default function Clientes() {
                     </td>
                   </tr>
                 )
-              }) : <tr><td colSpan={7}><div className="empty"><div className="ico"><i className="fa fa-users" /></div><h4>Sin clientes</h4><p>Agregá tu primer cliente o empresa</p></div></td></tr>}
+              }) : <tr><td colSpan={7}><div className="empty"><div className="ico"><i className="fa fa-users" /></div><h4>{vocab.emptyTitle}</h4><p>{vocab.emptySubtitle}</p></div></td></tr>}
             </tbody>
           </table>
         </div>
@@ -779,8 +788,8 @@ export default function Clientes() {
           }) : (
             <div className="empty-native" style={{ gridColumn: '1 / -1' }}>
               <div className="ico"><i className="fa fa-users" /></div>
-              <h4>Sin clientes</h4>
-              <p>Agregá tu primer cliente o empresa</p>
+              <h4>{vocab.emptyTitle}</h4>
+              <p>{vocab.emptySubtitle}</p>
               <button className="btn btn-brand" onClick={() => openEdit()}>
                 <i className="fa fa-plus" /> Agregar cliente
               </button>
@@ -877,8 +886,8 @@ export default function Clientes() {
         }) : (
           <div className="empty">
             <div className="ico"><i className="fa fa-users" /></div>
-            <h4>Sin clientes</h4>
-            <p>Agregá tu primer cliente o empresa</p>
+            <h4>{vocab.emptyTitle}</h4>
+            <p>{vocab.emptySubtitle}</p>
           </div>
         )}
       </div>
@@ -974,8 +983,19 @@ export default function Clientes() {
             {/* Datos de contacto */}
             <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Datos de contacto</div>
             <div className="grid2">
-              <div className="fg"><label>Empresa *</label><input type="text" value={form.company} onChange={e => setF('company', e.target.value)} placeholder="Empresa S.A." autoFocus /></div>
-              <div className="fg"><label>Contacto</label><input type="text" value={form.contact} onChange={e => setF('contact', e.target.value)} placeholder="Nombre y apellido" /></div>
+              {/* Modelo comercial: para minorista invertimos el orden (Cliente como primario)
+                  y movemos Empresa a opcional. Para mayorista/ambos queda como antes. */}
+              {_cfg.tipoVenta === 'minorista' ? (
+                <>
+                  <div className="fg"><label>Cliente *</label><input type="text" value={form.contact} onChange={e => setF('contact', e.target.value)} placeholder={vocab.primaryPh} autoFocus /></div>
+                  <div className="fg"><label>{vocab.secondaryLabel}</label><input type="text" value={form.company} onChange={e => setF('company', e.target.value)} placeholder={vocab.secondaryPh} /></div>
+                </>
+              ) : (
+                <>
+                  <div className="fg"><label>{vocab.primaryLabel}{vocab.primaryReq ? ' *' : ''}</label><input type="text" value={form.company} onChange={e => setF('company', e.target.value)} placeholder={vocab.primaryPh} autoFocus /></div>
+                  <div className="fg"><label>{vocab.secondaryLabel}</label><input type="text" value={form.contact} onChange={e => setF('contact', e.target.value)} placeholder={vocab.secondaryPh} /></div>
+                </>
+              )}
               <div className="fg"><label>WhatsApp</label><input type="text" value={form.wa} onChange={e => setF('wa', e.target.value)} placeholder="+54 ..." /></div>
               <div className="fg"><label>Email</label><input type="email" value={form.email} onChange={e => setF('email', e.target.value)} /></div>
               <div className="fg" style={!config().features?.descuentoCliente ? { gridColumn: '1 / -1' } : undefined}>

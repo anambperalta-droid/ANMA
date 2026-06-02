@@ -6,6 +6,7 @@ import { useToast } from '../../context/ToastContext'
 import { fmt, db, dbW, dbDel } from '../../lib/storage'
 import { getMPConfig, createPaymentLink, getBankConfig, buildBankInfoText } from '../../lib/mercadopago'
 import { pushBudget, getSheetsConfig } from '../../lib/sheets'
+import { buildBudgetWA } from '../../lib/voice'
 
 const emptyItem = () => ({ name: '', variant: '', qty: 1, costUnit: '', priceUnit: '' })
 
@@ -793,10 +794,20 @@ export default function Presupuesto() {
   }
 
   const waText = useMemo(() => {
-    const bName = c.businessName || 'ANMA'
     const prodList = items.filter(i => i.name).map(i => `• ${i.qty}x ${i.name}`).join('\n')
-    return `Hola ${form.contact || '[NOMBRE]'}! Te envio el presupuesto de *${bName}* para ${form.company || '[EMPRESA]'}:\n\n${prodList}\n\n*Total:* ${fmt(calc.total)}\n*Entrega estimada:* ${form.deliveryDate ? fmtDate(form.deliveryDate) : 'A coordinar'}${form.noteCli ? '\n*Nota:* ' + form.noteCli : ''}\n\nTe queda alguna duda? Quedamos a disposicion!`
-  }, [form, items, calc.total, c.businessName])
+    // Construcción adaptada al tipoVenta: minorista NO incluye "para [empresa]",
+    // mayorista sí, ambos depende de si hay company cargada.
+    return buildBudgetWA({
+      tipoVenta:     _tipoVenta,
+      businessName:  c.businessName,
+      contact:       form.contact,
+      company:       form.company,
+      prodList,
+      total:         fmt(calc.total),
+      deliveryDate:  form.deliveryDate ? fmtDate(form.deliveryDate) : '',
+      noteCli:       form.noteCli,
+    })
+  }, [form, items, calc.total, c.businessName, _tipoVenta])
 
   const copyWA = () => navigator.clipboard.writeText(waText).then(() => toast('Mensaje WA copiado', 'ok'))
 
@@ -1163,7 +1174,7 @@ export default function Presupuesto() {
                     <label>Contacto (buscar en CRM)</label>
                     <ClientCombo clients={clients} value={form.contact} onSelect={handleClientSelect} onChange={val => setF('contact', val)} />
                   </div>
-                  <div className="fg"><label>Empresa</label><input type="text" value={form.company} onChange={e => setF('company', e.target.value)} placeholder="Empresa S.A." /></div>
+                  <div className="fg"><label>{_tipoVenta === 'minorista' ? 'Empresa (opcional)' : 'Empresa'}</label><input type="text" value={form.company} onChange={e => setF('company', e.target.value)} placeholder={_tipoVenta === 'minorista' ? 'Si compra a nombre de una empresa' : 'Empresa S.A.'} /></div>
                   <div className="fg">
                     <label>WhatsApp</label>
                     <input type="text" value={form.wa}

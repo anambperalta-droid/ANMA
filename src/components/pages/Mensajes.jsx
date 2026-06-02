@@ -3,6 +3,7 @@ import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt } from '../../lib/storage'
+import { getDefaultTemplates } from '../../lib/voice'
 
 /* ═══ 5 Solapas de venta ═══ */
 const STAGES = ['Captación', 'Presupuestos', 'Pagos', 'Logística', 'Post-Venta']
@@ -14,33 +15,10 @@ const STAGE_ICONS = {
   'Post-Venta': 'fa-heart',
 }
 
-/* ═══ 12 templates default ═══ */
-const DEFAULT_TEMPLATES = [
-  { stage: 'Captación', title: 'Presentación inicial', isDefault: true,
-    text: 'Hola {{nombre}}! 👋\n\nSoy de *{{negocio}}*, proveemos productos para empresas y negocios.\n\nMe encantaría contarte qué opciones tenemos para {{empresa}}. ¿Tenés unos minutos esta semana?\n\n¡Saludos!' },
-  { stage: 'Captación', title: 'Contacto por referencia', isDefault: true,
-    text: 'Hola {{nombre}}!\n\nMe pasaron tu contacto a través de {{empresa}}. Somos *{{negocio}}* y trabajamos con empresas que buscan productos de calidad al mejor precio.\n\n¿Te interesaría ver nuestro catálogo actualizado?\n\n¡Quedo atento!' },
-  { stage: 'Captación', title: 'Seguimiento amable', isDefault: true,
-    text: 'Hola {{nombre}}! ¿Cómo andás?\n\nTe escribo para saber si pudiste revisar la propuesta que te mandé el {{fecha}}.\n\n¿Necesitás que ajustemos cantidades o condiciones? Estamos para ayudarte.\n\n¡Saludos!' },
-  { stage: 'Presupuestos', title: 'Envío de presupuesto', isDefault: true,
-    text: 'Hola {{nombre}}!\n\nTe envío el presupuesto para {{empresa}}:\n\n📦 {{producto}}\n*Total:* {{precio}}\n*Entrega estimada:* {{fecha}}\n\nQuedamos a disposición para cualquier ajuste. ¡Esperamos tu confirmación!' },
-  { stage: 'Presupuestos', title: 'Cotización con opciones', isDefault: true,
-    text: 'Hola {{nombre}}!\n\nTe armé las opciones que charlamos para {{empresa}}:\n\n- *Opción A:* {{producto}} — {{precio}}\n- *Opción B:* [completar]\n\nAmbas con entrega incluida. ¿Cuál te cierra más?' },
-  { stage: 'Presupuestos', title: 'Contrapropuesta', isDefault: true,
-    text: 'Hola {{nombre}}!\n\nRevisé los números para {{empresa}} y puedo ofrecerte:\n\n📦 {{producto}} — {{precio}} *(descuento por volumen incluido)*\n✅ Envío bonificado\n\nEs nuestro mejor precio. ¿Confirmamos?' },
-  { stage: 'Pagos', title: 'Confirmación de pedido', isDefault: true,
-    text: '¡Excelente {{nombre}}!\n\nQueda confirmado el pedido para {{empresa}}:\n\n📦 {{producto}}\n*Total:* {{precio}}\n*Seña:* [monto seña]\n*Entrega:* {{fecha}}\n\nTe paso los datos para la transferencia. ¡Gracias por elegir *{{negocio}}*!' },
-  { stage: 'Pagos', title: 'Recordatorio de pago', isDefault: true,
-    text: 'Hola {{nombre}}!\n\nTe escribo porque queda pendiente el saldo del pedido de {{empresa}} por *{{precio}}*.\n\n¿Necesitás los datos bancarios de nuevo? Estamos para ayudarte.\n\n¡Saludos!' },
-  { stage: 'Logística', title: 'Aviso de despacho', isDefault: true,
-    text: 'Hola {{nombre}}! 🚀\n\nYa despachamos tu pedido para {{empresa}}.\n\n📦 {{producto}}\n*Entrega estimada:* {{fecha}}\n\nTe avisamos cuando llegue. ¡Cualquier consulta, escribinos!' },
-  { stage: 'Logística', title: 'Recordatorio de plazo', isDefault: true,
-    text: 'Hola {{nombre}}!\n\nLos plazos de entrega están ajustados y quería confirmar si avanzamos con el pedido de {{empresa}}.\n\nPara llegar a la fecha que necesitás, lo ideal es confirmar esta semana. ¿Qué te parece?' },
-  { stage: 'Post-Venta', title: 'Agradecimiento post-entrega', isDefault: true,
-    text: 'Hola {{nombre}}! ✅\n\nEsperamos que el pedido haya llegado perfecto a {{empresa}}.\n\n¿Nos contás cómo les fue? Tu opinión nos ayuda a mejorar.\n\nPara futuros pedidos ya tenemos tu perfil guardado. ¡Gracias!' },
-  { stage: 'Post-Venta', title: 'Reactivación de cliente', isDefault: true,
-    text: 'Hola {{nombre}}! 👋\n\nHace un tiempo que no hablamos. En *{{negocio}}* tenemos stock renovado y productos que creo que le van a servir a {{empresa}}.\n\n¿Te mando el catálogo actualizado?\n\n¡Saludos!' },
-]
+/* ═══ Templates default — ahora adaptados según tipoVenta del usuario ═══
+   Ver /lib/voice.js: getDefaultTemplates(tipoVenta) devuelve el set B2C
+   o B2B según el modelo comercial. Lo invocamos en runtime dentro del
+   componente para tener acceso al config. */
 
 /* ── Paleta soft ── */
 const P = {
@@ -239,12 +217,13 @@ export default function Mensajes() {
   const templates = useMemo(() => {
     const stored = get('waTemplates')
     if (!stored.length) {
-      const withIds = DEFAULT_TEMPLATES.map((t, i) => ({ ...t, id: Date.now() + i }))
+      const defaults = getDefaultTemplates(c.tipoVenta)
+      const withIds = defaults.map((t, i) => ({ ...t, id: Date.now() + i }))
       set('waTemplates', withIds)
       return withIds
     }
     return stored
-  }, [get('waTemplates').length])
+  }, [get('waTemplates').length, c.tipoVenta])
 
   useEffect(() => {
     const handleEsc = (e) => {
@@ -302,7 +281,8 @@ export default function Mensajes() {
   const deleteMsg = (id) => confirm('¿Eliminar este mensaje?', () => { deleteEntity('waTemplates', id); toast('Mensaje eliminado', 'in') })
 
   const restoreDefaults = () => confirm('¿Restaurar los mensajes originales?', () => {
-    const withIds = DEFAULT_TEMPLATES.map((t, i) => ({ ...t, id: Date.now() + i }))
+    const defaults = getDefaultTemplates(c.tipoVenta)
+    const withIds = defaults.map((t, i) => ({ ...t, id: Date.now() + i }))
     set('waTemplates', withIds); toast('Mensajes restaurados', 'ok')
   })
 
