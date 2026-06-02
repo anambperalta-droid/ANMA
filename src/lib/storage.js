@@ -64,12 +64,9 @@ export const DEFAULTS = {
     'Envío express — 24/48hs (+15%)',
     'Entrega a coordinar',
   ],
-  productCats: [
-    'Producto terminado',
-    'Semi-elaborado',
-    'Reventa',
-    'Servicio',
-  ],
+  // Categorías de productos: vacío por defecto. Se seedean en el Onboarding
+  // según el rubro elegido (lib/rubros.js → getCategoriesForRubro).
+  productCats: [],
   insumoCats: [
     { id: 'prod_core',    label: 'Materia Prima / Producción' },
     { id: 'packaging',    label: 'Packaging y Experiencia' },
