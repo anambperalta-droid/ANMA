@@ -295,6 +295,9 @@ td b{color:var(--txt);font-weight:600}
 .fg input::placeholder,.fg textarea::placeholder{color:var(--txt4)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+@media(max-width:768px){.grid4{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.grid4{grid-template-columns:1fr}}
 
 /* ─── MODALS ─── */
 /* Overlay backdrop — único elemento scrolleable. Block para que el modal

@@ -1408,18 +1408,18 @@ export default function Presupuesto() {
                   </label>
                 </div>
 
-                {/* Fila 4: Parámetros financieros */}
-                <div className="grid3" style={{ marginTop: 4 }}>
+                {/* Fila 4: Parámetros financieros — todos en una línea */}
+                <div className={feats.descuentoCliente ? 'grid4' : 'grid3'} style={{ marginTop: 4 }}>
                   <div className="fg"><label>Margen ganancia (%)</label><input type="number" value={form.margin} onFocus={selectOnFocus} onChange={e => setMarginAndReprice(e.target.value)} onBlur={e => { if (e.target.value === '') setMarginAndReprice(0) }} min="0" max="100" /></div>
                   <div className="fg"><label>Seña requerida (%)</label><input type="number" value={form.deposit} onFocus={selectOnFocus} onChange={e => setF('deposit', e.target.value)} onBlur={e => { if (e.target.value === '') setF('deposit', 0) }} min="0" max="100" /></div>
                   <div className="fg"><label>Impresión/logo x u. ($)</label><input type="number" value={form.logoCost} onFocus={selectOnFocus} onChange={e => setF('logoCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('logoCost', 0) }} min="0" /></div>
+                  {feats.descuentoCliente && (
+                    <div className="fg">
+                      <label>Descuento al cliente (%)</label>
+                      <input type="number" value={form.discount} onFocus={selectOnFocus} onChange={e => setDiscountAndReprice(e.target.value)} onBlur={e => { if (e.target.value === '') setDiscountAndReprice(0) }} min="0" max="100" />
+                    </div>
+                  )}
                 </div>
-                {feats.descuentoCliente && (
-                  <div className="fg" style={{ maxWidth: 200, marginTop: 4 }}>
-                    <label>Descuento al cliente (%)</label>
-                    <input type="number" value={form.discount} onFocus={selectOnFocus} onChange={e => setDiscountAndReprice(e.target.value)} onBlur={e => { if (e.target.value === '') setDiscountAndReprice(0) }} min="0" max="100" />
-                  </div>
-                )}
 
                 {/* ─── 📦 Insumos Operativos de Despacho ─── */}
                 {!['retira', 'local', 'showroom'].some(kw => (form.delivery || '').toLowerCase().includes(kw)) && (
