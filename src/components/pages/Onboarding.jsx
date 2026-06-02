@@ -23,19 +23,7 @@ import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
-
-const RUBROS = [
-  { val: 'indumentaria', icon: '👔', label: 'Indumentaria', sub: 'Ropa, calzado, accesorios' },
-  { val: 'tecnologia',   icon: '🔌', label: 'Tecnología',  sub: 'Electrónica, gadgets, insumos' },
-  { val: 'decoracion',   icon: '🏺', label: 'Decoración',  sub: 'Hogar, deco, regalos' },
-  { val: 'almacen',      icon: '🧀', label: 'Almacén',     sub: 'Comestibles, bebidas, dietética' },
-]
-
-const TIPOS_VENTA = [
-  { val: 'minorista', icon: '🛍️', label: 'Minorista',      sub: 'Vendo al consumidor final' },
-  { val: 'mayorista', icon: '📦', label: 'Mayorista',      sub: 'Vendo a otros comercios' },
-  { val: 'ambos',     icon: '🔄', label: 'Ambos Canales',  sub: 'Combino retail y B2B' },
-]
+import { RUBROS, TIPOS_VENTA, getCategoriesForRubro, isGenericOrEmptyCats } from '../../lib/rubros'
 
 export default function Onboarding() {
   const { config, updateConfig } = useData()
@@ -54,13 +42,20 @@ export default function Onboarding() {
     if (!ready) return
     setSaving(true)
     try {
-      updateConfig({
+      // Seedear categorías de productos según el rubro elegido — pero SOLO
+      // si el usuario aún no las personalizó (tiene las genéricas o vacío).
+      const currentCats = c.productCats || []
+      const patch = {
         businessName: businessName.trim(),
         rubro,
         tipoVenta,
         onboardingCompleted: true,
         onboardingCompletedAt: new Date().toISOString(),
-      })
+      }
+      if (isGenericOrEmptyCats(currentCats)) {
+        patch.productCats = getCategoriesForRubro(rubro)
+      }
+      updateConfig(patch)
       toast(`¡Listo! Bienvenido a ${businessName.trim()} 🎉`, 'ok')
       nav('/', { replace: true })
     } catch (e) {

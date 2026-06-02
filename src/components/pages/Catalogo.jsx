@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, db, dbW } from '../../lib/storage'
+import { getCategoriesForRubro, getRubroMeta } from '../../lib/rubros'
 
 const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '' }
 
@@ -1030,6 +1031,42 @@ export default function Catalogo() {
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) { setCatMgmtModal(false); setEditingCat(null) } }}>
           <div className="modal" style={{ maxWidth: 480 }}>
             <div className="mh"><h3><i className="fa fa-sliders" style={{ marginRight: 8 }} />Gestionar categorías</h3><button className="mclose" onClick={() => { setCatMgmtModal(false); setEditingCat(null) }}><i className="fa fa-xmark" /></button></div>
+            {/* Banner: aplicar categorías sugeridas según el rubro del onboarding */}
+            {c.rubro && (() => {
+              const meta = getRubroMeta(c.rubro)
+              const suggested = getCategoriesForRubro(c.rubro)
+              const missing = suggested.filter(s => !cats.includes(s))
+              if (missing.length === 0) return null
+              return (
+                <div style={{
+                  background: 'linear-gradient(135deg,#F5F3FF,#FDF2F8)',
+                  border: '1.5px solid #DDD6FE', borderRadius: 10,
+                  padding: '12px 14px', marginBottom: 12,
+                  display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
+                }}>
+                  <div style={{ fontSize: 22 }}>{meta?.icon || '✨'}</div>
+                  <div style={{ flex: 1, minWidth: 180 }}>
+                    <div style={{ fontSize: 12, fontWeight: 800, color: '#7C3AED', marginBottom: 2 }}>
+                      Sugeridas para {meta?.label || 'tu rubro'}
+                    </div>
+                    <div style={{ fontSize: 11, color: '#6B7280' }}>
+                      Agregamos {missing.length} categoría{missing.length !== 1 ? 's' : ''} alineada{missing.length !== 1 ? 's' : ''} a tu rubro: <i>{missing.slice(0, 4).join(', ')}{missing.length > 4 ? '...' : ''}</i>
+                    </div>
+                  </div>
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => {
+                      const merged = Array.from(new Set([...cats, ...suggested]))
+                      updateConfig({ productCats: merged })
+                      toast(`+${missing.length} categorías agregadas`, 'ok')
+                    }}
+                    style={{ flexShrink: 0 }}
+                  >
+                    <i className="fa fa-wand-magic-sparkles" /> Aplicar
+                  </button>
+                </div>
+              )
+            })()}
             {cats.length === 0 && <div style={{ fontSize: 13, color: 'var(--txt3)', textAlign: 'center', padding: 20 }}>No hay categorías definidas.<br/>Creá una desde Configuración.</div>}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 340, overflowY: 'auto' }}>
               {cats.map((cat, i) => {
