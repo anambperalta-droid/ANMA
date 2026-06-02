@@ -1267,7 +1267,26 @@ export default function Presupuesto() {
                             </td>
                             <td style={{ verticalAlign: 'middle' }}><input type="text" inputMode="numeric" value={it.qty === '' ? '' : String(it.qty)} onFocus={selectOnFocus} onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'qty', r === '' ? '' : Math.max(1, parseInt(r) || 1)) }} onBlur={e => { if (e.target.value === '') updateItem(i, 'qty', 1) }} style={{ padding: '0 8px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit', width: '100%', textAlign: 'right', height: 36, boxSizing: 'border-box' }} /></td>
                             {feats.costoInterno && <td style={{ verticalAlign: 'middle' }}><input type="text" inputMode="numeric" value={fmtTbl(it.costUnit)} onFocus={selectOnFocus} onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'costUnit', r === '' ? '' : Number(r)) }} onBlur={e => { if (e.target.value === '') updateItem(i, 'costUnit', 0) }} style={{ padding: '0 8px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit', width: '100%', textAlign: 'right', height: 36, boxSizing: 'border-box' }} /></td>}
-                            <td style={{ verticalAlign: 'middle' }}><input type="text" inputMode="numeric" value={fmtTbl(it.priceUnit)} onFocus={selectOnFocus} onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'priceUnit', r === '' ? '' : Number(r)) }} onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }} style={{ padding: '0 8px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit', width: '100%', textAlign: 'right', height: 36, boxSizing: 'border-box' }} /></td>
+                            <td style={{ verticalAlign: 'middle', position: 'relative' }}>
+                              {(() => {
+                                const belowCost = num(it.costUnit) > 0 && num(it.priceUnit) > 0 && num(it.priceUnit) < num(it.costUnit)
+                                return (
+                                  <input
+                                    type="text" inputMode="numeric"
+                                    value={fmtTbl(it.priceUnit)}
+                                    onFocus={selectOnFocus}
+                                    onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'priceUnit', r === '' ? '' : Number(r)) }}
+                                    onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }}
+                                    title={belowCost ? `⚠️ Precio menor al costo (${fmt(num(it.costUnit))})` : undefined}
+                                    style={{
+                                      padding: '0 8px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit',
+                                      width: '100%', textAlign: 'right', height: 36, boxSizing: 'border-box',
+                                      ...(belowCost ? { border: '1.5px solid var(--red)', background: 'var(--red-lt)', color: 'var(--red)', fontWeight: 700 } : {}),
+                                    }}
+                                  />
+                                )
+                              })()}
+                            </td>
                             <td style={{ fontWeight: 700, color: 'var(--money)', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit', textAlign: 'right', paddingRight: 8, verticalAlign: 'middle' }}>{fmt(num(it.qty) * num(it.priceUnit))}</td>
                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}><button onClick={() => removeItem(i)} title="Eliminar" style={{ width: 28, height: 28, borderRadius: 7, border: 'none', background: 'transparent', color: 'var(--txt3)', cursor: 'pointer', fontSize: 13, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'color .15s, background .15s' }} onMouseEnter={e => { e.currentTarget.style.color = 'var(--red)'; e.currentTarget.style.background = 'var(--red-lt)' }} onMouseLeave={e => { e.currentTarget.style.color = 'var(--txt3)'; e.currentTarget.style.background = 'transparent' }}><i className="fa fa-xmark" /></button></td>
                           </tr>
@@ -1713,6 +1732,22 @@ export default function Presupuesto() {
         <div>
           <div className="calc-panel">
             <div className="cp-title"><i className="fa fa-calculator" />Resumen</div>
+            {/* ── Alerta: vendiendo por debajo del costo ───────────────────── */}
+            {!calc.costPending && Number(calc.marginReal) < 0 && (
+              <div style={{
+                background: 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)',
+                color: '#fff', borderRadius: 10, padding: '10px 12px', marginBottom: 10,
+                display: 'flex', alignItems: 'center', gap: 10,
+                boxShadow: '0 2px 8px rgba(220, 38, 38, .35)',
+                border: '1px solid rgba(255,255,255,.18)',
+              }}>
+                <i className="fa fa-triangle-exclamation" style={{ fontSize: 18, flexShrink: 0 }} />
+                <div style={{ fontSize: 11, lineHeight: 1.35 }}>
+                  <div style={{ fontWeight: 800, fontSize: 12 }}>Vendiendo bajo costo</div>
+                  <div style={{ opacity: .92 }}>Perdés {fmt(Math.abs(calc.gain))} en este presupuesto. Subí el precio o revisá costos.</div>
+                </div>
+              </div>
+            )}
             <div className="cp-row"><span className="cp-lbl">N° Presupuesto</span><span className="cp-val">{budgetNum}</span></div>
             {feats.costoInterno && <div className="cp-row"><span className="cp-lbl">Costo proveedor</span><span className="cp-val" style={calc.costPending ? { color: '#F59E0B', fontStyle: 'italic', fontWeight: 700 } : undefined}>{calc.costPending ? 'Pendiente' : fmt(calc.totalCost)}</span></div>}
             {calc.logTotal > 0 && <div className="cp-row"><span className="cp-lbl">Impresión</span><span className="cp-val">{fmt(calc.logTotal)}</span></div>}
