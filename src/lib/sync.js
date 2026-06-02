@@ -69,6 +69,34 @@ async function resolveWorkspace(userId) {
   }
 }
 
+/**
+ * ETL ligero — extrae rubro / tipo_venta / onboarding_completed del cfg local
+ * y los persiste en columnas tipadas de business_profiles para queries de
+ * analytics/segmentación. Fire-and-forget: no bloquea el push principal del blob.
+ * Solo emite UPDATE cuando hay datos válidos (evita pisar con nulls).
+ */
+async function pushBusinessProfile() {
+  if (!_wsId || _role === 'viewer') return
+  try {
+    const cfg = db('cfg', {})
+    const payload = {}
+    const ALLOWED_RUBROS = ['indumentaria', 'tecnologia', 'decoracion', 'almacen']
+    const ALLOWED_TIPOS  = ['minorista', 'mayorista', 'ambos']
+    if (cfg.rubro && ALLOWED_RUBROS.includes(cfg.rubro))        payload.rubro = cfg.rubro
+    if (cfg.tipoVenta && ALLOWED_TIPOS.includes(cfg.tipoVenta)) payload.tipo_venta = cfg.tipoVenta
+    if (typeof cfg.onboardingCompleted === 'boolean')           payload.onboarding_completed = cfg.onboardingCompleted
+    if (Object.keys(payload).length === 0) return
+
+    const { error } = await supabase
+      .from('business_profiles')
+      .update(payload)
+      .eq('workspace_id', _wsId)
+    if (error) console.warn('[sync] business_profile update failed', error.message)
+  } catch (e) {
+    console.warn('[sync] business_profile push failed', e?.message)
+  }
+}
+
 async function doPush(retryCount = 0) {
   if (!_uid || !_wsId) return
   // Viewers do not push.
@@ -86,6 +114,8 @@ async function doPush(retryCount = 0) {
       else console.warn('[sync] push failed after retry', error.message)
       return
     }
+    // Sync paralelo de columnas tipadas (no bloquea, no falla el flujo principal)
+    pushBusinessProfile()
     window.dispatchEvent(new CustomEvent('anma:cloud-saved'))
   } catch (e) {
     if (retryCount < 1) setTimeout(() => doPush(retryCount + 1), 4000)
