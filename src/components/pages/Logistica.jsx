@@ -81,18 +81,35 @@ const getTrackingUrl = (carrier, code) => {
 }
 
 /* ── Pestaña Viajes / Comisionista ──────────────────────────────────────
-   Lista global de viajes con paradas (insumos/mercaderia/entrega). Cada
-   parada puede estar atribuida a un presupuesto (budgetId) — esa atribución
-   se crea desde el bloque "Logística / Comisionista" del Presupuesto. Editar
-   un viaje desde acá impacta directamente en el costo del presupuesto asociado.
-*/
-const PARADA_TIPO_LBL = { insumos: '📥 Insumos', mercaderia: '📦 Mercadería', entrega: '🚚 Entrega' }
+   Rediseño profesional: KPIs, cards expansibles, modal correcto (modal-bg
+   + modal-form-card con body scrolleable y footer sticky). Sincronización
+   bidireccional con Presupuestos vía paradas.budgetId. */
+const PARADA_TIPOS = [
+  { val: 'insumos',    lbl: 'Retiro Insumos',   icon: '📥', color: '#7C3AED' },
+  { val: 'mercaderia', lbl: 'Retiro Mercadería',icon: '📦', color: '#2563EB' },
+  { val: 'entrega',    lbl: 'Entrega Pedido',   icon: '🚚', color: '#059669' },
+]
+const tipoMeta = (t) => PARADA_TIPOS.find(x => x.val === t) || PARADA_TIPOS[0]
+
 function ViajesTab({ get, saveEntity, deleteEntity, toast, confirm }) {
   const viajes  = get('viajes', [])
   const budgets = get('budgets', [])
   const [modal, setModal] = useState(false)
-  const [edit, setEdit]   = useState(null) // viaje en edición o null = nuevo
-  const sorted = [...viajes].sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''))
+  const [edit, setEdit]   = useState(null)
+  const [expanded, setExpanded] = useState({})
+  const sorted = useMemo(() => [...viajes].sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '')), [viajes])
+
+  // KPIs globales
+  const stats = useMemo(() => {
+    let totalParadas = 0, totalGasto = 0
+    const tipoCount = { insumos: 0, mercaderia: 0, entrega: 0 }
+    viajes.forEach(v => (v.paradas || []).forEach(p => {
+      totalParadas++
+      totalGasto += Number(p.costo) || 0
+      if (tipoCount[p.tipo] !== undefined) tipoCount[p.tipo]++
+    }))
+    return { totalViajes: viajes.length, totalParadas, totalGasto, tipoCount }
+  }, [viajes])
 
   const openNew = () => { setEdit({ fecha: new Date().toISOString().slice(0,10), comisionista: '', paradas: [], notas: '' }); setModal(true) }
   const openEdit = (v) => { setEdit({ ...v, paradas: [...(v.paradas || [])] }); setModal(true) }
@@ -100,7 +117,7 @@ function ViajesTab({ get, saveEntity, deleteEntity, toast, confirm }) {
 
   const setField = (k, val) => setEdit(e => ({ ...e, [k]: val }))
   const updParada = (i, k, val) => setEdit(e => ({ ...e, paradas: e.paradas.map((p, idx) => idx !== i ? p : { ...p, [k]: val }) }))
-  const addParada = () => setEdit(e => ({ ...e, paradas: [...(e.paradas || []), { tipo: 'entrega', descripcion: '', costo: 0, budgetId: null }] }))
+  const addParada = (tipo = 'entrega') => setEdit(e => ({ ...e, paradas: [...(e.paradas || []), { tipo, descripcion: '', costo: 0, budgetId: null }] }))
   const delParada = (i) => setEdit(e => ({ ...e, paradas: e.paradas.filter((_, idx) => idx !== i) }))
 
   const save = () => {
@@ -125,106 +142,210 @@ function ViajesTab({ get, saveEntity, deleteEntity, toast, confirm }) {
     toast('Viaje eliminado', 'ok')
   }
 
+  const editingTotal = (edit?.paradas || []).reduce((s, p) => s + (Number(p.costo) || 0), 0)
+
   return (
     <div style={{ marginTop: 8 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, flexWrap: 'wrap', gap: 8 }}>
+      {/* HEADER con KPIs */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <div style={{ fontSize: 14, fontWeight: 800 }}>Control de Viajes</div>
-          <div style={{ fontSize: 11, color: 'var(--txt3)' }}>Un viaje puede tener múltiples paradas (insumos, mercadería, entregas). Las paradas con presupuesto asociado impactan en el costo de ese pedido.</div>
+          <div style={{ fontSize: 16, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <i className="fa fa-route" style={{ color: 'var(--brand)' }} /> Control de Viajes
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 2 }}>
+            Un viaje puede tener múltiples paradas. Las paradas con presupuesto asociado impactan el costo del pedido.
+          </div>
         </div>
-        <button className="btn btn-primary btn-sm" onClick={openNew}><i className="fa fa-plus" /> Nuevo viaje</button>
+        <button className="btn btn-primary" onClick={openNew} style={{ fontSize: 13, padding: '9px 16px' }}>
+          <i className="fa fa-plus" /> Nuevo viaje
+        </button>
       </div>
 
-      {sorted.length === 0 ? (
-        <div className="card" style={{ padding: 24, textAlign: 'center', color: 'var(--txt3)' }}>
-          <i className="fa fa-truck" style={{ fontSize: 28, opacity: .4, display: 'block', marginBottom: 8 }} />
-          Todavía no registraste viajes. Cargá uno acá o desde el Presupuesto.
-        </div>
-      ) : (
-        <div className="card" style={{ padding: 0, overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-            <thead><tr style={{ background: 'var(--surface2)' }}>
-              <th style={{ textAlign: 'left', padding: '8px 12px' }}>Fecha</th>
-              <th style={{ textAlign: 'left', padding: '8px 12px' }}>Comisionista</th>
-              <th style={{ textAlign: 'center', padding: '8px 12px' }}>Paradas</th>
-              <th style={{ textAlign: 'left', padding: '8px 12px' }}>Presupuestos</th>
-              <th style={{ textAlign: 'right', padding: '8px 12px' }}>Total</th>
-              <th style={{ width: 90 }}></th>
-            </tr></thead>
-            <tbody>
-              {sorted.map(v => {
-                const conteo = (v.paradas || []).reduce((acc, p) => { acc[p.tipo] = (acc[p.tipo] || 0) + 1; return acc }, {})
-                const budgetNums = Array.from(new Set((v.paradas || []).map(p => p.budgetNum).filter(Boolean)))
-                return (
-                  <tr key={v.id} style={{ borderTop: '1px solid var(--border)' }}>
-                    <td style={{ padding: '8px 12px', whiteSpace: 'nowrap' }}>{v.fecha ? fmtDate(v.fecha) : '—'}</td>
-                    <td style={{ padding: '8px 12px' }}>{v.comisionista || <span style={{ color: 'var(--txt3)' }}>—</span>}</td>
-                    <td style={{ padding: '8px 12px', textAlign: 'center' }}>
-                      <span style={{ fontWeight: 700 }}>{(v.paradas || []).length}</span>
-                      <span style={{ color: 'var(--txt3)', fontSize: 10, marginLeft: 4 }}>
-                        {conteo.insumos ? `· ${conteo.insumos} ins` : ''}{conteo.mercaderia ? ` · ${conteo.mercaderia} mer` : ''}{conteo.entrega ? ` · ${conteo.entrega} ent` : ''}
-                      </span>
-                    </td>
-                    <td style={{ padding: '8px 12px', fontSize: 11, color: 'var(--txt3)' }}>{budgetNums.length ? budgetNums.join(', ') : '—'}</td>
-                    <td style={{ padding: '8px 12px', textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(v.total || 0)}</td>
-                    <td style={{ padding: '8px 12px', textAlign: 'right' }}>
-                      <button className="btn btn-ghost btn-xs" onClick={() => openEdit(v)} title="Editar"><i className="fa fa-pen" /></button>
-                      <button className="btn btn-ghost btn-xs" onClick={() => del(v)} title="Eliminar" style={{ color: 'var(--red)' }}><i className="fa fa-trash" /></button>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+      {/* KPI Strip */}
+      {viajes.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10, marginBottom: 16 }}>
+          <div className="card" style={{ padding: '12px 14px' }}>
+            <div style={{ fontSize: 10, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em', fontWeight: 700 }}>Viajes</div>
+            <div style={{ fontSize: 22, fontWeight: 800, marginTop: 3 }}>{stats.totalViajes}</div>
+          </div>
+          <div className="card" style={{ padding: '12px 14px' }}>
+            <div style={{ fontSize: 10, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em', fontWeight: 700 }}>Paradas totales</div>
+            <div style={{ fontSize: 22, fontWeight: 800, marginTop: 3 }}>{stats.totalParadas}</div>
+            <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 2 }}>
+              📥 {stats.tipoCount.insumos} · 📦 {stats.tipoCount.mercaderia} · 🚚 {stats.tipoCount.entrega}
+            </div>
+          </div>
+          <div className="card" style={{ padding: '12px 14px' }}>
+            <div style={{ fontSize: 10, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em', fontWeight: 700 }}>Gasto logístico</div>
+            <div style={{ fontSize: 22, fontWeight: 800, marginTop: 3, color: 'var(--money)' }}>{fmt(stats.totalGasto)}</div>
+          </div>
         </div>
       )}
 
+      {/* Lista de viajes — cards expansibles */}
+      {sorted.length === 0 ? (
+        <div className="card" style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--txt3)' }}>
+          <i className="fa fa-truck" style={{ fontSize: 34, opacity: .35, display: 'block', marginBottom: 10 }} />
+          <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--txt2)', marginBottom: 4 }}>Sin viajes registrados</div>
+          <div style={{ fontSize: 12 }}>Cargá uno con "Nuevo viaje" o desde el bloque Logística del Presupuesto.</div>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {sorted.map(v => {
+            const isOpen = !!expanded[v.id]
+            const conteo = (v.paradas || []).reduce((acc, p) => { acc[p.tipo] = (acc[p.tipo] || 0) + 1; return acc }, {})
+            const budgetNums = Array.from(new Set((v.paradas || []).map(p => p.budgetNum).filter(Boolean)))
+            return (
+              <div key={v.id} className="card" style={{ padding: 0, overflow: 'hidden' }}>
+                {/* Header de la card */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', cursor: 'pointer' }}
+                  onClick={() => setExpanded(s => ({ ...s, [v.id]: !s[v.id] }))}>
+                  <div style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--brand-xlt, #F5F3FF)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)', fontSize: 16, flexShrink: 0 }}>
+                    <i className="fa fa-truck" />
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <span style={{ fontWeight: 700, fontSize: 13 }}>{v.fecha ? fmtDate(v.fecha) : 'Sin fecha'}</span>
+                      <span style={{ fontSize: 11, color: 'var(--txt3)' }}>·</span>
+                      <span style={{ fontSize: 12, color: 'var(--txt2)' }}>{v.comisionista || <span style={{ color: 'var(--txt4)', fontStyle: 'italic' }}>Sin comisionista</span>}</span>
+                    </div>
+                    <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 2, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                      <span><b style={{ color: 'var(--txt2)' }}>{(v.paradas || []).length}</b> parada{(v.paradas || []).length !== 1 ? 's' : ''}</span>
+                      {conteo.insumos ? <span>📥 {conteo.insumos}</span> : null}
+                      {conteo.mercaderia ? <span>📦 {conteo.mercaderia}</span> : null}
+                      {conteo.entrega ? <span>🚚 {conteo.entrega}</span> : null}
+                      {budgetNums.length > 0 && <span style={{ color: 'var(--brand)' }}><i className="fa fa-link" style={{ fontSize: 9 }} /> {budgetNums.join(', ')}</span>}
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                    <div style={{ fontWeight: 800, fontSize: 14, color: 'var(--money)' }}>{fmt(v.total || 0)}</div>
+                    <div style={{ fontSize: 10, color: 'var(--txt3)' }}>total</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 4, marginLeft: 8 }}>
+                    <button className="btn btn-ghost btn-xs" onClick={(e) => { e.stopPropagation(); openEdit(v) }} title="Editar"><i className="fa fa-pen" /></button>
+                    <button className="btn btn-ghost btn-xs" onClick={(e) => { e.stopPropagation(); del(v) }} title="Eliminar" style={{ color: 'var(--red)' }}><i className="fa fa-trash" /></button>
+                    <i className={`fa fa-chevron-${isOpen ? 'up' : 'down'}`} style={{ fontSize: 11, color: 'var(--txt3)', marginLeft: 4, alignSelf: 'center' }} />
+                  </div>
+                </div>
+                {/* Detalle expansible — paradas */}
+                {isOpen && (v.paradas || []).length > 0 && (
+                  <div style={{ borderTop: '1px solid var(--border)', background: 'var(--surface2)', padding: '10px 16px' }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 6 }}>Paradas</div>
+                    {(v.paradas || []).map((p, i) => {
+                      const meta = tipoMeta(p.tipo)
+                      return (
+                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 0', borderBottom: i < v.paradas.length - 1 ? '1px dashed var(--border)' : 'none' }}>
+                          <span style={{ width: 22, fontSize: 13, textAlign: 'center', flexShrink: 0 }}>{meta.icon}</span>
+                          <span style={{ fontSize: 11, color: meta.color, fontWeight: 700, minWidth: 110, flexShrink: 0 }}>{meta.lbl}</span>
+                          <span style={{ flex: 1, fontSize: 12, color: 'var(--txt)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {p.descripcion || <span style={{ color: 'var(--txt4)', fontStyle: 'italic' }}>sin descripción</span>}
+                          </span>
+                          {p.budgetNum && <span style={{ fontSize: 10, background: 'var(--brand-xlt)', color: 'var(--brand)', padding: '2px 8px', borderRadius: 9999, fontWeight: 700 }}><i className="fa fa-link" style={{ fontSize: 8, marginRight: 3 }} />{p.budgetNum}</span>}
+                          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--money)', minWidth: 80, textAlign: 'right' }}>{fmt(p.costo || 0)}</span>
+                        </div>
+                      )
+                    })}
+                    {v.notas && (
+                      <div style={{ marginTop: 10, padding: '8px 10px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 6, fontSize: 11, color: 'var(--txt2)' }}>
+                        <i className="fa fa-note-sticky" style={{ marginRight: 5, opacity: .6 }} /> {v.notas}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* ─── MODAL: Nuevo/Editar Viaje ─── */}
       {modal && edit && (
-        <>
-          <div className="modal-overlay" onClick={close} />
+        <div className="modal-bg open" style={{ zIndex: 9100 }} onClick={e => { if (e.target === e.currentTarget) close() }}>
           <div className="modal-form-card" style={{ maxWidth: 720 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-              <h3 style={{ margin: 0 }}>{edit.id ? `Editar viaje #${edit.id}` : 'Nuevo viaje'}</h3>
+            {/* Header fijo */}
+            <div style={{ padding: '18px 22px 14px', borderBottom: '1px solid var(--border)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+              <div>
+                <h3 style={{ margin: 0, fontSize: 15 }}><i className="fa fa-truck" style={{ marginRight: 8, color: 'var(--brand)' }} />{edit.id ? 'Editar viaje' : 'Nuevo viaje'}</h3>
+                <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 2 }}>Agregá paradas, asociá presupuestos y registrá costos.</div>
+              </div>
               <button className="btn btn-ghost btn-sm" onClick={close}><i className="fa fa-xmark" /></button>
             </div>
-            <div className="grid2">
-              <div className="fg"><label>Fecha</label><input type="date" value={edit.fecha || ''} onChange={e => setField('fecha', e.target.value)} /></div>
-              <div className="fg"><label>Comisionista</label><input type="text" value={edit.comisionista || ''} onChange={e => setField('comisionista', e.target.value)} placeholder="Nombre" /></div>
-            </div>
-            <div style={{ marginTop: 12 }}>
-              <div style={{ fontWeight: 700, fontSize: 12, marginBottom: 6 }}>Paradas</div>
-              {(edit.paradas || []).length === 0 && <div style={{ fontSize: 12, color: 'var(--txt3)', fontStyle: 'italic', padding: '4px 0' }}>Sin paradas.</div>}
-              {(edit.paradas || []).map((p, i) => (
-                <div key={i} style={{ display: 'flex', gap: 6, marginBottom: 6, flexWrap: 'wrap', alignItems: 'center' }}>
-                  <select value={p.tipo} onChange={e => updParada(i, 'tipo', e.target.value)} style={{ flex: '0 0 150px' }}>
-                    <option value="insumos">📥 Insumos</option>
-                    <option value="mercaderia">📦 Mercadería</option>
-                    <option value="entrega">🚚 Entrega</option>
-                  </select>
-                  <input type="text" value={p.descripcion || ''} onChange={e => updParada(i, 'descripcion', e.target.value)} placeholder="Descripción" style={{ flex: '1 1 160px', minWidth: 120 }} />
-                  <select value={p.budgetId || ''} onChange={e => { const id = Number(e.target.value) || null; const b = budgets.find(x => x.id === id); updParada(i, 'budgetId', id); updParada(i, 'budgetNum', b?.num || '') }} style={{ flex: '0 0 140px' }} title="Presupuesto asociado (opcional)">
-                    <option value="">— sin asociar —</option>
-                    {budgets.map(b => <option key={b.id} value={b.id}>{b.num || `#${b.id}`} · {b.contact || b.company || ''}</option>)}
-                  </select>
-                  <input type="number" min="0" value={p.costo || 0} onChange={e => updParada(i, 'costo', e.target.value)} placeholder="Costo" style={{ width: 90, textAlign: 'right' }} />
-                  <button className="btn btn-ghost btn-xs" onClick={() => delParada(i)} style={{ color: 'var(--red)' }}><i className="fa fa-trash" /></button>
+
+            {/* Body scrolleable */}
+            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '16px 22px', WebkitOverflowScrolling: 'touch' }}>
+              <div className="grid2" style={{ gap: 12 }}>
+                <div className="fg"><label>Fecha</label><input type="date" value={edit.fecha || ''} onChange={e => setField('fecha', e.target.value)} /></div>
+                <div className="fg"><label>Comisionista / Transportista</label><input type="text" value={edit.comisionista || ''} onChange={e => setField('comisionista', e.target.value)} placeholder="Nombre" /></div>
+              </div>
+
+              <div style={{ marginTop: 16 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8, gap: 10, flexWrap: 'wrap' }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--txt)' }}>Paradas del viaje</div>
+                    <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 1 }}>Cada parada puede estar asociada a un presupuesto.</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+                    {PARADA_TIPOS.map(t => (
+                      <button key={t.val} type="button" className="btn btn-ghost btn-xs" onClick={() => addParada(t.val)} title={`Agregar ${t.lbl}`}>
+                        <span style={{ marginRight: 3 }}>{t.icon}</span> {t.lbl}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              ))}
-              <button className="btn btn-ghost btn-sm" onClick={addParada} style={{ marginTop: 4 }}><i className="fa fa-plus" /> Agregar parada</button>
+
+                {(edit.paradas || []).length === 0 ? (
+                  <div style={{ padding: '20px', textAlign: 'center', background: 'var(--surface2)', borderRadius: 10, border: '1.5px dashed var(--border)', color: 'var(--txt3)', fontSize: 12 }}>
+                    Sin paradas todavía. Agregá la primera con los botones de arriba.
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {(edit.paradas || []).map((p, i) => {
+                      const meta = tipoMeta(p.tipo)
+                      return (
+                        <div key={i} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '10px 12px', borderLeft: `3px solid ${meta.color}` }}>
+                          <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
+                            <select value={p.tipo} onChange={e => updParada(i, 'tipo', e.target.value)} style={{ flex: '0 0 170px', fontSize: 12, padding: '6px 8px', height: 34 }}>
+                              {PARADA_TIPOS.map(t => <option key={t.val} value={t.val}>{t.icon} {t.lbl}</option>)}
+                            </select>
+                            <input type="text" value={p.descripcion || ''} onChange={e => updParada(i, 'descripcion', e.target.value)} placeholder="Descripción (dónde / qué)" style={{ flex: 1, minWidth: 120, fontSize: 12, padding: '6px 10px', height: 34 }} />
+                            <button className="btn btn-ghost btn-xs" onClick={() => delParada(i)} title="Quitar parada" style={{ color: 'var(--red)', flexShrink: 0 }}><i className="fa fa-trash" /></button>
+                          </div>
+                          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                            <div style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                              <span style={{ fontSize: 10, color: 'var(--txt3)', whiteSpace: 'nowrap' }}>📋 Presupuesto:</span>
+                              <select value={p.budgetId || ''} onChange={e => { const id = Number(e.target.value) || null; const b = budgets.find(x => x.id === id); updParada(i, 'budgetId', id); updParada(i, 'budgetNum', b?.num || '') }} style={{ flex: 1, fontSize: 11, padding: '4px 6px', height: 30 }}>
+                                <option value="">— sin asociar —</option>
+                                {budgets.map(b => <option key={b.id} value={b.id}>{b.num || `#${b.id}`} · {b.contact || b.company || ''}</option>)}
+                              </select>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                              <span style={{ fontSize: 10, color: 'var(--txt3)' }}>$ Costo:</span>
+                              <input type="number" min="0" value={p.costo || 0} onChange={e => updParada(i, 'costo', e.target.value)} placeholder="0" style={{ width: 110, textAlign: 'right', fontSize: 12, padding: '4px 8px', height: 30, fontVariantNumeric: 'tabular-nums', fontWeight: 700 }} />
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <div className="fg" style={{ marginTop: 16 }}>
+                <label>Notas del viaje (interno)</label>
+                <textarea rows={2} value={edit.notas || ''} onChange={e => setField('notas', e.target.value)} placeholder="Observaciones, peajes, kilometraje..." style={{ resize: 'vertical' }} />
+              </div>
             </div>
-            <div className="fg" style={{ marginTop: 12 }}>
-              <label>Notas</label>
-              <textarea rows={2} value={edit.notas || ''} onChange={e => setField('notas', e.target.value)} placeholder="Observaciones del viaje..." />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 14, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
-              <div style={{ fontSize: 13, fontWeight: 700 }}>Total: {fmt((edit.paradas || []).reduce((s, p) => s + (Number(p.costo) || 0), 0))}</div>
-              <div style={{ display: 'flex', gap: 6 }}>
-                <button className="btn btn-ghost" onClick={close}>Cancelar</button>
+
+            {/* Footer fijo */}
+            <div className="mfooter" style={{ padding: '14px 22px', justifyContent: 'space-between' }}>
+              <div style={{ fontSize: 13, fontWeight: 700 }}>Total: <span style={{ color: 'var(--money)' }}>{fmt(editingTotal)}</span></div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button className="btn btn-secondary" onClick={close}>Cancelar</button>
                 <button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar viaje</button>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   )
