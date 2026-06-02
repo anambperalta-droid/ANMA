@@ -312,12 +312,18 @@ export default function Presupuesto() {
   const { id } = useParams()
   const nav = useNavigate()
   const { get, config, saveBudget, deductStockForOrder, saveEntity } = useData()
-  /* ── Precio "preferido" desde el catálogo según el tipo de venta del onboarding.
-     Minorista → priceB2C ; Mayorista → priceB2B ; Ambos → priceB2C como fallback. */
+  /* ── Precio "preferido" desde el catálogo según el canal de venta.
+     Para usuarios "ambos", el canal se elige por presupuesto (form.canalVenta);
+     para minorista/mayorista, queda fijo según el onboarding.
+     Minorista → priceB2C ; Mayorista → priceB2B ; fallback al otro si no hay. */
   const _tipoVenta = (config()?.tipoVenta) || 'ambos'
-  const catalogPrice = (p) => {
+  const canalEffective = (canalForm) => {
+    if (_tipoVenta === 'ambos') return canalForm || 'minorista'
+    return _tipoVenta
+  }
+  const catalogPriceFor = (p, canal) => {
     if (!p) return 0
-    if (_tipoVenta === 'mayorista') return p.priceB2B || p.priceB2C || 0
+    if (canal === 'mayorista') return p.priceB2B || p.priceB2C || 0
     return p.priceB2C || p.priceB2B || 0
   }
   const toast = useToast()
@@ -335,6 +341,7 @@ export default function Presupuesto() {
     logisticaParadas: [],
     comisionista: '',
     viajeFecha: '',
+    canalVenta: _tipoVenta === 'ambos' ? 'minorista' : _tipoVenta,
   })
   const [items, setItems] = useState([emptyItem()])
   const [editId, setEditId] = useState(null)
@@ -374,6 +381,7 @@ export default function Presupuesto() {
           logisticaParadas: b.logisticaParadas || [],
           comisionista: b.comisionista || '',
           viajeFecha: b.viajeFecha || '',
+          canalVenta: b.canalVenta || (_tipoVenta === 'ambos' ? 'minorista' : _tipoVenta),
         })
         setItems(b.items?.length ? b.items : [emptyItem()])
         setEditId(b.id)
@@ -411,7 +419,7 @@ export default function Presupuesto() {
       if (!it.name || !it.costUnit) return it
       const match = products.find(p => p.name === it.name)
       if (match) {
-        const price = catalogPrice(match) || Math.round(num(match.cost) * (1 + m))
+        const price = catalogPriceFor(match, canalEffective(form.canalVenta)) || Math.round(num(match.cost) * (1 + m))
         return { ...it, priceUnit: price }
       }
       return it
@@ -428,7 +436,7 @@ export default function Presupuesto() {
           updated.costUnit = match.cost || 0
           updated.productId = match.id
           // Precio del catálogo según el tipo de venta (B2C para minorista/ambos, B2B para mayorista)
-          updated.priceUnit = catalogPrice(match) || (num(match.cost) > 0 ? priceFromMargin(num(match.cost), form.margin) : 0)
+          updated.priceUnit = catalogPriceFor(match, canalEffective(form.canalVenta)) || (num(match.cost) > 0 ? priceFromMargin(num(match.cost), form.margin) : 0)
           updated.stockAvailable = match.stock || 0
         }
       }
@@ -1182,6 +1190,33 @@ export default function Presupuesto() {
             {currentStep === 2 && (
               <>
                 <PaneHeader icon="fa-box-open" title="Paso 2 · Productos" subtitle="Agregá los ítems que incluye el pedido" />
+                {_tipoVenta === 'ambos' && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', marginBottom: 10, background: '#FAFAFB', border: '1px solid #ECECF1', borderRadius: 10 }}>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: 0.3 }}>Canal de este presupuesto</div>
+                    <div style={{ display: 'inline-flex', background: '#fff', border: '1px solid #E5E7EB', borderRadius: 8, padding: 2, gap: 2 }}>
+                      {[
+                        { val: 'minorista', label: 'Público', icon: '🛍️' },
+                        { val: 'mayorista', label: 'Mayorista', icon: '📦' },
+                      ].map(opt => {
+                        const active = (form.canalVenta || 'minorista') === opt.val
+                        return (
+                          <button
+                            key={opt.val}
+                            type="button"
+                            onClick={() => setF('canalVenta', opt.val)}
+                            style={{
+                              padding: '6px 12px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: 'none', cursor: 'pointer',
+                              background: active ? 'var(--brand)' : 'transparent',
+                              color: active ? '#fff' : '#6B7280',
+                              transition: 'all .15s',
+                            }}
+                          >{opt.icon} {opt.label}</button>
+                        )
+                      })}
+                    </div>
+                    <div style={{ fontSize: 10, color: '#9CA3AF', marginLeft: 'auto' }}>Determina qué precio del catálogo se usa al agregar productos</div>
+                  </div>
+                )}
                 <div className="tbl-card items-scroll" style={{ overflowX: 'auto' }}>
                   <table style={{ tableLayout: 'fixed', width: '100%', minWidth: 720 }}>
                     <thead><tr>
@@ -1217,7 +1252,7 @@ export default function Presupuesto() {
                                     ...x, name: p.name,
                                     costUnit: p.cost || 0,
                                     productId: p.id,
-                                    priceUnit: catalogPrice(p) || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
+                                    priceUnit: catalogPriceFor(p, canalEffective(form.canalVenta)) || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
                                     stockAvailable: p.stock || 0,
                                   }))
                                 }}
@@ -1261,7 +1296,7 @@ export default function Presupuesto() {
                                   ...x, name: p.name,
                                   costUnit: p.cost || 0,
                                   productId: p.id,
-                                  priceUnit: catalogPrice(p) || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
+                                  priceUnit: catalogPriceFor(p, canalEffective(form.canalVenta)) || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
                                   stockAvailable: p.stock || 0,
                                 }))
                               }}

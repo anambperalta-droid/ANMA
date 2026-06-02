@@ -9,6 +9,7 @@ import { applyThemeColors } from '../../lib/theme'
 import { getSheetsConfig, setSheetsConfig, testSheetsConnection, pushAllBudgets, APPS_SCRIPT_TEMPLATE } from '../../lib/sheets'
 import { SITES, CURRENT_SITE, sendInvite } from '../../lib/invites'
 import { flushSync } from '../../lib/sync'
+import { TIPOS_VENTA, RUBROS } from '../../lib/rubros'
 
 /* ── Modal de confirmación destructiva ── */
 function DeleteConfirmModal({ title, message, onConfirm, onClose }) {
@@ -174,6 +175,8 @@ export default function Config() {
   const [numberFormat, setNumberFormat] = useState(c.numberFormat || 'es-AR')
   const [prefix, setPrefix] = useState(c.budgetPrefix || 'AN')
   const [defMargin, setDefMargin] = useState(c.defaultMargin || 40)
+  const [tipoVenta, setTipoVenta] = useState(c.tipoVenta || 'ambos')
+  const [rubro, setRubro] = useState(c.rubro || '')
   const [defDeposit, setDefDeposit] = useState(c.defaultDeposit || 50)
   const [validity, setValidity] = useState(c.validity || 15)
   const [conds, setConds] = useState(c.paymentConditions || '')
@@ -308,6 +311,7 @@ export default function Config() {
       businessName: bname, subtitle: bsub, brandColor: bcolor, accentColor: acolor,
       contactEmail: cEmail, contactWA: cWA.replace(/[^\d]/g, ''), contactIG: cIG, contactWeb: cWeb, address: cAddr,
       currency, numberFormat, budgetPrefix: prefix, defaultMargin: Number(defMargin), defaultDeposit: Number(defDeposit), validity: Number(validity),
+      tipoVenta, rubro,
       paymentConditions: conds, legalNote: legal,
       ivaEnabled, ivaRate: Number(ivaRate), otrosImpuestosRate: Number(otrosImp),
       cuit, ptoVenta, razonSocial, condIva,
@@ -693,7 +697,7 @@ export default function Config() {
                   </div>
                 </div>
                 {/* Fila 3: Seña + Validez — grid2 colapsa a 1col en mobile */}
-                <div className="grid2" style={{ marginBottom: 0 }}>
+                <div className="grid2" style={{ marginBottom: 12 }}>
                   <div className="fg" style={{ marginBottom: 0 }}>
                     <label>Seña por defecto (%)</label>
                     <input type="number" value={defDeposit} onChange={e => setDefDeposit(e.target.value)} style={{ borderRadius: 12 }} />
@@ -701,6 +705,30 @@ export default function Config() {
                   <div className="fg" style={{ marginBottom: 0 }}>
                     <label>Validez (días)</label>
                     <input type="number" value={validity} onChange={e => setValidity(e.target.value)} style={{ borderRadius: 12 }} />
+                  </div>
+                </div>
+                {/* Fila 4: Rubro + Tipo de venta (perfil comercial del onboarding, editable acá) */}
+                <div className="grid2" style={{ marginBottom: 0 }}>
+                  <div className="fg" style={{ marginBottom: 0 }}>
+                    <label>Rubro</label>
+                    <select value={rubro} onChange={e => setRubro(e.target.value)} style={{ borderRadius: 12 }}>
+                      <option value="">— sin definir —</option>
+                      {RUBROS.map(r => (
+                        <option key={r.val} value={r.val}>{r.icon} {r.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="fg" style={{ marginBottom: 0 }}>
+                    <label>Tipo de venta</label>
+                    <select value={tipoVenta} onChange={e => setTipoVenta(e.target.value)} style={{ borderRadius: 12 }}>
+                      {TIPOS_VENTA.map(t => (
+                        <option key={t.val} value={t.val}>{t.icon} {t.label}</option>
+                      ))}
+                    </select>
+                    <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 4, fontStyle: 'italic' }}>
+                      <i className="fa fa-circle-info" style={{ marginRight: 4, opacity: .7 }} />
+                      "Ambos" habilita un toggle Público/Mayorista en cada presupuesto.
+                    </div>
                   </div>
                 </div>
               </div>
