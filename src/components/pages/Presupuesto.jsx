@@ -427,7 +427,7 @@ export default function Presupuesto() {
       // Cambiar costUnit dispara reprice automático para que priceUnit no quede stale
       if (key === 'costUnit') {
         const cu = num(val)
-        if (cu > 0) updated.priceUnit = priceFromMargin(cu, form.margin)
+        if (cu > 0) updated.priceUnit = priceFromMargin(cu, form.margin, form.discount)
       }
       return updated
     }))
@@ -466,21 +466,22 @@ export default function Presupuesto() {
     })
   }
 
-  /* ── Cálculo de precio desde margen ────────────────────────────────────
-     price = cost / (1 - m/100) — margen sobre precio de venta.
-     Si ponés 35% en el input, "Margen real" mostrado dará exactamente 35%. */
-  const priceFromMargin = (cost, marginPct) => {
+  /* ── Cálculo de precio desde margen + descuento ───────────────────────
+     price = cost / ((1 - m/100) × (1 - d/100))
+     Pre-compensa el descuento al cliente. Garantía: si ponés 15% margen y
+     5% descuento, el "Margen real" del panel da 15% (no 9.5%).
+     m, d capados al 99% para evitar división por cero. */
+  const priceFromMargin = (cost, marginPct, discountPct = 0) => {
     const m = Math.min(99, Math.max(0, num(marginPct))) / 100
-    return Math.round(num(cost) / (1 - m))
+    const d = Math.min(99, Math.max(0, num(discountPct))) / 100
+    const denom = (1 - m) * (1 - d)
+    return denom > 0 ? Math.round(num(cost) / denom) : Math.round(num(cost))
   }
 
-  /* ── Margen: recalcula priceUnit en TODOS los ítems distribuyendo costos fijos
-     (envío cargado + dispatch packaging + logística/comisionista) pro-rata según
-     el costo total de cada ítem. Así "Margen real" = % ingresado, exacto. */
-  const setMarginAndReprice = (val) => {
-    setF('margin', val)
+  /* ── Reprice unificado: aplica margen + descuento + costos fijos pro-rata.
+     Llamado desde setMarginAndReprice y setDiscountAndReprice. */
+  const _repriceAllItems = (marginPct, discountPct) => {
     setItems(prev => {
-      // Costos fijos del presupuesto (no escalan con qty del ítem individual)
       const shipCharged = form.shipCharged !== false
       const dispatchCost = (form.dispatchInsumos || []).reduce((s, d) => {
         const ins = get('insumos', []).find(x => x.id === Number(d.insumoId))
@@ -497,9 +498,18 @@ export default function Presupuesto() {
           ? ((ownCost * qty) / totalItemsBaseCost) * sharedFixed
           : 0
         const effCost = ownCost + (share / qty)
-        return { ...it, priceUnit: priceFromMargin(effCost, val) }
+        return { ...it, priceUnit: priceFromMargin(effCost, marginPct, discountPct) }
       })
     })
+  }
+
+  const setMarginAndReprice = (val) => {
+    setF('margin', val)
+    _repriceAllItems(val, form.discount)
+  }
+  const setDiscountAndReprice = (val) => {
+    setF('discount', val)
+    _repriceAllItems(form.margin, val)
   }
 
   /* ── Logística / Comisionista — paradas atribuidas a ESTE presupuesto ── */
@@ -1134,7 +1144,7 @@ export default function Presupuesto() {
                                     ...x, name: p.name,
                                     costUnit: p.cost || 0,
                                     productId: p.id,
-                                    priceUnit: p.priceB2C || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin) : 0),
+                                    priceUnit: p.priceB2C || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
                                     stockAvailable: p.stock || 0,
                                   }))
                                 }}
@@ -1178,7 +1188,7 @@ export default function Presupuesto() {
                                   ...x, name: p.name,
                                   costUnit: p.cost || 0,
                                   productId: p.id,
-                                  priceUnit: p.priceB2C || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin) : 0),
+                                  priceUnit: p.priceB2C || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
                                   stockAvailable: p.stock || 0,
                                 }))
                               }}
@@ -1331,7 +1341,7 @@ export default function Presupuesto() {
                 {feats.descuentoCliente && (
                   <div className="fg" style={{ maxWidth: 200, marginTop: 4 }}>
                     <label>Descuento al cliente (%)</label>
-                    <input type="number" value={form.discount} onFocus={selectOnFocus} onChange={e => setF('discount', e.target.value)} onBlur={e => { if (e.target.value === '') setF('discount', 0) }} min="0" max="100" style={{ maxWidth: 120 }} />
+                    <input type="number" value={form.discount} onFocus={selectOnFocus} onChange={e => setDiscountAndReprice(e.target.value)} onBlur={e => { if (e.target.value === '') setDiscountAndReprice(0) }} min="0" max="100" style={{ maxWidth: 120 }} />
                   </div>
                 )}
 
