@@ -312,6 +312,14 @@ export default function Presupuesto() {
   const { id } = useParams()
   const nav = useNavigate()
   const { get, config, saveBudget, deductStockForOrder, saveEntity } = useData()
+  /* ── Precio "preferido" desde el catálogo según el tipo de venta del onboarding.
+     Minorista → priceB2C ; Mayorista → priceB2B ; Ambos → priceB2C como fallback. */
+  const _tipoVenta = (config()?.tipoVenta) || 'ambos'
+  const catalogPrice = (p) => {
+    if (!p) return 0
+    if (_tipoVenta === 'mayorista') return p.priceB2B || p.priceB2C || 0
+    return p.priceB2C || p.priceB2B || 0
+  }
   const toast = useToast()
   const c = config()
   const feats = c.features || {}
@@ -403,7 +411,7 @@ export default function Presupuesto() {
       if (!it.name || !it.costUnit) return it
       const match = products.find(p => p.name === it.name)
       if (match) {
-        const price = match.priceB2C || Math.round(num(match.cost) * (1 + m))
+        const price = catalogPrice(match) || Math.round(num(match.cost) * (1 + m))
         return { ...it, priceUnit: price }
       }
       return it
@@ -419,8 +427,8 @@ export default function Presupuesto() {
         if (match) {
           updated.costUnit = match.cost || 0
           updated.productId = match.id
-          // Si el producto tiene priceB2C usalo (precio de catálogo); si no, calcular con margen actual
-          updated.priceUnit = match.priceB2C || (num(match.cost) > 0 ? priceFromMargin(num(match.cost), form.margin) : 0)
+          // Precio del catálogo según el tipo de venta (B2C para minorista/ambos, B2B para mayorista)
+          updated.priceUnit = catalogPrice(match) || (num(match.cost) > 0 ? priceFromMargin(num(match.cost), form.margin) : 0)
           updated.stockAvailable = match.stock || 0
         }
       }
@@ -1144,7 +1152,7 @@ export default function Presupuesto() {
                                     ...x, name: p.name,
                                     costUnit: p.cost || 0,
                                     productId: p.id,
-                                    priceUnit: p.priceB2C || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
+                                    priceUnit: catalogPrice(p) || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
                                     stockAvailable: p.stock || 0,
                                   }))
                                 }}
@@ -1188,7 +1196,7 @@ export default function Presupuesto() {
                                   ...x, name: p.name,
                                   costUnit: p.cost || 0,
                                   productId: p.id,
-                                  priceUnit: p.priceB2C || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
+                                  priceUnit: catalogPrice(p) || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
                                   stockAvailable: p.stock || 0,
                                 }))
                               }}

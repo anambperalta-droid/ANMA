@@ -95,6 +95,14 @@ export default function Catalogo() {
   const cats = c.productCats || []
   const units = c.units || ['unidad','kg','litro','metro','caja','pack','rollo']
   const rules = c.pricingRules || { b2c: { margin: 40 }, b2b: { margin: 25 } }
+  /* ── Tipo de venta del onboarding condiciona qué columnas/inputs de precio
+     ver: minorista solo B2C, mayorista solo B2B, ambos = ambas. Default
+     'ambos' por compatibilidad con usuarios que aún no pasaron el Paso 1. */
+  const tipoVenta = c.tipoVenta || 'ambos'
+  const showB2C = tipoVenta === 'minorista' || tipoVenta === 'ambos'
+  const showB2B = tipoVenta === 'mayorista' || tipoVenta === 'ambos'
+  // Total de columnas opcionales activas — para calcular colSpan correctamente.
+  const priceColsActive = (showB2C ? 1 : 0) + (showB2B ? 1 : 0)
 
   const filtered = useMemo(() => {
     let f = products
@@ -493,8 +501,8 @@ export default function Catalogo() {
                   </button>
                 </span>
               </th>}
-              <th style={{ textAlign: 'right' }} className="col-hide-mobile">P. Público</th>
-              <th style={{ textAlign: 'right' }} className="col-hide-mobile">P. Mayorista</th>
+              {showB2C && <th style={{ textAlign: 'right' }} className="col-hide-mobile">P. Público</th>}
+              {showB2B && <th style={{ textAlign: 'right' }} className="col-hide-mobile">P. Mayorista</th>}
               {!opHideCosts && <th style={{ textAlign: 'center' }} className="col-hide-mobile">% Margen</th>}
               {showCostInfo && <th className="col-hide-mobile">Últ. actualización</th>}
               <th style={{ textAlign: 'right' }}>Stock</th>
@@ -502,7 +510,7 @@ export default function Catalogo() {
             </tr></thead>
             <tbody>
               {loading ? [1,2,3,4].map(i => (
-                <tr key={i}><td colSpan={showCostInfo ? 11 : 10}><div className="sk sk-text" style={{ height: 18, width: `${50 + Math.random() * 40}%` }} /></td></tr>
+                <tr key={i}><td colSpan={(showCostInfo ? 11 : 10) - (2 - priceColsActive)}><div className="sk sk-text" style={{ height: 18, width: `${50 + Math.random() * 40}%` }} /></td></tr>
               )) : filtered.length ? filtered.map(p => {
                 const isLow = p.minStock > 0 && (p.stock || 0) <= p.minStock
                 const mp = marginPct(p)
@@ -524,8 +532,8 @@ export default function Catalogo() {
                     <td className="col-hide-mobile"><span style={{ display: 'inline-flex', alignItems: 'center', background: cc.bg, color: cc.color, fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, whiteSpace: 'nowrap' }}>{p.cat || '—'}</span></td>
                     <td className="col-hide-mobile" style={{ fontSize: 11 }}>{supplierName(p.supplierId)}</td>
                     {!opHideCosts && <td style={{ textAlign: 'right' }}>{fmt(p.cost)}</td>}
-                    <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>
-                    <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2B || autoPrice(p.cost).b2b)}</td>
+                    {showB2C && <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>}
+                    {showB2B && <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2B || autoPrice(p.cost).b2b)}</td>}
                     {!opHideCosts && <td className="col-hide-mobile" style={{ textAlign: 'center' }}>
                       {mp !== null ? <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 800, color: marginColor(mp), background: marginColor(mp) + '18', padding: '2px 8px', borderRadius: 10 }}>{mp}%</span> : <span style={{ color: 'var(--txt4)', fontSize: 11 }}>—</span>}
                     </td>}
@@ -555,7 +563,7 @@ export default function Catalogo() {
                     </div></td>
                   </tr>
                 )
-              }) : <tr><td colSpan={showCostInfo ? 11 : 10}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>Sin productos</p></div></td></tr>}
+              }) : <tr><td colSpan={(showCostInfo ? 11 : 10) - (2 - priceColsActive)}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>Sin productos</p></div></td></tr>}
             </tbody>
           </table>
         </div>
@@ -746,28 +754,45 @@ export default function Catalogo() {
                   </label>
                   <input tabIndex={6} type="number" value={marginInput} onChange={e => onMarginChange(e.target.value)} placeholder="%" min="0" />
                 </div>
-                <div className="cat-price-arrow" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 2, color: 'var(--txt4)', fontSize: 14, fontWeight: 700 }}>→</div>
-                <div className="fg" style={{ marginBottom: 0 }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <i className="fa fa-tag" style={{ color: 'var(--green)', fontSize: 10 }} />
-                    Precio de Venta (B2C)
-                  </label>
-                  <input tabIndex={7} type="number" value={form.priceB2C} onChange={e => onPriceChange(e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--green)', borderWidth: 2 }} />
-                </div>
+                {showB2C && <div className="cat-price-arrow" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 2, color: 'var(--txt4)', fontSize: 14, fontWeight: 700 }}>→</div>}
+                {showB2C && (
+                  <div className="fg" style={{ marginBottom: 0 }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <i className="fa fa-tag" style={{ color: 'var(--green)', fontSize: 10 }} />
+                      Precio de Venta {showB2B ? '(Público)' : ''}
+                    </label>
+                    <input tabIndex={7} type="number" value={form.priceB2C} onChange={e => onPriceChange(e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--green)', borderWidth: 2 }} />
+                  </div>
+                )}
+                {!showB2C && showB2B && (
+                  <>
+                    <div className="cat-price-arrow" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 2, color: 'var(--txt4)', fontSize: 14, fontWeight: 700 }}>→</div>
+                    <div className="fg" style={{ marginBottom: 0 }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <i className="fa fa-handshake" style={{ color: 'var(--brand)', fontSize: 10 }} />
+                        Precio Mayorista
+                      </label>
+                      <input tabIndex={7} type="number" value={form.priceB2B} onChange={e => setF('priceB2B', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--brand)', borderWidth: 2 }} />
+                    </div>
+                  </>
+                )}
               </div>
-              {num(form.cost) > 0 && num(form.priceB2C) > 0 && (
+              {num(form.cost) > 0 && showB2C && num(form.priceB2C) > 0 && (
                 <div style={{ marginTop: 12, padding: '9px 13px', borderRadius: 9, background: num(form.priceB2C) > num(form.cost) ? 'rgba(16,185,129,.08)' : 'rgba(239,68,68,.08)', border: `1px solid ${num(form.priceB2C) > num(form.cost) ? 'rgba(16,185,129,.25)' : 'rgba(239,68,68,.25)'}`, fontSize: 12, color: num(form.priceB2C) > num(form.cost) ? 'var(--green)' : 'var(--red)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
                   <i className={`fa fa-arrow-${num(form.priceB2C) > num(form.cost) ? 'trend-up' : 'trend-down'}`} />
                   Ganancia por unidad: ${(num(form.priceB2C) - num(form.cost)).toLocaleString('es-AR')} · Margen real: {marginInput || 0}%
                 </div>
               )}
-              <div className="fg" style={{ marginTop: 14, marginBottom: 0 }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <i className="fa fa-handshake" style={{ color: 'var(--brand)', fontSize: 10 }} />
-                  Precio Mayorista (B2B)
-                </label>
-                <input tabIndex={8} type="number" value={form.priceB2B} onChange={e => setF('priceB2B', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--brand)', borderWidth: 2 }} />
-              </div>
+              {/* Segundo input de precio solo cuando hay AMBOS canales activos */}
+              {showB2C && showB2B && (
+                <div className="fg" style={{ marginTop: 14, marginBottom: 0 }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <i className="fa fa-handshake" style={{ color: 'var(--brand)', fontSize: 10 }} />
+                    Precio Mayorista (B2B)
+                  </label>
+                  <input tabIndex={8} type="number" value={form.priceB2B} onChange={e => setF('priceB2B', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--brand)', borderWidth: 2 }} />
+                </div>
+              )}
             </div>
 
             {/* ── CARD 3: Inventario ── */}
