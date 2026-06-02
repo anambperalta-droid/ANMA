@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+import { useState, useEffect, useMemo, useRef, useCallback, useLayoutEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
@@ -7,6 +8,142 @@ import { getMPConfig, createPaymentLink, getBankConfig, buildBankInfoText } from
 import { pushBudget, getSheetsConfig } from '../../lib/sheets'
 
 const emptyItem = () => ({ name: '', variant: '', qty: 1, costUnit: '', priceUnit: '' })
+
+/* ── ProductAutocomplete ────────────────────────────────────────────────
+   Input predictivo con dropdown relativo (renderizado en portal con
+   posición fixed para no quedar cortado por overflow del padre). Filtra
+   en vivo mientras se escribe. Navegación con teclado (↑↓ Enter Esc).
+   Se cierra al perder foco o seleccionar un producto. */
+function ProductAutocomplete({ value, products, onChangeText, onPick, placeholder, style, inputStyle, formatLine }) {
+  const [open, setOpen] = useState(false)
+  const [highlight, setHighlight] = useState(0)
+  const [rect, setRect] = useState(null)
+  const wrapRef = useRef(null)
+  const inputRef = useRef(null)
+  const dropdownRef = useRef(null)
+
+  const lq = (value || '').toLowerCase().trim()
+  const filtered = useMemo(() => {
+    if (!products || products.length === 0) return []
+    if (!lq) return products.slice(0, 50)
+    return products.filter(p =>
+      (p.name || '').toLowerCase().includes(lq) ||
+      (p.cat || '').toLowerCase().includes(lq)
+    ).slice(0, 50)
+  }, [products, lq])
+
+  // Recalcular posición del dropdown cuando se abre / scrollea / resize
+  const recalc = () => {
+    if (!inputRef.current) return
+    const r = inputRef.current.getBoundingClientRect()
+    setRect({ top: r.bottom + 2, left: r.left, width: r.width })
+  }
+  useLayoutEffect(() => { if (open) recalc() }, [open])
+  useEffect(() => {
+    if (!open) return
+    const onScroll = () => recalc()
+    const onResize = () => recalc()
+    window.addEventListener('scroll', onScroll, true)
+    window.addEventListener('resize', onResize)
+    return () => {
+      window.removeEventListener('scroll', onScroll, true)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [open])
+
+  // Cierre por click fuera (tanto del input como del dropdown)
+  useEffect(() => {
+    if (!open) return
+    const onClick = (e) => {
+      if (wrapRef.current?.contains(e.target)) return
+      if (dropdownRef.current?.contains(e.target)) return
+      setOpen(false)
+    }
+    document.addEventListener('mousedown', onClick)
+    return () => document.removeEventListener('mousedown', onClick)
+  }, [open])
+
+  const handleKey = (e) => {
+    if (!open && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) { setOpen(true); return }
+    if (!open) return
+    if (e.key === 'ArrowDown') { e.preventDefault(); setHighlight(h => Math.min(filtered.length - 1, h + 1)) }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setHighlight(h => Math.max(0, h - 1)) }
+    else if (e.key === 'Enter') {
+      if (filtered[highlight]) { e.preventDefault(); pick(filtered[highlight]) }
+    }
+    else if (e.key === 'Escape') { setOpen(false) }
+  }
+
+  const pick = (p) => {
+    onPick(p)
+    setOpen(false)
+    setHighlight(0)
+  }
+
+  return (
+    <div ref={wrapRef} style={{ position: 'relative', width: '100%', ...style }}>
+      <input
+        ref={inputRef}
+        type="text"
+        value={value || ''}
+        onChange={e => { onChangeText(e.target.value); setOpen(true); setHighlight(0) }}
+        onFocus={() => setOpen(true)}
+        onKeyDown={handleKey}
+        placeholder={placeholder || 'Buscar producto...'}
+        autoComplete="off"
+        style={{ width: '100%', ...inputStyle }}
+      />
+      {open && rect && filtered.length > 0 && createPortal(
+        <div
+          ref={dropdownRef}
+          style={{
+            position: 'fixed',
+            top: rect.top,
+            left: rect.left,
+            width: Math.max(260, rect.width),
+            maxHeight: 280,
+            overflowY: 'auto',
+            background: 'var(--surface, #fff)',
+            border: '1.5px solid var(--brand, #7C3AED)',
+            borderRadius: 10,
+            boxShadow: '0 10px 32px rgba(0,0,0,.18)',
+            zIndex: 9999,
+            padding: 4,
+          }}
+        >
+          {filtered.map((p, i) => (
+            <button
+              key={p.id}
+              onMouseDown={e => { e.preventDefault(); pick(p) }}
+              onMouseEnter={() => setHighlight(i)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+                padding: '8px 10px', border: 'none',
+                background: i === highlight ? 'var(--brand-xlt, #F5F3FF)' : 'transparent',
+                borderRadius: 6, cursor: 'pointer', textAlign: 'left',
+                color: 'var(--txt, #111)', fontFamily: 'inherit', fontSize: 12.5,
+              }}
+            >
+              <i className="fa fa-box-open" style={{ color: 'var(--brand)', fontSize: 11, opacity: .8 }} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
+                {(p.cat || typeof p.cost === 'number') && (
+                  <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>
+                    {p.cat ? <span>{p.cat}</span> : null}
+                    {p.cat && typeof p.cost === 'number' ? ' · ' : ''}
+                    {typeof p.cost === 'number' ? `Costo: ${fmt(p.cost || 0)}` : ''}
+                  </div>
+                )}
+              </div>
+              {formatLine && formatLine(p)}
+            </button>
+          ))}
+        </div>,
+        document.body
+      )}
+    </div>
+  )
+}
 
 /* ── Selector de producto (BottomSheet / modal) ── */
 function ProductPicker({ open, onClose, products, onSelect }) {
@@ -987,13 +1124,23 @@ export default function Presupuesto() {
                               <i className="fa fa-grip-vertical" />
                             </td>
                             <td style={{ verticalAlign: 'middle' }}>
-                              <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-                                <input type="text" value={it.name} onChange={e => updateItem(i, 'name', e.target.value)} placeholder="Nombre del producto" style={{ padding: '0 8px', fontSize: 12, flex: 1, minWidth: 0, height: 36, boxSizing: 'border-box' }} />
-                                <button onClick={() => openPicker(i)} type="button" title="Elegir del catálogo"
-                                  style={{ width: 28, height: 28, borderRadius: 7, border: '1.5px solid var(--border)', background: 'var(--surface2)', color: 'var(--brand)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0, transition: 'background .12s' }}>
-                                  <i className="fa fa-list" />
-                                </button>
-                              </div>
+                              <ProductAutocomplete
+                                value={it.name}
+                                products={products}
+                                onChangeText={(v) => updateItem(i, 'name', v)}
+                                onPick={(p) => {
+                                  updateItem(i, 'name', p.name)
+                                  setItems(prev => prev.map((x, k) => k !== i ? x : {
+                                    ...x, name: p.name,
+                                    costUnit: p.cost || 0,
+                                    productId: p.id,
+                                    priceUnit: p.priceB2C || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin) : 0),
+                                    stockAvailable: p.stock || 0,
+                                  }))
+                                }}
+                                placeholder="Nombre del producto"
+                                inputStyle={{ padding: '0 8px', fontSize: 12, height: 36, boxSizing: 'border-box' }}
+                              />
                             </td>
                             <td style={{ verticalAlign: 'middle' }}><input type="text" value={it.variant || ''} onChange={e => updateItem(i, 'variant', e.target.value)} placeholder="Color / talle" style={{ padding: '0 6px', fontSize: 12, width: '100%', height: 36, boxSizing: 'border-box' }} /></td>
                             <td style={{ textAlign: 'center', fontSize: 11, color: overStock ? 'var(--red)' : 'var(--txt3)', fontWeight: overStock ? 700 : 400, verticalAlign: 'middle' }}>
@@ -1019,23 +1166,26 @@ export default function Presupuesto() {
                     return (
                       <div key={i} className="mob-item-card">
 
-                        {/* Fila 1: Nombre del producto + picker + eliminar */}
+                        {/* Fila 1: Nombre del producto (autocomplete) + eliminar */}
                         <div className="mic-header">
-                          <input
-                            type="text"
-                            value={it.name}
-                            onChange={e => updateItem(i, 'name', e.target.value)}
-                            placeholder="Nombre del producto"
-                            className="mic-name-input"
-                          />
-                          <button
-                            onClick={() => openPicker(i)}
-                            type="button"
-                            title="Elegir del catálogo"
-                            className="mic-picker-btn"
-                          >
-                            <i className="fa fa-list" />
-                          </button>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <ProductAutocomplete
+                              value={it.name}
+                              products={products}
+                              onChangeText={(v) => updateItem(i, 'name', v)}
+                              onPick={(p) => {
+                                setItems(prev => prev.map((x, k) => k !== i ? x : {
+                                  ...x, name: p.name,
+                                  costUnit: p.cost || 0,
+                                  productId: p.id,
+                                  priceUnit: p.priceB2C || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin) : 0),
+                                  stockAvailable: p.stock || 0,
+                                }))
+                              }}
+                              placeholder="Nombre del producto"
+                              inputStyle={{ width: '100%' }}
+                            />
+                          </div>
                           <button
                             onClick={() => removeItem(i)}
                             type="button"
@@ -1106,7 +1256,7 @@ export default function Presupuesto() {
                   })}
                 </div>
 
-                <ProductPicker open={pickerOpen} onClose={() => setPickerOpen(false)} products={products} onSelect={handlePickProduct} />
+                {/* ProductPicker modal removido — el autocomplete predictivo lo reemplaza */}
                 <button className="btn btn-ghost btn-xs" style={{ marginTop: 8 }} onClick={addItem}><i className="fa fa-plus" /> Agregar producto</button>
                 <div className="wiz-tip">
                   <i className="fa fa-lightbulb" /> Escribí el nombre del producto para autocompletar desde tu catálogo — el costo y precio se llenan solos.
