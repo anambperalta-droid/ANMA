@@ -705,9 +705,9 @@ export default function Catalogo() {
 
       {/* Modal producto */}
       {modal && (
-        <div className="modal-bg open" style={{ alignItems: 'flex-start', padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal-form-card" style={{ maxWidth: 740, width: 'calc(100vw - 28px)' }}>
-            <div className="mh" style={{ flexShrink: 0 }}><h3>{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
+        <div className="modal-bg open" style={{ padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
+          <div className="modal-form-card" style={{ maxWidth: 740, width: 'calc(100vw - 28px)', minHeight: 'auto', height: 'auto', maxHeight: 'none', overflow: 'visible' }}>
+            <div className="mh"><h3>{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
             {/* Banner borrador */}
             {hasDraft && (
               <div style={{ flexShrink: 0, background: '#FFFBEB', borderBottom: '1px solid #FDE68A', padding: '9px 16px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
@@ -726,7 +726,8 @@ export default function Catalogo() {
                 <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--txt4)', fontSize: 14, lineHeight: 1, padding: 2 }} onClick={() => setHasDraft(null)}>×</button>
               </div>
             )}
-            <div ref={bodyRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '18px 22px 4px' }}>
+            {/* Body — flujo natural, sin scroll interno ni flex:1 que estire/clipee */}
+            <div ref={bodyRef} style={{ padding: '18px 22px 4px' }}>
 
             {/* ── CARD 1: Datos del producto ── */}
             <div style={{ background: 'var(--surface2)', borderRadius: 14, padding: '18px 22px', marginBottom: 16, border: '1px solid var(--border)' }}>
@@ -876,7 +877,7 @@ export default function Catalogo() {
             )}
 
             </div>
-            <div className="mfooter" style={{ flexShrink: 0 }}><button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button><button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar</button></div>
+            <div className="mfooter"><button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button><button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar</button></div>
           </div>
         </div>
       )}

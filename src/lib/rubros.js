@@ -121,17 +121,48 @@ export function getCategoriesForRubro(rubro) {
 }
 
 /**
- * Determina si las categorías actuales del usuario coinciden EXACTAMENTE con
- * el preset de algún rubro (= el usuario nunca las customizó manualmente).
- * Útil para decidir si podemos reemplazarlas al cambiar de rubro sin pisar
- * cambios reales del usuario.
+ * Presets HISTÓRICOS — todos los sets que alguna vez sembramos por rubro.
+ * Lo usamos para reconocer cats que vienen de seeds previos aunque hayamos
+ * cambiado el preset actual. Crítico para detectar "no customizadas" después
+ * de actualizaciones de la app.
+ */
+const HISTORICAL_PRESETS = [
+  // Decoración v1 (original)
+  ['Iluminación', 'Textiles del hogar', 'Muebles auxiliares', 'Cuadros y arte', 'Plantas y macetas', 'Aromas y velas', 'Vajilla y mesa'],
+  // Decoración v2 (actual — duplicado por seguridad)
+  ['Muebles', 'Iluminación', 'Bazar y vajilla', 'Blanquería y textiles', 'Decoración de pared', 'Aromas y velas', 'Plantas y macetas', 'Almohadones y mantas', 'Espejos y marcos'],
+]
+
+/**
+ * Determina si las categorías actuales del usuario coinciden con algún preset
+ * (actual o histórico) de cualquier rubro = el usuario nunca las customizó.
+ * Si match → es seguro reemplazarlas al cambiar de rubro.
+ *
+ * También aplica heurística de overlap >= 70% con cualquier preset histórico
+ * para cubrir casos donde el usuario tiene pequeñas adiciones pero el núcleo
+ * sigue siendo el del rubro.
  */
 export function catsMatchAnyRubroPreset(cats) {
   if (!Array.isArray(cats) || cats.length === 0) return true
   const sorted = [...cats].sort().join('|')
+  // 1. Match exacto contra cualquier preset actual
   for (const r of Object.keys(CATEGORIES_BY_RUBRO)) {
     const preset = [...CATEGORIES_BY_RUBRO[r]].sort().join('|')
     if (sorted === preset) return true
+  }
+  // 2. Match exacto contra cualquier preset histórico
+  for (const preset of HISTORICAL_PRESETS) {
+    if (sorted === [...preset].sort().join('|')) return true
+  }
+  // 3. Overlap >= 70% con cualquier preset (actual o histórico)
+  const catSet = new Set(cats)
+  const allPresets = [
+    ...Object.values(CATEGORIES_BY_RUBRO),
+    ...HISTORICAL_PRESETS,
+  ]
+  for (const preset of allPresets) {
+    const overlap = preset.filter(p => catSet.has(p)).length
+    if (preset.length > 0 && overlap / preset.length >= 0.7) return true
   }
   return false
 }
