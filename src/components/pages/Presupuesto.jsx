@@ -915,65 +915,65 @@ export default function Presupuesto() {
          ═══════════════════════════════════════════════════════════════════════════ */
       *{box-sizing:border-box;font-variant-numeric:tabular-nums}
       body{
-        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Arial,sans-serif;
-        margin:0;padding:22px 28px 80px;color:#0F0C2E;
-        font-size:12.5px;line-height:1.5;background:#fff;
+        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,'Helvetica Neue',Arial,sans-serif;
+        margin:0;padding:22px 28px 80px;color:#1F1B45;
+        font-size:12.5px;line-height:1.55;background:#fff;font-weight:400;
         -webkit-font-smoothing:antialiased;
       }
       /* Header con marca + meta del presupuesto */
       .header-tbl{width:100%;border-collapse:collapse;margin-bottom:14px}
-      .header-tbl td{padding-bottom:10px;border-bottom:2.5px solid ${brandColor};vertical-align:top}
-      .brand{font-size:20px;font-weight:800;color:${brandColor};letter-spacing:-.3px;line-height:1.1}
+      .header-tbl td{padding-bottom:10px;border-bottom:2px solid ${brandColor};vertical-align:top}
+      .brand{font-size:20px;font-weight:700;color:${brandColor};letter-spacing:-.3px;line-height:1.1}
       .brand img{height:42px;display:block}
-      .hd-meta{text-align:right;font-size:11.5px;color:#1F1B45;line-height:1.55}
-      .hd-meta .num{font-size:17px;font-weight:800;color:#0F0C2E;margin-bottom:3px;letter-spacing:-.2px}
-      .vig{display:inline-block;margin-top:5px;padding:3px 10px;background:#FEF3C7;color:#92400E;font-size:10.5px;font-weight:700;border-radius:5px;letter-spacing:.3px}
+      .hd-meta{text-align:right;font-size:11.5px;color:#4B5563;line-height:1.6}
+      .hd-meta .num{font-size:16px;font-weight:700;color:#1F1B45;margin-bottom:3px;letter-spacing:-.2px}
+      .vig{display:inline-block;margin-top:5px;padding:3px 10px;background:#FEF3C7;color:#92400E;font-size:10.5px;font-weight:600;border-radius:5px;letter-spacing:.3px}
       /* Datos del cliente */
-      .client-tbl{width:100%;border-collapse:collapse;background:#F6F7FB;border-radius:8px;margin-bottom:12px}
-      .client-tbl td{padding:8px 12px;vertical-align:top}
-      .client-tbl .lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;color:#6B7280;font-weight:700;margin-bottom:2px}
-      .client-tbl .val{font-size:12.5px;font-weight:600;color:#0F0C2E;line-height:1.35}
-      /* Tabla principal de items — profesional, no cartel */
+      .client-tbl{width:100%;border-collapse:collapse;background:#FAFBFC;border-radius:8px;margin-bottom:12px}
+      .client-tbl td{padding:9px 13px;vertical-align:top}
+      .client-tbl .lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;color:#9CA3AF;font-weight:600;margin-bottom:2px}
+      .client-tbl .val{font-size:12.5px;font-weight:500;color:#1F1B45;line-height:1.35}
+      /* Tabla principal de items — profesional y elegante */
       table{width:100%;border-collapse:collapse;margin:6px 0 0}
-      /* TÍTULOS de columnas — 12px uppercase bold */
+      /* TÍTULOS de columnas — 11px uppercase, peso medio (no agresivo) */
       th{
         background:${brandColor};color:#fff;
         padding:9px 12px;text-align:left;
-        font-size:12px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;
+        font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:600;
         line-height:1.2;
       }
-      /* DETALLES / NOMBRES — 12px regular */
+      /* DETALLES / NOMBRES — 12px regular (sin negritas en cuerpo) */
       td{
-        padding:8px 12px;border-bottom:1px solid #E8EAF2;
-        font-size:12px;font-weight:400;color:#1F1B45;line-height:1.45;
+        padding:9px 12px;border-bottom:1px solid #EEF0F5;
+        font-size:12px;font-weight:400;color:#1F1B45;line-height:1.5;
       }
       tr:last-child td{border-bottom:none}
-      /* MONTOS / VALORES — 12px medium */
+      /* MONTOS / VALORES — peso medio (500), color neutro fuerte */
       td.money,
       td[style*="text-align:right"]{
-        font-weight:500;color:#0F0C2E;
+        font-weight:500;color:#1F1B45;
       }
-      .variant{color:#6B7280;font-size:10.5px;margin-left:4px;font-weight:400}
-      /* Bloque de totales — proporción profesional */
-      .totals{margin-top:10px}
+      .variant{color:#9CA3AF;font-size:10.5px;margin-left:4px;font-weight:400}
+      /* Bloque de totales — más sobrio */
+      .totals{margin-top:12px}
       .totals-box{
         width:300px;margin-left:auto;padding:14px 18px;
-        background:linear-gradient(135deg,${brandColor}10,${brandColor}22);
-        border-radius:10px;border:1.5px solid ${brandColor}40;
+        background:linear-gradient(135deg,${brandColor}08,${brandColor}14);
+        border-radius:10px;border:1px solid ${brandColor}33;
       }
-      .totals-row{width:100%;border-collapse:collapse;font-size:12.5px;color:#1F1B45;margin:2px 0}
+      .totals-row{width:100%;border-collapse:collapse;font-size:12px;color:#4B5563;margin:2px 0}
       .totals-row td{padding:3px 0;border:none}
-      .totals-row .tv{text-align:right;font-weight:600;white-space:nowrap;color:#0F0C2E}
-      /* TOTAL — 19px bold (prominente pero NO cartel) */
+      .totals-row .tv{text-align:right;font-weight:500;white-space:nowrap;color:#1F1B45}
+      /* TOTAL — 18px semibold (no extra-bold) — elegante, no cartel */
       .tr-big td{
-        font-size:19px;font-weight:800;color:${brandColor};
-        padding-top:8px;
-        border-top:1.5px solid ${brandColor}40;
-        letter-spacing:-.3px;line-height:1.2;
+        font-size:18px;font-weight:700;color:${brandColor};
+        padding-top:9px;
+        border-top:1px solid ${brandColor}33;
+        letter-spacing:-.2px;line-height:1.2;
       }
-      .tr-big .tv{font-size:19px;font-weight:800;color:${brandColor}}
-      .tr-senia td{font-size:13px;font-weight:700;color:${brandColor};padding-top:5px}
-      .tr-senia .tv{font-size:13px;font-weight:700;color:${brandColor}}
+      .tr-big .tv{font-size:18px;font-weight:700;color:${brandColor}}
+      .tr-senia td{font-size:12.5px;font-weight:600;color:${brandColor};padding-top:5px}
+      .tr-senia .tv{font-size:12.5px;font-weight:600;color:${brandColor}}
       /* Nota al cliente */
       .note{
         margin-top:18px;padding:14px 18px;
@@ -2017,8 +2017,8 @@ export default function Presupuesto() {
 
       {/* MODAL PREVIEW */}
       {previewHtml && (
-        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setPreviewHtml('') }}>
-          <div style={{ background: 'var(--surface)', borderRadius: 18, width: '100%', maxWidth: 940, height: 'min(900px, 90vh)', boxShadow: 'var(--sh-lg)', animation: 'pgIn .2s ease both', display: 'flex', flexDirection: 'column', overflow: 'hidden', flexShrink: 0, margin: 'auto 0' }}>
+        <div className="modal-bg open" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 16px' }} onClick={e => { if (e.target === e.currentTarget) setPreviewHtml('') }}>
+          <div style={{ background: 'var(--surface)', borderRadius: 18, width: '100%', maxWidth: 940, height: 'min(900px, 90vh)', boxShadow: 'var(--sh-lg)', animation: 'pgIn .2s ease both', display: 'flex', flexDirection: 'column', overflow: 'hidden', flexShrink: 0, margin: '0 auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 18px', borderBottom: '1px solid var(--border)', flexShrink: 0, background: 'var(--surface2)', borderRadius: '18px 18px 0 0' }}>
               <h3 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}>Vista previa — {budgetNum}</h3>
               <div style={{ display: 'flex', gap: 6 }}>
