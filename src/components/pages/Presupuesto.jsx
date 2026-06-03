@@ -450,7 +450,12 @@ export default function Presupuesto() {
     }))
   }
   const addItem = () => setItems(prev => [...prev, emptyItem()])
-  const removeItem = (idx) => setItems(prev => prev.length > 1 ? prev.filter((_, i) => i !== idx) : prev)
+  /* Si es la única fila, resetea a estado vacío (limpia nombre, costo, precio).
+     Antes no hacía nada → bug: el precio del producto borrado seguía visible. */
+  const removeItem = (idx) => setItems(prev => {
+    if (prev.length > 1) return prev.filter((_, i) => i !== idx)
+    return prev.map((it, i) => i !== idx ? it : emptyItem())
+  })
 
   const [pickerOpen, setPickerOpen] = useState(false)
   const [pickerIdx, setPickerIdx] = useState(null)
