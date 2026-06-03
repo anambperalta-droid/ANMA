@@ -153,6 +153,32 @@ const HISTORICAL_PRESETS = [
 ]
 
 /**
+ * Detecta si las categorías del usuario están DESACTUALIZADAS — es decir,
+ * coinciden con un preset HISTÓRICO de cualquier rubro pero NO con el preset
+ * ACTUAL del rubro que tiene configurado. Útil para mostrar un banner que
+ * ofrezca actualizar sin obligar al usuario a redescubrir la opción.
+ */
+export function catsAreOutdated(cats, rubro) {
+  if (!rubro) return false
+  if (!Array.isArray(cats) || cats.length === 0) return false
+  const sortedCurrent = [...cats].sort().join('|')
+  const currentPreset = getCategoriesForRubro(rubro)
+  const sortedPreset = [...currentPreset].sort().join('|')
+  if (sortedCurrent === sortedPreset) return false  // ya están al día
+  // ¿Coinciden con algún preset histórico? Entonces están desactualizadas.
+  for (const preset of HISTORICAL_PRESETS) {
+    if (sortedCurrent === [...preset].sort().join('|')) return true
+  }
+  // Overlap alto con preset histórico = también desactualizadas
+  const catSet = new Set(cats)
+  for (const preset of HISTORICAL_PRESETS) {
+    const overlap = preset.filter(p => catSet.has(p)).length
+    if (preset.length > 0 && overlap / preset.length >= 0.8) return true
+  }
+  return false
+}
+
+/**
  * Determina si las categorías actuales del usuario coinciden con algún preset
  * (actual o histórico) de cualquier rubro = el usuario nunca las customizó.
  * Si match → es seguro reemplazarlas al cambiar de rubro.

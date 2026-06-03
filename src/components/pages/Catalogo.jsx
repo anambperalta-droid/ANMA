@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, db, dbW } from '../../lib/storage'
-import { getCategoriesForRubro, getRubroMeta } from '../../lib/rubros'
+import { getCategoriesForRubro, getRubroMeta, catsAreOutdated, RUBROS } from '../../lib/rubros'
 import { getProductPlaceholder, getEmptyProducts } from '../../lib/voice'
 
 const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '' }
@@ -352,8 +352,58 @@ export default function Catalogo() {
     try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)) } catch {}
   }, [form, marginInput, modal]) // eslint-disable-line
 
+  // ── Auto-detect: ¿el usuario tiene cats viejas para su rubro actual? ──
+  // Si sí, mostramos banner ofreciendo upgrade. Dismiss persiste por workspace.
+  const dismissKey = `cats_upgrade_dismissed_${c.rubro || 'none'}`
+  const [bannerDismissed, setBannerDismissed] = useState(() => {
+    try { return localStorage.getItem(dismissKey) === '1' } catch { return false }
+  })
+  const showCatsUpgrade = !bannerDismissed && c.rubro && catsAreOutdated(c.productCats || [], c.rubro)
+  const applyUpgrade = () => {
+    const suggested = getCategoriesForRubro(c.rubro)
+    const meta = RUBROS.find(r => r.val === c.rubro)
+    if (window.confirm(`¿Reemplazar tus ${(c.productCats || []).length} categorías actuales por las ${suggested.length} sugeridas para ${meta?.label || c.rubro}?\n\nLos productos con una categoría que ya no esté quedarán como "Sin categoría" hasta que los reasignes.`)) {
+      updateConfig({ productCats: suggested })
+      toast('Categorías actualizadas', 'ok')
+      try { localStorage.removeItem(dismissKey) } catch {}
+    }
+  }
+  const dismissUpgrade = () => {
+    try { localStorage.setItem(dismissKey, '1') } catch {}
+    setBannerDismissed(true)
+  }
+
   return (
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>
+      {/* Banner: categorías desactualizadas */}
+      {showCatsUpgrade && (() => {
+        const meta = RUBROS.find(r => r.val === c.rubro)
+        return (
+          <div style={{
+            background: 'linear-gradient(135deg, #F5F3FF 0%, #EFF6FF 100%)',
+            border: '1px solid #C4B5FD', borderRadius: 12,
+            padding: '12px 16px', marginBottom: 12,
+            display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
+          }}>
+            <i className="fa fa-wand-magic-sparkles" style={{ color: '#7C3AED', fontSize: 18, flexShrink: 0 }} />
+            <div style={{ flex: 1, minWidth: 220, fontSize: 12.5, color: '#1E1B4B', lineHeight: 1.5 }}>
+              <b>Tenemos nuevas categorías sugeridas para {meta?.label || c.rubro}.</b>
+              <br/>
+              <span style={{ color: '#4C1D95', opacity: .8 }}>Tus categorías actuales parecen de una versión anterior. ¿Querés actualizarlas?</span>
+            </div>
+            <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+              <button onClick={dismissUpgrade}
+                style={{ background: 'transparent', border: '1px solid #C4B5FD', color: '#6D28D9', padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                Ahora no
+              </button>
+              <button onClick={applyUpgrade}
+                style={{ background: '#7C3AED', border: 'none', color: '#fff', padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <i className="fa fa-wand-magic-sparkles" /> Aplicar sugeridas
+              </button>
+            </div>
+          </div>
+        )
+      })()}
       <div className="ph cat-ph" style={{ marginBottom: 6 }}>
         <div className="ph-right" style={{ gap: 6 }}>
           <div className="cli-pill-group">
