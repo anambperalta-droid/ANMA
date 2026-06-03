@@ -3,7 +3,7 @@ import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt } from '../../lib/storage'
-import { getDefaultTemplates } from '../../lib/voice'
+import { getDefaultTemplates, templatesAreOutdated } from '../../lib/voice'
 
 /* ═══ 5 Solapas de venta ═══ */
 const STAGES = ['Captación', 'Presupuestos', 'Pagos', 'Logística', 'Post-Venta']
@@ -355,8 +355,54 @@ export default function Mensajes() {
     </div>
   )
 
+  // ── Detector: templates desactualizados para el tipoVenta actual ──
+  const dismissKey = `tpls_outdated_dismissed_${c.tipoVenta || 'none'}`
+  const [bannerDismissed, setBannerDismissed] = useState(() => {
+    try { return localStorage.getItem(dismissKey) === '1' } catch { return false }
+  })
+  const showOutdated = !bannerDismissed && templatesAreOutdated(templates, c.tipoVenta)
+  const applyTemplatesUpdate = () => {
+    if (window.confirm(`¿Reemplazar tus mensajes actuales por los sugeridos para ${c.tipoVenta === 'minorista' ? 'venta minorista (cliente final)' : 'venta mayorista (empresas)'}?\n\nLos mensajes que hayas customizado se perderán. Los nuevos están adaptados al tono de tu modelo comercial.`)) {
+      const defaults = getDefaultTemplates(c.tipoVenta)
+      const withIds = defaults.map((t, i) => ({ ...t, id: Date.now() + i }))
+      set('waTemplates', withIds)
+      toast('Mensajes actualizados al modelo comercial actual', 'ok')
+      try { localStorage.removeItem(dismissKey) } catch {}
+    }
+  }
+  const dismissTemplatesBanner = () => {
+    try { localStorage.setItem(dismissKey, '1') } catch {}
+    setBannerDismissed(true)
+  }
+
   return (
     <div className="page active" style={{ animation: 'pgIn .2s ease both' }}>
+      {/* Banner: templates desactualizados para el modelo comercial */}
+      {showOutdated && (
+        <div style={{
+          background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
+          border: '1px solid #F59E0B', borderRadius: 12,
+          padding: '12px 16px', margin: '0 0 12px',
+          display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
+        }}>
+          <i className="fa fa-comment-dots" style={{ color: '#B45309', fontSize: 18, flexShrink: 0 }} />
+          <div style={{ flex: 1, minWidth: 220, fontSize: 12.5, color: '#78350F', lineHeight: 1.5 }}>
+            <b>Tus mensajes parecen ser de venta mayorista, pero tu modelo es minorista.</b>
+            <br/>
+            <span style={{ opacity: .85 }}>Tenemos 12 mensajes adaptados al tono cercano de venta directa al cliente. ¿Querés actualizarlos?</span>
+          </div>
+          <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+            <button onClick={dismissTemplatesBanner}
+              style={{ background: 'transparent', border: '1px solid #D97706', color: '#92400E', padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+              Ahora no
+            </button>
+            <button onClick={applyTemplatesUpdate}
+              style={{ background: '#D97706', border: 'none', color: '#fff', padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <i className="fa fa-wand-magic-sparkles" /> Aplicar nuevos
+            </button>
+          </div>
+        </div>
+      )}
       {/* ── Header ── */}
       <div className="ph">
         <div className="ph-right">

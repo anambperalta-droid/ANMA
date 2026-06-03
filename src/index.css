@@ -159,6 +159,13 @@ input,select,textarea{font-family:inherit}
 .sb-profile-chip .sb-chip-ico{margin-right:2px;opacity:.95}
 .sb-profile-chip .sb-chip-sep{opacity:.4;margin:0 1px}
 .sidebar.slim .sb-profile-chip{display:none}
+/* Versión del build — chip discreto al pie del sidebar */
+.sb-version{
+  font-size:9px;color:rgba(255,255,255,.25);
+  text-align:center;padding:6px 0 0;letter-spacing:.3px;
+  font-family:ui-monospace, 'SF Mono', Consolas, monospace;
+}
+.sidebar.slim .sb-version{display:none}
 .sb-nav{flex:1;padding:10px 10px}
 .sb-sec{font-size:10px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:1.2px;text-transform:uppercase;padding:14px 12px 5px}
 .sb-item{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:9px;cursor:pointer;color:rgba(255,255,255,.55);font-size:13px;font-weight:500;transition:all var(--tr);margin-bottom:2px;position:relative;user-select:none}

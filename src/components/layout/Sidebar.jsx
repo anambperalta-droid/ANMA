@@ -100,6 +100,10 @@ export default function Sidebar({ open, onClose, collapsed }) {
           <div><div className="sb-uname">{userName}</div><div className="sb-urole">{role === 'operator' ? 'Operador · Cerrar sesión' : 'Cerrar sesión'}</div></div>
           <i className="fa fa-right-from-bracket" style={{ marginLeft: 'auto', color: 'rgba(255,255,255,.25)', fontSize: 13 }} />
         </div>
+        {/* Versión del build — útil para diagnosticar caché viejo del usuario */}
+        <div className="sb-version" title="Versión del build — si reportás un bug, mencionalo">
+          v{__BUILD_VERSION__}
+        </div>
       </div>
     </aside>
   )

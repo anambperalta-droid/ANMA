@@ -166,6 +166,35 @@ export function getDefaultTemplates(tipoVenta) {
   return TEMPLATES_MAYORISTA   // mayorista + ambos
 }
 
+/**
+ * Detecta si los templates almacenados del usuario están DESACTUALIZADOS para
+ * su modelo comercial actual. Caso clásico: usuario es minorista pero tiene los
+ * templates B2B viejos seedeados (de cuando éramos solo B2B o de registro previo
+ * a la auditoría de voz).
+ *
+ * Heurística: si tipoVenta = 'minorista' y la mayoría (>=50%) de sus templates
+ * matchea EXACTAMENTE textos del set MAYORISTA → están desactualizados.
+ * Si la mayoría matchea el set actual de su tipoVenta → están al día.
+ */
+export function templatesAreOutdated(stored, tipoVenta) {
+  if (!Array.isArray(stored) || stored.length === 0) return false
+  if (!tipoVenta || tipoVenta === 'ambos') return false  // 'ambos' usa mayorista — no consideramos desactualizado
+  if (tipoVenta !== 'minorista') return false             // solo tiene sentido para minorista
+
+  const currentDefaults = getDefaultTemplates(tipoVenta)
+  const currentTexts = new Set(currentDefaults.map(t => t.text))
+  const currentMatch = stored.filter(t => currentTexts.has(t.text)).length
+
+  // Si ya están al día (>=70% matchea current), no es outdated
+  if (currentMatch >= currentDefaults.length * 0.7) return false
+
+  // ¿Matchea el OTRO set (mayorista) en mayoría?
+  const otherDefaults = TEMPLATES_MAYORISTA
+  const otherTexts = new Set(otherDefaults.map(t => t.text))
+  const otherMatch = stored.filter(t => otherTexts.has(t.text)).length
+  return otherMatch >= otherDefaults.length * 0.5
+}
+
 /* ─────────────────────────────────────────────────────────────────
    PLACEHOLDERS CONTEXTUALES POR RUBRO
    ─ Los ejemplos en inputs ("Ej: Remera algodón premium") se sienten
