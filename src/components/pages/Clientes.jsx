@@ -928,17 +928,17 @@ export default function Clientes() {
       {/* MODAL EDITAR */}
       {modal && (
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal-form-card" style={{ maxWidth: 680 }}>
-            {/* Header fijo */}
-            <div style={{ padding: '18px 28px 14px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+          {/* Card con overrides inline para garantizar h-auto sin min-height artificial */}
+          <div className="modal-form-card" style={{ maxWidth: 680, minHeight: 'auto', height: 'auto', maxHeight: 'none', overflow: 'visible' }}>
+            {/* Header */}
+            <div style={{ padding: '18px 28px 14px', borderBottom: '1px solid var(--border)' }}>
               <div className="mh" style={{ margin: 0, paddingBottom: 0, borderBottom: 'none' }}>
                 <h3>{form.id ? 'Editar' : 'Agregar'} cliente</h3>
                 <button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button>
               </div>
             </div>
-            {/* Body — flujo natural, sin scroll interno. El modal se estira y
-                 si excede el viewport, scrollea el overlay completo. */}
-            <div style={{ padding: '18px 28px 4px' }}>
+            {/* Body — flujo natural, sin scroll interno, sin altura fija. */}
+            <div style={{ padding: '18px 28px 4px', overflow: 'visible', minHeight: 'auto', maxHeight: 'none', height: 'auto' }}>
 
             {/* ── Extraer datos de texto ── */}
             <div style={{ marginBottom: 14, borderRadius: 10, border: `1.5px solid ${pasteMode ? 'rgba(37,211,102,.4)' : 'var(--border)'}`, overflow: 'hidden', transition: 'border-color .2s' }}>
