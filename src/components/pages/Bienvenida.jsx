@@ -2,6 +2,18 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 
+/**
+ * Bienvenida — landing post-auth con DOS flujos distintos:
+ *
+ *   A) OAuth (Google) → el usuario ya tiene cuenta vía Google, no necesita
+ *      contraseña. Detectamos `app_metadata.provider === 'google'` (o
+ *      `providers` contains 'google') y redirigimos directo a /.
+ *
+ *   B) Invitación por email (token_hash / magic link) → el usuario nuevo
+ *      tiene que elegir contraseña. Mostramos el formulario clásico.
+ *
+ * El detector debajo distingue ambos casos para no mostrar UI confusa.
+ */
 export default function Bienvenida() {
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -10,27 +22,53 @@ export default function Bienvenida() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [sessionReady, setSessionReady] = useState(false)
+  const [isOAuthUser, setIsOAuthUser] = useState(false)   // ← skip password form si true
   const navigate = useNavigate()
+
+  // Helper: chequear si el usuario actual vino de OAuth (Google) en cuyo caso
+  // ya tiene credenciales y NO necesita elegir contraseña. Lo mandamos al app.
+  const isOAuthSession = (session) => {
+    if (!session?.user) return false
+    const provider = session.user.app_metadata?.provider
+    const providers = session.user.app_metadata?.providers || []
+    if (provider === 'google') return true
+    if (Array.isArray(providers) && providers.includes('google')) return true
+    return false
+  }
+
+  // Después de validar la sesión: si es OAuth user → redirect inmediato.
+  const finishAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession()
+    if (isOAuthSession(session)) {
+      // OAuth user: no password setup needed. Vamos directo al app (router
+      // decidirá si va a /onboarding o /).
+      navigate('/', { replace: true })
+      return true
+    }
+    return false
+  }
 
   useEffect(() => {
     async function detectSession() {
-      // 1) PKCE flow: ?code= in query params
+      // 1) PKCE flow: ?code= in query params (Google OAuth + invitation token PKCE)
       const url = new URL(window.location.href)
       const code = url.searchParams.get('code')
       if (code) {
         const { error: codeErr } = await supabase.auth.exchangeCodeForSession(code)
         if (codeErr) {
-          setError('El enlace de invitacion expiro o es invalido.')
+          setError('El enlace expiró o es inválido. Volvé a /login para reintentar.')
           setLoading(false)
           return
         }
         window.history.replaceState(null, '', window.location.pathname)
+        // Si es Google → al app directo. Si es invitación → form contraseña.
+        if (await finishAuth()) return
         setSessionReady(true)
         setLoading(false)
         return
       }
 
-      // 2) Implicit flow: #access_token= in hash
+      // 2) Implicit flow: #access_token= in hash (legacy OAuth)
       const hash = window.location.hash
       if (hash && hash.includes('access_token')) {
         const params = new URLSearchParams(hash.substring(1))
@@ -42,18 +80,19 @@ export default function Bienvenida() {
             refresh_token: refreshToken,
           })
           if (sessErr) {
-            setError('El enlace de invitacion expiro o es invalido.')
+            setError('El enlace expiró o es inválido. Volvé a /login para reintentar.')
             setLoading(false)
             return
           }
           window.history.replaceState(null, '', window.location.pathname)
+          if (await finishAuth()) return   // OAuth → directo al app
           setSessionReady(true)
           setLoading(false)
           return
         }
       }
 
-      // 3) Token hash flow (email OTP): ?token_hash=&type=
+      // 3) Token hash flow (email OTP / invitation): ?token_hash=&type=
       const tokenHash = url.searchParams.get('token_hash')
       const type = url.searchParams.get('type')
       if (tokenHash && type) {
@@ -62,19 +101,25 @@ export default function Bienvenida() {
           type: type,
         })
         if (otpErr) {
-          setError('El enlace de invitacion expiro o es invalido.')
+          setError('El enlace expiró o es inválido. Solicitá uno nuevo.')
           setLoading(false)
           return
         }
         window.history.replaceState(null, '', window.location.pathname)
+        // Aquí es típicamente invitación por email → muestra form contraseña.
         setSessionReady(true)
         setLoading(false)
         return
       }
 
-      // 4) Already has a session (user refreshed the page)
+      // 4) Ya hay sesión (refresh de la página, o el user volvió logueado)
       const { data: { session } } = await supabase.auth.getSession()
       if (session) {
+        if (isOAuthSession(session)) {
+          // Usuario Google que vuelve a /bienvenida con sesión activa → al app
+          navigate('/', { replace: true })
+          return
+        }
         setSessionReady(true)
         setLoading(false)
         return
@@ -154,8 +199,30 @@ export default function Bienvenida() {
       <div style={styles.container}>
         <div style={styles.card} className="bv-card">
           <div style={styles.logo}>AN</div>
-          <h1 style={styles.title} className="bv-title">Enlace Invalido</h1>
+          <h1 style={styles.title} className="bv-title">Enlace no válido</h1>
           <p style={styles.subtitle}>{error}</p>
+          <button
+            onClick={() => window.location.replace('/login')}
+            style={{
+              marginTop: 16, width: '100%', padding: '12px 18px',
+              background: 'linear-gradient(135deg,#7C3AED,#059669)',
+              color: '#fff', border: 'none', borderRadius: 10,
+              fontSize: 14, fontWeight: 700, cursor: 'pointer',
+              boxShadow: '0 6px 20px rgba(124,58,237,.35)',
+            }}>
+            <i className="fa fa-arrow-right-to-bracket" style={{ marginRight: 8 }} />
+            Volver a Ingresar
+          </button>
+          <button
+            onClick={() => window.location.replace('/registro')}
+            style={{
+              marginTop: 8, width: '100%', padding: '10px 18px',
+              background: 'transparent', color: 'rgba(255,255,255,.7)',
+              border: '1px solid rgba(255,255,255,.15)', borderRadius: 10,
+              fontSize: 13, fontWeight: 600, cursor: 'pointer',
+            }}>
+            ¿No tenés cuenta? Registrate
+          </button>
         </div>
       </div>
     )
