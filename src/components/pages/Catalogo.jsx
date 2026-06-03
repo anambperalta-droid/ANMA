@@ -532,28 +532,32 @@ export default function Catalogo() {
                     </td>
                     <td className="col-hide-mobile">
                       {/* Categoría editable inline. Click → abre select con categorías
-                          del workspace. Cambio se guarda al instante. Fuente más grande
-                          para lectura rápida. */}
+                          del workspace. Cambio se guarda al instante. */}
                       <select
                         value={p.cat || ''}
                         onChange={e => saveEntity('products', { ...p, cat: e.target.value })}
+                        spellCheck={false}
                         title="Click para cambiar categoría"
                         style={{
                           display: 'inline-flex', alignItems: 'center',
                           background: cc.bg, color: cc.color,
-                          fontSize: 12.5, fontWeight: 700,
-                          padding: '4px 26px 4px 11px', borderRadius: 20,
+                          fontSize: 12, fontWeight: 700,
+                          padding: '5px 24px 5px 12px', borderRadius: 20,
                           whiteSpace: 'nowrap', border: 'none',
-                          cursor: 'pointer', appearance: 'none',
-                          backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='${encodeURIComponent(cc.color)}'><path d='M7 10l5 5 5-5z'/></svg>")`,
-                          backgroundRepeat: 'no-repeat',
-                          backgroundPosition: 'right 8px center',
+                          cursor: 'pointer',
+                          WebkitAppearance: 'none', MozAppearance: 'none', appearance: 'none',
+                          textDecoration: 'none',
+                          textDecorationLine: 'none',
+                          textDecorationStyle: 'solid',
+                          outline: 'none',
                           fontFamily: 'inherit',
+                          lineHeight: 1.3,
                         }}
                       >
                         <option value="">— Sin categoría —</option>
                         {cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                       </select>
+                      <i className="fa fa-chevron-down" style={{ fontSize: 8, color: cc.color, marginLeft: -18, pointerEvents: 'none', opacity: .6 }} />
                     </td>
                     <td className="col-hide-mobile" style={{ fontSize: 11 }}>{supplierName(p.supplierId)}</td>
                     {!opHideCosts && <td style={{ textAlign: 'right' }}>{fmt(p.cost)}</td>}

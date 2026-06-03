@@ -51,21 +51,31 @@ export const TIPOS_VENTA = [
  */
 export const CATEGORIES_BY_RUBRO = {
   indumentaria: [
-    'Remeras y tops',
+    'Remeras',
+    'Camisas y blusas',
     'Pantalones y jeans',
+    'Calzas y leggings',
     'Vestidos y polleras',
+    'Sweaters y buzos',
     'Abrigos y camperas',
     'Calzado',
+    'Carteras y mochilas',
     'Accesorios',
-    'Ropa interior y básicos',
+    'Ropa interior',
+    'Trajes de baño',
   ],
   tecnologia: [
-    'Computación',
+    'Notebooks',
+    'Monitores',
     'Periféricos',
-    'Audio y sonido',
-    'Smartphones y tablets',
+    'Audio',
+    'Almacenamiento',
+    'Componentes PC',
+    'Smartphones',
+    'Tablets',
     'Gaming',
     'Smart Home',
+    'Conectividad',
     'Accesorios y cables',
   ],
   decoracion: [
@@ -81,11 +91,14 @@ export const CATEGORIES_BY_RUBRO = {
   ],
   almacen: [
     'Bebidas',
-    'Lácteos y huevos',
+    'Frescos',
+    'Lácteos y fiambres',
     'Panificados',
+    'Almacén general',
     'Snacks y golosinas',
-    'Conservas y secos',
+    'Congelados',
     'Limpieza',
+    'Perfumería',
     'Dietética y sin TACC',
   ],
 }
@@ -127,10 +140,16 @@ export function getCategoriesForRubro(rubro) {
  * de actualizaciones de la app.
  */
 const HISTORICAL_PRESETS = [
-  // Decoración v1 (original)
+  // ─── Indumentaria v1 (original) ───
+  ['Remeras y tops', 'Pantalones y jeans', 'Vestidos y polleras', 'Abrigos y camperas', 'Calzado', 'Accesorios', 'Ropa interior y básicos'],
+  // ─── Tecnología v1 (original) ───
+  ['Computación', 'Periféricos', 'Audio y sonido', 'Smartphones y tablets', 'Gaming', 'Smart Home', 'Accesorios y cables'],
+  // ─── Decoración v1 (original) ───
   ['Iluminación', 'Textiles del hogar', 'Muebles auxiliares', 'Cuadros y arte', 'Plantas y macetas', 'Aromas y velas', 'Vajilla y mesa'],
-  // Decoración v2 (actual — duplicado por seguridad)
+  // ─── Decoración v2 ───
   ['Muebles', 'Iluminación', 'Bazar y vajilla', 'Blanquería y textiles', 'Decoración de pared', 'Aromas y velas', 'Plantas y macetas', 'Almohadones y mantas', 'Espejos y marcos'],
+  // ─── Almacén v1 (original) ───
+  ['Bebidas', 'Lácteos y huevos', 'Panificados', 'Snacks y golosinas', 'Conservas y secos', 'Limpieza', 'Dietética y sin TACC'],
 ]
 
 /**
