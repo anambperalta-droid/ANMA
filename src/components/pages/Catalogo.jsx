@@ -530,7 +530,31 @@ export default function Catalogo() {
                         </div>
                       </div>
                     </td>
-                    <td className="col-hide-mobile"><span style={{ display: 'inline-flex', alignItems: 'center', background: cc.bg, color: cc.color, fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, whiteSpace: 'nowrap' }}>{p.cat || '—'}</span></td>
+                    <td className="col-hide-mobile">
+                      {/* Categoría editable inline. Click → abre select con categorías
+                          del workspace. Cambio se guarda al instante. Fuente más grande
+                          para lectura rápida. */}
+                      <select
+                        value={p.cat || ''}
+                        onChange={e => saveEntity('products', { ...p, cat: e.target.value })}
+                        title="Click para cambiar categoría"
+                        style={{
+                          display: 'inline-flex', alignItems: 'center',
+                          background: cc.bg, color: cc.color,
+                          fontSize: 12.5, fontWeight: 700,
+                          padding: '4px 26px 4px 11px', borderRadius: 20,
+                          whiteSpace: 'nowrap', border: 'none',
+                          cursor: 'pointer', appearance: 'none',
+                          backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='${encodeURIComponent(cc.color)}'><path d='M7 10l5 5 5-5z'/></svg>")`,
+                          backgroundRepeat: 'no-repeat',
+                          backgroundPosition: 'right 8px center',
+                          fontFamily: 'inherit',
+                        }}
+                      >
+                        <option value="">— Sin categoría —</option>
+                        {cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                      </select>
+                    </td>
                     <td className="col-hide-mobile" style={{ fontSize: 11 }}>{supplierName(p.supplierId)}</td>
                     {!opHideCosts && <td style={{ textAlign: 'right' }}>{fmt(p.cost)}</td>}
                     {showB2C && <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>}

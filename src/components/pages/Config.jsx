@@ -9,7 +9,8 @@ import { applyThemeColors } from '../../lib/theme'
 import { getSheetsConfig, setSheetsConfig, testSheetsConnection, pushAllBudgets, APPS_SCRIPT_TEMPLATE } from '../../lib/sheets'
 import { SITES, CURRENT_SITE, sendInvite } from '../../lib/invites'
 import { flushSync } from '../../lib/sync'
-import { TIPOS_VENTA, RUBROS } from '../../lib/rubros'
+import { TIPOS_VENTA, RUBROS, getCategoriesForRubro, catsMatchAnyRubroPreset, isGenericOrEmptyCats } from '../../lib/rubros'
+import { getSuggestedSubtitle } from '../../lib/voice'
 
 /* ── Modal de confirmación destructiva ── */
 function DeleteConfirmModal({ title, message, onConfirm, onClose }) {
@@ -307,7 +308,10 @@ export default function Config() {
   }
 
   const saveAll = () => {
-    updateConfig({
+    // Detectar cambio de rubro y re-seedear categorías si el usuario no las
+    // customizó (coinciden con un preset previo o están vacías/genéricas).
+    // Idem para el subtitle si era el default o el del rubro anterior.
+    const patch = {
       businessName: bname, subtitle: bsub, brandColor: bcolor, accentColor: acolor,
       contactEmail: cEmail, contactWA: cWA.replace(/[^\d]/g, ''), contactIG: cIG, contactWeb: cWeb, address: cAddr,
       currency, numberFormat, budgetPrefix: prefix, defaultMargin: Number(defMargin), defaultDeposit: Number(defDeposit), validity: Number(validity),
@@ -316,10 +320,24 @@ export default function Config() {
       ivaEnabled, ivaRate: Number(ivaRate), otrosImpuestosRate: Number(otrosImp),
       cuit, ptoVenta, razonSocial, condIva,
       ejsServiceId: ejsServiceId.trim(), ejsTemplateId: ejsTemplateId.trim(), ejsPublicKey: ejsPublicKey.trim(), ejsEnabled,
-    })
+    }
+    const rubroChanged = rubro && rubro !== c.rubro
+    if (rubroChanged) {
+      const currentCats = c.productCats || []
+      // Si las cats actuales son las del rubro previo (o vacías/genéricas) → reemplazamos
+      if (isGenericOrEmptyCats(currentCats) || catsMatchAnyRubroPreset(currentCats)) {
+        patch.productCats = getCategoriesForRubro(rubro)
+      }
+      // Subtitle: si era el genérico o el del rubro anterior → sugerimos el nuevo
+      const previousSuggested = getSuggestedSubtitle(c.rubro)
+      if (!bsub || bsub === 'Tu negocio en un solo lugar' || bsub === previousSuggested) {
+        patch.subtitle = getSuggestedSubtitle(rubro)
+      }
+    }
+    updateConfig(patch)
     applyThemeColors(bcolor, acolor)
     flushSync()
-    toast('Configuración guardada', 'ok')
+    toast(rubroChanged && patch.productCats ? 'Configuración guardada · categorías actualizadas al nuevo rubro' : 'Configuración guardada', 'ok')
   }
 
   const saveMPConfig = () => {

@@ -69,13 +69,15 @@ export const CATEGORIES_BY_RUBRO = {
     'Accesorios y cables',
   ],
   decoracion: [
+    'Muebles',
     'Iluminación',
-    'Textiles del hogar',
-    'Muebles auxiliares',
-    'Cuadros y arte',
-    'Plantas y macetas',
+    'Bazar y vajilla',
+    'Blanquería y textiles',
+    'Decoración de pared',
     'Aromas y velas',
-    'Vajilla y mesa',
+    'Plantas y macetas',
+    'Almohadones y mantas',
+    'Espejos y marcos',
   ],
   almacen: [
     'Bebidas',
@@ -116,6 +118,22 @@ export function isGenericOrEmptyCats(cats) {
  */
 export function getCategoriesForRubro(rubro) {
   return CATEGORIES_BY_RUBRO[rubro] || GENERIC_PRODUCT_CATS
+}
+
+/**
+ * Determina si las categorías actuales del usuario coinciden EXACTAMENTE con
+ * el preset de algún rubro (= el usuario nunca las customizó manualmente).
+ * Útil para decidir si podemos reemplazarlas al cambiar de rubro sin pisar
+ * cambios reales del usuario.
+ */
+export function catsMatchAnyRubroPreset(cats) {
+  if (!Array.isArray(cats) || cats.length === 0) return true
+  const sorted = [...cats].sort().join('|')
+  for (const r of Object.keys(CATEGORIES_BY_RUBRO)) {
+    const preset = [...CATEGORIES_BY_RUBRO[r]].sort().join('|')
+    if (sorted === preset) return true
+  }
+  return false
 }
 
 /**

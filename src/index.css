@@ -1631,13 +1631,17 @@ td b{color:var(--txt);font-weight:600}
   min-height:240px;
 }
 /* Forzamos a que los body internos NO scrolleen — los componentes los
-   declaran con overflow-y:auto inline, los neutralizamos acá. Body keeps
-   flex:1 para empujar el footer al fondo en formularios cortos. */
+   declaran con overflow-y:auto + flex:1 inline, los neutralizamos acá.
+   Sin flex:1 los bodies toman su altura natural (sin estirarse ni clipear)
+   y el modal crece según contenido total. */
 .modal-form-card > div[style*="overflow-y"],
 .modal-form-card > div[style*="overflow:auto"],
 .modal-form-card > div[style*="overflow: auto"]{
-  overflow:visible!important;max-height:none!important;
+  overflow:visible!important;
+  max-height:none!important;
   min-height:0!important;
+  flex:0 0 auto!important;       /* ← CRÍTICO: desactiva flex:1 que estiraba+clipeaba */
+  height:auto!important;
 }
 /* Footers sticky declarados inline → flujo natural, anclado al fondo
    por margin-top:auto en el flex column del modal-form-card */
