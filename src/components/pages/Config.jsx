@@ -800,8 +800,34 @@ export default function Config() {
 
       {tab === 'listas' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
-          <ListEditor label="Categorías de productos" icon="fa-tag" accentColor="#7C3AED"
-            items={c.productCats || []} onAdd={v => handleListAdd('productCats', v)} onRemove={i => handleListRemove('productCats', i)} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <ListEditor label="Categorías de productos" icon="fa-tag" accentColor="#7C3AED"
+              items={c.productCats || []} onAdd={v => handleListAdd('productCats', v)} onRemove={i => handleListRemove('productCats', i)} />
+            {/* Botón para aplicar las categorías sugeridas del rubro actual.
+                Útil cuando el usuario tiene cats desactualizadas o quedaron del rubro anterior. */}
+            {rubro && (() => {
+              const suggested = getCategoriesForRubro(rubro)
+              const meta = RUBROS.find(r => r.val === rubro)
+              return (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm(`¿Reemplazar tus categorías actuales por las ${suggested.length} sugeridas para ${meta?.label || rubro}?\n\nLos productos con una categoría que ya no esté quedarán como "Sin categoría" hasta que los reasignes.`)) {
+                      updateConfig({ productCats: suggested })
+                      flushSync()
+                      toast(`Categorías actualizadas a las sugeridas para ${meta?.label || rubro}`, 'ok')
+                    }
+                  }}
+                  style={{
+                    background: 'transparent', border: '1px dashed #C4B5FD', borderRadius: 8,
+                    padding: '8px 12px', cursor: 'pointer', fontSize: 11.5, fontWeight: 600,
+                    color: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  }}>
+                  <i className="fa fa-wand-magic-sparkles" /> Aplicar categorías sugeridas para {meta?.label || rubro}
+                </button>
+              )
+            })()}
+          </div>
           <ListEditor label="Categorías de insumos" icon="fa-boxes-stacking" accentColor="#0891B2"
             items={c.insumoCats || []} onAdd={v => handleListAdd('insumoCats', v)} onRemove={i => handleListRemove('insumoCats', i)} />
           <ListEditor label="Unidades de medida" icon="fa-ruler" accentColor="#059669"
