@@ -916,64 +916,64 @@ export default function Presupuesto() {
       *{box-sizing:border-box;font-variant-numeric:tabular-nums}
       body{
         font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Arial,sans-serif;
-        margin:0;padding:26px 32px 80px;color:#0F0C2E;
-        font-size:13px;line-height:1.55;background:#fff;
+        margin:0;padding:28px 34px 90px;color:#0F0C2E;
+        font-size:16px;line-height:1.6;background:#fff;
         -webkit-font-smoothing:antialiased;
       }
       /* Header con marca + meta del presupuesto */
-      .header-tbl{width:100%;border-collapse:collapse;margin-bottom:18px}
-      .header-tbl td{padding-bottom:14px;border-bottom:3px solid ${brandColor};vertical-align:top}
-      .brand{font-size:24px;font-weight:800;color:${brandColor};letter-spacing:-.4px;line-height:1.1}
-      .brand img{height:46px;display:block}
-      .hd-meta{text-align:right;font-size:13px;color:#1F1B45;line-height:1.65}
-      .hd-meta .num{font-size:20px;font-weight:800;color:#0F0C2E;margin-bottom:4px;letter-spacing:-.3px}
-      .vig{display:inline-block;margin-top:6px;padding:5px 11px;background:#FEF3C7;color:#92400E;font-size:11.5px;font-weight:700;border-radius:6px;letter-spacing:.3px}
+      .header-tbl{width:100%;border-collapse:collapse;margin-bottom:20px}
+      .header-tbl td{padding-bottom:16px;border-bottom:3px solid ${brandColor};vertical-align:top}
+      .brand{font-size:32px;font-weight:800;color:${brandColor};letter-spacing:-.5px;line-height:1.1}
+      .brand img{height:54px;display:block}
+      .hd-meta{text-align:right;font-size:16px;color:#1F1B45;line-height:1.7}
+      .hd-meta .num{font-size:26px;font-weight:800;color:#0F0C2E;margin-bottom:6px;letter-spacing:-.4px}
+      .vig{display:inline-block;margin-top:8px;padding:6px 13px;background:#FEF3C7;color:#92400E;font-size:14px;font-weight:700;border-radius:6px;letter-spacing:.3px}
       /* Datos del cliente */
-      .client-tbl{width:100%;border-collapse:collapse;background:#F6F7FB;border-radius:10px;margin-bottom:16px}
-      .client-tbl td{padding:11px 14px;vertical-align:top}
-      .client-tbl .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:#6B7280;font-weight:700;margin-bottom:3px}
-      .client-tbl .val{font-size:14px;font-weight:600;color:#0F0C2E;line-height:1.35}
-      /* Tabla principal de items — el corazón del presupuesto */
-      table{width:100%;border-collapse:collapse;margin:6px 0 0}
-      /* TÍTULOS PRINCIPALES — 15pt bold */
+      .client-tbl{width:100%;border-collapse:collapse;background:#F6F7FB;border-radius:12px;margin-bottom:18px}
+      .client-tbl td{padding:14px 18px;vertical-align:top}
+      .client-tbl .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:#6B7280;font-weight:700;margin-bottom:4px}
+      .client-tbl .val{font-size:17px;font-weight:600;color:#0F0C2E;line-height:1.35}
+      /* Tabla principal de items */
+      table{width:100%;border-collapse:collapse;margin:8px 0 0}
+      /* TÍTULOS PRINCIPALES — 22px bold uppercase */
       th{
         background:${brandColor};color:#fff;
-        padding:12px 14px;text-align:left;
-        font-size:20px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;
+        padding:15px 16px;text-align:left;
+        font-size:22px;text-transform:uppercase;letter-spacing:.6px;font-weight:800;
         line-height:1.2;
       }
-      /* DETALLES / NOMBRES — 12pt regular */
+      /* DETALLES / NOMBRES — 17px regular */
       td{
-        padding:13px 14px;border-bottom:1px solid #E8EAF2;
-        font-size:16px;font-weight:400;color:#1F1B45;line-height:1.45;
+        padding:15px 16px;border-bottom:1px solid #E8EAF2;
+        font-size:17px;font-weight:400;color:#1F1B45;line-height:1.5;
       }
       tr:last-child td{border-bottom:none}
-      /* MONTOS Y VALORES — 12pt medium */
+      /* MONTOS Y VALORES — 17px medium */
       td.money,
       td[style*="text-align:right"]{
         font-weight:500;color:#0F0C2E;
       }
-      .variant{color:#6B7280;font-size:13px;margin-left:4px;font-weight:400}
+      .variant{color:#6B7280;font-size:15px;margin-left:5px;font-weight:400}
       /* Bloque de totales */
-      .totals{margin-top:14px}
+      .totals{margin-top:18px}
       .totals-box{
-        width:340px;margin-left:auto;padding:16px 20px;
+        width:400px;margin-left:auto;padding:20px 26px;
         background:linear-gradient(135deg,${brandColor}10,${brandColor}22);
-        border-radius:12px;border:1.5px solid ${brandColor}40;
+        border-radius:14px;border:2px solid ${brandColor}40;
       }
-      .totals-row{width:100%;border-collapse:collapse;font-size:14px;color:#1F1B45;margin:3px 0}
-      .totals-row td{padding:5px 0;border:none}
-      .totals-row .tv{text-align:right;font-weight:500;white-space:nowrap;color:#0F0C2E}
-      /* TOTAL — 20pt bold (lo más prominente del PDF) */
+      .totals-row{width:100%;border-collapse:collapse;font-size:17px;color:#1F1B45;margin:4px 0}
+      .totals-row td{padding:6px 0;border:none}
+      .totals-row .tv{text-align:right;font-weight:600;white-space:nowrap;color:#0F0C2E}
+      /* TOTAL — 33px bold (lo más prominente del PDF) */
       .tr-big td{
-        font-size:27px;font-weight:800;color:${brandColor};
-        padding-top:10px;margin-top:6px;
-        border-top:1.5px solid ${brandColor}40;
-        letter-spacing:-.5px;line-height:1.15;
+        font-size:33px;font-weight:800;color:${brandColor};
+        padding-top:12px;
+        border-top:2px solid ${brandColor}40;
+        letter-spacing:-.6px;line-height:1.15;
       }
-      .tr-big .tv{font-size:27px;font-weight:800;color:${brandColor}}
-      .tr-senia td{font-size:15px;font-weight:700;color:${brandColor};padding-top:6px}
-      .tr-senia .tv{font-size:15px;font-weight:700;color:${brandColor}}
+      .tr-big .tv{font-size:33px;font-weight:800;color:${brandColor}}
+      .tr-senia td{font-size:18px;font-weight:700;color:${brandColor};padding-top:8px}
+      .tr-senia .tv{font-size:18px;font-weight:700;color:${brandColor}}
       /* Nota al cliente */
       .note{
         margin-top:18px;padding:14px 18px;
