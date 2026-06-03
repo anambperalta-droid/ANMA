@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, db, dbW } from '../../lib/storage'
 import { getCategoriesForRubro, getRubroMeta } from '../../lib/rubros'
+import { getProductPlaceholder, getEmptyProducts } from '../../lib/voice'
 
 const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '' }
 
@@ -474,8 +475,8 @@ export default function Catalogo() {
         }) : (
           <div className="empty-native">
             <div className="ico"><i className="fa fa-box-open" /></div>
-            <h4>Sin productos</h4>
-            <p>Agregá tu primer producto al catálogo.</p>
+            <h4>{getEmptyProducts(c.rubro).title}</h4>
+            <p>{getEmptyProducts(c.rubro).subtitle}</p>
           </div>
         )}
       </div>
@@ -563,7 +564,7 @@ export default function Catalogo() {
                     </div></td>
                   </tr>
                 )
-              }) : <tr><td colSpan={(showCostInfo ? 11 : 10) - (2 - priceColsActive)}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>Sin productos</p></div></td></tr>}
+              }) : <tr><td colSpan={(showCostInfo ? 11 : 10) - (2 - priceColsActive)}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>{getEmptyProducts(c.rubro).title}</p></div></td></tr>}
             </tbody>
           </table>
         </div>
@@ -712,7 +713,7 @@ export default function Catalogo() {
                 <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Datos del producto</span>
               </div>
               <div className="grid2" style={{ gap: '14px 16px' }}>
-                <div className="fg" style={{ marginBottom: 0 }}><label>Nombre *</label><input autoFocus tabIndex={1} type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Ej: Remera algodón premium" /></div>
+                <div className="fg" style={{ marginBottom: 0 }}><label>Nombre *</label><input autoFocus tabIndex={1} type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder={getProductPlaceholder(c.rubro)} /></div>
                 <div className="fg" style={{ marginBottom: 0 }}><label>SKU / Código</label><input tabIndex={2} type="text" value={form.sku || ''} onChange={e => setF('sku', e.target.value)} placeholder="Opcional" /></div>
                 <div className="fg" style={{ marginBottom: 0 }}><label>Categoría</label>
                   <select value={form.cat} onChange={e => setF('cat', e.target.value)}>
@@ -986,7 +987,7 @@ export default function Catalogo() {
                 <div style={{ fontSize: 12, color: 'var(--txt2)', lineHeight: 1.7 }}>
                   Una línea por producto: <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>Nombre del producto, costo</code>
                 </div>
-                <div style={{ marginTop: 6, fontSize: 11, color: 'var(--txt3)' }}>Ej: <code>Remera algodón premium, 2500</code></div>
+                <div style={{ marginTop: 6, fontSize: 11, color: 'var(--txt3)' }}>Ej: <code>{getProductPlaceholder(c.rubro).replace(/^Ej:\s*/, '')}, 2500</code></div>
               </div>
               <div className="fg"><label>Categoría</label><select value={bulkCat} onChange={e => setBulkCat(e.target.value)}>{cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}</select></div>
               <div className="fg" style={{ marginBottom: 8 }}>

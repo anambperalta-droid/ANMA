@@ -165,3 +165,64 @@ export function getDefaultTemplates(tipoVenta) {
   if (tipoVenta === 'minorista') return TEMPLATES_MINORISTA
   return TEMPLATES_MAYORISTA   // mayorista + ambos
 }
+
+/* ─────────────────────────────────────────────────────────────────
+   PLACEHOLDERS CONTEXTUALES POR RUBRO
+   ─ Los ejemplos en inputs ("Ej: Remera algodón premium") se sienten
+     personalizados al rubro del usuario.
+───────────────────────────────────────────────────────────────── */
+const PRODUCT_PLACEHOLDERS = {
+  indumentaria: 'Ej: Remera algodón premium',
+  tecnologia:   'Ej: Cargador USB-C 65W',
+  decoracion:   'Ej: Vela aromática lavanda',
+  almacen:      'Ej: Aceite de oliva 500ml',
+}
+
+const CLIENT_RUBRO_PLACEHOLDERS = {
+  indumentaria: 'Boutique, Showroom, Distribuidora…',
+  tecnologia:   'Empresa, Comercio, Particular…',
+  decoracion:   'Hogar, Evento, Comercio…',
+  almacen:      'Restó, Kiosco, Particular…',
+}
+
+export function getProductPlaceholder(rubro) {
+  return PRODUCT_PLACEHOLDERS[rubro] || 'Ej: Nombre del producto'
+}
+
+export function getClientRubroPlaceholder(rubro) {
+  return CLIENT_RUBRO_PLACEHOLDERS[rubro] || 'Tecnología, Salud, Eventos…'
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   EMPTY STATES — Mensajes warm cuando no hay datos
+   ─ Sirven para Catálogo, Clientes, Presupuestos, Insumos.
+   ─ Adaptan tono según rubro: indumentaria habla de "prendas",
+     almacén de "productos", etc.
+───────────────────────────────────────────────────────────────── */
+const EMPTY_PRODUCTS = {
+  indumentaria: { title: 'Sin prendas en el catálogo', subtitle: 'Agregá tu primer producto (remera, pantalón, calzado…)' },
+  tecnologia:   { title: 'Sin productos cargados',     subtitle: 'Agregá tu primer dispositivo o accesorio' },
+  decoracion:   { title: 'Sin productos cargados',     subtitle: 'Agregá tu primera pieza al catálogo' },
+  almacen:      { title: 'Sin productos cargados',     subtitle: 'Agregá tu primer producto del almacén' },
+  default:      { title: 'Sin productos',              subtitle: 'Agregá tu primer producto al catálogo' },
+}
+
+export function getEmptyProducts(rubro) {
+  return EMPTY_PRODUCTS[rubro] || EMPTY_PRODUCTS.default
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SUBTITLE SUGERIDO POR RUBRO (para Onboarding)
+   ─ Reemplaza el genérico "Tu negocio en un solo lugar" por algo
+     que se sienta del usuario.
+───────────────────────────────────────────────────────────────── */
+const SUBTITLES = {
+  indumentaria: 'Tu marca, ordenada',
+  tecnologia:   'Stock + ventas en un solo lugar',
+  decoracion:   'Tu showroom organizado',
+  almacen:      'Las cuentas claras de tu almacén',
+}
+
+export function getSuggestedSubtitle(rubro) {
+  return SUBTITLES[rubro] || 'Tu negocio en un solo lugar'
+}

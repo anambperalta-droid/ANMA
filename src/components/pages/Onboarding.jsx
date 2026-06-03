@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { RUBROS, TIPOS_VENTA, getCategoriesForRubro, isGenericOrEmptyCats } from '../../lib/rubros'
+import { getSuggestedSubtitle } from '../../lib/voice'
 
 export default function Onboarding() {
   const { config, updateConfig } = useData()
@@ -54,6 +55,11 @@ export default function Onboarding() {
       }
       if (isGenericOrEmptyCats(currentCats)) {
         patch.productCats = getCategoriesForRubro(rubro)
+      }
+      // Subtitle sugerido por rubro — solo si el usuario aún no tiene uno custom.
+      // Respeta override del usuario si ya configuró uno desde Comercial.
+      if (!c.subtitle || c.subtitle === 'Tu negocio en un solo lugar') {
+        patch.subtitle = getSuggestedSubtitle(rubro)
       }
       updateConfig(patch)
       toast(`¡Listo! Bienvenido a ${businessName.trim()} 🎉`, 'ok')
