@@ -1620,14 +1620,15 @@ td b{color:var(--txt);font-weight:600}
   width:calc(100vw - 32px);box-shadow:var(--sh-lg);
   animation:pgIn .2s ease both;margin:0 0 24px;
   display:flex;flex-direction:column;
-  /* SIN scroll interno: contenido fluye natural. El overlay scrollea si excede.
-     min-height generoso: el modal tiene presencia visual aunque el contenido
-     sea corto (footer queda al pie de la tarjeta, no flotando). */
+  /* SIN scroll interno + SIN altura mínima artificial.
+     El modal crece según su contenido (h-auto). Si el contenido cabe en el
+     viewport, NO hay scroll. Si lo excede, el overlay (.modal-bg) scrollea
+     la página entera. min-height bajo solo para evitar modales colapsados. */
   overflow:visible;
-  padding:0 0 max(32px, env(safe-area-inset-bottom, 14px));
+  padding:0 0 max(20px, env(safe-area-inset-bottom, 14px));
   height:auto;
   max-height:none;
-  min-height:min(82vh, 720px);
+  min-height:240px;
 }
 /* Forzamos a que los body internos NO scrolleen — los componentes los
    declaran con overflow-y:auto inline, los neutralizamos acá. Body keeps
