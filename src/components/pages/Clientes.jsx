@@ -229,6 +229,10 @@ export default function Clientes() {
   const [revinculMsg, setRevinculMsg] = useState('')
   const [selectedIds, setSelectedIds] = useState(new Set())
   const [pasteMode, setPasteMode] = useState(false)
+  // Datos fiscales colapsable — la mayoría de clientes (especialmente minorista)
+  // no requiere CUIT/IVA. Mantenemos cerrado por defecto para que el modal entre
+  // sin scroll en viewports normales. Se auto-abre si el form ya tiene esos datos.
+  const [showFiscal, setShowFiscal] = useState(false)
   const [pasteText, setPasteText] = useState('')
   const [formRegUrl, setFormRegUrl] = useState('')
 
@@ -1009,36 +1013,53 @@ export default function Clientes() {
               )}
             </div>
 
-            {/* Datos fiscales */}
-            <div style={{ borderTop: '1px solid var(--border)', margin: '14px 0 10px', paddingTop: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-                <i className="fa fa-landmark" style={{ color: 'var(--brand)', fontSize: 11 }} />
-                <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.08em' }}>Datos Fiscales (Facturación)</span>
-              </div>
-              <div className="grid2">
-                <div className="fg">
-                  <label>CUIT / CUIL</label>
-                  <input type="text" value={form.cuit || ''} onChange={e => setF('cuit', e.target.value)} placeholder="20-12345678-9" maxLength={13} />
+            {/* Datos fiscales — colapsable. Auto-abre si ya hay datos cargados. */}
+            {(() => {
+              const hasFiscal = !!(form.cuit || form.ivaCondition || form.razonSocial)
+              const open = showFiscal || hasFiscal
+              return (
+                <div style={{ marginTop: 12 }}>
+                  <button
+                    type="button"
+                    onClick={() => setShowFiscal(s => !s)}
+                    style={{
+                      width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                      background: 'transparent', border: '1px dashed var(--border)', borderRadius: 8,
+                      padding: '8px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: 'var(--txt2)',
+                    }}>
+                    <span><i className="fa fa-landmark" style={{ marginRight: 8, color: 'var(--brand)' }} />Datos fiscales (facturación)</span>
+                    <i className={`fa fa-chevron-${open ? 'up' : 'down'}`} style={{ color: 'var(--txt3)' }} />
+                  </button>
+                  {open && (
+                    <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginTop: 8, border: '1.5px solid var(--border)' }}>
+                      <div className="grid2">
+                        <div className="fg">
+                          <label>CUIT / CUIL</label>
+                          <input type="text" value={form.cuit || ''} onChange={e => setF('cuit', e.target.value)} placeholder="20-12345678-9" maxLength={13} />
+                        </div>
+                        <div className="fg">
+                          <label>Condición frente al IVA</label>
+                          <select value={form.ivaCondition || ''} onChange={e => setF('ivaCondition', e.target.value)}>
+                            <option value="">— seleccionar —</option>
+                            <option value="Responsable Inscripto">Responsable Inscripto</option>
+                            <option value="Monotributista">Monotributista</option>
+                            <option value="Exento">Exento</option>
+                            <option value="No Responsable">No Responsable</option>
+                            <option value="Consumidor Final">Consumidor Final</option>
+                          </select>
+                        </div>
+                        <div className="fg" style={{ gridColumn: '1 / -1' }}>
+                          <label>Razón Social</label>
+                          <input type="text" value={form.razonSocial || ''} onChange={e => setF('razonSocial', e.target.value)} placeholder="Razón social completa según AFIP" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="fg">
-                  <label>Condición frente al IVA</label>
-                  <select value={form.ivaCondition || ''} onChange={e => setF('ivaCondition', e.target.value)}>
-                    <option value="">— seleccionar —</option>
-                    <option value="Responsable Inscripto">Responsable Inscripto</option>
-                    <option value="Monotributista">Monotributista</option>
-                    <option value="Exento">Exento</option>
-                    <option value="No Responsable">No Responsable</option>
-                    <option value="Consumidor Final">Consumidor Final</option>
-                  </select>
-                </div>
-                <div className="fg" style={{ gridColumn: '1 / -1' }}>
-                  <label>Razón Social</label>
-                  <input type="text" value={form.razonSocial || ''} onChange={e => setF('razonSocial', e.target.value)} placeholder="Razón social completa según AFIP" />
-                </div>
-              </div>
-            </div>
+              )
+            })()}
 
-            <div className="fg"><label>Notas internas</label><textarea value={form.notes} onChange={e => setF('notes', e.target.value)} rows={3} placeholder="Preferencias, condiciones especiales, recordatorios..." /></div>
+            <div className="fg" style={{ marginTop: 10 }}><label>Notas internas</label><textarea value={form.notes} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Preferencias, condiciones especiales, recordatorios..." /></div>
             </div>{/* /body scrollable */}
             {/* Footer fijo */}
             <div style={{ flexShrink: 0, position: 'sticky', bottom: 0, borderTop: '1px solid var(--border)', padding: '14px 28px 20px', background: 'var(--surface)', display: 'flex', gap: 10, justifyContent: 'flex-end', zIndex: 5 }}>
