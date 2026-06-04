@@ -114,8 +114,9 @@ section{padding:52px 0}
 .pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .pillar-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:28px;transition:transform .2s,border-color .2s,box-shadow .2s}
 .pillar-card:hover{transform:translateY(-3px);border-color:#7c3aed;box-shadow:0 10px 32px rgba(124,58,237,.08)}
-.pillar-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#7c3aed15,#05966915);color:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
-.pillar-card h4{font-size:16px;margin:0 0 8px;font-weight:800;color:#0F172A}
+.pillar-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#7c3aed15,#05966915);color:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.pillar-card-hd{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.pillar-card h4{font-size:16px;margin:0;font-weight:800;color:#0F172A}
 .pillar-card p{font-size:14px;color:#475569;margin:0;line-height:1.65}
 @media(max-width:780px){.pillar-grid{grid-template-columns:1fr}}
 
@@ -459,7 +460,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow"><span class="pulse-dot"></span> ANMA Pro · Hecho en Argentina · <strong style="color:#34d399">+15 negocios activos</strong></span>
-      <h1 class="h1 font-black tracking-tight text-balance">De los presupuestos al cobro, todo <em>en un solo lugar</em>.</h1>
+      <h1 class="h1 font-black tracking-tight text-balance">De los presupuestos al cobro, todo <em>en un solo lugar</em></h1>
       <p class="lead text-balance">Sin Excel, sin papeles, sin caos. Gestioná tus clientes, pedidos y stock real desde una sola pantalla diseñada para negocios que venden al público, a empresas, o de ambas formas. La solución para moverte rápido.</p>
       <!-- CTA: foco único + enlace secundario mínimo -->
       <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:22px">
@@ -773,18 +774,15 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   <div class="wrap">
     <div class="pillar-grid">
       <div class="pillar-card">
-        <div class="pillar-icon"><i class="fa-solid fa-gauge-high"></i></div>
-        <h4>Todo a la vista</h4>
+        <div class="pillar-card-hd"><div class="pillar-icon"><i class="fa-solid fa-gauge-high"></i></div><h4>Todo a la vista</h4></div>
         <p>Un tablero principal para entender la salud del negocio al toque. Entrás, mirás y ya sabés dónde estás parado.</p>
       </div>
       <div class="pillar-card">
-        <div class="pillar-icon"><i class="fa-solid fa-feather"></i></div>
-        <h4>Gestión liviana</h4>
+        <div class="pillar-card-hd"><div class="pillar-icon"><i class="fa-solid fa-feather"></i></div><h4>Gestión liviana</h4></div>
         <p>Organizá tus entregas y tareas diarias sin fricción. Diseñado para ser intuitivo: si sabés usar un celular, sabés usar ANMA Pro.</p>
       </div>
       <div class="pillar-card">
-        <div class="pillar-icon"><i class="fa-solid fa-bolt"></i></div>
-        <h4>En tiempo real</h4>
+        <div class="pillar-card-hd"><div class="pillar-icon"><i class="fa-solid fa-bolt"></i></div><h4>En tiempo real</h4></div>
         <p>Tu información segura y al día. Chau archivos duplicados. Tu negocio viaja con vos, ordenado y bajo control.</p>
       </div>
     </div>
@@ -1228,50 +1226,50 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     <div class="feat-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1060px;margin:0 auto">
 
       <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
-        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <i class="fa-solid fa-file-invoice-dollar" style="color:#7c3aed;font-size:16px"></i>
-        </div>
-        <h4 style="margin:0 0 7px;font-size:15px;font-weight:800;color:#0F172A">Ventas sin fricciones</h4>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">Ventas sin fricciones</h4></div>
         <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Presupuestos y mensajes de WhatsApp listos para enviar desde una sola pantalla.</p>
       </div>
 
       <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
-        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <i class="fa-solid fa-people-group" style="color:#7c3aed;font-size:16px"></i>
-        </div>
-        <h4 style="margin:0 0 7px;font-size:15px;font-weight:800;color:#0F172A">Comunidad a mano</h4>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">Comunidad a mano</h4></div>
         <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Historia de clientes organizada para una atención personalizada que te diferencia.</p>
       </div>
 
       <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
-        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <i class="fa-solid fa-box-open" style="color:#7c3aed;font-size:16px"></i>
-        </div>
-        <h4 style="margin:0 0 7px;font-size:15px;font-weight:800;color:#0F172A">Inventario en tiempo real</h4>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">Inventario en tiempo real</h4></div>
         <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Stock que se descuenta solo con cada venta. Nunca más conteo manual.</p>
       </div>
 
       <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
-        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <i class="fa-solid fa-truck-fast" style="color:#7c3aed;font-size:16px"></i>
-        </div>
-        <h4 style="margin:0 0 7px;font-size:15px;font-weight:800;color:#0F172A">Logística inteligente</h4>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">Logística inteligente</h4></div>
         <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Tarifas por zona y alertas automáticas si algo se atrasa en la entrega.</p>
       </div>
 
       <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
-        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <i class="fa-brands fa-whatsapp" style="color:#7c3aed;font-size:18px"></i>
-        </div>
-        <h4 style="margin:0 0 7px;font-size:15px;font-weight:800;color:#0F172A">WhatsApp pre-armado</h4>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">WhatsApp pre-armado</h4></div>
         <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Plantillas para presupuestos, recordatorios y seguimientos. Consistencia sin esfuerzo.</p>
       </div>
 
       <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
-        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <i class="fa-solid fa-chart-line" style="color:#7c3aed;font-size:16px"></i>
-        </div>
-        <h4 style="margin:0 0 7px;font-size:15px;font-weight:800;color:#0F172A">Tus números, sin vueltas</h4>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">Tus números, sin vueltas</h4></div>
         <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Gráficos claros que te dicen cómo viene el mes. Decisiones con datos, no con intuición.</p>
       </div>
 
