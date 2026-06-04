@@ -326,6 +326,10 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   .h1{font-size:36px!important;letter-spacing:-.8px!important}
   .hero-grid{gap:28px!important}
   .kpi-strip{grid-template-columns:1fr 1fr!important}
+  /* Características 2-col → 1-col */
+  #caracteristicas-grid{grid-template-columns:1fr!important;gap:40px!important}
+  /* Para quién 2-col → 1-col */
+  #para-quien-grid{grid-template-columns:1fr!important}
 }
 
 /* MOBILE 680px */
@@ -1184,84 +1188,76 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- CARACTERÍSTICAS -->
-<section style="padding:56px 0;background:#fff">
+<section style="padding:80px 0;background:#fff;border-top:1px solid #e5e7eb">
   <div class="wrap">
+    <div id="caracteristicas-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;max-width:1100px;margin:0 auto">
 
-    <!-- Encabezado -->
-    <div style="text-align:center;max-width:700px;margin:0 auto 40px">
-      <p style="font-size:18px;font-weight:600;color:#0F172A;margin:0 0 14px;line-height:1.5">Una sola plataforma, integrada.<br>No 8 apps que hablan mal entre sí.</p>
-      <p style="font-size:15px;font-weight:700;color:#7c3aed;margin:0;font-style:italic">— Menos ruido operativo, más foco en lo que importa. —</p>
-    </div>
-
-    <!-- Grid 6 cards -->
-    <div class="feat-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:960px;margin:0 auto">
-
-      <!-- 1 -->
-      <div style="background:#fff;border:1px solid #e8eaf0;border-radius:16px;padding:28px 28px 26px">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div style="width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i class="fa-solid fa-file-invoice-dollar" style="color:#7c3aed;font-size:17px"></i>
-          </div>
-          <h4 style="margin:0;font-size:16px;font-weight:800;color:#0F172A">Ventas sin fricciones</h4>
-        </div>
-        <p style="margin:0;font-size:14px;color:#4c5080;line-height:1.7">Que cerrar una venta no sea un trámite lento. Mandá presupuestos y mensajes listos para enviar por WhatsApp. Se siente bien cuando todo sale a la primera.</p>
+      <!-- Columna izquierda: texto ancla -->
+      <div>
+        <span class="eyebrow-dark" style="margin-bottom:18px">Todo en uno</span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-balance leading-tight" style="color:#0F172A;margin:0 0 20px;line-height:1.08">
+          Un solo registro. El control absoluto de tu stock, clientes y caja.
+        </h2>
+        <p class="text-base sm:text-lg leading-relaxed text-balance font-normal" style="color:#64748b;margin:0 0 24px;line-height:1.75">
+          Centralizar tu negocio no significa sumar más tareas; significa dejar de hacer trabajo doble. Cada vez que registrás una venta, ANMA se encarga de ordenar el resto: descuenta el stock real, actualiza las cuentas corrientes y organiza tus prioridades de cobro en un solo lugar. Menos ruido operativo para que vuelvas a liderar con claridad.
+        </p>
+        <blockquote style="border-left:2px solid #4f46e5;padding-left:16px;color:#64748b;margin:0;font-style:italic;font-size:15px;font-weight:500;line-height:1.65">
+          La tranquilidad de saber exactamente dónde estás parado, sin depender de planillas colgadas ni de tu memoria.
+        </blockquote>
       </div>
 
-      <!-- 2 -->
-      <div style="background:#fff;border:1px solid #e8eaf0;border-radius:16px;padding:28px 28px 26px">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div style="width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i class="fa-solid fa-people-group" style="color:#7c3aed;font-size:17px"></i>
-          </div>
-          <h4 style="margin:0;font-size:16px;font-weight:800;color:#0F172A">Toda tu comunidad a mano</h4>
-        </div>
-        <p style="margin:0;font-size:14px;color:#4c5080;line-height:1.7">Guardá la historia de tus clientes sin esfuerzo. Tener sus datos organizados te permite darles esa atención personalizada que te hace diferente.</p>
-      </div>
+      <!-- Columna derecha: 6 funcionalidades -->
+      <div class="feat-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
 
-      <!-- 3 -->
-      <div style="background:#fff;border:1px solid #e8eaf0;border-radius:16px;padding:28px 28px 26px">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div style="width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i class="fa-solid fa-box-open" style="color:#7c3aed;font-size:17px"></i>
+        <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:14px;padding:22px 20px">
+          <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+            <i class="fa-solid fa-file-invoice-dollar" style="color:#7c3aed;font-size:15px"></i>
           </div>
-          <h4 style="margin:0;font-size:16px;font-weight:800;color:#0F172A">Inventario que te sigue el ritmo</h4>
+          <h4 style="margin:0 0 6px;font-size:14px;font-weight:800;color:#0F172A">Ventas sin fricciones</h4>
+          <p style="margin:0;font-size:12.5px;color:#64748b;line-height:1.65">Presupuestos y mensajes de WhatsApp listos para enviar desde una sola pantalla.</p>
         </div>
-        <p style="margin:0;font-size:14px;color:#4c5080;line-height:1.7">Tu stock se actualiza solo mientras trabajás. Es esa tranquilidad de saber exactamente qué tenés disponible, sin tener que ir a contar producto por producto.</p>
-      </div>
 
-      <!-- 4 -->
-      <div style="background:#fff;border:1px solid #e8eaf0;border-radius:16px;padding:28px 28px 26px">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div style="width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i class="fa-solid fa-truck-fast" style="color:#7c3aed;font-size:17px"></i>
+        <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:14px;padding:22px 20px">
+          <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+            <i class="fa-solid fa-people-group" style="color:#7c3aed;font-size:15px"></i>
           </div>
-          <h4 style="margin:0;font-size:16px;font-weight:800;color:#0F172A">Logística inteligente</h4>
+          <h4 style="margin:0 0 6px;font-size:14px;font-weight:800;color:#0F172A">Comunidad a mano</h4>
+          <p style="margin:0;font-size:12.5px;color:#64748b;line-height:1.65">Historia de clientes organizada para una atención personalizada que te diferencia.</p>
         </div>
-        <p style="margin:0;font-size:14px;color:#4c5080;line-height:1.7">Tarifas por zona, tracking de envíos y notificaciones automáticas al cliente. SLA monitoreado: el sistema te avisa si algo se atrasa.</p>
-      </div>
 
-      <!-- 5 -->
-      <div style="background:#fff;border:1px solid #e8eaf0;border-radius:16px;padding:28px 28px 26px">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div style="width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i class="fa-brands fa-whatsapp" style="color:#7c3aed;font-size:19px"></i>
+        <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:14px;padding:22px 20px">
+          <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+            <i class="fa-solid fa-box-open" style="color:#7c3aed;font-size:15px"></i>
           </div>
-          <h4 style="margin:0;font-size:16px;font-weight:800;color:#0F172A">WhatsApp pre-armado</h4>
+          <h4 style="margin:0 0 6px;font-size:14px;font-weight:800;color:#0F172A">Inventario en tiempo real</h4>
+          <p style="margin:0;font-size:12.5px;color:#64748b;line-height:1.65">Stock que se descuenta solo con cada venta. Nunca más conteo manual.</p>
         </div>
-        <p style="margin:0;font-size:14px;color:#4c5080;line-height:1.7">Plantillas configurables para presupuestos, recordatorios, agradecimientos. Mensajes consistentes sin tipear lo mismo 50 veces al día.</p>
-      </div>
 
-      <!-- 6 -->
-      <div style="background:#fff;border:1px solid #e8eaf0;border-radius:16px;padding:28px 28px 26px">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div style="width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i class="fa-solid fa-chart-line" style="color:#7c3aed;font-size:17px"></i>
+        <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:14px;padding:22px 20px">
+          <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+            <i class="fa-solid fa-truck-fast" style="color:#7c3aed;font-size:15px"></i>
           </div>
-          <h4 style="margin:0;font-size:16px;font-weight:800;color:#0F172A">Tus números, sin vueltas</h4>
+          <h4 style="margin:0 0 6px;font-size:14px;font-weight:800;color:#0F172A">Logística inteligente</h4>
+          <p style="margin:0;font-size:12.5px;color:#64748b;line-height:1.65">Tarifas por zona y alertas automáticas si algo se atrasa en la entrega.</p>
         </div>
-        <p style="margin:0;font-size:14px;color:#4c5080;line-height:1.7">Gráficos que te cuentan cómo viene el mes de forma clara. Menos tiempo analizando planillas y más tiempo viendo cómo crece lo que armaste.</p>
-      </div>
 
+        <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:14px;padding:22px 20px">
+          <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+            <i class="fa-brands fa-whatsapp" style="color:#7c3aed;font-size:17px"></i>
+          </div>
+          <h4 style="margin:0 0 6px;font-size:14px;font-weight:800;color:#0F172A">WhatsApp pre-armado</h4>
+          <p style="margin:0;font-size:12.5px;color:#64748b;line-height:1.65">Plantillas para presupuestos, recordatorios y seguimientos. Consistencia sin esfuerzo.</p>
+        </div>
+
+        <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:14px;padding:22px 20px">
+          <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+            <i class="fa-solid fa-chart-line" style="color:#7c3aed;font-size:15px"></i>
+          </div>
+          <h4 style="margin:0 0 6px;font-size:14px;font-weight:800;color:#0F172A">Tus números, sin vueltas</h4>
+          <p style="margin:0;font-size:12.5px;color:#64748b;line-height:1.65">Gráficos claros que te dicen cómo viene el mes. Decisiones con datos, no con intuición.</p>
+        </div>
+
+      </div>
     </div>
   </div>
 </section>
@@ -1340,17 +1336,47 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- PARA QUIÉN -->
-<section id="para-quien" class="para-quien" style="padding:48px 0">
-  <div class="wrap">
-    <div style="text-align:center;max-width:700px;margin:0 auto 28px">
-      <span class="eyebrow-dark">Para quién es</span>
-      <h2 class="h2">Negocios que necesitan<br>orden y visibilidad</h2>
+<section id="para-quien" style="padding:80px 24px;background:#f8fafc;border-top:1px solid #e5e7eb">
+  <div style="max-width:1020px;margin:0 auto">
+
+    <div style="text-align:center;max-width:660px;margin:0 auto 48px">
+      <span class="eyebrow-dark" style="margin-bottom:16px">Para quién es</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance text-center" style="color:#0F172A;margin:0 0 16px;line-height:1.1">
+        Diseñado para la realidad de tu rubro.
+      </h2>
+      <p class="text-lg text-balance text-center" style="color:#64748b;margin:0 auto;max-width:580px;line-height:1.65">
+        No importa si vendés productos masivos, artículos de diseño con variantes, o si manejás dos listas de precios en paralelo. ANMA se adapta al ritmo de tu inventario.
+      </p>
     </div>
-    <div class="pq-grid">
-      <div class="pq"><i class="fa-solid fa-store"></i><h5>Comercios</h5><p>Productos físicos con stock</p></div>
-      <div class="pq"><i class="fa-solid fa-handshake"></i><h5>Servicios B2B</h5><p>Cotizaciones recurrentes</p></div>
-      <div class="pq"><i class="fa-solid fa-screwdriver-wrench"></i><h5>Talleres / Producción</h5><p>Pedidos a medida</p></div>
-      <div class="pq"><i class="fa-solid fa-laptop"></i><h5>Emprendedores</h5><p>Crecer sin caos</p></div>
+
+    <div id="para-quien-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto">
+
+      <!-- Bloque 1 -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:36px 32px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+          <i class="fa-solid fa-boxes-stacked" style="color:#7c3aed;font-size:18px"></i>
+        </div>
+        <h3 class="text-xl font-bold tracking-tight" style="color:#0F172A;margin:0 0 10px">
+          Indumentaria, Tecnología y Deco
+        </h3>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:#64748b;margin:0;line-height:1.75">
+          Pensado para negocios que sufren la rotación de stock. Controlá variantes críticas como talles, colores, modelos o números de serie sin duplicar productos. Registrá señas, gestioná entregas parciales y sabé exactamente qué tenés disponible en góndola o depósito al instante.
+        </p>
+      </div>
+
+      <!-- Bloque 2 -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:36px 32px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+          <i class="fa-solid fa-arrows-split-up-and-left" style="color:#7c3aed;font-size:18px"></i>
+        </div>
+        <h3 class="text-xl font-bold tracking-tight" style="color:#0F172A;margin:0 0 10px">
+          Venta Minorista, Mayorista o Mixta
+        </h3>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:#64748b;margin:0;line-height:1.75">
+          Ideal si despachás directo al público (B2C) o si abastecés a revendedores y distribuidores (B2B). Manejá cuentas corrientes separadas, controlá los plazos de pago y hacé seguimientos amables de saldos pendientes sin perder el orden de tu caja principal.
+        </p>
+      </div>
+
     </div>
   </div>
 </section>
