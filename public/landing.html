@@ -202,8 +202,8 @@ section{padding:52px 0}
 .faq{border:1px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden;background:#fff}
 .faq summary{padding:18px 22px;font-weight:700;font-size:15px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:#0F172A}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";font-size:22px;color:#7c3aed;font-weight:400}
-.faq[open] summary::after{content:"−"}
+.faq summary::after{content:"";width:22px;height:22px;flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c3aed' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;transition:transform .2s ease}
+.faq[open] summary::after{content:"";transform:rotate(180deg)}
 .faq[open] summary{border-bottom:1px solid #f1f5f9}
 .faq-body{padding:18px 22px;font-size:14px;color:#475569;line-height:1.7}
 
@@ -1545,82 +1545,61 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- FAQ -->
-<section id="faq" style="padding:52px 0">
+<section id="faq" style="padding:80px 0;background:#f8fafc;border-top:1px solid #e5e7eb">
   <div class="wrap">
-    <div style="text-align:center;max-width:700px;margin:0 auto 24px">
-      <span class="eyebrow-dark">Preguntas frecuentes</span>
-      <h2 class="h2">Lo que más nos preguntan</h2>
+
+    <div style="text-align:center;max-width:700px;margin:0 auto 48px">
+      <span class="eyebrow-dark" style="margin-bottom:16px">Preguntas frecuentes</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance text-center" style="color:#0F172A;margin:0;line-height:1.1">
+        Despejá tus dudas y empezá<br class="hidden sm:block"> a gestionar con claridad.
+      </h2>
     </div>
+
     <div class="faq-wrap">
+
       <details class="faq" open>
-        <summary>¿Necesito instalar algo?</summary>
-        <div class="faq-body">No. ANMA Pro funciona 100% desde el navegador en cualquier dispositivo. Te creás cuenta y ya estás operando — sin descargas, sin configuración compleja.</div>
+        <summary>¿Sirve si vendo tanto por menor (B2C) como por mayor (B2B)?</summary>
+        <div class="faq-body">Sí, totalmente. ANMA está diseñado para registrar pedidos de todo tipo. Podés gestionar clientes finales, registrar cuentas corrientes mayoristas, controlar señas y hacer el seguimiento de los saldos pendientes desde una misma pantalla.</div>
       </details>
+
       <details class="faq">
-        <summary>¿Mis datos están seguros?</summary>
-        <div class="faq-body">Sí. Tu información corre sobre infraestructura en la nube de alta disponibilidad, con encriptación de extremo a extremo y respaldos automáticos diarios. Tus datos son completamente tuyos y los exportás a Excel/CSV cuando quieras.</div>
+        <summary>Tengo miles de productos con variantes (talles, colores o modelos), ¿es difícil cargarlos?</summary>
+        <div class="faq-body">Para nada. La interfaz está pensada para que la carga de catálogos e inventario sea rápida y sin fricciones visuales. Podés estructurar variantes y costos en minutos para que tu stock real se descuente automáticamente con cada venta.</div>
       </details>
+
       <details class="faq">
-        <summary>¿Puedo importar mi info actual?</summary>
-        <div class="faq-body">Sí. Importás clientes, productos y presupuestos desde Excel o CSV. Si tenés mucha data acumulada o un sistema viejo, el equipo te ayuda con la migración inicial sin costo.</div>
+        <summary>¿Cómo funciona el seguimiento por WhatsApp?</summary>
+        <div class="faq-body">El sistema agrupa tus contactos según su estado operativo actual. Con un solo clic, podés abrir WhatsApp con plantillas predefinidas listas para enviar un mensaje de recontacto amable o re-vincular clientes que dejaron presupuestos pendientes.</div>
       </details>
+
       <details class="faq">
-        <summary>¿Tengo soporte si me trabo?</summary>
-        <div class="faq-body">Sí, totalmente. No vas a estar sola en esto. Tenés soporte prioritario por WhatsApp y email 100% en español. Además, el onboarding (la configuración inicial guiada) está incluido para que arranques sin fricciones. Respondemos súper rápido porque sabemos que tu negocio no puede parar.</div>
+        <summary>¿Realmente es gratis empezar?</summary>
+        <div class="faq-body">Sí. Podés registrarte y empezar a usar las funciones clave para ordenar tu operación hoy mismo. No te pedimos tarjeta de crédito ni hay configuraciones técnicas ocultas. Queremos que pruebes el sistema y recuperes tu tranquilidad.</div>
       </details>
-      <details class="faq">
-        <summary>¿Funciona si tengo varios operadores?</summary>
-        <div class="faq-body">Sí. Creás usuarios, definís roles (owner / operador / solo-lectura) y cada uno ve y edita sólo lo que le toca. Todo en tiempo real — si tu socia cambia algo, lo ves al instante.</div>
-      </details>
-      <details class="faq">
-        <summary>¿Y si no me convence?</summary>
-        <div class="faq-body">Exportás todos tus datos en cualquier momento. Si tenés dudas antes de arrancar, coordinamos una demo guiada sin costo para que veas la herramienta con tu caso real.</div>
-      </details>
-      <details class="faq">
-        <summary>¿Puedo agendar una demo guiada?</summary>
-        <div class="faq-body">Sí. Escribinos por WhatsApp y coordinamos un video-call de 20 min donde te mostramos la herramienta funcionando con tu caso real. Es gratis y sin compromiso.</div>
-      </details>
-      <details class="faq">
-        <summary>¿El precio de $30.000/mes es mucho para mi negocio?</summary>
-        <div class="faq-body">Miralo como una inversión para dejar de correr detrás de la urgencia. Si ANMA te permite centralizar tus pedidos, automatizar tus mensajes de WhatsApp y soltar la planilla de Excel, te está devolviendo días enteros de paz mental al mes. Ese tiempo recuperado lo podés usar para diseñar, producir o vender más. Además, el primer mes ya está cubierto con el pago de ingreso para que lo pruebes sin riesgo: si sentís que no es para vos, te llevás tus datos y listo.</div>
-      </details>
+
     </div>
   </div>
 </section>
 
 <!-- CTA FINAL -->
-<section id="contact" style="padding:64px 0;background:linear-gradient(145deg,#1a0636 0%,#2d0a57 40%,#4c1d95 100%)">
-  <div class="wrap" style="text-align:center;max-width:680px;margin:0 auto">
+<section id="contact" style="padding:96px 16px;background:#0F172A;text-align:center">
+  <div style="max-width:680px;margin:0 auto">
 
-    <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;font-size:12px;font-weight:600;color:#c4b5fd;padding:6px 16px;margin-bottom:20px">
-      <span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;animation:pulse 2s infinite"></span>
-      Contestamos en menos de 1 hora
-    </span>
+    <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-balance text-white" style="color:#fff;margin:0 0 20px;line-height:1.08">
+      Recuperá el control de tus números.<br class="hidden sm:block"> Volvé a tomar aire.
+    </h2>
 
-    <h2 style="color:#fff;font-size:38px;font-weight:900;letter-spacing:-.8px;margin:0 0 14px;line-height:1.15">Tu negocio ordenado<br>empieza hoy</h2>
-    <p style="color:rgba(255,255,255,.65);font-size:16px;line-height:1.7;margin:0 0 32px">Probá gratis 7 días sin tarjeta. O si preferís hablar primero, estamos en WhatsApp ahora mismo.</p>
+    <p class="text-lg text-slate-400 text-balance" style="max-width:560px;margin:0 auto 32px;line-height:1.65;color:#94a3b8">
+      Dejá atrás las planillas colgadas, los chats perdidos y la incertidumbre del stock. Uní tu operación en ANMA y liderá tu negocio con datos reales.
+    </p>
 
-    <!-- Dos opciones claras -->
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
-      <a href="/registro" style="display:inline-flex;align-items:center;gap:10px;background:#059669;color:#fff;text-decoration:none;padding:16px 28px;border-radius:14px;font-size:16px;font-weight:800;box-shadow:0 12px 32px rgba(5,150,105,.4)">
-        <i class="fa-solid fa-rocket"></i> Probar gratis — 7 días
-      </a>
-      <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quer%C3%ADa%20hacerles%20una%20consulta." target="_blank" class="wa-cta-btn" style="padding:16px 28px;font-size:16px">
-        <i class="fa-brands fa-whatsapp"></i>
-        Traé aire fresco a tu gestión — Hablemos ahora
-      </a>
-    </div>
-
-    <div style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.45)">
-      <span><i class="fa-solid fa-lock" style="color:#34d399;margin-right:5px"></i>Sin tarjeta de crédito</span>
-      <span><i class="fa-solid fa-check" style="color:#34d399;margin-right:5px"></i>Datos seguros</span>
-      <span><i class="fa-solid fa-check" style="color:#34d399;margin-right:5px"></i>Cancelás cuando quieras</span>
-      <span><i class="fa-solid fa-flag" style="color:#34d399;margin-right:5px"></i>Hecho en Argentina</span>
-    </div>
-
-    <a href="mailto:ana.mbperalta@gmail.com" class="contact-email-link" style="margin-top:20px;color:rgba(255,255,255,.35)">
-      <i class="fa-solid fa-envelope"></i> ana.mbperalta@gmail.com
+    <a href="/registro" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-lg transition-all inline-block" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap">
+      Empezar a gestionar gratis ahora
     </a>
+
+    <span class="block text-xs uppercase tracking-wider font-semibold" style="color:#475569;margin-top:16px">
+      Sin contratos &bull; Sin tarjetas &bull; Configuración inmediata
+    </span>
 
   </div>
 </section>
