@@ -404,7 +404,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 /* STICKY MOBILE CTA BAR */
 .mobile-cta-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fff;border-top:1px solid #e5e7eb;padding:12px 16px;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.1)}
 .mobile-cta-bar a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:12px;font-weight:700;font-size:14px;text-decoration:none}
-.mobile-cta-bar .mb-primary{background:#059669;color:#fff}
+.mobile-cta-bar .mb-primary{background:#4f46e5;color:#fff}
 .mobile-cta-bar .mb-ghost{background:#f1f5f9;color:#0F172A}
 @media(max-width:680px){body{padding-bottom:76px}.fab-wa{display:none!important}}
 </style>
@@ -436,35 +436,23 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow"><span class="pulse-dot"></span> ANMA Pro · Hecho en Argentina · <strong style="color:#34d399">+15 negocios activos</strong></span>
-      <h1 class="h1">De los presupuestos<br>al cobro, todo<br><em>en un solo lugar</em></h1>
-      <p class="lead">Sin Excel, sin papeles, sin caos. Gestioná clientes, pedidos y stock desde una sola pantalla diseñada para negocios reales que necesitan moverse rápido.</p>
-      <!-- CTA principal (dominante) -->
-      <div style="margin-bottom:16px">
-        <a href="/registro" class="cta-primary-btn">
-          <i class="fa-solid fa-rocket" style="font-size:20px"></i>
-          <span>Empezar gratis — 7 días sin costo</span>
-          <span style="font-size:22px;opacity:.65;font-weight:400;margin-left:4px">→</span>
+      <h1 class="h1 font-bold tracking-tight text-balance">De los presupuestos al cobro, todo <em>en un solo lugar</em>.</h1>
+      <p class="lead text-balance">Sin Excel, sin papeles, sin caos. Gestioná tus clientes, pedidos y stock real desde una sola pantalla diseñada para negocios que venden al público, a empresas, o de ambas formas. La solución para moverte rápido.</p>
+      <!-- CTA: foco único + enlace secundario mínimo -->
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:22px">
+        <a href="/registro" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-md hover:shadow-lg transition-all" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap">
+          Empezar a gestionar gratis
+        </a>
+        <a href="/demo.html" class="hover:text-white transition-colors" style="font-size:14.5px;font-weight:600;color:rgba(255,255,255,.5);text-decoration:underline;text-underline-offset:4px;white-space:nowrap">
+          Ver Demo
         </a>
       </div>
 
-      <!-- CTA secundario + trust en la misma línea -->
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:22px">
-        <a href="/demo.html" class="cta-secondary-btn">
-          <span class="cta-play-circle"><i class="fa-solid fa-play" style="font-size:10px;margin-left:2px"></i></span>
-          Ver demo en vivo
-        </a>
-        <span style="color:rgba(255,255,255,.15);font-size:18px;line-height:1">|</span>
-        <a href="https://api.whatsapp.com/send?phone=5491169456863&text=Hola%2C%20quiero%20hablar%20con%20ventas%20de%20ANMA%20Pro" target="_blank" class="cta-secondary-btn">
-          <i class="fa-brands fa-whatsapp" style="color:#4ade80;font-size:16px"></i>
-          Hablar con ventas
-        </a>
-      </div>
-
-      <!-- Trust strip limpio sin redundancias -->
+      <!-- Trust strip -->
       <div class="hero-trust">
         <span><i class="fa-solid fa-lock"></i> Sin tarjeta de crédito</span>
         <span><i class="fa-solid fa-check"></i> Cancelás cuando quieras</span>
-        <span><i class="fa-solid fa-flag"></i> Hecho en Argentina</span>
+        <span><i class="fa-solid fa-shield-halved"></i> Hecho en Argentina</span>
         <span><i class="fa-solid fa-users"></i> +15 negocios activos</span>
       </div>
     </div>
@@ -1576,8 +1564,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 
 <!-- STICKY MOBILE CTA BAR -->
 <div class="mobile-cta-bar">
-  <a href="/registro" class="mb-primary"><i class="fa-solid fa-rocket"></i> Empezar gratis — 7 días</a>
-  <a href="/demo.html" class="mb-ghost"><i class="fa-solid fa-play"></i> Demo</a>
+  <a href="/registro" class="mb-primary">Empezar a gestionar gratis</a>
+  <a href="/demo.html" class="mb-ghost">Ver Demo</a>
 </div>
 
 <!-- FOOTER -->
