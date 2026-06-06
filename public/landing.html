@@ -431,6 +431,168 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 .mobile-cta-bar .mb-primary{background:#059669;color:#fff}
 .mobile-cta-bar .mb-ghost{background:#f1f5f9;color:#0F172A}
 @media(max-width:680px){body{padding-bottom:76px}.fab-wa{display:none!important}}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE FIXES — Mobile UX hardening
+   ═══════════════════════════════════════════════ */
+
+/* iOS safe-area inset para sticky CTA bar */
+@supports(padding:max(0px)){
+  .mobile-cta-bar{padding-bottom:max(12px,env(safe-area-inset-bottom))!important}
+  @media(max-width:680px){body{padding-bottom:calc(76px + env(safe-area-inset-bottom))!important}}
+}
+
+/* Evitar zoom iOS en links/inputs (mínimo 16px en interactivos críticos) */
+.faq summary,.form input,.form textarea,.form select{font-size:16px}
+
+/* Touch targets accesibles en navegación */
+@media(max-width:780px){
+  /* NAV — compacto pero visible */
+  .nav-in{padding:11px 0!important;gap:8px}
+  .logo{font-size:15.5px!important;letter-spacing:-.3px}
+  .logo-mark{width:28px!important;height:28px!important;font-size:12px}
+  .nav-cta{gap:6px!important;flex-shrink:0}
+  .nav-cta .btn{padding:8px 12px!important;font-size:12px!important;white-space:nowrap}
+  .nav-cta .btn i{font-size:11px}
+}
+
+@media(max-width:680px){
+  /* ── HERO ── */
+  .hero{padding:32px 0 52px!important}
+  .eyebrow{font-size:10.5px!important;padding:5px 11px!important;line-height:1.4;max-width:100%;white-space:normal;text-align:center}
+  .eyebrow strong{display:inline}
+  .lead{font-size:15px!important;margin-bottom:22px!important;line-height:1.6!important}
+  .hero-ctas{gap:14px!important;margin-bottom:18px!important;flex-direction:column;align-items:stretch}
+  /* Micro-garantías: 1 línea por garantía, centradas, separación cómoda */
+  .hero .flex.items-center.flex-wrap.mt-6{flex-direction:column!important;align-items:center!important;gap:10px!important;margin-top:18px!important;font-size:11px!important}
+
+  /* ── DEMO INTERACTIVO ── scroll horizontal con indicador */
+  #demo{padding:40px 0!important}
+  #demo .wrap{padding:0 12px!important}
+  #demo .demo-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:10px 10px 0 0}
+  #demo .demo-tabs::-webkit-scrollbar{display:none}
+  #demo .app-shell-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
+  #demo .app-shell-wrap::-webkit-scrollbar{height:6px}
+  #demo .app-shell-wrap::-webkit-scrollbar-thumb{background:rgba(124,58,237,.4);border-radius:99px}
+  #demo .app-layout{min-width:560px;height:auto!important;max-height:none!important}
+  #demo .app-view{min-width:560px}
+  #demo .app-tbl-wrap{padding:0 14px 14px!important}
+  #demo .app-tbl th,#demo .app-tbl td{font-size:11px!important;padding:7px 9px!important;white-space:nowrap!important}
+  #demo .demo-section-head h2,#demo h2{font-size:22px!important;letter-spacing:-.4px!important;line-height:1.2!important}
+  #demo .demo-section-head p,#demo > .wrap > div > p{font-size:13px!important}
+  /* Hint visual: desliza */
+  #demo .app-shell-wrap::after{content:"← desliza →";display:block;font-size:10px;color:rgba(255,255,255,.4);text-align:center;padding:6px 0;background:rgba(0,0,0,.3)}
+
+  /* ── ROI BLOCK ── reducir padding y tipografía */
+  section > .wrap > div[style*="border-radius:22px"]{padding:28px 22px!important;gap:22px!important;border-radius:18px!important}
+  section > .wrap > div[style*="border-radius:22px"] h3{font-size:20px!important;line-height:1.25!important;letter-spacing:-.3px!important}
+  section > .wrap > div[style*="border-radius:22px"] p{font-size:13.5px!important;line-height:1.65!important}
+  .roi-stats-col{flex:1 1 100%!important;min-width:0!important;width:100%!important}
+  .roi-stats-col > div div[style*="font-size:24px"]{font-size:22px!important}
+
+  /* ── PRICING ── tarjeta compacta */
+  #pricing{padding:44px 0!important}
+  #pricing > div{padding:0 14px!important}
+  #pricing > div > div[style*="background:#1a0b2e"]{padding:24px 20px!important;border-radius:18px!important}
+  #pricing h2{font-size:22px!important;letter-spacing:-.3px!important;line-height:1.2!important}
+  #pricing h2 br{display:none}
+  .pricing-left span[style*="font-size:64px"]{font-size:42px!important;letter-spacing:-1.5px!important}
+  .pricing-left span[style*="font-size:20px"]{font-size:15px!important}
+  .pricing-left span[style*="font-size:26px"]{font-size:22px!important;letter-spacing:-.5px!important}
+  .pricing-left span[style*="font-size:12px;font-weight:600"]{font-size:11px!important}
+  .pricing-right{padding-top:20px!important;gap:14px!important}
+  .pricing-right h4{font-size:13.5px!important}
+  .pricing-right p{font-size:11.5px!important;line-height:1.5!important}
+  /* Pie personalización: stack vertical */
+  #pricing > div > div[style*="rgba(26,11,46,.6)"]{flex-direction:column!important;gap:8px!important;padding:14px 18px!important;text-align:center}
+  #pricing > div > div[style*="rgba(26,11,46,.6)"] > div[style*="width:1px"]{display:none}
+
+  /* ── CTA FINAL ── */
+  #contact{padding:64px 16px!important}
+  #contact h2{font-size:24px!important;line-height:1.18!important;letter-spacing:-.5px!important;margin-bottom:16px!important}
+  #contact h2 br{display:none}
+  #contact > div > p{font-size:15px!important;line-height:1.65!important;margin-bottom:24px!important}
+  #contact a.cta-primary-btn{width:100%!important;padding:16px 22px!important;font-size:15.5px!important;justify-content:center;box-sizing:border-box}
+
+  /* ── EMPATÍA ── */
+  #sec-empathy{padding:48px 16px!important}
+  #sec-empathy h2{font-size:26px!important;line-height:1.15!important;letter-spacing:-.4px!important}
+  #sec-empathy h3{font-size:17px!important;line-height:1.35!important;margin-bottom:18px!important}
+  #sec-empathy p{font-size:14.5px!important;line-height:1.7!important;text-align:left}
+
+  /* ── CÓMO FUNCIONA ── */
+  #como-funciona{padding:48px 0!important}
+  #como-funciona > .wrap > div:first-child{margin-bottom:36px!important}
+  #como-funciona h2{font-size:24px!important;line-height:1.2!important}
+  #como-funciona h2 br{display:none}
+  #como-funciona > .wrap > div:first-child p{font-size:14.5px!important}
+  #como-funciona .grid{gap:36px!important}
+  #como-funciona h3{font-size:17px!important}
+  #como-funciona .paso-num{font-size:52px!important;letter-spacing:-2px!important;margin-bottom:2px!important}
+
+  /* ── CARACTERÍSTICAS ── */
+  #sec-caracteristicas{padding:48px 0!important}
+  #sec-caracteristicas h2{font-size:24px!important;letter-spacing:-.3px!important;line-height:1.18!important}
+  #sec-caracteristicas h2 br{display:none}
+  #sec-caracteristicas > .wrap > div:first-child p{font-size:14.5px!important}
+  #sec-caracteristicas blockquote{font-size:13.5px!important;padding-left:14px!important;max-width:100%!important;display:block!important}
+  .feat-grid{gap:12px!important}
+  .feat-grid > div{padding:20px 18px!important}
+  .feat-grid h4{font-size:14.5px!important}
+  .feat-grid p{font-size:13px!important;line-height:1.6!important}
+
+  /* ── TESTIMONIOS ── */
+  .testi-grid{gap:14px!important}
+  .testi-grid > div{padding:22px 20px!important}
+  .testi-grid p{font-size:14px!important;line-height:1.65!important}
+
+  /* ── PARA QUIÉN ── */
+  #para-quien{padding:48px 16px!important}
+  #para-quien h2{font-size:24px!important;letter-spacing:-.3px!important}
+  #para-quien > div > div:first-child p{font-size:14.5px!important}
+  #para-quien-grid{gap:16px!important}
+  #para-quien-grid > div{padding:24px 22px!important;border-radius:16px!important}
+  #para-quien-grid h3{font-size:17px!important;margin-bottom:8px!important}
+  #para-quien-grid p{font-size:13.5px!important;line-height:1.65!important}
+
+  /* ── FAQ ── */
+  #faq{padding:52px 0!important}
+  #faq h2{font-size:24px!important;letter-spacing:-.3px!important;line-height:1.2!important}
+  #faq h2 br{display:none}
+  .faq summary{padding:16px 18px!important;font-size:14px!important;gap:10px;align-items:flex-start}
+  .faq summary::after{margin-top:2px}
+  .faq-body{padding:14px 18px 18px!important;font-size:13.5px!important;line-height:1.65!important}
+
+  /* ── FOOTER ── */
+  footer{padding:32px 0 90px!important}
+  .foot-grid{gap:24px!important}
+  .foot-col a{padding:7px 0!important;min-height:36px;display:flex;align-items:center}
+
+  /* Sticky CTA bar — más compacto en mobile, tap target ok */
+  .mobile-cta-bar{padding:10px 12px!important;gap:8px!important}
+  .mobile-cta-bar a{padding:13px 10px!important;font-size:13.5px!important;line-height:1.2;text-align:center}
+}
+
+/* Móviles muy chicos */
+@media(max-width:420px){
+  .logo{font-size:14px!important}
+  .nav-cta .btn{padding:7px 10px!important;font-size:11.5px!important}
+  .h1{font-size:24px!important;letter-spacing:-.3px!important;line-height:1.12!important}
+  .lead{font-size:14px!important}
+  .cta-primary-btn{font-size:14.5px!important;padding:15px 20px!important;letter-spacing:-.2px}
+  .pricing-left span[style*="font-size:64px"]{font-size:36px!important}
+  #demo .app-layout,#demo .app-view{min-width:500px}
+  #contact h2{font-size:22px!important}
+  #sec-empathy h2,#sec-caracteristicas h2,#para-quien h2,#faq h2,#como-funciona h2,#pricing h2{font-size:22px!important}
+  .mobile-cta-bar a{font-size:12.5px!important;padding:12px 8px!important}
+}
+
+/* Asegurar que ninguna sección desborde horizontalmente */
+@media(max-width:680px){
+  section{max-width:100vw;overflow-x:hidden}
+  #demo{overflow-x:hidden}
+  #demo .app-shell-wrap{max-width:100%}
+}
 </style>
 </head>
 <body>
