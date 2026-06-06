@@ -367,7 +367,7 @@ td b{color:var(--txt);font-weight:600}
     <div class="sb-sec">Gestión</div>
     <div class="sb-item active" data-sec="dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
     <div class="sb-item" data-sec="pedido"><i class="fa-solid fa-file-invoice-dollar"></i> Nuevo pedido</div>
-    <div class="sb-item" data-sec="clientes"><i class="fa-solid fa-users"></i> Clientes <span class="sb-chip">83</span></div>
+    <div class="sb-item" data-sec="clientes"><i class="fa-solid fa-users"></i> Clientes <span class="sb-chip">6</span></div>
 
     <div class="sb-sec">Catálogo</div>
     <div class="sb-item" data-sec="productos"><i class="fa-solid fa-cube"></i> Productos</div>
@@ -414,232 +414,342 @@ td b{color:var(--txt);font-weight:600}
       <div class="ph">
         <div class="ph-left">
           <h2>Dashboard</h2>
-          <p>Facturación, pedidos y métricas de distribución · Mayo 2026</p>
+          <p>Resumen de tu negocio · Junio 2026</p>
         </div>
         <div class="ph-right">
-          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-calendar"></i> Este mes</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-calendar"></i> Este mes <i class="fa-solid fa-chevron-down" style="font-size:9px;opacity:.6"></i></button>
           <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-download"></i> Exportar</button>
           <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo pedido</button>
         </div>
       </div>
 
+      <!-- Sub-tabs reales: Resumen / Presupuestos / Análisis / Seguimiento -->
       <div class="tab-bar">
         <button class="tab-btn active">Resumen</button>
-        <button class="tab-btn">Pedidos</button>
+        <button class="tab-btn">Presupuestos</button>
         <button class="tab-btn">Análisis</button>
-        <button class="tab-btn">Seguimiento <span style="background:var(--acento);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px">5</span></button>
+        <button class="tab-btn">Seguimiento <span style="background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px">1</span></button>
       </div>
 
-      <!-- Hoy importa -->
+      <!-- Hoy importa (espejo de Historial.jsx) -->
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;font-size:11px;font-weight:800;color:var(--txt);text-transform:uppercase;letter-spacing:.6px">
         <i class="fa-solid fa-bolt" style="color:var(--amber)"></i> Hoy importa
-        <span style="background:var(--surface2);border:1px solid var(--border);color:var(--txt3);padding:1px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-left:auto">9</span>
+        <span style="background:var(--surface2);border:1px solid var(--border);color:var(--txt3);padding:1px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-left:auto">3</span>
       </div>
       <div class="today-grid">
         <div class="today-card red">
           <div class="today-top">
             <div class="today-ico"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-            <div><div class="today-lbl">Cuentas a cobrar</div><div class="today-val">5 <small>facturas</small></div></div>
+            <div><div class="today-lbl">Cobros vencidos</div><div class="today-val">1 <small>pedido</small></div></div>
             <i class="fa-solid fa-chevron-right today-arr"></i>
           </div>
-          <div class="today-desc"><b style="color:var(--red);font-variant-numeric:tabular-nums">$ 284.500</b> vencidas · más de 15 días</div>
+          <div class="today-desc"><b style="color:var(--red);font-variant-numeric:tabular-nums">$ 63.420</b> sin cobrar · entrega ya pasó</div>
         </div>
         <div class="today-card amber">
           <div class="today-top">
             <div class="today-ico"><i class="fa-solid fa-truck-fast"></i></div>
-            <div><div class="today-lbl">Despachos hoy</div><div class="today-val">8 <small>rutas</small></div></div>
+            <div><div class="today-lbl">Entregas hoy</div><div class="today-val">1 <small>pedido</small></div></div>
             <i class="fa-solid fa-chevron-right today-arr"></i>
           </div>
-          <div class="today-desc">CABA Norte, GBA Oeste, Rosario — confirmados</div>
+          <div class="today-desc">Distribuidora del Sur</div>
         </div>
         <div class="today-card brand">
           <div class="today-top">
             <div class="today-ico"><i class="fa-solid fa-comments"></i></div>
-            <div><div class="today-lbl">Seguimientos</div><div class="today-val">5 <small>presupuestos</small></div></div>
+            <div><div class="today-lbl">A confirmar</div><div class="today-val">1 <small>seguimiento</small></div></div>
             <i class="fa-solid fa-chevron-right today-arr"></i>
           </div>
-          <div class="today-desc">Enviados hace 4+ días sin respuesta</div>
+          <div class="today-desc">Enviado hace 3+ días — recordale antes de que se enfríe</div>
         </div>
       </div>
 
-      <!-- KPIs -->
+      <!-- KPIs reales (Ventas Brutas / Ingresos Caja / Ticket Promedio / Presupuestos) -->
       <div class="bento">
         <div class="bento-kpi">
           <div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-chart-line"></i></div>
-          <div class="kpi-label">Facturación bruta</div>
-          <div class="kpi-val">$ 2.184.600</div>
-          <div class="kpi-foot"><span class="kpi-delta">↑ 18%</span> vs mes anterior</div>
+          <div class="kpi-label">Ventas Brutas</div>
+          <div class="kpi-val">$ 554.850</div>
+          <div class="kpi-foot"><span class="kpi-delta">↑ 18%</span> vs período anterior</div>
         </div>
-        <div class="bento-kpi">
+        <div class="bento-kpi" style="border-left:3px solid var(--green)">
           <div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
-          <div class="kpi-label">Cobrado</div>
-          <div class="kpi-val">$ 1.730.200</div>
-          <div class="kpi-foot"><span class="kpi-delta">↑ 12%</span> vs mes anterior</div>
-        </div>
-        <div class="bento-kpi">
-          <div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-box-open"></i></div>
-          <div class="kpi-label">Pedidos del mes</div>
-          <div class="kpi-val">147</div>
-          <div class="kpi-foot">128 entregados · 19 en camino</div>
+          <div class="kpi-label">Ingresos Caja</div>
+          <div class="kpi-val">$ 274.500</div>
+          <div class="kpi-foot"><span class="kpi-delta">↑ 24%</span> vs período anterior</div>
         </div>
         <div class="bento-kpi">
           <div class="kpi-icon-wrap" style="background:var(--blue-lt);color:var(--blue)"><i class="fa-solid fa-ticket"></i></div>
-          <div class="kpi-label">Pedido promedio</div>
-          <div class="kpi-val">$ 14.860</div>
-          <div class="kpi-foot"><span class="kpi-delta">↑ 5%</span> vs mes anterior</div>
+          <div class="kpi-label">Ticket Promedio</div>
+          <div class="kpi-val">$ 92.475</div>
+          <div class="kpi-foot">Sobre 6 presupuestos</div>
+        </div>
+        <div class="bento-kpi">
+          <div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+          <div class="kpi-label">Presupuestos</div>
+          <div class="kpi-val">6</div>
+          <div class="kpi-foot">Conversión 67% · 4 cerrados</div>
         </div>
 
-        <!-- Bar chart -->
+        <!-- Bar chart: Ingresos cobrados día a día (espejo de BarChart en Historial.jsx) -->
         <div class="bento-chart">
-          <div class="bento-chart-title"><i class="fa-solid fa-chart-bar"></i> Facturación cobrada — este mes</div>
+          <div class="bento-chart-title"><i class="fa-solid fa-chart-bar"></i> Ingresos cobrados — día a día · Junio 2026</div>
           <div class="bar-chart">
-            <div class="bc"><div class="bb" style="height:25%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:40%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
             <div class="bc"><div class="bb" style="height:18%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:55%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:72%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:45%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:30%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:85%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:68%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:52%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:94%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:100%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:25%;background:var(--grad)"></div></div>
             <div class="bc"><div class="bb" style="height:42%;background:var(--grad)"></div></div>
             <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
             <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:62%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:76%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:55%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:35%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:58%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:22%;background:var(--grad)"></div></div>
             <div class="bc"><div class="bb" style="height:48%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:82%;background:var(--grad)"></div></div>
-            <div class="bc"><div class="bb" style="height:70%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:72%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:55%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:38%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:62%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:88%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:45%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:78%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:100%;background:var(--grad)"></div></div>
+            <div class="bc"><div class="bb" style="height:0%;background:var(--grad)"></div></div>
           </div>
           <div style="display:flex;justify-content:space-between;margin-top:5px">
             <span class="bl">1</span><span class="bl">5</span><span class="bl">10</span><span class="bl">15</span><span class="bl">20</span><span class="bl">25</span>
           </div>
+          <div style="display:flex;gap:6px;align-items:center;margin-top:8px;font-size:10px;color:var(--txt4)">
+            <div style="width:10px;height:10px;background:var(--brand);opacity:.45;border-radius:2px;flex-shrink:0"></div>
+            <span>Mes anterior (referencia)</span>
+          </div>
         </div>
 
-        <!-- Donut chart -->
+        <!-- Donut: Estado de pedidos con STATUS_MAP real -->
         <div class="bento-chart">
           <div class="bento-chart-title"><i class="fa-solid fa-chart-pie"></i> Estado de pedidos</div>
           <div class="donut-wrap">
             <svg width="100" height="100" viewBox="0 0 90 90" style="flex-shrink:0">
               <circle cx="45" cy="45" r="36" fill="none" stroke="#F3F4F6" stroke-width="10"/>
-              <circle cx="45" cy="45" r="36" fill="none" stroke="#059669" stroke-width="10" stroke-dasharray="148 226" stroke-dashoffset="0" transform="rotate(-90 45 45)" stroke-linecap="round"/>
-              <circle cx="45" cy="45" r="36" fill="none" stroke="#2563EB" stroke-width="10" stroke-dasharray="48 226" stroke-dashoffset="-148" transform="rotate(-90 45 45)" stroke-linecap="round"/>
-              <circle cx="45" cy="45" r="36" fill="none" stroke="#D97706" stroke-width="10" stroke-dasharray="18 226" stroke-dashoffset="-196" transform="rotate(-90 45 45)" stroke-linecap="round"/>
-              <circle cx="45" cy="45" r="36" fill="none" stroke="#DC2626" stroke-width="10" stroke-dasharray="12 226" stroke-dashoffset="-214" transform="rotate(-90 45 45)" stroke-linecap="round"/>
-              <text x="45" y="47" text-anchor="middle" font-size="13" font-weight="800" fill="#111827">147</text>
-              <text x="45" y="57" text-anchor="middle" font-size="7" fill="#6B7280">pedidos</text>
+              <!-- Confirmado 33% (2 de 6) -->
+              <circle cx="45" cy="45" r="36" fill="none" stroke="#16A34A" stroke-width="10" stroke-dasharray="75 226" stroke-dashoffset="0" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+              <!-- Enviado 33% (2 de 6) -->
+              <circle cx="45" cy="45" r="36" fill="none" stroke="#3B82F6" stroke-width="10" stroke-dasharray="75 226" stroke-dashoffset="-75" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+              <!-- Entregado 17% (1 de 6) -->
+              <circle cx="45" cy="45" r="36" fill="none" stroke="#15803D" stroke-width="10" stroke-dasharray="38 226" stroke-dashoffset="-150" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+              <!-- En producción 17% (1 de 6) -->
+              <circle cx="45" cy="45" r="36" fill="none" stroke="#D97706" stroke-width="10" stroke-dasharray="38 226" stroke-dashoffset="-188" transform="rotate(-90 45 45)" stroke-linecap="round"/>
+              <text x="45" y="47" text-anchor="middle" font-size="13" font-weight="800" fill="#111827">6</text>
+              <text x="45" y="57" text-anchor="middle" font-size="7" fill="#6B7280">presupuestos</text>
             </svg>
             <div class="donut-leg">
-              <div class="donut-row"><span class="dd" style="background:#059669"></span> Entregado <span class="pct" style="color:#059669;background:rgba(5,150,105,.1)">65%</span><span class="donut-n">96</span></div>
-              <div class="donut-row"><span class="dd" style="background:#2563EB"></span> En camino <span class="pct" style="color:#2563EB;background:#EFF6FF">21%</span><span class="donut-n">31</span></div>
-              <div class="donut-row"><span class="dd" style="background:#D97706"></span> Preparando <span class="pct" style="color:#D97706;background:#FFFBEB">8%</span><span class="donut-n">12</span></div>
-              <div class="donut-row"><span class="dd" style="background:#DC2626"></span> Cancelado <span class="pct" style="color:#DC2626;background:#FEF2F2">5%</span><span class="donut-n">8</span></div>
+              <div class="donut-row"><span class="dd" style="background:#16A34A"></span> Confirmado <span class="pct" style="color:#16A34A;background:rgba(22,163,74,.10)">33%</span><span class="donut-n">2</span></div>
+              <div class="donut-row"><span class="dd" style="background:#3B82F6"></span> Enviado <span class="pct" style="color:#3B82F6;background:#EFF6FF">33%</span><span class="donut-n">2</span></div>
+              <div class="donut-row"><span class="dd" style="background:#15803D"></span> Entregado <span class="pct" style="color:#15803D;background:rgba(21,128,61,.10)">17%</span><span class="donut-n">1</span></div>
+              <div class="donut-row"><span class="dd" style="background:#D97706"></span> En producción <span class="pct" style="color:#D97706;background:#FFFBEB">17%</span><span class="donut-n">1</span></div>
             </div>
           </div>
           <div style="font-size:9.5px;color:var(--txt4);text-align:center;margin-top:10px">Click en un estado para filtrar la lista</div>
         </div>
       </div>
 
-      <!-- Top clientes -->
+      <!-- Tabla Últimos presupuestos (columnas reales con DotBadge) -->
       <div class="tbl-card" style="margin-bottom:16px">
         <div class="tbl-hdr">
-          <span class="tbl-hdr-title">Últimos pedidos</span>
+          <span class="tbl-hdr-title">Últimos presupuestos</span>
           <a class="tbl-link">Ver todos →</a>
         </div>
         <table>
           <thead>
-            <tr><th>N°</th><th>Cliente</th><th>Productos</th><th>Entrega</th><th>Estado</th><th>Pago</th><th style="text-align:right">Total</th><th></th></tr>
+            <tr><th style="width:80px">N°</th><th>Cliente</th><th style="text-align:right;width:120px">Total</th><th style="width:150px">Pago</th><th style="width:150px">Estado</th><th style="width:80px">Fecha</th><th></th></tr>
           </thead>
           <tbody>
-            <tr><td class="td-num">PED-0892</td><td><b>Supermercado El Cruce</b><div style="font-size:11px;color:var(--txt3)">Luján, GBA Oeste</div></td><td style="font-size:11.5px">Aceite × 48, Arroz × 120</td><td>27/05</td><td><span class="badge b-confirmed">Entregado</span></td><td><span class="badge b-paid">Pagado</span></td><td class="td-amt">$ 68.400</td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
-            <tr><td class="td-num">PED-0891</td><td><b>Almacén Norte S.A.</b><div style="font-size:11px;color:var(--txt3)">CABA, Villa Urquiza</div></td><td style="font-size:11.5px">Yerba × 200, Azúcar × 100</td><td style="color:var(--red);font-weight:700">HOY</td><td><span class="badge b-negotiating">En camino</span></td><td><span class="badge b-partial">Seña</span></td><td class="td-amt">$ 124.800</td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
-            <tr><td class="td-num">PED-0890</td><td><b>Cooperativa La Unión</b><div style="font-size:11px;color:var(--txt3)">Rosario, SF</div></td><td style="font-size:11.5px">Mix surtido × 500 bultos</td><td>28/05</td><td><span class="badge b-sent">Preparando</span></td><td><span class="badge b-pending">Pendiente</span></td><td class="td-amt">$ 342.000</td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
-            <tr><td class="td-num">PED-0889</td><td><b>Kiosco Central Srl</b><div style="font-size:11px;color:var(--txt3)">La Plata, BA</div></td><td style="font-size:11.5px">Golosinas × 80, Fiambre × 20</td><td>26/05</td><td><span class="badge b-confirmed">Entregado</span></td><td><span class="badge b-paid">Pagado</span></td><td class="td-amt">$ 28.600</td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
-            <tr><td class="td-num">PED-0888</td><td><b>Ferretería Central</b><div style="font-size:11px;color:var(--txt3)">Córdoba Capital</div></td><td style="font-size:11.5px">Limpieza × 60 cajas</td><td>25/05</td><td><span class="badge b-confirmed">Entregado</span></td><td><span class="badge b-partial">CC 30d</span></td><td class="td-amt">$ 89.200</td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
+            <tr>
+              <td class="td-num"><b>P-0024</b></td>
+              <td><b>Distribuidora del Sur</b><div style="font-size:11px;color:var(--txt3)">Marcos Sánchez</div></td>
+              <td class="td-amt">$ 187.450</td>
+              <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#D97706"><span style="width:7px;height:7px;border-radius:50%;background:#D97706"></span>Seña abonada</span></td>
+              <td><span style="display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6"></span>Enviado</span></td>
+              <td style="color:var(--green);font-weight:700;font-size:11.5px">Hoy</td>
+              <td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td>
+            </tr>
+            <tr>
+              <td class="td-num"><b>P-0023</b></td>
+              <td><b>Café Andino</b><div style="font-size:11px;color:var(--txt3)">Lucía Paredes</div></td>
+              <td class="td-amt">$ 94.200</td>
+              <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#16A34A"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A"></span>Pagado</span></td>
+              <td><span style="display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#16A34A"></span>Confirmado</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">22/05</td>
+              <td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td>
+            </tr>
+            <tr>
+              <td class="td-num"><b>P-0022</b></td>
+              <td><b>Estudio Mendoza</b><div style="font-size:11px;color:var(--txt3)">Equipo Estudio</div></td>
+              <td class="td-amt">$ 145.000</td>
+              <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#16A34A"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A"></span>Pagado</span></td>
+              <td><span style="display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#15803D"></span>Entregado</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">18/05</td>
+              <td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td>
+            </tr>
+            <tr>
+              <td class="td-num"><b>P-0021</b></td>
+              <td><b>Marta Lugones</b><div style="font-size:11px;color:var(--txt3)">—</div></td>
+              <td class="td-amt">$ 32.800</td>
+              <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#D97706"><span style="width:7px;height:7px;border-radius:50%;background:#D97706"></span>Seña abonada</span></td>
+              <td><span style="display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#D97706"></span>En producción</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">15/05</td>
+              <td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td>
+            </tr>
+            <tr style="background:rgba(220,38,38,.04)">
+              <td class="td-num"><b>P-0020</b></td>
+              <td><b>Bazar San Telmo</b><div style="font-size:11px;color:var(--txt3)">Romina Gómez</div></td>
+              <td class="td-amt">$ 76.500</td>
+              <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#DC2626"><span style="width:7px;height:7px;border-radius:50%;background:#DC2626"></span>Pago pendiente</span></td>
+              <td><span style="display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6"></span>Enviado</span></td>
+              <td style="color:var(--red);font-weight:700;font-size:11.5px">11/05</td>
+              <td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td>
+            </tr>
+            <tr>
+              <td class="td-num"><b>P-0019</b></td>
+              <td><b>Diego Romero</b><div style="font-size:11px;color:var(--txt3)">—</div></td>
+              <td class="td-amt">$ 18.900</td>
+              <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#16A34A"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A"></span>Pagado</span></td>
+              <td><span style="display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#16A34A"></span>Confirmado</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">04/05</td>
+              <td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td>
+            </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Insights -->
+      <!-- Insights (sobre métricas reales) -->
       <div class="insight-card">
         <div class="insight-hdr"><i class="fa-solid fa-lightbulb"></i> Insights del período <span class="insight-chip">3</span></div>
         <div class="insights">
-          <div class="insight suc"><div class="insight-ico"><i class="fa-solid fa-rocket"></i></div><div class="insight-body"><b>Facturación creció 18% vs mes anterior</b><p>El aumento proviene principalmente de Cooperativa La Unión y nuevos clientes del GBA Oeste. Conviene reforzar esa zona.</p></div></div>
-          <div class="insight war"><div class="insight-ico"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="insight-body"><b>$ 284.500 en cuentas vencidas a +15 días</b><p>5 clientes superaron su plazo de pago. Priorizar contacto hoy: Almacén Norte (mayor monto) y Kiosco Sur.</p></div></div>
-          <div class="insight inf"><div class="insight-ico"><i class="fa-solid fa-circle-info"></i></div><div class="insight-body"><b>Ruta GBA Oeste tiene el costo por entrega más bajo</b><p>$ 890 por parada vs $ 1.420 promedio. Evaluar concentrar más clientes en esa zona para mejorar el margen.</p></div></div>
+          <div class="insight suc"><div class="insight-ico"><i class="fa-solid fa-rocket"></i></div><div class="insight-body"><b>Las ventas crecieron un 18% respecto al período anterior</b><p>Buen ritmo en el cierre. Mantené el seguimiento de los pedidos en "Enviado" — son la próxima conversión.</p></div></div>
+          <div class="insight war"><div class="insight-ico"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="insight-body"><b>$ 63.420 sin cobrar en pedidos confirmados con entrega pasada</b><p>1 pedido vencido. Priorizá el contacto antes de que se enfríe: Bazar San Telmo (11/05).</p></div></div>
+          <div class="insight inf"><div class="insight-ico"><i class="fa-solid fa-star"></i></div><div class="insight-body"><b>Conversión del 67% — cerrás 2 de cada 3 presupuestos que enviás</b><p>Por encima del promedio. Considerá subir tu margen estándar o probar precios premium en productos clave.</p></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ═══ NUEVO PEDIDO ═══ -->
+    <!-- ═══ NUEVO PEDIDO (espejo de Presupuesto.jsx) ═══ -->
     <section class="sec" id="sec-pedido">
       <div class="ph">
         <div class="ph-left">
-          <h2>Nuevo pedido</h2>
-          <p>Cargá el pedido y generá la remito en segundos</p>
+          <h2>Nuevo pedido <span style="font-size:13px;color:var(--txt3);font-weight:600;margin-left:8px">· P-0025</span></h2>
+          <p>Cargá items, ajustá margen y mandalo por WhatsApp en segundos</p>
         </div>
         <div class="ph-right">
-          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-download"></i> Vista previa</button>
-          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Confirmar pedido</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-eye"></i> Vista previa</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Guardar borrador</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-paper-plane"></i> Confirmar y enviar</button>
         </div>
       </div>
       <div class="form-grid">
         <div class="card">
-          <div class="card-title"><i class="fa-solid fa-building"></i> Cliente</div>
+          <!-- ── Cliente (fields reales: Contacto + Empresa + WA + Email) ── -->
+          <div class="card-title"><i class="fa-solid fa-user"></i> Cliente</div>
           <div class="grid2">
-            <div class="fg"><label>Razón social</label><input value="Supermercado El Cruce"></div>
-            <div class="fg"><label>CUIT</label><input value="30-71234567-8"></div>
+            <div class="fg">
+              <label>Contacto (buscar en CRM)</label>
+              <div style="position:relative">
+                <input value="Marcela Torres" placeholder="Nombre del cliente">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--txt4);font-size:11px;pointer-events:none"></i>
+              </div>
+            </div>
+            <div class="fg"><label>Empresa <span style="font-weight:400;color:var(--txt3);font-size:10.5px">(opcional)</span></label><input value="Supermercado El Cruce" placeholder="Empresa S.A."></div>
           </div>
           <div class="grid2">
-            <div class="fg"><label>Contacto</label><input value="Marcela Torres"></div>
-            <div class="fg"><label>WhatsApp</label><input value="+54 9 11 5678-9012"></div>
-          </div>
-          <div class="fg"><label>Dirección de entrega</label><input value="Rivadavia 1450, Luján, GBA Oeste"></div>
-          <div class="grid2">
-            <div class="fg"><label>Fecha de entrega</label><input value="2026-06-03" type="date"></div>
-            <div class="fg"><label>Condición de pago</label><select><option selected>Cuenta corriente 30d</option><option>Contado</option><option>Cheque a 45d</option><option>Seña 50%</option></select></div>
+            <div class="fg"><label>WhatsApp</label><input value="+54 9 11 5678-9012" placeholder="+54 351 1234567"></div>
+            <div class="fg"><label>Email del cliente</label><input type="email" value="marcela@elcruce.com" placeholder="cliente@email.com"></div>
           </div>
 
-          <div class="card-title" style="margin-top:16px"><i class="fa-solid fa-boxes-stacked"></i> Productos del pedido</div>
+          <!-- ── Productos (columnas reales: Producto / Cant. / Precio u. / Subtotal) ── -->
+          <div class="card-title" style="margin-top:18px;display:flex;align-items:center;justify-content:space-between">
+            <span><i class="fa-solid fa-cube"></i> Productos del pedido</span>
+            <span style="font-size:11px;color:var(--txt3);font-weight:500;text-transform:none;letter-spacing:0">4 items</span>
+          </div>
           <div class="tbl-card" style="margin-bottom:10px">
             <table>
-              <thead><tr><th>Producto</th><th>Unid.</th><th>Bultos</th><th style="text-align:right">P/Bulto</th><th style="text-align:right">Subtotal</th></tr></thead>
+              <thead><tr><th>Producto</th><th style="width:110px">Variante</th><th style="width:80px;text-align:center">Cant.</th><th style="width:120px;text-align:right">Precio u.</th><th style="width:130px;text-align:right">Subtotal</th><th style="width:36px"></th></tr></thead>
               <tbody>
-                <tr><td>Aceite de girasol 1L</td><td>12×</td><td>4</td><td class="td-amt">$ 8.400</td><td class="td-amt">$ 33.600</td></tr>
-                <tr><td>Arroz largo fino 1kg</td><td>20×</td><td>6</td><td class="td-amt">$ 5.800</td><td class="td-amt">$ 34.800</td></tr>
-                <tr><td>Yerba compuesta 500g</td><td>10×</td><td>10</td><td class="td-amt">$ 3.200</td><td class="td-amt">$ 32.000</td></tr>
-                <tr><td>Azúcar blanca 1kg</td><td>25×</td><td>4</td><td class="td-amt">$ 4.600</td><td class="td-amt">$ 18.400</td></tr>
+                <tr><td><b>Pack mayorista x30</b><div style="font-size:10.5px;color:var(--txt3)">SKU: PCK-MAY-30</div></td><td style="color:var(--txt3);font-size:11.5px">—</td><td style="text-align:center;font-variant-numeric:tabular-nums">12</td><td class="td-amt">$ 3.140</td><td class="td-amt">$ 37.680</td><td><i class="fa-solid fa-trash" style="color:var(--red);opacity:.6;font-size:11px"></i></td></tr>
+                <tr><td><b>Modelo Lux Premium</b><div style="font-size:10.5px;color:var(--txt3)">SKU: MOD-LUX</div></td><td style="font-size:11.5px;color:var(--txt2)">Negro · M</td><td style="text-align:center;font-variant-numeric:tabular-nums">3</td><td class="td-amt">$ 9.500</td><td class="td-amt">$ 28.500</td><td><i class="fa-solid fa-trash" style="color:var(--red);opacity:.6;font-size:11px"></i></td></tr>
+                <tr><td><b>Catálogo impreso A5</b><div style="font-size:10.5px;color:var(--txt3)">SKU: CAT-A5</div></td><td style="color:var(--txt3);font-size:11.5px">—</td><td style="text-align:center;font-variant-numeric:tabular-nums">20</td><td class="td-amt">$ 2.800</td><td class="td-amt">$ 56.000</td><td><i class="fa-solid fa-trash" style="color:var(--red);opacity:.6;font-size:11px"></i></td></tr>
+                <tr><td><b>Insumos pack base</b><div style="font-size:10.5px;color:var(--txt3)">SKU: INS-BAS</div></td><td style="color:var(--txt3);font-size:11.5px">—</td><td style="text-align:center;font-variant-numeric:tabular-nums">8</td><td class="td-amt">$ 1.580</td><td class="td-amt">$ 12.640</td><td><i class="fa-solid fa-trash" style="color:var(--red);opacity:.6;font-size:11px"></i></td></tr>
               </tbody>
             </table>
           </div>
           <button style="background:var(--surface2);border:1.5px dashed var(--brand);color:var(--brand);padding:9px;border-radius:9px;font-weight:700;font-size:12px;cursor:pointer;width:100%;font-family:inherit"><i class="fa-solid fa-plus"></i> Agregar producto</button>
 
-          <div class="fg" style="margin-top:16px"><label>Observaciones internas</label><textarea rows="2" placeholder="Ej: horario de descarga, contacto en portería, indicaciones del chofer…"></textarea></div>
+          <!-- ── Modalidad y fechas (campos reales) ── -->
+          <div class="card-title" style="margin-top:18px"><i class="fa-solid fa-sliders"></i> Modalidad y entrega</div>
+          <div class="grid2">
+            <div class="fg"><label>Modalidad</label><select><option>Minorista (B2C)</option><option selected>Mayorista (B2B)</option><option>Mixto</option></select></div>
+            <div class="fg"><label>Fecha pactada</label><input value="2026-06-15" type="date"></div>
+          </div>
+          <div class="grid2">
+            <div class="fg"><label>Estado del pedido</label><select><option selected>Borrador</option><option>Enviado</option><option>Confirmado</option><option>En producción</option><option>Entregado</option><option>Cancelado</option></select></div>
+            <div class="fg"><label>Estado de pago</label><select><option selected>Pago pendiente</option><option>Seña abonada</option><option>Pagado</option></select></div>
+          </div>
+
+          <!-- ── Ajustes comerciales (campos reales: Margen, Seña, Logo, Descuento) ── -->
+          <div class="card-title" style="margin-top:18px"><i class="fa-solid fa-percent"></i> Ajustes comerciales</div>
+          <div class="grid2">
+            <div class="fg"><label>Margen ganancia (%)</label><input type="number" value="42" min="0" max="100"></div>
+            <div class="fg"><label>Seña requerida (%)</label><input type="number" value="30" min="0" max="100"></div>
+          </div>
+          <div class="grid2">
+            <div class="fg"><label>Descuento al cliente (%)</label><input type="number" value="5" min="0" max="100"></div>
+            <div class="fg"><label>Impresión / logo x u. ($)</label><input type="number" value="0" min="0"></div>
+          </div>
+
+          <!-- ── Notas reales ── -->
+          <div class="card-title" style="margin-top:18px"><i class="fa-solid fa-note-sticky"></i> Notas</div>
+          <div class="fg"><label>Nota interna <span style="font-weight:400;color:var(--txt3);font-size:10.5px">(solo para vos)</span></label><textarea rows="2" placeholder="Solo para vos…">Confirmó por WhatsApp el 03/06 — facturar contra entrega</textarea></div>
+          <div class="fg"><label>Nota al cliente <span style="font-weight:400;color:var(--txt3);font-size:10.5px">(aparece en el PDF)</span></label><textarea rows="2" placeholder="Visible en el presupuesto…">Plazo de entrega estimado: 7 días hábiles desde la confirmación de la seña.</textarea></div>
         </div>
 
+        <!-- ── Sidebar Resumen (campos reales: Subtotal / Descuento / Total / Seña / Margen estimado) ── -->
         <div>
           <div class="card" style="position:sticky;top:120px">
-            <div class="card-title"><i class="fa-solid fa-calculator"></i> Resumen del pedido</div>
-            <div class="calc-row"><span>Subtotal mercadería</span><b>$ 118.800</b></div>
-            <div class="calc-row"><span>Descuento cliente (5%)</span><b style="color:var(--green)">− $ 5.940</b></div>
-            <div class="calc-row"><span>Costo de flete</span><b>$ 4.200</b></div>
-            <div class="calc-row"><span>IVA (21%)</span><b>$ 24.393</b></div>
-            <div class="calc-total"><span>Total c/IVA</span><span>$ 141.453</span></div>
-            <div style="background:var(--green-lt);border:1px solid rgba(5,150,105,.2);border-radius:10px;padding:10px 12px;margin-top:12px;font-size:11.5px">
-              <b style="display:block;margin-bottom:3px;color:var(--green)">Margen estimado: $ 32.800 (27%)</b>
-              <span style="color:var(--txt3)">Sobre costo de compra + flete + carga/descarga</span>
+            <div class="card-title"><i class="fa-solid fa-receipt"></i> Resumen del pedido</div>
+            <div class="calc-row"><span>Subtotal items</span><b>$ 134.820</b></div>
+            <div class="calc-row"><span>Descuento cliente (5%)</span><b style="color:var(--green)">− $ 6.741</b></div>
+            <div class="calc-total"><span>Total</span><span>$ 128.079</span></div>
+
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-top:12px;font-size:12px;color:var(--txt2)">
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                <span>Seña requerida (30%)</span>
+                <b style="color:var(--brand)">$ 38.424</b>
+              </div>
+              <div style="display:flex;justify-content:space-between;color:var(--txt3);font-size:11px">
+                <span>Resto a la entrega</span>
+                <span style="font-variant-numeric:tabular-nums">$ 89.655</span>
+              </div>
             </div>
+
+            <div style="background:var(--green-lt);border:1px solid rgba(5,150,105,.2);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:11.5px">
+              <b style="display:block;margin-bottom:3px;color:var(--green)">Margen estimado: $ 53.793 (42%)</b>
+              <span style="color:var(--txt3)">Sobre costo de productos + insumos</span>
+            </div>
+
+            <!-- Vista previa estado actual -->
+            <div style="display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 12px;background:var(--surface2);border-radius:9px;font-size:11.5px">
+              <span style="width:8px;height:8px;border-radius:50%;background:#94A3B8;flex-shrink:0"></span>
+              <span style="color:var(--txt2)">Estado: <b style="color:var(--txt)">Borrador</b></span>
+              <span style="margin-left:auto;color:var(--txt3);font-size:11px">Sin enviar</span>
+            </div>
+
             <div style="margin-top:14px;display:flex;flex-direction:column;gap:7px">
-              <button class="btn btn-acento" style="width:100%;justify-content:center;border-radius:9px;padding:11px 16px"><i class="fa-solid fa-file-invoice"></i> Generar remito PDF</button>
-              <button class="btn btn-secondary" style="width:100%;justify-content:center;border-radius:9px;padding:11px 16px"><i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp</button>
+              <button class="btn btn-acento" style="width:100%;justify-content:center;border-radius:9px;padding:11px 16px"><i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp</button>
+              <button class="btn btn-secondary" style="width:100%;justify-content:center;border-radius:9px;padding:11px 16px"><i class="fa-solid fa-file-pdf"></i> Generar PDF</button>
+              <button class="btn btn-secondary" style="width:100%;justify-content:center;border-radius:9px;padding:11px 16px"><i class="fa-regular fa-copy"></i> Duplicar pedido</button>
             </div>
           </div>
         </div>
@@ -651,381 +761,755 @@ td b{color:var(--txt);font-weight:600}
       <div class="ph">
         <div class="ph-left">
           <h2>Clientes</h2>
-          <p>Base de clientes distribución · 83 activos · CABA, GBA, Interior</p>
+          <p>6 contactos · Activos, tibios y fríos según última actividad</p>
         </div>
         <div class="ph-right">
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
           <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar</button>
           <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-download"></i> Exportar</button>
-          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Agregar</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo cliente</button>
         </div>
       </div>
+
+      <!-- Chips de filtro rápido (espejo de Clientes.jsx) -->
+      <div class="tab-bar">
+        <button class="tab-btn active">Todos · 6</button>
+        <button class="tab-btn">Activos · 4</button>
+        <button class="tab-btn">Tibios · 1</button>
+        <button class="tab-btn">Fríos · 1 <i class="fa-solid fa-snowflake" style="font-size:9px"></i></button>
+      </div>
+
       <div class="tbl-card">
         <table>
           <thead>
-            <tr><th>Empresa / Contacto</th><th>Zona</th><th>Cond. pago</th><th>Pedidos</th><th style="text-align:right">Facturado</th><th>Estado</th><th></th></tr>
+            <tr>
+              <th>Empresa / Contacto</th>
+              <th style="text-align:center;width:50px" title="WhatsApp"><i class="fa-brands fa-whatsapp" style="color:var(--txt3);font-size:13px"></i></th>
+              <th style="text-align:center;width:50px" title="Email"><i class="fa-solid fa-envelope" style="color:var(--txt3);font-size:12px"></i></th>
+              <th style="width:130px">Rubro</th>
+              <th style="width:140px">Última actividad</th>
+              <th style="text-align:right;width:130px">Acciones</th>
+            </tr>
           </thead>
           <tbody>
-            <tr><td><b>Cooperativa La Unión</b><div style="font-size:11px;color:var(--txt3)">Miguel Solano · (0341) 4612-0033</div></td><td style="font-size:11.5px;color:var(--txt3)">Rosario, SF</td><td style="font-size:11.5px;color:var(--txt3)">CC 45d</td><td><b>38</b></td><td class="td-amt" style="text-align:right">$ 1.240.800</td><td><span class="badge b-confirmed">Al día</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Supermercado El Cruce</b><div style="font-size:11px;color:var(--txt3)">Marcela Torres · +54 9 11 5678-9012</div></td><td style="font-size:11.5px;color:var(--txt3)">Luján, GBA</td><td style="font-size:11.5px;color:var(--txt3)">CC 30d</td><td><b>29</b></td><td class="td-amt" style="text-align:right">$ 892.400</td><td><span class="badge b-confirmed">Al día</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Almacén Norte S.A.</b><div style="font-size:11px;color:var(--txt3)">Jorge Rivas · +54 9 11 4422-8877</div></td><td style="font-size:11.5px;color:var(--txt3)">CABA</td><td style="font-size:11.5px;color:var(--txt3)">Contado</td><td><b>22</b></td><td class="td-amt" style="text-align:right">$ 568.200</td><td><span class="badge b-negotiating">Vencido 15d</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Ferretería Central</b><div style="font-size:11px;color:var(--txt3)">Paula Ibáñez · +54 9 351 6677-4499</div></td><td style="font-size:11.5px;color:var(--txt3)">Córdoba</td><td style="font-size:11.5px;color:var(--txt3)">Cheque 45d</td><td><b>18</b></td><td class="td-amt" style="text-align:right">$ 421.600</td><td><span class="badge b-confirmed">Al día</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Kiosco Central Srl</b><div style="font-size:11px;color:var(--txt3)">Ramón Gutiérrez · +54 9 221 5544-2211</div></td><td style="font-size:11.5px;color:var(--txt3)">La Plata</td><td style="font-size:11.5px;color:var(--txt3)">CC 15d</td><td><b>15</b></td><td class="td-amt" style="text-align:right">$ 228.400</td><td><span class="badge b-confirmed">Al día</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Minimarket Sol</b><div style="font-size:11px;color:var(--txt3)">Claudia Ramos · +54 9 11 2233-4455</div></td><td style="font-size:11.5px;color:var(--txt3)">GBA Norte</td><td style="font-size:11.5px;color:var(--txt3)">CC 30d</td><td><b>11</b></td><td class="td-amt" style="text-align:right">$ 184.300</td><td><span class="badge b-lost">Vencido 30d</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span title="Activo — hoy" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                  <div><div style="font-weight:600;font-size:13px;color:var(--txt);line-height:1.3">Distribuidora del Sur</div><div style="font-size:11px;color:var(--txt3);margin-top:1px">Marcos Sánchez</div></div>
+                </div>
+              </td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+              <td style="font-size:12px;font-weight:500;color:var(--txt2)">Mayorista</td>
+              <td style="font-size:12px;color:var(--txt3);font-variant-numeric:tabular-nums">06/06/2026</td>
+              <td style="text-align:right">
+                <div class="acts" style="justify-content:flex-end">
+                  <button class="act edit"><i class="fa-solid fa-pen"></i></button>
+                  <button class="act del"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span title="Activo — hace 14d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                  <div><div style="font-weight:600;font-size:13px;color:var(--txt);line-height:1.3">Café Andino</div><div style="font-size:11px;color:var(--txt3);margin-top:1px">Lucía Paredes</div></div>
+                </div>
+              </td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+              <td style="font-size:12px;font-weight:500;color:var(--txt2)">Gastronomía</td>
+              <td style="font-size:12px;color:var(--txt3);font-variant-numeric:tabular-nums">22/05/2026</td>
+              <td style="text-align:right">
+                <div class="acts" style="justify-content:flex-end">
+                  <button class="act edit"><i class="fa-solid fa-pen"></i></button>
+                  <button class="act del"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span title="Activo — hace 18d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                  <div><div style="font-weight:600;font-size:13px;color:var(--txt);line-height:1.3">Estudio Mendoza</div><div style="font-size:11px;color:var(--txt3);margin-top:1px">Equipo Estudio</div></div>
+                </div>
+              </td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+              <td style="text-align:center"><span style="color:var(--txt4);font-size:11px">—</span></td>
+              <td style="font-size:12px;font-weight:500;color:var(--txt2)">Servicios</td>
+              <td style="font-size:12px;color:var(--txt3);font-variant-numeric:tabular-nums">18/05/2026</td>
+              <td style="text-align:right">
+                <div class="acts" style="justify-content:flex-end">
+                  <button class="act edit"><i class="fa-solid fa-pen"></i></button>
+                  <button class="act del"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span title="Tibio — hace 26d" style="width:7px;height:7px;border-radius:50%;background:#D97706;flex-shrink:0;display:inline-block"></span>
+                  <div><div style="font-weight:600;font-size:13px;color:var(--txt);line-height:1.3">Bazar San Telmo</div><div style="font-size:11px;color:var(--txt3);margin-top:1px">Romina Gómez</div></div>
+                </div>
+              </td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+              <td style="font-size:12px;font-weight:500;color:var(--txt2)">Comercio</td>
+              <td style="font-size:12px;color:#D97706;font-weight:700;font-variant-numeric:tabular-nums">11/05/2026</td>
+              <td style="text-align:right">
+                <div class="acts" style="justify-content:flex-end">
+                  <button title="Recontactar — sin actividad >30d" class="act" style="background:#FEF9C3;color:#EAB308;border:1.5px solid #FEF3C7"><i class="fa-solid fa-bolt"></i></button>
+                  <button class="act edit"><i class="fa-solid fa-pen"></i></button>
+                  <button class="act del"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span title="Tibio — hace 21d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                  <div><div style="font-weight:600;font-size:13px;color:var(--txt);line-height:1.3">Marta Lugones</div></div>
+                </div>
+              </td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+              <td style="text-align:center"><span style="color:var(--txt4);font-size:11px">—</span></td>
+              <td style="font-size:12px;color:var(--txt4)">—</td>
+              <td style="font-size:12px;color:var(--txt3);font-variant-numeric:tabular-nums">15/05/2026</td>
+              <td style="text-align:right">
+                <div class="acts" style="justify-content:flex-end">
+                  <button class="act edit"><i class="fa-solid fa-pen"></i></button>
+                  <button class="act del"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span title="Frío — hace 62d" style="width:7px;height:7px;border-radius:50%;background:#DC2626;flex-shrink:0;display:inline-block"></span>
+                  <div><div style="font-weight:600;font-size:13px;color:var(--txt);line-height:1.3">Diego Romero</div></div>
+                </div>
+              </td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+              <td style="text-align:center"><span style="color:var(--txt4);font-size:11px">—</span></td>
+              <td style="font-size:12px;color:var(--txt4)">—</td>
+              <td style="font-size:12px;color:#DC2626;font-weight:700;font-variant-numeric:tabular-nums">04/04/2026</td>
+              <td style="text-align:right">
+                <div class="acts" style="justify-content:flex-end">
+                  <button title="Recontactar — sin actividad >60d" class="act" style="background:#FEF9C3;color:#EAB308;border:1.5px solid #FEF3C7"><i class="fa-solid fa-bolt"></i></button>
+                  <button class="act edit"><i class="fa-solid fa-pen"></i></button>
+                  <button class="act del"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- ═══ PRODUCTOS ═══ -->
+    <!-- ═══ PRODUCTOS (espejo de Catalogo.jsx) ═══ -->
     <section class="sec" id="sec-productos">
       <div class="ph">
         <div class="ph-left">
           <h2>Productos</h2>
-          <p>Catálogo de distribución · 124 SKUs · 8 con stock crítico</p>
+          <p>Catálogo · 5 ítems · 2 con stock crítico</p>
         </div>
         <div class="ph-right">
-          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar lista</button>
-          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Agregar</button>
+          <button class="btn btn-secondary btn-sm" style="background:#FEF2F2;border-color:#FECACA;color:#DC2626"><i class="fa-solid fa-triangle-exclamation"></i> Stock crítico · 2</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-percent"></i> Precios</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo producto</button>
         </div>
       </div>
       <div class="bento">
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-cube"></i></div><div class="kpi-label">Total SKUs</div><div class="kpi-val">124</div><div class="kpi-foot">en catálogo activo</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-circle-check"></i></div><div class="kpi-label">Stock OK</div><div class="kpi-val" style="color:var(--green)">108</div><div class="kpi-foot">sobre el mínimo</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="kpi-label">Stock bajo</div><div class="kpi-val" style="color:var(--amber)">8</div><div class="kpi-foot">reposición próxima</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--red-lt);color:var(--red)"><i class="fa-solid fa-ban"></i></div><div class="kpi-label">Sin stock</div><div class="kpi-val" style="color:var(--red)">8</div><div class="kpi-foot">reposición urgente</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-cube"></i></div><div class="kpi-label">Total productos</div><div class="kpi-val">5</div><div class="kpi-foot">en catálogo activo</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-circle-check"></i></div><div class="kpi-label">Stock OK</div><div class="kpi-val" style="color:var(--green)">2</div><div class="kpi-foot">sobre el mínimo</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="kpi-label">Stock bajo</div><div class="kpi-val" style="color:var(--amber)">1</div><div class="kpi-foot">reposición próxima</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--red-lt);color:var(--red)"><i class="fa-solid fa-ban"></i></div><div class="kpi-label">Sin stock</div><div class="kpi-val" style="color:var(--red)">1</div><div class="kpi-foot">reposición urgente</div></div>
       </div>
       <div class="tbl-card">
         <table>
-          <thead><tr><th>Producto</th><th>Categoría</th><th>Stock (bultos)</th><th style="text-align:right">P. venta</th><th style="text-align:right">P. costo</th><th>Margen</th><th>Estado</th><th></th></tr></thead>
+          <thead><tr>
+            <th>Producto</th>
+            <th style="width:115px">Categoría</th>
+            <th style="width:110px">Proveedor</th>
+            <th style="text-align:right;width:85px">Costo</th>
+            <th style="text-align:right;width:100px">P. Público</th>
+            <th style="text-align:right;width:100px">P. Mayorista</th>
+            <th style="text-align:center;width:78px">% Margen</th>
+            <th style="text-align:right;width:74px">Stock</th>
+            <th style="text-align:right;width:48px"></th>
+          </tr></thead>
           <tbody>
-            <tr><td><b>Aceite de girasol 1L (12u)</b></td><td style="font-size:11px;color:var(--txt3)">Aceites</td><td>148 / 50</td><td class="td-amt">$ 8.400</td><td class="td-amt">$ 6.200</td><td style="color:var(--green);font-weight:700">26%</td><td><span class="badge b-confirmed">Stock OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Arroz largo fino 1kg (20u)</b></td><td style="font-size:11px;color:var(--txt3)">Secos</td><td>92 / 30</td><td class="td-amt">$ 5.800</td><td class="td-amt">$ 4.400</td><td style="color:var(--green);font-weight:700">24%</td><td><span class="badge b-confirmed">Stock OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Yerba compuesta 500g (10u)</b></td><td style="font-size:11px;color:var(--txt3)">Infusiones</td><td>18 / 20</td><td class="td-amt">$ 3.200</td><td class="td-amt">$ 2.400</td><td style="color:var(--amber);font-weight:700">25%</td><td><span class="badge b-negotiating">Stock bajo</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Azúcar blanca 1kg (25u)</b></td><td style="font-size:11px;color:var(--txt3)">Secos</td><td>0 / 40</td><td class="td-amt">$ 4.600</td><td class="td-amt">$ 3.500</td><td style="color:var(--red);font-weight:700">24%</td><td><span class="badge b-lost">Sin stock</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Detergente liq. 1L (12u)</b></td><td style="font-size:11px;color:var(--txt3)">Limpieza</td><td>65 / 20</td><td class="td-amt">$ 6.100</td><td class="td-amt">$ 4.700</td><td style="color:var(--green);font-weight:700">23%</td><td><span class="badge b-confirmed">Stock OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Fideos spaghetti 500g (20u)</b></td><td style="font-size:11px;color:var(--txt3)">Pastas</td><td>8 / 30</td><td class="td-amt">$ 4.200</td><td class="td-amt">$ 3.200</td><td style="color:var(--amber);font-weight:700">24%</td><td><span class="badge b-negotiating">Stock bajo</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr>
+              <td><div style="font-weight:800;color:var(--txt)">Pack mayorista x30</div><div style="font-size:10.5px;color:var(--txt3)">SKU: PCK-MAY-30</div></td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#EDE9FE;color:#7C3AED;padding:3px 10px;border-radius:99px;white-space:nowrap">Mayorista</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">Imp. del Norte</td>
+              <td class="td-amt" style="color:var(--txt3)">$ 1.860</td>
+              <td class="td-amt">$ 3.140</td>
+              <td class="td-amt">$ 2.620</td>
+              <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803D">41%</span></td>
+              <td style="text-align:right;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums">24</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
+            <tr style="border-left:3px solid var(--amber)">
+              <td><div style="font-weight:800;color:var(--txt)">Modelo Lux Premium</div><div style="font-size:10.5px;color:var(--txt3)">SKU: MOD-LUX · 4 variantes</div></td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#FFE4E6;color:#BE185D;padding:3px 10px;border-radius:99px;white-space:nowrap">Indumentaria</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">Textil Sur</td>
+              <td class="td-amt" style="color:var(--txt3)">$ 4.200</td>
+              <td class="td-amt">$ 9.500</td>
+              <td class="td-amt">$ 7.800</td>
+              <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803D">45%</span></td>
+              <td style="text-align:right;font-weight:700;color:var(--amber);font-variant-numeric:tabular-nums">8 <i class="fa-solid fa-triangle-exclamation" style="font-size:9px"></i></td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:800;color:var(--txt)">Servicio mensual de gestión</div><div style="font-size:10.5px;color:var(--txt3)">SKU: SRV-MES</div></td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#DBEAFE;color:#1D4ED8;padding:3px 10px;border-radius:99px;white-space:nowrap">Servicio</span></td>
+              <td style="font-size:11.5px;color:var(--txt4)">—</td>
+              <td class="td-amt" style="color:var(--txt3)">$ 45.000</td>
+              <td class="td-amt">$ 145.000</td>
+              <td class="td-amt" style="color:var(--txt4);font-weight:400">—</td>
+              <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803D">69%</span></td>
+              <td style="text-align:right;color:var(--txt4);font-size:11.5px">—</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
+            <tr style="border-left:3px solid var(--red)">
+              <td><div style="font-weight:800;color:var(--txt)">Insumos pack base</div><div style="font-size:10.5px;color:var(--txt3)">SKU: INS-BAS</div></td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#FEF3C7;color:#92400E;padding:3px 10px;border-radius:99px;white-space:nowrap">Insumo</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">Plásticos AR</td>
+              <td class="td-amt" style="color:var(--txt3)">$ 890</td>
+              <td class="td-amt">$ 1.580</td>
+              <td class="td-amt">$ 1.350</td>
+              <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803D">44%</span></td>
+              <td style="text-align:right;font-weight:800;color:var(--red);font-variant-numeric:tabular-nums">0</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:800;color:var(--txt)">Catálogo impreso A5</div><div style="font-size:10.5px;color:var(--txt3)">SKU: CAT-A5</div></td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#E0F2FE;color:#0369A1;padding:3px 10px;border-radius:99px;white-space:nowrap">Marketing</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">Imp. del Norte</td>
+              <td class="td-amt" style="color:var(--txt3)">$ 1.100</td>
+              <td class="td-amt">$ 2.800</td>
+              <td class="td-amt" style="color:var(--txt4);font-weight:400">—</td>
+              <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803D">61%</span></td>
+              <td style="text-align:right;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums">42</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- ═══ INSUMOS ═══ -->
+    <!-- ═══ INSUMOS (espejo de Insumos.jsx) ═══ -->
     <section class="sec" id="sec-insumos">
       <div class="ph">
         <div class="ph-left">
           <h2>Insumos</h2>
-          <p>Materiales operativos · pallets, embalajes, cintas, EPP · 32 ítems</p>
+          <p>Materiales que entran en tus productos o servicios · 6 ítems</p>
         </div>
         <div class="ph-right">
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-right-arrow-left"></i> Movimientos</button>
           <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar</button>
-          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Agregar</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo insumo</button>
         </div>
       </div>
       <div class="bento">
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-boxes-stacked"></i></div><div class="kpi-label">Total insumos</div><div class="kpi-val">32</div><div class="kpi-foot">ítems registrados</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-circle-check"></i></div><div class="kpi-label">Disponibles</div><div class="kpi-val" style="color:var(--green)">26</div><div class="kpi-foot">stock suficiente</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--red-lt);color:var(--red)"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="kpi-label">A reponer</div><div class="kpi-val" style="color:var(--red)">6</div><div class="kpi-foot">solicitar esta semana</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-dollar-sign"></i></div><div class="kpi-label">Costo mensual</div><div class="kpi-val">$ 48.200</div><div class="kpi-foot">estimado en insumos</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-boxes-stacked"></i></div><div class="kpi-label">Total insumos</div><div class="kpi-val">6</div><div class="kpi-foot">ítems registrados</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-circle-check"></i></div><div class="kpi-label">Disponibles</div><div class="kpi-val" style="color:var(--green)">4</div><div class="kpi-foot">sobre el mínimo</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="kpi-label">Stock bajo</div><div class="kpi-val" style="color:var(--amber)">1</div><div class="kpi-foot">cerca del mínimo</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--red-lt);color:var(--red)"><i class="fa-solid fa-ban"></i></div><div class="kpi-label">Sin stock</div><div class="kpi-val" style="color:var(--red)">1</div><div class="kpi-foot">a reponer urgente</div></div>
       </div>
       <div class="tbl-card">
         <table>
-          <thead><tr><th>Insumo</th><th>Categoría</th><th>Stock</th><th>Mínimo</th><th style="text-align:right">Costo unit.</th><th>Estado</th><th></th></tr></thead>
+          <thead><tr>
+            <th>Insumo</th>
+            <th style="width:90px">Unidad</th>
+            <th style="width:120px">Categoría</th>
+            <th style="width:140px">Proveedor</th>
+            <th style="text-align:right;width:120px">Costo unitario</th>
+            <th style="text-align:right;width:90px">Stock</th>
+            <th style="text-align:right;width:90px">Mínimo</th>
+            <th style="text-align:right;width:48px"></th>
+          </tr></thead>
           <tbody>
-            <tr><td><b>Pallet de madera 120×100</b></td><td style="font-size:11px;color:var(--txt3)">Paletería</td><td>48 un.</td><td>20 un.</td><td class="td-amt">$ 3.200</td><td><span class="badge b-confirmed">OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Film stretch 500m</b></td><td style="font-size:11px;color:var(--txt3)">Embalaje</td><td>12 rollos</td><td>10 rollos</td><td class="td-amt">$ 890</td><td><span class="badge b-confirmed">OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Cinta de embalar (36u)</b></td><td style="font-size:11px;color:var(--txt3)">Embalaje</td><td>3 cajas</td><td>8 cajas</td><td class="td-amt">$ 2.400</td><td><span class="badge b-lost">A reponer</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Guantes de trabajo (par)</b></td><td style="font-size:11px;color:var(--txt3)">EPP</td><td>22 pares</td><td>15 pares</td><td class="td-amt">$ 480</td><td><span class="badge b-confirmed">OK</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Caja de cartón 60×40×40</b></td><td style="font-size:11px;color:var(--txt3)">Embalaje</td><td>0 un.</td><td>200 un.</td><td class="td-amt">$ 320</td><td><span class="badge b-lost">Sin stock</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
-            <tr><td><b>Etiquetas térmicas (500u)</b></td><td style="font-size:11px;color:var(--txt3)">Identificación</td><td>4 rollos</td><td>10 rollos</td><td class="td-amt">$ 1.200</td><td><span class="badge b-negotiating">Stock bajo</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+            <tr>
+              <td><div style="font-weight:700">Tela algodón 180gr</div><div style="font-size:10.5px;color:var(--txt3)">Confección de prendas</div></td>
+              <td style="font-size:11.5px;color:var(--txt2)">metro</td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#FFE4E6;color:#BE185D;padding:2px 9px;border-radius:99px;white-space:nowrap">Textil</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">Textil Sur</td>
+              <td class="td-amt">$ 2.400</td>
+              <td style="text-align:right;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums">86</td>
+              <td style="text-align:right;color:var(--txt3);font-variant-numeric:tabular-nums">30</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:700">Hilo poliéster blanco</div><div style="font-size:10.5px;color:var(--txt3)">Costura general</div></td>
+              <td style="font-size:11.5px;color:var(--txt2)">cono</td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#FFE4E6;color:#BE185D;padding:2px 9px;border-radius:99px;white-space:nowrap">Textil</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">Textil Sur</td>
+              <td class="td-amt">$ 1.150</td>
+              <td style="text-align:right;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums">12</td>
+              <td style="text-align:right;color:var(--txt3);font-variant-numeric:tabular-nums">6</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
+            <tr style="border-left:3px solid var(--amber)">
+              <td><div style="font-weight:700">Etiquetas con logo</div><div style="font-size:10.5px;color:var(--txt3)">SKU: ETI-LOG-01</div></td>
+              <td style="font-size:11.5px;color:var(--txt2)">unidad</td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#E0F2FE;color:#0369A1;padding:2px 9px;border-radius:99px;white-space:nowrap">Identificación</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">Imp. del Norte</td>
+              <td class="td-amt">$ 95</td>
+              <td style="text-align:right;font-weight:700;color:var(--amber);font-variant-numeric:tabular-nums">28</td>
+              <td style="text-align:right;color:var(--txt3);font-variant-numeric:tabular-nums">50</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:700">Bolsas de packaging M</div><div style="font-size:10.5px;color:var(--txt3)">Para envíos a domicilio</div></td>
+              <td style="font-size:11.5px;color:var(--txt2)">unidad</td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#FEF3C7;color:#92400E;padding:2px 9px;border-radius:99px;white-space:nowrap">Embalaje</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">Plásticos AR</td>
+              <td class="td-amt">$ 320</td>
+              <td style="text-align:right;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums">214</td>
+              <td style="text-align:right;color:var(--txt3);font-variant-numeric:tabular-nums">100</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
+            <tr style="border-left:3px solid var(--red)">
+              <td><div style="font-weight:700">Cinta de embalar marcada</div><div style="font-size:10.5px;color:var(--txt3)">Envíos · sellado de cajas</div></td>
+              <td style="font-size:11.5px;color:var(--txt2)">rollo</td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#FEF3C7;color:#92400E;padding:2px 9px;border-radius:99px;white-space:nowrap">Embalaje</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">Plásticos AR</td>
+              <td class="td-amt">$ 2.400</td>
+              <td style="text-align:right;font-weight:800;color:var(--red);font-variant-numeric:tabular-nums">0</td>
+              <td style="text-align:right;color:var(--txt3);font-variant-numeric:tabular-nums">8</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:700">Tinta para impresora plotter</div><div style="font-size:10.5px;color:var(--txt3)">Catálogos impresos</div></td>
+              <td style="font-size:11.5px;color:var(--txt2)">cartucho</td>
+              <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#E0F2FE;color:#0369A1;padding:2px 9px;border-radius:99px;white-space:nowrap">Marketing</span></td>
+              <td style="font-size:11.5px;color:var(--txt2)">Imp. del Norte</td>
+              <td class="td-amt">$ 8.500</td>
+              <td style="text-align:right;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums">4</td>
+              <td style="text-align:right;color:var(--txt3);font-variant-numeric:tabular-nums">2</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+            </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- ═══ PROVEEDORES ═══ -->
+    <!-- ═══ PROVEEDORES (espejo de Proveedores.jsx) ═══ -->
     <section class="sec" id="sec-proveedores">
       <div class="ph">
         <div class="ph-left">
           <h2>Proveedores</h2>
-          <p>Red de proveedores · 12 activos · 4 con pedidos pendientes</p>
+          <p>4 activos · Plazo de pago, lead time y datos de contacto</p>
         </div>
         <div class="ph-right">
-          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-share"></i> Portal proveedores</button>
-          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Agregar</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo proveedor</button>
         </div>
-      </div>
-      <div class="alert red">
-        <i class="fa-solid fa-bell ico"></i>
-        <div class="alert-body"><b>4 órdenes de compra pendientes de confirmación</b> · Molinos Río, Arcor y Central Logística sin respuesta</div>
-        <button class="btn btn-acento btn-sm"><i class="fa-brands fa-whatsapp"></i> Recordar ahora</button>
-      </div>
-      <div class="cgrid">
-        <div class="prov-card">
-          <div class="prov-top">
-            <div class="prov-ava" style="background:linear-gradient(135deg,#7C3AED,#4F46E5)">MR</div>
-            <div class="prov-info"><b>Molinos Río de la Plata</b><span>Aceites · Harinas · Secos</span></div>
-          </div>
-          <div class="prov-meta">
-            <span><i class="fa-solid fa-phone"></i> (011) 4321-7890</span>
-            <span><i class="fa-solid fa-clock"></i> Lead time: 5 días hábiles</span>
-            <span><i class="fa-solid fa-credit-card"></i> Cheque a 60 días</span>
-          </div>
-          <div style="margin-top:10px"><span class="badge b-negotiating">OC pendiente</span></div>
-        </div>
-        <div class="prov-card">
-          <div class="prov-top">
-            <div class="prov-ava" style="background:linear-gradient(135deg,#D97706,#EA580C)">AR</div>
-            <div class="prov-info"><b>Arcor S.A.</b><span>Golosinas · Galletitas · Bebidas</span></div>
-          </div>
-          <div class="prov-meta">
-            <span><i class="fa-solid fa-phone"></i> 0800-222-7267</span>
-            <span><i class="fa-solid fa-clock"></i> Lead time: 3 días</span>
-            <span><i class="fa-solid fa-credit-card"></i> CC 30 días</span>
-          </div>
-          <div style="margin-top:10px"><span class="badge b-negotiating">OC pendiente</span></div>
-        </div>
-        <div class="prov-card">
-          <div class="prov-top">
-            <div class="prov-ava" style="background:linear-gradient(135deg,#059669,#10B981)">CL</div>
-            <div class="prov-info"><b>Central Logística</b><span>Pallets · Embalajes · EPP</span></div>
-          </div>
-          <div class="prov-meta">
-            <span><i class="fa-solid fa-phone"></i> (011) 5555-4433</span>
-            <span><i class="fa-solid fa-clock"></i> Lead time: 2 días</span>
-            <span><i class="fa-solid fa-credit-card"></i> Contado</span>
-          </div>
-          <div style="margin-top:10px"><span class="badge b-confirmed">Entregado</span></div>
-        </div>
-        <div class="prov-card">
-          <div class="prov-top">
-            <div class="prov-ava" style="background:linear-gradient(135deg,#2563EB,#06B6D4)">LA</div>
-            <div class="prov-info"><b>La Anónima Distrib.</b><span>Lácteos · Fiambres · Congelados</span></div>
-          </div>
-          <div class="prov-meta">
-            <span><i class="fa-solid fa-phone"></i> (011) 4567-8901</span>
-            <span><i class="fa-solid fa-clock"></i> Lead time: 4 días</span>
-            <span><i class="fa-solid fa-credit-card"></i> CC 45 días</span>
-          </div>
-          <div style="margin-top:10px"><span class="badge b-confirmed">Al día</span></div>
-        </div>
-        <div class="prov-card">
-          <div class="prov-top">
-            <div class="prov-ava" style="background:linear-gradient(135deg,#4F46E5,#7C3AED)">UC</div>
-            <div class="prov-info"><b>Unilever Argentina</b><span>Higiene · Limpieza · Cuidado</span></div>
-          </div>
-          <div class="prov-meta">
-            <span><i class="fa-solid fa-phone"></i> 0800-888-5555</span>
-            <span><i class="fa-solid fa-clock"></i> Lead time: 7 días hábiles</span>
-            <span><i class="fa-solid fa-credit-card"></i> Cheque a 30 días</span>
-          </div>
-          <div style="margin-top:10px"><span class="badge b-confirmed">Al día</span></div>
-        </div>
-        <div class="prov-card">
-          <div class="prov-top">
-            <div class="prov-ava" style="background:linear-gradient(135deg,#059669,#6366F1)">MN</div>
-            <div class="prov-info"><b>Mastellone Hnos.</b><span>Lácteos · La Serenísima</span></div>
-          </div>
-          <div class="prov-meta">
-            <span><i class="fa-solid fa-phone"></i> 0800-333-7878</span>
-            <span><i class="fa-solid fa-clock"></i> Lead time: 2 días</span>
-            <span><i class="fa-solid fa-credit-card"></i> CC 15 días</span>
-          </div>
-          <div style="margin-top:10px"><span class="badge b-confirmed">Al día</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ LOGÍSTICA ═══ -->
-    <section class="sec" id="sec-logistica">
-      <div class="ph">
-        <div class="ph-left">
-          <h2>Logística</h2>
-          <p>Rutas de entrega · flota · seguimiento de despachos</p>
-        </div>
-        <div class="ph-right">
-          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-route"></i> Planificar ruta</button>
-          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Registrar envío</button>
-        </div>
-      </div>
-      <div class="alert amber">
-        <i class="fa-solid fa-triangle-exclamation ico"></i>
-        <div class="alert-body"><b>2 envíos atrasados</b> · OCA y transporte propio superaron el SLA de 48h · Ruta GBA Norte</div>
-        <button class="btn btn-secondary btn-sm">Ver atrasados</button>
-      </div>
-
-      <div class="tab-bar">
-        <button class="tab-btn active">Despachos activos</button>
-        <button class="tab-btn">Rutas y flota</button>
-        <button class="tab-btn">Costos del mes</button>
-      </div>
-
-      <div class="bento">
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-truck"></i></div><div class="kpi-label">Costo flete mes</div><div class="kpi-val">$ 284.600</div><div class="kpi-foot">todos los transportes</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-box-open"></i></div><div class="kpi-label">Despachos mes</div><div class="kpi-val">147</div><div class="kpi-foot">128 entregados</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--red-lt);color:var(--red)"><i class="fa-solid fa-clock-rotate-left"></i></div><div class="kpi-label">Atrasados</div><div class="kpi-val" style="color:var(--red)">2</div><div class="kpi-foot">superan SLA 48h</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-coins"></i></div><div class="kpi-label">Costo x despacho</div><div class="kpi-val">$ 1.936</div><div class="kpi-foot">promedio del mes</div></div>
       </div>
 
       <div class="tbl-card">
         <table>
-          <thead><tr><th>Remito</th><th>Fecha</th><th>Cliente</th><th>Destino</th><th>Transporte</th><th style="text-align:right">Costo</th><th>Estado</th><th></th></tr></thead>
+          <thead><tr>
+            <th>Nombre / Contacto</th>
+            <th style="text-align:center;width:50px" title="WhatsApp"><i class="fa-brands fa-whatsapp" style="color:var(--txt3);font-size:13px"></i></th>
+            <th style="text-align:center;width:50px" title="Email"><i class="fa-solid fa-envelope" style="color:var(--txt3);font-size:12px"></i></th>
+            <th style="width:130px">Rubro</th>
+            <th style="text-align:center;width:100px">Plazo pago</th>
+            <th style="text-align:center;width:110px">Lead time</th>
+            <th style="text-align:right;width:90px">Acciones</th>
+          </tr></thead>
           <tbody>
-            <tr style="background:rgba(220,38,38,.03)">
-              <td class="td-num">R-008821</td>
-              <td>23/05<div style="font-size:10px;color:var(--red);font-weight:700"><i class="fa-solid fa-triangle-exclamation"></i> 4d atrasado</div></td>
-              <td>Almacén Norte S.A.</td><td>CABA</td><td>OCA</td>
-              <td class="td-amt">$ 4.800</td>
-              <td><span class="badge b-purple">En tránsito</span></td>
-              <td><div class="acts"><button class="act"><i class="fa-solid fa-location-arrow"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td>
+            <tr>
+              <td>
+                <div><div style="font-weight:600;font-size:13px;color:var(--txt)">Textil Sur</div><div style="font-size:11px;color:var(--txt3);margin-top:1px">Hernán Rivero · CUIT 30-71234567-8</div></div>
+              </td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+              <td style="font-size:12px;font-weight:500;color:var(--txt2)">Textil</td>
+              <td style="text-align:center"><span style="font-size:11.5px;font-weight:700;color:var(--txt2);background:var(--surface2);padding:3px 9px;border-radius:6px">30 días</span></td>
+              <td style="text-align:center;font-size:11.5px;color:var(--txt2)"><i class="fa-regular fa-clock" style="font-size:10px;color:var(--txt3);margin-right:4px"></i>7 días</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td>
             </tr>
-            <tr><td class="td-num">R-008820</td><td>HOY<div style="font-size:10px;color:var(--amber);font-weight:700">en camino</div></td><td>Supermercado El Cruce</td><td>Luján</td><td>Transporte propio</td><td class="td-amt">$ 0</td><td><span class="badge b-negotiating">En ruta</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
-            <tr><td class="td-num">R-008819</td><td>HOY</td><td>Cooperativa La Unión</td><td>Rosario</td><td>Andreani</td><td class="td-amt">$ 12.400</td><td><span class="badge b-sent">En camino</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act wa"><i class="fa-brands fa-whatsapp"></i></button></div></td></tr>
-            <tr><td class="td-num">R-008818</td><td>26/05</td><td>Ferretería Central</td><td>Córdoba</td><td>Andreani</td><td class="td-amt">$ 9.600</td><td><span class="badge b-confirmed">Entregado</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td></tr>
-            <tr><td class="td-num">R-008817</td><td>25/05</td><td>Kiosco Central Srl</td><td>La Plata</td><td>OCA</td><td class="td-amt">$ 3.200</td><td><span class="badge b-confirmed">Entregado</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td></tr>
-            <tr><td class="td-num">R-008816</td><td>24/05</td><td>Minimarket Sol</td><td>GBA Norte</td><td>Transporte propio</td><td class="td-amt">$ 0</td><td><span class="badge b-confirmed">Entregado</span></td><td><div class="acts"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td></tr>
+            <tr>
+              <td>
+                <div><div style="font-weight:600;font-size:13px;color:var(--txt)">Imp. del Norte</div><div style="font-size:11px;color:var(--txt3);margin-top:1px">Sofía Ledesma</div></div>
+              </td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+              <td style="font-size:12px;font-weight:500;color:var(--txt2)">Marketing / Impresión</td>
+              <td style="text-align:center"><span style="font-size:11.5px;font-weight:700;color:var(--green);background:var(--green-lt);padding:3px 9px;border-radius:6px">Contado</span></td>
+              <td style="text-align:center;font-size:11.5px;color:var(--txt2)"><i class="fa-regular fa-clock" style="font-size:10px;color:var(--txt3);margin-right:4px"></i>3 días</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td>
+            </tr>
+            <tr>
+              <td>
+                <div><div style="font-weight:600;font-size:13px;color:var(--txt)">Plásticos AR</div><div style="font-size:11px;color:var(--txt3);margin-top:1px">Atención al cliente</div></div>
+              </td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+              <td style="text-align:center"><span style="color:var(--txt4);font-size:11px">—</span></td>
+              <td style="font-size:12px;font-weight:500;color:var(--txt2)">Embalaje</td>
+              <td style="text-align:center"><span style="font-size:11.5px;font-weight:700;color:var(--txt2);background:var(--surface2);padding:3px 9px;border-radius:6px">15 días</span></td>
+              <td style="text-align:center;font-size:11.5px;color:var(--txt2)"><i class="fa-regular fa-clock" style="font-size:10px;color:var(--txt3);margin-right:4px"></i>5 días</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td>
+            </tr>
+            <tr>
+              <td>
+                <div><div style="font-weight:600;font-size:13px;color:var(--txt)">Estudio Diseño 360</div><div style="font-size:11px;color:var(--txt3);margin-top:1px">Mariana Crespo</div></div>
+              </td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+              <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+              <td style="font-size:12px;font-weight:500;color:var(--txt2)">Servicios</td>
+              <td style="text-align:center"><span style="font-size:11.5px;font-weight:700;color:var(--txt2);background:var(--surface2);padding:3px 9px;border-radius:6px">7 días</span></td>
+              <td style="text-align:center;font-size:11.5px;color:var(--txt2)"><i class="fa-regular fa-clock" style="font-size:10px;color:var(--txt3);margin-right:4px"></i>10 días</td>
+              <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button><button class="act del"><i class="fa-solid fa-trash"></i></button></div></td>
+            </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- ═══ MENSAJES WA ═══ -->
-    <section class="sec" id="sec-mensajes">
+    <!-- ═══ LOGÍSTICA (espejo de Logistica.jsx: Viajes + Paradas + Envíos) ═══ -->
+    <section class="sec" id="sec-logistica">
       <div class="ph">
         <div class="ph-left">
-          <h2>Mensajes WhatsApp</h2>
-          <p>Plantillas de comunicación con clientes y proveedores</p>
+          <h2>Logística</h2>
+          <p>Viajes con comisionista, paradas y envíos a clientes</p>
         </div>
         <div class="ph-right">
-          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nueva plantilla</button>
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-paper-plane"></i> Registrar envío</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo viaje</button>
         </div>
       </div>
-      <div class="wa-grid">
-        <div class="wa-card">
-          <h5><i class="fa-brands fa-whatsapp"></i> Confirmación de pedido</h5>
-          <div class="wa-pre">Hola {contacto}, buen día! 👋
 
-Te confirmo el pedido N° {numero} de Distribuidora Norte:
+      <!-- Sub-tabs reales -->
+      <div class="tab-bar">
+        <button class="tab-btn active">Viajes</button>
+        <button class="tab-btn">Envíos</button>
+        <button class="tab-btn">Transportistas</button>
+      </div>
 
-📦 {detalle_productos}
-🚚 Entrega estimada: {fecha_entrega}
-💰 Total c/IVA: {total}
-📝 Condición: {cond_pago}
+      <div class="bento">
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-route"></i></div><div class="kpi-label">Viajes</div><div class="kpi-val">3</div><div class="kpi-foot">este mes</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-location-dot"></i></div><div class="kpi-label">Paradas totales</div><div class="kpi-val" style="color:var(--green)">11</div><div class="kpi-foot">visitadas</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-coins"></i></div><div class="kpi-label">Costo total</div><div class="kpi-val">$ 89.400</div><div class="kpi-foot">peajes + comisionistas</div></div>
+        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--blue-lt);color:var(--blue)"><i class="fa-solid fa-paper-plane"></i></div><div class="kpi-label">Envíos a clientes</div><div class="kpi-val">8</div><div class="kpi-foot">vía Andreani / Correo Argentino</div></div>
+      </div>
 
-Te mandamos el remito en PDF. Cualquier consulta, por este medio. ¡Gracias! ✅</div>
-          <div class="wa-meta"><span>Última edición: 10/04/26</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+      <!-- Viajes con paradas (estructura real) -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- Viaje 1 -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--sh)">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+            <div>
+              <div style="font-size:14px;font-weight:800;color:var(--txt)"><i class="fa-solid fa-truck-fast" style="color:var(--brand);margin-right:6px"></i> Viaje · 06/06/2026</div>
+              <div style="font-size:11.5px;color:var(--txt3);margin-top:3px">Comisionista: <b style="color:var(--txt2)">Hernán Romero</b> · 4 paradas</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:11.5px;font-weight:800;color:var(--brand);background:var(--brand-xlt);padding:5px 12px;border-radius:8px">$ 38.200</span>
+              <button class="act edit"><i class="fa-solid fa-pen"></i></button>
+            </div>
+          </div>
+          <div style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Paradas</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface2);border-radius:8px;font-size:12px">
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">1</span>
+              <span style="flex:1;color:var(--txt2)"><b style="color:var(--txt)">Distribuidora del Sur</b> · Av. San Martín 1240, Tigre</span>
+              <span style="font-weight:700;color:var(--txt);font-variant-numeric:tabular-nums">$ 8.400</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface2);border-radius:8px;font-size:12px">
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">2</span>
+              <span style="flex:1;color:var(--txt2)"><b style="color:var(--txt)">Café Andino</b> · Pirovano 850, Caballito</span>
+              <span style="font-weight:700;color:var(--txt);font-variant-numeric:tabular-nums">$ 6.200</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface2);border-radius:8px;font-size:12px">
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">3</span>
+              <span style="flex:1;color:var(--txt2)"><b style="color:var(--txt)">Retiro insumos</b> · Plásticos AR, Lanús</span>
+              <span style="font-weight:700;color:var(--txt);font-variant-numeric:tabular-nums">$ 4.800</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface2);border-radius:8px;font-size:12px">
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">4</span>
+              <span style="flex:1;color:var(--txt2)"><b style="color:var(--txt)">Comisión + peajes</b></span>
+              <span style="font-weight:700;color:var(--txt);font-variant-numeric:tabular-nums">$ 18.800</span>
+            </div>
+          </div>
         </div>
-        <div class="wa-card">
-          <h5><i class="fa-brands fa-whatsapp"></i> Aviso de despacho</h5>
-          <div class="wa-pre">Hola {contacto}! 🚛
 
-Tu pedido N° {numero} ya fue despachado.
-
-📦 Transportista: {transporte}
-🔎 Tracking: {link_tracking}
-⏰ Llegada estimada: {fecha_estimada}
-
-Ante cualquier novedad en la entrega, avisanos. ¡Saludos!</div>
-          <div class="wa-meta"><span>Última edición: 02/04/26</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        <!-- Viaje 2 -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--sh)">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+            <div>
+              <div style="font-size:14px;font-weight:800;color:var(--txt)"><i class="fa-solid fa-truck-fast" style="color:var(--brand);margin-right:6px"></i> Viaje · 22/05/2026</div>
+              <div style="font-size:11.5px;color:var(--txt3);margin-top:3px">Comisionista: <b style="color:var(--txt2)">Transporte propio</b> · 3 paradas</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:11.5px;font-weight:800;color:var(--brand);background:var(--brand-xlt);padding:5px 12px;border-radius:8px">$ 24.600</span>
+              <button class="act edit"><i class="fa-solid fa-pen"></i></button>
+            </div>
+          </div>
+          <div style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Paradas</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface2);border-radius:8px;font-size:12px">
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">1</span>
+              <span style="flex:1;color:var(--txt2)"><b style="color:var(--txt)">Bazar San Telmo</b> · Defensa 920, San Telmo</span>
+              <span style="font-weight:700;color:var(--txt);font-variant-numeric:tabular-nums">$ 7.200</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface2);border-radius:8px;font-size:12px">
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">2</span>
+              <span style="flex:1;color:var(--txt2)"><b style="color:var(--txt)">Marta Lugones</b> · entrega particular, Olivos</span>
+              <span style="font-weight:700;color:var(--txt);font-variant-numeric:tabular-nums">$ 5.400</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface2);border-radius:8px;font-size:12px">
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">3</span>
+              <span style="flex:1;color:var(--txt2)"><b style="color:var(--txt)">Combustible + peajes</b></span>
+              <span style="font-weight:700;color:var(--txt);font-variant-numeric:tabular-nums">$ 12.000</span>
+            </div>
+          </div>
         </div>
-        <div class="wa-card">
-          <h5><i class="fa-brands fa-whatsapp"></i> Recordatorio de pago</h5>
-          <div class="wa-pre">Hola {contacto}, buenos días!
 
-Te recuerdo que la factura N° {nro_factura} por $ {monto} vence el {fecha_vencimiento}.
+      </div>
 
-🏦 CBU: 0720035688000012345678
-👤 Distribuidora Norte S.A.
-CUIT: 30-71234567-8
-
-Ante cualquier consulta, a las órdenes. ¡Gracias!</div>
-          <div class="wa-meta"><span>Última edición: 20/03/26</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+      <!-- Envíos vía courier (tabla espejo de Logistica.jsx envíos) -->
+      <div style="margin-top:24px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <i class="fa-solid fa-paper-plane" style="color:var(--brand)"></i>
+          <h3 style="font-size:14px;font-weight:800;color:var(--txt);margin:0">Envíos por courier</h3>
         </div>
-        <div class="wa-card">
-          <h5><i class="fa-brands fa-whatsapp"></i> Lista de precios actualizada</h5>
-          <div class="wa-pre">Hola {contacto}! 📋
-
-Te compartimos la lista de precios actualizada al {fecha}:
-👉 {link_lista}
-
-Los precios tienen vigencia hasta el {fecha_vigencia}.
-
-Para hacer tu pedido respondé este mensaje o llamanos al (011) 4321-7890.
-
-¡Gracias por elegirnos! 🙏</div>
-          <div class="wa-meta"><span>Última edición: 01/05/26</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        <div class="tbl-card">
+          <table>
+            <thead><tr>
+              <th style="width:90px">N° Remito</th>
+              <th>Destinatario</th>
+              <th style="width:140px">Empresa de envío</th>
+              <th style="width:90px">Fecha</th>
+              <th style="text-align:right;width:90px">Costo</th>
+              <th style="width:120px">Estado</th>
+              <th style="width:60px">Paga</th>
+              <th style="text-align:right;width:48px"></th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td class="td-num"><b>VC-001248</b></td>
+                <td><b>Diego Romero</b><div style="font-size:11px;color:var(--txt3)">CABA · Villa Crespo</div></td>
+                <td style="font-size:11.5px;color:var(--txt2)">Andreani</td>
+                <td style="font-size:11.5px;color:var(--txt2)">06/06</td>
+                <td class="td-amt">$ 3.400</td>
+                <td><span style="display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6"></span>En camino</span></td>
+                <td style="font-size:11px;color:var(--txt3)">Cliente</td>
+                <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+              </tr>
+              <tr>
+                <td class="td-num"><b>VC-001247</b></td>
+                <td><b>Estudio Mendoza</b><div style="font-size:11px;color:var(--txt3)">Mendoza · Capital</div></td>
+                <td style="font-size:11.5px;color:var(--txt2)">Correo Argentino</td>
+                <td style="font-size:11.5px;color:var(--txt2)">04/06</td>
+                <td class="td-amt">$ 5.800</td>
+                <td><span style="display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#15803D"></span>Entregado</span></td>
+                <td style="font-size:11px;color:var(--txt3)">Negocio</td>
+                <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+              </tr>
+              <tr>
+                <td class="td-num"><b>VC-001246</b></td>
+                <td><b>Café Andino</b><div style="font-size:11px;color:var(--txt3)">Rosario · Centro</div></td>
+                <td style="font-size:11.5px;color:var(--txt2)">Andreani</td>
+                <td style="font-size:11.5px;color:var(--txt2)">22/05</td>
+                <td class="td-amt">$ 4.200</td>
+                <td><span style="display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#15803D"></span>Entregado</span></td>
+                <td style="font-size:11px;color:var(--txt3)">Cliente</td>
+                <td style="text-align:right"><div class="acts" style="justify-content:flex-end"><button class="act edit"><i class="fa-solid fa-pen"></i></button></div></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
 
-    <!-- ═══ CONFIGURACIÓN ═══ -->
+    <!-- ═══ MENSAJES WA (espejo de Mensajes.jsx con etapas reales) ═══ -->
+    <section class="sec" id="sec-mensajes">
+      <div class="ph">
+        <div class="ph-left">
+          <h2>Mensajes WhatsApp</h2>
+          <p>Plantillas organizadas por etapa del cliente · Variables auto-completables</p>
+        </div>
+        <div class="ph-right">
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-rotate"></i> Restaurar defaults</button>
+          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo mensaje</button>
+        </div>
+      </div>
+
+      <!-- Tabs de etapas reales: Captación / Presupuestos / Pagos / Logística / Post-Venta -->
+      <div class="tab-bar">
+        <button class="tab-btn"><i class="fa-solid fa-bullhorn" style="font-size:10px"></i> Captación <span style="background:var(--surface);color:var(--txt3);font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;border:1px solid var(--border)">6</span></button>
+        <button class="tab-btn active"><i class="fa-solid fa-file-invoice-dollar" style="font-size:10px"></i> Presupuestos <span style="background:var(--brand);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px">5</span></button>
+        <button class="tab-btn"><i class="fa-solid fa-circle-dollar-to-slot" style="font-size:10px"></i> Pagos <span style="background:var(--surface);color:var(--txt3);font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;border:1px solid var(--border)">4</span></button>
+        <button class="tab-btn"><i class="fa-solid fa-truck-fast" style="font-size:10px"></i> Logística <span style="background:var(--surface);color:var(--txt3);font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;border:1px solid var(--border)">4</span></button>
+        <button class="tab-btn"><i class="fa-solid fa-heart" style="font-size:10px"></i> Post-Venta <span style="background:var(--surface);color:var(--txt3);font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;border:1px solid var(--border)">3</span></button>
+      </div>
+
+      <!-- Plantillas reales con variables {{nombre}} {{negocio}} -->
+      <div class="wa-grid">
+        <div class="wa-card">
+          <h5><i class="fa-brands fa-whatsapp"></i> Envío de presupuesto</h5>
+          <div class="wa-pre">Hola {{nombre}}! Te paso el presupuesto que armamos desde {{negocio}}.
+
+📎 PDF: {{link_pdf}}
+💰 Total: {{total}}
+📅 Validez: 7 días
+
+Cualquier duda me avisás, ajustamos lo que haga falta. ✨</div>
+          <div class="wa-meta"><span>Variables: nombre, negocio, link_pdf, total</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        </div>
+        <div class="wa-card">
+          <h5><i class="fa-brands fa-whatsapp"></i> Cotización con opciones</h5>
+          <div class="wa-pre">Hola {{nombre}}! Como hablamos, armé 2 opciones desde {{negocio}}:
+
+🅰️ Opción base · {{precio_a}}
+🅱️ Opción ampliada · {{precio_b}}
+
+Te paso los detalles por acá. La que más te cierre, la avanzamos. 🙌</div>
+          <div class="wa-meta"><span>Variables: nombre, negocio, precio_a, precio_b</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        </div>
+        <div class="wa-card">
+          <h5><i class="fa-brands fa-whatsapp"></i> Recordatorio suave</h5>
+          <div class="wa-pre">Hola {{nombre}}! ¿Cómo va? Te recuerdo el presupuesto que te pasamos desde {{negocio}}.
+
+Si tenés alguna duda o querés ajustar algo, decime sin problema. Estamos para ayudarte. 🙏</div>
+          <div class="wa-meta"><span>Sugerido a partir de 4 días sin respuesta</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        </div>
+        <div class="wa-card">
+          <h5><i class="fa-brands fa-whatsapp"></i> Contrapropuesta</h5>
+          <div class="wa-pre">Hola {{nombre}}! Entiendo. Te pasamos esta alternativa desde {{negocio}}:
+
+✅ {{detalle_ajuste}}
+💰 Nuevo total: {{total}}
+
+Si te sirve avanzamos, sino seguimos buscando la opción que mejor te cierre. 🤝</div>
+          <div class="wa-meta"><span>Variables: nombre, negocio, detalle_ajuste, total</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        </div>
+        <div class="wa-card">
+          <h5><i class="fa-brands fa-whatsapp"></i> Reserva / lo aparto</h5>
+          <div class="wa-pre">Hola {{nombre}}! Confirmo que aparté el pedido desde {{negocio}}.
+
+🔒 Reserva hasta: {{fecha_reserva}}
+💰 Seña sugerida: {{sena}}
+
+Avísame cuando quieras avanzar con la seña así te lo dejamos guardado. ✨</div>
+          <div class="wa-meta"><span>Variables: nombre, negocio, fecha_reserva, sena</span><span style="color:var(--green);font-weight:700">Activa ✓</span></div>
+        </div>
+        <div class="wa-card" style="border:1.5px dashed var(--border2);background:var(--surface2);display:flex;align-items:center;justify-content:center;min-height:160px;text-align:center">
+          <div>
+            <i class="fa-solid fa-plus" style="font-size:22px;color:var(--brand);margin-bottom:8px;display:block"></i>
+            <div style="font-size:13px;font-weight:700;color:var(--txt)">Nuevo mensaje en Presupuestos</div>
+            <div style="font-size:11px;color:var(--txt3);margin-top:4px">Variables disponibles: nombre, negocio, total, link_pdf, fecha_reserva, sena</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CONFIGURACIÓN (espejo de Config.jsx) ═══ -->
     <section class="sec" id="sec-config">
       <div class="ph">
         <div class="ph-left">
           <h2>Configuración</h2>
-          <p>Empresa, facturación, integraciones y equipo</p>
+          <p>Datos del negocio, modelo comercial, equipo y notificaciones</p>
         </div>
         <div class="ph-right">
           <button class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
         </div>
       </div>
       <div class="cfg-grid">
+
+        <!-- Datos del negocio (config real: businessName + subtitle + email + logo) -->
         <div class="cfg-card">
-          <h4><i class="fa-solid fa-building"></i> Datos de la empresa</h4>
-          <p>Información fiscal que aparece en facturas y remitos</p>
-          <div class="fg"><label>Razón social</label><input value="Distribuidora Norte S.A."></div>
+          <h4><i class="fa-solid fa-store"></i> Datos del negocio</h4>
+          <p>Aparecen en los presupuestos, remitos y mensajes</p>
+          <div class="fg"><label>Nombre del negocio</label><input value="Distribuidora Norte"></div>
+          <div class="fg"><label>Subtítulo / Slogan</label><input value="Tu negocio en un solo lugar"></div>
           <div class="grid2">
-            <div class="fg"><label>CUIT</label><input value="30-71234567-8"></div>
-            <div class="fg"><label>Condición IVA</label><select><option selected>Responsable Inscripto</option><option>Monotributo</option><option>Exento</option></select></div>
+            <div class="fg"><label>Email de contacto</label><input value="ariel@distribuidoranorte.com"></div>
+            <div class="fg"><label>WhatsApp del negocio</label><input value="+54 9 11 4321-7890"></div>
           </div>
-          <div class="fg"><label>Domicilio fiscal</label><input value="Av. San Martín 4560, Haedo, GBA Oeste"></div>
-          <div class="grid2">
-            <div class="fg"><label>Teléfono</label><input value="(011) 4321-7890"></div>
-            <div class="fg"><label>Email</label><input value="admin@distribuidoranorte.com.ar"></div>
+          <div class="fg">
+            <label>Logo del negocio</label>
+            <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:9px;border:1px dashed var(--border2)">
+              <div style="width:42px;height:42px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0">DN</div>
+              <span style="font-size:11.5px;color:var(--txt3)">Subí un PNG o SVG · Aparece en sidebar y en los PDF</span>
+            </div>
           </div>
         </div>
+
+        <!-- Modelo comercial (config real: rubro + tipoVenta) -->
         <div class="cfg-card">
-          <h4><i class="fa-solid fa-file-invoice"></i> Facturación</h4>
-          <p>Configuración de AFIP y puntos de venta</p>
-          <div class="fg"><label>Punto de venta AFIP</label><input value="0001"></div>
-          <div class="grid2">
-            <div class="fg"><label>Tipo de comprobante</label><select><option selected>Factura A</option><option>Factura B</option><option>Factura C</option></select></div>
-            <div class="fg"><label>Próximo N° de factura</label><input value="000001248"></div>
+          <h4><i class="fa-solid fa-sliders"></i> Modelo comercial</h4>
+          <p>Adapta vocabulario, plantillas y formularios a tu rubro</p>
+          <div class="fg">
+            <label>Rubro principal</label>
+            <select>
+              <option>Indumentaria</option>
+              <option>Tecnología</option>
+              <option>Deco / Hogar</option>
+              <option>Servicios</option>
+              <option>Gastronomía</option>
+              <option selected>Distribución</option>
+              <option>Otro</option>
+            </select>
           </div>
-          <div class="fg"><label>Clave AFIP (almacenada segura)</label><input type="password" value="**********"></div>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
-            <span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;flex-shrink:0"></span>
-            <span style="font-size:11px;color:var(--green);font-weight:600">Conectado a AFIP — última sincronización hace 2h</span>
+          <div class="fg">
+            <label>Tipo de venta</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:4px">
+              <div style="padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:11.5px;font-weight:600;color:var(--txt3);text-align:center;cursor:default"><i class="fa-solid fa-user" style="font-size:11px;display:block;margin-bottom:3px"></i>Minorista</div>
+              <div style="padding:8px 10px;border:1.5px solid var(--brand);background:var(--brand-xlt);border-radius:8px;font-size:11.5px;font-weight:700;color:var(--brand);text-align:center;cursor:default"><i class="fa-solid fa-building" style="font-size:11px;display:block;margin-bottom:3px"></i>Mayorista</div>
+              <div style="padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:11.5px;font-weight:600;color:var(--txt3);text-align:center;cursor:default"><i class="fa-solid fa-arrows-split-up-and-left" style="font-size:11px;display:block;margin-bottom:3px"></i>Ambos</div>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Funcionalidades activas</label>
+            <div class="toggle"><span>Descuento al cliente por defecto</span><div class="tg on"></div></div>
+            <div class="toggle"><span>Variantes en productos (color, talle)</span><div class="tg on"></div></div>
+            <div class="toggle"><span>Costo de impresión / logo</span><div class="tg"></div></div>
+            <div class="toggle"><span>Costo interno de envíos (margen real)</span><div class="tg on"></div></div>
           </div>
         </div>
+
+        <!-- Notificaciones (espejo de Config notifications) -->
         <div class="cfg-card">
           <h4><i class="fa-solid fa-bell"></i> Notificaciones</h4>
-          <p>Alertas de cobranzas, stock y operación</p>
-          <div class="toggle"><span>Cuentas a cobrar vencidas (diario)</span><div class="tg on"></div></div>
+          <p>Avisos por email y en la app</p>
+          <div class="toggle"><span>Cobros vencidos (diario)</span><div class="tg on"></div></div>
           <div class="toggle"><span>Stock crítico de productos</span><div class="tg on"></div></div>
-          <div class="toggle"><span>Envíos atrasados (en tiempo real)</span><div class="tg on"></div></div>
-          <div class="toggle"><span>Resumen semanal de rendimiento</span><div class="tg on"></div></div>
-          <div class="toggle"><span>Alertas de seguimiento (cada 4 días)</span><div class="tg on"></div></div>
+          <div class="toggle"><span>Stock crítico de insumos</span><div class="tg on"></div></div>
+          <div class="toggle"><span>Presupuestos sin respuesta hace +4 días</span><div class="tg on"></div></div>
+          <div class="toggle"><span>Resumen semanal por email</span><div class="tg on"></div></div>
           <div class="toggle"><span>Notificaciones push en navegador</span><div class="tg"></div></div>
         </div>
+
+        <!-- Equipo (workspace members reales: owner / operator) -->
         <div class="cfg-card">
-          <h4><i class="fa-solid fa-users"></i> Equipo</h4>
-          <p>Usuarios con acceso al workspace</p>
+          <h4><i class="fa-solid fa-users"></i> Equipo del workspace</h4>
+          <p>Quién accede y con qué permisos</p>
           <div style="display:flex;align-items:center;gap:10px;padding:10px 0">
             <div style="width:32px;height:32px;border-radius:50%;background:var(--grad);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">AP</div>
-            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--txt)">Ariel Paz</div><div style="font-size:11px;color:var(--txt3)">ariel@distribuidoranorte.com.ar</div></div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--txt)">Ariel Paz</div><div style="font-size:11px;color:var(--txt3)">ariel@distribuidoranorte.com</div></div>
             <span class="badge b-confirmed">Owner</span>
           </div>
           <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--border)">
-            <div style="width:32px;height:32px;border-radius:50%;background:var(--acento);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">MR</div>
-            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--txt)">María Rodríguez</div><div style="font-size:11px;color:var(--txt3)">maria@distribuidoranorte.com.ar</div></div>
-            <span class="badge b-sent">Admin</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--border)">
             <div style="width:32px;height:32px;border-radius:50%;background:var(--amber);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">JL</div>
-            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--txt)">Juan López</div><div style="font-size:11px;color:var(--txt3)">juan@distribuidoranorte.com.ar</div></div>
-            <span class="badge b-draft">Operador</span>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--txt)">Juan López</div><div style="font-size:11px;color:var(--txt3)">juan@distribuidoranorte.com · Operador</div></div>
+            <span class="badge b-draft">Operator</span>
           </div>
-          <button class="btn btn-secondary btn-sm" style="margin-top:12px;width:100%;justify-content:center"><i class="fa-solid fa-plus"></i> Invitar usuario</button>
+          <button class="btn btn-secondary btn-sm" style="margin-top:12px;width:100%;justify-content:center"><i class="fa-solid fa-plus"></i> Invitar al equipo</button>
+
+          <!-- Backup real -->
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+            <div style="font-size:11px;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Respaldo</div>
+            <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center"><i class="fa-solid fa-cloud-arrow-down"></i> Descargar backup (JSON)</button>
+            <p style="font-size:11px;color:var(--txt3);margin-top:6px;line-height:1.5">Tus datos siempre tuyos · Bajalos cuando quieras con todo: presupuestos, clientes, productos, insumos, proveedores y configuración.</p>
+          </div>
         </div>
       </div>
     </section>
