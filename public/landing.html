@@ -245,9 +245,13 @@ section{padding:52px 0}
 .demo-dots{display:flex;gap:5px}
 .demo-dot{width:10px;height:10px;border-radius:50%}
 .demo-url-bar{flex:1;background:#1e293b;color:#64748b;font-size:10px;font-family:monospace;padding:4px 12px;border-radius:5px;text-align:center}
-.demo-tabs{display:flex;gap:1px;background:#111827;padding:8px 14px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-.demo-tab{padding:8px 18px;font-size:12.5px;font-weight:600;color:#64748b;border-radius:7px 7px 0 0;cursor:pointer;display:inline-flex;align-items:center;gap:7px;border:1px solid transparent;border-bottom:none;transition:background .15s,color .15s}
-.demo-tab.active{background:#f8fafc;color:#0F172A;border-color:rgba(255,255,255,.07)}
+.demo-tabs{display:flex;gap:2px;background:#111827;padding:10px 14px 0;border:1px solid rgba(255,255,255,.07);border-bottom:none;border-radius:14px 14px 0 0}
+.demo-tab{padding:9px 18px;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.55);border-radius:8px 8px 0 0;cursor:pointer;display:inline-flex;align-items:center;gap:7px;border:1px solid transparent;border-bottom:none;transition:background .15s,color .15s}
+.demo-tab:hover:not(.active){background:rgba(255,255,255,.04);color:rgba(255,255,255,.85)}
+.demo-tab.active{background:#f8fafc;color:#0F172A;border-color:rgba(255,255,255,.07);font-weight:700}
+.demo-tab.active i{color:#7c3aed}
+/* App shell se conecta al tab strip — sin border-radius arriba */
+#demo .app-shell-wrap{border-radius:0 0 14px 14px;border-top:none}
 .demo-tab i{font-size:11px}
 .demo-panel{display:none}
 .demo-panel.active{display:block}
@@ -952,29 +956,23 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- DEMO REAL -->
-<section id="demo" style="padding:52px 0;background:#0F172A">
+<section id="demo" style="padding:64px 0 72px;background:#0F172A">
   <div class="wrap">
-    <div class="text-center max-w-2xl mx-auto px-4 mb-8">
+    <div class="text-center max-w-2xl mx-auto px-4" style="margin-bottom:28px">
       <span class="inline-flex items-center gap-2 mb-4" style="padding:5px 14px;background:rgba(124,58,237,.18);color:#a78bfa;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;border:1px solid rgba(124,58,237,.28)">Vista real del sistema</span>
       <h2 class="text-3xl md:text-4xl font-black tracking-tight leading-tight mb-3" style="color:#fff">Así se ve ANMA Pro por dentro</h2>
-      <p class="text-base md:text-lg font-medium" style="color:rgba(255,255,255,.6);line-height:1.65">Pantallas reales de la app — navegá entre secciones</p>
+      <p class="text-base md:text-lg font-medium" style="color:rgba(255,255,255,.6);line-height:1.65">Pantallas reales del sistema — navegá entre secciones</p>
     </div>
 
-    <div class="demo-tabs" style="margin-bottom:0">
-      <div class="demo-tab active" data-tab="dashboard"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
-      <div class="demo-tab" data-tab="presupuestos"><i class="fa-solid fa-file-invoice-dollar"></i> Presupuestos</div>
-      <div class="demo-tab" data-tab="clientes"><i class="fa-solid fa-users"></i> Clientes</div>
-      <div class="demo-tab" data-tab="catalogo"><i class="fa-solid fa-box-open"></i> Catálogo</div>
+    <!-- Segmented control: vista actual del demo -->
+    <div class="demo-tabs" role="tablist" aria-label="Vista del demo">
+      <div class="demo-tab active" data-tab="dashboard" role="tab"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
+      <div class="demo-tab" data-tab="presupuestos" role="tab"><i class="fa-solid fa-file-invoice-dollar"></i> Presupuestos</div>
+      <div class="demo-tab" data-tab="clientes" role="tab"><i class="fa-solid fa-users"></i> Clientes</div>
+      <div class="demo-tab" data-tab="catalogo" role="tab"><i class="fa-solid fa-cube"></i> Productos</div>
     </div>
 
     <div class="app-shell-wrap">
-
-      <!-- chrome bar -->
-      <div class="app-chrome-bar">
-        <div class="app-chrome-dots"><span></span><span></span><span></span></div>
-        <div class="app-chrome-url">anma-hub.vercel.app · Panel de gestión</div>
-        <div style="width:60px"></div>
-      </div>
 
       <!-- app layout: sidebar + main -->
       <div class="app-layout">
@@ -1003,123 +1001,162 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
         <!-- ── MAIN: vistas con tabs ── -->
         <div class="app-main">
 
-          <!-- Panel: Dashboard -->
+          <!-- Panel: Dashboard (espejo de Historial.jsx) -->
           <div class="app-view av-active" id="panel-dashboard">
 
-          <!-- topbar -->
+          <!-- topbar real -->
           <div class="app-topbar">
             <div class="app-topbar-left">
               <b>Dashboard</b>
               &nbsp;·&nbsp;
-              <span style="color:#64748b">22 de mayo, 2026</span>
+              <span style="color:#64748b">Junio · 2026</span>
             </div>
             <div class="app-topbar-actions">
-              <span style="font-size:11px;padding:4px 10px;border:1px solid #e2e8f0;border-radius:6px;color:#64748b;background:#fff;display:inline-flex;align-items:center;gap:5px"><i class="fa-regular fa-calendar" style="font-size:10px"></i> Este mes</span>
-              <span style="font-size:11px;padding:4px 10px;border:1px solid #e2e8f0;border-radius:6px;color:#64748b;background:#fff;display:inline-flex;align-items:center;gap:5px"><i class="fa-solid fa-download" style="font-size:10px"></i> Exportar</span>
-              <span class="app-btn app-btn-primary" style="font-size:11px;padding:5px 12px"><i class="fa-solid fa-plus"></i> Nuevo presupuesto</span>
+              <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-regular fa-calendar" style="font-size:10px"></i> Este mes <i class="fa-solid fa-chevron-down" style="font-size:8px;color:#94a3b8"></i></span>
+              <span class="app-btn app-btn-primary" style="font-size:11px;padding:6px 13px"><i class="fa-solid fa-plus"></i> Nuevo pedido</span>
             </div>
           </div>
 
-          <!-- sub-tabs -->
+          <!-- sub-tabs reales: Resumen / Presupuestos / Análisis / Seguimiento -->
           <div style="display:flex;gap:2px;padding:8px 20px 0;background:#fff;border-bottom:1px solid #e2e8f0;flex-shrink:0">
-            <div style="font-size:12px;font-weight:700;color:#7c3aed;padding:6px 14px;border-bottom:2px solid #7c3aed;cursor:default">Resumen</div>
-            <div style="font-size:12px;color:#94a3b8;padding:6px 14px;cursor:default">Presupuestos</div>
-            <div style="font-size:12px;color:#94a3b8;padding:6px 14px;cursor:default">Análisis</div>
-            <div style="font-size:12px;color:#94a3b8;padding:6px 14px;cursor:default;display:flex;align-items:center;gap:5px">Seguimiento <span style="background:#e2e8f0;border-radius:99px;padding:1px 6px;font-size:10px;font-weight:700;color:#475569">2</span></div>
+            <div style="font-size:12px;font-weight:700;color:#7c3aed;padding:7px 14px;border-bottom:2px solid #7c3aed;cursor:default;margin-bottom:-1px">Resumen</div>
+            <div style="font-size:12px;color:#94a3b8;padding:7px 14px;cursor:default;font-weight:500">Presupuestos</div>
+            <div style="font-size:12px;color:#94a3b8;padding:7px 14px;cursor:default;font-weight:500">Análisis</div>
+            <div style="font-size:12px;color:#94a3b8;padding:7px 14px;cursor:default;display:flex;align-items:center;gap:6px;font-weight:500">Seguimiento <span style="background:#fee2e2;color:#dc2626;border-radius:99px;padding:1px 7px;font-size:10px;font-weight:800">1</span></div>
           </div>
 
           <!-- contenido dashboard -->
           <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column">
 
-            <!-- HOY IMPORTA -->
-            <div style="padding:12px 20px 0;flex-shrink:0">
-              <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-                <span style="color:#f59e0b;font-size:13px">⚡</span>
-                <span style="font-size:10px;font-weight:800;color:#0F172A;text-transform:uppercase;letter-spacing:.6px">Hoy importa</span>
-                <span style="font-size:10px;background:#f1f5f9;color:#475569;border-radius:99px;padding:1px 7px;font-weight:700">6</span>
+            <!-- HOY IMPORTA (espejo exacto de Historial.jsx líneas 1070-1141) -->
+            <div style="padding:14px 20px 0;flex-shrink:0">
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+                <i class="fa-solid fa-bolt" style="color:#f59e0b;font-size:12px"></i>
+                <h3 style="margin:0;font-size:11px;font-weight:800;color:#0F172A;text-transform:uppercase;letter-spacing:.06em">Hoy importa</h3>
+                <span style="font-size:10px;background:#f1f5f9;color:#475569;border-radius:10px;padding:1px 8px;font-weight:700">3</span>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-                <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:10px 14px">
-                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-                    <div style="width:18px;height:18px;border-radius:5px;background:#ef4444;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;flex-shrink:0"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                    <span style="font-size:9px;font-weight:800;color:#dc2626;text-transform:uppercase;letter-spacing:.5px">Cobros vencidos</span>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
+                <!-- Cobros vencidos -->
+                <div style="background:linear-gradient(135deg,rgba(220,38,38,.06),rgba(220,38,38,.02));border:1.5px solid rgba(220,38,38,.25);border-radius:14px;padding:12px 14px">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                    <div style="width:30px;height:30px;border-radius:9px;background:#DC2626;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:9.5px;font-weight:700;color:#DC2626;text-transform:uppercase;letter-spacing:.06em">Cobros vencidos</div>
+                      <div style="font-size:17px;font-weight:800;color:#0F172A;line-height:1.1">1 <span style="font-size:10.5px;color:#64748b;font-weight:500">pedido</span></div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color:#DC2626;font-size:11px"></i>
                   </div>
-                  <div style="font-size:22px;font-weight:900;color:#0F172A;line-height:1">4 <span style="font-size:11px;font-weight:500;color:#64748b">pedidos</span></div>
-                  <div style="font-size:10px;color:#dc2626;font-weight:600;margin-top:3px">$917.305 sin cobrar · entrega ya pasó</div>
+                  <div style="font-size:11px;color:#475569;line-height:1.4"><b style="color:#DC2626;font-variant-numeric:tabular-nums">$63.420</b> sin cobrar · entrega ya pasó</div>
                 </div>
-                <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 14px">
-                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-                    <div style="width:18px;height:18px;border-radius:5px;background:#92400e;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;flex-shrink:0"><i class="fa-solid fa-comment-dots"></i></div>
-                    <span style="font-size:9px;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:.5px">A confirmar</span>
+                <!-- Entregas hoy -->
+                <div style="background:linear-gradient(135deg,rgba(217,119,6,.07),rgba(217,119,6,.02));border:1.5px solid rgba(217,119,6,.25);border-radius:14px;padding:12px 14px">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                    <div style="width:30px;height:30px;border-radius:9px;background:#D97706;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px"><i class="fa-solid fa-truck-fast"></i></div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:9.5px;font-weight:700;color:#D97706;text-transform:uppercase;letter-spacing:.06em">Entregas hoy</div>
+                      <div style="font-size:17px;font-weight:800;color:#0F172A;line-height:1.1">1 <span style="font-size:10.5px;color:#64748b;font-weight:500">pedido</span></div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color:#D97706;font-size:11px"></i>
                   </div>
-                  <div style="font-size:22px;font-weight:900;color:#0F172A;line-height:1">2 <span style="font-size:11px;font-weight:500;color:#64748b">seguimientos</span></div>
-                  <div style="font-size:10px;color:#78716c;margin-top:3px">Enviados hace 3+ días — recordales</div>
+                  <div style="font-size:11px;color:#475569;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Distribuidora del Sur</div>
+                </div>
+                <!-- A confirmar -->
+                <div style="background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(124,58,237,.02));border:1.5px solid #7c3aed;border-radius:14px;padding:12px 14px">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                    <div style="width:30px;height:30px;border-radius:9px;background:#7c3aed;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px"><i class="fa-solid fa-comments"></i></div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:9.5px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.06em">A confirmar</div>
+                      <div style="font-size:17px;font-weight:800;color:#0F172A;line-height:1.1">1 <span style="font-size:10.5px;color:#64748b;font-weight:500">seguimiento</span></div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color:#7c3aed;font-size:11px"></i>
+                  </div>
+                  <div style="font-size:11px;color:#475569;line-height:1.4">Enviado hace 3+ días — recordale</div>
                 </div>
               </div>
             </div>
 
-            <!-- KPIs -->
+            <!-- KPIs bento (Ventas Brutas, Ingresos Caja, Ticket Promedio, Presupuestos) -->
             <div class="kpi-strip">
               <div class="kpi-card">
-                <div class="kpi-label">Ventas brutas</div>
-                <div class="kpi-num" style="font-size:22px">$2.46M</div>
-                <div style="font-size:10px;color:#10b981;font-weight:700;margin-top:2px">↑ 92% vs mes ant.</div>
+                <div class="kpi-label">Ventas Brutas</div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
+                  <div class="kpi-num" style="font-size:22px">$554.850</div>
+                  <span style="font-size:10px;font-weight:700;color:#16A34A;background:rgba(22,163,74,.10);padding:2px 6px;border-radius:5px">↑18%</span>
+                </div>
+                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="18" style="display:block;margin-top:5px"><polyline points="0,18 14,16 28,14 42,12 56,10 70,7 84,5 100,3" fill="none" stroke="#7c3aed" stroke-width="1.4" opacity=".45"/></svg>
               </div>
-              <div class="kpi-card" style="background:#f0fdf4;border-color:#bbf7d0">
-                <div class="kpi-label">Ingresos caja</div>
-                <div class="kpi-num knum-ok" style="font-size:22px">$1.71M</div>
-                <div style="font-size:10px;color:#10b981;font-weight:700;margin-top:2px">↑ 329%</div>
+              <div class="kpi-card" style="background:#f0fdf4;border-left:3px solid #16A34A">
+                <div class="kpi-label">Ingresos Caja</div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
+                  <div class="kpi-num knum-ok" style="font-size:22px">$274.500</div>
+                  <span style="font-size:10px;font-weight:700;color:#16A34A;background:rgba(22,163,74,.10);padding:2px 6px;border-radius:5px">↑24%</span>
+                </div>
+                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="18" style="display:block;margin-top:5px"><polyline points="0,19 14,17 28,18 42,13 56,11 70,10 84,7 100,5" fill="none" stroke="#16A34A" stroke-width="1.4" opacity=".45"/></svg>
               </div>
               <div class="kpi-card">
-                <div class="kpi-label">Ticket promedio</div>
-                <div class="kpi-num" style="font-size:22px">$246k</div>
-                <div style="font-size:10px;color:#94a3b8;margin-top:2px">10 presupuestos</div>
+                <div class="kpi-label">Ticket Promedio</div>
+                <div class="kpi-num" style="font-size:22px">$92.475</div>
+                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="18" style="display:block;margin-top:5px"><polyline points="0,12 14,14 28,9 42,15 56,8 70,11 84,9 100,7" fill="none" stroke="#7c3aed" stroke-width="1.4" opacity=".45"/></svg>
               </div>
               <div class="kpi-card">
-                <div class="kpi-label">Margen promedio</div>
-                <div class="kpi-num knum-ok" style="font-size:22px">64%</div>
-                <div style="font-size:10px;color:#94a3b8;margin-top:2px">sobre servicios</div>
+                <div class="kpi-label">Presupuestos</div>
+                <div class="kpi-num" style="font-size:22px">6</div>
+                <div style="font-size:10px;color:#94a3b8;margin-top:3px">Conv. 67% · 4 cerrados</div>
               </div>
             </div>
 
-            <!-- Últimos presupuestos -->
+            <!-- Tabla Últimos presupuestos (columnas reales del Resumen) -->
             <div class="app-tbl-wrap" style="padding-top:0">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:12.5px;font-weight:700;color:#0F172A">Últimos presupuestos</span>
+                <span style="font-size:11px;color:#7c3aed;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:default">Ver todos <i class="fa-solid fa-arrow-right" style="font-size:9px"></i></span>
+              </div>
               <table class="app-tbl">
                 <thead><tr>
-                  <th>N°</th><th>Cliente</th><th>Detalle</th><th>Total</th><th>Estado</th><th>Fecha</th>
+                  <th style="width:68px">N°</th><th>Cliente</th><th style="text-align:right;width:100px">Total</th><th style="width:130px">Estado</th><th style="width:38px"></th>
                 </tr></thead>
                 <tbody>
                   <tr>
-                    <td style="font-family:monospace;color:#94a3b8;font-size:12px">P-0047</td>
-                    <td><b>Constructora Palmieri</b><small>Ana Palmieri</small></td>
-                    <td style="color:#475569;font-size:12px">Branding completo + Diseño web</td>
-                    <td style="font-weight:800;color:#059669">$240.000</td>
-                    <td><span class="sp sp-stock-bajo">Enviado</span></td>
-                    <td style="color:#16a34a;font-weight:700;font-size:12px">Hoy</td>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0024</b></td>
+                    <td><b>Distribuidora del Sur</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$187.450</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6;display:inline-block"></span>Enviado</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
                   </tr>
                   <tr>
-                    <td style="font-family:monospace;color:#94a3b8;font-size:12px">P-0046</td>
-                    <td><b>Bodega Los Andes</b><small>Lucía Ferreyra</small></td>
-                    <td style="color:#475569;font-size:12px">Catálogo impreso x150 + Flyers</td>
-                    <td style="font-weight:800;color:#059669">$145.000</td>
-                    <td><span class="sp sp-activo">Aprobado</span></td>
-                    <td style="color:#334155;font-size:12px">16/05</td>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0023</b></td>
+                    <td><b>Café Andino</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$94.200</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#16A34A;display:inline-block"></span>Confirmado</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
                   </tr>
                   <tr>
-                    <td style="font-family:monospace;color:#94a3b8;font-size:12px">P-0045</td>
-                    <td><b>Farmacia San Martín</b><small>Carlos Benigni</small></td>
-                    <td style="color:#475569;font-size:12px">Tarjetas premium x500</td>
-                    <td style="font-weight:800;color:#059669">$45.000</td>
-                    <td><span class="sp sp-stock-ok">Cobrado</span></td>
-                    <td style="color:#334155;font-size:12px">08/05</td>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0022</b></td>
+                    <td><b>Estudio Mendoza</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$145.000</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#15803D;display:inline-block"></span>Entregado</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
                   </tr>
                   <tr>
-                    <td style="font-family:monospace;color:#94a3b8;font-size:12px">P-0044</td>
-                    <td><b>Café del Norte</b><small>Verónica Lagos</small></td>
-                    <td style="color:#475569;font-size:12px">Flyers A5 x1000 + Hora consultoría</td>
-                    <td style="font-weight:800;color:#059669">$85.500</td>
-                    <td><span class="sp sp-stock-bajo">Seguimiento</span></td>
-                    <td style="color:#f59e0b;font-size:12px">04/05</td>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0021</b></td>
+                    <td><b>Marta Lugones</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$32.800</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#D97706;display:inline-block"></span>En producción</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0020</b></td>
+                    <td><b>Bazar San Telmo</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$76.500</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6;display:inline-block"></span>Enviado</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0019</b></td>
+                    <td><b>Diego Romero</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$18.900</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#16A34A;display:inline-block"></span>Confirmado</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
                   </tr>
                 </tbody>
               </table>
@@ -1129,231 +1166,292 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 
           </div><!-- /panel-dashboard -->
 
-          <!-- Panel: Presupuestos -->
+          <!-- Panel: Presupuestos (espejo de Historial.jsx → tab "Presupuestos") -->
           <div class="app-view" id="panel-presupuestos">
             <div class="app-topbar">
-              <div class="app-topbar-left"><b>Presupuestos</b>&nbsp;·&nbsp;<span style="color:#64748b">10 este mes</span></div>
+              <div class="app-topbar-left"><b>Presupuestos</b>&nbsp;·&nbsp;<span style="color:#64748b">6 en el período</span></div>
               <div class="app-topbar-actions">
-                <span style="font-size:11px;padding:4px 10px;border:1px solid #e2e8f0;border-radius:6px;color:#64748b;background:#fff;display:inline-flex;align-items:center;gap:5px">Todos los estados</span>
-                <span class="app-btn app-btn-primary" style="font-size:11px;padding:5px 12px"><i class="fa-solid fa-plus"></i> Nuevo presupuesto</span>
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-solid fa-magnifying-glass" style="font-size:9px"></i> Buscar</span>
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-solid fa-filter" style="font-size:9px"></i> Todos los estados <i class="fa-solid fa-chevron-down" style="font-size:8px;color:#94a3b8"></i></span>
+                <span class="app-btn app-btn-primary" style="font-size:11px;padding:6px 13px"><i class="fa-solid fa-plus"></i> Nuevo pedido</span>
               </div>
             </div>
-            <div style="flex:1;overflow-y:auto">
-              <table class="app-tbl">
+            <!-- chips de filtro rápido -->
+            <div style="display:flex;gap:6px;padding:8px 20px;background:#fff;border-bottom:1px solid #e2e8f0;flex-wrap:wrap">
+              <span style="font-size:10.5px;padding:4px 10px;background:#7c3aed;color:#fff;border-radius:99px;font-weight:700">Todos · 6</span>
+              <span style="font-size:10.5px;padding:4px 10px;background:#f1f5f9;color:#475569;border-radius:99px;font-weight:600">Sin cobrar · 1</span>
+              <span style="font-size:10.5px;padding:4px 10px;background:#f1f5f9;color:#475569;border-radius:99px;font-weight:600">Atrasados · 1</span>
+              <span style="font-size:10.5px;padding:4px 10px;background:#f1f5f9;color:#475569;border-radius:99px;font-weight:600">Alta ganancia</span>
+            </div>
+            <div style="flex:1;overflow-y:auto;background:#f8fafc;padding:12px 20px">
+              <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden">
+              <table class="app-tbl" style="border:none;border-radius:0">
                 <thead><tr>
-                  <th>N°</th><th>Cliente</th><th>Detalle</th><th>Total</th><th>Seña</th><th>Estado</th><th>Fecha</th><th></th>
+                  <th style="width:74px">N°</th><th>Cliente</th><th style="text-align:right;width:108px">Total</th><th style="width:130px">Pago</th><th style="width:140px">Estado</th><th style="width:80px">Fecha</th><th style="width:38px"></th>
                 </tr></thead>
                 <tbody>
                   <tr>
-                    <td style="font-family:monospace;color:#94a3b8;font-size:12px">P-0047</td>
-                    <td><b>Constructora Palmieri</b><small>Ana Palmieri</small></td>
-                    <td style="color:#475569;font-size:12px">Branding completo + Diseño web</td>
-                    <td style="font-weight:800;color:#059669">$240.000</td>
-                    <td style="font-size:12px;color:#7c3aed;font-weight:700">$72.000</td>
-                    <td><span class="sp sp-stock-bajo">Enviado</span></td>
-                    <td style="font-size:12px;color:#16a34a;font-weight:700">Hoy</td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0024</b></td>
+                    <td><b>Distribuidora del Sur</b><small>Marcos Sánchez</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$187.450</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#D97706"><span style="width:7px;height:7px;border-radius:50%;background:#D97706"></span>Seña abonada</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6"></span>Enviado</span></td>
+                    <td style="font-size:12px;color:#16A34A;font-weight:700">Hoy</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
                   </tr>
                   <tr>
-                    <td style="font-family:monospace;color:#94a3b8;font-size:12px">P-0046</td>
-                    <td><b>Bodega Los Andes</b><small>Lucía Ferreyra</small></td>
-                    <td style="color:#475569;font-size:12px">Catálogo impreso x150 + Flyers</td>
-                    <td style="font-weight:800;color:#059669">$145.000</td>
-                    <td style="font-size:12px;color:#10b981;font-weight:700">Cobrada ✓</td>
-                    <td><span class="sp sp-activo">Aprobado</span></td>
-                    <td style="font-size:12px">16/05</td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0023</b></td>
+                    <td><b>Café Andino</b><small>Lucía Paredes</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$94.200</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#16A34A"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A"></span>Pagado</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#16A34A"></span>Confirmado</span></td>
+                    <td style="font-size:12px;color:#334155">22/05</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
                   </tr>
                   <tr>
-                    <td style="font-family:monospace;color:#94a3b8;font-size:12px">P-0045</td>
-                    <td><b>Farmacia San Martín</b><small>Carlos Benigni</small></td>
-                    <td style="color:#475569;font-size:12px">Tarjetas premium x500</td>
-                    <td style="font-weight:800;color:#059669">$45.000</td>
-                    <td style="font-size:12px;color:#10b981;font-weight:700">Cobrada ✓</td>
-                    <td><span class="sp sp-stock-ok">Cobrado</span></td>
-                    <td style="font-size:12px">08/05</td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0022</b></td>
+                    <td><b>Estudio Mendoza</b><small>Equipo Estudio</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$145.000</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#16A34A"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A"></span>Pagado</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#15803D"></span>Entregado</span></td>
+                    <td style="font-size:12px;color:#334155">18/05</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
                   </tr>
                   <tr>
-                    <td style="font-family:monospace;color:#94a3b8;font-size:12px">P-0044</td>
-                    <td><b>Café del Norte</b><small>Verónica Lagos</small></td>
-                    <td style="color:#475569;font-size:12px">Flyers A5 x1000 + Consultoría</td>
-                    <td style="font-weight:800;color:#059669">$85.500</td>
-                    <td style="font-size:12px;color:#7c3aed;font-weight:700">$25.650</td>
-                    <td><span class="sp sp-stock-bajo">Seguimiento</span></td>
-                    <td style="font-size:12px;color:#f59e0b">04/05</td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0021</b></td>
+                    <td><b>Marta Lugones</b><small>—</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$32.800</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#D97706"><span style="width:7px;height:7px;border-radius:50%;background:#D97706"></span>Seña abonada</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#D97706"></span>En producción</span></td>
+                    <td style="font-size:12px;color:#334155">15/05</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr style="background:#fef2f2">
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0020</b></td>
+                    <td><b>Bazar San Telmo</b><small>Romina Gómez</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$76.500</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#DC2626"><span style="width:7px;height:7px;border-radius:50%;background:#DC2626"></span>Pago pendiente</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6"></span>Enviado</span></td>
+                    <td style="font-size:12px;color:#DC2626;font-weight:700">11/05</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
                   </tr>
                   <tr>
-                    <td style="font-family:monospace;color:#94a3b8;font-size:12px">P-0043</td>
-                    <td><b>Estudio Sur</b><small>Martín Sosa</small></td>
-                    <td style="color:#475569;font-size:12px">Imagen corporativa completa</td>
-                    <td style="font-weight:800;color:#059669">$195.000</td>
-                    <td style="font-size:12px;color:#10b981;font-weight:700">Cobrada ✓</td>
-                    <td><span class="sp sp-stock-ok">Cobrado</span></td>
-                    <td style="font-size:12px">28/04</td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td style="font-family:monospace;color:#94a3b8;font-size:12px">P-0042</td>
-                    <td><b>Librería Del Sur</b><small>Roberto Vega</small></td>
-                    <td style="color:#475569;font-size:12px">Papelería institucional x500</td>
-                    <td style="font-weight:800;color:#059669">$62.000</td>
-                    <td style="font-size:12px;color:#94a3b8">—</td>
-                    <td><span class="sp sp-inactivo">Borrador</span></td>
-                    <td style="font-size:12px">20/04</td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0019</b></td>
+                    <td><b>Diego Romero</b><small>—</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$18.900</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#16A34A"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A"></span>Pagado</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#16A34A"></span>Confirmado</span></td>
+                    <td style="font-size:12px;color:#334155">04/05</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
                   </tr>
                 </tbody>
               </table>
+              </div>
             </div>
           </div><!-- /panel-presupuestos -->
 
-          <!-- Panel: Clientes -->
+          <!-- Panel: Clientes (espejo de Clientes.jsx, tabla zt-tbl) -->
           <div class="app-view" id="panel-clientes">
             <div class="app-topbar">
-              <div class="app-topbar-left"><b>Clientes</b>&nbsp;·&nbsp;<span style="color:#64748b">8 activos</span></div>
+              <div class="app-topbar-left"><b>Clientes</b>&nbsp;·&nbsp;<span style="color:#64748b">5 activos</span></div>
               <div class="app-topbar-actions">
-                <span style="font-size:11px;padding:4px 10px;border:1px solid #e2e8f0;border-radius:6px;color:#64748b;background:#fff;display:inline-flex;align-items:center;gap:5px"><i class="fa-solid fa-magnifying-glass" style="font-size:9px"></i> Buscar</span>
-                <span class="app-btn app-btn-primary" style="font-size:11px;padding:5px 12px"><i class="fa-solid fa-plus"></i> Nuevo cliente</span>
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-solid fa-magnifying-glass" style="font-size:9px"></i> Buscar</span>
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-solid fa-file-import" style="font-size:9px"></i> Importar</span>
+                <span class="app-btn app-btn-primary" style="font-size:11px;padding:6px 13px"><i class="fa-solid fa-plus"></i> Nuevo cliente</span>
               </div>
             </div>
-            <div style="flex:1;overflow-y:auto">
-              <table class="app-tbl">
+            <div style="flex:1;overflow-y:auto;background:#f8fafc;padding:12px 20px">
+              <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden">
+              <table class="app-tbl" style="border:none;border-radius:0">
                 <thead><tr>
-                  <th>Cliente</th><th>Contacto</th><th>Ciudad</th><th>Último pedido</th><th>Total facturado</th><th>Estado</th><th></th>
+                  <th>Empresa / Contacto</th>
+                  <th style="text-align:center;width:54px" title="WhatsApp"><i class="fa-brands fa-whatsapp" style="color:#6B7280;font-size:13px"></i></th>
+                  <th style="text-align:center;width:54px" title="Email"><i class="fa-solid fa-envelope" style="color:#6B7280;font-size:12px"></i></th>
+                  <th style="width:130px">Rubro</th>
+                  <th style="width:130px">Última actividad</th>
+                  <th style="text-align:right;width:108px">Acciones</th>
                 </tr></thead>
                 <tbody>
                   <tr>
-                    <td><b>Constructora Palmieri</b><small>Ana Palmieri</small></td>
-                    <td style="font-size:12px;color:#475569">ana@palmieri.com</td>
-                    <td style="font-size:12px">Buenos Aires</td>
-                    <td style="font-size:12px;color:#16a34a;font-weight:700">Hoy</td>
-                    <td style="font-weight:800;color:#059669">$435.000</td>
-                    <td><span class="sp sp-activo">Activo</span></td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span title="Activo — hace 0d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                        <div><div style="font-weight:600;font-size:13px;color:#0F172A;line-height:1.3">Distribuidora del Sur</div><div style="font-size:11px;color:#6B7280;margin-top:1px">Marcos Sánchez</div></div>
+                      </div>
+                    </td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+                    <td style="font-size:12px;font-weight:500;color:#475569">Mayorista</td>
+                    <td style="font-size:12px;color:#6B7280;font-variant-numeric:tabular-nums">06/06/2026</td>
+                    <td style="text-align:right">
+                      <div style="display:inline-flex;gap:4px;justify-content:flex-end">
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-pen"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FECACA;background:#FEF2F2;color:#DC2626;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-trash"></i></span>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
-                    <td><b>Estudio Sur</b><small>Martín Sosa</small></td>
-                    <td style="font-size:12px;color:#475569">msosa@estudiosur.com</td>
-                    <td style="font-size:12px">Córdoba</td>
-                    <td style="font-size:12px">28/04</td>
-                    <td style="font-weight:800;color:#059669">$380.000</td>
-                    <td><span class="sp sp-activo">Activo</span></td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span title="Activo — hace 14d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                        <div><div style="font-weight:600;font-size:13px;color:#0F172A;line-height:1.3">Café Andino</div><div style="font-size:11px;color:#6B7280;margin-top:1px">Lucía Paredes</div></div>
+                      </div>
+                    </td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+                    <td style="font-size:12px;font-weight:500;color:#475569">Gastronomía</td>
+                    <td style="font-size:12px;color:#6B7280;font-variant-numeric:tabular-nums">22/05/2026</td>
+                    <td style="text-align:right">
+                      <div style="display:inline-flex;gap:4px;justify-content:flex-end">
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-pen"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FECACA;background:#FEF2F2;color:#DC2626;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-trash"></i></span>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
-                    <td><b>Bodega Los Andes</b><small>Lucía Ferreyra</small></td>
-                    <td style="font-size:12px;color:#475569">lucia@losandes.com.ar</td>
-                    <td style="font-size:12px">Mendoza</td>
-                    <td style="font-size:12px">16/05</td>
-                    <td style="font-weight:800;color:#059669">$290.000</td>
-                    <td><span class="sp sp-activo">Activo</span></td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span title="Activo — hace 18d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                        <div><div style="font-weight:600;font-size:13px;color:#0F172A;line-height:1.3">Estudio Mendoza</div><div style="font-size:11px;color:#6B7280;margin-top:1px">Equipo Estudio</div></div>
+                      </div>
+                    </td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+                    <td style="text-align:center"><span style="color:#94a3b8;font-size:11px">—</span></td>
+                    <td style="font-size:12px;font-weight:500;color:#475569">Servicios</td>
+                    <td style="font-size:12px;color:#6B7280;font-variant-numeric:tabular-nums">18/05/2026</td>
+                    <td style="text-align:right">
+                      <div style="display:inline-flex;gap:4px;justify-content:flex-end">
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-pen"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FECACA;background:#FEF2F2;color:#DC2626;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-trash"></i></span>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
-                    <td><b>Café del Norte</b><small>Verónica Lagos</small></td>
-                    <td style="font-size:12px;color:#475569">vlagos@cafenorte.com</td>
-                    <td style="font-size:12px">Rosario</td>
-                    <td style="font-size:12px;color:#f59e0b;font-weight:700">04/05 ⚡</td>
-                    <td style="font-weight:800;color:#059669">$155.000</td>
-                    <td><span class="sp sp-stock-bajo">Seguimiento</span></td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span title="Tibio — hace 26d" style="width:7px;height:7px;border-radius:50%;background:#D97706;flex-shrink:0;display:inline-block"></span>
+                        <div><div style="font-weight:600;font-size:13px;color:#0F172A;line-height:1.3">Bazar San Telmo</div><div style="font-size:11px;color:#6B7280;margin-top:1px">Romina Gómez</div></div>
+                      </div>
+                    </td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+                    <td style="font-size:12px;font-weight:500;color:#475569">Comercio</td>
+                    <td style="font-size:12px;color:#D97706;font-weight:700;font-variant-numeric:tabular-nums">11/05/2026</td>
+                    <td style="text-align:right">
+                      <div style="display:inline-flex;gap:4px;justify-content:flex-end">
+                        <span title="Recontactar — sin actividad >30d" style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FEF3C7;background:#FEF9C3;color:#EAB308;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-bolt"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-pen"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FECACA;background:#FEF2F2;color:#DC2626;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-trash"></i></span>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
-                    <td><b>Farmacia San Martín</b><small>Carlos Benigni</small></td>
-                    <td style="font-size:12px;color:#475569">cbenigni@farmaciasm.com</td>
-                    <td style="font-size:12px">Buenos Aires</td>
-                    <td style="font-size:12px">08/05</td>
-                    <td style="font-weight:800;color:#059669">$130.000</td>
-                    <td><span class="sp sp-activo">Activo</span></td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td><b>Librería Del Sur</b><small>Roberto Vega</small></td>
-                    <td style="font-size:12px;color:#475569">rvega@libreriasur.com</td>
-                    <td style="font-size:12px">Buenos Aires</td>
-                    <td style="font-size:12px">20/04</td>
-                    <td style="font-weight:800;color:#059669">$62.000</td>
-                    <td><span class="sp sp-inactivo">Sin pedidos</span></td>
-                    <td><button class="t-wa"><i class="fa-brands fa-whatsapp"></i></button></td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span title="Activo — hace 21d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                        <div><div style="font-weight:600;font-size:13px;color:#0F172A;line-height:1.3">Marta Lugones</div></div>
+                      </div>
+                    </td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+                    <td style="text-align:center"><span style="color:#94a3b8;font-size:11px">—</span></td>
+                    <td style="font-size:12px;color:#94a3b8">—</td>
+                    <td style="font-size:12px;color:#6B7280;font-variant-numeric:tabular-nums">15/05/2026</td>
+                    <td style="text-align:right">
+                      <div style="display:inline-flex;gap:4px;justify-content:flex-end">
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-pen"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FECACA;background:#FEF2F2;color:#DC2626;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-trash"></i></span>
+                      </div>
+                    </td>
                   </tr>
                 </tbody>
               </table>
+              </div>
             </div>
           </div><!-- /panel-clientes -->
 
-          <!-- Panel: Catálogo -->
+          <!-- Panel: Productos (espejo de Catalogo.jsx) -->
           <div class="app-view" id="panel-catalogo">
             <div class="app-topbar">
-              <div class="app-topbar-left"><b>Catálogo de Productos</b>&nbsp;·&nbsp;<span style="color:#64748b">11 productos</span></div>
+              <div class="app-topbar-left"><b>Productos</b>&nbsp;·&nbsp;<span style="color:#64748b">5 ítems</span></div>
               <div class="app-topbar-actions">
-                <span style="font-size:11px;padding:4px 10px;border:1px solid #e2e8f0;border-radius:6px;color:#64748b;background:#fff">Todos</span>
-                <span class="app-btn app-btn-primary" style="font-size:11px;padding:5px 12px"><i class="fa-solid fa-plus"></i> Nuevo producto</span>
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #FECACA;border-radius:7px;color:#DC2626;background:#FEF2F2;display:inline-flex;align-items:center;gap:5px;font-weight:700"><i class="fa-solid fa-triangle-exclamation" style="font-size:9px"></i> Stock crítico · 2</span>
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-solid fa-percent" style="font-size:9px"></i> Precios</span>
+                <span class="app-btn app-btn-primary" style="font-size:11px;padding:6px 13px"><i class="fa-solid fa-plus"></i> Nuevo producto</span>
               </div>
             </div>
-            <div style="flex:1;overflow-y:auto">
-              <table class="app-tbl">
+            <div style="flex:1;overflow-y:auto;background:#f8fafc;padding:12px 20px">
+              <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden">
+              <table class="app-tbl" style="border:none;border-radius:0">
                 <thead><tr>
-                  <th>Producto / SKU</th><th>Categoría</th><th>Proveedor</th><th>P. Público</th><th>Margen</th><th>Stock</th><th></th>
+                  <th>Producto</th>
+                  <th style="width:110px">Categoría</th>
+                  <th style="width:110px">Proveedor</th>
+                  <th style="text-align:right;width:80px">Costo</th>
+                  <th style="text-align:right;width:96px">P. Público</th>
+                  <th style="text-align:right;width:96px">P. Mayorista</th>
+                  <th style="text-align:center;width:72px">% Margen</th>
+                  <th style="text-align:right;width:74px">Stock</th>
+                  <th style="text-align:right;width:48px"></th>
                 </tr></thead>
                 <tbody>
                   <tr>
-                    <td><b>Branding completo</b><small>SRV-BRD-01</small></td>
-                    <td><span class="sp sp-activo" style="font-size:10px">Servicio</span></td>
-                    <td style="font-size:12px;color:#94a3b8">—</td>
-                    <td style="font-weight:800;color:#059669">$95.000</td>
-                    <td><span class="dmarg">66%</span></td>
-                    <td style="font-size:12px;color:#94a3b8">—</td>
-                    <td><button class="t-edit"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><div style="font-weight:800;color:#0F172A">Pack mayorista x30</div><div style="font-size:10px;color:#94a3b8">SKU: PCK-MAY-30</div></td>
+                    <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#EDE9FE;color:#7c3aed;padding:3px 10px;border-radius:99px;white-space:nowrap">Mayorista</span></td>
+                    <td style="font-size:12px;color:#475569">Imp. del Norte</td>
+                    <td style="text-align:right;font-size:12px;color:#64748b;font-variant-numeric:tabular-nums">$1.860</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$3.140</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$2.620</td>
+                    <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803d">41%</span></td>
+                    <td style="text-align:right;font-weight:700;color:#16A34A;font-variant-numeric:tabular-nums">24</td>
+                    <td style="text-align:center"><i class="fa-solid fa-pen" style="color:#94a3b8;font-size:10px"></i></td>
+                  </tr>
+                  <tr style="border-left:3px solid #f59e0b">
+                    <td><div style="font-weight:800;color:#0F172A">Modelo Lux Premium</div><div style="font-size:10px;color:#94a3b8">SKU: MOD-LUX</div></td>
+                    <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#FFE4E6;color:#BE185D;padding:3px 10px;border-radius:99px;white-space:nowrap">Indumentaria</span></td>
+                    <td style="font-size:12px;color:#475569">Textil Sur</td>
+                    <td style="text-align:right;font-size:12px;color:#64748b;font-variant-numeric:tabular-nums">$4.200</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$9.500</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$7.800</td>
+                    <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803d">45%</span></td>
+                    <td style="text-align:right;font-weight:700;color:#D97706;font-variant-numeric:tabular-nums">8 <i class="fa-solid fa-triangle-exclamation" style="font-size:9px"></i></td>
+                    <td style="text-align:center"><i class="fa-solid fa-pen" style="color:#94a3b8;font-size:10px"></i></td>
                   </tr>
                   <tr>
-                    <td><b>Diseño web (5 sec)</b><small>SRV-WEB-05</small></td>
-                    <td><span class="sp sp-activo" style="font-size:10px">Servicio</span></td>
+                    <td><div style="font-weight:800;color:#0F172A">Servicio mensual de gestión</div><div style="font-size:10px;color:#94a3b8">SKU: SRV-MES</div></td>
+                    <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#DBEAFE;color:#1D4ED8;padding:3px 10px;border-radius:99px;white-space:nowrap">Servicio</span></td>
                     <td style="font-size:12px;color:#94a3b8">—</td>
-                    <td style="font-weight:800;color:#059669">$145.000</td>
-                    <td><span class="dmarg">67%</span></td>
-                    <td style="font-size:12px;color:#94a3b8">—</td>
-                    <td><button class="t-edit"><i class="fa-solid fa-pen"></i></button></td>
+                    <td style="text-align:right;font-size:12px;color:#64748b;font-variant-numeric:tabular-nums">$45.000</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$145.000</td>
+                    <td style="text-align:right;font-size:12px;color:#94a3b8">—</td>
+                    <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803d">69%</span></td>
+                    <td style="text-align:right;font-size:12px;color:#94a3b8">—</td>
+                    <td style="text-align:center"><i class="fa-solid fa-pen" style="color:#94a3b8;font-size:10px"></i></td>
                   </tr>
-                  <tr class="row-warn">
-                    <td><b>Catálogo impreso A4</b><small>FIS-CAT-A4</small></td>
-                    <td><span class="sp sp-stock-ok" style="font-size:10px">Físico</span></td>
-                    <td style="font-size:12px">Imp. Norte</td>
-                    <td style="font-weight:800;color:#059669">$12.500</td>
-                    <td><span class="dmarg" style="background:#fef9c3;color:#92400e">58%</span></td>
-                    <td style="font-weight:700;color:#f59e0b">8 ⚠</td>
-                    <td><button class="t-edit"><i class="fa-solid fa-pen"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td><b>Flyer A5 (1000u)</b><small>FIS-FLY-A5</small></td>
-                    <td><span class="sp sp-stock-ok" style="font-size:10px">Físico</span></td>
-                    <td style="font-size:12px">Imp. Norte</td>
-                    <td style="font-weight:800;color:#059669">$28.000</td>
-                    <td><span class="dmarg">62%</span></td>
-                    <td style="font-weight:700;color:#16a34a">85</td>
-                    <td><button class="t-edit"><i class="fa-solid fa-pen"></i></button></td>
-                  </tr>
-                  <tr class="row-red">
-                    <td><b>Tarjeta premium (500u)</b><small>FIS-TRJ-500</small></td>
-                    <td><span class="sp sp-stock-ok" style="font-size:10px">Físico</span></td>
-                    <td style="font-size:12px">Imp. Sur</td>
-                    <td style="font-weight:800;color:#059669">$45.000</td>
-                    <td><span class="dmarg">71%</span></td>
-                    <td style="font-weight:800;color:#dc2626">0 ✖</td>
-                    <td><button class="t-edit"><i class="fa-solid fa-pen"></i></button></td>
+                  <tr style="border-left:3px solid #ef4444">
+                    <td><div style="font-weight:800;color:#0F172A">Insumos pack base</div><div style="font-size:10px;color:#94a3b8">SKU: INS-BAS</div></td>
+                    <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#FEF3C7;color:#92400E;padding:3px 10px;border-radius:99px;white-space:nowrap">Insumo</span></td>
+                    <td style="font-size:12px;color:#475569">Plásticos AR</td>
+                    <td style="text-align:right;font-size:12px;color:#64748b;font-variant-numeric:tabular-nums">$890</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$1.580</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$1.350</td>
+                    <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803d">44%</span></td>
+                    <td style="text-align:right;font-weight:800;color:#DC2626;font-variant-numeric:tabular-nums">0</td>
+                    <td style="text-align:center"><i class="fa-solid fa-pen" style="color:#94a3b8;font-size:10px"></i></td>
                   </tr>
                   <tr>
-                    <td><b>Hora de consultoría</b><small>SRV-CON-01</small></td>
-                    <td><span class="sp sp-activo" style="font-size:10px">Servicio</span></td>
-                    <td style="font-size:12px;color:#94a3b8">—</td>
-                    <td style="font-weight:800;color:#059669">$18.000</td>
-                    <td><span class="dmarg">100%</span></td>
-                    <td style="font-size:12px;color:#94a3b8">—</td>
-                    <td><button class="t-edit"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><div style="font-weight:800;color:#0F172A">Catálogo impreso A5</div><div style="font-size:10px;color:#94a3b8">SKU: CAT-A5</div></td>
+                    <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#E0F2FE;color:#0369A1;padding:3px 10px;border-radius:99px;white-space:nowrap">Marketing</span></td>
+                    <td style="font-size:12px;color:#475569">Imp. del Norte</td>
+                    <td style="text-align:right;font-size:12px;color:#64748b;font-variant-numeric:tabular-nums">$1.100</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$2.800</td>
+                    <td style="text-align:right;font-size:12px;color:#94a3b8">—</td>
+                    <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803d">61%</span></td>
+                    <td style="text-align:right;font-weight:700;color:#16A34A;font-variant-numeric:tabular-nums">42</td>
+                    <td style="text-align:center"><i class="fa-solid fa-pen" style="color:#94a3b8;font-size:10px"></i></td>
                   </tr>
                 </tbody>
               </table>
+              </div>
             </div>
           </div><!-- /panel-catalogo -->
 
@@ -1362,7 +1460,10 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 
     </div><!-- /app-shell-wrap -->
 
-    <p style="text-align:center;margin:20px 0 0;font-size:13px;color:rgba(255,255,255,.35)">Navegá entre secciones · Pantallas reales de ANMA Pro en acción</p>
+    <p style="text-align:center;margin:22px 0 0;font-size:12.5px;color:rgba(255,255,255,.4)">
+      <i class="fa-solid fa-circle-info" style="margin-right:6px;color:rgba(255,255,255,.3)"></i>
+      Vista interactiva · Hacé click en cada sección para explorar. Los datos son ilustrativos, la estructura es idéntica al sistema en producción.
+    </p>
   </div>
 </section>
 
