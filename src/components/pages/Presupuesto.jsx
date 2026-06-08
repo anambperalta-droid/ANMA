@@ -1180,10 +1180,57 @@ export default function Presupuesto() {
         box-shadow:0 0 0 3px rgba(124,58,237,.08);
       }
       @media(max-width:640px){
-        .logi-parada-row{display:flex;flex-wrap:wrap;padding:10px 4px}
-        .logi-parada-row > select{flex:1 1 60%}
-        .logi-parada-row > input[type=text]{flex:1 1 100%}
-        .logi-parada-row > input[type=number]{flex:1 1 50%}
+        .logi-parada-row{
+          display:grid!important;grid-template-columns:1fr 28px!important;
+          gap:6px 8px!important;padding:10px 8px!important;
+          background:var(--surface2)!important;border-radius:10px!important;
+          margin-bottom:6px!important;border-bottom:none!important;
+          align-items:center!important;
+        }
+        .logi-parada-row > select{grid-column:1 / 2;font-size:12px!important;padding:7px 8px!important}
+        .logi-parada-row > input[type=text]{grid-column:1 / 3;font-size:12.5px!important;padding:8px 10px!important;background:var(--surface)!important;border:1px solid var(--border)!important}
+        .logi-parada-row > input[type=number]{grid-column:1 / 2;font-size:13px!important;font-weight:700!important;padding:8px 10px!important;background:var(--surface)!important;border:1px solid var(--border)!important;text-align:right!important}
+        .logi-parada-row > button{grid-column:2 / 3;grid-row:1 / 4;align-self:start;margin-top:4px}
+      }
+      /* ── Logística section card (al final de Paso 3) ── */
+      .logi-section-card{
+        background:var(--surface);border:1.5px solid var(--border);
+        border-radius:14px;padding:14px 16px;
+      }
+      .logi-section-hd{
+        display:flex;align-items:center;justify-content:space-between;gap:10px;
+        padding-bottom:12px;margin-bottom:12px;
+        border-bottom:1px solid var(--border);
+      }
+      .logi-section-hd-l{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+      .logi-section-ico{
+        width:34px;height:34px;border-radius:10px;
+        background:linear-gradient(135deg,#FEF3C7,#FDE68A);
+        display:flex;align-items:center;justify-content:center;
+        font-size:17px;flex-shrink:0;
+      }
+      .logi-section-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+      .logi-section-title{
+        font-size:13.5px;font-weight:800;color:var(--txt);
+        letter-spacing:-.01em;line-height:1.2;
+      }
+      .logi-section-hint{
+        font-size:11px;color:var(--txt3);font-weight:500;
+        line-height:1.3;
+      }
+      .logi-section-tag{
+        background:#EDE9FE;color:#5B21B6;
+        padding:4px 9px;border-radius:9999px;
+        font-size:10.5px;font-weight:700;flex-shrink:0;
+        display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+      }
+      .logi-section-fields{margin-bottom:12px}
+      @media(max-width:640px){
+        .logi-section-card{padding:12px 14px;border-radius:12px}
+        .logi-section-hd{padding-bottom:10px;margin-bottom:10px}
+        .logi-section-ico{width:30px;height:30px;font-size:15px;border-radius:9px}
+        .logi-section-title{font-size:12.5px}
+        .logi-section-hint{font-size:10.5px}
       }
       /* Botón Agregar minimalista */
       .tbl-add-btn{
@@ -1195,6 +1242,13 @@ export default function Presupuesto() {
       }
       .tbl-add-btn:hover{border-color:var(--brand);color:var(--brand);background:rgba(124,58,237,.04)}
       .tbl-add-btn i{font-size:11px}
+      /* En mobile: full-width para alinearse con el wiz-tip y mantener jerarquía */
+      @media(max-width:640px){
+        .mob-items-list + .tbl-add-btn{
+          display:flex;width:100%;justify-content:center;
+          padding:11px 14px;font-size:13px;border-radius:10px;margin-top:10px;
+        }
+      }
     `}</style>
       <div className="ph ph-pres">
         <div className="ph-left" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -1647,20 +1701,22 @@ export default function Presupuesto() {
                 </div>
 
                 {/* ─── 🚚 Logística / Comisionista — al FINAL del paso para no obstruir el flujo principal ─── */}
-                <div className="tbl-card" style={{ marginTop: 18 }}>
-                  <div className="tbl-section-hd">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <span style={{ fontSize: 13 }}>🚚</span>
-                      <span className="label">Logística / Comisionista</span>
-                      <span className="hint">opcional · suma al costo total</span>
+                <div className="logi-section-card" style={{ marginTop: 18 }}>
+                  <div className="logi-section-hd">
+                    <div className="logi-section-hd-l">
+                      <div className="logi-section-ico">🚚</div>
+                      <div className="logi-section-tx">
+                        <div className="logi-section-title">Logística / Comisionista</div>
+                        <div className="logi-section-hint">Opcional · suma al costo total</div>
+                      </div>
                     </div>
                     {form.viajeId && (
-                      <span style={{ background: '#EDE9FE', color: '#5B21B6', padding: '3px 8px', borderRadius: 9999, fontSize: 10, fontWeight: 700 }} title="Vinculado a un viaje registrado">
+                      <span className="logi-section-tag" title="Vinculado a un viaje registrado">
                         <i className="fa fa-link" /> Viaje #{form.viajeId}
                       </span>
                     )}
                   </div>
-                  <div className="grid2" style={{ marginBottom: 10 }}>
+                  <div className="grid2 logi-section-fields">
                     <div className="fg">
                       <label>Comisionista / Transportista</label>
                       <input type="text" value={form.comisionista || ''} onChange={e => setF('comisionista', e.target.value)} placeholder="Nombre del comisionista" />
