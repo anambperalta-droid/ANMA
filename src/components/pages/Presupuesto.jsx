@@ -781,6 +781,9 @@ export default function Presupuesto() {
     setDraftRestored(false)
     dbDel(DRAFT_KEY)
     toast('Presupuesto guardado', 'ok')
+    // First-budget celebration: dispara el evento global — el componente
+    // FirstBudgetCelebration chequea si es el primero y muestra el modal.
+    try { window.dispatchEvent(new CustomEvent('anma:first-budget-saved')) } catch { /* ignorar */ }
     // ─── Auto-sync a Google Sheets (fire-and-forget) ───
     const gs = getSheetsConfig()
     if (gs.enabled && gs.autoSync && gs.url && savedBudget) {

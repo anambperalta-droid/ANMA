@@ -6,6 +6,7 @@ import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, db, dbW } from '../../lib/storage'
 import { getCategoriesForRubro, getRubroMeta, catsAreOutdated, RUBROS } from '../../lib/rubros'
 import { getProductPlaceholder, getEmptyProducts } from '../../lib/voice'
+import EmptyHero from '../layout/EmptyHero'
 
 const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '' }
 
@@ -539,11 +540,14 @@ export default function Catalogo() {
             </div>
           )
         }) : (
-          <div className="empty-native">
-            <div className="ico"><i className="fa fa-box-open" /></div>
-            <h4>{getEmptyProducts(c.rubro).title}</h4>
-            <p>{getEmptyProducts(c.rubro).subtitle}</p>
-          </div>
+          <EmptyHero
+            icon="fa-box-open"
+            title={getEmptyProducts(c.rubro).title}
+            subtitle={getEmptyProducts(c.rubro).subtitle}
+            primary={{ label: 'Nuevo producto', icon: 'fa-plus', onClick: () => open() }}
+            secondary={{ label: 'Importar lista', icon: 'fa-file-import', onClick: () => { setBulkCat(cats[0] || ''); setBulkModal(true) } }}
+            tip="Costo, precio público y mayorista se completan solos al usar el catálogo."
+          />
         )}
       </div>
 

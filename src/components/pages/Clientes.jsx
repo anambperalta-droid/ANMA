@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, STATUS_MAP, STATUS_CLS } from '../../lib/storage'
 import { getClientVocab, getClientRubroPlaceholder } from '../../lib/voice'
+import EmptyHero from '../layout/EmptyHero'
 
 /* ── Modal de vista previa de presupuesto (solo lectura, mobile-first) ── */
 function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
@@ -743,7 +744,16 @@ export default function Clientes() {
                     </td>
                   </tr>
                 )
-              }) : <tr><td colSpan={7}><div className="empty"><div className="ico"><i className="fa fa-users" /></div><h4>{vocab.emptyTitle}</h4><p>{vocab.emptySubtitle}</p></div></td></tr>}
+              }) : <tr><td colSpan={7}>
+                <EmptyHero
+                  icon="fa-users"
+                  title={vocab.emptyTitle}
+                  subtitle={vocab.emptySubtitle}
+                  primary={{ label: 'Nuevo cliente', icon: 'fa-plus', onClick: () => openEdit() }}
+                  secondary={{ label: 'Importar CSV / vCard', icon: 'fa-file-import', onClick: () => setImportModal(true) }}
+                  tip="Importá tus contactos desde el teléfono en 30 segundos."
+                />
+              </td></tr>}
             </tbody>
           </table>
         </div>
