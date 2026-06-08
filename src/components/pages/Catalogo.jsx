@@ -479,12 +479,28 @@ export default function Catalogo() {
               </div>
             )}
           </div>
-          {/* Gestionar: fijo en extremo derecho con degradado en mobile */}
-          <button className="cat-gestionar" onClick={() => setCatMgmtModal(true)} title="Gestionar categorías">
-            <i className="fa fa-sliders" /> Gestionar
-          </button>
+          {/* Gestionar + Nuevo: fijos en extremo derecho con degradado en mobile */}
+          <div className="cat-actions-right">
+            <button className="cat-gestionar" onClick={() => setCatMgmtModal(true)} title="Gestionar categorías">
+              <i className="fa fa-sliders" /> Gestionar
+            </button>
+            <button className="cat-nuevo-mob" onClick={() => open()} title="Nuevo producto">
+              <i className="fa fa-plus" /> Nuevo
+            </button>
+          </div>
         </div>
       </div>
+      <style>{`
+        .cat-actions-right{display:inline-flex;align-items:center;gap:6px;flex-shrink:0}
+        .cat-nuevo-mob{display:none;align-items:center;gap:6px;height:38px;padding:0 14px;border-radius:9999px;border:none;background:var(--color-principal,#7C3AED);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;box-shadow:0 4px 14px var(--brand-dim,rgba(124,58,237,.2));transition:all .15s}
+        .cat-nuevo-mob:active{transform:scale(.95)}
+        .cat-nuevo-mob i{font-size:11px}
+        /* Botón primario "+ Nuevo" SOLO en mobile (en desktop ya existe en .cat-ph) */
+        @media(max-width:640px){
+          .cat-nuevo-mob{display:inline-flex}
+          .cat-gestionar{padding:0 12px!important}
+        }
+      `}</style>
 
       {/* ── MOBILE CARD LIST (≤640px) ── */}
       <div className="cat-mob-list">

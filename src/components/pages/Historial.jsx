@@ -1383,49 +1383,67 @@ export default function Historial() {
             .hist-act i{opacity:.7;transition:opacity .15s ease}
             .hist-act:hover i{opacity:1}
           `}</style>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
-            <div className="search-row" style={{ maxWidth: 300, flex: '0 0 auto' }}>
+          <div className="hist-search-filters" style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
+            <div className="search-row hist-search-mobile" style={{ maxWidth: 300, flex: '0 0 auto' }}>
               <i className="fa fa-magnifying-glass" />
               <input type="text" placeholder="Buscar cliente, empresa..." value={search} onChange={e => setSearch(e.target.value)} />
             </div>
-            <div style={{ display: 'flex', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, padding: 2, gap: 1 }}>
+            <div className="hist-status-seg" style={{ display: 'flex', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, padding: 2, gap: 1, overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', maxWidth: '100%' }}>
               {['all', 'draft', 'sent', 'negotiating', 'confirmed', 'lost'].map(f => (
                 <button key={f} onClick={() => setFilter(f)}
-                  style={{ padding: '5px 11px', border: 'none', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, fontWeight: filter === f ? 600 : 400, background: filter === f ? 'var(--surface)' : 'transparent', color: filter === f ? 'var(--txt)' : 'var(--txt3)', boxShadow: filter === f ? '0 1px 3px rgba(0,0,0,.1)' : 'none', transition: 'all .15s ease', whiteSpace: 'nowrap' }}>
+                  style={{ padding: '5px 11px', border: 'none', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, fontWeight: filter === f ? 600 : 400, background: filter === f ? 'var(--surface)' : 'transparent', color: filter === f ? 'var(--txt)' : 'var(--txt3)', boxShadow: filter === f ? '0 1px 3px rgba(0,0,0,.1)' : 'none', transition: 'all .15s ease', whiteSpace: 'nowrap', flexShrink: 0 }}>
                   {f === 'all' ? 'Todos' : STATUS_MAP[f]}
                 </button>
               ))}
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
-            {[
-              { key: 'atrasados', label: 'Atrasados', icon: 'fa-fire', color: '#DC2626' },
-              { key: 'sin_cobrar', label: 'Sin cobrar', icon: 'fa-hourglass-half', color: '#D97706' },
-              { key: 'alta_ganancia', label: 'Alta ganancia', icon: 'fa-trophy', color: '#16A34A' },
-            ].map(chip => (
-              <button key={chip.key}
-                onClick={() => setQuickFilter(q => q === chip.key ? '' : chip.key)}
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 11px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s', border: `1.5px solid ${quickFilter === chip.key ? chip.color : 'var(--border)'}`, background: quickFilter === chip.key ? chip.color + '12' : 'transparent', color: quickFilter === chip.key ? chip.color : 'var(--txt3)' }}>
-                <i className={`fa ${chip.icon}`} style={{ fontSize: 10 }} />
-                {chip.label}
-              </button>
-            ))}
-            {quickFilter && (
-              <button onClick={() => setQuickFilter('')}
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 11px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s', border: '1.5px solid var(--border)', background: 'transparent', color: 'var(--txt3)' }}
-                title="Quitar filtro rápido">
-                <i className="fa fa-xmark" style={{ fontSize: 10 }} />
-                Quitar filtro
-              </button>
-            )}
+          <style>{`
+            .hist-status-seg::-webkit-scrollbar{display:none}
+            @media(max-width:640px){
+              .hist-search-mobile{flex:1 1 100%!important;max-width:100%!important}
+              .hist-status-seg{flex:1 1 100%!important}
+            }
+          `}</style>
+          <div className="hist-quick-row" style={{ display: 'flex', gap: 6, marginBottom: 10, alignItems: 'center' }}>
+            <div className="hist-quick-chips" style={{ display: 'flex', gap: 6, flex: 1, minWidth: 0, overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', paddingBottom: 2 }}>
+              {[
+                { key: 'atrasados', label: 'Atrasados', icon: 'fa-fire', color: '#DC2626' },
+                { key: 'sin_cobrar', label: 'Sin cobrar', icon: 'fa-hourglass-half', color: '#D97706' },
+                { key: 'alta_ganancia', label: 'Alta ganancia', icon: 'fa-trophy', color: '#16A34A' },
+              ].map(chip => (
+                <button key={chip.key}
+                  onClick={() => setQuickFilter(q => q === chip.key ? '' : chip.key)}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s', border: `1.5px solid ${quickFilter === chip.key ? chip.color : 'var(--border)'}`, background: quickFilter === chip.key ? chip.color + '12' : 'transparent', color: quickFilter === chip.key ? chip.color : 'var(--txt3)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                  <i className={`fa ${chip.icon}`} style={{ fontSize: 10 }} />
+                  {chip.label}
+                </button>
+              ))}
+              {quickFilter && (
+                <button onClick={() => setQuickFilter('')}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s', border: '1.5px solid var(--border)', background: 'transparent', color: 'var(--txt3)', whiteSpace: 'nowrap', flexShrink: 0 }}
+                  title="Quitar filtro rápido">
+                  <i className="fa fa-xmark" style={{ fontSize: 10 }} />
+                  Quitar
+                </button>
+              )}
+            </div>
             <button
               onClick={() => setShowLossReason(v => !v)}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 11px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s', border: `1.5px solid ${showLossReason ? '#DC2626' : 'var(--border)'}`, background: showLossReason ? '#FEE2E2' : 'transparent', color: showLossReason ? '#DC2626' : 'var(--txt3)', marginLeft: 'auto' }}
+              className="hist-loss-btn"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s', border: `1.5px solid ${showLossReason ? '#DC2626' : 'var(--border)'}`, background: showLossReason ? '#FEE2E2' : 'transparent', color: showLossReason ? '#DC2626' : 'var(--txt3)', whiteSpace: 'nowrap', flexShrink: 0 }}
               title={showLossReason ? 'Ocultar motivo de pérdida' : 'Mostrar motivo de pérdida'}>
               <i className="fa fa-circle-xmark" style={{ fontSize: 10 }} />
-              {showLossReason ? 'Ocultar motivo' : 'Ver motivo pérdida'}
+              <span className="hist-loss-label">{showLossReason ? 'Ocultar motivo' : 'Ver motivo pérdida'}</span>
             </button>
           </div>
+          <style>{`
+            .hist-quick-chips::-webkit-scrollbar{display:none}
+            /* En mobile angosto: el botón "Ver motivo pérdida" se reduce a icono solo */
+            @media(max-width:540px){
+              .hist-loss-btn .hist-loss-label{display:none}
+              .hist-loss-btn{padding:5px 9px!important;min-width:30px;justify-content:center}
+            }
+          `}</style>
           {selectedIds.size > 0 && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: 'var(--brand-xlt)', border: '1.5px solid var(--brand)', borderRadius: 10, marginBottom: 10, flexWrap: 'wrap' }}>
               <b style={{ color: 'var(--brand)', fontSize: 12 }}>{selectedIds.size} seleccionados</b>

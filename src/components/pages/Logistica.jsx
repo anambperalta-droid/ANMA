@@ -670,7 +670,7 @@ export default function Logistica() {
       <div className="tab-bar logi-tab-bar-scroll logi-mob-tabs" style={{ gap: 0 }}>
         {['envios', 'viajes', 'cotizar', 'resumen'].map(t => (
           <div key={t} className={`tab-btn ${tab === t ? 'active' : ''}`} onClick={() => setTab(t)}>
-            {t === 'envios' ? 'Envíos' : t === 'cotizar' ? 'Cotizar' : 'Resumen'}
+            {t === 'envios' ? 'Envíos' : t === 'viajes' ? 'Viajes' : t === 'cotizar' ? 'Cotizar' : 'Resumen'}
           </div>
         ))}
         <button className="logi-tab-add" onClick={() => openShip()}>
@@ -714,21 +714,34 @@ export default function Logistica() {
           </div>
 
           {/* ── KPI strip ── */}
-          <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+          <div className="logi-kpi-strip" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 10 }}>
             {[
-              { label: 'Envíos hoy',  val: todayCount,          icon: 'fa-truck-fast',          color: 'var(--brand)' },
+              { label: 'Hoy',         val: todayCount,          icon: 'fa-truck-fast',          color: 'var(--brand)' },
               { label: 'Pendientes',  val: pendingCount,         icon: 'fa-box',                 color: '#D97706' },
               { label: 'Atrasados',   val: lateShipments.length, icon: 'fa-triangle-exclamation', color: '#DC2626' },
             ].map(k => (
-              <div key={k.label} className="card" style={{ flex: 1, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+              <div key={k.label} className="card logi-kpi-card" style={{ padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
                 <i className={`fa ${k.icon}`} style={{ color: k.val > 0 ? k.color : 'var(--txt4)', fontSize: 16, flexShrink: 0 }} />
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{k.label}</div>
-                  <div style={{ fontSize: 20, fontWeight: 800, color: k.val > 0 ? k.color : 'var(--txt)', lineHeight: 1.2 }}>{k.val}</div>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div className="logi-kpi-label" style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.2 }}>{k.label}</div>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: k.val > 0 ? k.color : 'var(--txt)', lineHeight: 1.2, fontVariantNumeric: 'tabular-nums' }}>{k.val}</div>
                 </div>
               </div>
             ))}
           </div>
+          <style>{`
+            /* KPI strip mobile: stack icon arriba + label completo abajo en pantallas chicas */
+            @media(max-width:480px){
+              .logi-kpi-card{padding:9px 10px!important;gap:7px!important;flex-direction:column!important;align-items:flex-start!important}
+              .logi-kpi-card i{font-size:14px!important}
+              .logi-kpi-label{font-size:9.5px!important;letter-spacing:.4px!important}
+              .logi-kpi-card > div > div:last-child{font-size:18px!important}
+            }
+            /* Pills de status: scroll horizontal sin wrap, sin truncar */
+            .logi-pills-row{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+            .logi-pills-row::-webkit-scrollbar{display:none}
+            .logi-pills-row .pill{flex-shrink:0;white-space:nowrap}
+          `}</style>
 
           {/* ── MOBILE CARD LIST (≤767px) ── */}
           <div className="logi-mob-list">
