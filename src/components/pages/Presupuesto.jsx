@@ -1417,59 +1417,52 @@ export default function Presupuesto() {
                           </button>
                         </div>
 
-                        {/* Fila 2: Variante + Stock */}
+                        {/* Fila 2: Variante (compact) + Stock chip (solo si hay info) */}
                         <div className="mic-meta-row">
                           <div className="mic-field" style={{ flex: 1, minWidth: 0 }}>
-                            <span className="mic-label">Variante</span>
                             <input
                               type="text"
                               value={it.variant || ''}
                               onChange={e => updateItem(i, 'variant', e.target.value)}
-                              placeholder="Color / talle"
+                              placeholder="Variante (color, talle...)"
                               className="mic-variant-input"
                             />
                           </div>
-                          <div className="mic-field mic-stock-field">
-                            <span className="mic-label">Stock</span>
-                            <span className="mic-stock-val" style={overStock ? { color: '#DC2626' } : {}}>
-                              {it.stockAvailable !== undefined ? it.stockAvailable : '—'}
-                              {overStock && (
-                                <i className="fa fa-triangle-exclamation" style={{ marginLeft: 5, fontSize: 11, color: '#DC2626' }} />
-                              )}
+                          {it.stockAvailable !== undefined && (
+                            <span className={`mic-stock-chip ${overStock ? 'is-over' : ''}`}>
+                              <i className="fa fa-cubes" />
+                              <span>Stock {it.stockAvailable}</span>
+                              {overStock && <i className="fa fa-triangle-exclamation" />}
                             </span>
-                          </div>
+                          )}
                         </div>
 
-                        {/* Fila 3: Cant. + Precio u. + Subtotal */}
-                        <div className="mic-nums-row">
-                          <div className="mic-field">
-                            <span className="mic-label">Cant.</span>
-                            <input
-                              type="text"
-                              inputMode="numeric"
-                              value={it.qty === '' ? '' : String(it.qty)}
-                              onFocus={selectOnFocus}
-                              onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'qty', r === '' ? '' : Math.max(1, parseInt(r) || 1)) }}
-                              onBlur={e => { if (e.target.value === '') updateItem(i, 'qty', 1) }}
-                              className="mic-qty-input"
-                            />
-                          </div>
-                          <div className="mic-field mic-price-field">
-                            <span className="mic-label">Precio u.</span>
-                            <input
-                              type="text"
-                              inputMode="numeric"
-                              value={fmtTbl(it.priceUnit)}
-                              onFocus={selectOnFocus}
-                              onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'priceUnit', r === '' ? '' : Number(r)) }}
-                              onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }}
-                              className="mic-price-input"
-                            />
-                          </div>
-                          <div className="mic-field mic-subtotal-field">
-                            <span className="mic-label">Subtotal</span>
-                            <span className="mic-subtotal">{fmt(num(it.qty) * num(it.priceUnit))}</span>
-                          </div>
+                        {/* Fila 3: Formula compacta — Cant × Precio = Subtotal */}
+                        <div className="mic-formula-row">
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            value={it.qty === '' ? '' : String(it.qty)}
+                            onFocus={selectOnFocus}
+                            onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'qty', r === '' ? '' : Math.max(1, parseInt(r) || 1)) }}
+                            onBlur={e => { if (e.target.value === '') updateItem(i, 'qty', 1) }}
+                            className="mic-qty-input"
+                            aria-label="Cantidad"
+                          />
+                          <span className="mic-op">×</span>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            value={fmtTbl(it.priceUnit)}
+                            onFocus={selectOnFocus}
+                            onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'priceUnit', r === '' ? '' : Number(r)) }}
+                            onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }}
+                            className="mic-price-input"
+                            placeholder="$ Precio u."
+                            aria-label="Precio unitario"
+                          />
+                          <span className="mic-op mic-op-eq">=</span>
+                          <span className="mic-subtotal">{fmt(num(it.qty) * num(it.priceUnit))}</span>
                         </div>
 
                       </div>
@@ -1546,15 +1539,15 @@ export default function Presupuesto() {
                   </label>
                 </div>
 
-                {/* Fila 4: Parámetros financieros — todos en una línea */}
-                <div className={feats.descuentoCliente ? 'grid4' : 'grid3'} style={{ marginTop: 4 }}>
-                  <div className="fg"><label>Margen ganancia (%)</label><input type="number" value={form.margin} onFocus={selectOnFocus} onChange={e => setMarginAndReprice(e.target.value)} onBlur={e => { if (e.target.value === '') setMarginAndReprice(0) }} min="0" max="100" /></div>
-                  <div className="fg"><label>Seña requerida (%)</label><input type="number" value={form.deposit} onFocus={selectOnFocus} onChange={e => setF('deposit', e.target.value)} onBlur={e => { if (e.target.value === '') setF('deposit', 0) }} min="0" max="100" /></div>
-                  <div className="fg"><label>Impresión/logo x u. ($)</label><input type="number" value={form.logoCost} onFocus={selectOnFocus} onChange={e => setF('logoCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('logoCost', 0) }} min="0" /></div>
+                {/* Fila 4: Parámetros financieros — todos en una línea (compactos en mobile, no apilar) */}
+                <div className={`wiz-money-grid ${feats.descuentoCliente ? 'grid4' : 'grid3'}`} style={{ marginTop: 4 }}>
+                  <div className="fg"><label>Margen (%)</label><input type="number" inputMode="numeric" value={form.margin} onFocus={selectOnFocus} onChange={e => setMarginAndReprice(e.target.value)} onBlur={e => { if (e.target.value === '') setMarginAndReprice(0) }} min="0" max="100" /></div>
+                  <div className="fg"><label>Seña (%)</label><input type="number" inputMode="numeric" value={form.deposit} onFocus={selectOnFocus} onChange={e => setF('deposit', e.target.value)} onBlur={e => { if (e.target.value === '') setF('deposit', 0) }} min="0" max="100" /></div>
+                  <div className="fg"><label>Logo x u. ($)</label><input type="number" inputMode="numeric" value={form.logoCost} onFocus={selectOnFocus} onChange={e => setF('logoCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('logoCost', 0) }} min="0" /></div>
                   {feats.descuentoCliente && (
                     <div className="fg">
-                      <label>Descuento al cliente (%)</label>
-                      <input type="number" value={form.discount} onFocus={selectOnFocus} onChange={e => setDiscountAndReprice(e.target.value)} onBlur={e => { if (e.target.value === '') setDiscountAndReprice(0) }} min="0" max="100" />
+                      <label>Descuento (%)</label>
+                      <input type="number" inputMode="numeric" value={form.discount} onFocus={selectOnFocus} onChange={e => setDiscountAndReprice(e.target.value)} onBlur={e => { if (e.target.value === '') setDiscountAndReprice(0) }} min="0" max="100" />
                     </div>
                   )}
                 </div>
