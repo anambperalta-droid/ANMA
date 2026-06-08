@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { prefetchRoute } from '../../lib/routes'
 
 const TABS = [
   { path: '/',            icon: 'fa-house',    label: 'Inicio',    perm: 'dashboard.view' },
@@ -28,6 +29,8 @@ export default function BottomNav({ onMore }) {
           <button
             key={i}
             onClick={() => nav(t.path)}
+            onTouchStart={() => prefetchRoute(t.path)}
+            onMouseEnter={() => prefetchRoute(t.path)}
             className="bn-fab"
             aria-label={t.label}
           >
@@ -51,6 +54,8 @@ export default function BottomNav({ onMore }) {
           <button
             key={i}
             onClick={() => nav(t.path)}
+            onTouchStart={() => prefetchRoute(t.path)}
+            onMouseEnter={() => prefetchRoute(t.path)}
             className={`bn-item${isActive ? ' active' : ''}`}
             aria-label={t.label}
           >

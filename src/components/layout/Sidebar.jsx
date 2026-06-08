@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useData } from '../../context/DataContext'
 import { RUBROS, TIPOS_VENTA } from '../../lib/rubros'
+import { prefetchRoute } from '../../lib/routes'
 
 // `perm` define quién ve cada entrada (owner ve todo, operator solo los que coincidan).
 // `ownerOnly: true` = oculto para operator siempre.
@@ -76,7 +77,18 @@ export default function Sidebar({ open, onClose, collapsed }) {
           if (item.section) return <div key={i} className="sb-sec">{item.section}</div>
           const active = loc.pathname === item.path || (item.path === '/presupuesto' && loc.pathname.startsWith('/presupuesto'))
           return (
-            <div key={item.path} className={`sb-item ${active ? 'active' : ''}`} data-tip={item.label} onClick={() => goTo(item.path)}>
+            <div
+              key={item.path}
+              className={`sb-item ${active ? 'active' : ''}`}
+              data-tip={item.label}
+              onClick={() => goTo(item.path)}
+              onMouseEnter={() => prefetchRoute(item.path)}
+              onTouchStart={() => prefetchRoute(item.path)}
+              onFocus={() => prefetchRoute(item.path)}
+              role="link"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(item.path) } }}
+            >
               <i className={`fa ${item.icon}`} />
               <span className="sb-lbl">{item.label}</span>
             </div>

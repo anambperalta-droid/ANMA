@@ -518,7 +518,7 @@ export default function Catalogo() {
                 onClick={e => e.stopPropagation()} />
               <div className="cat-mob-item-l">
                 {p.image
-                  ? <img src={p.image} className="cat-mob-item-img" alt={p.name} />
+                  ? <img src={p.image} className="cat-mob-item-img" alt={p.name} loading="lazy" decoding="async" />
                   : <div className="cat-mob-item-noimg"><i className="fa fa-box-open" style={{ color: cc.color, fontSize: 16, opacity: .6 }} /></div>
                 }
                 <div className="cat-mob-item-info">
@@ -593,7 +593,7 @@ export default function Catalogo() {
                     </td>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        {p.image && <img src={p.image} alt={p.name} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 6, border: '1px solid var(--border)', flexShrink: 0 }} />}
+                        {p.image && <img src={p.image} alt={p.name} loading="lazy" decoding="async" style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 6, border: '1px solid var(--border)', flexShrink: 0 }} />}
                         <div>
                           <div style={{ fontWeight: 800 }}>{p.name}</div>
                           {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
@@ -688,7 +688,7 @@ export default function Catalogo() {
                 {/* IMAGE */}
                 <div className="prod-card-img" style={{ background: cc.bg }}>
                   {p.image
-                    ? <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ? <img src={p.image} alt={p.name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     : <i className="fa fa-box-open" style={{ fontSize: 38, color: cc.color, opacity: .5 }} />
                   }
                   <input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)}
