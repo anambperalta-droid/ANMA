@@ -654,11 +654,33 @@ export default function Presupuesto() {
     return `${c.budgetPrefix || 'AN'}-${String(num).padStart(4, '0')}`
   }, [editId, c.nextNum, c.budgetPrefix])
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.contact && !form.company) { toast('Falta el cliente. Cargá un nombre de contacto o empresa.', 'er'); return }
     if (form.wa && !isValidWA(form.wa)) { toast('El WhatsApp no tiene un formato válido. Ej: +54 351 1234567', 'er'); setWaTouched(true); return }
+    // Email del cliente (si se cargó): validar formato
+    if (form.clientEmail && form.clientEmail.trim()) {
+      const { validateEmail } = await import('../../lib/validate')
+      const e = validateEmail(form.clientEmail)
+      if (!e.ok) { toast(e.msg, 'er'); return }
+    }
+    // Parámetros financieros: % entre 0-100, costos no negativos
+    const { validatePercent, validatePrice } = await import('../../lib/validate')
+    const checks = [
+      validatePercent(form.margin, 'El margen'),
+      validatePercent(form.deposit, 'La seña'),
+      validatePercent(form.discount, 'El descuento'),
+      validatePrice(form.logoCost, 'El costo de logo'),
+    ]
+    for (const c of checks) {
+      if (!c.ok) { toast(c.msg, 'er'); return }
+    }
     const validItems = items.filter(i => i.name).map(i => ({ ...i, qty: num(i.qty), costUnit: num(i.costUnit), priceUnit: num(i.priceUnit) }))
     if (!validItems.length) { toast('Necesitás al menos un producto. Agregá uno desde "Productos".', 'er'); return }
+    // Validar que ningún item tenga cantidades o precios negativos (defensivo)
+    for (const it of validItems) {
+      if (it.qty < 0) { toast(`Cantidad inválida en "${it.name}".`, 'er'); return }
+      if (it.priceUnit < 0) { toast(`Precio inválido en "${it.name}".`, 'er'); return }
+    }
 
     // Qualifying = order has started / is confirmed as real.
     // Uses a Set so it handles:

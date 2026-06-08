@@ -1,5 +1,6 @@
 import { supabase } from './supabase'
 import { db, dbW, setWriteHook } from './storage'
+import { log } from './logger'
 
 const SITE_KEY = 'anma-pro'
 const DATA_KEYS = ['budgets', 'clients', 'suppliers', 'products', 'insumos', 'stockMoves', 'cfg']
@@ -55,7 +56,7 @@ async function resolveWorkspace(userId) {
 
     if (error) {
       // Fallback: treat as own owner (legacy path, pre-Phase2 SQL migration).
-      console.warn('[sync] membership resolve error', error.message)
+      log.warn('[sync] membership resolve error', error.message)
       return { wsId: userId, role: 'owner' }
     }
     if (!data) {
@@ -64,7 +65,7 @@ async function resolveWorkspace(userId) {
     }
     return { wsId: data.workspace_id, role: data.role }
   } catch (e) {
-    console.warn('[sync] membership resolve failed', e?.message)
+    log.warn('[sync] membership resolve failed', e?.message)
     return { wsId: userId, role: 'owner' }
   }
 }
@@ -91,9 +92,9 @@ async function pushBusinessProfile() {
       .from('business_profiles')
       .update(payload)
       .eq('workspace_id', _wsId)
-    if (error) console.warn('[sync] business_profile update failed', error.message)
+    if (error) log.warn('[sync] business_profile update failed', error.message)
   } catch (e) {
-    console.warn('[sync] business_profile push failed', e?.message)
+    log.warn('[sync] business_profile push failed', e?.message)
   }
 }
 
@@ -111,7 +112,7 @@ async function doPush(retryCount = 0) {
     if (error) {
       // One automatic retry after 4 s to recover from transient network errors.
       if (retryCount < 1) setTimeout(() => doPush(retryCount + 1), 4000)
-      else console.warn('[sync] push failed after retry', error.message)
+      else log.warn('[sync] push failed after retry', error.message)
       return
     }
     // Sync paralelo de columnas tipadas (no bloquea, no falla el flujo principal)
@@ -119,7 +120,7 @@ async function doPush(retryCount = 0) {
     window.dispatchEvent(new CustomEvent('anma:cloud-saved'))
   } catch (e) {
     if (retryCount < 1) setTimeout(() => doPush(retryCount + 1), 4000)
-    else console.warn('[sync] push failed', e?.message)
+    else log.warn('[sync] push failed', e?.message)
   }
 }
 
@@ -228,7 +229,7 @@ export async function pullFromCloud(userId) {
     window.dispatchEvent(new CustomEvent('anma:synced'))
     return true
   } catch (e) {
-    console.warn('[sync] pull failed', e?.message)
+    log.warn('[sync] pull failed', e?.message)
     return false
   }
 }
