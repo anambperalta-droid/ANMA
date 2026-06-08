@@ -12,6 +12,7 @@ import TaskFab from './TaskFab'
 import BottomNav from './BottomNav'
 import BottomSheet, { BottomSheetItem } from './BottomSheet'
 import PWAInstall from './PWAInstall'
+import TrialBanner from './TrialBanner'
 
 // ── Code splitting: rutas grandes se cargan on-demand ───────────────────
 // Historial, Presupuesto, Catalogo son los componentes más pesados (>1000 LOC).
@@ -27,6 +28,7 @@ const Insumos     = lazy(() => import('../pages/Insumos'))
 const Config      = lazy(() => import('../pages/Config'))
 const Admin       = lazy(() => import('../pages/Admin'))
 const Importador  = lazy(() => import('../pages/Importador'))
+const NotFound    = lazy(() => import('../pages/NotFound'))
 
 // Fallback de carga: skeleton coherente con el resto de la app
 function RouteFallback() {
@@ -319,11 +321,14 @@ function AppShellInner() {
 
   return (
     <div style={{ display: 'flex', width: '100vw', height: '100vh', overflow: 'clip' }}>
+      {/* Skip link: usuarios de teclado pueden saltar la navegación al contenido principal */}
+      <a href="#main-content" className="skip-link">Saltar al contenido</a>
       <Sidebar open={sideOpen} onClose={() => setSideOpen(false)} collapsed={collapsed} />
       {sideOpen && <div className="sb-overlay" onClick={() => setSideOpen(false)} />}
       <div className={`main${collapsed ? ' slim' : ''}`}>
+        <TrialBanner />
         <Topbar onMenuClick={() => setSideOpen(!sideOpen)} onCollapseClick={toggleCollapsed} collapsed={collapsed} />
-        <div className="content">
+        <div className="content" id="main-content" role="main">
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<Guard perm="dashboard.view"><Historial /></Guard>} />
@@ -338,6 +343,8 @@ function AppShellInner() {
               <Route path="/config" element={<Guard perm="config.access"><Config /></Guard>} />
               <Route path="/importador" element={<Guard perm="config.access"><Importador /></Guard>} />
               <Route path="/admin" element={<AdminGuard><Admin /></AdminGuard>} />
+              {/* Catch-all: 404 con contexto (sidebar + topbar siguen visibles) */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </div>
