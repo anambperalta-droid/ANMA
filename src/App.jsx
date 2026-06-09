@@ -9,6 +9,8 @@ import TrialExpirado from './components/pages/TrialExpirado'
 import PortalProveedor from './components/pages/PortalProveedor'
 import Alta from './components/pages/Alta'
 import Onboarding from './components/pages/Onboarding'
+import Activar from './components/pages/Activar'
+import PagoResultado from './components/pages/PagoResultado'
 import ErrorBoundary from './components/layout/ErrorBoundary'
 
 function AuthRedirect() {
@@ -56,6 +58,14 @@ export default function App() {
           trial?.expired  ? <TrialExpirado /> :
           <Onboarding />
         } />
+        {/* Activación — accesible INCLUSO con trial expirado para que pueda pagar */}
+        <Route path="/activar" element={
+          !authed ? <Navigate to="/registro?next=/activar" replace /> : <Activar />
+        } />
+        {/* Páginas de retorno post-checkout MP — públicas (MP redirige acá) */}
+        <Route path="/pago-exitoso" element={<PagoResultado variant="exitoso" />} />
+        <Route path="/pago-pendiente" element={<PagoResultado variant="pendiente" />} />
+        <Route path="/pago-error" element={<PagoResultado variant="error" />} />
         <Route path="/*" element={
           hasAuthParams    ? <Navigate to={'/bienvenida' + search + hash} replace /> :
           !authed          ? <Navigate to="/login" /> :

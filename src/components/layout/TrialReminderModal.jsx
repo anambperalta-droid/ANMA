@@ -104,7 +104,8 @@ export default function TrialReminderModal() {
   }
 
   const goActivate = () => {
-    window.open('https://api.whatsapp.com/send?phone=5491169456863&text=' + encodeURIComponent('¡Hola! Quiero activar mi plan de ANMA Pro antes de que se venza el trial.'), '_blank')
+    // Llevamos al user a la página de activación (que dispara MP)
+    window.location.href = '/activar'
     close()
   }
 
@@ -173,7 +174,7 @@ export default function TrialReminderModal() {
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               }}
             >
-              <i className="fa-brands fa-whatsapp" />
+              <i className="fa fa-bolt" />
               {m.cta}
             </button>
             <button

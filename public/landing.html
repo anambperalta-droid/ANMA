@@ -1754,8 +1754,10 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
             </p>
           </div>
 
-          <!-- CTA principal -->
-          <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quer%C3%ADa%20solicitar%20la%20implementaci%C3%B3n." target="_blank" style="display:block;background:#059669;color:#fff;text-decoration:none;padding:14px;border-radius:12px;font-weight:800;font-size:14px;text-align:center;box-shadow:0 8px 24px rgba(5,150,105,.35);transition:background .15s" onmouseover="this.style.background='#047857'" onmouseout="this.style.background='#059669'">Solicitar implementación</a>
+          <!-- CTA principal — va a /activar (auto-redirige a /registro si no está logueado) -->
+          <a href="/activar" style="display:block;background:linear-gradient(135deg,#059669,#047857);color:#fff;text-decoration:none;padding:14px;border-radius:12px;font-weight:800;font-size:14px;text-align:center;box-shadow:0 8px 24px rgba(5,150,105,.35);transition:transform .15s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(5,150,105,.45)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(5,150,105,.35)'">
+            <i class="fa-solid fa-bolt" style="margin-right:6px"></i> Activar mi plan ahora
+          </a>
 
           <!-- Sin contratos -->
           <p style="font-size:11.5px;color:#475569;text-align:center;margin:0;line-height:1.5">
