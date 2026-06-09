@@ -166,7 +166,15 @@ export default function Bienvenida() {
     setSubmitting(true)
     const { data: updated, error: updateErr } = await supabase.auth.updateUser({ password })
     if (updateErr) {
-      setError(updateErr.message)
+      // Friendly translation de errores típicos
+      const raw = String(updateErr.message || '').toLowerCase()
+      const friendly =
+        raw.includes('same') ? 'La contraseña nueva no puede ser igual a la actual.' :
+        raw.includes('weak') ? 'La contraseña es muy débil. Probá una más segura.' :
+        raw.includes('network') ? 'Sin conexión. Verificá tu internet e intentá de nuevo.' :
+        raw.includes('session') || raw.includes('expired') ? 'Tu enlace de activación expiró. Pedí uno nuevo al administrador.' :
+        updateErr.message
+      setError(friendly)
       setSubmitting(false)
       return
     }
@@ -242,6 +250,7 @@ export default function Bienvenida() {
         @media(max-width:480px){
           .bv-card{padding:32px 20px 28px!important}
           .bv-title{font-size:20px!important}
+          .f-inp{font-size:16px!important}  /* anti-zoom iOS Safari al hacer focus */
         }
       `}</style>
       <div style={styles.card} className="bv-card">

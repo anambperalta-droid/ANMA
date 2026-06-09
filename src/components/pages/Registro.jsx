@@ -175,7 +175,13 @@ export default function Registro() {
     const cleanEmail = email.trim()
     if (!cleanBiz)             { setErr('Ingresá el nombre de tu empresa.'); return }
     if (!cleanEmail)           { setErr('Ingresá tu email.'); return }
-    if (pass.length < 8)       { setErr('La contraseña debe tener al menos 8 caracteres.'); return }
+
+    // Validación robusta de email + password
+    const { validateEmail, validatePassword } = await import('../../lib/validate')
+    const ev = validateEmail(cleanEmail)
+    if (!ev.ok) { setErr(ev.msg); return }
+    const pv = validatePassword(pass)
+    if (!pv.ok) { setErr(pv.msg); return }
 
     setLoading(true)
 
@@ -321,7 +327,7 @@ export default function Registro() {
                 <input
                   type={showPwd ? 'text' : 'password'}
                   className="rg-inp"
-                  placeholder="Mínimo 8 caracteres"
+                  placeholder="Mínimo 8 caracteres · letra + número"
                   value={pass}
                   onChange={e => setPass(e.target.value)}
                   onKeyDown={handleKey}

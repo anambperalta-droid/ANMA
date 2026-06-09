@@ -67,6 +67,10 @@ export default function Login() {
 
   const handleLogin = async () => {
     if (!email || !pass) { setErr('Completá email y contraseña para continuar.'); return }
+    // Validación de formato de email antes de pegar al server (mejor UX)
+    const { validateEmail } = await import('../../lib/validate')
+    const ev = validateEmail(email)
+    if (!ev.ok) { setErr(ev.msg); return }
     setSubmitting(true); setErr('')
     const result = await login(email, pass)
     if (result) { setErr(friendlyAuthError(result)); setSubmitting(false); return }
@@ -389,6 +393,23 @@ export default function Login() {
               ? <><i className="fa fa-spinner fa-spin" /> Ingresando...</>
               : <><i className="fa fa-arrow-right-to-bracket" /> Entrar a ANMA</>}
           </button>
+
+          {/* Link directo a registro para usuarios nuevos */}
+          <div style={{
+            textAlign: 'center', marginTop: 18, marginBottom: 14,
+            fontSize: 13, color: 'rgba(255,255,255,.65)',
+          }}>
+            ¿No tenés cuenta?{' '}
+            <a
+              href="/registro"
+              style={{
+                color: '#a78bfa', fontWeight: 700, textDecoration: 'none',
+                borderBottom: '1px dashed rgba(167,139,250,.5)', paddingBottom: 1,
+              }}
+            >
+              Registrate gratis →
+            </a>
+          </div>
 
           <div className="lp-divider">o</div>
 
