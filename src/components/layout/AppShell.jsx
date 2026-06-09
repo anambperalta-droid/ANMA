@@ -15,6 +15,7 @@ import PWAInstall from './PWAInstall'
 import TrialBanner from './TrialBanner'
 import WelcomeTour from './WelcomeTour'
 import FirstBudgetCelebration from './FirstBudgetCelebration'
+import TrialReminderModal from './TrialReminderModal'
 import RouteFallback from './RouteFallback'
 
 // Code splitting + prefetch caching centralizados en lib/routes.js
@@ -361,6 +362,7 @@ function AppShellInner() {
       <PWAInstall />
       <WelcomeTour />
       <FirstBudgetCelebration />
+      <TrialReminderModal />
     </div>
   )
 }
