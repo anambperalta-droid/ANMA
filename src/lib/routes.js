@@ -26,6 +26,7 @@ const REGISTRY = {
   config:      { loader: () => import('../components/pages/Config'),       kind: 'form' },
   admin:       { loader: () => import('../components/pages/Admin'),        kind: 'table' },
   importador:  { loader: () => import('../components/pages/Importador'),   kind: 'form' },
+  micuenta:    { loader: () => import('../components/pages/MiCuenta'),     kind: 'form' },
   notfound:    { loader: () => import('../components/pages/NotFound'),     kind: 'dashboard' },
 }
 
@@ -52,6 +53,7 @@ export const Mensajes    = lazy(() => cachedLoad('mensajes'))
 export const Config      = lazy(() => cachedLoad('config'))
 export const Admin       = lazy(() => cachedLoad('admin'))
 export const Importador  = lazy(() => cachedLoad('importador'))
+export const MiCuenta    = lazy(() => cachedLoad('micuenta'))
 export const NotFound    = lazy(() => cachedLoad('notfound'))
 
 /**

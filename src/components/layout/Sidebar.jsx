@@ -95,7 +95,13 @@ export default function Sidebar({ open, onClose, collapsed }) {
           )
         })}
         {role === 'owner' && (
-          <div className="sb-item" data-tip="Backup" onClick={doBackup}><i className="fa fa-cloud-arrow-down" /><span className="sb-lbl">Backup</span></div>
+          <>
+            <div className="sb-sec">Tu cuenta</div>
+            <div className={`sb-item ${loc.pathname === '/mi-cuenta' ? 'active' : ''}`} data-tip="Mi cuenta · Suscripción + datos" onClick={() => goTo('/mi-cuenta')}>
+              <i className="fa fa-user-gear" /><span className="sb-lbl">Mi cuenta</span>
+            </div>
+            <div className="sb-item" data-tip="Backup" onClick={doBackup}><i className="fa fa-cloud-arrow-down" /><span className="sb-lbl">Backup</span></div>
+          </>
         )}
         {isGlobalAdmin && (
           <>
