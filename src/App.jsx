@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 import { useData } from './context/DataContext'
 import Login from './components/layout/Login'
@@ -13,15 +13,16 @@ import Activar from './components/pages/Activar'
 import PagoResultado from './components/pages/PagoResultado'
 import ErrorBoundary from './components/layout/ErrorBoundary'
 
-function AuthRedirect() {
-  const loc = useLocation()
-  const hash = loc.hash || ''
-  const search = loc.search || ''
-  const hasToken = hash.includes('access_token') || search.includes('code=') || search.includes('token_hash=')
-  if (hasToken) {
-    return <Navigate to={'/bienvenida' + search + hash} replace />
-  }
-  return null
+// Si el user ya está autenticado y la URL tenía `?next=/algo`, redirigimos ahí
+// en vez de tirarlo siempre a `/`. Sirve para el flow: /activar → /login?next=/activar
+// → login OK → /activar (no perder contexto).
+// Whitelist explícita por seguridad: sólo paths internos que arrancan con `/`
+// y NO con `//` (evita open redirect tipo `?next=//evil.com`).
+function NavigateToNext({ fallback = '/' }) {
+  const [params] = useSearchParams()
+  const next = params.get('next')
+  const safe = next && next.startsWith('/') && !next.startsWith('//') ? next : fallback
+  return <Navigate to={safe} replace />
 }
 
 export default function App() {
@@ -47,15 +48,17 @@ export default function App() {
         <Route path="/portal-proveedor" element={<PortalProveedor />} />
         <Route path="/alta" element={<Alta appName="ANMA Pro" />} />
         <Route path="/bienvenida" element={<Bienvenida />} />
-        <Route path="/registro" element={authed ? <Navigate to="/" /> : <Registro />} />
+        <Route path="/registro" element={authed ? <NavigateToNext /> : <Registro />} />
         <Route path="/login" element={
           hasAuthParams ? <Navigate to={'/bienvenida' + search + hash} replace /> :
-          authed ? <Navigate to="/" /> : <Login />
+          authed ? <NavigateToNext /> : <Login />
         } />
-        {/* Onboarding Paso 1 — captura perfil comercial del negocio */}
+        {/* Onboarding Paso 1 — captura perfil comercial. Si ya lo completó,
+            no dejamos que lo repita por error: lo mandamos al dashboard. */}
         <Route path="/onboarding" element={
-          !authed         ? <Navigate to="/login" /> :
-          trial?.expired  ? <TrialExpirado /> :
+          !authed                  ? <Navigate to="/login" /> :
+          trial?.expired           ? <TrialExpirado /> :
+          (cfg.onboardingCompleted || cfg.rubro) ? <Navigate to="/" replace /> :
           <Onboarding />
         } />
         {/* Activación — accesible INCLUSO con trial expirado para que pueda pagar */}
