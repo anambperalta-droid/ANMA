@@ -155,7 +155,10 @@ input,select,textarea{font-family:inherit}
 .tab-btn:hover:not(.active){color:var(--brand);background:var(--brand-xlt)}
 
 /* ── BENTO KPI GRID ── */
-.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+/* auto-fit: las cards SIEMPRE se adaptan al ancho disponible — nunca se cortan,
+   sea viewport real, iframe o panel de preview. 4 cols en desktop ancho,
+   2-3 en tablet, 2 en mobile (refinado en los media queries de abajo). */
+.bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:20px}
 .bento-kpi{background:var(--surface);border-radius:16px;padding:20px 22px 18px;box-shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);position:relative;overflow:hidden;transition:box-shadow .2s}
 .bento-kpi:hover{box-shadow:0 4px 20px rgba(0,0,0,.10)}
 .kpi-icon-wrap{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px}

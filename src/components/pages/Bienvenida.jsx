@@ -131,12 +131,37 @@ export default function Bienvenida() {
       }
 
       // 1) PKCE flow: ?code= (Google OAuth + invitation PKCE)
+      // CRÍTICO: el cliente Supabase tiene detectSessionInUrl:true, que consume
+      // el ?code= AUTOMÁTICAMENTE al cargar la página. Si después llamamos
+      // exchangeCodeForSession manualmente, falla con "code already used" aunque
+      // la sesión YA EXISTE. Por eso: chequear sesión ANTES, y si el exchange
+      // falla, rechequear ANTES de mostrar error (era el bug de Google OAuth).
       const code = params.get('code')
       if (code) {
         logAuth('pkce-flow', { code: code.slice(0, 8) + '...' })
+
+        // ¿El auto-detect ya canjeó el código? → sesión lista, seguir.
+        let { data: { session: preSession } } = await supabase.auth.getSession()
+        if (preSession) {
+          logAuth('pkce-auto-detected', { user: preSession.user?.email })
+          window.history.replaceState(null, '', window.location.pathname)
+          if (await finishAuth()) return
+          setSessionReady(true); setLoading(false); return
+        }
+
         const { error: codeErr } = await supabase.auth.exchangeCodeForSession(code)
         if (codeErr) {
           logAuth('pkce-error', codeErr)
+          // Carrera: el auto-detect pudo terminar mientras tanto. Rechequear
+          // (con un pequeño margen) antes de declarar el enlace inválido.
+          await new Promise(r => setTimeout(r, 600))
+          const { data: { session: postSession } } = await supabase.auth.getSession()
+          if (postSession) {
+            logAuth('pkce-race-recovered', { user: postSession.user?.email })
+            window.history.replaceState(null, '', window.location.pathname)
+            if (await finishAuth()) return
+            setSessionReady(true); setLoading(false); return
+          }
           setError('El enlace expiró o ya fue usado. Pedí uno nuevo desde Ingresar.')
           setLoading(false)
           return
