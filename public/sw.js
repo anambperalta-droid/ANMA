@@ -1,92 +1,80 @@
-/* ANMA Pro — Service Worker v3
-   Estrategia: Network-first para API/auth, Cache-first para assets estáticos
+/* ANMA Pro — Service Worker v4
+   Network-first para JS/CSS/HTML (anti cache-stale).
+   Stale-while-revalidate para imágenes/fonts.
+   Bypass total para Supabase y APIs.
 */
-const CACHE_VER = 'anma-pro-v3'
-const STATIC_CACHE = `${CACHE_VER}-static`
-const DYNAMIC_CACHE = `${CACHE_VER}-dynamic`
+const CACHE_VER = 'anma-pro-v4'
+const RUNTIME = `${CACHE_VER}-runtime`
+const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
-const PRECACHE_URLS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/favicon.svg',
-]
+const PRECACHE = ['/', '/index.html', '/manifest.webmanifest', '/favicon.svg']
 
 const BYPASS_PATTERNS = [
-  'supabase.co',
-  'googleapis.com',
-  'gstatic.com',
-  'cdnjs.cloudflare.com',
-  'wa.me',
+  'supabase.co', 'googleapis.com', 'gstatic.com',
+  'cdnjs.cloudflare.com', 'wa.me', '/auth', '/api',
 ]
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(STATIC_CACHE)
-      .then(c => c.addAll(PRECACHE_URLS))
-      .catch(() => {})
+    caches.open(OFFLINE_FALLBACK)
+      .then(c => c.addAll(PRECACHE))
+      .catch(() => { /* silenciar offline */ })
   )
   self.skipWaiting()
 })
 
 self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(k => k !== STATIC_CACHE && k !== DYNAMIC_CACHE)
-          .map(k => caches.delete(k))
-      )
+  e.waitUntil((async () => {
+    const keys = await caches.keys()
+    await Promise.all(keys
+      .filter(k => k !== RUNTIME && k !== OFFLINE_FALLBACK)
+      .map(k => caches.delete(k))
     )
-  )
-  self.clients.claim()
+    await self.clients.claim()
+    const clients = await self.clients.matchAll({ type: 'window' })
+    clients.forEach(c => c.postMessage({ type: 'SW_ACTIVATED', version: CACHE_VER }))
+  })())
+})
+
+self.addEventListener('message', e => {
+  if (e.data === 'SKIP_WAITING') self.skipWaiting()
 })
 
 self.addEventListener('fetch', e => {
   const { request } = e
-  const url = new URL(request.url)
-
   if (request.method !== 'GET') return
 
-  const isBypass = BYPASS_PATTERNS.some(p => url.hostname.includes(p)) ||
-    url.pathname.startsWith('/auth') ||
-    url.pathname.startsWith('/api')
+  const url = new URL(request.url)
+  const isBypass = BYPASS_PATTERNS.some(p =>
+    url.hostname.includes(p) || url.pathname.startsWith(p)
+  )
   if (isBypass) return
 
-  const isStaticAsset = /\.(js|css|svg|png|jpg|webp|woff2?|ttf|ico)(\?|$)/.test(url.pathname)
-  if (isStaticAsset) {
-    e.respondWith(
-      caches.match(request).then(cached => {
-        if (cached) return cached
-        return fetch(request).then(res => {
-          if (res.ok) caches.open(STATIC_CACHE).then(c => c.put(request, res.clone()))
-          return res
-        })
-      })
-    )
-    return
-  }
-
-  if (request.mode === 'navigate') {
-    e.respondWith(
-      fetch(request)
-        .then(res => {
-          if (res.ok) caches.open(DYNAMIC_CACHE).then(c => c.put(request, res.clone()))
-          return res
-        })
-        .catch(() =>
-          caches.match(request).then(cached => cached || caches.match('/index.html'))
-        )
-    )
-    return
-  }
-
-  e.respondWith(
-    fetch(request)
-      .then(res => {
-        if (res.ok) caches.open(DYNAMIC_CACHE).then(c => c.put(request, res.clone()))
+  const isMedia = /\.(svg|png|jpg|jpeg|webp|woff2?|ttf|ico)(\?|$)/.test(url.pathname)
+  if (isMedia) {
+    e.respondWith((async () => {
+      const cache = await caches.open(RUNTIME)
+      const cached = await cache.match(request)
+      const fetchPromise = fetch(request).then(res => {
+        if (res.ok) cache.put(request, res.clone())
         return res
-      })
-      .catch(() => caches.match(request))
-  )
+      }).catch(() => cached)
+      return cached || fetchPromise
+    })())
+    return
+  }
+
+  e.respondWith((async () => {
+    try {
+      const fresh = await fetch(request, { cache: 'no-store' })
+      if (fresh.ok) {
+        const cache = await caches.open(RUNTIME)
+        cache.put(request, fresh.clone())
+      }
+      return fresh
+    } catch {
+      const cached = await caches.match(request)
+      return cached || caches.match('/index.html')
+    }
+  })())
 })
