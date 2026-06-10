@@ -152,7 +152,15 @@ export function AuthProvider({ children }) {
   }, [])
 
   const resetPassword = useCallback(async (email) => {
-    const redirectTo = `${window.location.origin}/bienvenida?reset=true`
+    // URL canónica hardcodeada por host: evita "link inválido" si el user
+    // entró desde un dominio no whitelisteado en Supabase Dashboard.
+    const host = window.location.hostname
+    const base = (host === 'localhost' || host === '127.0.0.1')
+      ? window.location.origin
+      : host.includes('anma-host')
+        ? 'https://anma-host.vercel.app'
+        : 'https://anma-hub.vercel.app'
+    const redirectTo = `${base}/bienvenida?reset=true`
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo })
     if (error) throw new Error(error.message)
   }, [])

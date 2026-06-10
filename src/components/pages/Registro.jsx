@@ -155,15 +155,19 @@ export default function Registro() {
   const handleGoogle = async () => {
     setGoogleBusy(true)
     setErr('')
+    // URL canónica hardcodeada para que coincida con la whitelist de Supabase.
+    const host = window.location.hostname
+    const base = (host === 'localhost' || host === '127.0.0.1')
+      ? window.location.origin
+      : 'https://anma-hub.vercel.app'
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/bienvenida`,
+        redirectTo: `${base}/bienvenida`,
         queryParams: { access_type: 'offline', prompt: 'select_account' },
       },
     })
     if (error) { setErr(error.message); setGoogleBusy(false) }
-    // Si no hay error, el browser redirige a Google → no hacer nada más
   }
 
   /* ── Email + Password ── */

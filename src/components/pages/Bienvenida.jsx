@@ -6,6 +6,20 @@ import { passwordStrength } from '../../lib/validate'
 const STRENGTH_LABELS = ['', 'Débil', 'Aceptable', 'Buena', 'Excelente']
 const STRENGTH_COLORS = ['#E5E7EB', '#DC2626', '#D97706', '#10B981', '#059669']
 
+// Detecta si estamos atrapados en un webview in-app (Gmail iOS, Instagram, Facebook)
+// — ahí los tokens no persisten entre webview y browser real, causando "enlace inválido".
+function isInAppBrowser() {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent || ''
+  return /FBAN|FBAV|Instagram|Line\/|MicroMessenger|GSA\/|Pinterest|TikTok/i.test(ua)
+    || (/iPhone|iPad/i.test(ua) && /Mobile\/\w+ (?!Safari)/i.test(ua))   // iOS Gmail/etc
+}
+
+// Log estructurado para debug en producción (visible en consola del browser del cliente).
+function logAuth(stage, info) {
+  try { console.log(`[anma-auth] ${stage}`, info) } catch { /* ignorar */ }
+}
+
 /**
  * Bienvenida — landing post-auth con DOS flujos distintos:
  *
@@ -52,103 +66,153 @@ export default function Bienvenida() {
     return false
   }
 
+  // Flow detectado del email: 'recovery' | 'invite' | 'signup' | 'magiclink' | null
+  const [authFlow, setAuthFlow] = useState(null)
+
   useEffect(() => {
     async function detectSession() {
-      // 1) PKCE flow: ?code= in query params (Google OAuth + invitation token PKCE)
       const url = new URL(window.location.href)
-      const code = url.searchParams.get('code')
-      if (code) {
-        const { error: codeErr } = await supabase.auth.exchangeCodeForSession(code)
-        if (codeErr) {
-          setError('El enlace expiró o es inválido. Volvé a /login para reintentar.')
-          setLoading(false)
-          return
-        }
-        window.history.replaceState(null, '', window.location.pathname)
-        // Si es Google → al app directo. Si es invitación → form contraseña.
-        if (await finishAuth()) return
-        setSessionReady(true)
+      const params = url.searchParams
+      const hash = window.location.hash || ''
+      logAuth('start', { href: window.location.href, hasCode: !!params.get('code'), hasHash: hash.includes('access_token') })
+
+      // 0) Errores devueltos por Supabase en el query (?error=&error_description=)
+      const errorParam = params.get('error') || params.get('error_code')
+      const errorDesc = params.get('error_description')
+      if (errorParam) {
+        logAuth('supabase-error', { errorParam, errorDesc })
+        const desc = (errorDesc || '').toLowerCase()
+        const friendly =
+          desc.includes('expired') ? 'El enlace expiró. Pedí uno nuevo desde Ingresar → ¿La olvidaste?'
+          : desc.includes('used')   ? 'Este enlace ya fue usado. Si no entraste, pedí uno nuevo.'
+          : desc.includes('access_denied') ? 'Rechazaste el acceso. Probá de nuevo desde el login.'
+          : (errorDesc || 'El enlace no es válido. Pedí uno nuevo.')
+        setError(friendly)
         setLoading(false)
         return
       }
 
-      // 2) Implicit flow: #access_token= in hash (legacy OAuth)
-      const hash = window.location.hash
+      // Si el user abrió el link desde Gmail iOS / Instagram / etc. (in-app browser),
+      // los tokens no persistirán. Mostramos guía para abrirlo en Safari/Chrome.
+      if (isInAppBrowser() && (params.get('code') || params.get('token_hash') || params.get('token') || hash.includes('access_token'))) {
+        logAuth('in-app-browser-detected', { ua: navigator.userAgent })
+        setError('Abrí este enlace en Safari o Chrome (no en Gmail/Instagram). Tocá los 3 puntos → "Abrir en navegador".')
+        setLoading(false)
+        return
+      }
+
+      // 1) PKCE flow: ?code= (Google OAuth + invitation PKCE)
+      const code = params.get('code')
+      if (code) {
+        logAuth('pkce-flow', { code: code.slice(0, 8) + '...' })
+        const { error: codeErr } = await supabase.auth.exchangeCodeForSession(code)
+        if (codeErr) {
+          logAuth('pkce-error', codeErr)
+          setError('El enlace expiró o ya fue usado. Pedí uno nuevo desde Ingresar.')
+          setLoading(false)
+          return
+        }
+        window.history.replaceState(null, '', window.location.pathname)
+        if (await finishAuth()) return
+        setSessionReady(true); setLoading(false); return
+      }
+
+      // 2) Implicit flow: #access_token= en hash (OAuth legacy + recovery viejo)
       if (hash && hash.includes('access_token')) {
-        const params = new URLSearchParams(hash.substring(1))
-        const accessToken = params.get('access_token')
-        const refreshToken = params.get('refresh_token')
+        const hp = new URLSearchParams(hash.substring(1))
+        const accessToken = hp.get('access_token')
+        const refreshToken = hp.get('refresh_token')
+        const hashType = hp.get('type')
+        if (hashType) setAuthFlow(hashType)
         if (accessToken && refreshToken) {
+          logAuth('hash-flow', { type: hashType })
           const { error: sessErr } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken,
           })
           if (sessErr) {
-            setError('El enlace expiró o es inválido. Volvé a /login para reintentar.')
+            logAuth('hash-error', sessErr)
+            setError('El enlace expiró o ya fue usado. Pedí uno nuevo desde Ingresar.')
             setLoading(false)
             return
           }
           window.history.replaceState(null, '', window.location.pathname)
-          if (await finishAuth()) return   // OAuth → directo al app
-          setSessionReady(true)
-          setLoading(false)
-          return
+          if (hashType !== 'recovery' && await finishAuth()) return
+          setSessionReady(true); setLoading(false); return
         }
       }
 
-      // 3) Token hash flow (email OTP / invitation): ?token_hash=&type=
-      const tokenHash = url.searchParams.get('token_hash')
-      const type = url.searchParams.get('type')
+      // 3) Token hash flow: ?token_hash=&type=  (formato actual de Supabase emails)
+      const tokenHash = params.get('token_hash')
+      const type = params.get('type')
       if (tokenHash && type) {
-        const { error: otpErr } = await supabase.auth.verifyOtp({
-          token_hash: tokenHash,
-          type: type,
-        })
+        logAuth('token-hash-flow', { type })
+        setAuthFlow(type)
+        const { error: otpErr } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type })
         if (otpErr) {
-          setError('El enlace expiró o es inválido. Solicitá uno nuevo.')
+          logAuth('token-hash-error', otpErr)
+          const m = String(otpErr.message || '').toLowerCase()
+          setError(
+            m.includes('expired') ? 'Este enlace expiró (vencen al hora). Pedí uno nuevo.'
+            : m.includes('invalid') || m.includes('used') ? 'Este enlace ya fue usado. Pedí uno nuevo desde Ingresar.'
+            : 'El enlace es inválido. Pedí uno nuevo desde Ingresar → ¿La olvidaste?'
+          )
           setLoading(false)
           return
         }
         window.history.replaceState(null, '', window.location.pathname)
-        // Aquí es típicamente invitación por email → muestra form contraseña.
-        setSessionReady(true)
-        setLoading(false)
-        return
+        setSessionReady(true); setLoading(false); return
       }
 
-      // 4) Ya hay sesión (refresh de la página, o el user volvió logueado)
+      // 4) Token legacy: ?token=&type=  (emails viejos antes de migrar a token_hash)
+      const legacyToken = params.get('token')
+      if (legacyToken && type) {
+        logAuth('legacy-token-flow', { type })
+        setAuthFlow(type)
+        const { error: legacyErr } = await supabase.auth.verifyOtp({ token_hash: legacyToken, type })
+        if (legacyErr) {
+          logAuth('legacy-token-error', legacyErr)
+          setError('El enlace expiró o ya fue usado. Pedí uno nuevo desde Ingresar.')
+          setLoading(false)
+          return
+        }
+        window.history.replaceState(null, '', window.location.pathname)
+        setSessionReady(true); setLoading(false); return
+      }
+
+      // 5) Sesión ya activa (refresh de la página, o user logueado)
       const { data: { session } } = await supabase.auth.getSession()
       if (session) {
+        logAuth('existing-session', { provider: session.user?.app_metadata?.provider })
         if (isOAuthSession(session)) {
-          // Usuario Google que vuelve a /bienvenida con sesión activa → al app
           navigate('/', { replace: true })
           return
         }
-        setSessionReady(true)
-        setLoading(false)
-        return
+        setSessionReady(true); setLoading(false); return
       }
 
-      // 5) Let Supabase auto-detect from URL (fallback)
+      // 6) Fallback: dejar a Supabase auto-detect (algunos flows hacen storage→event)
+      logAuth('fallback-listener', null)
       const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
         if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION')) {
-          setSessionReady(true)
-          setLoading(false)
+          logAuth('fallback-success', { event })
+          setSessionReady(true); setLoading(false)
           subscription.unsubscribe()
         }
       })
 
-      // Timeout: if nothing detected in 3s, show error
+      // 6s — algunos móviles lentos con red 3G tardan más que 3s
       setTimeout(() => {
         setLoading((prev) => {
           if (prev) {
-            setError('No se detecto una invitacion valida. Solicita un nuevo enlace al administrador.')
+            logAuth('timeout', null)
+            setError('No detectamos una sesión válida. Si llegaste por un email, pedí un enlace nuevo desde Ingresar.')
             subscription.unsubscribe()
             return false
           }
           return prev
         })
-      }, 3000)
+      }, 6000)
     }
 
     detectSession()
@@ -255,8 +319,14 @@ export default function Bienvenida() {
       `}</style>
       <div style={styles.card} className="bv-card">
         <div style={styles.logo}>AN</div>
-        <h1 style={styles.title} className="bv-title">Bienvenido a ANMA</h1>
-        <p style={styles.subtitle}>Elige tu contraseña para comenzar</p>
+        <h1 style={styles.title} className="bv-title">
+          {authFlow === 'recovery' ? 'Elegí tu nueva contraseña' : 'Bienvenido a ANMA'}
+        </h1>
+        <p style={styles.subtitle}>
+          {authFlow === 'recovery'
+            ? 'Tu cuenta ya está activa — solo definí una nueva contraseña.'
+            : 'Elige tu contraseña para comenzar'}
+        </p>
 
         {error && (
           <div style={styles.error}>
