@@ -107,6 +107,14 @@ export default function MetricsTab({ workspaces = [] }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <style>{`
+        @media(max-width:520px){
+          .mt-funnel-label{width:88px!important;font-size:11.5px!important}
+          .mt-funnel-bar-txt{font-size:10.5px!important;padding-left:8px!important}
+          .mt-channel-row{grid-template-columns:1fr 1fr!important;gap:4px 10px!important}
+          .mt-channel-row > .mt-channel-name{grid-column:1/-1;font-size:13px!important}
+        }
+      `}</style>
 
       {/* ── Hero: MRR + sparkline ─────────────────────────────────────── */}
       <div className="admin-mcard" style={{ padding: '20px 22px' }}>
@@ -184,20 +192,20 @@ export default function MetricsTab({ workspaces = [] }) {
               s.label === 'Pagando hoy' ? '#16A34A' :
               s.label === 'Activaron' ? '#059669' : '#7C3AED'
             return (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ width: 120, fontSize: 12.5, color: 'var(--txt2)', fontWeight: 600 }}>
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div className="mt-funnel-label" style={{ width: 120, fontSize: 12.5, color: 'var(--txt2)', fontWeight: 600, flexShrink: 0 }}>
                   {s.label}
                 </div>
-                <div style={{ flex: 1, height: 24, background: 'var(--surface2)', borderRadius: 6, overflow: 'hidden', position: 'relative' }}>
+                <div style={{ flex: 1, height: 24, background: 'var(--surface2)', borderRadius: 6, overflow: 'hidden', position: 'relative', minWidth: 0 }}>
                   <div style={{
                     width: `${s.pct}%`, height: '100%',
                     background: `linear-gradient(90deg, ${color}cc, ${color})`,
                     transition: 'width .4s', borderRadius: 6,
                   }} />
-                  <div style={{
+                  <div className="mt-funnel-bar-txt" style={{
                     position: 'absolute', inset: 0, display: 'flex', alignItems: 'center',
                     paddingLeft: 10, fontSize: 11.5, fontWeight: 700, color: s.pct > 40 ? '#fff' : 'var(--txt)',
-                    fontVariantNumeric: 'tabular-nums',
+                    fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap',
                   }}>
                     {fmtInt(s.count)} · {s.pct}%
                   </div>
@@ -242,8 +250,8 @@ export default function MetricsTab({ workspaces = [] }) {
         {m.channels.available ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {m.channels.channels.map((c, i) => (
-              <div key={i} style={{ display: 'grid', gridTemplateColumns: '120px 1fr auto auto', gap: 10, alignItems: 'center', padding: '6px 0', borderBottom: i < m.channels.channels.length - 1 ? '1px solid var(--border)' : 'none', fontSize: 12.5 }}>
-                <span style={{ color: 'var(--txt)', fontWeight: 600, textTransform: 'capitalize' }}>{c.name}</span>
+              <div key={i} className="mt-channel-row" style={{ display: 'grid', gridTemplateColumns: '120px 1fr auto auto', gap: 10, alignItems: 'center', padding: '8px 0', borderBottom: i < m.channels.channels.length - 1 ? '1px solid var(--border)' : 'none', fontSize: 12.5 }}>
+                <span className="mt-channel-name" style={{ color: 'var(--txt)', fontWeight: 600, textTransform: 'capitalize' }}>{c.name}</span>
                 <span style={{ color: 'var(--txt3)' }}>{c.signups} signups · {c.activated} activaron</span>
                 <span style={{ fontWeight: 700, color: '#059669', fontVariantNumeric: 'tabular-nums' }}>{fmtPct(c.conversion)}</span>
                 <span style={{ fontWeight: 700, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums' }}>{fmtMoney(c.revenue)}</span>
