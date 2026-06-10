@@ -345,12 +345,39 @@ td b{color:var(--txt);font-weight:600}
   .brow-nav{display:none}
   .brow-bar{padding:8px 10px;gap:7px}
   .brow-back span,.brow-cta span{display:none}
-  .bento{grid-template-columns:1fr}
+  /* KPIs 2×2 como la app real en mobile (1 col solo se siente vacío) */
+  .bento{grid-template-columns:1fr 1fr;gap:10px}
+  .bento-kpi{padding:14px 14px 12px}
+  .bento-kpi .kpi-val{font-size:20px}
   .cgrid,.wa-grid,.cfg-grid{grid-template-columns:1fr}
   .tb-search{display:none}
   .topbar{padding:0 14px;gap:8px}
   .content{padding:12px 14px}
   .demo-float{font-size:10px;padding:7px 14px;bottom:10px}
+  /* Tabs scrolleables sin cortar (Resumen/Presupuestos/Análisis/Seguimiento) */
+  .tab-bar{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap}
+  .tab-bar::-webkit-scrollbar{display:none}
+  .tab-btn{flex-shrink:0;white-space:nowrap}
+  /* Tablas: scroll horizontal contenido */
+  .tbl-card{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbl-card table{min-width:640px}
+  /* Page headers apilados */
+  .ph{flex-direction:column;align-items:stretch;gap:8px}
+  .ph-right{flex-wrap:wrap}
+  /* Grid 2-col de Insumos (tabla + Resumen lateral): apilar */
+  .ins-layout{grid-template-columns:1fr!important}
+  /* Wizard steps: compactar (solo círculo+título, sin subtítulo) */
+  .wiz-step-sub{display:none}
+  .wiz-steps-row{gap:5px!important}
+  .wiz-steps-row > .wiz-step{min-width:0!important;padding:8px 8px!important;flex-direction:column;gap:5px!important;text-align:center}
+  .wiz-steps-row i.fa-minus{display:none}
+  /* Sidebar resumen del pedido: full width debajo */
+  .form-grid{gap:14px}
+}
+@media(max-width:420px){
+  .bento{grid-template-columns:1fr 1fr;gap:8px}
+  .bento-kpi .kpi-val{font-size:18px}
+  .content{padding:10px 10px}
 }
 </style>
 </head>
@@ -692,29 +719,29 @@ td b{color:var(--txt);font-weight:600}
 
       <!-- Wizard steps indicator (4 pasos: Cliente / Productos / Entrega / Confirmar) -->
       <div class="card" style="padding:18px 20px;margin-bottom:14px">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div class="wiz-steps-row" style="display:flex;align-items:center;gap:8px">
           <!-- Step 1 ACTIVE -->
-          <div style="flex:1;min-width:140px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--brand-xlt);border:1.5px solid var(--brand);border-radius:11px">
+          <div class="wiz-step" style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--brand-xlt);border:1.5px solid var(--brand);border-radius:11px">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">1</div>
-            <div><div style="font-size:12.5px;font-weight:700;color:var(--brand);line-height:1.2">Cliente</div><div style="font-size:10.5px;color:var(--txt3);margin-top:2px">Contacto y datos</div></div>
+            <div style="min-width:0"><div style="font-size:12.5px;font-weight:700;color:var(--brand);line-height:1.2">Cliente</div><div class="wiz-step-sub" style="font-size:10.5px;color:var(--txt3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Contacto y datos</div></div>
           </div>
           <i class="fa-solid fa-minus" style="color:var(--border2);opacity:.6"></i>
           <!-- Step 2 -->
-          <div style="flex:1;min-width:140px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;opacity:.6">
+          <div class="wiz-step" style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;opacity:.6">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--surface3);color:var(--txt3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">2</div>
-            <div><div style="font-size:12.5px;font-weight:700;color:var(--txt2);line-height:1.2">Productos</div><div style="font-size:10.5px;color:var(--txt3);margin-top:2px">Ítems del pedido</div></div>
+            <div style="min-width:0"><div style="font-size:12.5px;font-weight:700;color:var(--txt2);line-height:1.2">Productos</div><div class="wiz-step-sub" style="font-size:10.5px;color:var(--txt3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Ítems del pedido</div></div>
           </div>
           <i class="fa-solid fa-minus" style="color:var(--border2);opacity:.6"></i>
           <!-- Step 3 -->
-          <div style="flex:1;min-width:140px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;opacity:.6">
+          <div class="wiz-step" style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;opacity:.6">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--surface3);color:var(--txt3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">3</div>
-            <div><div style="font-size:12.5px;font-weight:700;color:var(--txt2);line-height:1.2">Entrega</div><div style="font-size:10.5px;color:var(--txt3);margin-top:2px">Envío y precio</div></div>
+            <div style="min-width:0"><div style="font-size:12.5px;font-weight:700;color:var(--txt2);line-height:1.2">Entrega</div><div class="wiz-step-sub" style="font-size:10.5px;color:var(--txt3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Envío y precio</div></div>
           </div>
           <i class="fa-solid fa-minus" style="color:var(--border2);opacity:.6"></i>
           <!-- Step 4 -->
-          <div style="flex:1;min-width:140px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;opacity:.6">
+          <div class="wiz-step" style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;opacity:.6">
             <div style="width:28px;height:28px;border-radius:50%;background:var(--surface3);color:var(--txt3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">4</div>
-            <div><div style="font-size:12.5px;font-weight:700;color:var(--txt2);line-height:1.2">Confirmar</div><div style="font-size:10.5px;color:var(--txt3);margin-top:2px">Revisar y enviar</div></div>
+            <div style="min-width:0"><div style="font-size:12.5px;font-weight:700;color:var(--txt2);line-height:1.2">Confirmar</div><div class="wiz-step-sub" style="font-size:10.5px;color:var(--txt3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Revisar y enviar</div></div>
           </div>
         </div>
       </div>
@@ -1104,8 +1131,8 @@ td b{color:var(--txt);font-weight:600}
         <button class="tab-btn"><i class="fa-solid fa-arrow-right-arrow-left" style="font-size:10px"></i> Movimientos</button>
       </div>
 
-      <!-- Layout 2 cols: tabla + sidebar Resumen -->
-      <div style="display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:flex-start">
+      <!-- Layout 2 cols: tabla + sidebar Resumen (apila en mobile via .ins-layout) -->
+      <div class="ins-layout" style="display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:flex-start">
         <div>
 
       <!-- Filtros -->

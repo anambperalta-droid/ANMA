@@ -499,8 +499,11 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   .eyebrow strong{display:inline}
   .lead{font-size:15px!important;margin-bottom:22px!important;line-height:1.6!important}
   .hero-ctas{gap:14px!important;margin-bottom:18px!important;flex-direction:column;align-items:stretch}
-  /* Micro-garantías: 1 línea por garantía, centradas, separación cómoda */
-  .hero .flex.items-center.flex-wrap.mt-6{flex-direction:column!important;align-items:center!important;gap:10px!important;margin-top:18px!important;font-size:11px!important}
+  /* CTA secundario "Ver Demo" centrado bajo el botón principal */
+  .hero-ctas .cta-secondary-btn,.hero-ctas > a[href="/demo.html"]{align-self:center!important;justify-content:center!important}
+  /* Micro-garantías: 1 línea por garantía, centradas, separación cómoda
+     (el div usa estilos inline → necesita !important para pisarlos) */
+  .hero-trust{flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:10px!important;margin-top:18px!important;font-size:10.5px!important}
 
   /* ── DEMO INTERACTIVO ── scroll horizontal con indicador */
   #demo{padding:40px 0!important}
