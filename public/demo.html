@@ -43,12 +43,13 @@
 
 /* ── Design tokens — exact match to src/index.css ── */
 :root{
-  --brand:#7C3AED;--brand-dark:#6D28D9;--brand-xlt:rgba(124,58,237,.08);--brand-dim:rgba(124,58,237,.12);
-  --grad:linear-gradient(135deg,#7C3AED 0%,#6366F1 100%);
-  --panel-grad:linear-gradient(160deg,#1E1B4B 0%,#312E81 50%,#4C1D95 100%);
-  --acento:#059669;--acento-dark:#047857;--acento-xlt:rgba(5,150,105,.08);--acento-dim:rgba(5,150,105,.12);
-  --acento-grad:linear-gradient(135deg,#059669 0%,#10B981 100%);
-  --sidebar-bg:#1E1B4B;
+  /* Paleta espejo de la app real: teal/cyan principal, emerald accent, sidebar dark slate */
+  --brand:#0D9488;--brand-dark:#0F766E;--brand-xlt:rgba(13,148,136,.08);--brand-dim:rgba(13,148,136,.14);
+  --grad:linear-gradient(135deg,#0D9488 0%,#14B8A6 100%);
+  --panel-grad:linear-gradient(160deg,#0F172A 0%,#1E293B 50%,#0F766E 100%);
+  --acento:#10B981;--acento-dark:#059669;--acento-xlt:rgba(16,185,129,.08);--acento-dim:rgba(16,185,129,.14);
+  --acento-grad:linear-gradient(135deg,#10B981 0%,#14B8A6 100%);
+  --sidebar-bg:#0F172A;
   --bg:#F8F9FA;--surface:#FFFFFF;--surface2:#F3F4F6;--surface3:#EDEFF3;
   --border:#E5E7EB;--border2:#D1D5DB;
   --txt:#111827;--txt2:#374151;--txt3:#6B7280;--txt4:#9CA3AF;--money:#000000;
@@ -384,30 +385,43 @@ td b{color:var(--txt);font-weight:600}
 <aside class="sidebar" id="sb">
   <div class="sb-top">
     <div class="sb-logo-row">
-      <div class="sb-logo"><i class="fa-solid fa-bolt"></i></div>
+      <div class="sb-logo" style="background:linear-gradient(135deg,#0D9488,#10B981);font-size:14px;font-weight:900;color:#fff">AN</div>
       <div class="sb-logo-txt">
-        <div class="n">ANMA Pro</div>
-        <div class="s">Distribuidora Norte</div>
+        <div class="n" style="text-transform:lowercase;letter-spacing:-.5px">anma</div>
+        <div class="s">Tu marca, ordenada</div>
       </div>
+    </div>
+    <!-- Chips de rubro + canal (espejo de la app real) -->
+    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+      <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:6px">
+        <i class="fa-solid fa-shirt" style="font-size:9px;color:#A78BFA"></i> Indumentaria
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:6px">
+        <i class="fa-solid fa-shop" style="font-size:9px;color:#10B981"></i> Ambos Canales
+      </span>
     </div>
   </div>
   <nav class="sb-nav">
-    <div class="sb-sec">Gestión</div>
+    <div class="sb-sec">Ventas</div>
     <div class="sb-item active" data-sec="dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
     <div class="sb-item" data-sec="pedido"><i class="fa-solid fa-file-invoice-dollar"></i> Nuevo pedido</div>
     <div class="sb-item" data-sec="clientes"><i class="fa-solid fa-users"></i> Clientes <span class="sb-chip">6</span></div>
 
-    <div class="sb-sec">Catálogo</div>
+    <div class="sb-sec">Inventario</div>
     <div class="sb-item" data-sec="productos"><i class="fa-solid fa-cube"></i> Productos</div>
     <div class="sb-item" data-sec="insumos"><i class="fa-solid fa-boxes-stacked"></i> Insumos</div>
     <div class="sb-item" data-sec="proveedores"><i class="fa-solid fa-industry"></i> Proveedores</div>
 
-    <div class="sb-sec">Operación</div>
+    <div class="sb-sec">Operaciones</div>
     <div class="sb-item" data-sec="logistica"><i class="fa-solid fa-truck-fast"></i> Logística</div>
     <div class="sb-item" data-sec="mensajes"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
 
     <div class="sb-sec">Sistema</div>
     <div class="sb-item" data-sec="config"><i class="fa-solid fa-gear"></i> Configuración</div>
+
+    <div class="sb-sec">Tu cuenta</div>
+    <div class="sb-item" data-sec="micuenta"><i class="fa-solid fa-user-gear"></i> Mi cuenta</div>
+    <div class="sb-item" data-sec="backup"><i class="fa-solid fa-cloud-arrow-up"></i> Backup</div>
   </nav>
   <div class="sb-foot">
     <div class="sb-user">
@@ -665,117 +679,148 @@ td b{color:var(--txt);font-weight:600}
       </div>
     </section>
 
-    <!-- ═══ NUEVO PEDIDO (espejo de Presupuesto.jsx) ═══ -->
+    <!-- ═══ NUEVO PEDIDO — Wizard 4 pasos (espejo Presupuesto.jsx real) ═══ -->
     <section class="sec" id="sec-pedido">
-      <div class="ph">
-        <div class="ph-left">
-          <h2>Nuevo pedido <span style="font-size:13px;color:var(--txt3);font-weight:600;margin-left:8px">· P-0025</span></h2>
-          <p>Cargá items, ajustá margen y mandalo por WhatsApp en segundos</p>
+      <!-- Header: ID + Estado chip + Descartar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <h2 style="margin:0;font-size:20px;font-weight:800;color:var(--txt)">P-0017</h2>
+          <span style="display:inline-flex;align-items:center;background:rgba(167,139,250,.15);color:#7C3AED;font-size:11px;font-weight:700;padding:4px 11px;border-radius:99px">Borrador</span>
         </div>
-        <div class="ph-right">
-          <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-eye"></i> Vista previa</button>
-          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-arrow-right"></i> Siguiente paso</button>
+        <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-xmark"></i> Descartar</button>
+      </div>
+
+      <!-- Wizard steps indicator (4 pasos: Cliente / Productos / Entrega / Confirmar) -->
+      <div class="card" style="padding:18px 20px;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <!-- Step 1 ACTIVE -->
+          <div style="flex:1;min-width:140px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--brand-xlt);border:1.5px solid var(--brand);border-radius:11px">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">1</div>
+            <div><div style="font-size:12.5px;font-weight:700;color:var(--brand);line-height:1.2">Cliente</div><div style="font-size:10.5px;color:var(--txt3);margin-top:2px">Contacto y datos</div></div>
+          </div>
+          <i class="fa-solid fa-minus" style="color:var(--border2);opacity:.6"></i>
+          <!-- Step 2 -->
+          <div style="flex:1;min-width:140px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;opacity:.6">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--surface3);color:var(--txt3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">2</div>
+            <div><div style="font-size:12.5px;font-weight:700;color:var(--txt2);line-height:1.2">Productos</div><div style="font-size:10.5px;color:var(--txt3);margin-top:2px">Ítems del pedido</div></div>
+          </div>
+          <i class="fa-solid fa-minus" style="color:var(--border2);opacity:.6"></i>
+          <!-- Step 3 -->
+          <div style="flex:1;min-width:140px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;opacity:.6">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--surface3);color:var(--txt3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">3</div>
+            <div><div style="font-size:12.5px;font-weight:700;color:var(--txt2);line-height:1.2">Entrega</div><div style="font-size:10.5px;color:var(--txt3);margin-top:2px">Envío y precio</div></div>
+          </div>
+          <i class="fa-solid fa-minus" style="color:var(--border2);opacity:.6"></i>
+          <!-- Step 4 -->
+          <div style="flex:1;min-width:140px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;opacity:.6">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--surface3);color:var(--txt3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">4</div>
+            <div><div style="font-size:12.5px;font-weight:700;color:var(--txt2);line-height:1.2">Confirmar</div><div style="font-size:10.5px;color:var(--txt3);margin-top:2px">Revisar y enviar</div></div>
+          </div>
         </div>
       </div>
+
       <div class="form-grid">
+        <!-- Form principal: Paso 1 — Cliente -->
         <div class="card">
-          <!-- ── Cliente (fields reales: Contacto + Empresa + WA + Email) ── -->
-          <div class="card-title"><i class="fa-solid fa-user"></i> Cliente</div>
-          <div class="grid2">
-            <div class="fg">
-              <label>Contacto (buscar en CRM)</label>
-              <div style="position:relative">
-                <input value="Marcela Torres" placeholder="Nombre del cliente">
-                <i class="fa-solid fa-magnifying-glass" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--txt4);font-size:11px;pointer-events:none"></i>
-              </div>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:6px">
+            <div style="width:46px;height:46px;border-radius:13px;background:var(--brand-xlt);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0"><i class="fa-solid fa-user"></i></div>
+            <div>
+              <div style="font-size:17px;font-weight:800;color:var(--txt);letter-spacing:-.3px">Paso 1 · Cliente</div>
+              <div style="font-size:12.5px;color:var(--txt3);margin-top:2px">¿A quién le estás haciendo el presupuesto?</div>
             </div>
-            <div class="fg"><label>Empresa <span style="font-weight:400;color:var(--txt3);font-size:10.5px">(opcional)</span></label><input value="Supermercado El Cruce" placeholder="Empresa S.A."></div>
-          </div>
-          <div class="grid2">
-            <div class="fg"><label>WhatsApp</label><input value="+54 9 11 5678-9012" placeholder="+54 351 1234567"></div>
-            <div class="fg"><label>Email del cliente</label><input type="email" value="marcela@elcruce.com" placeholder="cliente@email.com"></div>
           </div>
 
-          <!-- ── Productos (columnas reales: Producto / Cant. / Precio u. / Subtotal) ── -->
-          <div class="card-title" style="margin-top:18px;display:flex;align-items:center;justify-content:space-between">
-            <span><i class="fa-solid fa-cube"></i> Productos del pedido</span>
-            <span style="font-size:11px;color:var(--txt3);font-weight:500;text-transform:none;letter-spacing:0">4 items</span>
-          </div>
-          <div class="tbl-card" style="margin-bottom:10px">
-            <table>
-              <thead><tr><th>Producto</th><th style="width:110px">Variante</th><th style="width:80px;text-align:center">Cant.</th><th style="width:120px;text-align:right">Precio u.</th><th style="width:130px;text-align:right">Subtotal</th><th style="width:36px"></th></tr></thead>
-              <tbody>
-                <tr><td><b>Pack mayorista x30</b><div style="font-size:10.5px;color:var(--txt3)">SKU: PCK-MAY-30</div></td><td style="color:var(--txt3);font-size:11.5px">—</td><td style="text-align:center;font-variant-numeric:tabular-nums">12</td><td class="td-amt">$ 3.140</td><td class="td-amt">$ 37.680</td><td><i class="fa-solid fa-trash" style="color:var(--red);opacity:.6;font-size:11px"></i></td></tr>
-                <tr><td><b>Modelo Lux Premium</b><div style="font-size:10.5px;color:var(--txt3)">SKU: MOD-LUX</div></td><td style="font-size:11.5px;color:var(--txt2)">Negro · M</td><td style="text-align:center;font-variant-numeric:tabular-nums">3</td><td class="td-amt">$ 9.500</td><td class="td-amt">$ 28.500</td><td><i class="fa-solid fa-trash" style="color:var(--red);opacity:.6;font-size:11px"></i></td></tr>
-                <tr><td><b>Catálogo impreso A5</b><div style="font-size:10.5px;color:var(--txt3)">SKU: CAT-A5</div></td><td style="color:var(--txt3);font-size:11.5px">—</td><td style="text-align:center;font-variant-numeric:tabular-nums">20</td><td class="td-amt">$ 2.800</td><td class="td-amt">$ 56.000</td><td><i class="fa-solid fa-trash" style="color:var(--red);opacity:.6;font-size:11px"></i></td></tr>
-                <tr><td><b>Insumos pack base</b><div style="font-size:10.5px;color:var(--txt3)">SKU: INS-BAS</div></td><td style="color:var(--txt3);font-size:11.5px">—</td><td style="text-align:center;font-variant-numeric:tabular-nums">8</td><td class="td-amt">$ 1.580</td><td class="td-amt">$ 12.640</td><td><i class="fa-solid fa-trash" style="color:var(--red);opacity:.6;font-size:11px"></i></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <button style="background:var(--surface2);border:1.5px dashed var(--brand);color:var(--brand);padding:9px;border-radius:9px;font-weight:700;font-size:12px;cursor:pointer;width:100%;font-family:inherit"><i class="fa-solid fa-plus"></i> Agregar producto</button>
+          <div style="height:1px;background:var(--border);margin:18px 0 22px"></div>
 
-          <!-- ── Modalidad y fechas (campos reales) ── -->
-          <div class="card-title" style="margin-top:18px"><i class="fa-solid fa-sliders"></i> Modalidad y entrega</div>
           <div class="grid2">
-            <div class="fg"><label>Modalidad</label><select><option>Minorista (B2C)</option><option selected>Mayorista (B2B)</option><option>Mixto</option></select></div>
-            <div class="fg"><label>Fecha pactada</label><input value="2026-06-15" type="date"></div>
+            <div class="fg"><label>Contacto (buscar en CRM)</label><input placeholder="Buscar cliente por nombre o empresa…"></div>
+            <div class="fg"><label>Empresa</label><input placeholder="Empresa S.A."></div>
           </div>
           <div class="grid2">
-            <div class="fg"><label>Estado del pedido</label><select><option selected>Borrador</option><option>Enviado</option><option>Confirmado</option><option>En producción</option><option>Entregado</option><option>Cancelado</option></select></div>
-            <div class="fg"><label>Estado de pago</label><select><option selected>Pago pendiente</option><option>Seña abonada</option><option>Pagado</option></select></div>
+            <div class="fg"><label>WhatsApp</label><input placeholder="+54 351 1234567"></div>
+            <div class="fg"><label>Email del cliente</label><input type="email" placeholder="cliente@email.com"></div>
           </div>
 
-          <!-- ── Ajustes comerciales (campos reales: Margen, Seña, Logo, Descuento) ── -->
-          <div class="card-title" style="margin-top:18px"><i class="fa-solid fa-percent"></i> Ajustes comerciales</div>
-          <div class="grid2">
-            <div class="fg"><label>Margen ganancia (%)</label><input type="number" value="42" min="0" max="100"></div>
-            <div class="fg"><label>Seña requerida (%)</label><input type="number" value="30" min="0" max="100"></div>
-          </div>
-          <div class="grid2">
-            <div class="fg"><label>Descuento al cliente (%)</label><input type="number" value="5" min="0" max="100"></div>
-            <div class="fg"><label>Impresión / logo x u. ($)</label><input type="number" value="0" min="0"></div>
+          <!-- Hint -->
+          <div style="margin-top:18px;padding:12px 14px;background:rgba(13,148,136,.06);border:1px solid rgba(13,148,136,.18);border-radius:10px;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--txt2)">
+            <i class="fa-solid fa-lightbulb" style="color:var(--brand);font-size:13px"></i>
+            <span>Buscá un contacto existente o creá uno nuevo escribiendo el nombre.</span>
           </div>
 
-          <!-- ── Notas reales ── -->
-          <div class="card-title" style="margin-top:18px"><i class="fa-solid fa-note-sticky"></i> Notas</div>
-          <div class="fg"><label>Nota interna <span style="font-weight:400;color:var(--txt3);font-size:10.5px">(solo para vos)</span></label><textarea rows="2" placeholder="Solo para vos…">Confirmó por WhatsApp el 03/06 — facturar contra entrega</textarea></div>
-          <div class="fg"><label>Nota al cliente <span style="font-weight:400;color:var(--txt3);font-size:10.5px">(aparece en el PDF)</span></label><textarea rows="2" placeholder="Visible en el presupuesto…">Plazo de entrega estimado: 7 días hábiles desde la confirmación de la seña.</textarea></div>
+          <!-- Nav inferior wizard -->
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px;padding-top:18px;border-top:1px solid var(--border);flex-wrap:wrap">
+            <button class="btn btn-secondary" disabled style="opacity:.45;min-width:130px;justify-content:center"><i class="fa-solid fa-arrow-left"></i> Anterior</button>
+            <div style="font-size:11.5px;font-weight:600;color:var(--txt3)">Paso 1 de 4</div>
+            <button class="btn btn-acento" style="min-width:130px;justify-content:center">Siguiente <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
         </div>
 
-        <!-- ── Sidebar Resumen (campos reales: Subtotal / Descuento / Total / Seña / Margen estimado) ── -->
+        <!-- Sidebar: Resumen DARK (espejo de la app real) -->
         <div>
-          <div class="card" style="position:sticky;top:120px">
-            <div class="card-title"><i class="fa-solid fa-receipt"></i> Resumen del pedido</div>
-            <div class="calc-row"><span>Subtotal items</span><b>$ 134.820</b></div>
-            <div class="calc-row"><span>Descuento cliente (5%)</span><b style="color:var(--green)">− $ 6.741</b></div>
-            <div class="calc-total"><span>Total</span><span>$ 128.079</span></div>
+          <div style="background:linear-gradient(160deg,#0F172A 0%,#1E293B 100%);border-radius:14px;padding:18px 18px 20px;position:sticky;top:120px;color:#fff;box-shadow:0 8px 28px rgba(0,0,0,.18)">
+            <div style="font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:14px;letter-spacing:-.2px">
+              <i class="fa-solid fa-calculator" style="color:#5EEAD4"></i> Resumen
+            </div>
 
-            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-top:12px;font-size:12px;color:var(--txt2)">
-              <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-                <span>Seña requerida (30%)</span>
-                <b style="color:var(--brand)">$ 38.424</b>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:12.5px;color:rgba(255,255,255,.75)">
+              <span>N° Presupuesto</span><b style="color:#fff">P-0017</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:12.5px;color:rgba(255,255,255,.75)">
+              <span>Ganancia</span><b style="color:#F59E0B">Pendiente</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:12.5px;color:rgba(255,255,255,.75)">
+              <span><i class="fa-regular fa-circle" style="font-size:9px;color:#5EEAD4;margin-right:4px"></i>Margen objetivo</span><b style="color:#fff">40%</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:12.5px;color:rgba(255,255,255,.75)">
+              <span>Margen real</span><b style="color:#F59E0B">Pendiente <i class="fa-solid fa-circle-info" style="font-size:10px;opacity:.6;margin-left:2px"></i></b>
+            </div>
+
+            <div style="height:1px;background:rgba(255,255,255,.1);margin:12px 0"></div>
+
+            <div style="display:flex;justify-content:space-between;align-items:flex-end">
+              <span style="font-size:13px;color:rgba(255,255,255,.7);font-weight:600">Total</span>
+              <div style="text-align:right">
+                <div style="font-size:24px;font-weight:900;color:#A78BFA;letter-spacing:-.5px;line-height:1">$0</div>
+                <div style="font-size:10.5px;color:rgba(255,255,255,.45);margin-top:2px">Seña: $0</div>
               </div>
-              <div style="display:flex;justify-content:space-between;color:var(--txt3);font-size:11px">
-                <span>Resto a la entrega</span>
-                <span style="font-variant-numeric:tabular-nums">$ 89.655</span>
+            </div>
+
+            <button style="width:100%;margin-top:14px;padding:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-weight:700;font-size:13px;border-radius:10px;cursor:not-allowed;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
+              <i class="fa-solid fa-floppy-disk"></i> Guardar Presupuesto
+            </button>
+
+            <!-- Comunicación -->
+            <div style="margin-top:16px">
+              <div style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px">Comunicación</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+                <button style="padding:11px;background:rgba(16,185,129,.18);border:1px solid rgba(16,185,129,.3);color:#10B981;font-weight:700;font-size:12.5px;border-radius:9px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px">
+                  <i class="fa-brands fa-whatsapp"></i> Enviar
+                </button>
+                <button style="padding:11px;background:rgba(16,185,129,.18);border:1px solid rgba(16,185,129,.3);color:#10B981;font-weight:700;font-size:12.5px;border-radius:9px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px">
+                  <i class="fa-brands fa-whatsapp"></i> Pago
+                </button>
               </div>
             </div>
 
-            <div style="background:var(--green-lt);border:1px solid rgba(5,150,105,.2);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:11.5px">
-              <b style="display:block;margin-bottom:3px;color:var(--green)">Margen estimado: $ 53.793 (42%)</b>
-              <span style="color:var(--txt3)">Sobre costo de productos + insumos</span>
+            <!-- Documentos -->
+            <div style="margin-top:14px">
+              <div style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px">Documentos</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+                <button style="padding:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.85);font-weight:600;font-size:12px;border-radius:9px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px">
+                  <i class="fa-regular fa-eye"></i> Vista previa
+                </button>
+                <button style="padding:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.85);font-weight:600;font-size:12px;border-radius:9px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px">
+                  <i class="fa-solid fa-file-pdf"></i> PDF
+                </button>
+              </div>
+              <button style="width:100%;margin-top:7px;padding:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.85);font-weight:600;font-size:12px;border-radius:9px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px">
+                <i class="fa-regular fa-envelope"></i> Enviar por email
+              </button>
             </div>
 
-            <!-- Vista previa estado actual -->
-            <div style="display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 12px;background:var(--surface2);border-radius:9px;font-size:11.5px">
-              <span style="width:8px;height:8px;border-radius:50%;background:#94A3B8;flex-shrink:0"></span>
-              <span style="color:var(--txt2)">Estado: <b style="color:var(--txt)">Borrador</b></span>
-              <span style="margin-left:auto;color:var(--txt3);font-size:11px">Sin enviar</span>
-            </div>
-
-            <div style="margin-top:14px;display:flex;flex-direction:column;gap:7px">
-              <button class="btn btn-acento" style="width:100%;justify-content:center;border-radius:9px;padding:11px 16px"><i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp</button>
-              <button class="btn btn-secondary" style="width:100%;justify-content:center;border-radius:9px;padding:11px 16px"><i class="fa-solid fa-file-pdf"></i> Generar PDF</button>
+            <!-- Pago online -->
+            <div style="margin-top:14px">
+              <div style="font-size:10.5px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px"><i class="fa-solid fa-credit-card" style="font-size:10px;margin-right:3px"></i> Pago Online</div>
             </div>
           </div>
         </div>
@@ -933,19 +978,28 @@ td b{color:var(--txt);font-weight:600}
       </div>
     </section>
 
-    <!-- ═══ PRODUCTOS (espejo de Catalogo.jsx) ═══ -->
+    <!-- ═══ PRODUCTOS — espejo Catalogo.jsx (toolbar real: Precios/Exportar/Importar/vista/Nuevo) ═══ -->
     <section class="sec" id="sec-productos">
-      <div class="ph">
-        <div class="ph-left">
-          <h2>Productos</h2>
-          <p>Catálogo · 5 ítems · 2 con stock crítico</p>
+      <!-- Toolbar real -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-percent"></i> Precios</button>
+        <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-export"></i> Exportar</button>
+        <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar</button>
+        <!-- Toggle vista grid/list -->
+        <div style="display:flex;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:2px;margin-left:4px">
+          <button style="width:34px;height:32px;border:none;background:transparent;color:var(--txt3);border-radius:7px;cursor:pointer;font-size:13px"><i class="fa-solid fa-table-cells-large"></i></button>
+          <button style="width:34px;height:32px;border:none;background:var(--brand);color:#fff;border-radius:7px;cursor:pointer;font-size:13px"><i class="fa-solid fa-list"></i></button>
         </div>
-        <div class="ph-right">
-          <button class="btn btn-secondary btn-sm" style="background:#FEF2F2;border-color:#FECACA;color:#DC2626"><i class="fa-solid fa-triangle-exclamation"></i> Stock crítico · 2</button>
-          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-percent"></i> Precios</button>
-          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar</button>
-          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo producto</button>
+        <button class="btn btn-acento btn-sm" style="margin-left:auto;border-radius:99px;padding:9px 18px;box-shadow:0 4px 14px rgba(16,185,129,.28)"><i class="fa-solid fa-plus"></i> Nuevo</button>
+      </div>
+      <!-- Búsqueda + filtro -->
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <div style="flex:1;min-width:240px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:8px 12px">
+          <i class="fa-solid fa-magnifying-glass" style="color:var(--txt4);font-size:12px"></i>
+          <input placeholder="Buscar producto o SKU…" style="flex:1;border:none;background:transparent;outline:none;font-size:13px;color:var(--txt)">
         </div>
+        <select style="background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:8px 32px 8px 12px;font-size:13px;color:var(--txt);min-width:200px"><option>Todas las categorías</option></select>
+        <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-sliders"></i> Gestionar</button>
       </div>
       <div class="bento">
         <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-cube"></i></div><div class="kpi-label">Total productos</div><div class="kpi-val">5</div><div class="kpi-foot">en catálogo activo</div></div>
@@ -1027,24 +1081,40 @@ td b{color:var(--txt);font-weight:600}
       </div>
     </section>
 
-    <!-- ═══ INSUMOS (espejo de Insumos.jsx) ═══ -->
+    <!-- ═══ INSUMOS — espejo Insumos.jsx (KPIs reales + tabs + Resumen lateral) ═══ -->
     <section class="sec" id="sec-insumos">
-      <div class="ph">
-        <div class="ph-left">
-          <h2>Insumos</h2>
-          <p>Materiales que entran en tus productos o servicios · 6 ítems</p>
-        </div>
-        <div class="ph-right">
-          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-right-arrow-left"></i> Movimientos</button>
-          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Importar</button>
-          <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo insumo</button>
-        </div>
+      <!-- CTA principal arriba — match app real -->
+      <div style="margin-bottom:18px">
+        <button class="btn btn-acento" style="padding:11px 22px;font-size:14px;border-radius:99px;box-shadow:0 6px 18px rgba(16,185,129,.28)">
+          <i class="fa-solid fa-plus"></i> Nuevo insumo
+        </button>
       </div>
-      <div class="bento">
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--brand-xlt);color:var(--brand)"><i class="fa-solid fa-boxes-stacked"></i></div><div class="kpi-label">Total insumos</div><div class="kpi-val">6</div><div class="kpi-foot">ítems registrados</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--green-lt);color:var(--green)"><i class="fa-solid fa-circle-check"></i></div><div class="kpi-label">Disponibles</div><div class="kpi-val" style="color:var(--green)">4</div><div class="kpi-foot">sobre el mínimo</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--amber-lt);color:var(--amber)"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="kpi-label">Stock bajo</div><div class="kpi-val" style="color:var(--amber)">1</div><div class="kpi-foot">cerca del mínimo</div></div>
-        <div class="bento-kpi"><div class="kpi-icon-wrap" style="background:var(--red-lt);color:var(--red)"><i class="fa-solid fa-ban"></i></div><div class="kpi-label">Sin stock</div><div class="kpi-val" style="color:var(--red)">1</div><div class="kpi-foot">a reponer urgente</div></div>
+
+      <!-- KPI cards alineadas con app real -->
+      <div class="bento" style="margin-bottom:18px">
+        <div class="bento-kpi" style="border-left:3px solid var(--brand)"><div class="kpi-label">Total insumos</div><div class="kpi-val">6</div></div>
+        <div class="bento-kpi" style="border-left:3px solid var(--green)"><div class="kpi-label">Valor total en stock</div><div class="kpi-val" style="font-size:22px">$ 6.272.740</div></div>
+        <div class="bento-kpi" style="border-left:3px solid var(--green);box-shadow:0 0 0 1px rgba(16,185,129,.25)"><div class="kpi-label">Stock bajo</div><div class="kpi-val" style="color:var(--green)">0</div><div class="kpi-foot" style="color:var(--green);font-weight:600">Todo en orden</div></div>
+        <div class="bento-kpi" style="border-left:3px solid var(--amber)"><div class="kpi-label">Categorías</div><div class="kpi-val">5</div></div>
+      </div>
+
+      <!-- Tabs Inventario / Movimientos -->
+      <div class="tab-bar" style="margin-bottom:14px">
+        <button class="tab-btn active"><i class="fa-solid fa-boxes-stacked" style="font-size:10px"></i> Inventario</button>
+        <button class="tab-btn"><i class="fa-solid fa-arrow-right-arrow-left" style="font-size:10px"></i> Movimientos</button>
+      </div>
+
+      <!-- Layout 2 cols: tabla + sidebar Resumen -->
+      <div style="display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:flex-start">
+        <div>
+
+      <!-- Filtros -->
+      <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:240px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:8px 12px">
+          <i class="fa-solid fa-magnifying-glass" style="color:var(--txt4);font-size:12px"></i>
+          <input placeholder="Buscar insumo o subcategoría…" style="flex:1;border:none;background:transparent;outline:none;font-size:13px;color:var(--txt)">
+        </div>
+        <select style="background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:8px 32px 8px 12px;font-size:13px;color:var(--txt);min-width:180px"><option>Todas las categorías</option></select>
       </div>
       <div class="tbl-card">
         <table>
@@ -1121,6 +1191,35 @@ td b{color:var(--txt);font-weight:600}
             </tr>
           </tbody>
         </table>
+      </div>
+        </div>
+
+        <!-- Sidebar Resumen (espejo app real) -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card" style="padding:14px 16px">
+            <div style="font-size:11px;font-weight:700;color:var(--txt3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">
+              <i class="fa-solid fa-database" style="font-size:10px;color:var(--brand)"></i> Resumen
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12.5px;color:var(--txt2);border-bottom:1px solid var(--border)">
+              <span><i class="fa-solid fa-boxes-stacked" style="font-size:10px;color:var(--brand);margin-right:5px"></i>Total insumos</span><b style="color:var(--txt)">6</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12.5px;color:var(--txt2);border-bottom:1px solid var(--border)">
+              <span><i class="fa-solid fa-coins" style="font-size:10px;color:var(--green);margin-right:5px"></i>Valor stock</span><b style="color:var(--txt)">$ 6.272.740</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12.5px;color:var(--txt2)">
+              <span><i class="fa-solid fa-tag" style="font-size:10px;color:var(--amber);margin-right:5px"></i>Categorías</span><b style="color:var(--txt)">5</b>
+            </div>
+          </div>
+
+          <!-- Card "Stock al día" -->
+          <div class="card" style="padding:18px 16px;text-align:center;background:linear-gradient(180deg,rgba(16,185,129,.05),var(--surface))">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(16,185,129,.12);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:18px">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div style="font-size:14px;font-weight:800;color:var(--txt);margin-bottom:4px">Stock al día</div>
+            <div style="font-size:11.5px;color:var(--txt3);line-height:1.5">Todos los insumos tienen stock suficiente</div>
+          </div>
+        </div>
       </div>
     </section>
 
