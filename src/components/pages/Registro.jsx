@@ -4,11 +4,12 @@
    Trial 7 días, acceso inmediato sin mail de confirmación
    (requiere "Confirm email" desactivado en Supabase → Auth > Settings)
 ───────────────────────────────────────── */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { injectSeedData } from '../../lib/seedData'
+import { getAcquisitionData, persistAcquisitionAcrossOAuth, clearAcquisitionData } from '../../lib/acquisitionTracking'
 
 const AnmaLogo = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="34" fill="none" viewBox="0 0 48 46">
@@ -140,6 +141,11 @@ export default function Registro() {
   const { authed } = useAuth()
   const navigate   = useNavigate()
 
+  // First-touch attribution: capturamos UTM + referrer al montar el form
+  // y los enviamos en signUp. Si el user vino de Instagram bio, después
+  // navegó por /demo, /landing y aterrizó en /registro, sigue siendo IG.
+  useEffect(() => { getAcquisitionData() }, [])
+
   const [biz,      setBiz]      = useState('')
   const [email,    setEmail]    = useState('')
   const [pass,     setPass]     = useState('')
@@ -155,7 +161,10 @@ export default function Registro() {
   const handleGoogle = async () => {
     setGoogleBusy(true)
     setErr('')
-    // URL canónica hardcodeada para que coincida con la whitelist de Supabase.
+    // Persistir acquisition data en localStorage ANTES de redirigir a Google.
+    // Después del callback en /bienvenida la consumimos y la asociamos al WS.
+    persistAcquisitionAcrossOAuth()
+
     const host = window.location.hostname
     const base = (host === 'localhost' || host === '127.0.0.1')
       ? window.location.origin
@@ -190,6 +199,7 @@ export default function Registro() {
     setLoading(true)
 
     const trialStart = new Date().toISOString()
+    const acq = getAcquisitionData() || {}
 
     const { data, error } = await supabase.auth.signUp({
       email: cleanEmail,
@@ -200,10 +210,15 @@ export default function Registro() {
           trial_started_at: trialStart,
           is_trial:         true,
           allowed_sites:    ['hub'],
+          // Acquisition tracking — el trigger SQL los copia al workspace.
+          acquisition_channel: acq.acquisition_channel || null,
+          acquisition_source:  acq.acquisition_source  || null,
+          utm_medium:          acq.utm_medium          || null,
+          utm_campaign:        acq.utm_campaign        || null,
+          utm_content:         acq.utm_content         || null,
+          referrer:            acq.referrer            || null,
+          landing_page:        acq.landing_page        || null,
         },
-        // Si en Supabase Auth > Settings > "Confirm email" está DESACTIVADO,
-        // data.session viene populated → el usuario entra directo.
-        // Si sigue activado, data.session es null → mostramos pantalla de email.
         emailRedirectTo: `${window.location.origin}/bienvenida`,
       },
     })
@@ -215,11 +230,11 @@ export default function Registro() {
     }
 
     if (data?.session?.user) {
-      // Acceso inmediato (email confirmation OFF en Supabase)
       injectSeedData(data.session.user.id, cleanBiz)
+      clearAcquisitionData()   // limpiar después del signUp exitoso
       navigate('/', { replace: true })
     } else {
-      // Confirmación de email requerida (email confirmation ON)
+      clearAcquisitionData()
       setEmailSent(true)
     }
 

@@ -6,6 +6,38 @@
 <title>ANMA Pro — El centro de control para tu negocio</title>
 <meta name="description" content="Centralizá tus pedidos, automatizá mensajes de WhatsApp y dejá el Excel atrás. ANMA Pro te devuelve paz mental y tiempo para crecer. Probá 7 días gratis, hecho en Argentina.">
 <meta property="og:title" content="ANMA Pro — El centro de control para tu negocio">
+<script>
+/* Captura first-touch de canal (UTM + referrer) ANTES de que el visitor
+   navegue a /registro. Se ejecuta solo si todavía no capturamos en la sesión. */
+(function(){try{
+  if (sessionStorage.getItem('anma_acquisition')) return;
+  var u = new URL(location.href), s = u.searchParams, ref = document.referrer || '';
+  var src = (s.get('utm_source')||'').toLowerCase();
+  var hasData = src || s.get('utm_medium') || s.get('utm_campaign') || ref;
+  if (!hasData) return;
+  var ch = 'directo';
+  if (src.indexOf('instagram')>=0 || src==='ig') ch='instagram';
+  else if (src.indexOf('whatsapp')>=0 || src==='wa') ch='whatsapp';
+  else if (src.indexOf('facebook')>=0 || src==='fb') ch='facebook';
+  else if (src.indexOf('tiktok')>=0) ch='tiktok';
+  else if (src.indexOf('google')>=0) ch='google';
+  else if (src.indexOf('referido')>=0 || src.indexOf('referral')>=0) ch='referido';
+  else if (ref.indexOf('instagram.com')>=0) ch='instagram';
+  else if (ref.indexOf('wa.me')>=0 || ref.indexOf('whatsapp')>=0) ch='whatsapp';
+  else if (ref.indexOf('google.')>=0) ch='google';
+  else if (ref.indexOf('facebook.com')>=0) ch='facebook';
+  else if (ref) { try { ch = new URL(ref).hostname.replace('www.',''); } catch(e){} }
+  sessionStorage.setItem('anma_acquisition', JSON.stringify({
+    acquisition_channel: ch,
+    acquisition_source: s.get('utm_source')||null,
+    utm_medium: s.get('utm_medium')||null,
+    utm_campaign: s.get('utm_campaign')||null,
+    utm_content: s.get('utm_content')||null,
+    referrer: ref||null,
+    landing_page: location.href.slice(0,500)
+  }));
+}catch(e){}})();
+</script>
 <meta property="og:description" content="Una interfaz limpia y rápida diseñada para que resuelvas con claridad, avances y recuperes tu tiempo.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://anma-hub.vercel.app/landing.html">

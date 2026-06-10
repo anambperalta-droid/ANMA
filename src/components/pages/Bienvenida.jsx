@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { passwordStrength } from '../../lib/validate'
+import { consumeAcquisitionAfterOAuth } from '../../lib/acquisitionTracking'
 
 const STRENGTH_LABELS = ['', 'Débil', 'Aceptable', 'Buena', 'Excelente']
 const STRENGTH_COLORS = ['#E5E7EB', '#DC2626', '#D97706', '#10B981', '#059669']
@@ -55,15 +56,43 @@ export default function Bienvenida() {
   }
 
   // Después de validar la sesión: si es OAuth user → redirect inmediato.
+  // Antes de redirigir, transferimos la acquisition data persistida (UTM/referrer)
+  // del localStorage al user_metadata + workspace. Esto permite trackear el canal
+  // por el cual entró un user de Google OAuth.
   const finishAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession()
     if (isOAuthSession(session)) {
-      // OAuth user: no password setup needed. Vamos directo al app (router
-      // decidirá si va a /onboarding o /).
+      await applyAcquisitionData(session?.user?.id)
       navigate('/', { replace: true })
       return true
     }
     return false
+  }
+
+  // Asocia los UTM/referrer capturados pre-OAuth al user_metadata y al workspace
+  // (sólo si el WS aún no tiene canal — anti-overwrite de datos previos).
+  const applyAcquisitionData = async (userId) => {
+    if (!userId) return
+    const acq = consumeAcquisitionAfterOAuth()
+    if (!acq || !acq.acquisition_channel) return
+    try {
+      await supabase.auth.updateUser({ data: acq })
+      await supabase
+        .from('workspaces')
+        .update({
+          acquisition_channel: acq.acquisition_channel,
+          acquisition_source:  acq.acquisition_source || null,
+          utm_medium:          acq.utm_medium || null,
+          utm_campaign:        acq.utm_campaign || null,
+          utm_content:         acq.utm_content || null,
+          referrer:            acq.referrer || null,
+          landing_page:        acq.landing_page || null,
+        })
+        .eq('owner_id', userId)
+        .is('acquisition_channel', null)
+    } catch (e) {
+      logAuth('acquisition-apply-error', e?.message)
+    }
   }
 
   // Flow detectado del email: 'recovery' | 'invite' | 'signup' | 'magiclink' | null

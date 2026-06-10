@@ -6,6 +6,34 @@
 <title>ANMA Pro — Demo en vivo</title>
 <meta name="description" content="Demo interactivo de ANMA Pro con datos ficticios. Explorá todas las secciones del sistema de distribución.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+/* First-touch tracking (mismo script que landing.html) */
+(function(){try{
+  if (sessionStorage.getItem('anma_acquisition')) return;
+  var u = new URL(location.href), s = u.searchParams, ref = document.referrer || '';
+  var src = (s.get('utm_source')||'').toLowerCase();
+  var hasData = src || s.get('utm_medium') || s.get('utm_campaign') || ref;
+  if (!hasData) return;
+  var ch = 'directo';
+  if (src.indexOf('instagram')>=0 || src==='ig') ch='instagram';
+  else if (src.indexOf('whatsapp')>=0 || src==='wa') ch='whatsapp';
+  else if (src.indexOf('facebook')>=0) ch='facebook';
+  else if (src.indexOf('google')>=0) ch='google';
+  else if (ref.indexOf('instagram.com')>=0) ch='instagram';
+  else if (ref.indexOf('wa.me')>=0) ch='whatsapp';
+  else if (ref.indexOf('google.')>=0) ch='google';
+  else if (ref) { try { ch = new URL(ref).hostname.replace('www.',''); } catch(e){} }
+  sessionStorage.setItem('anma_acquisition', JSON.stringify({
+    acquisition_channel: ch,
+    acquisition_source: s.get('utm_source')||null,
+    utm_medium: s.get('utm_medium')||null,
+    utm_campaign: s.get('utm_campaign')||null,
+    utm_content: s.get('utm_content')||null,
+    referrer: ref||null,
+    landing_page: location.href.slice(0,500)
+  }));
+}catch(e){}})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
