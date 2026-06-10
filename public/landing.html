@@ -629,6 +629,71 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   #demo{overflow-x:hidden}
   #demo .app-shell-wrap{max-width:100%}
 }
+
+/* ═══ TAILWIND FALLBACK ═══
+   La landing usa clases de Tailwind via CDN. Si el CDN no carga (red lenta,
+   bloqueador, CSP), estos fallbacks locales replican las clases usadas para
+   que la página NUNCA se vea rota. Cuando Tailwind carga, pisa estos valores
+   con resultado idéntico. */
+.font-black{font-weight:900}
+.font-extrabold{font-weight:800}
+.font-bold{font-weight:700}
+.font-semibold{font-weight:600}
+.font-medium{font-weight:500}
+.font-normal{font-weight:400}
+.tracking-tight{letter-spacing:-.025em}
+.tracking-wider{letter-spacing:.05em}
+.leading-relaxed{line-height:1.625}
+.leading-tight{line-height:1.25}
+.uppercase{text-transform:uppercase}
+.text-center{text-align:center}
+.text-xs{font-size:12px}
+.text-sm{font-size:14px}
+.text-base{font-size:16px}
+.text-lg{font-size:18px}
+.text-xl{font-size:20px}
+.text-2xl{font-size:24px}
+.text-3xl{font-size:30px}
+.text-4xl{font-size:36px}
+.block{display:block}
+.select-none{user-select:none}
+.flex{display:flex}
+.inline-flex{display:inline-flex}
+.items-center{align-items:center}
+.justify-center{justify-content:center}
+.flex-wrap{flex-wrap:wrap}
+.gap-2{gap:8px}
+.gap-6{gap:24px}
+.gap-12{gap:48px}
+.grid{display:grid}
+.grid-cols-1{grid-template-columns:1fr}
+.mt-6{margin-top:24px}
+.mb-3{margin-bottom:12px}
+.mb-4{margin-bottom:16px}
+.mx-auto{margin-left:auto;margin-right:auto}
+.px-4{padding-left:16px;padding-right:16px}
+.max-w-2xl{max-width:672px}
+.text-balance{text-wrap:balance}
+.transition-colors{transition:color .15s,background-color .15s}
+.h-4{height:16px}
+.w-4{width:16px}
+@media(min-width:640px){
+  .sm\:text-base{font-size:16px}
+  .sm\:text-lg{font-size:18px}
+  .sm\:text-2xl{font-size:24px}
+  .sm\:text-4xl{font-size:36px}
+}
+@media(min-width:768px){
+  .md\:text-lg{font-size:18px}
+  .md\:text-4xl{font-size:36px}
+}
+@media(min-width:1024px){
+  .lg\:grid-cols-3{grid-template-columns:repeat(3,1fr)}
+  .lg\:justify-start{justify-content:flex-start}
+}
+@media(max-width:1023px){
+  .pasos-grid{grid-template-columns:1fr!important}
+}
 </style>
 </head>
 <body>
@@ -670,18 +735,18 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
         </a>
       </div>
 
-      <!-- Micro-garantías -->
-      <div class="flex items-center justify-center lg:justify-start gap-6 flex-wrap mt-6 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,.48)">
-        <span style="display:inline-flex;align-items:center;gap:6px">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 stroke-[2.5]" style="color:rgba(255,255,255,.32);flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <!-- Micro-garantías (sin Tailwind — tamaños fijos inline para que NUNCA exploten) -->
+      <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:24px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.48)" class="hero-trust">
+        <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:rgba(255,255,255,.32);flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           Listo en 60 segundos
         </span>
-        <span style="display:inline-flex;align-items:center;gap:6px">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 stroke-[2.5]" style="color:rgba(255,255,255,.32);flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:rgba(255,255,255,.32);flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
           No requiere tarjeta de crédito
         </span>
-        <span style="display:inline-flex;align-items:center;gap:6px">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 stroke-[2.5]" style="color:rgba(255,255,255,.32);flex-shrink:0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:rgba(255,255,255,.32);flex-shrink:0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           Diseñado por y para emprendedores
         </span>
       </div>
@@ -925,7 +990,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     </div>
 
     <!-- Pasos -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 text-center" style="max-width:1020px;margin:0 auto;padding:0 4px">
+    <div class="pasos-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px;text-align:center;max-width:1020px;margin:0 auto;padding:0 4px">
 
       <!-- Paso 01 -->
       <div style="position:relative;padding:0 8px">
@@ -1977,10 +2042,12 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 document.getElementById('y').textContent = new Date().getFullYear();
 
 
-// Tab → sidebar nav item mapping (según rutas reales de la app)
+// Tab → sidebar nav item mapping (según rutas reales de la app).
+// OJO: la lista de Presupuestos vive en Dashboard (Historial → tab Presupuestos),
+// NO en "Nuevo pedido" (que es el wizard de creación). Mapear ahí sería incoherente.
 var tabNavMap = {
   dashboard: 'nav-dashboard',
-  presupuestos: 'nav-presupuesto',
+  presupuestos: 'nav-dashboard',
   clientes: 'nav-clientes',
   catalogo: 'nav-catalogo'
 };
