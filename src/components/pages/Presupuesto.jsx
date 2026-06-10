@@ -1647,7 +1647,7 @@ export default function Presupuesto() {
                           Packaging y materiales del envío — invisibles para el cliente, impactan en tu costo real
                         </div>
                       </div>
-                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                      <div className="disp-quick" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                         <button type="button" className="btn btn-ghost btn-xs" onClick={loadBolsaEcommerce} title="Cargar Bolsa eCommerce / mailer">
                           ✉️ Bolsa eCommerce
                         </button>

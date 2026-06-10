@@ -1552,8 +1552,11 @@ td b{color:var(--txt);font-weight:600}
   .wiz-pane-title{font-size:13px!important;line-height:1.2!important}
   .wiz-pane-sub{font-size:11px!important}
   .calc-panel{display:none!important}
-  /* Inputs/selects: full-width (excl. checkbox) */
-  .wiz-pane{padding:12px 16px 220px!important}
+  /* Inputs/selects: full-width (excl. checkbox)
+     padding-bottom 260px: reserva para las 3 barras flotantes apiladas
+     (bottom-nav + wiz-nav + barra TOTAL) — sin esto la barra TOTAL tapa
+     el último contenido del paso (ej. el tip de autocompletar). */
+  .wiz-pane{padding:12px 16px 260px!important}
   .wiz-pane input:not([type=checkbox]):not(.mic-name-input):not(.mic-variant-input):not(.mic-qty-input):not(.mic-price-input),.wiz-pane select{min-height:46px!important;width:100%!important;box-sizing:border-box!important}
   /* Paso 2: tabla → ocultar en mobile, usar mob-item-card */
   .items-scroll{display:none!important}
@@ -1582,8 +1585,10 @@ td b{color:var(--txt);font-weight:600}
   .mic-formula-row .mic-op{font-size:13px!important;font-weight:600!important;color:var(--txt4)!important;flex-shrink:0;line-height:1;padding:0 1px}
   .mic-formula-row .mic-op-eq{color:var(--txt3)!important;font-weight:500!important}
   .mic-qty-input{width:54px!important;min-height:36px!important;font-size:14px!important;font-weight:700!important;text-align:center!important;border-radius:8px!important;box-sizing:border-box!important;padding:0 4px!important;min-width:0!important;flex-shrink:0!important;border:1.5px solid var(--border)!important;background:var(--surface)!important}
-  .mic-price-input{flex:1!important;min-width:0!important;min-height:36px!important;font-size:13.5px!important;font-weight:600!important;text-align:right!important;border-radius:8px!important;box-sizing:border-box!important;padding:0 10px!important;width:100%!important;border:1.5px solid var(--border)!important;background:var(--surface)!important}
-  .mic-subtotal{font-size:15px!important;font-weight:800!important;color:var(--money)!important;white-space:nowrap!important;line-height:1!important;flex-shrink:0!important;padding-left:6px!important;font-variant-numeric:tabular-nums!important}
+  /* Precio acotado (max 150px) y subtotal absorbe el aire sobrante alineado
+     a la derecha — antes el precio se estiraba enorme y quedaba desfasado. */
+  .mic-price-input{flex:1!important;min-width:0!important;max-width:150px!important;min-height:36px!important;font-size:13.5px!important;font-weight:600!important;text-align:right!important;border-radius:8px!important;box-sizing:border-box!important;padding:0 10px!important;width:100%!important;border:1.5px solid var(--border)!important;background:var(--surface)!important}
+  .mic-subtotal{flex:1!important;text-align:right!important;font-size:15px!important;font-weight:800!important;color:var(--money)!important;white-space:nowrap!important;line-height:1!important;padding-left:6px!important;font-variant-numeric:tabular-nums!important}
   /* Legacy mic-label/mic-field labels (paths que aún se usen) */
   .mic-field{display:flex!important;flex-direction:column!important;gap:4px!important}
   .mic-label{font-size:9px!important;font-weight:800!important;color:var(--txt4)!important;text-transform:uppercase!important;letter-spacing:.07em!important;line-height:1!important;display:block!important}
@@ -1592,6 +1597,10 @@ td b{color:var(--txt);font-weight:600}
   .bsheet-item-title{font-size:14px!important;font-weight:800!important}
   /* + Agregar: ancho completo con borde punteado */
   .wiz-pane .btn-ghost.btn-xs{width:100%!important;min-height:46px!important;justify-content:center!important;border-radius:12px!important;font-size:13px!important;font-weight:700!important;margin-top:12px!important;border:1.5px dashed var(--border)!important;padding:0!important;flex-direction:row!important}
+  /* Quick-add de insumos (Bolsa eCommerce / Caja Frágil): lado a lado al 50%
+     en vez de 2 botones full-width apilados con aire desperdiciado. */
+  .disp-quick{display:flex!important;gap:8px!important;width:100%!important;flex-wrap:nowrap!important;margin-top:10px!important}
+  .disp-quick .btn-ghost.btn-xs{flex:1!important;width:auto!important;min-width:0!important;margin-top:0!important;min-height:42px!important;font-size:12px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
   /* Sticky wiz-nav: flotante encima de bottom nav */
   /* Mini total bar: flotante encima del wiz-nav */
   .pres-mob-total{display:flex!important;align-items:center!important;gap:8px!important;position:fixed!important;bottom:calc(168px + env(safe-area-inset-bottom,0px))!important;left:10px!important;right:10px!important;background:rgba(14,11,38,.88)!important;color:#fff!important;border-radius:14px!important;padding:10px 16px!important;z-index:199!important;box-shadow:0 4px 24px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.06) inset!important;backdrop-filter:blur(20px) saturate(180%)!important;-webkit-backdrop-filter:blur(20px) saturate(180%)!important;border:1px solid rgba(255,255,255,.08)!important}
