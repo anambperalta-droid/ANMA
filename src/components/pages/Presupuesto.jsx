@@ -1075,26 +1075,30 @@ export default function Presupuesto() {
       <thead><tr><th>Producto</th><th style="text-align:center;width:55px">Cant.</th><th style="text-align:right;width:90px">P. unit.</th><th style="text-align:right;width:95px">Subtotal</th></tr></thead>
       <tbody>${prodRows}</tbody>
     </table>
-    <div class="totals"><div class="totals-box">
+    ${(() => {
+      // ── IVA SUMADO sobre el total ──────────────────────────────────────
+      // Si ivaEnabled, el 21% se AGREGA al total y queda detallado renglón
+      // por renglón. La seña se calcula sobre el total final (con IVA).
+      const ivaR = c.ivaEnabled ? (Number(c.ivaRate) || 21) / 100 : 0
+      const ivaAmt = Math.round(calc.total * ivaR)
+      const totalFinal = calc.total + ivaAmt
+      const depositFinal = ivaR > 0
+        ? Math.round(totalFinal * (Number(form.deposit) || 0) / 100)
+        : calc.depositAmt
+      return `<div class="totals"><div class="totals-box">
       <table class="totals-row" width="100%" cellpadding="0" cellspacing="0"><tr><td>Subtotal productos</td><td class="tv">${fmt(calc.totalRevenue)}</td></tr></table>
       ${calc.discountAmt > 0 ? `<table class="totals-row" width="100%" cellpadding="0" cellspacing="0" style="color:#DC2626"><tr><td>Descuento (${calc.discountPct}%)</td><td class="tv">−${fmt(calc.discountAmt)}</td></tr></table>` : ''}
       ${showEnvioLeyenda ? `<table class="totals-row" width="100%" cellpadding="0" cellspacing="0" style="font-size:10px;color:#92400E;font-style:italic"><tr><td>🚚 Costo de envío sujeto a pesaje y despacho</td><td class="tv">A cotizar</td></tr></table>` : ''}
-      <table class="totals-row tr-big" width="100%" cellpadding="0" cellspacing="0"><tr><td>Total</td><td class="tv">${fmt(calc.total)}</td></tr></table>
-      <table class="totals-row tr-senia" width="100%" cellpadding="0" cellspacing="0"><tr><td>Seña (${form.deposit}%)</td><td class="tv">${fmt(calc.depositAmt)}</td></tr></table>
-      <table class="totals-row" width="100%" cellpadding="0" cellspacing="0" style="color:#059669;font-weight:700"><tr><td>Saldo contra entrega</td><td class="tv">${fmt(calc.total - calc.depositAmt)}</td></tr></table>
+      ${ivaAmt > 0 ? `<table class="totals-row" width="100%" cellpadding="0" cellspacing="0" style="color:#92400E;font-weight:700"><tr><td>IVA (${(ivaR*100).toFixed(0)}%)</td><td class="tv">+${fmt(ivaAmt)}</td></tr></table>` : ''}
+      <table class="totals-row tr-big" width="100%" cellpadding="0" cellspacing="0"><tr><td>Total${ivaAmt > 0 ? ' (IVA incluido)' : ''}</td><td class="tv">${fmt(totalFinal)}</td></tr></table>
+      <table class="totals-row tr-senia" width="100%" cellpadding="0" cellspacing="0"><tr><td>Seña (${form.deposit}%)</td><td class="tv">${fmt(depositFinal)}</td></tr></table>
+      <table class="totals-row" width="100%" cellpadding="0" cellspacing="0" style="color:#059669;font-weight:700"><tr><td>Saldo contra entrega</td><td class="tv">${fmt(totalFinal - depositFinal)}</td></tr></table>
     </div></div>
-    ${c.ivaEnabled ? (() => {
-      const total = calc.total
-      const ivaR = (Number(c.ivaRate) || 21) / 100
-      const otrosR = (Number(c.otrosImpuestosRate) || 0) / 100
-      const ivaContenido = total - (total / (1 + ivaR))
-      const otrosImpAmt = total * otrosR
-      return `<div class="iva-box">
+    ${ivaAmt > 0 ? `<div class="iva-box">
         <div class="iva-title">Régimen de Transparencia Fiscal al Consumidor (Ley 27.743)</div>
-        <table class="iva-tbl" width="100%" cellpadding="0" cellspacing="0"><tr><td>IVA Contenido (${(ivaR*100).toFixed(0)}%)</td><td class="iv">${fmt(ivaContenido)}</td></tr></table>
-        ${otrosR > 0 ? `<table class="iva-tbl" width="100%" cellpadding="0" cellspacing="0"><tr><td>Otros Impuestos Nacionales Indirectos</td><td class="iv">${fmt(otrosImpAmt)}</td></tr></table>` : ''}
-      </div>`
-    })() : ''}
+        <table class="iva-tbl" width="100%" cellpadding="0" cellspacing="0"><tr><td>IVA (${(ivaR*100).toFixed(0)}%) — discriminado sobre el subtotal</td><td class="iv">${fmt(ivaAmt)}</td></tr></table>
+      </div>` : ''}`
+    })()}
     ${form.noteCli ? `<div class="note">${form.noteCli}</div>` : ''}
     ${(() => {
       const bank = getBankConfig ? getBankConfig() : null
