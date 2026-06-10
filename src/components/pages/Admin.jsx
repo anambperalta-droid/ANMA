@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { useRealtimeSignups, ensureNotificationPermission, sendBrowserNotification } from '../../lib/useRealtimeSignups'
 import { getBillingStatus, STATUS, MONTHLY_AMOUNT, ONBOARDING_AMOUNT, buildPaymentReminderWAMessage, fmtMoney, fmtShortDate } from '../../lib/subscription'
+import MetricsTab from './admin/MetricsTab'
 
 /**
  * ANMA Pro — Admin global (cross-tenant)
@@ -766,6 +767,9 @@ export default function Admin() {
 
       {/* ── Tabs ────────────────────────────────────────────────────── */}
       <div className="admin-tabs">
+        <button className={`admin-tab ${tab === 'metrics' ? 'active' : ''}`} onClick={() => setTab('metrics')}>
+          <i className="fa fa-chart-line" /> Métricas
+        </button>
         <button className={`admin-tab ${tab === 'trials' ? 'active' : ''}`} onClick={() => setTab('trials')}>
           <i className="fa fa-rocket" /> Trials <span className="chip">{rows.filter(w => w.trial.isTrial).length}</span>
         </button>
@@ -847,7 +851,11 @@ export default function Admin() {
         </div>
       )}
 
-      {/* ── Tabla ───────────────────────────────────────────────────── */}
+      {/* ── Tab: Métricas (dashboard SaaS) ──────────────────────────── */}
+      {tab === 'metrics' && <MetricsTab workspaces={rows} />}
+
+      {/* ── Tabla (resto de tabs) ───────────────────────────────────── */}
+      {tab !== 'metrics' && (
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, minWidth: tab === 'trials' ? 920 : tab === 'billing' ? 980 : 720 }}>
@@ -1054,6 +1062,7 @@ export default function Admin() {
           </table>
         </div>
       </div>
+      )}
 
       {/* ── Leyenda de temperatura/urgencia ─────────────────────────── */}
       {tab === 'trials' && filtered.length > 0 && (
