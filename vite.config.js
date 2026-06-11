@@ -29,13 +29,5 @@ export default defineConfig({
   },
   server: {
     port: 5174,
-    proxy: {
-      // Proxy para Resend API — evita CORS en desarrollo
-      '/resend-api': {
-        target: 'https://api.resend.com',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/resend-api/, ''),
-      },
-    },
   },
 })
