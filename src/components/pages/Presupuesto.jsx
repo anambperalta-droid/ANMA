@@ -646,8 +646,14 @@ export default function Presupuesto() {
     const marginThreshold = num(c.marginLowThreshold) || 10
     const marginLow = hasFullCostData && total > 0 && Number(marginReal) < marginThreshold
     const depositAmt = Math.round(total * num(form.deposit) / 100)
-    return { totalCost, totalRevenue, logTotal, baseCost, total, gain, marginReal, marginLow, marginThreshold, depositAmt, totalQty, discountAmt, discountPct, dispatchCost, viajesCost, costPending, hasFullCostData }
-  }, [items, form.shipCost, form.shipCharged, form.logoCost, form.deposit, form.discount, form.dispatchInsumos, form.logisticaParadas, c.marginLowThreshold, get])
+    // IVA SUMADO sobre el total (misma lógica que PDF/WA): si ivaEnabled,
+    // el % se agrega al total y la seña se calcula sobre el total final.
+    const ivaRate = c.ivaEnabled ? (num(c.ivaRate) || 21) / 100 : 0
+    const ivaAmt = Math.round(total * ivaRate)
+    const totalFinal = total + ivaAmt
+    const depositFinal = ivaRate > 0 ? Math.round(totalFinal * num(form.deposit) / 100) : depositAmt
+    return { totalCost, totalRevenue, logTotal, baseCost, total, gain, marginReal, marginLow, marginThreshold, depositAmt, totalQty, discountAmt, discountPct, dispatchCost, viajesCost, costPending, hasFullCostData, ivaRate, ivaAmt, totalFinal, depositFinal }
+  }, [items, form.shipCost, form.shipCharged, form.logoCost, form.deposit, form.discount, form.dispatchInsumos, form.logisticaParadas, c.marginLowThreshold, c.ivaEnabled, c.ivaRate, get])
 
   const budgetNum = useMemo(() => {
     if (editId) { const b = get('budgets').find(x => x.id === editId); return b?.num || '#—' }
@@ -850,7 +856,7 @@ export default function Presupuesto() {
     if (!mp.enabled || !mp.token) { toast('Activá y configurá Mercado Pago en Configuración > Pagos.', 'er'); return }
     setMpLoading(true)
     try {
-      const budget = { num: budgetNum, contact: form.contact, company: form.company, items, shipCost: form.shipCost }
+      const budget = { num: budgetNum, contact: form.contact, company: form.company, items, shipCost: form.shipCost, total: calc.totalFinal }
       const result = await createPaymentLink({ budget, mp, depositPct: form.deposit })
       if (result.ok) {
         setMpResult({ ok: true, link: result.link, label: `${result.amountLabel}: ${fmt(result.amount)}` })
@@ -1838,6 +1844,42 @@ export default function Presupuesto() {
                       <div className="wiz-rev-meta">Envío {fmt(num(form.shipCost))} · Margen {form.margin}% · Seña {form.deposit}%</div>
                     </div>
                   </div>
+                  {/* ─ Totales — mismo desglose que PDF/WA (Subtotal → IVA → Total → Seña) ─ */}
+                  <div className="wiz-rev-card">
+                    <div className="wiz-rev-card-h"><i className="fa fa-calculator" /> Resumen</div>
+                    <div className="wiz-rev-body">
+                      {calc.discountAmt > 0 && (
+                        <div className="wiz-rev-item" style={{ color: 'var(--red)', fontSize: 12 }}>
+                          <span>Descuento ({calc.discountPct}%)</span>
+                          <span>−{fmt(calc.discountAmt)}</span>
+                        </div>
+                      )}
+                      {calc.ivaAmt > 0 && (
+                        <>
+                          <div className="wiz-rev-item" style={{ fontWeight: 600, color: 'var(--txt2)' }}>
+                            <span>Subtotal</span>
+                            <span>{fmt(calc.total)}</span>
+                          </div>
+                          <div className="wiz-rev-item" style={{ fontWeight: 700, color: '#B45309' }}>
+                            <span>IVA ({(calc.ivaRate * 100).toFixed(0)}%)</span>
+                            <span>+{fmt(calc.ivaAmt)}</span>
+                          </div>
+                        </>
+                      )}
+                      <div className="wiz-rev-item" style={{ fontWeight: 800, fontSize: 16, marginTop: 6, paddingTop: 6, borderTop: calc.ivaAmt > 0 ? '1px dashed var(--border)' : '2px solid var(--border)' }}>
+                        <span>Total{calc.ivaAmt > 0 ? ' (IVA incl.)' : ''}</span>
+                        <span style={{ color: 'var(--brand)' }}>{fmt(calc.totalFinal)}</span>
+                      </div>
+                      <div className="wiz-rev-item" style={{ fontWeight: 600, color: 'var(--txt2)', marginTop: 4 }}>
+                        <span>Seña ({form.deposit}%)</span>
+                        <span>{fmt(calc.depositFinal)}</span>
+                      </div>
+                      <div className="wiz-rev-item" style={{ fontWeight: 700, color: '#16A34A' }}>
+                        <span>Saldo contra entrega</span>
+                        <span>{fmt(calc.totalFinal - calc.depositFinal)}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className="wiz-tip" style={{ marginTop: 14 }}>
                   <i className="fa fa-circle-check" /> Todo listo. Al confirmar guardás el presupuesto y volvés al dashboard.
@@ -1848,9 +1890,9 @@ export default function Presupuesto() {
             {/* QUICK ACTIONS BAR — visible solo en mobile */}
             <div className="pres-mob-total">
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="pmt-label">Total</div>
+                <div className="pmt-label">Total{calc.ivaAmt > 0 ? ` · IVA ${(calc.ivaRate * 100).toFixed(0)}% incl.` : ''}</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div className="pmt-val">{fmt(calc.total)}</div>
+                  <div className="pmt-val">{fmt(calc.totalFinal)}</div>
                   {feats.margenTabla && !calc.costPending && calc.marginLow && <span className="pmt-warn" title={`Margen bajo (< ${calc.marginThreshold}%)`}><i className="fa fa-triangle-exclamation" /></span>}
                   {feats.margenTabla && <div className="pmt-margin" style={calc.costPending ? { color: '#F59E0B', fontStyle: 'italic' } : undefined} title={calc.costPending ? 'Falta cargar el Costo unitario' : undefined}>{calc.costPending ? '—' : `${calc.marginReal}%`}</div>}
                 </div>
