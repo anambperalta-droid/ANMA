@@ -1,5 +1,28 @@
 # 📧 Supabase Auth — Email Templates UNIVERSALES (Pro + Regalos)
 
+## 🚨 ACTUALIZACIÓN 11/06/2026 — Links a prueba de prefetch (RE-PEGAR LOS 3 TEMPLATES)
+
+**Problema confirmado en producción** (Nicolas, reset password): los links con
+`{{ .ConfirmationURL }}` pasan por el endpoint `/auth/v1/verify` de Supabase y son
+de **un solo uso**. Gmail, los antivirus y el propio Chrome de Android **pre-cargan**
+el link antes del click real → el token se consume → el usuario ve "Enlace no válido /
+expirado" aunque haga click 1 minuto después de recibir el email.
+
+**Solución (la oficial de Supabase para este caso):** el link del email va **directo
+a la app** con `token_hash`, y la verificación la hace el JavaScript de la app
+(`verifyOtp`). Los scanners/prefetchers no ejecutan JS → el token no se gasta.
+
+Los 3 templates de abajo **ya están corregidos** con este formato:
+```
+{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery   ← reset
+{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=signup     ← confirmación
+{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite     ← invitación
+```
+La app ya maneja `?token_hash=&type=` en `/bienvenida` (ambas apps, deployed).
+**Acción requerida: re-pegar los 3 templates en el dashboard** (paso a paso abajo).
+
+---
+
 ## ⚠️ Importante: por qué un solo template para las 2 apps
 
 ANMA Pro (`anma-hub`) y ANMA Regalos (`anma-host`) comparten el **mismo proyecto Supabase** (`paxsvjdimqlfxnlipplx`). Los email templates son **globales al proyecto** — no se pueden tener distintos por sitio.
@@ -88,7 +111,7 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
           <!-- CTA con color dinámico según app -->
           <table cellpadding="0" cellspacing="0" align="center">
             <tr><td style="background:linear-gradient(135deg,{{ if eq (index .Data.allowed_sites 0) "host" }}#D946EF,#EC4899{{ else }}#059669,#10b981{{ end }});border-radius:12px;box-shadow:0 8px 24px rgba(124,58,237,.35)">
-              <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-size:15px;font-weight:700">
+              <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=signup" style="display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-size:15px;font-weight:700">
                 ✓ Confirmar mi email
               </a>
             </td></tr>
@@ -96,7 +119,7 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
 
           <p style="color:#6b7280;font-size:12px;line-height:1.6;margin:24px 0 0;text-align:center">
             O copiá este link en tu navegador:<br>
-            <span style="color:#7C3AED;word-break:break-all">{{ .ConfirmationURL }}</span>
+            <span style="color:#7C3AED;word-break:break-all">{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=signup</span>
           </p>
 
           <!-- Tips dinámicos por app -->
@@ -155,7 +178,7 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
           </p>
           <table cellpadding="0" cellspacing="0" align="center">
             <tr><td style="background:linear-gradient(135deg,#7C3AED,#6D28D9);border-radius:12px">
-              <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-size:14.5px;font-weight:700">
+              <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery" style="display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-size:14.5px;font-weight:700">
                 Cambiar mi contraseña
               </a>
             </td></tr>
@@ -214,7 +237,7 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
           </p>
           <table cellpadding="0" cellspacing="0" align="center">
             <tr><td style="background:linear-gradient(135deg,{{ if eq (index .Data.allowed_sites 0) "host" }}#D946EF,#EC4899{{ else }}#7C3AED,#6366F1{{ end }});border-radius:12px">
-              <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-size:14.5px;font-weight:700">
+              <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite" style="display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-size:14.5px;font-weight:700">
                 Aceptar invitación
               </a>
             </td></tr>
