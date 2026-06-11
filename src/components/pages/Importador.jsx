@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { useData }         from '../../context/DataContext'
 import { parseText, markDuplicates, detectTipo } from '../../lib/importParser'
 
-// ── Constantes de entidades para ANMA Pro ────────────────────────────
+// ── Constantes de entidades para ANMA Hub ────────────────────────────
 const ENTIDADES = [
   {
     key:     'clients',

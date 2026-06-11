@@ -25,7 +25,7 @@ La app ya maneja `?token_hash=&type=` en `/bienvenida` (ambas apps, deployed).
 
 ## ⚠️ Importante: por qué un solo template para las 2 apps
 
-ANMA Pro (`anma-hub`) y ANMA Regalos (`anma-host`) comparten el **mismo proyecto Supabase** (`paxsvjdimqlfxnlipplx`). Los email templates son **globales al proyecto** — no se pueden tener distintos por sitio.
+ANMA Hub (`anma-hub`) y ANMA Regalos (`anma-host`) comparten el **mismo proyecto Supabase** (`paxsvjdimqlfxnlipplx`). Los email templates son **globales al proyecto** — no se pueden tener distintos por sitio.
 
 **Solución profesional:** templates con detección automática. Cuando el user se registra:
 - Desde anma-hub.vercel.app → pasamos `allowed_sites: ['hub']`
@@ -91,11 +91,11 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
           <p style="color:rgba(255,255,255,.85);margin:6px 0 0;font-size:14px">7 días para descubrir cómo armás tus kits de regalo en minutos</p>
         </td></tr>
         {{ else }}
-        <!-- ═══ HEADER ANMA PRO (violeta — fiel a la landing) ═══ -->
+        <!-- ═══ HEADER ANMA HUB (violeta — fiel a la landing) ═══ -->
         <tr><td style="background:linear-gradient(135deg,#4C1D95,#7C3AED 50%,#A78BFA);padding:40px 32px;text-align:center">
           <div style="display:inline-block;width:60px;height:60px;background:#fff;border-radius:18px;line-height:60px;margin-bottom:16px;font-size:28px">🚀</div>
-          <h1 style="color:#fff;margin:0;font-size:24px;font-weight:800;letter-spacing:-.3px">¡Bienvenido a ANMA Pro!</h1>
-          <p style="color:rgba(255,255,255,.85);margin:6px 0 0;font-size:14px">7 días para descubrir cómo ANMA Pro ordena tu negocio</p>
+          <h1 style="color:#fff;margin:0;font-size:24px;font-weight:800;letter-spacing:-.3px">¡Bienvenido a ANMA Hub!</h1>
+          <p style="color:rgba(255,255,255,.85);margin:6px 0 0;font-size:14px">7 días para descubrir cómo ANMA Hub ordena tu negocio</p>
         </td></tr>
         {{ end }}
 
@@ -143,7 +143,7 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
         <tr><td style="background:#f9fafb;padding:20px 36px;border-top:1px solid #e5e7eb;text-align:center">
           <p style="color:#6b7280;font-size:11.5px;margin:0;line-height:1.6">
             Si no te registraste vos, podés ignorar este email.<br>
-            {{ if eq (index .Data.allowed_sites 0) "host" }}ANMA Regalos{{ else }}ANMA Pro{{ end }} · Hecho en Argentina 🇦🇷
+            {{ if eq (index .Data.allowed_sites 0) "host" }}ANMA Regalos{{ else }}ANMA Hub{{ end }}
           </p>
         </td></tr>
       </table>
@@ -223,7 +223,7 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
         {{ else }}
         <tr><td style="background:linear-gradient(135deg,#4C1D95,#7C3AED 50%,#6366F1);padding:36px 32px;text-align:center">
           <div style="display:inline-block;width:54px;height:54px;background:#fff;border-radius:16px;line-height:54px;margin-bottom:14px;font-size:24px">🎯</div>
-          <h1 style="color:#fff;margin:0;font-size:22px;font-weight:800">Te invitaron a ANMA Pro</h1>
+          <h1 style="color:#fff;margin:0;font-size:22px;font-weight:800">Te invitaron a ANMA Hub</h1>
         </td></tr>
         {{ end }}
 
@@ -246,7 +246,7 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
 
         <tr><td style="background:#f9fafb;padding:18px 32px;border-top:1px solid #e5e7eb;text-align:center">
           <p style="color:#9ca3af;font-size:11px;margin:0">
-            {{ if eq (index .Data.allowed_sites 0) "host" }}ANMA Regalos{{ else }}ANMA Pro{{ end }} · Acceso colaborativo
+            {{ if eq (index .Data.allowed_sites 0) "host" }}ANMA Regalos{{ else }}ANMA Hub{{ end }} · Acceso colaborativo
           </p>
         </td></tr>
       </table>
@@ -283,14 +283,14 @@ En el sidebar de Authentication → **URL Configuration**:
 Esto garantiza que el `{{ .ConfirmationURL }}` redirija al dominio correcto desde donde el user se registró.
 
 ### 4. Probá enviando un signup desde Pro y otro desde Regalos
-- Registrate desde `https://anma-hub.vercel.app/registro` → te debe llegar email **violeta-verde "ANMA Pro"** 🚀
+- Registrate desde `https://anma-hub.vercel.app/registro` → te debe llegar email **violeta-verde "ANMA Hub"** 🚀
 - Registrate (con otro email) desde `https://anma-host.vercel.app/registro` → te debe llegar email **violeta-fucsia "ANMA Regalos"** 🎁
 
 Si recibís el mismo, revisá el código de Registro.jsx — debe estar pasando `allowed_sites: ['hub']` o `['host']` en `signUp.options.data`.
 
 ---
 
-## 🛟 ¿Qué hago si ya pegué el viejo template solo "ANMA Pro"?
+## 🛟 ¿Qué hago si ya pegué el viejo template solo "ANMA Hub"?
 
 **Borrá lo pegado y pegá la versión nueva**. El template anterior no rompe nada (manda emails OK), pero todos los users — incluso los que se registran desde Regalos — reciben branding de Pro.
 

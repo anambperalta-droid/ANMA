@@ -1,5 +1,5 @@
 /**
- * ANMA Pro — Utilidad de Migración Bulk Load v1
+ * ANMA Hub — Utilidad de Migración Bulk Load v1
  * ─────────────────────────────────────────────
  * Lee datos de localStorage (clientes, proveedores, productos, insumos)
  * y los carga en las tablas normalizadas de Supabase usando upsert

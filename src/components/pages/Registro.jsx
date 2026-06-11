@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────
-   ANMA Pro — Vista de Registro /registro
+   ANMA Hub — Vista de Registro /registro
    Google OAuth (prioridad) + Email/Password
    Trial 7 días, acceso inmediato sin mail de confirmación
    (requiere "Confirm email" desactivado en Supabase → Auth > Settings)
@@ -281,7 +281,7 @@ export default function Registro() {
           <div className="rg-brand">
             <div className="rg-logo"><AnmaLogo /></div>
             <div>
-              <div className="rg-brand-name">ANMA Pro</div>
+              <div className="rg-brand-name">ANMA Hub</div>
               <div className="rg-brand-tag">7 días gratis · Sin tarjeta</div>
             </div>
           </div>

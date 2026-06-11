@@ -1345,7 +1345,7 @@ export default function Clientes() {
       {regFormModal && (() => {
         const cfg = config()
         const adminWa = (cfg.wa || '').replace(/\D/g, '')
-        const neg = cfg.businessName || 'ANMA Pro'
+        const neg = cfg.businessName || 'ANMA'
         const intakeUrl = `${window.location.origin}/alta?neg=${encodeURIComponent(neg)}${adminWa ? `&admin=${adminWa}` : ''}`
         const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(intakeUrl)}`
         return (

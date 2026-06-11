@@ -249,9 +249,9 @@ export default function Config() {
       const emailjs = (await import('@emailjs/browser')).default
       await emailjs.send(svc, tpl, {
         to_email: ejsTestEmail.trim(),
-        subject: 'Test de conexión — ANMA Pro',
-        html_body: '<p>✅ EmailJS configurado correctamente en ANMA Pro.</p>',
-        from_name: c.businessName || 'ANMA Pro',
+        subject: 'Test de conexión — ANMA',
+        html_body: '<p>✅ EmailJS configurado correctamente en ANMA.</p>',
+        from_name: c.businessName || 'ANMA',
       }, pub)
       setEjsTestResult('ok')
       updateConfig({ ejsServiceId: svc, ejsTemplateId: tpl, ejsPublicKey: pub, ejsEnabled: true })

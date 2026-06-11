@@ -51,7 +51,7 @@ export default function App() {
       <Routes>
         {/* Rutas públicas sin auth */}
         <Route path="/portal-proveedor" element={<PortalProveedor />} />
-        <Route path="/alta" element={<Alta appName="ANMA Pro" />} />
+        <Route path="/alta" element={<Alta appName="ANMA Hub" />} />
         <Route path="/bienvenida" element={<Bienvenida />} />
         <Route path="/registro" element={authed ? <NavigateToNext /> : <Registro />} />
         <Route path="/login" element={

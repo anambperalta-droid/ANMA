@@ -1,5 +1,5 @@
 /**
- * ANMA Pro — POST /api/mark-paid
+ * ANMA Hub — POST /api/mark-paid
  *
  * Endpoint para que el ADMIN GLOBAL registre un pago manual (transferencia,
  * efectivo, mercado pago link compartido, etc).

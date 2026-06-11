@@ -198,7 +198,7 @@ export default function Onboarding() {
             </>
           ) : (
             <>
-              Empezar a usar ANMA Pro
+              Empezar a usar ANMA
               <span style={{ fontSize: 18, lineHeight: 1 }}>→</span>
             </>
           )}

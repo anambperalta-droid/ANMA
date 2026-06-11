@@ -1,5 +1,5 @@
 /**
- * ANMA Pro — Logger central
+ * ANMA Hub — Logger central
  *
  * En desarrollo: pasa al console nativo con timestamp.
  * En producción: silencia info/log/warn; reporta error a sentry/etc si se configura.

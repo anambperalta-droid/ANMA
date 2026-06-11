@@ -14,7 +14,7 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-export default function Alta({ appName = 'ANMA Pro' }) {
+export default function Alta({ appName = 'ANMA Hub' }) {
   const [params] = useSearchParams()
   const adminWa  = (params.get('admin') || params.get('a') || '').replace(/\D/g, '')
   const negocio  = params.get('neg')   || params.get('n') || appName

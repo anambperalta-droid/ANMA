@@ -21,7 +21,7 @@ const TOUR_KEY = 'anma_welcome_tour_done'
 const STEPS = [
   {
     icon: 'fa-chart-line', color: '#7C3AED',
-    title: '¡Bienvenido a ANMA Pro!',
+    title: '¡Bienvenido a ANMA!',
     body: 'Acá vas a ver la salud completa de tu negocio: ventas, cobros, alertas y estado de pedidos en un solo lugar.',
     cta: 'Próximo',
   },

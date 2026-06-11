@@ -1,5 +1,5 @@
 /**
- * ANMA Pro — POST /api/mp-create-preference
+ * ANMA Hub — POST /api/mp-create-preference
  *
  * Crea una preferencia de pago en Mercado Pago para el "Pago de ingreso" ($120.000)
  * o cuota mensual ($30.000) y devuelve el init_point para redirigir al checkout.
@@ -21,7 +21,7 @@ import { createClient } from '@supabase/supabase-js'
 
 const PRICING = {
   onboarding: { amount: 120000, label: 'Pago de ingreso — Setup llave en mano + 1er mes' },
-  monthly:    { amount:  30000, label: 'Cuota mensual ANMA Pro' },
+  monthly:    { amount:  30000, label: 'Cuota mensual ANMA Hub' },
 }
 
 export default async function handler(req, res) {
@@ -64,14 +64,14 @@ export default async function handler(req, res) {
       items: [{
         id: `anma-${kind}`,
         title: pricing.label,
-        description: 'ANMA Pro — Sistema de gestión de negocios',
+        description: 'ANMA Hub — Sistema de gestión de negocios',
         quantity: 1,
         unit_price: pricing.amount,
         currency_id: 'ARS',
       }],
       payer: userEmail ? { email: userEmail } : undefined,
       external_reference: `${workspaceId}|${kind}`,
-      statement_descriptor: 'ANMA PRO',
+      statement_descriptor: 'ANMA HUB',
       back_urls: {
         success: `${baseUrl}/pago-exitoso`,
         pending: `${baseUrl}/pago-pendiente`,

@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 
 /**
- * Portal público de proveedor (sin auth) — ANMA Pro.
+ * Portal público de proveedor (sin auth) — ANMA Hub.
  * Lee datos serializados desde el query param ?d=BASE64.
  */
 export default function PortalProveedor() {

@@ -1,4 +1,4 @@
-/* ANMA Pro — Service Worker v4
+/* ANMA Hub — Service Worker v4
    Network-first para JS/CSS/HTML (anti cache-stale).
    Stale-while-revalidate para imágenes/fonts.
    Bypass total para Supabase y APIs.

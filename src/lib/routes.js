@@ -1,5 +1,5 @@
 /**
- * ANMA Pro — Route registry + lazy + prefetch.
+ * ANMA Hub — Route registry + lazy + prefetch.
  *
  * Centraliza los lazy imports de las páginas para que:
  *  1. AppShell los use como `lazy(() => loader())`

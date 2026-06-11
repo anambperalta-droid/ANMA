@@ -1,5 +1,5 @@
 /**
- * ANMA Pro — Helper de estado de suscripción.
+ * ANMA Hub — Helper de estado de suscripción.
  *
  * Funciones puras que calculan, a partir de un workspace de Supabase
  * (con las columnas que agregamos en SUPABASE_MP_MIGRATION.sql):

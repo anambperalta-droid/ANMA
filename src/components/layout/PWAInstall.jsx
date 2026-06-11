@@ -117,7 +117,7 @@ export default function PWAInstall() {
 
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', marginBottom: 2, letterSpacing: '-.2px' }}>
-            Instalá ANMA Pro en tu celular
+            Instalá ANMA en tu celular
           </div>
 
           {mode === 'android' && (

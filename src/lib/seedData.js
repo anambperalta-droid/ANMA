@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────
-   ANMA Pro — Init de usuario nuevo (sin datos de demo)
+   ANMA Hub — Init de usuario nuevo (sin datos de demo)
 ───────────────────────────────────────── */
 import { setStorageUser, wCfg, dbW, db, cfg, DEFAULTS, STORAGE_BASE } from './storage'
 

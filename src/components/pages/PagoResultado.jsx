@@ -54,7 +54,7 @@ const VARIANTS = {
       { icon: 'fa-whatsapp', text: 'O escribinos por WhatsApp y lo resolvemos juntos' },
     ],
     primary: { label: 'Probar de nuevo', to: '/activar' },
-    secondary: { label: 'Hablar por WhatsApp', href: 'https://api.whatsapp.com/send?phone=5491169456863&text=¡Hola! Tuve un problema con el pago de ANMA Pro' },
+    secondary: { label: 'Hablar por WhatsApp', href: 'https://api.whatsapp.com/send?phone=5491169456863&text=¡Hola! Tuve un problema con el pago de ANMA Hub' },
   },
 }
 

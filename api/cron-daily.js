@@ -1,5 +1,5 @@
 /**
- * ANMA Pro — GET /api/cron-daily
+ * ANMA Hub — GET /api/cron-daily
  *
  * Vercel Cron Job que se ejecuta 1 vez por día (9 AM UTC = 6 AM ARG).
  * Configurado en vercel.json: { "crons": [{ "path": "/api/cron-daily", "schedule": "0 9 * * *" }] }

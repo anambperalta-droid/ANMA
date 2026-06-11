@@ -7,7 +7,7 @@ import { getBillingStatus, STATUS, MONTHLY_AMOUNT, ONBOARDING_AMOUNT, buildPayme
 import MetricsTab from './admin/MetricsTab'
 
 /**
- * ANMA Pro — Admin global (cross-tenant)
+ * ANMA Hub — Admin global (cross-tenant)
  *
  * Vista profesional para gestionar workspaces, trials y conversiones.
  * 3 tabs principales:
@@ -80,10 +80,10 @@ const fmtDate = (iso) => {
 // Mensaje WhatsApp pre-cargado para contactar prospect
 const waLink = (wsName, kind = 'trial') => {
   const msgs = {
-    trial:    `¡Hola! Soy de ANMA Pro. Vi que estás probando el sistema con ${wsName || 'tu negocio'}. ¿Cómo va? Si necesitás una mano, estoy acá.`,
-    expiring: `¡Hola! Te escribo desde ANMA Pro. Tu prueba está por vencer y no quiero que pierdas tus datos. ¿Charlamos para activar tu plan?`,
-    expired:  `¡Hola! Tu prueba de ANMA Pro terminó hace unos días. Tus datos siguen guardados — si querés retomarlos, en 1 click activamos.`,
-    paid:     `¡Hola! Soy de ANMA Pro. ¿Cómo está yendo todo con el sistema?`,
+    trial:    `¡Hola! Soy de ANMA. Vi que estás probando el sistema con ${wsName || 'tu negocio'}. ¿Cómo va? Si necesitás una mano, estoy acá.`,
+    expiring: `¡Hola! Te escribo desde ANMA. Tu prueba está por vencer y no quiero que pierdas tus datos. ¿Charlamos para activar tu plan?`,
+    expired:  `¡Hola! Tu prueba de ANMA terminó hace unos días. Tus datos siguen guardados — si querés retomarlos, en 1 click activamos.`,
+    paid:     `¡Hola! Soy de ANMA. ¿Cómo está yendo todo con el sistema?`,
   }
   return `https://api.whatsapp.com/send?text=${encodeURIComponent(msgs[kind] || msgs.trial)}`
 }
@@ -171,7 +171,7 @@ export default function Admin() {
     if (!newWs?.id) return
     const wsName = newWs.name || 'Nuevo workspace'
     toast(`🎉 Nuevo signup: ${wsName}`, 'ok')
-    const n = sendBrowserNotification('Nuevo signup en ANMA Pro', {
+    const n = sendBrowserNotification('Nuevo signup en ANMA', {
       body: `${wsName} acaba de registrarse. Mirá tu Admin para contactarlos.`,
       tag: 'anma-signup',
     })
@@ -546,7 +546,7 @@ export default function Admin() {
         <div>
           <h1 style={{ margin: 0, fontSize: 20, fontWeight: 800, letterSpacing: '-.3px' }}>
             <i className="fa fa-shield-halved" style={{ marginRight: 8, color: '#7C3AED' }} />
-            Admin · ANMA Pro
+            Admin · ANMA
           </h1>
           <div style={{ fontSize: 12, color: 'var(--txt3)', marginTop: 2 }}>
             Gestión cross-tenant · {user?.email}

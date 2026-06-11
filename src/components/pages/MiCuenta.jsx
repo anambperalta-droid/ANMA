@@ -204,7 +204,7 @@ export default function MiCuenta() {
       body: '¿Querés cancelar tu suscripción? Vamos a coordinar por WhatsApp para asegurarnos de que no perdés ningún dato. Tus datos quedan guardados 90 días por si querés volver.',
       confirmLabel: 'Hablar con soporte',
     }, () => {
-      const msg = `¡Hola! Quiero cancelar mi suscripción de ANMA Pro${c.businessName ? ` (${c.businessName})` : ''}. ¿Charlamos?`
+      const msg = `¡Hola! Quiero cancelar mi suscripción de ANMA${c.businessName ? ` (${c.businessName})` : ''}. ¿Charlamos?`
       window.open(`https://api.whatsapp.com/send?phone=5491169456863&text=${encodeURIComponent(msg)}`, '_blank')
     })
   }
@@ -306,7 +306,7 @@ export default function MiCuenta() {
           <>
             <div className="mc-row">
               <span className="mc-row-lbl">Plan</span>
-              <span className="mc-row-val">ANMA Pro · Gestión Integral</span>
+              <span className="mc-row-val">ANMA Hub · Gestión Integral</span>
             </div>
             <div className="mc-row">
               <span className="mc-row-lbl">Activación</span>

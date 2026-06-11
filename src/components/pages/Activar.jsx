@@ -5,7 +5,7 @@ import { useData } from '../../context/DataContext'
 import { supabase } from '../../lib/supabase'
 
 /**
- * /activar — Página de activación de plan ANMA Pro.
+ * /activar — Página de activación de plan ANMA Hub.
  *
  * Modelo de pricing único:
  *   - Pago de ingreso: $120.000 ARS (única vez, incluye setup + 1er mes)
@@ -290,7 +290,7 @@ export default function Activar() {
 
         <p style={{ textAlign: 'center', marginTop: 24, fontSize: 12, color: 'var(--txt3)' }}>
           ¿Dudas? Escribinos a{' '}
-          <a href="https://api.whatsapp.com/send?phone=5491169456863&text=¡Hola! Tengo una consulta sobre la activación de ANMA Pro" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', fontWeight: 700, textDecoration: 'none' }}>
+          <a href="https://api.whatsapp.com/send?phone=5491169456863&text=¡Hola! Tengo una consulta sobre la activación de ANMA Hub" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', fontWeight: 700, textDecoration: 'none' }}>
             <i className="fa-brands fa-whatsapp" /> WhatsApp
           </a>
         </p>

@@ -1,5 +1,5 @@
 /**
- * ANMA Pro — Validadores centrales para production-ready
+ * ANMA Hub — Validadores centrales para production-ready
  *
  * Reglas:
  * 1. Toda función retorna { ok: boolean, msg?: string }

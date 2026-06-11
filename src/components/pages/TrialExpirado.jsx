@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────
-   ANMA Pro — Pantalla Trial Expirado
+   ANMA Hub — Pantalla Trial Expirado
    Se muestra cuando el trial de 7 días venció
    y el usuario aún no está suscrito.
 ───────────────────────────────────────── */
@@ -94,7 +94,7 @@ export default function TrialExpirado() {
 
           <h2 className="te-h">Tu período de prueba terminó</h2>
           <p className="te-sub">
-            Los 7 días de prueba de <em>{name}</em> en ANMA Pro llegaron a su fin.
+            Los 7 días de prueba de <em>{name}</em> en ANMA llegaron a su fin.
             Suscribite para seguir gestionando tu negocio sin interrupciones.
           </p>
 

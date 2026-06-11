@@ -1,6 +1,6 @@
 {
-  "name": "ANMA Pro — Gestión de Negocios",
-  "short_name": "ANMA Pro",
+  "name": "ANMA Hub — Gestión de Negocios",
+  "short_name": "ANMA Hub",
   "description": "Pedidos, clientes, productos e insumos en un solo lugar",
   "start_url": "/",
   "scope": "/",

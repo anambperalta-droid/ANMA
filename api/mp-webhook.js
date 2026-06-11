@@ -1,5 +1,5 @@
 /**
- * ANMA Pro — POST /api/mp-webhook
+ * ANMA Hub — POST /api/mp-webhook
  *
  * Recibe notificaciones de Mercado Pago cuando ocurre algo con un pago.
  * MP llama acá con { type, data: { id } } y nosotros consultamos el pago

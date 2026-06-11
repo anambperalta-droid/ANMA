@@ -57,7 +57,7 @@ export default function TrialBanner() {
     ? '¡Último día de prueba!'
     : daysLeft <= 3
       ? `Quedan ${daysLeft} ${dayLabel} de prueba`
-      : `Estás probando ANMA Pro — ${daysLeft} ${dayLabel} restantes`
+      : `Estás probando ANMA — ${daysLeft} ${dayLabel} restantes`
 
   return (
     <div

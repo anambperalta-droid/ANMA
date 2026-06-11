@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────
-   ANMA Pro — Trial engine
+   ANMA Hub — Trial engine
    7 días desde trial_started_at en user_metadata.
    Si el usuario tiene `subscribed: true` o `invited_to_site`
    (operador invitado), el trial no aplica.

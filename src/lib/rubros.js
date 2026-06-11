@@ -1,7 +1,7 @@
 /**
  * rubros.js — Catálogo maestro de rubros comerciales y sus presets
  *
- * Define el universo de rubros válidos para ANMA Pro y, por cada uno, el set
+ * Define el universo de rubros válidos para ANMA Hub y, por cada uno, el set
  * de categorías de productos recomendadas (productCats) que se aplican al
  * completar el onboarding o al resetear desde Configuración.
  *
