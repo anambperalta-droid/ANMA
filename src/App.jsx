@@ -1,17 +1,21 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 import { useData } from './context/DataContext'
 import Login from './components/layout/Login'
 import AppShell from './components/layout/AppShell'
-import Bienvenida from './components/pages/Bienvenida'
-import Registro from './components/pages/Registro'
-import TrialExpirado from './components/pages/TrialExpirado'
-import PortalProveedor from './components/pages/PortalProveedor'
-import Alta from './components/pages/Alta'
-import Onboarding from './components/pages/Onboarding'
-import Activar from './components/pages/Activar'
-import PagoResultado from './components/pages/PagoResultado'
 import ErrorBoundary from './components/layout/ErrorBoundary'
+
+// Páginas secundarias lazy: no forman parte del flujo principal post-login,
+// así el bundle inicial solo carga Login + AppShell.
+const Bienvenida      = lazy(() => import('./components/pages/Bienvenida'))
+const Registro        = lazy(() => import('./components/pages/Registro'))
+const TrialExpirado   = lazy(() => import('./components/pages/TrialExpirado'))
+const PortalProveedor = lazy(() => import('./components/pages/PortalProveedor'))
+const Alta            = lazy(() => import('./components/pages/Alta'))
+const Onboarding      = lazy(() => import('./components/pages/Onboarding'))
+const Activar         = lazy(() => import('./components/pages/Activar'))
+const PagoResultado   = lazy(() => import('./components/pages/PagoResultado'))
 
 // Si el user ya está autenticado y la URL tenía `?next=/algo`, redirigimos ahí
 // en vez de tirarlo siempre a `/`. Sirve para el flow: /activar → /login?next=/activar
@@ -43,6 +47,7 @@ export default function App() {
 
   return (
     <ErrorBoundary>
+      <Suspense fallback={<div className="sk sk-kpi" style={{ height: '100vh' }} />}>
       <Routes>
         {/* Rutas públicas sin auth */}
         <Route path="/portal-proveedor" element={<PortalProveedor />} />
@@ -77,6 +82,7 @@ export default function App() {
           <AppShell />
         } />
       </Routes>
+      </Suspense>
     </ErrorBoundary>
   )
 }

@@ -15,7 +15,7 @@ const emptyItem = () => ({ name: '', variant: '', qty: 1, costUnit: '', priceUni
    posición fixed para no quedar cortado por overflow del padre). Filtra
    en vivo mientras se escribe. Navegación con teclado (↑↓ Enter Esc).
    Se cierra al perder foco o seleccionar un producto. */
-function ProductAutocomplete({ value, products, onChangeText, onPick, placeholder, style, inputStyle, formatLine }) {
+function ProductAutocomplete({ value, products, onChangeText, onPick, placeholder, style, inputStyle, inputClassName, formatLine }) {
   const [open, setOpen] = useState(false)
   const [highlight, setHighlight] = useState(0)
   const [rect, setRect] = useState(null)
@@ -92,6 +92,7 @@ function ProductAutocomplete({ value, products, onChangeText, onPick, placeholde
         onKeyDown={handleKey}
         placeholder={placeholder || 'Buscar producto...'}
         autoComplete="off"
+        className={inputClassName}
         style={{ width: '100%', ...inputStyle }}
       />
       {open && rect && filtered.length > 0 && createPortal(
@@ -1487,6 +1488,7 @@ export default function Presupuesto() {
                                 }))
                               }}
                               placeholder="Nombre del producto"
+                              inputClassName="mic-name-input"
                               inputStyle={{ width: '100%' }}
                             />
                           </div>
