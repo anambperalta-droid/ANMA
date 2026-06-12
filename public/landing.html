@@ -7,6 +7,10 @@
 <meta name="description" content="Gestioná clientes, pedidos y stock desde una sola pantalla. ANMA Hub te ayuda a mantener una comunicación cercana con tus clientes y a trabajar sin caos operativo. Probá 7 días gratis.">
 <meta property="og:title" content="ANMA Hub — El centro de control para tu negocio">
 <script>
+/* Dominio canónico: el alias vercel.app redirige a anmahub.com (página estática, sin datos locales) */
+if (location.hostname === 'anma-hub.vercel.app') location.replace('https://anmahub.com' + location.pathname + location.search)
+</script>
+<script>
 /* Captura first-touch de canal (UTM + referrer) ANTES de que el visitor
    navegue a /registro. Se ejecuta solo si todavía no capturamos en la sesión. */
 (function(){try{

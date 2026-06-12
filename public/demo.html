@@ -7,6 +7,10 @@
 <meta name="description" content="Demo interactivo de ANMA Hub con datos ficticios. Explorá todas las secciones del sistema de distribución.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script>
+/* Dominio canónico: el alias vercel.app redirige a anmahub.com (página estática, sin datos locales) */
+if (location.hostname === 'anma-hub.vercel.app') location.replace('https://anmahub.com' + location.pathname + location.search)
+</script>
+<script>
 /* First-touch tracking (mismo script que landing.html) */
 (function(){try{
   if (sessionStorage.getItem('anma_acquisition')) return;

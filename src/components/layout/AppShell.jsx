@@ -18,6 +18,7 @@ import WelcomeTour from './WelcomeTour'
 import FirstBudgetCelebration from './FirstBudgetCelebration'
 import TrialReminderModal from './TrialReminderModal'
 import RouteFallback from './RouteFallback'
+import { flushSync as flushCloudSync } from '../../lib/sync'
 
 // Code splitting + prefetch caching centralizados en lib/routes.js
 import {
@@ -300,6 +301,30 @@ function AppShellInner() {
     const numFocus = (e) => { if (e.target.type === 'number') e.target.select() }
     document.addEventListener('focus', numFocus, true)
     return () => document.removeEventListener('focus', numFocus, true)
+  }, [])
+
+  // ── Migración de dominio: anma-hub.vercel.app → anmahub.com ──────────────
+  // Redirección INTELIGENTE: primero esperamos que la sync suba los datos
+  // locales a la nube (evento anma:cloud-saved) y recién ahí migramos.
+  // Una redirección bruta a nivel Vercel perdería los datos de localStorage
+  // de usuarios que nunca visitaron el dominio nuevo (es por-origen).
+  useEffect(() => {
+    if (window.location.hostname !== 'anma-hub.vercel.app') return
+    let done = false
+    const go = () => {
+      if (done) return
+      done = true
+      window.location.replace('https://anmahub.com' + window.location.pathname + window.location.search)
+    }
+    // Push confirmado en la nube → migrar (margen de 500ms por otras escrituras)
+    const onSaved = () => setTimeout(go, 500)
+    window.addEventListener('anma:cloud-saved', onSaved)
+    // A los 4s forzamos un push completo (por si el pull inicial no lo disparó)
+    const t1 = setTimeout(() => { try { flushCloudSync() } catch { /* ignorar */ } }, 4000)
+    // Red caída / sync trabada: migrar igual a los 15s (los datos locales
+    // quedan intactos en este origen y se pueden re-sincronizar volviendo)
+    const t2 = setTimeout(go, 15000)
+    return () => { window.removeEventListener('anma:cloud-saved', onSaved); clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
   // Mobile: cerrar el teclado virtual al scrollear con el dedo.
