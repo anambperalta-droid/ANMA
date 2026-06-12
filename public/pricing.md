@@ -16,5 +16,5 @@
 - Sin contratos de permanencia: se cancela cuando el cliente quiera
 
 ## Contacto
-- Registro: https://anma-hub.vercel.app/registro
-- Demo sin registro: https://anma-hub.vercel.app/demo.html
+- Registro: https://anmahub.com/registro
+- Demo sin registro: https://anmahub.com/demo.html

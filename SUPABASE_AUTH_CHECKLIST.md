@@ -8,20 +8,22 @@ La causa raíz suele ser una de estas 3 — entrá al **Supabase Dashboard del p
 
 ## 1️⃣ Redirect URLs — Authentication → URL Configuration
 
-**Site URL** (canónica, una sola):
+**Site URL** (canónica, una sola — dominio propio desde 12/06/2026):
 ```
-https://anma-hub.vercel.app
+https://anmahub.com
 ```
 
 **Redirect URLs** (todos los dominios desde los que puede llegar un email/OAuth):
 ```
+https://anmahub.com/**
+https://www.anmahub.com/**
 https://anma-hub.vercel.app/**
 https://anma-host.vercel.app/**
 http://localhost:5173/**
 http://localhost:5174/**
 ```
 
-> ⚠️ Si tenés un dominio custom (ej. `anmapro.com.ar`), agregalo TAMBIÉN con `/**` al final. Sin esto, Google OAuth y los emails fallan con "link inválido".
+> ⚠️ Sin el dominio en esta lista, Google OAuth y los emails fallan con "link inválido". El alias `anma-hub.vercel.app` se mantiene porque sigue sirviendo la app.
 
 ---
 
@@ -32,6 +34,8 @@ Habilitado. Client ID + Client Secret pegados desde Google Cloud Console.
 En **Google Cloud Console → APIs & Services → Credentials → OAuth 2.0 Client**:
 - **Authorized JavaScript origins**:
   ```
+  https://anmahub.com
+  https://www.anmahub.com
   https://anma-hub.vercel.app
   https://anma-host.vercel.app
   https://[tu-proyecto].supabase.co

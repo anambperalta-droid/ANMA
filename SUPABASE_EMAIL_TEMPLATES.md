@@ -273,9 +273,11 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
 ### 3. URL Configuration (CRÍTICO para que los links funcionen)
 En el sidebar de Authentication → **URL Configuration**:
 
-- **Site URL**: dejá `https://anma-hub.vercel.app` (es el default)
+- **Site URL**: `https://anmahub.com` (dominio propio desde 12/06/2026)
 - **Redirect URLs** (Add URL para cada uno):
-  - `https://anma-hub.vercel.app/**`
+  - `https://anmahub.com/**`
+  - `https://www.anmahub.com/**`
+  - `https://anma-hub.vercel.app/**` (alias legacy, mantener)
   - `https://anma-host.vercel.app/**`
   - `http://localhost:5173/**` (para dev local)
   - `http://localhost:5174/**` (si corrés ambas apps en paralelo)

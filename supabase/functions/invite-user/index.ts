@@ -2,7 +2,9 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3'
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 
 const ALLOWED_REDIRECTS = new Set([
-  'https://anma-hub.vercel.app/bienvenida',
+  'https://anmahub.com/bienvenida',
+  'https://www.anmahub.com/bienvenida',
+  'https://anma-hub.vercel.app/bienvenida', // alias legacy, sigue activo
   'https://anma-host.vercel.app/bienvenida',
   'http://localhost:5173/bienvenida',
   'http://localhost:5174/bienvenida',

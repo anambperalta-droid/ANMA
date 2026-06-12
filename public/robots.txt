@@ -27,4 +27,4 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-Sitemap: https://anma-hub.vercel.app/sitemap.xml
+Sitemap: https://anmahub.com/sitemap.xml

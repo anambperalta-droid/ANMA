@@ -19,7 +19,7 @@
  *   - Idempotente: si el mismo payment_id llega 2 veces, no duplicamos
  *
  * NOTA: registralo en Mercado Pago Developers → Webhooks:
- *   URL: https://anma-hub.vercel.app/api/mp-webhook
+ *   URL: https://anmahub.com/api/mp-webhook
  *   Eventos: Pagos
  */
 

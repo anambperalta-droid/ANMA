@@ -17,10 +17,10 @@ Emprendedores y pymes de Argentina que hoy gestionan con Excel, cuadernos y chat
 
 ## Páginas clave
 
-- [Landing](https://anma-hub.vercel.app/landing.html): qué es ANMA Hub, para quién, precios y preguntas frecuentes.
-- [Demo interactiva](https://anma-hub.vercel.app/demo.html): recorrido por el sistema con datos ficticios, sin registro.
-- [Registro](https://anma-hub.vercel.app/registro): prueba gratuita de 7 días, sin tarjeta de crédito.
-- [Precios](https://anma-hub.vercel.app/pricing.md): planes en formato legible por máquinas.
+- [Landing](https://anmahub.com/landing.html): qué es ANMA Hub, para quién, precios y preguntas frecuentes.
+- [Demo interactiva](https://anmahub.com/demo.html): recorrido por el sistema con datos ficticios, sin registro.
+- [Registro](https://anmahub.com/registro): prueba gratuita de 7 días, sin tarjeta de crédito.
+- [Precios](https://anmahub.com/pricing.md): planes en formato legible por máquinas.
 
 ## Datos
 

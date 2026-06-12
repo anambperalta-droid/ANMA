@@ -170,7 +170,7 @@ export default function Registro() {
     const host = window.location.hostname
     const base = (host === 'localhost' || host === '127.0.0.1')
       ? window.location.origin
-      : 'https://anma-hub.vercel.app'
+      : 'https://anmahub.com'
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {

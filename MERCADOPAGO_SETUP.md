@@ -35,7 +35,7 @@ Si devuelve cualquier cosa (incluso vacío), está OK.
 | Key | Value | Descripción |
 |---|---|---|
 | `MP_ACCESS_TOKEN` | `TEST-881124199003012-060823-...` (el de prueba) | Para empezar. Luego cambiás al de producción cuando estés listo |
-| `APP_BASE_URL` | `https://anma-hub.vercel.app` | URL base de tu app |
+| `APP_BASE_URL` | `https://anmahub.com` | URL base de tu app |
 | `SUPABASE_SERVICE_ROLE_KEY` | (copialo de Supabase) | Para que el webhook actualice DB con permisos elevados |
 
 ### Cómo conseguir `SUPABASE_SERVICE_ROLE_KEY`:
@@ -55,8 +55,8 @@ Si devuelve cualquier cosa (incluso vacío), está OK.
 2. Sidebar → **Webhooks** (o **Notificaciones** → **Webhooks**)
 3. Click **Configurar notificaciones** o **+ Crear webhook**
 4. Completá:
-   - **URL de producción**: `https://anma-hub.vercel.app/api/mp-webhook`
-   - **URL de prueba**: `https://anma-hub.vercel.app/api/mp-webhook` (la misma)
+   - **URL de producción**: `https://anmahub.com/api/mp-webhook`
+   - **URL de prueba**: `https://anmahub.com/api/mp-webhook` (la misma)
    - **Eventos a suscribir**: ✅ **Pagos** (payment)
 5. Click **Guardar**
 6. MP te muestra una **clave secreta** — pegala como `MP_WEBHOOK_SECRET` en Vercel (opcional pero recomendado para validar la firma del webhook)
@@ -87,7 +87,7 @@ DNI: 12345678
 ### Flow de prueba completo:
 
 1. **Logueate** en tu app con un user de prueba (registrate uno fresh si querés)
-2. Andá a `https://anma-hub.vercel.app/activar`
+2. Andá a `https://anmahub.com/activar`
 3. Click **"Pagar $120.000 con Mercado Pago"**
 4. Te lleva a MP — pagá con la **tarjeta aprobada** y la **cuenta de comprador de prueba**
 5. MP redirige a `/pago-exitoso`
@@ -136,7 +136,7 @@ Si querés mantener ambos ambientes:
 → El user no tiene un workspace creado todavía. Esto pasa si nunca corrió `injectSeedData`. Resolvelo con un signup limpio o creá el workspace manual en Supabase.
 
 ### El webhook nunca llega
-→ Verificá la URL en MP Developers (debe ser exactamente `https://anma-hub.vercel.app/api/mp-webhook`).
+→ Verificá la URL en MP Developers (debe ser exactamente `https://anmahub.com/api/mp-webhook`).
 → Revisá los logs de Vercel: Deployments → Latest → Functions → mp-webhook
 
 ### El pago se aprobó pero el workspace no se actualizó

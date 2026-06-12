@@ -40,7 +40,7 @@ function inferChannel({ source, medium, referrer }) {
     try {
       const host = new URL(referrer).hostname.replace('www.', '')
       // No contar la propia app como referrer
-      if (host.includes('anma-hub.vercel.app') || host.includes('anma-host.vercel.app')) return null
+      if (host.includes('anmahub.com') || host.includes('anma-hub.vercel.app') || host.includes('anma-host.vercel.app')) return null
       return host    // ej. 'reddit.com'
     } catch { /* ignorar URL inválida */ }
   }

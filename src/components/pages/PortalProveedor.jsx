@@ -307,7 +307,7 @@ export default function PortalProveedor() {
           <span style={S.footDot} />
           <span>Información de solo lectura</span>
           <span style={S.footDot} />
-          <a href="https://anma-hub.vercel.app" style={S.footLink}>¿Querés algo así para tu negocio?</a>
+          <a href="https://anmahub.com" style={S.footLink}>¿Querés algo así para tu negocio?</a>
         </div>
       </div>
     </div>

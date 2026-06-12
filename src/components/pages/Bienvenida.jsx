@@ -311,10 +311,12 @@ export default function Bienvenida() {
     // simplemente mandamos al dashboard.
     const siteMeta = updated?.user?.user_metadata?.invited_to_site
     const currentHost = window.location.hostname
-    const hubHost = 'anma-hub.vercel.app'
+    // El hub vive en anmahub.com (dominio propio) pero anma-hub.vercel.app
+    // sigue siendo un alias válido — ambos cuentan como "ya estoy en el hub".
+    const hubHosts = ['anmahub.com', 'www.anmahub.com', 'anma-hub.vercel.app']
     const hostHost = 'anma-host.vercel.app'
-    if (siteMeta === 'hub' && currentHost !== hubHost && currentHost !== 'localhost') {
-      window.location.replace(`https://${hubHost}/`)
+    if (siteMeta === 'hub' && !hubHosts.includes(currentHost) && currentHost !== 'localhost') {
+      window.location.replace('https://anmahub.com/')
       return
     }
     if (siteMeta === 'host' && currentHost !== hostHost && currentHost !== 'localhost') {
