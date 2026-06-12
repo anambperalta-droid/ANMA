@@ -11,37 +11,43 @@
  *   - storage.js (fallback genérico cuando aún no hay rubro)
  */
 
+// `fa` = ícono FontAwesome (UI profesional: onboarding, selects).
+// `icon` emoji se mantiene por compat con consumidores legacy (Sidebar, Catálogo).
 export const RUBROS = [
   {
     val: 'indumentaria',
     icon: '👔',
+    fa: 'fa-shirt',
     label: 'Indumentaria',
     sub: 'Ropa, calzado, accesorios',
   },
   {
     val: 'tecnologia',
     icon: '🔌',
+    fa: 'fa-laptop',
     label: 'Tecnología',
     sub: 'Electrónica, gadgets, insumos',
   },
   {
     val: 'decoracion',
     icon: '🏺',
+    fa: 'fa-couch',
     label: 'Decoración',
     sub: 'Hogar, deco, regalos',
   },
   {
     val: 'almacen',
     icon: '🧀',
+    fa: 'fa-store',
     label: 'Almacén',
     sub: 'Comestibles, bebidas, dietética',
   },
 ]
 
 export const TIPOS_VENTA = [
-  { val: 'minorista', icon: '🛍️', label: 'Minorista',     sub: 'Vendo al consumidor final' },
-  { val: 'mayorista', icon: '📦', label: 'Mayorista',     sub: 'Vendo a otros comercios' },
-  { val: 'ambos',     icon: '🔄', label: 'Ambos Canales', sub: 'Combino retail y B2B' },
+  { val: 'minorista', icon: '🛍️', fa: 'fa-bag-shopping',  label: 'Minorista',     sub: 'Vendo al consumidor final' },
+  { val: 'mayorista', icon: '📦', fa: 'fa-boxes-stacked', label: 'Mayorista',     sub: 'Vendo a otros comercios' },
+  { val: 'ambos',     icon: '🔄', fa: 'fa-arrows-rotate', label: 'Ambos canales', sub: 'Combino retail y B2B' },
 ]
 
 /**

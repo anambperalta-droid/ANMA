@@ -62,7 +62,7 @@ export default function Onboarding() {
         patch.subtitle = getSuggestedSubtitle(rubro)
       }
       updateConfig(patch)
-      toast(`¡Listo! Bienvenido a ${businessName.trim()} 🎉`, 'ok')
+      toast(`Perfil guardado. Bienvenido, ${businessName.trim()}.`, 'ok')
       nav('/', { replace: true })
     } catch (e) {
       toast('No pudimos guardar. Intentá de nuevo.', 'er')
@@ -128,7 +128,8 @@ export default function Onboarding() {
     <div style={s.page}>
       <div style={s.card}>
         <div style={s.badge}>
-          <span>✨</span> Paso 1 de 3
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#7C3AED', display: 'inline-block' }} />
+          Perfil comercial · Paso 1 de 3
         </div>
         <h1 style={s.h1}>Contanos sobre tu negocio</h1>
         <p style={s.sub}>
@@ -159,7 +160,7 @@ export default function Onboarding() {
             {RUBROS.map(r => (
               <SelectCard
                 key={r.val}
-                icon={r.icon}
+                fa={r.fa}
                 label={r.label}
                 sub={r.sub}
                 selected={rubro === r.val}
@@ -176,7 +177,7 @@ export default function Onboarding() {
             {TIPOS_VENTA.map(t => (
               <SelectCard
                 key={t.val}
-                icon={t.icon}
+                fa={t.fa}
                 label={t.label}
                 sub={t.sub}
                 selected={tipoVenta === t.val}
@@ -216,33 +217,44 @@ export default function Onboarding() {
   )
 }
 
-/* ─── Sub-componente: card de selección única ─── */
-function SelectCard({ icon, label, sub, selected, onClick }) {
+/* ─── Sub-componente: card de selección única ───
+   Ícono FontAwesome en chip sobrio (mismo lenguaje visual que la landing)
+   en lugar de emoji — transmite producto profesional sin perder calidez. */
+function SelectCard({ fa, label, sub, selected, onClick }) {
   const base = {
     border: `1.5px solid ${selected ? '#7C3AED' : '#E5E7EB'}`,
-    background: selected ? 'linear-gradient(135deg,#F5F3FF,#FDF2F8)' : '#fff',
+    background: selected ? '#F5F3FF' : '#fff',
     borderRadius: 12, padding: '14px 12px',
     cursor: 'pointer', fontFamily: 'inherit',
-    display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start',
+    display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'flex-start',
     transition: 'all .15s', textAlign: 'left',
-    boxShadow: selected ? '0 4px 14px rgba(124,58,237,.18), 0 0 0 4px rgba(124,58,237,.06)' : '0 1px 2px rgba(0,0,0,.03)',
-    position: 'relative', minHeight: 86,
+    boxShadow: selected ? '0 4px 14px rgba(124,58,237,.14), 0 0 0 3px rgba(124,58,237,.07)' : '0 1px 2px rgba(0,0,0,.03)',
+    position: 'relative', minHeight: 96,
   }
   return (
     <button type="button" onClick={onClick} style={base}
       onMouseEnter={e => { if (!selected) e.currentTarget.style.borderColor = '#C4B5FD' }}
       onMouseLeave={e => { if (!selected) e.currentTarget.style.borderColor = '#E5E7EB' }}>
-      <div style={{ fontSize: 24, lineHeight: 1, marginBottom: 2 }}>{icon}</div>
-      <div style={{ fontSize: 13.5, fontWeight: 800, color: selected ? '#7C3AED' : '#1E1B4B' }}>{label}</div>
+      <div style={{
+        width: 34, height: 34, borderRadius: 10,
+        background: selected ? 'linear-gradient(135deg,#7C3AED,#9D5CF5)' : 'linear-gradient(135deg,#F5F3FF,#EDE9FE)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        marginBottom: 3, transition: 'background .15s',
+        boxShadow: selected ? '0 3px 10px rgba(124,58,237,.3)' : 'none',
+      }}>
+        <i className={`fa-solid ${fa}`} style={{ fontSize: 14, color: selected ? '#fff' : '#7C3AED' }} />
+      </div>
+      <div style={{ fontSize: 13.5, fontWeight: 800, color: selected ? '#6D28D9' : '#1E1B4B', letterSpacing: '-.1px' }}>{label}</div>
       <div style={{ fontSize: 10.5, color: '#6B7280', lineHeight: 1.35 }}>{sub}</div>
       {selected && (
         <div style={{
-          position: 'absolute', top: 8, right: 8,
+          position: 'absolute', top: 9, right: 9,
           width: 18, height: 18, borderRadius: '50%',
           background: '#7C3AED', color: '#fff',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 10, fontWeight: 800,
-        }}>✓</div>
+        }}>
+          <i className="fa-solid fa-check" style={{ fontSize: 9 }} />
+        </div>
       )}
     </button>
   )

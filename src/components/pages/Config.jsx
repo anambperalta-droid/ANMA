@@ -740,7 +740,7 @@ export default function Config() {
                     <select value={rubro} onChange={e => setRubro(e.target.value)} style={{ borderRadius: 12 }}>
                       <option value="">— sin definir —</option>
                       {RUBROS.map(r => (
-                        <option key={r.val} value={r.val}>{r.icon} {r.label}</option>
+                        <option key={r.val} value={r.val}>{r.label}</option>
                       ))}
                     </select>
                   </div>
@@ -748,7 +748,7 @@ export default function Config() {
                     <label>Tipo de venta</label>
                     <select value={tipoVenta} onChange={e => setTipoVenta(e.target.value)} style={{ borderRadius: 12 }}>
                       {TIPOS_VENTA.map(t => (
-                        <option key={t.val} value={t.val}>{t.icon} {t.label}</option>
+                        <option key={t.val} value={t.val}>{t.label}</option>
                       ))}
                     </select>
                     <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 4, fontStyle: 'italic' }}>

@@ -60,9 +60,9 @@ export default function Sidebar({ open, onClose, collapsed }) {
           const tipoMeta  = TIPOS_VENTA.find(t => t.val === c.tipoVenta)
           return (
             <div className="sb-profile-chip" title={`${rubroMeta?.label || ''}${tipoMeta ? ' · ' + tipoMeta.label : ''}`}>
-              {rubroMeta && <span><span className="sb-chip-ico">{rubroMeta.icon}</span> {rubroMeta.label}</span>}
+              {rubroMeta && <span><i className={`fa-solid ${rubroMeta.fa} sb-chip-ico`} style={{ fontSize: 10, opacity: .8 }} /> {rubroMeta.label}</span>}
               {rubroMeta && tipoMeta && <span className="sb-chip-sep">·</span>}
-              {tipoMeta && <span><span className="sb-chip-ico">{tipoMeta.icon}</span> {tipoMeta.label}</span>}
+              {tipoMeta && <span><i className={`fa-solid ${tipoMeta.fa} sb-chip-ico`} style={{ fontSize: 10, opacity: .8 }} /> {tipoMeta.label}</span>}
             </div>
           )
         })()}
