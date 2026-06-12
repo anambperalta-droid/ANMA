@@ -1,16 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#8B5CF6"/>
-      <stop offset=".55" stop-color="#7C3AED"/>
-      <stop offset="1" stop-color="#4C1D95"/>
+      <stop offset="0" stop-color="#2E1065"/>
+      <stop offset=".55" stop-color="#5B21B6"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="node" x1="26" y1="8" x2="38" y2="21" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#059669"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
-  <!-- Monograma A geométrico -->
-  <path fill-rule="evenodd" fill="#ffffff"
-    d="M32 13 L49.5 51 H41.2 L37.6 42.6 H26.4 L22.8 51 H14.5 Z
-       M32 25.8 L28.4 35.6 h7.2 Z"/>
-  <!-- Nodo hub (acento esmeralda de la marca) -->
-  <circle cx="46.5" cy="16.5" r="5.5" fill="#10B981" stroke="#ffffff" stroke-width="2.4"/>
+  <!-- Fondo: violeta profundo con luz diagonal -->
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <!-- Destello superior sutil (da volumen sin ruido) -->
+  <path d="M0 0h64v20c-21 9-43 9-64 0z" fill="#ffffff" opacity=".07"/>
+  <!-- Monograma A: trazos gruesos, remates redondeados -->
+  <path d="M17.5 49 32 16.5 46.5 49" fill="none" stroke="#ffffff" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Barra de la A: conector flotante entre las piernas (hub) -->
+  <line x1="24.4" y1="39.5" x2="39.6" y2="39.5" stroke="#ffffff" stroke-width="5.4" stroke-linecap="round" opacity=".95"/>
+  <!-- Faro esmeralda en la cima: la señal encendida -->
+  <circle cx="32" cy="14.5" r="6" fill="url(#node)" stroke="#ffffff" stroke-width="2.6"/>
 </svg>

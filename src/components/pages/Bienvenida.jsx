@@ -154,15 +154,29 @@ export default function Bienvenida() {
         const { error: codeErr } = await supabase.auth.exchangeCodeForSession(code)
         if (codeErr) {
           logAuth('pkce-error', codeErr)
-          // Carrera: el auto-detect pudo terminar mientras tanto. Rechequear
-          // (con un pequeño margen) antes de declarar el enlace inválido.
-          await new Promise(r => setTimeout(r, 600))
-          const { data: { session: postSession } } = await supabase.auth.getSession()
-          if (postSession) {
-            logAuth('pkce-race-recovered', { user: postSession.user?.email })
+          // Carrera: el auto-detect (detectSessionInUrl) pudo estar canjeando el
+          // código en paralelo. Polleamos la sesión hasta 3.5s antes de declarar
+          // el enlace inválido — en redes lentas 600ms no alcanzaban.
+          let recovered = null
+          for (let i = 0; i < 7 && !recovered; i++) {
+            await new Promise(r => setTimeout(r, 500))
+            const { data: { session: postSession } } = await supabase.auth.getSession()
+            if (postSession) recovered = postSession
+          }
+          if (recovered) {
+            logAuth('pkce-race-recovered', { user: recovered.user?.email })
             window.history.replaceState(null, '', window.location.pathname)
             if (await finishAuth()) return
             setSessionReady(true); setLoading(false); return
+          }
+          // Caso origen cruzado: el flujo OAuth empezó en otro dominio (el
+          // code_verifier vive allá). Reintentar acá mismo lo resuelve.
+          const m = String(codeErr.message || '').toLowerCase()
+          if (m.includes('verifier')) {
+            logAuth('pkce-cross-origin', null)
+            setError('El inicio de sesión empezó desde otra dirección de ANMA. Tocá "Volver a Ingresar" y probá de nuevo acá — va a funcionar.')
+            setLoading(false)
+            return
           }
           setError('El enlace expiró o ya fue usado. Pedí uno nuevo desde Ingresar.')
           setLoading(false)

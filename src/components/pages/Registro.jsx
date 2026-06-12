@@ -11,11 +11,13 @@ import { supabase } from '../../lib/supabase'
 import { injectSeedData } from '../../lib/seedData'
 import { getAcquisitionData, persistAcquisitionAcrossOAuth, clearAcquisitionData } from '../../lib/acquisitionTracking'
 
-// Monograma ANMA Hub: "A" geométrica + nodo hub esmeralda (mismo diseño que favicon.svg)
+// Monograma ANMA Hub "A-faro": trazos redondeados + barra conectora +
+// nodo esmeralda encendido en la cima (mismo diseño que favicon.svg)
 const AnmaLogo = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 64 64" fill="none">
-    <path fill="#fff" fillRule="evenodd" d="M32 13 L49.5 51 H41.2 L37.6 42.6 H26.4 L22.8 51 H14.5 Z M32 25.8 L28.4 35.6 h7.2 Z"/>
-    <circle cx="46.5" cy="16.5" r="5.5" fill="#10B981" stroke="#fff" strokeWidth="2.4"/>
+  <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 64 64" fill="none">
+    <path d="M17.5 49 32 16.5 46.5 49" stroke="#fff" strokeWidth="6.6" strokeLinecap="round" strokeLinejoin="round"/>
+    <line x1="24.4" y1="39.5" x2="39.6" y2="39.5" stroke="#fff" strokeWidth="5.4" strokeLinecap="round" opacity=".95"/>
+    <circle cx="32" cy="14.5" r="6" fill="#10B981" stroke="#fff" strokeWidth="2.6"/>
   </svg>
 )
 
@@ -167,14 +169,14 @@ export default function Registro() {
     // Después del callback en /bienvenida la consumimos y la asociamos al WS.
     persistAcquisitionAcrossOAuth()
 
-    const host = window.location.hostname
-    const base = (host === 'localhost' || host === '127.0.0.1')
-      ? window.location.origin
-      : 'https://anmahub.com'
+    // PKCE: el code_verifier vive en el localStorage del ORIGEN que inicia el
+    // flujo. El redirect DEBE volver al mismo origen — un redirect cross-domain
+    // (ej. iniciar en anma-hub.vercel.app y volver a anmahub.com) deja el
+    // verifier huérfano y el exchange falla con "enlace no válido".
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${base}/bienvenida`,
+        redirectTo: `${window.location.origin}/bienvenida`,
         queryParams: { access_type: 'offline', prompt: 'select_account' },
       },
     })
