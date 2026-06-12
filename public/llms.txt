@@ -22,6 +22,11 @@ Emprendedores y pymes de Argentina que hoy gestionan con Excel, cuadernos y chat
 - [Registro](https://anmahub.com/registro): prueba gratuita de 7 días, sin tarjeta de crédito.
 - [Precios](https://anmahub.com/pricing.md): planes en formato legible por máquinas.
 
+## Recursos y guías
+
+- [Excel vs. sistema de gestión](https://anmahub.com/recursos/excel-vs-sistema-de-gestion.html): comparación honesta — cuándo conviene cada uno, tabla de criterios, señales de que la planilla cuesta plata.
+- [Control de stock para tiendas de ropa](https://anmahub.com/recursos/control-de-stock-tienda-de-ropa.html): método de 4 reglas para talles y colores, stock mínimo, señas y micro-recuentos.
+
 ## Datos
 
 - Idioma: español (Argentina). Moneda: ARS.

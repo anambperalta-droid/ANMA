@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cómo controlar el stock de una tienda de ropa (talles y colores sin caos) | ANMA Hub</title>
+<meta name="description" content="Guía práctica para controlar el stock de una tienda de indumentaria: cómo organizar talles y colores, evitar vender lo que no tenés, manejar señas y saber qué reponer. Método paso a paso.">
+<link rel="canonical" href="https://anmahub.com/recursos/control-de-stock-tienda-de-ropa.html">
+<meta property="og:title" content="Cómo controlar el stock de una tienda de ropa sin caos">
+<meta property="og:description" content="Talles, colores, señas y reposición: el método paso a paso para tiendas de indumentaria.">
+<meta property="og:url" content="https://anmahub.com/recursos/control-de-stock-tienda-de-ropa.html">
+<meta property="og:image" content="https://anmahub.com/og-image.png">
+<meta property="og:type" content="article">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Cómo controlar el stock de una tienda de ropa (talles y colores sin caos)","description":"Guía práctica de control de stock para tiendas de indumentaria en Argentina: variantes, señas, reposición y errores comunes.","datePublished":"2026-06-12","dateModified":"2026-06-12","inLanguage":"es-AR","author":{"@type":"Organization","name":"ANMA Hub","url":"https://anmahub.com"},"publisher":{"@type":"Organization","name":"ANMA Hub"},"mainEntityOfPage":"https://anmahub.com/recursos/control-de-stock-tienda-de-ropa.html"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"¿Cómo se organiza el stock de ropa con talles y colores?","acceptedAnswer":{"@type":"Answer","text":"La regla es: un producto, muchas variantes. La remera es UN producto; cada combinación de talle y color es una variante con su propio stock. Organizarlo como productos separados (Remera S Negra, Remera M Negra...) multiplica el catálogo y garantiza errores. La unidad que se cuenta y se repone es la variante, no el producto."}},
+{"@type":"Question","name":"¿Cada cuánto conviene hacer recuento de stock en una tienda de ropa?","acceptedAnswer":{"@type":"Answer","text":"Un recuento completo por temporada (2 veces al año) y micro-recuentos semanales de los 10-15 productos que más rotan. El recuento anual gigante de los manuales no funciona en indumentaria: para cuando terminás, la temporada cambió."}},
+{"@type":"Question","name":"¿Cómo evitar vender ropa que ya no hay en stock?","acceptedAnswer":{"@type":"Answer","text":"El stock tiene que descontarse en el momento exacto de la venta o la seña — no al final del día ni el domingo. Si el registro es manual y diferido, siempre va a existir una ventana donde dos clientes compran la última prenda. La seña debe congelar stock igual que una venta."}},
+{"@type":"Question","name":"¿Qué es el stock mínimo y cómo se calcula en indumentaria?","acceptedAnswer":{"@type":"Answer","text":"Es la cantidad que dispara la reposición. Cálculo práctico: ventas semanales promedio de esa variante × semanas que tarda tu proveedor en entregar + 1 semana de margen. Si vendés 3 remeras M negras por semana y el proveedor tarda 2 semanas, tu mínimo es 9."}}
+]}
+</script>
+<style>
+  :root{--brand:#7C3AED;--txt:#1E1B4B;--txt2:#475569;--txt3:#64748b;--border:#e5e7eb;--bg:#fff}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--txt2);background:var(--bg);line-height:1.75;font-size:16.5px}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);z-index:10}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--txt);text-decoration:none;font-size:16px}
+  .logo img{width:30px;height:30px;border-radius:8px}
+  .nav a.cta{background:var(--brand);color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:9px}
+  article{max-width:760px;margin:0 auto;padding:48px 22px 64px}
+  .meta{font-size:13px;color:var(--txt3);margin-bottom:14px}
+  .meta b{color:var(--brand)}
+  h1{font-size:clamp(28px,5vw,40px);font-weight:800;color:var(--txt);line-height:1.15;letter-spacing:-.8px;margin:0 0 18px}
+  h2{font-size:23px;font-weight:800;color:var(--txt);letter-spacing:-.3px;margin:44px 0 12px;line-height:1.25}
+  p{margin:0 0 16px}
+  .lead{font-size:18.5px;color:var(--txt2);line-height:1.7}
+  .answer{background:#F5F3FF;border-left:3px solid var(--brand);border-radius:0 12px 12px 0;padding:18px 22px;margin:24px 0;font-size:16.5px}
+  .answer b{color:var(--txt)}
+  table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14.5px}
+  th{background:#F8FAFC;text-align:left;padding:11px 14px;border-bottom:2px solid var(--border);color:var(--txt);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+  td{padding:12px 14px;border-bottom:1px solid #f1f5f9;vertical-align:top}
+  td:first-child{font-weight:600;color:var(--txt)}
+  ul,ol{padding-left:24px;margin:0 0 16px}
+  li{margin-bottom:8px}
+  .box-cta{background:linear-gradient(135deg,#1a0636,#3b1278);border-radius:18px;padding:30px 32px;margin:48px 0 0;text-align:center}
+  .box-cta h2{color:#fff;margin:0 0 8px;font-size:22px}
+  .box-cta p{color:rgba(255,255,255,.75);font-size:14.5px;margin:0 0 20px}
+  .box-cta a{display:inline-block;background:linear-gradient(135deg,#059669,#10b981);color:#fff;text-decoration:none;font-weight:800;padding:14px 30px;border-radius:11px;font-size:15px}
+  footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:12.5px;color:var(--txt3)}
+  footer a{color:var(--brand);text-decoration:none}
+  @media(max-width:640px){table{font-size:13px}th,td{padding:9px 8px}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/landing.html" class="logo"><img src="/favicon.svg" alt=""> ANMA Hub</a>
+  <a href="/registro" class="cta">Probar gratis</a>
+</nav>
+
+<article>
+  <div class="meta"><b>Guía por rubro · Indumentaria</b> · Actualizado: 12 de junio de 2026 · Lectura: 7 min</div>
+  <h1>Cómo controlar el stock de una tienda de ropa sin volverse loca</h1>
+  <p class="lead">El stock de indumentaria es el más difícil de todos los rubros: cada prenda existe en varios talles y colores, las temporadas vencen, y una seña puede "congelar" una prenda semanas. Esta guía es el método práctico, paso a paso, probado en comercios reales.</p>
+
+  <div class="answer">
+    <b>Respuesta corta:</b> el control de stock de ropa se basa en 4 reglas: ① un producto con variantes (no un producto por talle), ② el stock se descuenta en el momento de la venta o seña (no a fin de día), ③ stock mínimo por variante calculado según rotación y demora del proveedor, y ④ micro-recuentos semanales de lo que más rota en vez del recuento anual gigante.
+  </div>
+
+  <h2>Regla 1 — Un producto, muchas variantes</h2>
+  <p>El error más común: crear "Remera básica S negra", "Remera básica M negra", "Remera básica L negra"... como productos separados. Con 10 modelos, 5 talles y 4 colores, tu catálogo tiene <b>200 entradas</b> imposibles de mantener.</p>
+  <p>La estructura correcta: la <b>remera básica es UN producto</b>; cada combinación talle+color es una <b>variante</b> con su propio contador de stock. El catálogo tiene 10 productos y la información vive ordenada. La unidad que se cuenta, se vende y se repone es siempre la variante.</p>
+
+  <h2>Regla 2 — El stock se descuenta cuando se vende, no "después"</h2>
+  <p>Si el registro es diferido ("a la noche paso todo"), existe una ventana de horas donde el sistema dice que tenés la prenda y la percha dice que no. En esa ventana pasan las dos cosas más caras del rubro:</p>
+  <ul>
+    <li><b>Vender la última prenda dos veces</b> — una clienta por Instagram y otra en el local, la misma campera M.</li>
+    <li><b>La seña fantasma</b> — alguien señó el vestido, nadie lo descontó, y se lo vendieron a otra persona. Perdés la venta, la seña y la clienta.</li>
+  </ul>
+  <p>La regla: <b>venta o seña registrada = stock descontado en ese instante.</b> Una seña congela stock exactamente igual que una venta.</p>
+
+  <h2>Regla 3 — Stock mínimo por variante (el cálculo simple)</h2>
+  <p>El "ojímetro" funciona hasta que un sábado te quedás sin el talle que más sale. El cálculo práctico:</p>
+  <div class="answer" style="background:#F0FDF4;border-color:#10b981">
+    <b>Stock mínimo = ventas semanales de esa variante × semanas de demora del proveedor + 1 semana de margen.</b><br>
+    Ejemplo: vendés 3 jeans talle 40 por semana y tu proveedor tarda 2 semanas → mínimo = 3 × 2 + 3 = <b>9 unidades</b>. Cuando el contador toca 9, reponés.
+  </div>
+  <p>No hace falta calcularlo para todo el catálogo: con definirlo para el <b>20% de productos que generan el 80% de tus ventas</b>, cubrís casi todo el riesgo.</p>
+
+  <h2>Regla 4 — Micro-recuentos semanales, no inventario anual</h2>
+  <p>El inventario anual completo es de manual de contabilidad, no de tienda de ropa: para cuando terminás de contar, cambió la temporada. Lo que funciona:</p>
+  <ul>
+    <li><b>Cada semana:</b> contá solo tus 10-15 productos de mayor rotación (10 minutos). Ahí viven casi todas las diferencias.</li>
+    <li><b>Cada temporada (2 veces al año):</b> recuento completo, aprovechando el recambio de mercadería.</li>
+    <li><b>Cada diferencia que encuentres, corregila en el momento</b> y preguntate por qué pasó: ¿venta sin registrar? ¿cambio sin anotar? ¿hurto?</li>
+  </ul>
+
+  <h2>Los 3 errores que más plata cuestan en indumentaria</h2>
+  <table>
+    <tr><th>Error</th><th>Qué lo causa</th><th>Cómo se evita</th></tr>
+    <tr><td>Vender lo que no hay</td><td>Registro diferido o planilla desactualizada</td><td>Descuento de stock en el momento (regla 2)</td></tr>
+    <tr><td>Plata muerta en talles que no rotan</td><td>Reponer "de a curva completa" sin mirar qué talle sale</td><td>Mirar rotación por variante antes de reponer (regla 3)</td></tr>
+    <tr><td>Cambios y devoluciones sin rastro</td><td>El cambio se hace "de palabra" y el stock queda mal en dos variantes</td><td>Todo cambio registrado como movimiento: entra una variante, sale otra</td></tr>
+  </table>
+
+  <h2>¿Planilla o sistema para todo esto?</h2>
+  <p>Las 4 reglas se pueden ejecutar en una planilla — el problema es que dependen de que un humano actualice todo, al instante, sin equivocarse nunca. Con variantes y señas de por medio, esa disciplina manual se rompe en semanas. Un sistema de gestión hace las reglas 1, 2 y 3 automáticamente; vos solo hacés los micro-recuentos. Si todavía dudás entre los dos caminos, escribimos una <a href="/recursos/excel-vs-sistema-de-gestion.html" style="color:var(--brand)">comparación honesta entre Excel y un sistema de gestión</a> — incluye los casos donde la planilla sigue ganando.</p>
+
+  <div class="box-cta">
+    <h2>Probá las 4 reglas funcionando solas</h2>
+    <p>ANMA Hub maneja variantes de talle y color, descuenta stock con cada venta o seña, y te avisa cuando una variante toca su mínimo. 7 días gratis, sin tarjeta.</p>
+    <a href="/registro">Probar ANMA Hub gratis</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/landing.html">ANMA Hub</a> · <a href="/recursos/excel-vs-sistema-de-gestion.html">Excel vs. sistema de gestión</a> · <a href="/demo.html">Ver demo</a>
+</footer>
+
+</body>
+</html>

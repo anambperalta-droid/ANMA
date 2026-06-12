@@ -20,13 +20,15 @@
 | Canonical + OG image + twitter cards | ✅ | Ya existían |
 | Sección "Para quién" con 4 rubros explícitos (indumentaria, decoración, tecnología, almacén) | ✅ | Las IAs citan contenido entity-rich: "mejor sistema de gestión para tienda de ropa Argentina" |
 
-## 🔜 FASE 2 — Contenido citable (próximas 2-4 semanas)
+## 🟡 FASE 2 — Contenido citable (EN CURSO — 2/5 piezas publicadas 12/06)
 
-Las IAs citan ~33% artículos comparativos y ~15% guías definitivas. Crear en `/blog/` o como páginas estáticas:
+Las IAs citan ~33% artículos comparativos y ~15% guías definitivas. Viven en `/recursos/`:
 
-1. **Comparativa honesta**: "Excel vs sistema de gestión: cuándo conviene cada uno" — tabla comparativa, balanceada (las IAs penalizan el sesgo obvio).
-2. **Guía por rubro** (programmatic-lite, 4 páginas): "Cómo controlar stock en una tienda de indumentaria / decoración / tecnología / almacén" — H2 que matchean cómo pregunta la gente, respuesta directa en los primeros 60 caracteres de cada sección.
+1. ✅ **Comparativa honesta**: [Excel vs. sistema de gestión](https://anmahub.com/recursos/excel-vs-sistema-de-gestion.html) — tabla de criterios, casos donde Excel gana, 4 señales de costo, FAQPage + Article schema.
+2. 🟡 **Guías por rubro** (1/4): ✅ [Control de stock para tiendas de ropa](https://anmahub.com/recursos/control-de-stock-tienda-de-ropa.html) (método 4 reglas). Faltan: decoración, tecnología, almacén — replicar la misma estructura (respuesta directa + reglas + tabla de errores + FAQ schema).
 3. **Datos propios** (+37% citación): cuando haya ≥20 clientes, publicar un dato original tipo "los comercios que usan seguimiento por WhatsApp recuperan X% de presupuestos pendientes". Los datos originales son lo MÁS citado.
+
+> Ambas páginas están en sitemap.xml, llms.txt y el footer de la landing (interlinkeadas entre sí).
 
 Reglas de redacción: respuesta directa primero (40-60 palabras), fecha de actualización visible, estadísticas con fuente, nada de keyword stuffing (-10% en IAs).
 
