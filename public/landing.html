@@ -53,7 +53,15 @@
 <link rel="canonical" href="https://anma-hub.vercel.app/landing.html">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"ANMA Hub","description":"Plataforma de gestión integral para negocios. Presupuestos, clientes, stock y logística en un solo lugar.","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"30000","priceCurrency":"ARS","priceSpecification":{"@type":"UnitPriceSpecification","price":"30000","priceCurrency":"ARS","billingDuration":"P1M"}},"url":"https://anma-hub.vercel.app","inLanguage":"es-AR","featureList":["Presupuestos PDF","Gestión de clientes","Control de stock","Logística de envíos","Mensajes WhatsApp","Dashboard con métricas"]}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"ANMA Hub","description":"Plataforma de gestión integral para tiendas de indumentaria, decoración y hogar, tecnología y almacenes. Presupuestos, clientes, stock con variantes y comunicación por WhatsApp en un solo lugar.","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"30000","priceCurrency":"ARS","priceSpecification":{"@type":"UnitPriceSpecification","price":"30000","priceCurrency":"ARS","billingDuration":"P1M"}},"url":"https://anma-hub.vercel.app","inLanguage":"es-AR","audience":{"@type":"BusinessAudience","name":"Tiendas de indumentaria, decoración y hogar, tecnología y electrónica, almacenes y distribuidoras de Argentina"},"featureList":["Presupuestos PDF","Gestión de clientes B2C y B2B","Control de stock con variantes (talles, colores, modelos)","Dos listas de precios: público y mayorista","Logística de envíos","Seguimiento por WhatsApp","Cobros con Mercado Pago","Dashboard con métricas"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"¿Sirve si vendo tanto por menor (B2C) como por mayor (B2B)?","acceptedAnswer":{"@type":"Answer","text":"Sí, totalmente. ANMA está diseñado para registrar pedidos de todo tipo. Podés gestionar clientes finales, registrar cuentas corrientes mayoristas, controlar señas y hacer el seguimiento de los saldos pendientes desde una misma pantalla."}},
+{"@type":"Question","name":"Tengo miles de productos con variantes (talles, colores o modelos), ¿es difícil cargarlos?","acceptedAnswer":{"@type":"Answer","text":"Para nada. La interfaz está pensada para que la carga de catálogos e inventario sea rápida y sin fricciones visuales. Podés estructurar variantes y costos en minutos para que tu stock real se descuente automáticamente con cada venta."}},
+{"@type":"Question","name":"¿Cómo funciona el seguimiento por WhatsApp?","acceptedAnswer":{"@type":"Answer","text":"El sistema agrupa tus contactos según su estado operativo actual. Con un solo clic, podés abrir WhatsApp con plantillas predefinidas listas para enviar un mensaje de recontacto amable o re-vincular clientes que dejaron presupuestos pendientes."}},
+{"@type":"Question","name":"¿Realmente es gratis empezar?","acceptedAnswer":{"@type":"Answer","text":"Sí. Podés registrarte y empezar a usar las funciones clave para ordenar tu operación hoy mismo. No te pedimos tarjeta de crédito ni hay configuraciones técnicas ocultas. La prueba dura 7 días completos."}}
+]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -709,7 +717,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 <header class="nav">
   <div class="wrap nav-in">
     <a href="#top" class="logo">
-      <span class="logo-mark"><i class="fa-solid fa-bolt"></i></span>
+      <img class="logo-mark" src="/favicon.svg" alt="ANMA Hub" width="32" height="32">
       ANMA Hub
     </a>
     <nav class="nav-links">
@@ -774,7 +782,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
           <!-- SIDEBAR -->
           <div style="width:52px;background:#0F172A;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid #1e293b">
             <div style="padding:8px 0 7px;border-bottom:1px solid #1e293b;display:flex;justify-content:center;align-items:center">
-              <div style="width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#7c3aed,#059669);display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff"><i class="fa-solid fa-bolt"></i></div>
+              <img src="/favicon.svg" alt="" style="width:24px;height:24px;border-radius:7px;display:block">
             </div>
             <div style="padding:6px 4px;display:flex;flex-direction:column;gap:1px">
               <div style="padding:5px 4px;border-radius:6px;background:#1e293b">
@@ -1087,7 +1095,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
         <!-- ── SIDEBAR (espejo real de la app) ── -->
         <nav class="app-nav">
           <div class="app-nav-logo">
-            <div class="app-nav-logo-mark"><i class="fa-solid fa-bolt"></i></div>
+            <img class="app-nav-logo-mark" src="/favicon.svg" alt="">
             <span>ANMA Hub</span>
           </div>
           <div class="app-nav-section">Ventas</div>
@@ -1730,35 +1738,61 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
         Diseñado para la realidad de tu rubro
       </h2>
       <p class="text-lg text-balance text-center" style="color:#64748b;margin:0 auto;max-width:580px;line-height:1.65">
-        No importa si vendés productos masivos, artículos de diseño con variantes, o si manejás dos listas de precios en paralelo. ANMA se adapta al ritmo de tu inventario.
+        Vendas al público, a empresas o de las dos formas, ANMA se adapta al ritmo de tu inventario: variantes, listas de precios, señas y cuentas corrientes en una sola pantalla.
       </p>
     </div>
 
     <div id="para-quien-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto">
 
-      <!-- Bloque 1 -->
-      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:36px 32px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
-        <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
-          <i class="fa-solid fa-boxes-stacked" style="color:#7c3aed;font-size:18px"></i>
+      <!-- Indumentaria -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:32px 30px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <i class="fa-solid fa-shirt" style="color:#7c3aed;font-size:18px"></i>
         </div>
         <h3 class="text-xl font-bold tracking-tight" style="color:#0F172A;margin:0 0 10px">
-          Indumentaria, Tecnología y Deco
+          Tiendas de indumentaria
         </h3>
         <p class="text-sm sm:text-base leading-relaxed" style="color:#64748b;margin:0;line-height:1.75">
-          Pensado para negocios que sufren la rotación de stock. Controlá variantes críticas como talles, colores, modelos o números de serie sin duplicar productos. Registrá señas, gestioná entregas parciales y sabé exactamente qué tenés disponible en góndola o depósito al instante.
+          Talles, colores y temporadas sin duplicar productos. Registrá señas, avisale al cliente cuando llega su talle y mirá qué tenés en percha o depósito al instante.
         </p>
       </div>
 
-      <!-- Bloque 2 -->
-      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:36px 32px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
-        <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
-          <i class="fa-solid fa-arrows-split-up-and-left" style="color:#7c3aed;font-size:18px"></i>
+      <!-- Decoración -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:32px 30px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <i class="fa-solid fa-couch" style="color:#7c3aed;font-size:18px"></i>
         </div>
         <h3 class="text-xl font-bold tracking-tight" style="color:#0F172A;margin:0 0 10px">
-          Venta Minorista, Mayorista o Mixta
+          Decoración y hogar
         </h3>
         <p class="text-sm sm:text-base leading-relaxed" style="color:#64748b;margin:0;line-height:1.75">
-          Ideal si despachás directo al público (B2C) o si abastecés a revendedores y distribuidores (B2B). Manejá cuentas corrientes separadas, controlá los plazos de pago y hacé seguimientos amables de saldos pendientes sin perder el orden de tu caja principal.
+          Pedidos a encargo, productos con variantes de diseño y entregas coordinadas. Presupuestá en minutos, cobrá la seña y mantené al cliente al tanto de cada etapa.
+        </p>
+      </div>
+
+      <!-- Tecnología -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:32px 30px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <i class="fa-solid fa-laptop" style="color:#7c3aed;font-size:18px"></i>
+        </div>
+        <h3 class="text-xl font-bold tracking-tight" style="color:#0F172A;margin:0 0 10px">
+          Tecnología y electrónica
+        </h3>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:#64748b;margin:0;line-height:1.75">
+          Modelos, números de serie y precios que cambian todo el tiempo. Actualizá tu lista en un clic, manejá precio público y mayorista en paralelo y cotizá sin vender bajo costo.
+        </p>
+      </div>
+
+      <!-- Almacén / distribución -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:32px 30px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <i class="fa-solid fa-store" style="color:#7c3aed;font-size:18px"></i>
+        </div>
+        <h3 class="text-xl font-bold tracking-tight" style="color:#0F172A;margin:0 0 10px">
+          Almacén y distribución
+        </h3>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:#64748b;margin:0;line-height:1.75">
+          Rotación alta y reposición constante. Controlá stock con alertas de mínimos, gestioná proveedores y llevá las cuentas corrientes de tus clientes mayoristas sin planillas.
         </p>
       </div>
 
@@ -2011,7 +2045,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <div class="logo" style="color:#fff"><span class="logo-mark"><i class="fa-solid fa-bolt"></i></span> ANMA Hub</div>
+        <div class="logo" style="color:#fff"><img class="logo-mark" src="/favicon.svg" alt="ANMA Hub" width="32" height="32"> ANMA Hub</div>
         <p>Plataforma de gestión integral para tu negocio, pensada para tu día a día.</p>
         <div class="foot-soc">
           <a href="mailto:ana.mbperalta@gmail.com" title="Soporte por email"><i class="fa-solid fa-envelope"></i></a>

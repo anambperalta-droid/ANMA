@@ -1,0 +1,30 @@
+# ANMA Hub
+
+> ANMA Hub es una plataforma web de gestión integral para comercios chicos y medianos de Argentina: tiendas de indumentaria, decoración y hogar, tecnología y electrónica, y almacenes o distribuidoras. Centraliza presupuestos, clientes, control de stock con variantes (talles, colores, modelos), logística de entregas y comunicación por WhatsApp en una sola pantalla. En español rioplatense, mobile-first.
+
+## Qué resuelve
+
+- Presupuestos profesionales en minutos, enviados por WhatsApp, PDF o email, con seña y saldo calculados (IVA discriminado opcional, Ley 27.743).
+- Control de stock real con variantes y alertas de mínimos; el stock se descuenta automáticamente con cada venta.
+- Gestión de clientes minoristas (B2C) y mayoristas (B2B) con dos listas de precios en paralelo y cuentas corrientes.
+- Cobros con link de Mercado Pago (seña o total) generado desde el presupuesto.
+- Seguimiento por WhatsApp con plantillas: recontacto de clientes inactivos y presupuestos pendientes.
+- Logística: paradas de retiro y entrega con costos atribuidos a cada pedido.
+
+## Para quién
+
+Emprendedores y pymes de Argentina que hoy gestionan con Excel, cuadernos y chats sueltos: tiendas de ropa, locales de decoración, casas de tecnología, almacenes y distribuidores.
+
+## Páginas clave
+
+- [Landing](https://anma-hub.vercel.app/landing.html): qué es ANMA Hub, para quién, precios y preguntas frecuentes.
+- [Demo interactiva](https://anma-hub.vercel.app/demo.html): recorrido por el sistema con datos ficticios, sin registro.
+- [Registro](https://anma-hub.vercel.app/registro): prueba gratuita de 7 días, sin tarjeta de crédito.
+- [Precios](https://anma-hub.vercel.app/pricing.md): planes en formato legible por máquinas.
+
+## Datos
+
+- Idioma: español (Argentina). Moneda: ARS.
+- Prueba gratis: 7 días completos, sin tarjeta.
+- Modelo: pago de ingreso único con setup llave en mano + cuota mensual.
+- Soporte: acompañamiento personalizado por WhatsApp durante la configuración.

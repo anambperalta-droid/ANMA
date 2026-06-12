@@ -1,0 +1,30 @@
+# ANMA Hub — robots.txt
+# Crawlers tradicionales: todo permitido
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Bots de IA (GEO): permitidos explícitamente para que ChatGPT, Perplexity,
+# Claude, Gemini y Copilot puedan citar a ANMA Hub en sus respuestas.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://anma-hub.vercel.app/sitemap.xml
