@@ -8,7 +8,7 @@ const SITE_KEY = 'anma-pro'
 // a anmahub.com: orders, tasks y preferencias nunca se habían subido).
 const DATA_KEYS = [
   'budgets', 'clients', 'suppliers', 'products', 'insumos', 'stockMoves',
-  'orders', 'tasks',
+  'shipments', 'viajes', 'tariffs', 'orders', 'tasks', 'waTemplates',
   'despCuit', 'despDir', 'sheetsCfg',
   'notifRead', 'notifDismissed', 'provAlertsDismissed',
   'productViewMode', 'todayCollapsed',
@@ -16,7 +16,7 @@ const DATA_KEYS = [
 ]
 // Claves que son arrays de objetos con `id` → merge inteligente por item.
 // El resto (escalares, arrays de strings) usa cloud-gana directo.
-const MERGE_BY_ID = new Set(['budgets', 'clients', 'suppliers', 'products', 'insumos', 'stockMoves', 'orders', 'tasks'])
+const MERGE_BY_ID = new Set(['budgets', 'clients', 'suppliers', 'products', 'insumos', 'stockMoves', 'shipments', 'viajes', 'tariffs', 'orders', 'tasks', 'waTemplates'])
 
 function collectData() {
   const out = {}
