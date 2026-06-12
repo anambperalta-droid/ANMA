@@ -3,7 +3,20 @@ import { db, dbW, setWriteHook } from './storage'
 import { log } from './logger'
 
 const SITE_KEY = 'anma-pro'
-const DATA_KEYS = ['budgets', 'clients', 'suppliers', 'products', 'insumos', 'stockMoves', 'cfg']
+// TODAS las claves de negocio — si una clave no está acá, NO viaja entre
+// dispositivos/dominios (causa de la pérdida de datos del 12/06 al migrar
+// a anmahub.com: orders, tasks y preferencias nunca se habían subido).
+const DATA_KEYS = [
+  'budgets', 'clients', 'suppliers', 'products', 'insumos', 'stockMoves',
+  'orders', 'tasks',
+  'despCuit', 'despDir', 'sheetsCfg',
+  'notifRead', 'notifDismissed', 'provAlertsDismissed',
+  'productViewMode', 'todayCollapsed',
+  'cfg',
+]
+// Claves que son arrays de objetos con `id` → merge inteligente por item.
+// El resto (escalares, arrays de strings) usa cloud-gana directo.
+const MERGE_BY_ID = new Set(['budgets', 'clients', 'suppliers', 'products', 'insumos', 'stockMoves', 'orders', 'tasks'])
 
 function collectData() {
   const out = {}
@@ -193,7 +206,15 @@ export async function pullFromCloud(userId) {
     let needsPushBack = false   // true if local had records not in cloud
 
     DATA_KEYS.forEach(k => {
-      if (cloud[k] === undefined) return
+      if (cloud[k] === undefined) {
+        // La nube no conoce esta clave (ej. clave nueva en el sync, o datos
+        // que nunca se subieron). Si hay datos locales → push completo para
+        // que la nube quede al día y otros dispositivos los reciban.
+        const local = db(k, null)
+        const hasLocal = local !== null && (!Array.isArray(local) || local.length > 0)
+        if (hasLocal) needsPushBack = true
+        return
+      }
       const local = db(k, k === 'cfg' ? {} : [])
 
       if (k === 'cfg') {
@@ -206,7 +227,7 @@ export async function pullFromCloud(userId) {
           needsPushBack = true
         }
         dbW(k, merged)
-      } else if (Array.isArray(cloud[k]) && Array.isArray(local)) {
+      } else if (MERGE_BY_ID.has(k) && Array.isArray(cloud[k]) && Array.isArray(local)) {
         const merged = mergeArraysById(local, cloud[k])
         // Push back if: (a) local had records not in cloud, or
         //               (b) a local item was newer than its cloud counterpart.
@@ -219,6 +240,8 @@ export async function pullFromCloud(userId) {
         if (merged.length !== cloud[k].length || localWon) needsPushBack = true
         dbW(k, merged)
       } else {
+        // Escalares y arrays simples (sin id): la nube gana. mergeArraysById
+        // devolvería [] para arrays de strings — por eso NO se mergean.
         dbW(k, cloud[k])
       }
     })
