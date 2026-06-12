@@ -11,12 +11,12 @@ import { supabase } from '../../lib/supabase'
 import { injectSeedData } from '../../lib/seedData'
 import { getAcquisitionData, persistAcquisitionAcrossOAuth, clearAcquisitionData } from '../../lib/acquisitionTracking'
 
-// Monograma ANMA Hub: "A" abierta de trazo continuo + bucle central
-// entrelazado (la conexión/hub). Mismo diseño que favicon.svg, en blanco.
+// Monograma ANMA Hub: "A" completa de trazo continuo + bucle abierto
+// enganchado en la pierna derecha (hub). Mismo diseño que favicon.svg, en blanco.
 const AnmaLogo = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 64 64" fill="none">
-    <path d="M17 51 32 13.5 47 51" stroke="#fff" strokeWidth="5.6" strokeLinecap="round" strokeLinejoin="round"/>
-    <circle cx="32" cy="37.5" r="8.4" stroke="#fff" strokeWidth="5.6"/>
+    <path d="M14 52 L30 13 Q32 8.5 34 13 L50 52" stroke="#fff" strokeWidth="5.6" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M35.3 45.5 A9.6 9.6 0 1 1 41 39.8" stroke="#fff" strokeWidth="5.6" strokeLinecap="round"/>
   </svg>
 )
 

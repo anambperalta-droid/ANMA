@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <!-- Violeta eléctrico: profundo → luminoso con toque magenta en el borde -->
-    <linearGradient id="v" x1="14" y1="54" x2="50" y2="12" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#6D28D9"/>
-      <stop offset=".55" stop-color="#A855F7"/>
-      <stop offset="1" stop-color="#E879F9"/>
+    <!-- Violeta profundo → eléctrico: tono oscuro predominante, limpio -->
+    <linearGradient id="v" x1="12" y1="56" x2="52" y2="10" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3B0764"/>
+      <stop offset=".55" stop-color="#6D28D9"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
     </linearGradient>
   </defs>
-  <!-- Contenedor limpio: blanco impecable, sin texturas -->
+  <!-- Contenedor blanco impecable -->
   <rect width="64" height="64" rx="15" fill="#ffffff"/>
-  <!-- "A" abierta de trazo continuo: dos piernas con ápice redondeado -->
-  <path d="M17 51 32 13.5 47 51" fill="none" stroke="url(#v)" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- El bucle central entrelazado: la conexión (hub) reemplaza a la barra -->
-  <circle cx="32" cy="37.5" r="8.4" fill="none" stroke="url(#v)" stroke-width="5.6"/>
+  <!-- "A" completa de trazo continuo con ápice redondeado -->
+  <path d="M14 52 L30 13 Q32 8.5 34 13 L50 52" fill="none" stroke="url(#v)" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Bucle abierto que se engancha en la pierna derecha: la conexión (hub) -->
+  <path d="M35.3 45.5 A9.6 9.6 0 1 1 41 39.8" fill="none" stroke="url(#v)" stroke-width="5.6" stroke-linecap="round"/>
 </svg>
