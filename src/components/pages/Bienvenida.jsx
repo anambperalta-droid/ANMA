@@ -113,11 +113,22 @@ export default function Bienvenida() {
       if (errorParam) {
         logAuth('supabase-error', { errorParam, errorDesc })
         const desc = (errorDesc || '').toLowerCase()
+        const code = (errorParam || '').toLowerCase()
+        // Hint específico para admin: si signup está deshabilitado en Supabase, el OAuth
+        // de Google con un email nuevo rebota acá con "signup_disabled" o "database error".
+        const isSignupBlocked =
+          code.includes('signup') ||
+          desc.includes('signup') ||
+          desc.includes('signups not allowed') ||
+          desc.includes('database error saving new user')
         const friendly =
-          desc.includes('expired') ? 'El enlace expiró. Pedí uno nuevo desde Ingresar → ¿La olvidaste?'
+          isSignupBlocked
+            ? 'No se pueden crear cuentas nuevas en este momento. Si esto te pasó intentando registrarte con Google, escribinos a ana.mbperalta@gmail.com — vamos a habilitarte el acceso. (Error: ' + (errorDesc || errorParam) + ')'
+          : desc.includes('expired') ? 'El enlace expiró. Pedí uno nuevo desde Ingresar → ¿La olvidaste?'
           : desc.includes('used')   ? 'Este enlace ya fue usado. Si no entraste, pedí uno nuevo.'
           : desc.includes('access_denied') ? 'Rechazaste el acceso. Probá de nuevo desde el login.'
-          : (errorDesc || 'El enlace no es válido. Pedí uno nuevo.')
+          : desc.includes('user_banned') ? 'Tu cuenta está suspendida. Escribinos a ana.mbperalta@gmail.com para revisarlo.'
+          : (errorDesc || 'No pudimos completar el ingreso. Probá de nuevo o escribinos a ana.mbperalta@gmail.com')
         setError(friendly)
         setLoading(false)
         return
