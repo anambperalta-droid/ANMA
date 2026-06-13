@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { persistAcquisitionAcrossOAuth } from '../../lib/acquisitionTracking'
@@ -7,6 +7,33 @@ const APP_VERSION = 'v1.4'
 const APP_YEAR = new Date().getFullYear()
 const LS_EMAIL_KEY = 'anma_last_email'
 const LS_LAST_LOGIN = 'anma_last_login'
+
+// Google Identity Services — usamos signInWithIdToken para bypassear el flow OAuth
+// tradicional (que dependía de cookies de state en supabase.co y se rompía con
+// múltiples apps usando el mismo proyecto, cookie partitioning, etc.).
+// Este enfoque obtiene el ID token directo del browser y lo manda a Supabase
+// sin redirects ni cookies de terceros.
+const GOOGLE_CLIENT_ID = '102631288658-3u7abhbutcmri2t9m89fbsbis7j6m8ud.apps.googleusercontent.com'
+
+function loadGIS() {
+  return new Promise((resolve, reject) => {
+    if (window.google?.accounts?.id) return resolve()
+    const existing = document.querySelector('script[data-gis]')
+    if (existing) {
+      existing.addEventListener('load', () => resolve(), { once: true })
+      existing.addEventListener('error', () => reject(new Error('GIS load error')), { once: true })
+      if (window.google?.accounts?.id) resolve()
+      return
+    }
+    const s = document.createElement('script')
+    s.src = 'https://accounts.google.com/gsi/client'
+    s.async = true; s.defer = true
+    s.dataset.gis = '1'
+    s.onload = () => resolve()
+    s.onerror = () => reject(new Error('GIS load error'))
+    document.head.appendChild(s)
+  })
+}
 
 function friendlyAuthError(raw, email) {
   if (!raw) return ''
@@ -69,25 +96,60 @@ export default function Login() {
   const [err, setErr] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [googleBusy, setGoogleBusy] = useState(false)
+  const [googleReady, setGoogleReady] = useState(false)
   const [capsOn, setCapsOn] = useState(false)
   const { login, resetPassword } = useAuth()
+  const googleBtnRef = useRef(null)
 
-  /* ── Google OAuth ── */
-  // PKCE: el code_verifier vive en localStorage del origen que inicia el flujo.
-  // Por eso redirectTo = window.location.origin (NO hardcoded) — el callback DEBE
-  // volver al mismo dominio desde donde se inició, sino el exchange falla.
-  const handleGoogle = async () => {
-    setGoogleBusy(true); setErr('')
-    persistAcquisitionAcrossOAuth()
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/bienvenida`,
-        queryParams: { access_type: 'offline', prompt: 'select_account' },
-      },
+  /* ── Google Identity Services (signInWithIdToken) ──
+   * Bypassa el OAuth-redirect flow tradicional. El ID token se obtiene en el
+   * browser via Google Identity Services y se manda a Supabase, sin redirect
+   * ni cookies de terceros — elimina el bug bad_oauth_state.
+   */
+  useEffect(() => {
+    let mounted = true
+    loadGIS().then(() => {
+      if (!mounted || !window.google?.accounts?.id || !googleBtnRef.current) return
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        ux_mode: 'popup',
+        auto_select: false,
+        callback: async (response) => {
+          if (!response?.credential) {
+            setErr('No recibimos la confirmación de Google. Probá de nuevo.')
+            return
+          }
+          setGoogleBusy(true); setErr('')
+          try { persistAcquisitionAcrossOAuth() } catch { /* noop */ }
+          const { error } = await supabase.auth.signInWithIdToken({
+            provider: 'google',
+            token: response.credential,
+          })
+          if (error) {
+            setErr('No pudimos completar el ingreso: ' + error.message)
+            setGoogleBusy(false)
+            return
+          }
+          // Éxito: AuthContext.onAuthStateChange se encarga de navegar.
+          try { localStorage.setItem(LS_LAST_LOGIN, new Date().toISOString()) } catch { /* noop */ }
+        },
+      })
+      window.google.accounts.id.renderButton(googleBtnRef.current, {
+        type: 'standard',
+        theme: 'outline',
+        size: 'large',
+        text: 'continue_with',
+        shape: 'rectangular',
+        logo_alignment: 'left',
+        width: 320,
+      })
+      if (mounted) setGoogleReady(true)
+    }).catch(e => {
+      console.error('[anma-auth] No se pudo cargar Google Identity Services', e)
+      if (mounted) setErr('No se pudo cargar Google. Reintentá o entrá con tu email.')
     })
-    if (error) { setErr(error.message); setGoogleBusy(false) }
-  }
+    return () => { mounted = false }
+  }, [])
 
   const lastLogin = (() => { try { return localStorage.getItem(LS_LAST_LOGIN) } catch { return null } })()
   const lastLoginRel = relativeDays(lastLogin)
@@ -400,12 +462,19 @@ export default function Login() {
               : <>Ingresá para retomar tu operación donde la dejaste.</>}
           </div>
 
-          {/* Google login (prioridad — la mayoría se registra con Google) */}
-          <button type="button" className="lp-google" onClick={handleGoogle} disabled={googleBusy || submitting}>
-            {googleBusy
-              ? <><i className="fa fa-spinner fa-spin" /> Redirigiendo a Google...</>
-              : <><GoogleIcon /> Continuar con Google</>}
-          </button>
+          {/* Google login (Google Identity Services — sin redirects, sin cookies de terceros) */}
+          <div style={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight:44, marginBottom:16 }}>
+            {googleBusy ? (
+              <div style={{ color:'rgba(255,255,255,.85)', fontSize:13, fontWeight:600, display:'flex', alignItems:'center', gap:8 }}>
+                <i className="fa fa-spinner fa-spin" /> Conectando con Google...
+              </div>
+            ) : !googleReady ? (
+              <div style={{ color:'rgba(255,255,255,.5)', fontSize:13, display:'flex', alignItems:'center', gap:8 }}>
+                <i className="fa fa-spinner fa-spin" /> Cargando Google...
+              </div>
+            ) : null}
+            <div ref={googleBtnRef} style={{ display: (googleReady && !googleBusy) ? 'block' : 'none' }} />
+          </div>
 
           <div className="lp-sep">o con tu email</div>
 

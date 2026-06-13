@@ -4,12 +4,35 @@
    Trial 7 días, acceso inmediato sin mail de confirmación
    (requiere "Confirm email" desactivado en Supabase → Auth > Settings)
 ───────────────────────────────────────── */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { injectSeedData } from '../../lib/seedData'
 import { getAcquisitionData, persistAcquisitionAcrossOAuth, clearAcquisitionData } from '../../lib/acquisitionTracking'
+
+// Google Identity Services — bypassa OAuth-redirect (que tenía bad_oauth_state
+// con múltiples apps usando el mismo Supabase project + cookie partitioning).
+const GOOGLE_CLIENT_ID = '102631288658-3u7abhbutcmri2t9m89fbsbis7j6m8ud.apps.googleusercontent.com'
+function loadGIS() {
+  return new Promise((resolve, reject) => {
+    if (window.google?.accounts?.id) return resolve()
+    const existing = document.querySelector('script[data-gis]')
+    if (existing) {
+      existing.addEventListener('load', () => resolve(), { once: true })
+      existing.addEventListener('error', () => reject(new Error('GIS load error')), { once: true })
+      if (window.google?.accounts?.id) resolve()
+      return
+    }
+    const s = document.createElement('script')
+    s.src = 'https://accounts.google.com/gsi/client'
+    s.async = true; s.defer = true
+    s.dataset.gis = '1'
+    s.onload = () => resolve()
+    s.onerror = () => reject(new Error('GIS load error'))
+    document.head.appendChild(s)
+  })
+}
 
 // Monograma ANMA Hub: "A" completa de trazo continuo + bucle abierto
 // enganchado en la pierna derecha (hub). Mismo diseño que favicon.svg, en blanco.
@@ -156,31 +179,57 @@ export default function Registro() {
   const [err,      setErr]      = useState('')
   const [loading,  setLoading]  = useState(false)   // email submit
   const [googleBusy, setGoogleBusy] = useState(false)
+  const [googleReady, setGoogleReady] = useState(false)
   const [emailSent, setEmailSent]   = useState(false)
+  const googleBtnRef = useRef(null)
+
+  // Google Identity Services init — render el botón oficial + signInWithIdToken
+  useEffect(() => {
+    if (authed) return  // ya autenticado, no inicializar
+    let mounted = true
+    loadGIS().then(() => {
+      if (!mounted || !window.google?.accounts?.id || !googleBtnRef.current) return
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        ux_mode: 'popup',
+        auto_select: false,
+        callback: async (response) => {
+          if (!response?.credential) {
+            setErr('No recibimos confirmación de Google. Probá de nuevo.')
+            return
+          }
+          setGoogleBusy(true); setErr('')
+          try { persistAcquisitionAcrossOAuth() } catch { /* noop */ }
+          const { error } = await supabase.auth.signInWithIdToken({
+            provider: 'google',
+            token: response.credential,
+          })
+          if (error) {
+            setErr('No pudimos registrarte: ' + error.message)
+            setGoogleBusy(false)
+            return
+          }
+          // AuthContext.onAuthStateChange inyecta seed data y navega.
+        },
+      })
+      window.google.accounts.id.renderButton(googleBtnRef.current, {
+        type: 'standard',
+        theme: 'outline',
+        size: 'large',
+        text: 'signup_with',
+        shape: 'rectangular',
+        logo_alignment: 'left',
+        width: 320,
+      })
+      if (mounted) setGoogleReady(true)
+    }).catch(e => {
+      console.error('[anma-auth] GIS load error', e)
+      if (mounted) setErr('No se pudo cargar Google. Usá tu email.')
+    })
+    return () => { mounted = false }
+  }, [authed])
 
   if (authed) return <Navigate to="/" replace />
-
-  /* ── Google OAuth ── */
-  const handleGoogle = async () => {
-    setGoogleBusy(true)
-    setErr('')
-    // Persistir acquisition data en localStorage ANTES de redirigir a Google.
-    // Después del callback en /bienvenida la consumimos y la asociamos al WS.
-    persistAcquisitionAcrossOAuth()
-
-    // PKCE: el code_verifier vive en el localStorage del ORIGEN que inicia el
-    // flujo. El redirect DEBE volver al mismo origen — un redirect cross-domain
-    // (ej. iniciar en anma-hub.vercel.app y volver a anmahub.com) deja el
-    // verifier huérfano y el exchange falla con "enlace no válido".
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/bienvenida`,
-        queryParams: { access_type: 'offline', prompt: 'select_account' },
-      },
-    })
-    if (error) { setErr(error.message); setGoogleBusy(false) }
-  }
 
   /* ── Email + Password ── */
   const handleEmail = async (e) => {
@@ -292,12 +341,19 @@ export default function Registro() {
           <div className="rg-h">Empezá <em>gratis hoy</em></div>
           <div className="rg-sub">Registro en 30 segundos. Sin tarjeta de crédito.</div>
 
-          {/* Google (prioridad) */}
-          <button className="rg-google" onClick={handleGoogle} disabled={googleBusy || loading} type="button">
-            {googleBusy
-              ? <><i className="fa fa-spinner fa-spin" style={{ fontSize:16 }} /> Redirigiendo a Google...</>
-              : <><GoogleIcon /> Registrarse con Google</>}
-          </button>
+          {/* Google (prioridad) — Google Identity Services con signInWithIdToken */}
+          <div style={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight:48 }}>
+            {googleBusy ? (
+              <div style={{ color:'#fff', fontSize:14, fontWeight:600, display:'flex', alignItems:'center', gap:8 }}>
+                <i className="fa fa-spinner fa-spin" /> Creando tu cuenta...
+              </div>
+            ) : !googleReady ? (
+              <div style={{ color:'rgba(255,255,255,.5)', fontSize:13, display:'flex', alignItems:'center', gap:8 }}>
+                <i className="fa fa-spinner fa-spin" /> Cargando Google...
+              </div>
+            ) : null}
+            <div ref={googleBtnRef} style={{ display: (googleReady && !googleBusy) ? 'block' : 'none' }} />
+          </div>
 
           <div className="rg-sep">o completá tus datos</div>
 
