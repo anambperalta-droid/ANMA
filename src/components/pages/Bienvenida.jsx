@@ -121,9 +121,18 @@ export default function Bienvenida() {
           desc.includes('signup') ||
           desc.includes('signups not allowed') ||
           desc.includes('database error saving new user')
+        // bad_oauth_state: cookie de state no se mantuvo entre Google y el callback.
+        // Causa típica: navegador en modo incógnito / privado (bloquea cookies de terceros),
+        // bloqueador de cookies muy estricto, o el usuario tardó demasiado en el consentimiento.
+        const isBadOAuthState =
+          code.includes('bad_oauth_state') ||
+          desc.includes('state not found') ||
+          desc.includes('state has expired')
         const friendly =
           isSignupBlocked
             ? 'No se pueden crear cuentas nuevas en este momento. Si esto te pasó intentando registrarte con Google, escribinos a ana.mbperalta@gmail.com — vamos a habilitarte el acceso. (Error: ' + (errorDesc || errorParam) + ')'
+          : isBadOAuthState
+            ? 'Tu navegador bloqueó el ingreso (suele pasar en modo incógnito o con bloqueadores de cookies estrictos). Cerrá esta ventana, abrí Chrome o Edge en modo normal y volvé a entrar — el login con Google va a funcionar.'
           : desc.includes('expired') ? 'El enlace expiró. Pedí uno nuevo desde Ingresar → ¿La olvidaste?'
           : desc.includes('used')   ? 'Este enlace ya fue usado. Si no entraste, pedí uno nuevo.'
           : desc.includes('access_denied') ? 'Rechazaste el acceso. Probá de nuevo desde el login.'
