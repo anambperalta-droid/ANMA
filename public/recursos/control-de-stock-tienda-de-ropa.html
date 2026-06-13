@@ -53,6 +53,26 @@
   footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:12.5px;color:var(--txt3)}
   footer a{color:var(--brand);text-decoration:none}
   @media(max-width:640px){table{font-size:13px}th,td{padding:9px 8px}}
+  .author{display:flex;align-items:center;gap:14px;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:22px 0 28px}
+  .author-img{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#ec4899);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0;font-size:14px;letter-spacing:.5px}
+  .author-info{flex:1;min-width:0}
+  .author-name{font-weight:700;color:var(--txt);font-size:14px;line-height:1.3}
+  .author-meta{font-size:12px;color:var(--txt3);margin-top:3px;line-height:1.45}
+  .mid-cta{background:linear-gradient(135deg,#F5F3FF,#FAF5FF);border:1.5px solid #DDD6FE;border-radius:14px;padding:22px 24px;margin:34px 0;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .mid-cta-txt{flex:1;min-width:200px;font-size:14.5px;color:var(--txt2);line-height:1.55}
+  .mid-cta-txt b{color:#5B21B6;display:block;margin-bottom:3px;font-size:15px;font-weight:800}
+  .mid-cta a{background:var(--brand);color:#fff;text-decoration:none;font-weight:700;padding:11px 22px;border-radius:10px;font-size:13.5px;white-space:nowrap;transition:background .15s,transform .15s}
+  .mid-cta a:hover{background:#5B21B6;transform:translateY(-1px)}
+  .related{margin:56px 0 0}
+  .related h3{font-size:13px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px;margin:0 0 18px}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .related-card{display:block;background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;text-decoration:none;transition:border-color .15s,transform .15s,box-shadow .15s}
+  .related-card:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:0 6px 16px -4px rgba(124,58,237,.15)}
+  .related-tag{font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:block}
+  .related-card b{display:block;color:var(--txt);font-size:14px;line-height:1.4;margin-bottom:5px;font-weight:700}
+  .related-card span{font-size:12.5px;color:var(--txt3);line-height:1.5}
+  .foot-rich{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font-size:12.5px;margin-bottom:8px}
+  .foot-credit{font-size:11.5px;color:var(--txt3);margin-top:6px}
 </style>
 </head>
 <body>
@@ -64,6 +84,13 @@
 
 <article>
   <div class="meta"><b>Guía por rubro · Indumentaria</b> · Actualizado: 12 de junio de 2026 · Lectura: 7 min</div>
+  <div class="author">
+    <div class="author-img">AH</div>
+    <div class="author-info">
+      <div class="author-name">Equipo ANMA Hub</div>
+      <div class="author-meta">Escribimos sobre gestión real para emprendedores argentinos. Probamos lo que recomendamos en nuestro propio producto antes de publicarlo.</div>
+    </div>
+  </div>
   <h1>Cómo controlar el stock de una tienda de ropa sin volverse loca</h1>
   <p class="lead">El stock de indumentaria es el más traicionero de todos los rubros: cada prenda existe en cinco talles y cuatro colores, las temporadas vencen, y una seña puede tener una campera "vendida pero colgada" durante semanas. Si alguna vez juraste que tenías ese vestido y no estaba, esta guía es para vos: el método práctico, sin teoría de manual, para que el stock deje de ocupar espacio en tu cabeza.</p>
 
@@ -109,8 +136,34 @@
     <tr><td>Cambios y devoluciones sin rastro</td><td>El cambio se hace "de palabra" y el stock queda mal en dos variantes</td><td>Todo cambio registrado como movimiento: entra una variante, sale otra</td></tr>
   </table>
 
+  <div class="mid-cta">
+    <div class="mid-cta-txt"><b>Talles, colores y señas, sin Excel.</b>ANMA Hub descuenta stock por variante en cada venta y te avisa cuando un talle toca el mínimo. 7 días gratis, sin tarjeta.</div>
+    <a href="/registro">Probar gratis →</a>
+  </div>
+
   <h2>¿Planilla o sistema para todo esto?</h2>
   <p>Las 4 reglas se pueden ejecutar en una planilla — el problema es que dependen de que un humano actualice todo, al instante, sin equivocarse nunca. Con variantes y señas de por medio, esa disciplina manual se rompe en semanas. Un sistema de gestión hace las reglas 1, 2 y 3 automáticamente; vos solo hacés los micro-recuentos. Si todavía dudás entre los dos caminos, escribimos una <a href="/recursos/excel-vs-sistema-de-gestion.html" style="color:var(--brand)">comparación honesta entre Excel y un sistema de gestión</a> — incluye los casos donde la planilla sigue ganando.</p>
+
+  <section class="related">
+    <h3>Seguí leyendo</h3>
+    <div class="related-grid">
+      <a class="related-card" href="/recursos/excel-vs-sistema-de-gestion.html">
+        <span class="related-tag">Decisional</span>
+        <b>Excel vs. sistema de gestión: cuándo conviene cada uno</b>
+        <span>La comparación honesta. Cuándo Excel todavía alcanza y cuándo te empieza a costar plata.</span>
+      </a>
+      <a class="related-card" href="/recursos/gestion-local-decoracion.html">
+        <span class="related-tag">Decoración</span>
+        <b>Tienda de decoración sin perder pedidos a medida</b>
+        <span>Para locales que venden diseño y piezas únicas, no commodities.</span>
+      </a>
+      <a class="related-card" href="/recursos/stock-tecnologia-electronica.html">
+        <span class="related-tag">Tecnología</span>
+        <b>Stock de electrónica con precios que cambian todos los días</b>
+        <span>Cómo no comerte el margen cuando los costos se mueven semana a semana.</span>
+      </a>
+    </div>
+  </section>
 
   <div class="box-cta">
     <h2>Probá las 4 reglas funcionando solas</h2>
@@ -120,7 +173,14 @@
 </article>
 
 <footer>
-  <a href="/landing.html">ANMA Hub</a> · <a href="/recursos/excel-vs-sistema-de-gestion.html">Excel vs. sistema de gestión</a> · <a href="/demo.html">Ver demo</a>
+  <div class="foot-rich">
+    <a href="/landing.html">ANMA Hub</a>
+    <a href="/recursos/">Todas las guías</a>
+    <a href="/demo.html">Ver demo</a>
+    <a href="/registro">Probar gratis</a>
+    <a href="/privacidad">Privacidad</a>
+  </div>
+  <div class="foot-credit">© 2026 ANMA Hub · Hecho en Argentina con la cabeza fría</div>
 </footer>
 
 </body>

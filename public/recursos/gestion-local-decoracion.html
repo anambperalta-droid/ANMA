@@ -53,6 +53,26 @@
   footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:12.5px;color:var(--txt3)}
   footer a{color:var(--brand);text-decoration:none}
   @media(max-width:640px){table{font-size:13px}th,td{padding:9px 8px}}
+  .author{display:flex;align-items:center;gap:14px;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:22px 0 28px}
+  .author-img{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#ec4899);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0;font-size:14px;letter-spacing:.5px}
+  .author-info{flex:1;min-width:0}
+  .author-name{font-weight:700;color:var(--txt);font-size:14px;line-height:1.3}
+  .author-meta{font-size:12px;color:var(--txt3);margin-top:3px;line-height:1.45}
+  .mid-cta{background:linear-gradient(135deg,#F5F3FF,#FAF5FF);border:1.5px solid #DDD6FE;border-radius:14px;padding:22px 24px;margin:34px 0;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .mid-cta-txt{flex:1;min-width:200px;font-size:14.5px;color:var(--txt2);line-height:1.55}
+  .mid-cta-txt b{color:#5B21B6;display:block;margin-bottom:3px;font-size:15px;font-weight:800}
+  .mid-cta a{background:var(--brand);color:#fff;text-decoration:none;font-weight:700;padding:11px 22px;border-radius:10px;font-size:13.5px;white-space:nowrap;transition:background .15s,transform .15s}
+  .mid-cta a:hover{background:#5B21B6;transform:translateY(-1px)}
+  .related{margin:56px 0 0}
+  .related h3{font-size:13px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px;margin:0 0 18px}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .related-card{display:block;background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;text-decoration:none;transition:border-color .15s,transform .15s,box-shadow .15s}
+  .related-card:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:0 6px 16px -4px rgba(124,58,237,.15)}
+  .related-tag{font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:block}
+  .related-card b{display:block;color:var(--txt);font-size:14px;line-height:1.4;margin-bottom:5px;font-weight:700}
+  .related-card span{font-size:12.5px;color:var(--txt3);line-height:1.5}
+  .foot-rich{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font-size:12.5px;margin-bottom:8px}
+  .foot-credit{font-size:11.5px;color:var(--txt3);margin-top:6px}
 </style>
 </head>
 <body>
@@ -64,6 +84,13 @@
 
 <article>
   <div class="meta"><b>Guía por rubro · Decoración y hogar</b> · Actualizado: 13 de junio de 2026 · Lectura: 7 min</div>
+  <div class="author">
+    <div class="author-img">AH</div>
+    <div class="author-info">
+      <div class="author-name">Equipo ANMA Hub</div>
+      <div class="author-meta">Escribimos sobre gestión real para emprendedores argentinos. Probamos lo que recomendamos en nuestro propio producto antes de publicarlo.</div>
+    </div>
+  </div>
   <h1>Cómo manejar una tienda de decoración sin perder pedidos (ni la cabeza)</h1>
   <p class="lead">En una tienda de deco, la mitad del negocio no está en lo que está en el estante: está en el cuadro que la clienta encargó "del mismo estilo que el de la sala", en el presupuesto que mandaste el martes y todavía no respondieron, en la maceta artesanal que guardaste porque alguien la quería ver. Ese negocio invisible es exactamente el que se cae sin un sistema. No es que seas desorganizada — es que nadie te mostró cómo ordenar algo tan particular.</p>
 
@@ -104,6 +131,11 @@
   </table>
   <p>No necesitás analizar todo esto todos los días. Pero mirarlo una vez por semana — cinco minutos — es la diferencia entre reaccionar al negocio y conducirlo.</p>
 
+  <div class="mid-cta">
+    <div class="mid-cta-txt"><b>Que ningún pedido a medida quede en el aire.</b>ANMA Hub te guarda cada encargo con seña, saldo y fecha — y el WhatsApp para avisar "ya está listo" a un click. 7 días gratis.</div>
+    <a href="/registro">Probar gratis →</a>
+  </div>
+
   <h2>El momento de tomar aire</h2>
   <p>Hay una versión del negocio de deco que es pura adrenalina: siempre corriendo de un pedido al otro, sin saber bien cuánto ganaste el mes, con la cabeza llena de encargos que tenés que ir a buscar en conversaciones de WhatsApp. Y hay otra versión donde podés cerrar el local, llegar a casa, y saber exactamente cómo está todo.</p>
   <p>La diferencia no es trabajar más. Es tener en un solo lugar lo que antes vivía disperso: los pedidos, los clientes, los presupuestos, los números. Cuando eso está ordenado, el negocio de deco deja de ser caótico y empieza a ser lo que siempre quisiste que fuera.</p>
@@ -127,12 +159,38 @@
 
   <p><b>¿Qué pasa si no tengo el tiempo para registrar todo esto?</b><br>
   El problema no es el tiempo: es la herramienta. Si registrar un pedido tarda más de un minuto, la herramienta no está bien diseñada para tu rubro. Un buen sistema de gestión se adapta a tu flujo, no al revés.</p>
+
+  <section class="related">
+    <h3>Seguí leyendo</h3>
+    <div class="related-grid">
+      <a class="related-card" href="/recursos/excel-vs-sistema-de-gestion.html">
+        <span class="related-tag">Decisional</span>
+        <b>Excel vs. sistema de gestión: cuándo conviene cada uno</b>
+        <span>La comparación honesta. Cuándo Excel todavía alcanza y cuándo te empieza a costar plata.</span>
+      </a>
+      <a class="related-card" href="/recursos/control-de-stock-tienda-de-ropa.html">
+        <span class="related-tag">Indumentaria</span>
+        <b>Stock de tienda de ropa sin caos de talles ni colores</b>
+        <span>Cómo organizar talles, evitar vender lo que no tenés y manejar señas paso a paso.</span>
+      </a>
+      <a class="related-card" href="/recursos/gestion-almacen-distribuidora.html">
+        <span class="related-tag">Almacén</span>
+        <b>Almacén o distribuidora sin perder mercadería ni rentabilidad</b>
+        <span>Alta rotación, vencimientos, márgenes reales y qué te deja plata de verdad.</span>
+      </a>
+    </div>
+  </section>
 </article>
 
 <footer>
-  <a href="/landing.html">ANMA Hub</a> · Gestión para negocios argentinos ·
-  <a href="/recursos/excel-vs-sistema-de-gestion.html">¿Excel o sistema?</a> ·
-  <a href="/recursos/control-de-stock-tienda-de-ropa.html">Stock de ropa</a>
+  <div class="foot-rich">
+    <a href="/landing.html">ANMA Hub</a>
+    <a href="/recursos/">Todas las guías</a>
+    <a href="/demo.html">Ver demo</a>
+    <a href="/registro">Probar gratis</a>
+    <a href="/privacidad">Privacidad</a>
+  </div>
+  <div class="foot-credit">© 2026 ANMA Hub · Hecho en Argentina con la cabeza fría</div>
 </footer>
 
 </body>

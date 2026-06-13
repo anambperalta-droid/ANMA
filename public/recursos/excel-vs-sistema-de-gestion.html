@@ -54,6 +54,30 @@
   footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:12.5px;color:var(--txt3)}
   footer a{color:var(--brand);text-decoration:none}
   @media(max-width:640px){table{font-size:13px}th,td{padding:9px 8px}}
+  /* Autor */
+  .author{display:flex;align-items:center;gap:14px;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:22px 0 28px}
+  .author-img{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#ec4899);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0;font-size:14px;letter-spacing:.5px}
+  .author-info{flex:1;min-width:0}
+  .author-name{font-weight:700;color:var(--txt);font-size:14px;line-height:1.3}
+  .author-meta{font-size:12px;color:var(--txt3);margin-top:3px;line-height:1.45}
+  /* CTA medio */
+  .mid-cta{background:linear-gradient(135deg,#F5F3FF 0%,#FAF5FF 100%);border:1.5px solid #DDD6FE;border-radius:14px;padding:22px 24px;margin:34px 0;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .mid-cta-txt{flex:1;min-width:200px;font-size:14.5px;color:var(--txt2);line-height:1.55}
+  .mid-cta-txt b{color:#5B21B6;display:block;margin-bottom:3px;font-size:15px;font-weight:800}
+  .mid-cta a{background:var(--brand);color:#fff;text-decoration:none;font-weight:700;padding:11px 22px;border-radius:10px;font-size:13.5px;white-space:nowrap;transition:background .15s,transform .15s}
+  .mid-cta a:hover{background:#5B21B6;transform:translateY(-1px)}
+  /* Guías relacionadas */
+  .related{margin:56px 0 0}
+  .related h3{font-size:13px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px;margin:0 0 18px}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .related-card{display:block;background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;text-decoration:none;transition:border-color .15s,transform .15s,box-shadow .15s}
+  .related-card:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:0 6px 16px -4px rgba(124,58,237,.15)}
+  .related-tag{font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:block}
+  .related-card b{display:block;color:var(--txt);font-size:14px;line-height:1.4;margin-bottom:5px;font-weight:700}
+  .related-card span{font-size:12.5px;color:var(--txt3);line-height:1.5}
+  /* Footer rico */
+  .foot-rich{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;font-size:12.5px;margin-bottom:8px}
+  .foot-credit{font-size:11.5px;color:var(--txt3);margin-top:6px}
 </style>
 </head>
 <body>
@@ -66,6 +90,13 @@
 <article>
   <div class="meta"><b>Guía para comercios</b> · Actualizado: 12 de junio de 2026 · Lectura: 6 min</div>
   <h1>Excel vs. sistema de gestión: cuándo conviene cada uno</h1>
+  <div class="author">
+    <div class="author-img">AH</div>
+    <div class="author-info">
+      <div class="author-name">Equipo ANMA Hub</div>
+      <div class="author-meta">Escribimos sobre gestión real para emprendedores argentinos. Probamos lo que recomendamos en nuestro propio producto antes de publicarlo.</div>
+    </div>
+  </div>
   <p class="lead">Casi todos los comercios argentinos arrancan igual: una planilla que armaste un domingo y que durante meses funciona bárbaro. Hasta que una noche te encontrás cruzando tres pestañas para saber si la seña de una clienta quedó anotada, y te das cuenta de que hace rato no respirás tranquila. Esta guía es para detectar ese momento exacto — sin humo: también te decimos cuándo la planilla sigue siendo tu mejor aliada.</p>
 
   <div class="answer">
@@ -107,6 +138,11 @@
   </ol>
   <p>Dos o más señales = la planilla ya te cuesta más que cualquier cuota. La matemática es simple: una sola venta de $40.000 perdida por error de stock paga el mes entero de casi cualquier sistema.</p>
 
+  <div class="mid-cta">
+    <div class="mid-cta-txt"><b>¿Te reconocés en dos o más?</b>Probá ANMA Hub 7 días sin tarjeta. Importás tu Excel actual y empezás a usarlo el mismo día.</div>
+    <a href="/registro">Probar gratis →</a>
+  </div>
+
   <h2>Lo que ninguna planilla te va a dar (aunque la armes perfecta)</h2>
   <p>Acá está la diferencia que casi nadie cuenta. Una planilla, en el mejor de los casos, te guarda datos. Pero hay tres cosas que hacen crecer un comercio y que necesitan algo más que celdas:</p>
   <ul>
@@ -123,6 +159,27 @@
     <li><b>Elegí algo que use tu vocabulario.</b> Si el sistema habla de "SKUs" y "leads" y vos hablás de talles y señas, la van a pelear todos los días.</li>
   </ol>
 
+  <section class="related">
+    <h3>Seguí leyendo</h3>
+    <div class="related-grid">
+      <a class="related-card" href="/recursos/control-de-stock-tienda-de-ropa.html">
+        <span class="related-tag">Indumentaria</span>
+        <b>Stock de tienda de ropa sin caos de talles ni colores</b>
+        <span>Cómo organizar talles, evitar vender lo que no tenés y manejar señas paso a paso.</span>
+      </a>
+      <a class="related-card" href="/recursos/stock-tecnologia-electronica.html">
+        <span class="related-tag">Tecnología</span>
+        <b>Stock de electrónica con precios que cambian todos los días</b>
+        <span>Cómo no comerte el margen cuando los costos se mueven semana a semana.</span>
+      </a>
+      <a class="related-card" href="/recursos/gestion-local-decoracion.html">
+        <span class="related-tag">Decoración</span>
+        <b>Tienda de decoración sin perder pedidos a medida</b>
+        <span>Para locales que venden diseño y piezas únicas, no commodities.</span>
+      </a>
+    </div>
+  </section>
+
   <div class="box-cta">
     <h2>¿Te reconociste en dos o más señales?</h2>
     <p>ANMA Hub está hecho para comercios que vienen de Excel: variantes, señas, seguimientos por WhatsApp y tus números reales en una pantalla. Probalo 7 días gratis, sin tarjeta — y volvé a cerrar la compu con la cabeza tranquila.</p>
@@ -131,7 +188,14 @@
 </article>
 
 <footer>
-  <a href="/landing.html">ANMA Hub</a> · <a href="/recursos/control-de-stock-tienda-de-ropa.html">Guía: control de stock para tiendas de ropa</a> · <a href="/demo.html">Ver demo</a>
+  <div class="foot-rich">
+    <a href="/landing.html">ANMA Hub</a>
+    <a href="/recursos/">Todas las guías</a>
+    <a href="/demo.html">Ver demo</a>
+    <a href="/registro">Probar gratis</a>
+    <a href="/privacidad">Privacidad</a>
+  </div>
+  <div class="foot-credit">© 2026 ANMA Hub · Hecho en Argentina con la cabeza fría</div>
 </footer>
 
 </body>
