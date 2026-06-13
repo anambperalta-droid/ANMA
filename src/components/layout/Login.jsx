@@ -17,20 +17,31 @@ const GOOGLE_CLIENT_ID = '102631288658-3u7abhbutcmri2t9m89fbsbis7j6m8ud.apps.goo
 
 function loadGIS() {
   return new Promise((resolve, reject) => {
+    // Espera a que window.google.accounts.id esté disponible — el script onload
+    // dispara antes que la API termine de inicializar, así que polleamos hasta 8s.
+    const waitForApi = () => new Promise((res, rej) => {
+      const start = Date.now()
+      const tick = () => {
+        if (window.google?.accounts?.id) return res()
+        if (Date.now() - start > 8000) return rej(new Error('GIS API not available after 8s'))
+        setTimeout(tick, 50)
+      }
+      tick()
+    })
+
     if (window.google?.accounts?.id) return resolve()
     const existing = document.querySelector('script[data-gis]')
     if (existing) {
-      existing.addEventListener('load', () => resolve(), { once: true })
-      existing.addEventListener('error', () => reject(new Error('GIS load error')), { once: true })
-      if (window.google?.accounts?.id) resolve()
+      // Script ya inyectado — esperar a que la API esté lista
+      waitForApi().then(resolve).catch(reject)
       return
     }
     const s = document.createElement('script')
     s.src = 'https://accounts.google.com/gsi/client'
     s.async = true; s.defer = true
     s.dataset.gis = '1'
-    s.onload = () => resolve()
-    s.onerror = () => reject(new Error('GIS load error'))
+    s.onload = () => waitForApi().then(resolve).catch(reject)
+    s.onerror = () => reject(new Error('GIS script load failed (CSP o red bloqueada)'))
     document.head.appendChild(s)
   })
 }
