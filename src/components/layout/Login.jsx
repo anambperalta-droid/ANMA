@@ -1,21 +1,37 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { supabase } from '../../lib/supabase'
+import { persistAcquisitionAcrossOAuth } from '../../lib/acquisitionTracking'
 
 const APP_VERSION = 'v1.4'
 const APP_YEAR = new Date().getFullYear()
 const LS_EMAIL_KEY = 'anma_last_email'
 const LS_LAST_LOGIN = 'anma_last_login'
 
-function friendlyAuthError(raw) {
+function friendlyAuthError(raw, email) {
   if (!raw) return ''
   const m = String(raw).toLowerCase()
-  if (m.includes('invalid login') || m.includes('invalid credentials')) return 'Email o contraseña incorrectos. Probá de nuevo.'
+  // Hint Google: si el email es @gmail y las credenciales son inválidas, probablemente
+  // se registró con Google y no tiene password. Sugerimos el botón de arriba.
+  if ((m.includes('invalid login') || m.includes('invalid credentials')) && /@(gmail|googlemail)\./i.test(email || '')) {
+    return '¿Te registraste con Google? Probá el botón "Continuar con Google" de arriba — tu cuenta no tiene contraseña.'
+  }
+  if (m.includes('invalid login') || m.includes('invalid credentials')) return 'Email o contraseña incorrectos. Si te registraste con Google, usá el botón de arriba.'
   if (m.includes('email not confirmed')) return 'Tu email aún no está confirmado. Revisá tu bandeja.'
   if (m.includes('too many') || m.includes('rate')) return 'Demasiados intentos. Esperá unos minutos y volvé a probar.'
   if (m.includes('network') || m.includes('failed to fetch')) return 'Sin conexión. Revisá tu internet e intentá de nuevo.'
   if (m.includes('user not found')) return 'No encontramos una cuenta con ese email.'
   return raw
 }
+
+const GoogleIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 48 48" fill="none">
+    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+  </svg>
+)
 
 function greeting() {
   const h = new Date().getHours()
@@ -52,8 +68,26 @@ export default function Login() {
   const [showPwd, setShowPwd] = useState(false)
   const [err, setErr] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [googleBusy, setGoogleBusy] = useState(false)
   const [capsOn, setCapsOn] = useState(false)
   const { login, resetPassword } = useAuth()
+
+  /* ── Google OAuth ── */
+  // PKCE: el code_verifier vive en localStorage del origen que inicia el flujo.
+  // Por eso redirectTo = window.location.origin (NO hardcoded) — el callback DEBE
+  // volver al mismo dominio desde donde se inició, sino el exchange falla.
+  const handleGoogle = async () => {
+    setGoogleBusy(true); setErr('')
+    persistAcquisitionAcrossOAuth()
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/bienvenida`,
+        queryParams: { access_type: 'offline', prompt: 'select_account' },
+      },
+    })
+    if (error) { setErr(error.message); setGoogleBusy(false) }
+  }
 
   const lastLogin = (() => { try { return localStorage.getItem(LS_LAST_LOGIN) } catch { return null } })()
   const lastLoginRel = relativeDays(lastLogin)
@@ -76,7 +110,7 @@ export default function Login() {
     if (!ev.ok) { setErr(ev.msg); return }
     setSubmitting(true); setErr('')
     const result = await login(email, pass)
-    if (result) { setErr(friendlyAuthError(result)); setSubmitting(false); return }
+    if (result) { setErr(friendlyAuthError(result, email)); setSubmitting(false); return }
     try { localStorage.setItem(LS_LAST_LOGIN, new Date().toISOString()) } catch { /* ignorar */ }
   }
 
@@ -279,6 +313,22 @@ export default function Login() {
         }
         .lp-divider::before,.lp-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.10)}
 
+        .lp-google{
+          display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+          padding:13px;background:#fff;color:#1f1f1f;border:none;border-radius:12px;
+          font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;
+          box-shadow:0 4px 18px rgba(0,0,0,.28);
+          transition:transform .15s,box-shadow .2s;margin-bottom:16px;
+        }
+        .lp-google:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.38)}
+        .lp-google:disabled{opacity:.6;cursor:not-allowed;transform:none}
+        .lp-sep{
+          display:flex;align-items:center;gap:10px;margin:0 0 16px;
+          font-size:10.5px;color:rgba(255,255,255,.35);
+          text-transform:uppercase;letter-spacing:1.2px;font-weight:600;
+        }
+        .lp-sep::before,.lp-sep::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.10)}
+
         .lp-cta{
           display:flex;align-items:center;justify-content:center;gap:6px;
           width:100%;padding:11px;border:1.5px solid rgba(255,255,255,.14);
@@ -349,6 +399,15 @@ export default function Login() {
               ? <>Tu último ingreso fue <b>{lastLoginRel}</b>. Todo te está esperando.</>
               : <>Ingresá para retomar tu operación donde la dejaste.</>}
           </div>
+
+          {/* Google login (prioridad — la mayoría se registra con Google) */}
+          <button type="button" className="lp-google" onClick={handleGoogle} disabled={googleBusy || submitting}>
+            {googleBusy
+              ? <><i className="fa fa-spinner fa-spin" /> Redirigiendo a Google...</>
+              : <><GoogleIcon /> Continuar con Google</>}
+          </button>
+
+          <div className="lp-sep">o con tu email</div>
 
           {err && (
             <div className="lp-err">
