@@ -371,6 +371,12 @@ export default function Registro() {
             <p className="rg-micro">
               <i className="fa fa-lock" />Sin tarjetas de crédito. Cancelás cuando quieras.
             </p>
+            <p className="rg-micro" style={{ marginTop:6, lineHeight:1.55 }}>
+              Al registrarte aceptás los{' '}
+              <a href="/terminos" target="_blank" rel="noopener" style={{ color:'#a78bfa', textDecoration:'underline' }}>Términos</a>
+              {' '}y la{' '}
+              <a href="/privacidad" target="_blank" rel="noopener" style={{ color:'#a78bfa', textDecoration:'underline' }}>Política de Privacidad</a>.
+            </p>
           </form>
 
           <Link to="/login" className="rg-already">
