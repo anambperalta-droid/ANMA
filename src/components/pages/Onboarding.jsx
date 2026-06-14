@@ -217,9 +217,83 @@ export default function Onboarding() {
   )
 }
 
+/* ─── Iconos de línea (stroke-only, sin relleno) ───
+   Diseño sofisticado tipo Lucide / Heroicons. Reemplazan los fa-solid (rellenos)
+   por SVG outline limpios. ViewBox 24x24, stroke 1.7, sin fill. */
+const LINE_ICONS = {
+  'fa-shirt': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 4 L20 6 L22 11 L18 13 L18 20 Q18 21 17 21 L7 21 Q6 21 6 20 L6 13 L2 11 L4 6 L8 4" />
+      <path d="M8 4 Q12 7 16 4" />
+    </svg>
+  ),
+  'fa-laptop': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="4" y="5" width="16" height="11" rx="1.5" />
+      <path d="M2 19 L22 19" />
+      <path d="M10 19 L14 19" strokeOpacity=".4" />
+    </svg>
+  ),
+  'fa-couch': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 11 L4 16 L20 16 L20 11" />
+      <path d="M4 11 Q4 8 6 8 L8 8 Q9 8 9 9 L9 13 L15 13 L15 9 Q15 8 16 8 L18 8 Q20 8 20 11" />
+      <path d="M5 16 L5 19" />
+      <path d="M19 16 L19 19" />
+    </svg>
+  ),
+  'fa-store': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 9 L4 4 L20 4 L21 9" />
+      <path d="M3 9 Q3 11 5 11 Q7 11 7 9" />
+      <path d="M7 9 Q7 11 9 11 Q11 11 11 9" />
+      <path d="M11 9 Q11 11 13 11 Q15 11 15 9" />
+      <path d="M15 9 Q15 11 17 11 Q19 11 19 9" />
+      <path d="M19 9 Q19 11 21 11" strokeOpacity=".6" />
+      <path d="M5 11 L5 20 L19 20 L19 11" />
+      <path d="M10 20 L10 15 L14 15 L14 20" />
+    </svg>
+  ),
+  'fa-bag-shopping': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 8 L19 8 L18 20 Q18 21 17 21 L7 21 Q6 21 6 20 L5 8" />
+      <path d="M9 8 L9 6 Q9 3 12 3 Q15 3 15 6 L15 8" />
+    </svg>
+  ),
+  'fa-boxes-stacked': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="13" width="8" height="8" rx="1" />
+      <rect x="13" y="13" width="8" height="8" rx="1" />
+      <rect x="8" y="3" width="8" height="8" rx="1" />
+      <path d="M6 17 L8 17" strokeOpacity=".5" />
+      <path d="M16 17 L18 17" strokeOpacity=".5" />
+      <path d="M11 7 L13 7" strokeOpacity=".5" />
+    </svg>
+  ),
+  'fa-arrows-rotate': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 12 Q3 5 12 5 Q17 5 20 9" />
+      <path d="M20 4 L20 9 L15 9" />
+      <path d="M21 12 Q21 19 12 19 Q7 19 4 15" />
+      <path d="M4 20 L4 15 L9 15" />
+    </svg>
+  ),
+}
+function LineIcon({ fa, size = 20, color = '#7C3AED' }) {
+  const svg = LINE_ICONS[fa]
+  if (!svg) return <i className={`fa-solid ${fa}`} style={{ fontSize: size * 0.7, color }} />
+  return (
+    <span style={{ width: size, height: size, color, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+      {/* clone para inyectar tamaño */}
+      <span style={{ width: '100%', height: '100%', display: 'block' }}>
+        {svg.type === 'svg' ? <svg {...svg.props} style={{ width: '100%', height: '100%' }} /> : svg}
+      </span>
+    </span>
+  )
+}
+
 /* ─── Sub-componente: card de selección única ───
-   Ícono FontAwesome en chip sobrio (mismo lenguaje visual que la landing)
-   en lugar de emoji — transmite producto profesional sin perder calidez. */
+   Ícono line-only sofisticado (sin relleno) en chip sobrio. */
 function SelectCard({ fa, label, sub, selected, onClick }) {
   const base = {
     border: `1.5px solid ${selected ? '#7C3AED' : '#E5E7EB'}`,
@@ -236,13 +310,14 @@ function SelectCard({ fa, label, sub, selected, onClick }) {
       onMouseEnter={e => { if (!selected) e.currentTarget.style.borderColor = '#C4B5FD' }}
       onMouseLeave={e => { if (!selected) e.currentTarget.style.borderColor = '#E5E7EB' }}>
       <div style={{
-        width: 34, height: 34, borderRadius: 10,
-        background: selected ? 'linear-gradient(135deg,#7C3AED,#9D5CF5)' : 'linear-gradient(135deg,#F5F3FF,#EDE9FE)',
+        width: 36, height: 36, borderRadius: 11,
+        background: selected ? 'linear-gradient(135deg,#7C3AED,#9D5CF5)' : 'transparent',
+        border: selected ? 'none' : '1.5px solid #DDD6FE',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        marginBottom: 3, transition: 'background .15s',
+        marginBottom: 5, transition: 'background .15s, border-color .15s',
         boxShadow: selected ? '0 3px 10px rgba(124,58,237,.3)' : 'none',
       }}>
-        <i className={`fa-solid ${fa}`} style={{ fontSize: 14, color: selected ? '#fff' : '#7C3AED' }} />
+        <LineIcon fa={fa} size={20} color={selected ? '#fff' : '#7C3AED'} />
       </div>
       <div style={{ fontSize: 13.5, fontWeight: 800, color: selected ? '#6D28D9' : '#1E1B4B', letterSpacing: '-.1px' }}>{label}</div>
       <div style={{ fontSize: 10.5, color: '#6B7280', lineHeight: 1.35 }}>{sub}</div>
