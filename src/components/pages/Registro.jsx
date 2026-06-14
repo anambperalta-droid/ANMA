@@ -163,6 +163,17 @@ const CSS = `
 export default function Registro() {
   const { authed } = useAuth()
   const navigate   = useNavigate()
+  // ?next=/activar (o cualquier URL relativa) → al registrarse va directo ahí.
+  // Permite que el botón "Activar mi plan" de la landing se salte el flow de trial.
+  const nextUrl = (() => {
+    try {
+      const p = new URLSearchParams(window.location.search)
+      const n = p.get('next')
+      if (n && n.startsWith('/')) return n
+    } catch { /* noop */ }
+    return null
+  })()
+  const isActivateFlow = nextUrl === '/activar'
 
   // First-touch attribution: capturamos UTM + referrer al montar el form
   // y los enviamos en signUp. Si el user vino de Instagram bio, después
@@ -251,7 +262,7 @@ export default function Registro() {
     if (data?.session?.user) {
       injectSeedData(data.session.user.id, cleanBiz)
       clearAcquisitionData()   // limpiar después del signUp exitoso
-      navigate('/', { replace: true })
+      navigate(nextUrl || '/', { replace: true })
     } else {
       clearAcquisitionData()
       setEmailSent(true)
@@ -301,12 +312,21 @@ export default function Registro() {
             <div className="rg-logo"><AnmaLogo /></div>
             <div>
               <div className="rg-brand-name">ANMA Hub</div>
-              <div className="rg-brand-tag">7 días gratis · Sin tarjeta</div>
+              <div className="rg-brand-tag">{isActivateFlow ? 'Plan Gestión Integral · $120.000 + setup' : '7 días gratis · Sin tarjeta'}</div>
             </div>
           </div>
 
-          <div className="rg-h">Empezá <em>gratis hoy</em></div>
-          <div className="rg-sub">Registro en 30 segundos. Sin tarjeta de crédito.</div>
+          {isActivateFlow ? (
+            <>
+              <div className="rg-h">Activá tu <em>plan ahora</em></div>
+              <div className="rg-sub">Creá tu cuenta en 30 segundos. Después te llevamos al pago seguro con Mercado Pago.</div>
+            </>
+          ) : (
+            <>
+              <div className="rg-h">Empezá <em>gratis hoy</em></div>
+              <div className="rg-sub">Registro en 30 segundos. Sin tarjeta de crédito.</div>
+            </>
+          )}
 
           {/* Google signup — redirect tradicional, funciona en todos los dispositivos */}
           <button className="rg-google" onClick={handleGoogle} disabled={googleBusy || loading} type="button">
@@ -381,7 +401,9 @@ export default function Registro() {
             <button type="submit" className="rg-btn" disabled={loading || googleBusy}>
               {loading
                 ? <><i className="fa fa-spinner fa-spin" /> Creando cuenta...</>
-                : <><i className="fa fa-rocket" /> Probar gratis por 7 días</>}
+                : isActivateFlow
+                  ? <><i className="fa fa-bolt" /> Crear cuenta y pasar al pago</>
+                  : <><i className="fa fa-rocket" /> Probar gratis por 7 días</>}
             </button>
 
             <p className="rg-micro">

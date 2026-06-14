@@ -173,9 +173,25 @@ function PaymentsModal({ budget, onSave, onClose }) {
 }
 
 /* ── Modal motivo de pérdida ── */
-function LossReasonModal({ onSave, onClose }) {
+function LossReasonModal({ budget, onSave, onClose }) {
   const [reason, setReason] = useState('')
   const [other, setOther] = useState('')
+  // Si hay pagos registrados, preguntar qué pasó con esa plata.
+  // null = aún no contestó. true = me quedé. false = devolví.
+  const hasPayments = budget && (Array.isArray(budget.payments) && budget.payments.length > 0)
+                                 || (budget && (budget.payStatus === 'partial' || budget.payStatus === 'paid'))
+  const paidAmount = (() => {
+    if (!budget) return 0
+    if (Array.isArray(budget.payments) && budget.payments.length > 0) {
+      return budget.payments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
+    }
+    const totalCobrado = budget.totalFinal || budget.total || 0
+    if (budget.payStatus === 'paid')    return totalCobrado
+    if (budget.payStatus === 'partial') return budget.depositAmt || Math.round(totalCobrado * (budget.deposit || 50) / 100)
+    return 0
+  })()
+  const [keptDeposit, setKeptDeposit] = useState(null)
+  const fmtMoney = (v) => '$' + Number(v || 0).toLocaleString('es-AR')
   const REASONS = [
     { k: 'price', l: '💰 Precio muy alto' },
     { k: 'time', l: '⏰ No llegábamos con los tiempos' },
@@ -185,6 +201,7 @@ function LossReasonModal({ onSave, onClose }) {
     { k: 'other', l: '📝 Otro motivo' },
   ]
   const finalReason = reason === 'other' ? other.trim() : (REASONS.find(r => r.k === reason)?.l.replace(/^\S+ /, '') || '')
+  const canSave = finalReason && (!hasPayments || keptDeposit !== null)
   return (
     <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) onClose() }}>
       <div className="modal" style={{ maxWidth: 460 }}>
@@ -217,9 +234,46 @@ function LossReasonModal({ onSave, onClose }) {
               style={{ width: '100%', padding: '10px 12px', border: '1.5px solid var(--border)', borderRadius: 10, fontSize: 13, fontFamily: 'inherit', boxSizing: 'border-box' }} />
           </div>
         )}
+
+        {/* Si hay pagos → preguntar qué pasó con esa plata */}
+        {hasPayments && (
+          <div style={{ background: '#FFFBEB', border: '1.5px solid #FDE68A', borderRadius: 10, padding: 14, marginBottom: 14 }}>
+            <div style={{ fontSize: 12.5, fontWeight: 700, color: '#92400E', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <i className="fa fa-hand-holding-dollar" /> El cliente pagó {fmtMoney(paidAmount)}
+            </div>
+            <div style={{ fontSize: 11.5, color: '#92400E', marginBottom: 10, lineHeight: 1.5 }}>
+              ¿Qué pasó con ese dinero? Determina si cuenta como ingreso de tu período.
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+              <button type="button" onClick={() => setKeptDeposit(true)}
+                style={{
+                  padding: '10px 8px', borderRadius: 9,
+                  border: `1.5px solid ${keptDeposit === true ? '#16A34A' : '#FDE68A'}`,
+                  background: keptDeposit === true ? '#DCFCE7' : '#fff',
+                  color: keptDeposit === true ? '#15803D' : '#92400E',
+                  fontSize: 11.5, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                }}>
+                <i className="fa fa-check" style={{ marginRight: 5 }} />Me quedé con la seña<br />
+                <span style={{ fontSize: 10, fontWeight: 500, opacity: .85 }}>Cuenta como ingreso</span>
+              </button>
+              <button type="button" onClick={() => setKeptDeposit(false)}
+                style={{
+                  padding: '10px 8px', borderRadius: 9,
+                  border: `1.5px solid ${keptDeposit === false ? '#DC2626' : '#FDE68A'}`,
+                  background: keptDeposit === false ? '#FEE2E2' : '#fff',
+                  color: keptDeposit === false ? '#991B1B' : '#92400E',
+                  fontSize: 11.5, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                }}>
+                <i className="fa fa-rotate-left" style={{ marginRight: 5 }} />Le devolví la plata<br />
+                <span style={{ fontSize: 10, fontWeight: 500, opacity: .85 }}>No cuenta como ingreso</span>
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="mfooter">
           <button className="btn btn-secondary" onClick={onClose}>Cancelar</button>
-          <button className="btn btn-primary" onClick={() => onSave(finalReason)} disabled={!finalReason}
+          <button className="btn btn-primary" onClick={() => onSave({ reason: finalReason, keptDeposit })} disabled={!canSave}
             style={{ background: 'var(--red)', borderColor: 'var(--red)' }}>
             <i className="fa fa-floppy-disk" /> Guardar y marcar como perdido
           </button>
@@ -637,9 +691,12 @@ export default function Historial() {
     const prevYM = (() => { const d = new Date(n.getFullYear(), n.getMonth() - 1, 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}` })()
     const totBudgeted = periodBudgets.reduce((s, b) => s + (b.total || 0), 0)
     const confirmed   = periodBudgets.filter(b => b.status === 'confirmed')
-    // Pagados: excluimos 'lost' (pedidos perdidos no cuentan como ingreso, aunque haya
-    // pagos quedados de una seña no devuelta — eso lo trackeará el modulo de pérdidas).
-    const pagados     = periodBudgets.filter(b => b.status !== 'lost' && (b.payStatus === 'paid' || b.payStatus === 'partial'))
+    // Pagados: incluye los NO perdidos + los perdidos donde te quedaste con la seña (keptDeposit:true).
+    // Si marcaste un pedido perdido y devolviste la plata, NO cuenta como ingreso.
+    const pagados     = periodBudgets.filter(b => {
+      if (b.status === 'lost' && !b.keptDeposit) return false
+      return b.payStatus === 'paid' || b.payStatus === 'partial'
+    })
     const totCobrado  = pagados.reduce((s, b) => s + cobrado(b), 0)
     const avgTicket   = periodBudgets.length ? Math.round(totBudgeted / periodBudgets.length) : 0
     const convRate    = periodBudgets.length ? Math.round(confirmed.length / periodBudgets.length * 100) + '%' : '—'
@@ -676,8 +733,8 @@ export default function Historial() {
       // Ventas brutas del día: presupuestos creados ese día (excluye perdidos)
       const dayBs = budgets.filter(b => b.date === ds && b.status !== 'lost')
       brutas.push(dayBs.reduce((s, b) => s + (b.total || 0), 0))
-      // Caja del día: pagos efectivamente recibidos en esa fecha (excluye perdidos)
-      caja.push(budgets.filter(b => b.status !== 'lost').reduce((s, b) => s + cobradoEnFecha(b, ds), 0))
+      // Caja del día: pagos efectivamente recibidos. Excluye perdidos sin seña preservada.
+      caja.push(budgets.filter(b => !(b.status === 'lost' && !b.keptDeposit)).reduce((s, b) => s + cobradoEnFecha(b, ds), 0))
       ticket.push(dayBs.length ? dayBs.reduce((s, b) => s + (b.total || 0), 0) / dayBs.length : 0)
     }
     return { sparkBrutas: brutas, sparkCaja: caja, sparkTicket: ticket }
@@ -901,18 +958,33 @@ export default function Historial() {
     }
     updateBudgetStatus(id, status); toast('Estado actualizado', 'ok')
   }
-  const confirmLoss = (reason) => {
+  const confirmLoss = ({ reason, keptDeposit }) => {
     if (!pendingLossId) return
     const b = budgets.find(x => x.id === pendingLossId)
     if (b) {
-      // Si el pedido estaba descontado, devolvemos el stock — el pedido se perdió, no se entregó.
+      // Determinar qué pasa con los pagos:
+      //   keptDeposit=true  → preservamos payments[] (cuentan como ingreso)
+      //   keptDeposit=false → limpiamos payments[] (la plata se devolvió)
+      //   keptDeposit=null  → sin pagos registrados, no aplica
+      const payments = keptDeposit === false ? [] : (b.payments || [])
+      const payStatus = keptDeposit === false ? 'pending' : b.payStatus
+      const patch = {
+        status: 'lost',
+        lossReason: reason,
+        lossDate: new Date().toISOString().slice(0, 10),
+        keptDeposit: keptDeposit === true,
+        payments,
+        payStatus,
+      }
       if (b.stockDeducted) {
         restoreStockForOrder(b.items || [], b.dispatchInsumos || [], b.num || '', 'lost')
-        saveBudget({ ...b, status: 'lost', stockDeducted: false, lossReason: reason, lossDate: new Date().toISOString().slice(0, 10) })
-        toast(`Marcado como perdido · ${reason} · stock restaurado`, 'in')
+        saveBudget({ ...b, ...patch, stockDeducted: false })
+        const extra = keptDeposit === true ? ' · seña preservada como ingreso' : keptDeposit === false ? ' · seña devuelta' : ''
+        toast(`Marcado como perdido · ${reason} · stock restaurado${extra}`, 'in')
       } else {
-        saveBudget({ ...b, status: 'lost', lossReason: reason, lossDate: new Date().toISOString().slice(0, 10) })
-        toast(`Marcado como perdido · ${reason}`, 'in')
+        saveBudget({ ...b, ...patch })
+        const extra = keptDeposit === true ? ' · seña preservada' : keptDeposit === false ? ' · seña devuelta' : ''
+        toast(`Marcado como perdido · ${reason}${extra}`, 'in')
       }
     }
     setPendingLossId(null)
@@ -2109,6 +2181,7 @@ export default function Historial() {
       {/* ═══ Loss Reason Modal ═══ */}
       {pendingLossId && (
         <LossReasonModal
+          budget={budgets.find(x => x.id === pendingLossId)}
           onSave={confirmLoss}
           onClose={() => setPendingLossId(null)}
         />

@@ -63,6 +63,8 @@ export default function Catalogo() {
   const [priceUpdateModal, setPriceUpdateModal] = useState(false)
   const [pricePct, setPricePct] = useState('')
   const [priceSupplier, setPriceSupplier] = useState('all')
+  const [priceCategory, setPriceCategory] = useState('all')
+  const [priceMode, setPriceMode] = useState('both') // 'both' | 'cost' | 'prices'
   const [loading, setLoading] = useState(true)
   const [showCostInfo, setShowCostInfo] = useState(false)
   const [form, setForm] = useState({ ...EMPTY })
@@ -217,23 +219,61 @@ export default function Catalogo() {
     setMoveModal(null); toast('Movimiento registrado', 'ok')
   }
 
-  /* Actualización masiva de precios */
-  const priceUpdatePreview = priceSupplier === 'all'
-    ? products
-    : products.filter(p => String(p.supplierId) === String(priceSupplier))
+  /* Actualización masiva — filtra por supplier + categoría combinados */
+  const priceUpdatePreview = products.filter(p => {
+    if (priceSupplier !== 'all' && String(p.supplierId) !== String(priceSupplier)) return false
+    if (priceCategory !== 'all' && p.cat !== priceCategory) return false
+    return true
+  })
 
+  /**
+   * Aplica un % a productos. Modo controla qué se modifica:
+   *   - 'cost'   → solo costo (precios B2C/B2B intactos — útil si subió tu proveedor pero no querés tocar venta)
+   *   - 'prices' → solo precios B2C y B2B (costo intacto — útil para subir precio sin tocar margen calculado)
+   *   - 'both'   → costo Y precios recalculados con margen actual del producto (preserva margen, no resetea a default)
+   * IMPORTANTE: 'both' mantiene el MARGEN DEL PRODUCTO (priceB2C / cost), NO resetea al margen default.
+   * Esto preserva precios manuales custom que vos hayas ajustado.
+   */
   const doPriceUpdate = () => {
     const pct = Number(pricePct)
     if (!pct) { toast('Ingresá un porcentaje válido', 'er'); return }
     const factor = 1 + pct / 100
     const targets = selectedIds.size > 0 ? products.filter(p => selectedIds.has(p.id)) : priceUpdatePreview
     targets.forEach(p => {
-      const newCost = Math.round((Number(p.cost) || 0) * factor)
-      const prices = autoPrice(newCost)
-      saveEntity('products', { ...p, cost: newCost, priceB2C: prices.b2c, priceB2B: prices.b2b })
+      const oldCost  = Number(p.cost) || 0
+      const oldB2C   = Number(p.priceB2C) || 0
+      const oldB2B   = Number(p.priceB2B) || 0
+      let patch = { ...p }
+      if (priceMode === 'cost') {
+        // Solo costo: precios quedan como están
+        patch.cost = Math.round(oldCost * factor)
+      } else if (priceMode === 'prices') {
+        // Solo precios: costo queda como está
+        patch.priceB2C = oldB2C > 0 ? Math.round(oldB2C * factor) : autoPrice(oldCost).b2c
+        patch.priceB2B = oldB2B > 0 ? Math.round(oldB2B * factor) : autoPrice(oldCost).b2b
+      } else {
+        // Ambos: preservamos margen ACTUAL del producto (no resetea a default).
+        // Si tenía precio manual, mantenemos esa proporción.
+        const newCost = Math.round(oldCost * factor)
+        patch.cost = newCost
+        if (oldCost > 0 && oldB2C > 0) {
+          const ratio = oldB2C / oldCost
+          patch.priceB2C = Math.round(newCost * ratio)
+        } else {
+          patch.priceB2C = autoPrice(newCost).b2c
+        }
+        if (oldCost > 0 && oldB2B > 0) {
+          const ratio = oldB2B / oldCost
+          patch.priceB2B = Math.round(newCost * ratio)
+        } else {
+          patch.priceB2B = autoPrice(newCost).b2b
+        }
+      }
+      saveEntity('products', patch)
     })
-    toast(`${targets.length} productos actualizados ${pct > 0 ? '+' : ''}${pct}%`, 'ok')
-    setPriceUpdateModal(false); setPricePct(''); setPriceSupplier('all')
+    const modeLabel = priceMode === 'cost' ? 'costo' : priceMode === 'prices' ? 'precios' : 'costo + precios'
+    toast(`${targets.length} productos actualizados (${modeLabel}) ${pct > 0 ? '+' : ''}${pct}%`, 'ok')
+    setPriceUpdateModal(false); setPricePct(''); setPriceSupplier('all'); setPriceCategory('all'); setPriceMode('both')
     if (selectedIds.size > 0) setSelectedIds(new Set())
   }
 
@@ -965,18 +1005,62 @@ export default function Catalogo() {
               <button className="mclose" onClick={() => setPriceUpdateModal(false)}><i className="fa fa-xmark" /></button>
             </div>
             <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '12px 16px', marginBottom: 16, fontSize: 12, color: 'var(--txt2)', lineHeight: 1.6 }}>
-              Aumenta o disminuye el <b>costo</b> de un proveedor en un porcentaje. Los precios B2C y B2B se recalculan automáticamente según tus reglas de margen.
+              Ajustá costos y/o precios por porcentaje. <b>Preserva el margen real</b> de cada producto — los precios manuales custom NO se resetean.
             </div>
+
+            {/* ── Modo: qué actualizar ── */}
+            <div className="fg">
+              <label>¿Qué actualizar?</label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+                {[
+                  { val: 'both',   icon: 'fa-layer-group', lbl: 'Costo + precios', hint: 'Sube ambos preservando margen' },
+                  { val: 'cost',   icon: 'fa-tag',         lbl: 'Solo costo',      hint: 'No toca precios de venta' },
+                  { val: 'prices', icon: 'fa-dollar-sign', lbl: 'Solo precios',    hint: 'No toca costo (B2C + B2B)' },
+                ].map(opt => (
+                  <button key={opt.val} type="button" onClick={() => setPriceMode(opt.val)}
+                    title={opt.hint}
+                    style={{
+                      padding: '10px 8px', borderRadius: 10,
+                      border: `1.5px solid ${priceMode === opt.val ? 'var(--brand)' : 'var(--border)'}`,
+                      background: priceMode === opt.val ? 'var(--brand-xlt)' : 'var(--surface)',
+                      color: priceMode === opt.val ? 'var(--brand)' : 'var(--txt2)',
+                      fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                      transition: 'all .15s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5,
+                    }}>
+                    <i className={`fa ${opt.icon}`} style={{ fontSize: 14 }} />
+                    {opt.lbl}
+                  </button>
+                ))}
+              </div>
+              <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 6, lineHeight: 1.5 }}>
+                {priceMode === 'both'   && '✓ Sube costo Y recalcula precios manteniendo el % de margen actual de cada producto'}
+                {priceMode === 'cost'   && '✓ Solo cambia el costo. B2C y B2B quedan exactamente como están'}
+                {priceMode === 'prices' && '✓ Solo cambia los precios B2C y B2B. El costo queda igual'}
+              </div>
+            </div>
+
             {selectedIds.size === 0 && (
-              <div className="fg">
-                <label>Proveedor</label>
-                <select value={priceSupplier} onChange={e => setPriceSupplier(e.target.value)}>
-                  <option value="all">Todos los proveedores ({products.length} productos)</option>
-                  {suppliers.map(s => {
-                    const count = products.filter(p => String(p.supplierId) === String(s.id)).length
-                    return <option key={s.id} value={s.id}>{s.name} ({count} productos)</option>
-                  })}
-                </select>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="fg">
+                  <label>Proveedor</label>
+                  <select value={priceSupplier} onChange={e => setPriceSupplier(e.target.value)}>
+                    <option value="all">Todos ({products.length})</option>
+                    {suppliers.map(s => {
+                      const count = products.filter(p => String(p.supplierId) === String(s.id)).length
+                      return <option key={s.id} value={s.id}>{s.name} ({count})</option>
+                    })}
+                  </select>
+                </div>
+                <div className="fg">
+                  <label>Categoría</label>
+                  <select value={priceCategory} onChange={e => setPriceCategory(e.target.value)}>
+                    <option value="all">Todas</option>
+                    {cats.map(c => {
+                      const count = products.filter(p => p.cat === c).length
+                      return <option key={c} value={c}>{c} ({count})</option>
+                    })}
+                  </select>
+                </div>
               </div>
             )}
             <div className="fg">
