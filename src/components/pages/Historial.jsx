@@ -372,9 +372,27 @@ function StatusDonut({ statuses, budgets, onSegmentClick }) {
 }
 
 // ── Pure helpers (module-level — no state deps) ──────────────────
+/**
+ * Cuánto efectivamente entró por este presupuesto.
+ *
+ * Prioridad de fuentes (de más confiable a menos):
+ *   1. b.payments[] — historial real de cobros (seña + saldo + ajustes). La SUMA.
+ *   2. payStatus='paid' → totalFinal (con IVA) || total. Lo que efectivamente cobró.
+ *   3. payStatus='partial' → depositAmt (la seña conocida).
+ *   4. pending → 0.
+ *
+ * Usar totalFinal (con IVA) corrige el bug histórico que subreportaba ingresos al
+ * no contar el IVA que entró efectivamente al bolsillo de Anma (aunque después
+ * vaya a AFIP, es plata que entró).
+ */
 const cobrado = (b) => {
-  if (b.payStatus === 'paid') return b.total || 0
-  if (b.payStatus === 'partial') return b.depositAmt || Math.round((b.total || 0) * (b.deposit || 50) / 100)
+  // Si hay registro de pagos individuales (seña + saldo + etc.), lo sumamos
+  if (Array.isArray(b.payments) && b.payments.length > 0) {
+    return b.payments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
+  }
+  const totalCobrado = b.totalFinal || b.total || 0
+  if (b.payStatus === 'paid')    return totalCobrado
+  if (b.payStatus === 'partial') return b.depositAmt || Math.round(totalCobrado * (b.deposit || 50) / 100)
   return 0
 }
 const ganCobrada = (b) => {
