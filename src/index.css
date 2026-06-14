@@ -1014,6 +1014,11 @@ td b{color:var(--txt);font-weight:600}
   .analysis-grid{grid-template-columns:1fr!important}
   /* Ocultar col menos importantes en tabla */
   .col-hide-mobile{display:none!important}
+  /* Tabla de pedidos — tap targets más generosos en mobile */
+  .hist-tbl td{padding:12px 8px!important;font-size:12.5px}
+  .hist-tbl th{padding:10px 8px!important;font-size:10.5px;letter-spacing:.04em}
+  .hist-act{min-width:36px;min-height:36px;padding:8px!important}
+  .hist-tbl tr:active{background:rgba(124,58,237,.04)}
   /* Budget detail modal header */
   .dm-head{flex-wrap:wrap;gap:8px}
   .dm-head .badge{margin-left:0}
