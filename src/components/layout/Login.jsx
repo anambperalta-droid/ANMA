@@ -46,6 +46,43 @@ function loadGIS() {
   })
 }
 
+// Detección de entornos donde GIS popup falla casi siempre:
+//  - Mobile (Android/iOS) navegadores
+//  - In-app browsers (FB, IG, Gmail iOS, etc.) — directamente no funcionan
+//  - Es más confiable enviar redirect en esos casos
+function shouldUseRedirectFlow() {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent || ''
+  const isInApp = /FBAN|FBAV|Instagram|Line\/|MicroMessenger|GSA\/|Pinterest|TikTok|WhatsApp/i.test(ua)
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(ua)
+  return isInApp || isMobile
+}
+
+// Limpia el cache de OAuth state previo para evitar bad_oauth_state
+// cuando hay intentos viejos colgados en localStorage / sessionStorage.
+function clearStaleOAuthState() {
+  try {
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith('sb-') && (k.includes('auth-token-code-verifier') || k.includes('-flow-state'))) {
+        try { localStorage.removeItem(k) } catch { /* noop */ }
+      }
+    })
+  } catch { /* noop */ }
+}
+
+// Fallback redirect — funciona en mobile y in-app, no depende de popup ni cookies de state.
+async function loginWithRedirect() {
+  clearStaleOAuthState()
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${window.location.origin}/bienvenida`,
+      queryParams: { access_type: 'offline', prompt: 'select_account' },
+    },
+  })
+  return error
+}
+
 function friendlyAuthError(raw, email) {
   if (!raw) return ''
   const m = String(raw).toLowerCase()
@@ -111,14 +148,29 @@ export default function Login() {
   const [capsOn, setCapsOn] = useState(false)
   const { login, resetPassword } = useAuth()
   const googleBtnRef = useRef(null)
+  // Mobile + in-app browsers tienen que ir SIEMPRE por redirect — GIS popup les falla.
+  const preferRedirect = useRef(shouldUseRedirectFlow()).current
 
-  /* ── Google Identity Services (signInWithIdToken) ──
-   * Bypassa el OAuth-redirect flow tradicional. El ID token se obtiene en el
-   * browser via Google Identity Services y se manda a Supabase, sin redirect
-   * ni cookies de terceros — elimina el bug bad_oauth_state.
+  /* ── Google login con doble vía:
+   *   1. Mobile / in-app → signInWithOAuth (redirect, sin popup) — botón render-as-button propio
+   *   2. Desktop → Google Identity Services popup → signInWithIdToken
+   *   Y siempre se muestra un fallback "método alternativo" para que el user no quede atascado.
    */
+  const handleRedirectGoogle = async () => {
+    setGoogleBusy(true); setErr('')
+    try { persistAcquisitionAcrossOAuth() } catch { /* noop */ }
+    const error = await loginWithRedirect()
+    if (error) {
+      setErr('No se pudo iniciar: ' + error.message)
+      setGoogleBusy(false)
+    }
+    // Si funciona, redirige al usuario fuera de la página, no hay que resetear estado.
+  }
+
   useEffect(() => {
+    if (preferRedirect) return // No cargar GIS en mobile/in-app
     let mounted = true
+    let timeoutId
     loadGIS().then(() => {
       if (!mounted || !window.google?.accounts?.id || !googleBtnRef.current) return
       window.google.accounts.id.initialize({
@@ -126,8 +178,10 @@ export default function Login() {
         ux_mode: 'popup',
         auto_select: false,
         callback: async (response) => {
+          if (timeoutId) clearTimeout(timeoutId)
           if (!response?.credential) {
-            setErr('No recibimos la confirmación de Google. Probá de nuevo.')
+            setErr('No recibimos la confirmación de Google. Probá de nuevo o usá el método alternativo abajo.')
+            setGoogleBusy(false)
             return
           }
           setGoogleBusy(true); setErr('')
@@ -141,11 +195,22 @@ export default function Login() {
             setGoogleBusy(false)
             return
           }
-          // Éxito: AuthContext.onAuthStateChange se encarga de navegar.
           try { localStorage.setItem(LS_LAST_LOGIN, new Date().toISOString()) } catch { /* noop */ }
         },
       })
-      window.google.accounts.id.renderButton(googleBtnRef.current, {
+      // Wrapper: cuando el user clickea el botón, arrancamos timeout que resetea el spinner
+      // si el popup nunca devuelve credential (cerrado, bloqueado, etc.).
+      const btnWrapper = document.createElement('div')
+      googleBtnRef.current.appendChild(btnWrapper)
+      btnWrapper.addEventListener('click', () => {
+        setGoogleBusy(true); setErr('')
+        if (timeoutId) clearTimeout(timeoutId)
+        timeoutId = setTimeout(() => {
+          setGoogleBusy(false)
+          setErr('Google no respondió. Probá el método alternativo de abajo.')
+        }, 30000)
+      }, true)
+      window.google.accounts.id.renderButton(btnWrapper, {
         type: 'standard',
         theme: 'outline',
         size: 'large',
@@ -157,10 +222,10 @@ export default function Login() {
       if (mounted) setGoogleReady(true)
     }).catch(e => {
       console.error('[anma-auth] No se pudo cargar Google Identity Services', e)
-      if (mounted) setErr('No se pudo cargar Google. Reintentá o entrá con tu email.')
+      if (mounted) setErr('No se pudo cargar Google. Probá el método alternativo abajo o entrá con tu email.')
     })
-    return () => { mounted = false }
-  }, [])
+    return () => { mounted = false; if (timeoutId) clearTimeout(timeoutId) }
+  }, [preferRedirect])
 
   const lastLogin = (() => { try { return localStorage.getItem(LS_LAST_LOGIN) } catch { return null } })()
   const lastLoginRel = relativeDays(lastLogin)
@@ -473,19 +538,37 @@ export default function Login() {
               : <>Ingresá para retomar tu operación donde la dejaste.</>}
           </div>
 
-          {/* Google login (Google Identity Services — sin redirects, sin cookies de terceros) */}
-          <div style={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight:44, marginBottom:16 }}>
-            {googleBusy ? (
-              <div style={{ color:'rgba(255,255,255,.85)', fontSize:13, fontWeight:600, display:'flex', alignItems:'center', gap:8 }}>
-                <i className="fa fa-spinner fa-spin" /> Conectando con Google...
+          {/* Google login: mobile → redirect button. Desktop → GIS popup + fallback redirect link */}
+          {preferRedirect ? (
+            <button type="button" className="lp-google" onClick={handleRedirectGoogle} disabled={googleBusy || submitting}>
+              {googleBusy
+                ? <><i className="fa fa-spinner fa-spin" /> Conectando con Google...</>
+                : <><GoogleIcon /> Continuar con Google</>}
+            </button>
+          ) : (
+            <>
+              <div style={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight:44, marginBottom:6 }}>
+                {googleBusy ? (
+                  <div style={{ color:'rgba(255,255,255,.85)', fontSize:13, fontWeight:600, display:'flex', alignItems:'center', gap:8 }}>
+                    <i className="fa fa-spinner fa-spin" /> Conectando con Google...
+                  </div>
+                ) : !googleReady ? (
+                  <div style={{ color:'rgba(255,255,255,.5)', fontSize:13, display:'flex', alignItems:'center', gap:8 }}>
+                    <i className="fa fa-spinner fa-spin" /> Cargando Google...
+                  </div>
+                ) : null}
+                <div ref={googleBtnRef} style={{ display: (googleReady && !googleBusy) ? 'block' : 'none' }} />
               </div>
-            ) : !googleReady ? (
-              <div style={{ color:'rgba(255,255,255,.5)', fontSize:13, display:'flex', alignItems:'center', gap:8 }}>
-                <i className="fa fa-spinner fa-spin" /> Cargando Google...
-              </div>
-            ) : null}
-            <div ref={googleBtnRef} style={{ display: (googleReady && !googleBusy) ? 'block' : 'none' }} />
-          </div>
+              {googleReady && !googleBusy && (
+                <div style={{ textAlign:'center', marginBottom:14 }}>
+                  <button type="button" onClick={handleRedirectGoogle}
+                    style={{ background:'none', border:'none', color:'rgba(255,255,255,.55)', fontSize:11.5, cursor:'pointer', textDecoration:'underline', textUnderlineOffset:3, fontFamily:'inherit' }}>
+                    ¿No funciona el popup? Probar método alternativo →
+                  </button>
+                </div>
+              )}
+            </>
+          )}
 
           <div className="lp-sep">o con tu email</div>
 

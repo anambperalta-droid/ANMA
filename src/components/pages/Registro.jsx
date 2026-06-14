@@ -42,6 +42,24 @@ function loadGIS() {
   })
 }
 
+// Mobile + in-app browsers usan redirect (GIS popup falla en esos entornos)
+function shouldUseRedirectFlow() {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent || ''
+  const isInApp = /FBAN|FBAV|Instagram|Line\/|MicroMessenger|GSA\/|Pinterest|TikTok|WhatsApp/i.test(ua)
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(ua)
+  return isInApp || isMobile
+}
+function clearStaleOAuthState() {
+  try {
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith('sb-') && (k.includes('auth-token-code-verifier') || k.includes('-flow-state'))) {
+        try { localStorage.removeItem(k) } catch { /* noop */ }
+      }
+    })
+  } catch { /* noop */ }
+}
+
 // Monograma ANMA Hub: "A" completa de trazo continuo + bucle abierto
 // enganchado en la pierna derecha (hub). Mismo diseño que favicon.svg, en blanco.
 const AnmaLogo = () => (
@@ -190,11 +208,31 @@ export default function Registro() {
   const [googleReady, setGoogleReady] = useState(false)
   const [emailSent, setEmailSent]   = useState(false)
   const googleBtnRef = useRef(null)
+  const preferRedirect = useRef(shouldUseRedirectFlow()).current
 
-  // Google Identity Services init — render el botón oficial + signInWithIdToken
+  // Fallback / mobile: redirect tradicional con limpieza de state stale
+  const handleRedirectGoogle = async () => {
+    setGoogleBusy(true); setErr('')
+    try { persistAcquisitionAcrossOAuth() } catch { /* noop */ }
+    clearStaleOAuthState()
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/bienvenida`,
+        queryParams: { access_type: 'offline', prompt: 'select_account' },
+      },
+    })
+    if (error) {
+      setErr('No se pudo iniciar: ' + error.message)
+      setGoogleBusy(false)
+    }
+  }
+
+  // GIS init (solo desktop)
   useEffect(() => {
-    if (authed) return  // ya autenticado, no inicializar
+    if (authed || preferRedirect) return
     let mounted = true
+    let timeoutId
     loadGIS().then(() => {
       if (!mounted || !window.google?.accounts?.id || !googleBtnRef.current) return
       window.google.accounts.id.initialize({
@@ -202,8 +240,10 @@ export default function Registro() {
         ux_mode: 'popup',
         auto_select: false,
         callback: async (response) => {
+          if (timeoutId) clearTimeout(timeoutId)
           if (!response?.credential) {
-            setErr('No recibimos confirmación de Google. Probá de nuevo.')
+            setErr('No recibimos confirmación de Google. Probá el método alternativo abajo.')
+            setGoogleBusy(false)
             return
           }
           setGoogleBusy(true); setErr('')
@@ -217,10 +257,19 @@ export default function Registro() {
             setGoogleBusy(false)
             return
           }
-          // AuthContext.onAuthStateChange inyecta seed data y navega.
         },
       })
-      window.google.accounts.id.renderButton(googleBtnRef.current, {
+      const btnWrapper = document.createElement('div')
+      googleBtnRef.current.appendChild(btnWrapper)
+      btnWrapper.addEventListener('click', () => {
+        setGoogleBusy(true); setErr('')
+        if (timeoutId) clearTimeout(timeoutId)
+        timeoutId = setTimeout(() => {
+          setGoogleBusy(false)
+          setErr('Google no respondió. Probá el método alternativo de abajo.')
+        }, 30000)
+      }, true)
+      window.google.accounts.id.renderButton(btnWrapper, {
         type: 'standard',
         theme: 'outline',
         size: 'large',
@@ -232,10 +281,10 @@ export default function Registro() {
       if (mounted) setGoogleReady(true)
     }).catch(e => {
       console.error('[anma-auth] GIS load error', e)
-      if (mounted) setErr('No se pudo cargar Google. Usá tu email.')
+      if (mounted) setErr('No se pudo cargar Google. Probá el método alternativo abajo o usá tu email.')
     })
-    return () => { mounted = false }
-  }, [authed])
+    return () => { mounted = false; if (timeoutId) clearTimeout(timeoutId) }
+  }, [authed, preferRedirect])
 
   if (authed) return <Navigate to="/" replace />
 
@@ -349,19 +398,37 @@ export default function Registro() {
           <div className="rg-h">Empezá <em>gratis hoy</em></div>
           <div className="rg-sub">Registro en 30 segundos. Sin tarjeta de crédito.</div>
 
-          {/* Google (prioridad) — Google Identity Services con signInWithIdToken */}
-          <div style={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight:48 }}>
-            {googleBusy ? (
-              <div style={{ color:'#fff', fontSize:14, fontWeight:600, display:'flex', alignItems:'center', gap:8 }}>
-                <i className="fa fa-spinner fa-spin" /> Creando tu cuenta...
+          {/* Google login: mobile → redirect botón propio. Desktop → GIS popup + fallback */}
+          {preferRedirect ? (
+            <button className="rg-google" onClick={handleRedirectGoogle} disabled={googleBusy || loading} type="button">
+              {googleBusy
+                ? <><i className="fa fa-spinner fa-spin" style={{ fontSize:16 }} /> Conectando con Google...</>
+                : <><GoogleIcon /> Registrarse con Google</>}
+            </button>
+          ) : (
+            <>
+              <div style={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight:48 }}>
+                {googleBusy ? (
+                  <div style={{ color:'#fff', fontSize:14, fontWeight:600, display:'flex', alignItems:'center', gap:8 }}>
+                    <i className="fa fa-spinner fa-spin" /> Creando tu cuenta...
+                  </div>
+                ) : !googleReady ? (
+                  <div style={{ color:'rgba(255,255,255,.5)', fontSize:13, display:'flex', alignItems:'center', gap:8 }}>
+                    <i className="fa fa-spinner fa-spin" /> Cargando Google...
+                  </div>
+                ) : null}
+                <div ref={googleBtnRef} style={{ display: (googleReady && !googleBusy) ? 'block' : 'none' }} />
               </div>
-            ) : !googleReady ? (
-              <div style={{ color:'rgba(255,255,255,.5)', fontSize:13, display:'flex', alignItems:'center', gap:8 }}>
-                <i className="fa fa-spinner fa-spin" /> Cargando Google...
-              </div>
-            ) : null}
-            <div ref={googleBtnRef} style={{ display: (googleReady && !googleBusy) ? 'block' : 'none' }} />
-          </div>
+              {googleReady && !googleBusy && (
+                <div style={{ textAlign:'center', marginTop:8, marginBottom:6 }}>
+                  <button type="button" onClick={handleRedirectGoogle}
+                    style={{ background:'none', border:'none', color:'rgba(255,255,255,.55)', fontSize:11.5, cursor:'pointer', textDecoration:'underline', textUnderlineOffset:3, fontFamily:'inherit' }}>
+                    ¿No funciona el popup? Probar método alternativo →
+                  </button>
+                </div>
+              )}
+            </>
+          )}
 
           <div className="rg-sep">o completá tus datos</div>
 
