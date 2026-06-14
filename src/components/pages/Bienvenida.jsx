@@ -382,7 +382,24 @@ export default function Bienvenida() {
           <h1 style={styles.title} className="bv-title">Enlace no válido</h1>
           <p style={styles.subtitle}>{error}</p>
           <button
-            onClick={() => window.location.replace('/login')}
+            onClick={async () => {
+              // Limpieza NUCLEAR antes de volver a /login para garantizar que el próximo
+              // intento empiece de cero — sin code_verifiers huérfanos, sin sesión zombi.
+              try { await supabase.auth.signOut({ scope: 'local' }) } catch { /* noop */ }
+              try {
+                Object.keys(localStorage).forEach(k => {
+                  if (k.startsWith('sb-') || k.startsWith('supabase.auth.')) {
+                    try { localStorage.removeItem(k) } catch { /* noop */ }
+                  }
+                })
+                Object.keys(sessionStorage).forEach(k => {
+                  if (k.startsWith('sb-') || k.startsWith('supabase.auth.')) {
+                    try { sessionStorage.removeItem(k) } catch { /* noop */ }
+                  }
+                })
+              } catch { /* noop */ }
+              window.location.replace('/login')
+            }}
             style={{
               marginTop: 16, width: '100%', padding: '12px 18px',
               background: 'linear-gradient(135deg,#7C3AED,#059669)',
@@ -391,7 +408,7 @@ export default function Bienvenida() {
               boxShadow: '0 6px 20px rgba(124,58,237,.35)',
             }}>
             <i className="fa fa-arrow-right-to-bracket" style={{ marginRight: 8 }} />
-            Volver a Ingresar
+            Limpiar y volver a Ingresar
           </button>
           <button
             onClick={() => window.location.replace('/registro')}

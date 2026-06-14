@@ -11,15 +11,24 @@ import { supabase } from '../../lib/supabase'
 import { injectSeedData } from '../../lib/seedData'
 import { getAcquisitionData, persistAcquisitionAcrossOAuth, clearAcquisitionData } from '../../lib/acquisitionTracking'
 
-// Limpia code_verifier huérfano de intentos previos cortados.
-function clearStaleOAuthState() {
+// Limpieza NUCLEAR de estado OAuth/Supabase antes de cada intento.
+function nukeStaleAuthState() {
   try {
     Object.keys(localStorage).forEach(k => {
-      if (k.startsWith('sb-') && (k.includes('auth-token-code-verifier') || k.includes('-flow-state'))) {
+      if (k.startsWith('sb-') || k.startsWith('supabase.auth.')) {
         try { localStorage.removeItem(k) } catch { /* noop */ }
       }
     })
+    Object.keys(sessionStorage).forEach(k => {
+      if (k.startsWith('sb-') || k.startsWith('supabase.auth.')) {
+        try { sessionStorage.removeItem(k) } catch { /* noop */ }
+      }
+    })
   } catch { /* noop */ }
+}
+async function preFlightAuthReset() {
+  try { await supabase.auth.signOut({ scope: 'local' }) } catch { /* noop */ }
+  nukeStaleAuthState()
 }
 
 // Monograma ANMA Hub: "A" completa de trazo continuo + bucle abierto
@@ -169,11 +178,11 @@ export default function Registro() {
   const [googleBusy, setGoogleBusy] = useState(false)
   const [emailSent, setEmailSent]   = useState(false)
 
-  // ── Google signup — redirect tradicional, sin popups ──
+  // ── Google signup — redirect tradicional + reset NUCLEAR previo ──
   const handleGoogle = async () => {
     setGoogleBusy(true); setErr('')
     try { persistAcquisitionAcrossOAuth() } catch { /* noop */ }
-    clearStaleOAuthState()
+    await preFlightAuthReset()
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {

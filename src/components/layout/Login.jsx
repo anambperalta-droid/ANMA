@@ -8,16 +8,33 @@ const APP_YEAR = new Date().getFullYear()
 const LS_EMAIL_KEY = 'anma_last_email'
 const LS_LAST_LOGIN = 'anma_last_login'
 
-// Limpia código verifier viejo (puede quedar huérfano si un OAuth previo se cortó).
-// Evita bad_oauth_state en el siguiente intento.
-function clearStaleOAuthState() {
+// Limpieza NUCLEAR del estado OAuth/Supabase en localStorage + sessionStorage.
+// Evita los 3 errores típicos: bad_oauth_state, verifier huérfano, sesiones zombi
+// que generan "link inválido" después de múltiples intentos.
+function nukeStaleAuthState() {
   try {
-    Object.keys(localStorage).forEach(k => {
-      if (k.startsWith('sb-') && (k.includes('auth-token-code-verifier') || k.includes('-flow-state'))) {
+    // localStorage: borrar todas las claves sb-* (tokens, verifiers, flow state)
+    const lsKeys = Object.keys(localStorage)
+    lsKeys.forEach(k => {
+      if (k.startsWith('sb-') || k.startsWith('supabase.auth.')) {
         try { localStorage.removeItem(k) } catch { /* noop */ }
       }
     })
+    // sessionStorage: lo mismo (algunas versiones lo usan también)
+    const ssKeys = Object.keys(sessionStorage)
+    ssKeys.forEach(k => {
+      if (k.startsWith('sb-') || k.startsWith('supabase.auth.')) {
+        try { sessionStorage.removeItem(k) } catch { /* noop */ }
+      }
+    })
   } catch { /* noop */ }
+}
+
+// Antes de iniciar un nuevo flujo OAuth, signOut explícito para matar cualquier
+// sesión a medio iniciar que pueda colisionar con el callback.
+async function preFlightAuthReset() {
+  try { await supabase.auth.signOut({ scope: 'local' }) } catch { /* noop */ }
+  nukeStaleAuthState()
 }
 
 function friendlyAuthError(raw, email) {
@@ -85,11 +102,12 @@ export default function Login() {
   const { login, resetPassword } = useAuth()
 
   // ── Google login (redirect tradicional — funciona en TODOS los dispositivos) ──
-  // Limpiamos verifiers viejos para evitar bad_oauth_state si hubo un intento previo cortado.
+  // Reset NUCLEAR antes de cada intento: signOut + borra todo sb-* de localStorage/sessionStorage.
+  // Esto evita "link inválido" y bad_oauth_state después de múltiples intentos fallidos.
   const handleGoogle = async () => {
     setGoogleBusy(true); setErr('')
     try { persistAcquisitionAcrossOAuth() } catch { /* noop */ }
-    clearStaleOAuthState()
+    await preFlightAuthReset()
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -101,7 +119,22 @@ export default function Login() {
       setErr('No se pudo iniciar Google: ' + error.message)
       setGoogleBusy(false)
     }
-    // Si funciona, el browser redirige fuera de la página — no hay que resetear estado.
+  }
+
+  // Botón visible "Limpiar y reintentar" para usuarios que vienen rebotando.
+  const handleHardReset = async () => {
+    setErr('')
+    await preFlightAuthReset()
+    // Vaciamos también localStorage propio de ANMA por si quedaron flags raros
+    try {
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('anma_acquisition_') || k === 'anma_oauth_pending') {
+          try { localStorage.removeItem(k) } catch { /* noop */ }
+        }
+      })
+    } catch { /* noop */ }
+    setErr('Limpieza completa ✓ Ahora probá Continuar con Google.')
+    setTimeout(() => setErr(''), 4000)
   }
 
   const lastLogin = (() => { try { return localStorage.getItem(LS_LAST_LOGIN) } catch { return null } })()
@@ -421,6 +454,14 @@ export default function Login() {
               ? <><i className="fa fa-spinner fa-spin" /> Redirigiendo a Google...</>
               : <><GoogleIcon /> Continuar con Google</>}
           </button>
+
+          {/* Rescate: si el user tuvo "link inválido" o intentos previos colgados */}
+          <div style={{ textAlign:'center', marginTop:8, marginBottom:4 }}>
+            <button type="button" onClick={handleHardReset} disabled={googleBusy}
+              style={{ background:'none', border:'none', color:'rgba(255,255,255,.45)', fontSize:11, cursor:'pointer', textDecoration:'underline', textUnderlineOffset:3, fontFamily:'inherit', padding:'4px 8px' }}>
+              ¿Tuviste "link inválido" antes? Limpiar y reintentar →
+            </button>
+          </div>
 
           <div className="lp-sep">o con tu email</div>
 
