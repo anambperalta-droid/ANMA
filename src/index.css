@@ -1864,9 +1864,26 @@ td b{color:var(--txt);font-weight:600}
    declaran con overflow-y:auto + flex:1 inline, los neutralizamos acá.
    Sin flex:1 los bodies toman su altura natural (sin estirarse ni clipear)
    y el modal crece según contenido total. */
-.modal-form-card > div[style*="overflow-y"],
-.modal-form-card > div[style*="overflow:auto"],
-.modal-form-card > div[style*="overflow: auto"]{
+/* Excepción: cuando el card tiene altura explícita, queremos que el body SÍ
+   scrollee internamente. Sino el modal se ve cortado. */
+.cli-detail-card > div[style*="overflow-y"],
+.cli-detail-card > div[style*="overflow:auto"]{
+  overflow-y:auto!important;
+  flex:1 1 auto!important;
+  min-height:0!important;
+}
+/* Producto modal: body con scroll interno (entre header y footer) */
+.prod-modal-card{display:flex;flex-direction:column;overflow:hidden!important;max-height:none}
+.prod-modal-card > .mh,.prod-modal-card > .mfooter{flex-shrink:0}
+.prod-modal-card > div[ref],
+.prod-modal-card > div:not(.mh):not(.mfooter):not([style*="flex-shrink:0"]){
+  overflow-y:auto!important;
+  min-height:0!important;
+  flex:1 1 auto!important;
+}
+.modal-form-card:not(.cli-detail-card):not(.prod-modal-card) > div[style*="overflow-y"],
+.modal-form-card:not(.cli-detail-card):not(.prod-modal-card) > div[style*="overflow:auto"],
+.modal-form-card:not(.cli-detail-card):not(.prod-modal-card) > div[style*="overflow: auto"]{
   overflow:visible!important;
   max-height:none!important;
   min-height:0!important;
