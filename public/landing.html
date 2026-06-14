@@ -99,7 +99,20 @@ a{color:inherit;text-decoration:none}
 .nav-links a:hover{color:#0F172A}
 .nav-cta{display:flex;gap:10px;align-items:center}
 .nav-cta .btn{padding:9px 16px;font-size:13px}
-@media(max-width:780px){.nav-links{display:none}}
+
+/* Burger menu mobile — slide-down panel */
+.nav-burger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:#1E1B4B;font-size:18px;border-radius:8px;transition:background .15s}
+.nav-burger:hover{background:#f1f5f9}
+.nav-menu-mobile{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(15,23,42,.08);padding:8px 0;flex-direction:column;z-index:60}
+.nav-menu-mobile.open{display:flex}
+.nav-menu-mobile a{padding:14px 22px;font-size:14.5px;font-weight:600;color:#1E1B4B;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-menu-mobile a:last-child{border-bottom:none}
+.nav-menu-mobile a:hover{background:#F5F3FF;color:#7C3AED}
+.nav-menu-mobile a i{font-size:13px;color:#94A3B8;width:18px;text-align:center}
+@media(max-width:780px){
+  .nav-links{display:none}
+  .nav-burger{display:inline-flex;align-items:center;justify-content:center}
+}
 
 /* HERO */
 .hero{position:relative;background:linear-gradient(145deg,#1a0636 0%,#2d0a57 25%,#4c1d95 60%,#6d28d9 85%,#7c3aed 100%);color:#fff;padding:60px 0 72px;overflow:hidden}
@@ -364,8 +377,19 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 .foot-bot .badges{display:flex;gap:14px;align-items:center}
 .foot-bot .badges span{display:inline-flex;align-items:center;gap:5px}
 .foot-bot .badges i{color:#34d399}
-@media(max-width:780px){.foot-grid{grid-template-columns:1fr 1fr;gap:30px}}
-@media(max-width:480px){.foot-grid{grid-template-columns:1fr}}
+/* Footer compacto en mobile: 2 columnas, padding reducido, links chicos */
+@media(max-width:780px){
+  .foot-grid{grid-template-columns:1fr 1fr;gap:24px 18px}
+  .foot-brand{grid-column:1/-1}
+  .foot-brand p{font-size:12.5px;margin:10px 0 14px;max-width:none}
+  .foot-col h6{font-size:10.5px;margin:0 0 10px}
+  .foot-col a{font-size:13px;padding:4px 0}
+  footer{padding:28px 0 16px}
+}
+@media(max-width:480px){
+  .foot-grid{grid-template-columns:1fr 1fr;gap:20px 14px}
+  .foot-col a{font-size:12.5px;padding:3px 0;line-height:1.5}
+}
 
 /* PRICING mobile */
 @media(max-width:680px){
@@ -457,7 +481,9 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 /* ── MOBILE 400px ── */
 @media(max-width:400px){
   .h1{font-size:22px!important;line-height:1.08!important}
-  .foot-grid{grid-template-columns:1fr!important}
+  /* Mantener 2 columnas en footer incluso en pantallas ultra-pequeñas — más compacto */
+  .foot-grid{grid-template-columns:1fr 1fr!important;gap:18px 12px!important}
+  .foot-col a{font-size:12px!important;padding:3px 0!important}
   .hero-trust{gap:8px!important;font-size:11px!important}
   /* Ocultar botón Ingresar para no sobrecargar nav */
   .nav-btn-login{display:none!important}
@@ -742,7 +768,18 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     <div class="nav-cta">
       <a href="/registro" class="btn btn-primary" style="padding:9px 16px;font-size:13px"><i class="fa-solid fa-rocket"></i> Probar gratis</a>
       <a href="/login" class="btn btn-dark nav-btn-login"><i class="fa-solid fa-arrow-right-to-bracket"></i> Ingresar</a>
+      <button class="nav-burger" id="nav-burger" aria-label="Abrir menú" aria-expanded="false">
+        <i class="fa-solid fa-bars"></i>
+      </button>
     </div>
+  </div>
+  <!-- Menú mobile desplegable -->
+  <div class="nav-menu-mobile" id="nav-menu-mobile">
+    <a href="#para-quien"><i class="fa-solid fa-users"></i> Para quién</a>
+    <a href="/demo.html"><i class="fa-solid fa-play"></i> Demo en vivo</a>
+    <a href="#pricing"><i class="fa-solid fa-tag"></i> Planes</a>
+    <a href="/recursos/"><i class="fa-solid fa-book-open"></i> Recursos</a>
+    <a href="#faq"><i class="fa-solid fa-circle-question"></i> Preguntas</a>
   </div>
 </header>
 
@@ -2098,6 +2135,65 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 
 <script>
 document.getElementById('y').textContent = new Date().getFullYear();
+
+// ── Burger menu (mobile) ──
+(function(){
+  var burger = document.getElementById('nav-burger');
+  var menu = document.getElementById('nav-menu-mobile');
+  if (!burger || !menu) return;
+  burger.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(open));
+    burger.innerHTML = open
+      ? '<i class="fa-solid fa-xmark"></i>'
+      : '<i class="fa-solid fa-bars"></i>';
+  });
+  // Cerrar al clickear un link del menú
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+      burger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    });
+  });
+  // Cerrar al clickear fuera
+  document.addEventListener('click', function(e){
+    if (!menu.classList.contains('open')) return;
+    if (menu.contains(e.target) || burger.contains(e.target)) return;
+    menu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+  });
+})();
+
+// ── Sticky CTA bar: ocultar en la zona del hero (cuando ya hay un CTA visible) ──
+// Reaparece al scrollear, y se oculta de nuevo cerca del footer para no taparlo.
+(function(){
+  var bar = document.querySelector('.mobile-cta-bar');
+  if (!bar) return;
+  var footer = document.querySelector('footer');
+  function update(){
+    var y = window.scrollY || window.pageYOffset;
+    var winH = window.innerHeight;
+    // Mostrar después de scrollear ~70% del viewport (ya pasó el hero principal)
+    var shouldShow = y > winH * 0.7;
+    // Ocultar cerca del footer (para no tapar links y CTA del final)
+    if (footer) {
+      var fTop = footer.getBoundingClientRect().top + y;
+      if (y + winH > fTop - 80) shouldShow = false;
+    }
+    bar.style.transform = shouldShow ? 'translateY(0)' : 'translateY(110%)';
+    bar.style.opacity = shouldShow ? '1' : '0';
+    bar.style.pointerEvents = shouldShow ? 'auto' : 'none';
+  }
+  bar.style.transition = 'transform .25s ease, opacity .2s ease';
+  bar.style.transform = 'translateY(110%)';
+  bar.style.opacity = '0';
+  bar.style.pointerEvents = 'none';
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
 
 
 // Tab → sidebar nav item mapping (según rutas reales de la app).
