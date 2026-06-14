@@ -4,52 +4,14 @@
    Trial 7 días, acceso inmediato sin mail de confirmación
    (requiere "Confirm email" desactivado en Supabase → Auth > Settings)
 ───────────────────────────────────────── */
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { injectSeedData } from '../../lib/seedData'
 import { getAcquisitionData, persistAcquisitionAcrossOAuth, clearAcquisitionData } from '../../lib/acquisitionTracking'
 
-// Google Identity Services — bypassa OAuth-redirect (que tenía bad_oauth_state
-// con múltiples apps usando el mismo Supabase project + cookie partitioning).
-const GOOGLE_CLIENT_ID = '102631288658-3u7abhbutcmri2t9m89fbsbis7j6m8ud.apps.googleusercontent.com'
-function loadGIS() {
-  return new Promise((resolve, reject) => {
-    const waitForApi = () => new Promise((res, rej) => {
-      const start = Date.now()
-      const tick = () => {
-        if (window.google?.accounts?.id) return res()
-        if (Date.now() - start > 8000) return rej(new Error('GIS API not available after 8s'))
-        setTimeout(tick, 50)
-      }
-      tick()
-    })
-
-    if (window.google?.accounts?.id) return resolve()
-    const existing = document.querySelector('script[data-gis]')
-    if (existing) {
-      waitForApi().then(resolve).catch(reject)
-      return
-    }
-    const s = document.createElement('script')
-    s.src = 'https://accounts.google.com/gsi/client'
-    s.async = true; s.defer = true
-    s.dataset.gis = '1'
-    s.onload = () => waitForApi().then(resolve).catch(reject)
-    s.onerror = () => reject(new Error('GIS script load failed (CSP o red bloqueada)'))
-    document.head.appendChild(s)
-  })
-}
-
-// Mobile + in-app browsers usan redirect (GIS popup falla en esos entornos)
-function shouldUseRedirectFlow() {
-  if (typeof navigator === 'undefined') return false
-  const ua = navigator.userAgent || ''
-  const isInApp = /FBAN|FBAV|Instagram|Line\/|MicroMessenger|GSA\/|Pinterest|TikTok|WhatsApp/i.test(ua)
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(ua)
-  return isInApp || isMobile
-}
+// Limpia code_verifier huérfano de intentos previos cortados.
 function clearStaleOAuthState() {
   try {
     Object.keys(localStorage).forEach(k => {
@@ -205,13 +167,10 @@ export default function Registro() {
   const [err,      setErr]      = useState('')
   const [loading,  setLoading]  = useState(false)   // email submit
   const [googleBusy, setGoogleBusy] = useState(false)
-  const [googleReady, setGoogleReady] = useState(false)
   const [emailSent, setEmailSent]   = useState(false)
-  const googleBtnRef = useRef(null)
-  const preferRedirect = useRef(shouldUseRedirectFlow()).current
 
-  // Fallback / mobile: redirect tradicional con limpieza de state stale
-  const handleRedirectGoogle = async () => {
+  // ── Google signup — redirect tradicional, sin popups ──
+  const handleGoogle = async () => {
     setGoogleBusy(true); setErr('')
     try { persistAcquisitionAcrossOAuth() } catch { /* noop */ }
     clearStaleOAuthState()
@@ -223,68 +182,10 @@ export default function Registro() {
       },
     })
     if (error) {
-      setErr('No se pudo iniciar: ' + error.message)
+      setErr('No se pudo iniciar Google: ' + error.message)
       setGoogleBusy(false)
     }
   }
-
-  // GIS init (solo desktop)
-  useEffect(() => {
-    if (authed || preferRedirect) return
-    let mounted = true
-    let timeoutId
-    loadGIS().then(() => {
-      if (!mounted || !window.google?.accounts?.id || !googleBtnRef.current) return
-      window.google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        ux_mode: 'popup',
-        auto_select: false,
-        callback: async (response) => {
-          if (timeoutId) clearTimeout(timeoutId)
-          if (!response?.credential) {
-            setErr('No recibimos confirmación de Google. Probá el método alternativo abajo.')
-            setGoogleBusy(false)
-            return
-          }
-          setGoogleBusy(true); setErr('')
-          try { persistAcquisitionAcrossOAuth() } catch { /* noop */ }
-          const { error } = await supabase.auth.signInWithIdToken({
-            provider: 'google',
-            token: response.credential,
-          })
-          if (error) {
-            setErr('No pudimos registrarte: ' + error.message)
-            setGoogleBusy(false)
-            return
-          }
-        },
-      })
-      const btnWrapper = document.createElement('div')
-      googleBtnRef.current.appendChild(btnWrapper)
-      btnWrapper.addEventListener('click', () => {
-        setGoogleBusy(true); setErr('')
-        if (timeoutId) clearTimeout(timeoutId)
-        timeoutId = setTimeout(() => {
-          setGoogleBusy(false)
-          setErr('Google no respondió. Probá el método alternativo de abajo.')
-        }, 30000)
-      }, true)
-      window.google.accounts.id.renderButton(btnWrapper, {
-        type: 'standard',
-        theme: 'outline',
-        size: 'large',
-        text: 'signup_with',
-        shape: 'rectangular',
-        logo_alignment: 'left',
-        width: 320,
-      })
-      if (mounted) setGoogleReady(true)
-    }).catch(e => {
-      console.error('[anma-auth] GIS load error', e)
-      if (mounted) setErr('No se pudo cargar Google. Probá el método alternativo abajo o usá tu email.')
-    })
-    return () => { mounted = false; if (timeoutId) clearTimeout(timeoutId) }
-  }, [authed, preferRedirect])
 
   if (authed) return <Navigate to="/" replace />
 
@@ -398,37 +299,12 @@ export default function Registro() {
           <div className="rg-h">Empezá <em>gratis hoy</em></div>
           <div className="rg-sub">Registro en 30 segundos. Sin tarjeta de crédito.</div>
 
-          {/* Google login: mobile → redirect botón propio. Desktop → GIS popup + fallback */}
-          {preferRedirect ? (
-            <button className="rg-google" onClick={handleRedirectGoogle} disabled={googleBusy || loading} type="button">
-              {googleBusy
-                ? <><i className="fa fa-spinner fa-spin" style={{ fontSize:16 }} /> Conectando con Google...</>
-                : <><GoogleIcon /> Registrarse con Google</>}
-            </button>
-          ) : (
-            <>
-              <div style={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight:48 }}>
-                {googleBusy ? (
-                  <div style={{ color:'#fff', fontSize:14, fontWeight:600, display:'flex', alignItems:'center', gap:8 }}>
-                    <i className="fa fa-spinner fa-spin" /> Creando tu cuenta...
-                  </div>
-                ) : !googleReady ? (
-                  <div style={{ color:'rgba(255,255,255,.5)', fontSize:13, display:'flex', alignItems:'center', gap:8 }}>
-                    <i className="fa fa-spinner fa-spin" /> Cargando Google...
-                  </div>
-                ) : null}
-                <div ref={googleBtnRef} style={{ display: (googleReady && !googleBusy) ? 'block' : 'none' }} />
-              </div>
-              {googleReady && !googleBusy && (
-                <div style={{ textAlign:'center', marginTop:8, marginBottom:6 }}>
-                  <button type="button" onClick={handleRedirectGoogle}
-                    style={{ background:'none', border:'none', color:'rgba(255,255,255,.55)', fontSize:11.5, cursor:'pointer', textDecoration:'underline', textUnderlineOffset:3, fontFamily:'inherit' }}>
-                    ¿No funciona el popup? Probar método alternativo →
-                  </button>
-                </div>
-              )}
-            </>
-          )}
+          {/* Google signup — redirect tradicional, funciona en todos los dispositivos */}
+          <button className="rg-google" onClick={handleGoogle} disabled={googleBusy || loading} type="button">
+            {googleBusy
+              ? <><i className="fa fa-spinner fa-spin" style={{ fontSize:16 }} /> Redirigiendo a Google...</>
+              : <><GoogleIcon /> Registrarse con Google</>}
+          </button>
 
           <div className="rg-sep">o completá tus datos</div>
 
