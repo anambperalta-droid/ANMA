@@ -637,7 +637,9 @@ export default function Historial() {
     const prevYM = (() => { const d = new Date(n.getFullYear(), n.getMonth() - 1, 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}` })()
     const totBudgeted = periodBudgets.reduce((s, b) => s + (b.total || 0), 0)
     const confirmed   = periodBudgets.filter(b => b.status === 'confirmed')
-    const pagados     = periodBudgets.filter(b => b.payStatus === 'paid' || b.payStatus === 'partial')
+    // Pagados: excluimos 'lost' (pedidos perdidos no cuentan como ingreso, aunque haya
+    // pagos quedados de una seña no devuelta — eso lo trackeará el modulo de pérdidas).
+    const pagados     = periodBudgets.filter(b => b.status !== 'lost' && (b.payStatus === 'paid' || b.payStatus === 'partial'))
     const totCobrado  = pagados.reduce((s, b) => s + cobrado(b), 0)
     const avgTicket   = periodBudgets.length ? Math.round(totBudgeted / periodBudgets.length) : 0
     const convRate    = periodBudgets.length ? Math.round(confirmed.length / periodBudgets.length * 100) + '%' : '—'
@@ -671,9 +673,11 @@ export default function Historial() {
     for (let i = 13; i >= 0; i--) {
       const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0)
       const ds = d.toISOString().slice(0, 10)
-      const dayBs = budgets.filter(b => b.date === ds)
+      // Ventas brutas del día: presupuestos creados ese día (excluye perdidos)
+      const dayBs = budgets.filter(b => b.date === ds && b.status !== 'lost')
       brutas.push(dayBs.reduce((s, b) => s + (b.total || 0), 0))
-      caja.push(dayBs.reduce((s, b) => s + cobrado(b), 0))
+      // Caja del día: pagos efectivamente recibidos en esa fecha (excluye perdidos)
+      caja.push(budgets.filter(b => b.status !== 'lost').reduce((s, b) => s + cobradoEnFecha(b, ds), 0))
       ticket.push(dayBs.length ? dayBs.reduce((s, b) => s + (b.total || 0), 0) / dayBs.length : 0)
     }
     return { sparkBrutas: brutas, sparkCaja: caja, sparkTicket: ticket }
