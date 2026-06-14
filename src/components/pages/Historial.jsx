@@ -388,7 +388,7 @@ const ganCobrada = (b) => {
 // ─────────────────────────────────────────────────────────────────
 
 export default function Historial() {
-  const { get, config, updateBudgetStatus, saveBudget, deleteBudget, deductStockForOrder } = useData()
+  const { get, config, updateBudgetStatus, saveBudget, deleteBudget, deductStockForOrder, restoreStockForOrder } = useData()
   const toast   = useToast()
   const confirm = useConfirm()
   const nav = useNavigate()
@@ -703,13 +703,23 @@ export default function Historial() {
     })
   }
   const QUALIFYING_STATES = new Set(['inprogress', 'delivered', 'En preparación', 'En producción', 'Entregado'])
+  // Estados que REVIERTEN un descuento previo: el pedido se cayó, hay que devolver el stock.
+  const REVERSING_STATES = new Set(['lost', 'cancelled', 'draft', 'pending', 'sent', 'negotiating'])
   const handleStatusChange = (id, status) => {
     if (status === 'lost') {
       setPendingLossId(id)
       return
     }
     const b = budgets.find(x => x.id === id)
-    if (b && QUALIFYING_STATES.has(status) && !b.stockDeducted) {
+    if (!b) return
+    // Transición qualifying → reversing: devolvemos el stock que se había descontado.
+    if (b.stockDeducted && REVERSING_STATES.has(status)) {
+      restoreStockForOrder(b.items || [], b.dispatchInsumos || [], b.num || '', status)
+      saveBudget({ ...b, status, stockDeducted: false })
+      toast('Estado actualizado · stock restaurado', 'ok')
+      return
+    }
+    if (QUALIFYING_STATES.has(status) && !b.stockDeducted) {
       deductStockForOrder(b.items || [], b.dispatchInsumos || [], b.num || '')
       const frozenCost = b.totalCost ?? (b.baseCost || 0)
       saveBudget({ ...b, status, stockDeducted: true, totalCost: frozenCost, totalGain: (b.total || 0) - frozenCost })
@@ -722,8 +732,15 @@ export default function Historial() {
     if (!pendingLossId) return
     const b = budgets.find(x => x.id === pendingLossId)
     if (b) {
-      saveBudget({ ...b, status: 'lost', lossReason: reason, lossDate: new Date().toISOString().slice(0, 10) })
-      toast(`Marcado como perdido · ${reason}`, 'in')
+      // Si el pedido estaba descontado, devolvemos el stock — el pedido se perdió, no se entregó.
+      if (b.stockDeducted) {
+        restoreStockForOrder(b.items || [], b.dispatchInsumos || [], b.num || '', 'lost')
+        saveBudget({ ...b, status: 'lost', stockDeducted: false, lossReason: reason, lossDate: new Date().toISOString().slice(0, 10) })
+        toast(`Marcado como perdido · ${reason} · stock restaurado`, 'in')
+      } else {
+        saveBudget({ ...b, status: 'lost', lossReason: reason, lossDate: new Date().toISOString().slice(0, 10) })
+        toast(`Marcado como perdido · ${reason}`, 'in')
+      }
     }
     setPendingLossId(null)
   }
@@ -744,13 +761,24 @@ export default function Historial() {
   const handlePayStatusChange = (id, payStatus) => {
     const b = budgets.find(x => x.id === id)
     if (!b) return
+    // Pago → "paid" descuenta stock SI el estado del pedido NO es uno calificador
+    // (si ya está en delivered/inprogress, la lógica de estado ya descontó).
     if (payStatus === 'paid' && !b.stockDeducted) {
       deductStockForOrder(b.items || [], b.dispatchInsumos || [], b.num || '')
       const frozenCost = b.totalCost ?? (b.baseCost || 0)
       saveBudget({ ...b, payStatus, stockDeducted: true, totalCost: frozenCost, totalGain: (b.total || 0) - frozenCost })
-    } else {
-      saveBudget({ ...b, payStatus })
+      toast('Pago actualizado · stock descontado', 'ok')
+      return
     }
+    // Revertir: si vuelve a pending/partial Y el estado del pedido NO es calificador
+    // (porque si está delivered, el descuento sigue válido por el estado), devolvemos stock.
+    if ((payStatus === 'pending' || payStatus === 'partial') && b.stockDeducted && !QUALIFYING_STATES.has(b.status)) {
+      restoreStockForOrder(b.items || [], b.dispatchInsumos || [], b.num || '', 'pago revertido')
+      saveBudget({ ...b, payStatus, stockDeducted: false })
+      toast('Pago actualizado · stock restaurado', 'ok')
+      return
+    }
+    saveBudget({ ...b, payStatus })
     toast('Pago actualizado', 'ok')
   }
   const toggleSelect = (id) => setSelectedIds(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n })
@@ -766,17 +794,28 @@ export default function Historial() {
       return
     }
     const isQualifying = QUALIFYING_STATES.has(bulkStatus)
+    const isReversing  = REVERSING_STATES.has(bulkStatus)
+    let restoredCount = 0
     selectedIds.forEach(id => {
       const b = budgets.find(x => x.id === id)
-      if (b && isQualifying && !b.stockDeducted) {
+      if (!b) return
+      if (isReversing && b.stockDeducted) {
+        restoreStockForOrder(b.items || [], b.dispatchInsumos || [], b.num || '', bulkStatus)
+        saveBudget({ ...b, status: bulkStatus, stockDeducted: false })
+        restoredCount++
+        return
+      }
+      if (isQualifying && !b.stockDeducted) {
         deductStockForOrder(b.items || [], b.dispatchInsumos || [], b.num || '')
         const frozenCost = b.totalCost ?? (b.baseCost || 0)
         saveBudget({ ...b, status: bulkStatus, stockDeducted: true, totalCost: frozenCost, totalGain: (b.total || 0) - frozenCost })
-      } else {
-        updateBudgetStatus(id, bulkStatus)
+        return
       }
+      updateBudgetStatus(id, bulkStatus)
     })
-    toast(`${selectedIds.size} presupuestos actualizados`, 'ok')
+    toast(restoredCount > 0
+      ? `${selectedIds.size} presupuestos actualizados · stock restaurado en ${restoredCount}`
+      : `${selectedIds.size} presupuestos actualizados`, 'ok')
     setSelectedIds(new Set()); setBulkStatus('')
   }
   // CSV escape + protección contra CSV injection (Excel/Sheets ejecutan fórmulas si la celda empieza con = + - @ \t \r).

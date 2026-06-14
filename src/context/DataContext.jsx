@@ -120,9 +120,36 @@ export function DataProvider({ children }) {
 
   const deleteBudget = useCallback((id) => {
     const existing = db('budgets', []).find(b => b.id === id)
+    // Si el presupuesto ya había descontado stock, lo restauramos antes de borrar.
+    // Sin esto, el stock virtual se "evapora" silenciosamente con cada cancelación.
+    if (existing?.stockDeducted) {
+      const today = new Date().toISOString().slice(0, 10)
+      const moves = db('stockMoves', [])
+      const products = db('products', [])
+      const insumos = db('insumos', [])
+      ;(existing.items || []).forEach(item => {
+        if (!item.productId) return
+        const qty = Number(item.qty) || 0
+        if (!qty) return
+        moves.push({ id: nextId(), type: 'return', date: today, productId: item.productId, qty, ref: existing.num || 'Eliminado', note: `Restauración por borrado · ${item.name || ''}`.trim() })
+        const idx = products.findIndex(x => x.id === item.productId)
+        if (idx > -1) products[idx] = { ...products[idx], stock: (products[idx].stock || 0) + qty, lastMove: today, updatedAt: Date.now() }
+      })
+      ;(existing.dispatchInsumos || []).forEach(d => {
+        if (!d.insumoId || !d.qty) return
+        const qty = Number(d.qty)
+        if (!qty) return
+        moves.push({ id: nextId(), type: 'return', date: today, insumoId: Number(d.insumoId), qty, ref: existing.num || 'Eliminado', note: 'Restauración por borrado · Insumo despacho' })
+        const idx = insumos.findIndex(x => x.id === Number(d.insumoId))
+        if (idx > -1) insumos[idx] = { ...insumos[idx], stock: (insumos[idx].stock || 0) + qty, lastMove: today, updatedAt: Date.now() }
+      })
+      dbW('stockMoves', moves)
+      dbW('products', products)
+      dbW('insumos', insumos)
+    }
     dbW('budgets', db('budgets', []).filter((b) => b.id !== id))
     refresh()
-    logAudit('delete', 'budget', id, existing ? { num: existing.num, total: existing.total } : null)
+    logAudit('delete', 'budget', id, existing ? { num: existing.num, total: existing.total, stockRestored: !!existing.stockDeducted } : null)
   }, [refresh])
 
   const updateBudgetStatus = useCallback((id, status) => {
@@ -282,6 +309,53 @@ export function DataProvider({ children }) {
     return move
   }, [refresh])
 
+  /* ── Restaurar stock cuando un presupuesto se cancela/pierde/borra ──
+     Inversa de deductStockForOrder. Suma de vuelta las unidades a productos
+     e insumos, y registra movimientos tipo 'return' para auditoría completa.
+     Crítico para que el inventario virtual no se "evapore" cuando hay
+     cancelaciones. */
+  const restoreStockForOrder = useCallback((items, dispatchInsumos = [], budgetRef = '', reason = 'cancel') => {
+    const today    = new Date().toISOString().slice(0, 10)
+    const moves    = db('stockMoves', [])
+    const products = db('products', [])
+    const insumos  = db('insumos', [])
+
+    ;(items || []).forEach(item => {
+      if (!item.productId) return
+      const qty = Number(item.qty) || 0
+      if (!qty) return
+      moves.push({
+        id: nextId(), type: 'return', date: today,
+        productId: item.productId, qty,
+        ref: budgetRef || 'Devolución', note: `Restauración por ${reason} · ${item.name || ''}`.trim(),
+      })
+      const idx = products.findIndex(x => x.id === item.productId)
+      if (idx > -1) {
+        products[idx] = { ...products[idx], stock: (products[idx].stock || 0) + qty, lastMove: today, updatedAt: Date.now() }
+      }
+    })
+
+    ;(dispatchInsumos || []).forEach(d => {
+      if (!d.insumoId || !d.qty) return
+      const qty = Number(d.qty)
+      if (!qty) return
+      moves.push({
+        id: nextId(), type: 'return', date: today,
+        insumoId: Number(d.insumoId), qty,
+        ref: budgetRef || 'Devolución', note: `Restauración por ${reason} · Insumo despacho`,
+      })
+      const idx = insumos.findIndex(x => x.id === Number(d.insumoId))
+      if (idx > -1) {
+        insumos[idx] = { ...insumos[idx], stock: (insumos[idx].stock || 0) + qty, lastMove: today, updatedAt: Date.now() }
+      }
+    })
+
+    dbW('stockMoves', moves)
+    dbW('products', products)
+    dbW('insumos', insumos)
+    refresh()
+  }, [refresh])
+
   /* ── Deducir stock al confirmar pedido (batch — una sola ventana de escritura) ──
      Lee todos los stores una vez, aplica todos los cambios en memoria, escribe todo
      junto. Minimiza el riesgo de estado parcial si el proceso se interrumpe. */
@@ -333,7 +407,7 @@ export function DataProvider({ children }) {
       get, set, config, updateConfig, refresh, tick,
       saveBudget, deleteBudget, updateBudgetStatus,
       saveEntity, deleteEntity, importarEntidades,
-      recordStockMove, deductStockForOrder,
+      recordStockMove, deductStockForOrder, restoreStockForOrder,
     }}>
       {children}
     </Ctx.Provider>
