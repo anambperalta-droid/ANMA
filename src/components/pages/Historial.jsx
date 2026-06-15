@@ -86,20 +86,21 @@ function PaymentsModal({ budget, onSave, onClose }) {
   const newStatus  = totalPaid <= 0 ? 'pending' : (totalDue > 0 && totalPaid >= totalDue ? 'paid' : 'partial')
   const statusInfo = { pending:{bg:'#FEF2F2',c:'#DC2626',l:'Pendiente'}, partial:{bg:'#FFFBEB',c:'#D97706',l:'Parcial'}, paid:{bg:'#F0FDF4',c:'#15803D',l:'Pagado'} }[newStatus]
 
+  // Agrega el pago Y guarda automáticamente — antes había 2 pasos confusos
+  // (Agregar → Guardar) y el usuario perdía la info si solo hacía Agregar.
   const addPayment = () => {
     const amt = Number(draft.amount)
     if (!amt || amt <= 0) return
-    setPayments([...payments, { id: Date.now(), date: draft.date, amount: amt, method: draft.method, notes: draft.notes.trim() }])
-    // Después de agregar, pre-cargar con el saldo restante (no a 0) — facilita pagos en cuotas
-    const newRemaining = Math.max(0, totalDue - (totalPaid + amt))
-    setDraft({
-      date: today,
-      amount: newRemaining > 0 ? String(newRemaining) : '',
-      method: draft.method,
-      notes: '',
-    })
+    const newPayments = [...payments, { id: Date.now(), date: draft.date, amount: amt, method: draft.method, notes: draft.notes.trim() }]
+    setPayments(newPayments)
+    // Auto-guardar al instante — el usuario ve confirmación inmediata
+    onSave(newPayments)
   }
-  const delPayment = (id) => setPayments(payments.filter(p => p.id !== id))
+  const delPayment = (id) => {
+    const next = payments.filter(p => p.id !== id)
+    setPayments(next)
+    onSave(next) // Auto-guarda al borrar
+  }
   const methodLbl = (val) => PAY_METHODS.find(m => m.val === val)?.lbl || val
 
   // Detectamos el caso confuso: marcado como 'paid' en la lista pero sin payments[]
@@ -205,20 +206,21 @@ function PaymentsModal({ budget, onSave, onClose }) {
               placeholder="Notas (opcional)"
               style={{ padding: '8px 12px', border: '1.5px solid var(--border)', borderRadius: 8, fontSize: 12.5, fontFamily: 'inherit' }} />
           </div>
-          {/* Botón agregar — compacto */}
+          {/* Botón agregar — auto-guarda al instante */}
           <button type="button" onClick={addPayment} disabled={!Number(draft.amount)}
-            style={{ width: '100%', padding: '8px 14px', background: Number(draft.amount) ? 'var(--brand)' : 'var(--border)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 12.5, cursor: Number(draft.amount) ? 'pointer' : 'not-allowed', fontFamily: 'inherit' }}>
-            <i className="fa fa-plus" /> Agregar pago
+            style={{ width: '100%', padding: '10px 14px', background: Number(draft.amount) ? '#15803D' : 'var(--border)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: Number(draft.amount) ? 'pointer' : 'not-allowed', fontFamily: 'inherit' }}>
+            <i className="fa fa-floppy-disk" /> Agregar y guardar pago
           </button>
+          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 5, textAlign: 'center' }}>
+            Se guarda automáticamente — podés cerrar cuando termines
+          </div>
         </div>
+        </div>{/* /pay-modal-body */}
 
-        {/* Footer */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
-          <button onClick={onClose} style={{ flex: 1, padding: '9px 14px', background: 'var(--surface2)', color: 'var(--txt2)', border: '1.5px solid var(--border)', borderRadius: 9, fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
-            Cancelar
-          </button>
-          <button onClick={() => onSave(payments)} style={{ flex: 1.4, padding: '9px 14px', background: '#15803D', color: '#fff', border: 'none', borderRadius: 9, fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
-            <i className="fa fa-floppy-disk" /> Guardar pagos
+        {/* Footer SIEMPRE visible — solo "Cerrar" porque cada pago se autoguarda */}
+        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+          <button onClick={onClose} style={{ padding: '10px 36px', background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 9, fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
+            <i className="fa fa-check" /> Cerrar
           </button>
         </div>
       </div>
@@ -1398,7 +1400,7 @@ export default function Historial() {
             </div>
           )}
           <button className="btn btn-ghost ph-export-btn" onClick={exportCSV} style={{minHeight:44}}><i className="fa fa-download" /><span>Exportar</span></button>
-          <button className="btn btn-primary ph-fab" onClick={() => nav('/presupuesto')} style={{ minHeight:44, background: '#16A34A', borderColor: '#16A34A' }}><i className="fa fa-plus" /><span>Nuevo pedido</span></button>
+          <button className="btn btn-primary ph-fab" onClick={() => nav('/presupuesto')} style={{ minHeight:44 }}><i className="fa fa-plus" /><span>Nuevo pedido</span></button>
         </div>
       </div>
 
@@ -1834,8 +1836,8 @@ export default function Historial() {
                   return (
                     <tr key={b.id} className={selectedIds.has(b.id) ? 'selected' : ''} style={selectedIds.has(b.id) ? { background: 'var(--brand-xlt)' } : undefined}>
                       <td><input type="checkbox" checked={selectedIds.has(b.id)} onChange={() => toggleSelect(b.id)} /></td>
-                      <td style={{ fontVariantNumeric: 'tabular-nums', letterSpacing: '-.01em', fontFamily: 'ui-monospace,SFMono-Regular,monospace' }}><b>{b.num || '—'}</b></td>
-                      <td className="col-hide-mobile" style={{ fontSize: 11, color: 'var(--txt3)' }}>{fmtDate(b.date)}</td>
+                      <td style={{ fontSize: 12.5, fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: 'var(--txt)' }}>{b.num || '—'}</td>
+                      <td className="col-hide-mobile" style={{ fontSize: 12.5, fontVariantNumeric: 'tabular-nums', color: 'var(--txt3)' }}>{fmtDate(b.date)}</td>
                       <td style={{ maxWidth: 200 }}>
                         <button
                           type="button"
@@ -2257,22 +2259,24 @@ export default function Historial() {
                               : totalDue > 0 && totalPaid >= totalDue ? 'paid'
                               : 'partial'
             const wasStockDeducted = paymentsBudget.stockDeducted === true
-            // Si pasa a 'paid' por primera vez y no se había descontado stock → descontar.
-            // Si vuelve a pending/partial y stockDeducted era true sin estado calificador → restaurar.
             const shouldDeduct = newPayStatus === 'paid' && !wasStockDeducted
             const shouldRestore = (newPayStatus === 'pending' || newPayStatus === 'partial') && wasStockDeducted && !QUALIFYING_STATES.has(paymentsBudget.status)
+            let updatedBudget
             if (shouldDeduct) {
               deductStockForOrder(paymentsBudget.items || [], paymentsBudget.dispatchInsumos || [], paymentsBudget.num || '')
               const frozenCost = paymentsBudget.totalCost ?? (paymentsBudget.baseCost || 0)
-              saveBudget({ ...paymentsBudget, payments, payStatus: newPayStatus, stockDeducted: true, totalCost: frozenCost, totalGain: (paymentsBudget.total || 0) - frozenCost })
+              updatedBudget = { ...paymentsBudget, payments, payStatus: newPayStatus, stockDeducted: true, totalCost: frozenCost, totalGain: (paymentsBudget.total || 0) - frozenCost }
             } else if (shouldRestore) {
               restoreStockForOrder(paymentsBudget.items || [], paymentsBudget.dispatchInsumos || [], paymentsBudget.num || '', 'pagos revertidos')
-              saveBudget({ ...paymentsBudget, payments, payStatus: newPayStatus, stockDeducted: false })
+              updatedBudget = { ...paymentsBudget, payments, payStatus: newPayStatus, stockDeducted: false }
             } else {
-              saveBudget({ ...paymentsBudget, payments, payStatus: newPayStatus })
+              updatedBudget = { ...paymentsBudget, payments, payStatus: newPayStatus }
             }
-            setPaymentsBudget(null)
-            toast(`Pagos actualizados — ${fmt(totalPaid)} de ${fmt(totalDue)}`, 'ok')
+            saveBudget(updatedBudget)
+            // Sincronizamos el state local del modal para que vea el budget actualizado.
+            // NO cerramos el modal — el user puede seguir agregando pagos. Click "Cerrar" para salir.
+            setPaymentsBudget(updatedBudget)
+            toast(`Pago guardado · ${fmt(totalPaid)} de ${fmt(totalDue)}`, 'ok')
           }}
         />
       )}
