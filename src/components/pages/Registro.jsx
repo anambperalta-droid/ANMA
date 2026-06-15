@@ -192,14 +192,17 @@ export default function Registro() {
   const [emailSent, setEmailSent]   = useState(false)
 
   // ── Google signup — redirect tradicional + reset NUCLEAR previo ──
+  // Si venimos del flow /activar (?next=/activar), persistimos el next en
+  // localStorage para que Bienvenida nos lleve ahí después del roundtrip OAuth.
   const handleGoogle = async () => {
     setGoogleBusy(true); setErr('')
     try { persistAcquisitionAcrossOAuth() } catch { /* noop */ }
+    try { if (nextUrl) localStorage.setItem('anma_post_auth_next', nextUrl) } catch { /* noop */ }
     await preFlightAuthReset()
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/bienvenida`,
+        redirectTo: `${window.location.origin}/bienvenida${nextUrl ? '?next=' + encodeURIComponent(nextUrl) : ''}`,
         queryParams: { access_type: 'offline', prompt: 'select_account' },
       },
     })

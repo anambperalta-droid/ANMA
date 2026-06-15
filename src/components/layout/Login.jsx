@@ -113,11 +113,21 @@ export default function Login() {
   const handleGoogle = async () => {
     setGoogleBusy(true); setErr('')
     try { persistAcquisitionAcrossOAuth() } catch { /* noop */ }
+    // Preservar ?next= a través del roundtrip de OAuth — sino se pierde y volvemos a /
+    let nextUrl = null
+    try {
+      const p = new URLSearchParams(window.location.search)
+      const n = p.get('next')
+      if (n && n.startsWith('/') && !n.startsWith('//')) {
+        nextUrl = n
+        localStorage.setItem('anma_post_auth_next', n)
+      }
+    } catch { /* noop */ }
     await preFlightAuthReset()
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/bienvenida`,
+        redirectTo: `${window.location.origin}/bienvenida${nextUrl ? '?next=' + encodeURIComponent(nextUrl) : ''}`,
         queryParams: { access_type: 'offline', prompt: 'select_account' },
       },
     })

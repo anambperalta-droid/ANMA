@@ -59,11 +59,26 @@ export default function Bienvenida() {
   // Antes de redirigir, transferimos la acquisition data persistida (UTM/referrer)
   // del localStorage al user_metadata + workspace. Esto permite trackear el canal
   // por el cual entró un user de Google OAuth.
+  // Lee el next= post-OAuth: primero del query param, después del localStorage.
+  // Whitelist: solo paths internos que empiezan con / y no con // (anti open-redirect).
+  const resolveNextUrl = () => {
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const nQuery = params.get('next')
+      if (nQuery && nQuery.startsWith('/') && !nQuery.startsWith('//')) return nQuery
+      const nLS = localStorage.getItem('anma_post_auth_next')
+      if (nLS && nLS.startsWith('/') && !nLS.startsWith('//')) {
+        localStorage.removeItem('anma_post_auth_next')
+        return nLS
+      }
+    } catch { /* noop */ }
+    return '/'
+  }
   const finishAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession()
     if (isOAuthSession(session)) {
       await applyAcquisitionData(session?.user?.id)
-      navigate('/', { replace: true })
+      navigate(resolveNextUrl(), { replace: true })
       return true
     }
     return false
@@ -283,7 +298,7 @@ export default function Bienvenida() {
       if (session) {
         logAuth('existing-session', { provider: session.user?.app_metadata?.provider })
         if (isOAuthSession(session)) {
-          navigate('/', { replace: true })
+          navigate(resolveNextUrl(), { replace: true })
           return
         }
         setSessionReady(true); setLoading(false); return
