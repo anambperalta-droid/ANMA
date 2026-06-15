@@ -82,10 +82,16 @@ function relativeDays(iso) {
 
 // Monograma ANMA Hub: "A" completa de trazo continuo + bucle abierto
 // enganchado en la pierna derecha (hub). Mismo diseño que favicon.svg, en blanco.
+// ANMA Hub — versión white-on-dark (Login/Registro tienen fondo violeta).
+// Mantiene la geometría del logo principal: A triangular + crossbar + curl "hub".
 const AnmaLogo = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 64 64" fill="none">
-    <path d="M14 52 L30 13 Q32 8.5 34 13 L50 52" stroke="#fff" strokeWidth="5.6" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M35.3 45.5 A9.6 9.6 0 1 1 41 39.8" stroke="#fff" strokeWidth="5.6" strokeLinecap="round"/>
+  <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 100 100" fill="none">
+    {/* Cuerpo de la A — trazo grueso blanco */}
+    <path d="M 22 90 L 50 8 L 78 90" stroke="#fff" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
+    {/* Crossbar */}
+    <path d="M 34 64 L 66 64" stroke="#fff" strokeWidth="6.5" strokeLinecap="round"/>
+    {/* Curl "Hub" — acento magenta que envuelve la pierna derecha */}
+    <path d="M 67 70 Q 86 76 82 90 Q 70 98 58 86" stroke="#F472B6" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 )
 
