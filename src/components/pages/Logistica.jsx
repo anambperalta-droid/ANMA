@@ -20,6 +20,14 @@ const CARRIER_TRACKING = {
   'Vía Cargo':        c => `https://www.viacargo.com.ar/web/seguimiento?nro=${c}`,
 }
 
+// Info de cada transportista para el tab Cotizar — URL para cotizar + color de marca
+const CARRIER_QUOTE = {
+  'Vía Cargo':        { color: '#059669', url: 'https://www.viacargo.com.ar', note: 'El flete se abona al recibir / en origen.' },
+  'Correo Argentino': { color: '#0EA5E9', url: 'https://www.correoargentino.com.ar/cotizar-envio',          note: 'Cotización oficial — sumá CP origen y destino.' },
+  'Andreani':         { color: '#F59E0B', url: 'https://www.andreani.com/sucursales-y-puntos-andreani',    note: 'Para sucursal o domicilio — pedí cotización online.' },
+  'OCA':              { color: '#DC2626', url: 'https://www.oca.com.ar/Cotizador',                          note: 'Cotizá según peso y código postal.' },
+}
+
 const STATUS_SELECT_STYLE = {
   'Preparando':   { background: '#FEF3C7', color: '#92400E', border: '1.5px solid #FCD34D' },
   'Despachado':   { background: '#DBEAFE', color: '#1E40AF', border: '1.5px solid #93C5FD' },
@@ -356,9 +364,6 @@ export default function Logistica() {
   const cfg = config()
   const feats = cfg.features || {}
   const companyName = cfg.companyName || cfg.company || ''
-  const viaMsg = companyName
-    ? `¡Hola! El costo de envío para tu pedido de ${companyName} es de $_______ a través de Vía Cargo. Recordá que el flete se abona al recibir / en origen. ¡Cualquier duda me avisás!`
-    : `¡Hola! El costo de envío para tu pedido es de $_______ a través de Vía Cargo. Recordá que el flete se abona al recibir / en origen. ¡Cualquier duda me avisás!`
   const toast   = useToast()
   const confirm = useConfirm()
   const [tab, setTab] = useState('envios')
@@ -372,6 +377,7 @@ export default function Logistica() {
   const [hoveredStatus, setHoveredStatus] = useState(null)
   const [cotizSearch, setCotizSearch] = useState('')
   const [cotizClient, setCotizClient] = useState(null)
+  const [selectedCarrier, setSelectedCarrier] = useState('Vía Cargo')
   const [despachoDir, setDespachoDir] = useState(() => db('despDir', ''))
   const [despachoCUIT, setDespachoCUIT] = useState(() => db('despCuit', ''))
   const dismissLateAlert = () => {
@@ -1012,24 +1018,54 @@ export default function Logistica() {
             )}
           </div>
 
-          {/* ── ÁREA: Herramientas (Vía Cargo + Preview + WA) ── */}
+          {/* ── ÁREA: Herramientas (Selector de transportista + Preview + WA) ── */}
+          {(() => {
+          const carrierInfo = CARRIER_QUOTE[selectedCarrier] || CARRIER_QUOTE['Vía Cargo']
+          const carrierNote = carrierInfo.note || ''
+          const carrierMsg = companyName
+            ? `¡Hola! El costo de envío para tu pedido de ${companyName} es de $_______ a través de ${selectedCarrier}. ${carrierNote} ¡Cualquier duda me avisás!`
+            : `¡Hola! El costo de envío para tu pedido es de $_______ a través de ${selectedCarrier}. ${carrierNote} ¡Cualquier duda me avisás!`
+          const tone = carrierInfo.color
+          return (
           <div className="cotiz-area-tools card" style={{ borderRadius: 20, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-            {/* Badge Vía Cargo fijo */}
+            {/* Selector de transportista — chips clickeables */}
             <div>
               <div style={{ fontSize: 10, fontWeight: 800, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
-                <i className="fa fa-truck" style={{ fontSize: 10 }} />Transportista
+                <i className="fa fa-truck" style={{ fontSize: 10 }} />Elegí el transportista
               </div>
-              <div className="cotiz-vc-badge">
-                <div style={{ width: 40, height: 40, borderRadius: 12, background: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, marginBottom: 12 }}>
+                {Object.keys(CARRIER_QUOTE).map(name => {
+                  const info = CARRIER_QUOTE[name]
+                  const isActive = selectedCarrier === name
+                  return (
+                    <button key={name} type="button" onClick={() => setSelectedCarrier(name)}
+                      style={{
+                        padding: '9px 11px', borderRadius: 10, cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
+                        border: `1.5px solid ${isActive ? info.color : 'var(--border)'}`,
+                        background: isActive ? `${info.color}10` : 'var(--surface)',
+                        display: 'flex', alignItems: 'center', gap: 8, transition: 'all .15s',
+                      }}>
+                      <span style={{ width: 26, height: 26, borderRadius: 7, background: info.color, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <i className="fa fa-truck" style={{ color: '#fff', fontSize: 11 }} />
+                      </span>
+                      <span style={{ fontSize: 12.5, fontWeight: 700, color: isActive ? info.color : 'var(--txt)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</span>
+                      {isActive && <i className="fa fa-check-circle" style={{ color: info.color, fontSize: 12 }} />}
+                    </button>
+                  )
+                })}
+              </div>
+              {/* Badge + link Cotizar oficial del seleccionado */}
+              <div className="cotiz-vc-badge" style={{ borderColor: `${tone}40`, background: `${tone}08` }}>
+                <div style={{ width: 40, height: 40, borderRadius: 12, background: tone, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <i className="fa fa-truck" style={{ color: '#fff', fontSize: 17 }} />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: '#065F46', textTransform: 'uppercase', letterSpacing: '.08em', lineHeight: 1 }}>Operado por</div>
-                  <div style={{ fontSize: 17, fontWeight: 800, color: '#059669', letterSpacing: '-.3px', marginTop: 3 }}>Vía Cargo</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: tone, textTransform: 'uppercase', letterSpacing: '.08em', lineHeight: 1 }}>Operado por</div>
+                  <div style={{ fontSize: 17, fontWeight: 800, color: tone, letterSpacing: '-.3px', marginTop: 3 }}>{selectedCarrier}</div>
                 </div>
-                <a href="https://www.viacargo.com.ar" target="_blank" rel="noreferrer"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: '#059669', background: '#fff', border: '1.5px solid #A7F3D0', borderRadius: 9, padding: '7px 13px', textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap', transition: 'filter .15s' }}
+                <a href={carrierInfo.url} target="_blank" rel="noreferrer"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: tone, background: '#fff', border: `1.5px solid ${tone}40`, borderRadius: 9, padding: '7px 13px', textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap', transition: 'filter .15s' }}
                   onMouseEnter={e => e.currentTarget.style.filter = 'brightness(.93)'}
                   onMouseLeave={e => e.currentTarget.style.filter = ''}>
                   <i className="fa fa-arrow-up-right-from-square" style={{ fontSize: 9 }} />Cotizar
@@ -1042,16 +1078,16 @@ export default function Logistica() {
               <div style={{ fontSize: 10, fontWeight: 800, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 5 }}>
                 <i className="fa fa-eye" style={{ fontSize: 10 }} />Vista previa del mensaje
               </div>
-              <p className="cotiz-preview">"{viaMsg}"</p>
+              <p className="cotiz-preview">"{carrierMsg}"</p>
             </div>
 
-            {/* Botón WA — w-full en mobile y desktop */}
+            {/* Botón WA */}
             <button className="cotiz-wa-btn"
               onClick={() => {
                 if (cotizClient?.wa) {
-                  window.open(`https://api.whatsapp.com/send?phone=${cotizClient.wa.replace(/\D/g, '')}&text=${encodeURIComponent(viaMsg)}`, '_blank')
+                  window.open(`https://api.whatsapp.com/send?phone=${cotizClient.wa.replace(/\D/g, '')}&text=${encodeURIComponent(carrierMsg)}`, '_blank')
                 } else {
-                  navigator.clipboard.writeText(viaMsg)
+                  navigator.clipboard.writeText(carrierMsg)
                   window.open('https://web.whatsapp.com/', '_blank')
                   toast('Texto copiado. Seleccioná el contacto en WhatsApp.', 'ok')
                 }
@@ -1067,6 +1103,7 @@ export default function Logistica() {
                 : 'Copiar texto + Abrir WhatsApp'}
             </button>
           </div>
+          )})()}
 
           {/* ── ÁREA: Mis Datos de Despacho ── */}
           <div className="cotiz-area-despacho card" style={{ borderRadius: 20, padding: '16px 18px' }}>

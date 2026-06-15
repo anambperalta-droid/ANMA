@@ -1044,34 +1044,49 @@ export default function Clientes() {
               )}
             </div>
 
-            {/* Datos fiscales — TODO visible, sin colapsar */}
-            <div style={{ borderTop: '1px solid var(--border)', margin: '14px 0 10px', paddingTop: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-                <i className="fa fa-landmark" style={{ color: 'var(--brand)', fontSize: 11 }} />
-                <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.08em' }}>Datos Fiscales (Facturación)</span>
-              </div>
-              <div className="grid2">
-                <div className="fg">
-                  <label>CUIT / CUIL</label>
-                  <input type="text" value={form.cuit || ''} onChange={e => setF('cuit', e.target.value)} placeholder="20-12345678-9" maxLength={13} />
+            {/* Datos fiscales — COLAPSABLE. Auto-abierto si ya tiene datos cargados */}
+            {(() => {
+              const hasFiscalData = !!(form.cuit || form.ivaCondition || form.razonSocial)
+              const isOpen = showFiscal || hasFiscalData
+              return (
+                <div style={{ borderTop: '1px solid var(--border)', margin: '14px 0 10px', paddingTop: 12 }}>
+                  <button type="button" onClick={() => setShowFiscal(!isOpen)}
+                    style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', padding: '4px 0', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left' }}>
+                    <i className="fa fa-landmark" style={{ color: 'var(--brand)', fontSize: 11 }} />
+                    <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', flex: 1 }}>
+                      Datos Fiscales (Facturación)
+                    </span>
+                    <span style={{ fontSize: 10.5, color: 'var(--txt4)', fontWeight: 500 }}>
+                      {isOpen ? 'Opcional' : 'Agregar si facturás'}
+                    </span>
+                    <i className={`fa fa-chevron-${isOpen ? 'up' : 'down'}`} style={{ fontSize: 10, color: 'var(--txt4)' }} />
+                  </button>
+                  {isOpen && (
+                    <div className="grid2" style={{ marginTop: 12 }}>
+                      <div className="fg">
+                        <label>CUIT / CUIL</label>
+                        <input type="text" value={form.cuit || ''} onChange={e => setF('cuit', e.target.value)} placeholder="20-12345678-9" maxLength={13} />
+                      </div>
+                      <div className="fg">
+                        <label>Condición frente al IVA</label>
+                        <select value={form.ivaCondition || ''} onChange={e => setF('ivaCondition', e.target.value)}>
+                          <option value="">— seleccionar —</option>
+                          <option value="Responsable Inscripto">Responsable Inscripto</option>
+                          <option value="Monotributista">Monotributista</option>
+                          <option value="Exento">Exento</option>
+                          <option value="No Responsable">No Responsable</option>
+                          <option value="Consumidor Final">Consumidor Final</option>
+                        </select>
+                      </div>
+                      <div className="fg" style={{ gridColumn: '1 / -1' }}>
+                        <label>Razón Social</label>
+                        <input type="text" value={form.razonSocial || ''} onChange={e => setF('razonSocial', e.target.value)} placeholder="Razón social completa según AFIP" />
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="fg">
-                  <label>Condición frente al IVA</label>
-                  <select value={form.ivaCondition || ''} onChange={e => setF('ivaCondition', e.target.value)}>
-                    <option value="">— seleccionar —</option>
-                    <option value="Responsable Inscripto">Responsable Inscripto</option>
-                    <option value="Monotributista">Monotributista</option>
-                    <option value="Exento">Exento</option>
-                    <option value="No Responsable">No Responsable</option>
-                    <option value="Consumidor Final">Consumidor Final</option>
-                  </select>
-                </div>
-                <div className="fg" style={{ gridColumn: '1 / -1' }}>
-                  <label>Razón Social</label>
-                  <input type="text" value={form.razonSocial || ''} onChange={e => setF('razonSocial', e.target.value)} placeholder="Razón social completa según AFIP" />
-                </div>
-              </div>
-            </div>
+              )
+            })()}
 
             <div className="fg"><label>Notas internas</label><textarea value={form.notes} onChange={e => setF('notes', e.target.value)} rows={3} placeholder="Preferencias, condiciones especiales, recordatorios..." /></div>
             </div>{/* /body — flujo natural */}
