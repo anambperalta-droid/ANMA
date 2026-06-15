@@ -99,7 +99,7 @@ const PARADA_TIPOS = [
 ]
 const tipoMeta = (t) => PARADA_TIPOS.find(x => x.val === t) || PARADA_TIPOS[0]
 
-function ViajesTab({ get, saveEntity, deleteEntity, toast, confirm }) {
+function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }) {
   const viajes  = get('viajes', [])
   const budgets = get('budgets', [])
   const [modal, setModal] = useState(false)
@@ -139,14 +139,38 @@ function ViajesTab({ get, saveEntity, deleteEntity, toast, confirm }) {
     }))
     const total = paradas.reduce((s, p) => s + p.costo, 0)
     const budgetIds = Array.from(new Set(paradas.map(p => p.budgetId).filter(Boolean)))
+    // IDs originales del viaje (antes de la edición) — incluye los que ahora se removieron
+    const originalIds = Array.from(new Set((edit.budgetIds || []).concat(((edit.paradas || []).map(p => p.budgetId).filter(Boolean)))))
+    const affectedIds = Array.from(new Set([...originalIds, ...budgetIds]))
     saveEntity('viajes', { ...edit, paradas, total, budgetIds })
-    toast('Viaje guardado', 'ok')
+    // Sincronización inversa: actualiza logisticaParadas de cada budget afectado.
+    // No tocamos budgets con stockDeducted: su costo histórico queda congelado.
+    if (saveBudget && affectedIds.length) {
+      affectedIds.forEach(bid => {
+        const b = budgets.find(x => x.id === bid)
+        if (!b || b.stockDeducted) return
+        const paradasDelBudget = paradas
+          .filter(p => p.budgetId === bid)
+          .map(p => ({ tipo: p.tipo, descripcion: p.descripcion, costo: p.costo }))
+        saveBudget({ ...b, logisticaParadas: paradasDelBudget, viajeId: paradasDelBudget.length ? edit.id : null })
+      })
+    }
+    toast('Viaje guardado — sincronizado con presupuestos', 'ok')
     close()
   }
 
   const del = async (v) => {
     if (!(await confirm(`¿Eliminar el viaje del ${v.fecha || '—'}?`))) return
     deleteEntity('viajes', v.id)
+    // Limpia referencia en los presupuestos vinculados (excepto los ya congelados por stockDeducted)
+    if (saveBudget) {
+      const linkedIds = Array.from(new Set((v.budgetIds || []).concat((v.paradas || []).map(p => p.budgetId).filter(Boolean))))
+      linkedIds.forEach(bid => {
+        const b = budgets.find(x => x.id === bid)
+        if (!b || b.stockDeducted) return
+        saveBudget({ ...b, logisticaParadas: [], viajeId: null })
+      })
+    }
     toast('Viaje eliminado', 'ok')
   }
 
@@ -360,7 +384,7 @@ function ViajesTab({ get, saveEntity, deleteEntity, toast, confirm }) {
 }
 
 export default function Logistica() {
-  const { get, saveEntity, deleteEntity, config } = useData()
+  const { get, saveEntity, saveBudget, deleteEntity, config } = useData()
   const cfg = config()
   const feats = cfg.features || {}
   const companyName = cfg.companyName || cfg.company || ''
@@ -938,7 +962,7 @@ export default function Logistica() {
       )}
 
       {/* ── TAB VIAJES (Comisionista) ──────────────────────────────── */}
-      {tab === 'viajes' && <ViajesTab get={get} saveEntity={saveEntity} deleteEntity={deleteEntity} toast={toast} confirm={confirm} />}
+      {tab === 'viajes' && <ViajesTab get={get} saveEntity={saveEntity} saveBudget={saveBudget} deleteEntity={deleteEntity} toast={toast} confirm={confirm} />}
 
       {/* ── TAB COTIZAR ────────────────────────────────────────────── */}
       {tab === 'cotizar' && (
