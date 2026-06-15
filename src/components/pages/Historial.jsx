@@ -227,6 +227,158 @@ function PaymentsModal({ budget, onSave, onClose }) {
   )
 }
 
+/* ── Modal Devolución (parcial o total) ──
+   Permite reincorporar stock y registrar reembolso al cliente.
+   Lista los items del budget con la cantidad ya devuelta y cuánto queda disponible. */
+function ReturnModal({ budget, onSave, onClose }) {
+  const today = new Date().toISOString().slice(0, 10)
+  const items = budget?.items || []
+  // Calcular cuánto ya se devolvió por item (para no permitir devolver de más)
+  const alreadyReturned = (productId) => (budget.returns || []).reduce((s, r) => {
+    const ri = (r.items || []).find(x => x.productId === productId)
+    return s + (Number(ri?.qty) || 0)
+  }, 0)
+  const initial = items.map(it => {
+    const sold = Number(it.qty) || 0
+    const ret = alreadyReturned(it.productId)
+    const remaining = Math.max(0, sold - ret)
+    return { productId: it.productId, name: it.name, priceUnit: Number(it.priceUnit ?? it.price ?? 0), costUnit: Number(it.costUnit || 0), sold, returned: ret, remaining, qty: 0 }
+  })
+  const [rows, setRows] = useState(initial)
+  const [date, setDate] = useState(today)
+  const [reason, setReason] = useState('')
+  const [notes, setNotes] = useState('')
+  const [refundCustom, setRefundCustom] = useState(null) // null = autocalculado
+  const fmt = (v) => '$' + Number(v || 0).toLocaleString('es-AR')
+
+  const REASONS = [
+    { k: 'defect',     l: '🔧 Producto defectuoso' },
+    { k: 'wrong',      l: '📦 Producto equivocado' },
+    { k: 'late',       l: '⏰ Llegó fuera de tiempo' },
+    { k: 'regret',     l: '🤔 Cliente se arrepintió' },
+    { k: 'damage',     l: '💔 Dañado en envío' },
+    { k: 'other',      l: '📝 Otro motivo' },
+  ]
+
+  const setQty = (productId, qty) => {
+    setRows(rs => rs.map(r => r.productId === productId
+      ? { ...r, qty: Math.min(r.remaining, Math.max(0, Number(qty) || 0)) }
+      : r))
+  }
+
+  const refundCalc = rows.reduce((s, r) => s + r.qty * r.priceUnit, 0)
+  const refundAmt  = refundCustom !== null ? Number(refundCustom) || 0 : refundCalc
+  const totalQty   = rows.reduce((s, r) => s + r.qty, 0)
+  const canSave    = totalQty > 0 && reason
+
+  const handleSave = () => {
+    const returnItems = rows
+      .filter(r => r.qty > 0)
+      .map(r => ({ productId: r.productId, name: r.name, qty: r.qty, priceUnit: r.priceUnit, costUnit: r.costUnit }))
+    onSave({
+      id: Math.random().toString(36).slice(2, 11),
+      date,
+      items: returnItems,
+      refundAmt: Math.max(0, refundAmt),
+      reason: reason === 'other' ? (notes.trim() || 'Otro motivo') : (REASONS.find(r => r.k === reason)?.l.replace(/^\S+ /, '') || ''),
+      notes,
+    })
+  }
+
+  return (
+    <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div className="modal" style={{ maxWidth: 560 }}>
+        <div className="mh">
+          <h3><i className="fa fa-rotate-left" style={{ color: '#F59E0B', marginRight: 8 }} />Registrar devolución</h3>
+          <button className="mclose" onClick={onClose}><i className="fa fa-xmark" /></button>
+        </div>
+        <p style={{ fontSize: 12, color: 'var(--txt3)', margin: '0 0 12px', lineHeight: 1.5 }}>
+          Reincorpora el stock al inventario y descuenta el reembolso de tu caja. Pedido <b>{budget?.num}</b> · {budget?.company || budget?.contact}
+        </p>
+
+        <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: 10, marginBottom: 12 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: .4, marginBottom: 8 }}>
+            <i className="fa fa-box-open" style={{ marginRight: 5 }} />Items vendidos
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {rows.map(r => (
+              <div key={r.productId || r.name} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto', gap: 8, alignItems: 'center', padding: '6px 8px', background: '#fff', border: '1px solid var(--border)', borderRadius: 8 }}>
+                <div>
+                  <div style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--txt1)' }}>{r.name}</div>
+                  <div style={{ fontSize: 10.5, color: 'var(--txt4)', marginTop: 2 }}>
+                    Vendido: {r.sold} · Devuelto: {r.returned} · Disponible: <b style={{ color: r.remaining > 0 ? 'var(--brand)' : 'var(--txt4)' }}>{r.remaining}</b>
+                  </div>
+                </div>
+                <input type="number" min={0} max={r.remaining} value={r.qty}
+                  onChange={e => setQty(r.productId, e.target.value)}
+                  disabled={r.remaining === 0}
+                  style={{ width: 62, padding: '6px 8px', fontSize: 13, fontWeight: 700, border: '1.5px solid var(--border)', borderRadius: 7, textAlign: 'center', fontFamily: 'inherit' }} />
+                <div style={{ fontSize: 11, color: 'var(--txt3)', minWidth: 70, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+                  {r.qty > 0 ? fmt(r.qty * r.priceUnit) : '—'}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid2" style={{ marginBottom: 10 }}>
+          <div className="fg">
+            <label>Fecha de devolución</label>
+            <input type="date" value={date} onChange={e => setDate(e.target.value)} />
+          </div>
+          <div className="fg">
+            <label>Monto a reintegrar al cliente</label>
+            <input type="number" min={0} value={refundCustom !== null ? refundCustom : refundCalc}
+              onChange={e => setRefundCustom(e.target.value)}
+              placeholder={String(refundCalc)} />
+            <div style={{ fontSize: 10.5, color: 'var(--txt4)', marginTop: 2 }}>
+              Sugerido: {fmt(refundCalc)} {refundCustom !== null && refundAmt !== refundCalc && <button type="button" onClick={() => setRefundCustom(null)} style={{ background: 'none', border: 'none', color: 'var(--brand)', fontSize: 10.5, cursor: 'pointer', fontFamily: 'inherit', padding: 0, marginLeft: 4 }}>usar sugerido</button>}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginBottom: 10 }}>
+          <label style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: .4, marginBottom: 6, display: 'block' }}>Motivo</label>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+            {REASONS.map(r => (
+              <button key={r.k} type="button" onClick={() => setReason(r.k)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '8px 10px', borderRadius: 8,
+                  border: `1.5px solid ${reason === r.k ? '#F59E0B' : 'var(--border)'}`,
+                  background: reason === r.k ? '#FFFBEB' : 'var(--surface)',
+                  color: reason === r.k ? '#92400E' : 'var(--txt2)',
+                  fontSize: 12, fontWeight: reason === r.k ? 700 : 500,
+                  cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left'
+                }}>{r.l}</button>
+            ))}
+          </div>
+        </div>
+
+        <div className="fg" style={{ marginBottom: 4 }}>
+          <label>Notas (opcional)</label>
+          <textarea rows={2} value={notes} onChange={e => setNotes(e.target.value)}
+            placeholder="Detalle del estado, observaciones para el inventario..."
+            style={{ width: '100%', resize: 'vertical', fontFamily: 'inherit', fontSize: 12.5 }} />
+        </div>
+
+        <div style={{ background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 9, padding: 10, fontSize: 11.5, color: '#92400E', lineHeight: 1.5, marginTop: 10 }}>
+          <i className="fa fa-circle-info" style={{ marginRight: 5 }} />
+          Al confirmar: <b>{totalQty}</b> unidad{totalQty !== 1 ? 'es' : ''} vuelven al stock y <b>{fmt(refundAmt)}</b> se descuentan de tu caja del {date.split('-').reverse().join('/')}.
+        </div>
+
+        <div className="mfooter" style={{ marginTop: 14 }}>
+          <button className="btn btn-secondary" onClick={onClose}>Cancelar</button>
+          <button className="btn btn-primary" onClick={handleSave} disabled={!canSave}
+            style={{ background: '#F59E0B', borderColor: '#F59E0B' }}>
+            <i className="fa fa-rotate-left" /> Confirmar devolución
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* ── Modal motivo de pérdida ── */
 function LossReasonModal({ budget, onSave, onClose }) {
   const [reason, setReason] = useState('')
@@ -613,15 +765,33 @@ function StatusDonut({ statuses, budgets, onSegmentClick }) {
  * no contar el IVA que entró efectivamente al bolsillo de Anma (aunque después
  * vaya a AFIP, es plata que entró).
  */
+// Devoluciones — reembolsos al cliente. Reducen cobrado, restauran stock y
+// descuentan ganancia proporcional. b.returns = [{ id, date, items: [{productId, qty}], refundAmt, reason, notes }]
+const returnedTotal    = (b) => (b.returns || []).reduce((s, r) => s + (Number(r.refundAmt) || 0), 0)
+const returnedEnFecha  = (b, ds) => (b.returns || []).filter(r => r.date === ds).reduce((s, r) => s + (Number(r.refundAmt) || 0), 0)
+const returnedEnRango  = (b, from, to) => (b.returns || []).filter(r => r.date >= from && r.date <= to).reduce((s, r) => s + (Number(r.refundAmt) || 0), 0)
+const returnedGain     = (b) => {
+  if (!Array.isArray(b.returns) || !b.returns.length) return 0
+  return b.returns.reduce((s, r) => s + (r.items || []).reduce((s2, ri) => {
+    const it = (b.items || []).find(x => x.productId === ri.productId)
+    const priceUnit = Number(it?.priceUnit ?? it?.price ?? 0)
+    const costUnit  = Number(it?.costUnit ?? 0)
+    return s2 + Math.max(0, (priceUnit - costUnit) * (Number(ri.qty) || 0))
+  }, 0), 0)
+}
+
 const cobrado = (b) => {
   // Si hay registro de pagos individuales (seña + saldo + etc.), lo sumamos
+  let total = 0
   if (Array.isArray(b.payments) && b.payments.length > 0) {
-    return b.payments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
+    total = b.payments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
+  } else {
+    const totalCobrado = b.totalFinal || b.total || 0
+    if (b.payStatus === 'paid')    total = totalCobrado
+    else if (b.payStatus === 'partial') total = b.depositAmt || Math.round(totalCobrado * (b.deposit || 50) / 100)
   }
-  const totalCobrado = b.totalFinal || b.total || 0
-  if (b.payStatus === 'paid')    return totalCobrado
-  if (b.payStatus === 'partial') return b.depositAmt || Math.round(totalCobrado * (b.deposit || 50) / 100)
-  return 0
+  // Restamos reembolsos por devoluciones
+  return Math.max(0, total - returnedTotal(b))
 }
 
 /**
@@ -631,31 +801,40 @@ const cobrado = (b) => {
  * Esto corrige el gráfico de cash flow real día a día.
  */
 const cobradoEnFecha = (b, fechaISO) => {
+  let total
   if (Array.isArray(b.payments) && b.payments.length > 0) {
-    return b.payments
+    total = b.payments
       .filter(p => p.date === fechaISO)
       .reduce((s, p) => s + (Number(p.amount) || 0), 0)
+  } else {
+    // Legacy: sin pagos individuales → todo se atribuye al día de creación
+    total = b.date === fechaISO ? cobrado(b) : 0
   }
-  // Legacy: sin pagos individuales → todo se atribuye al día de creación
-  return b.date === fechaISO ? cobrado(b) : 0
+  // Reembolsos por devolución de ese día restan
+  return total - returnedEnFecha(b, fechaISO)
 }
 
 /** Cuánto se cobró dentro de un rango [from, to] inclusive (ISO yyyy-mm-dd). */
 const cobradoEnRango = (b, fromISO, toISO) => {
+  let total
   if (Array.isArray(b.payments) && b.payments.length > 0) {
-    return b.payments
+    total = b.payments
       .filter(p => p.date >= fromISO && p.date <= toISO)
       .reduce((s, p) => s + (Number(p.amount) || 0), 0)
+  } else {
+    total = (b.date >= fromISO && b.date <= toISO) ? cobrado(b) : 0
   }
-  return (b.date >= fromISO && b.date <= toISO) ? cobrado(b) : 0
+  return total - returnedEnRango(b, fromISO, toISO)
 }
 const ganCobrada = (b) => {
-  if (b.payStatus === 'paid') return b.totalGain || 0
-  if (b.payStatus === 'partial') {
+  let gain
+  if (b.payStatus === 'paid') gain = b.totalGain || 0
+  else if (b.payStatus === 'partial') {
     const pct = (b.depositAmt || 0) / ((b.total || 1))
-    return Math.round((b.totalGain || 0) * pct)
-  }
-  return 0
+    gain = Math.round((b.totalGain || 0) * pct)
+  } else gain = 0
+  // Restamos la ganancia que se "perdió" con las devoluciones
+  return Math.max(0, gain - returnedGain(b))
 }
 // ─────────────────────────────────────────────────────────────────
 
@@ -687,6 +866,7 @@ export default function Historial() {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false)
   const [previewBudget, setPreviewBudget] = useState(null)
   const [paymentsBudget, setPaymentsBudget] = useState(null)
+  const [returnBudget,   setReturnBudget]   = useState(null)
   const [todayCollapsed, setTodayCollapsed] = useState(() => db('todayCollapsed', false))
   const toggleTodayCollapsed = () => {
     setTodayCollapsed(c => {
@@ -1043,6 +1223,23 @@ export default function Historial() {
       }
     }
     setPendingLossId(null)
+  }
+
+  // ── Confirmar devolución (parcial o total) ──
+  // Restaura stock de las unidades devueltas, registra el reembolso en budget.returns[]
+  // y deja registro de stockMove tipo 'return' para auditoría.
+  const confirmReturn = (ret) => {
+    if (!returnBudget) return
+    const b = returnBudget
+    // Filtrar items devueltos: solo los que tienen productId (no insumos de despacho)
+    const returnItemsForStock = (ret.items || []).filter(i => i.productId && i.qty > 0)
+    if (b.stockDeducted && returnItemsForStock.length > 0) {
+      restoreStockForOrder(returnItemsForStock, [], b.num || '', 'devolución')
+    }
+    const updatedReturns = [...(b.returns || []), ret]
+    saveBudget({ ...b, returns: updatedReturns })
+    toast(`Devolución registrada · ${ret.items.length} item(s) · $${Number(ret.refundAmt || 0).toLocaleString('es-AR')} reintegrado`, 'in')
+    setReturnBudget(null)
   }
   const STATUS_COLORS = {
     draft:       { bg: '#F1F5F9', color: '#475569', border: '#CBD5E1' },
@@ -1948,6 +2145,17 @@ export default function Historial() {
                             onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}>
                             <i className="fa-brands fa-whatsapp" style={{ fontSize: 13 }} />
                           </button>
+                          {b.stockDeducted && (
+                            <button className="hist-act" onClick={() => setReturnBudget(b)} title={(b.returns || []).length > 0 ? `Devoluciones: ${(b.returns || []).length} · Registrar otra` : 'Registrar devolución'}
+                              onMouseEnter={e => e.currentTarget.style.color = '#F59E0B'}
+                              onMouseLeave={e => e.currentTarget.style.color = (b.returns || []).length > 0 ? '#F59E0B' : '#D1D5DB'}
+                              style={{ color: (b.returns || []).length > 0 ? '#F59E0B' : undefined, position: 'relative' }}>
+                              <i className="fa fa-rotate-left" style={{ fontSize: 12 }} />
+                              {(b.returns || []).length > 0 && (
+                                <span style={{ position: 'absolute', top: -2, right: -2, background: '#F59E0B', color: '#fff', fontSize: 8, fontWeight: 800, borderRadius: '50%', width: 12, height: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{(b.returns || []).length}</span>
+                              )}
+                            </button>
+                          )}
                           <button className="hist-act" onClick={() => handleDelete(b)} title="Eliminar"
                             onMouseEnter={e => e.currentTarget.style.color = 'var(--red)'}
                             onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}>
@@ -2277,6 +2485,15 @@ export default function Historial() {
             setPaymentsBudget(updatedBudget)
             toast(`Pago guardado · ${fmt(totalPaid)} de ${fmt(totalDue)}`, 'ok')
           }}
+        />
+      )}
+
+      {/* ═══ Modal Devolución ═══ */}
+      {returnBudget && (
+        <ReturnModal
+          budget={returnBudget}
+          onClose={() => setReturnBudget(null)}
+          onSave={confirmReturn}
         />
       )}
 
