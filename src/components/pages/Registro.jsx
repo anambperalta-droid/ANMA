@@ -33,12 +33,11 @@ async function preFlightAuthReset() {
 
 // Monograma ANMA Hub: "A" completa de trazo continuo + bucle abierto
 // enganchado en la pierna derecha (hub). Mismo diseño que favicon.svg, en blanco.
-// ANMA Hub — white-on-dark variant (fondo violeta del registro).
+// ANMA Hub — white-on-dark sobrio (fondo violeta del registro).
 const AnmaLogo = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 100 100" fill="none">
-    <path d="M 22 90 L 50 8 L 78 90" stroke="#fff" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M 34 64 L 66 64" stroke="#fff" strokeWidth="6.5" strokeLinecap="round"/>
-    <path d="M 67 70 Q 86 76 82 90 Q 70 98 58 86" stroke="#F472B6" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M 22 84 L 50 16 L 78 84" stroke="#fff" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M 33 64 L 67 64" stroke="#fff" strokeWidth="8" strokeLinecap="round"/>
   </svg>
 )
 
