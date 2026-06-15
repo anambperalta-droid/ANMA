@@ -1873,6 +1873,10 @@ td b{color:var(--txt);font-weight:600}
   flex:1 1 auto!important;
   min-height:0!important;
 }
+/* Modal de pagos: altura fija + body con scroll interno (footer siempre visible) */
+.pay-modal-card{overflow:hidden!important;max-height:none!important}
+.pay-modal-card .pay-modal-body{overflow-y:auto!important;flex:1 1 auto!important;min-height:0!important;-webkit-overflow-scrolling:touch}
+
 /* Producto modal: body con scroll interno (entre header y footer) */
 .prod-modal-card{display:flex;flex-direction:column;overflow:hidden!important;max-height:none}
 .prod-modal-card > .mh,.prod-modal-card > .mfooter{flex-shrink:0}

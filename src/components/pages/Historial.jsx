@@ -102,13 +102,33 @@ function PaymentsModal({ budget, onSave, onClose }) {
   const delPayment = (id) => setPayments(payments.filter(p => p.id !== id))
   const methodLbl = (val) => PAY_METHODS.find(m => m.val === val)?.lbl || val
 
+  // Detectamos el caso confuso: marcado como 'paid' en la lista pero sin payments[]
+  const inconsistentPaid = budget.payStatus === 'paid' && initialPayments.length === 0
+
   return (
     <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-      <div className="modal" style={{ maxWidth: 580 }} onClick={e => e.stopPropagation()}>
-        <div className="mh">
+      <div className="modal pay-modal-card" style={{ maxWidth: 600, height: 'min(90dvh, 760px)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }} onClick={e => e.stopPropagation()}>
+        <div className="mh" style={{ flexShrink: 0 }}>
           <h3><i className="fa fa-hand-holding-dollar" style={{ color: '#15803D', marginRight: 8 }} />Pagos · {budget.num || '—'}</h3>
           <button className="mclose" onClick={onClose}><i className="fa fa-xmark" /></button>
         </div>
+
+        {/* Privacidad: aclarar que este modal es solo interno, no llega al cliente */}
+        <div style={{ flexShrink: 0, fontSize: 10.5, color: 'var(--txt3)', background: 'var(--surface2)', padding: '6px 12px', borderRadius: 8, marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <i className="fa fa-lock" style={{ color: 'var(--txt4)' }} />
+          <span>Información interna — el cliente NO ve estos registros en el presupuesto / WhatsApp / PDF</span>
+        </div>
+
+        {/* Body scrollable */}
+        <div className="pay-modal-body" style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingRight: 4 }}>
+
+        {/* Advertencia si está marcado paid sin payments[] */}
+        {inconsistentPaid && (
+          <div style={{ background: '#FFFBEB', border: '1.5px solid #FDE68A', borderRadius: 10, padding: '10px 12px', marginBottom: 12, fontSize: 12, color: '#92400E', display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+            <i className="fa fa-triangle-exclamation" style={{ marginTop: 2, flexShrink: 0 }} />
+            <span>Este pedido figura como <b>Pagado</b> en la lista pero sin comprobantes registrados acá. Cargá ahora el detalle del cobro real (fecha, monto, método) — quedará trazado para tu contador.</span>
+          </div>
+        )}
 
         {/* Resumen visual */}
         <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: 14, marginBottom: 14, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
@@ -201,7 +221,10 @@ function PaymentsModal({ budget, onSave, onClose }) {
           </button>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginTop: 18 }}>
+        </div>{/* /pay-modal-body */}
+
+        {/* Footer SIEMPRE visible, fuera del scroll */}
+        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'space-between', gap: 12, marginTop: 14, paddingTop: 14, borderTop: '1px solid var(--border)' }}>
           <button className="btn btn-secondary" onClick={onClose} style={{ flex: 1 }}>
             <i className="fa fa-xmark" /> Cancelar
           </button>
