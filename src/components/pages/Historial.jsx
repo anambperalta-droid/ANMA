@@ -215,9 +215,8 @@ function PaymentsModal({ budget, onSave, onClose }) {
             Se guarda automáticamente — podés cerrar cuando termines
           </div>
         </div>
-        </div>{/* /pay-modal-body */}
 
-        {/* Footer SIEMPRE visible — solo "Cerrar" porque cada pago se autoguarda */}
+        {/* Footer — solo "Cerrar" porque cada pago se autoguarda al agregar */}
         <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
           <button onClick={onClose} style={{ padding: '10px 36px', background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 9, fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>
             <i className="fa fa-check" /> Cerrar
