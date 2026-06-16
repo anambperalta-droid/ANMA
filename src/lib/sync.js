@@ -52,6 +52,9 @@ let _wsId             = null   // workspace id (owner's user_id, resolved via me
 let _role             = null   // 'owner' | 'operator' | 'viewer'
 let _timer            = null
 let _beforeunloadFn   = null   // reference kept to allow removal on logout
+let _pagehideFn       = null   // iOS Safari: pagehide fires when beforeunload doesn't
+let _visibilityFn     = null   // mobile: flush cuando el tab se va a background
+let _onlineFn         = null   // reintenta push cuando vuelve la conexion
 
 /** Resolve the workspace the user belongs to.
  *  Falls back to self-workspace (userId) for legacy / no-membership users. */
@@ -141,11 +144,11 @@ async function doPush(retryCount = 0) {
 export function initSync(userId) {
   _uid = userId
 
-  // Remove any previous beforeunload listener (handles logout + user switch)
-  if (_beforeunloadFn) {
-    window.removeEventListener('beforeunload', _beforeunloadFn)
-    _beforeunloadFn = null
-  }
+  // Remove any previous listeners (handles logout + user switch)
+  if (_beforeunloadFn) { window.removeEventListener('beforeunload', _beforeunloadFn); _beforeunloadFn = null }
+  if (_pagehideFn)     { window.removeEventListener('pagehide',     _pagehideFn);     _pagehideFn     = null }
+  if (_visibilityFn)   { document.removeEventListener('visibilitychange', _visibilityFn); _visibilityFn = null }
+  if (_onlineFn)       { window.removeEventListener('online',       _onlineFn);       _onlineFn       = null }
 
   if (!userId) {
     _wsId = null
@@ -154,9 +157,17 @@ export function initSync(userId) {
     return
   }
 
-  // Flush immediately on tab close — avoids losing the last write during the 1500ms debounce
+  // Flush immediately when navegando/cerrando. beforeunload solo en desktop;
+  // mobile (iOS Safari sobre todo) usa pagehide y visibilitychange — sin esto
+  // las escrituras en el debounce de 1.5s se pierden al cambiar de app.
   _beforeunloadFn = () => flushSync()
-  window.addEventListener('beforeunload', _beforeunloadFn)
+  _pagehideFn     = () => flushSync()
+  _visibilityFn   = () => { if (document.visibilityState === 'hidden') flushSync() }
+  _onlineFn       = () => flushSync()
+  window.addEventListener('beforeunload',          _beforeunloadFn)
+  window.addEventListener('pagehide',              _pagehideFn)
+  document.addEventListener('visibilitychange',    _visibilityFn)
+  window.addEventListener('online',                _onlineFn)
 
   // Resolve workspace async, then enable the write hook.
   resolveWorkspace(userId).then(({ wsId, role }) => {
