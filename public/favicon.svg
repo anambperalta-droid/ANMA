@@ -1,37 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
   <defs>
-    <linearGradient id="legFront" x1="10%" y1="0%" x2="90%" y2="100%">
-      <stop offset="0%" stop-color="#4C1D95"/>
-      <stop offset="40%" stop-color="#7C3AED"/>
-      <stop offset="80%" stop-color="#A78BFA"/>
-      <stop offset="100%" stop-color="#C4B5FD"/>
-    </linearGradient>
     <linearGradient id="legSide" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#1E1B4B"/>
-      <stop offset="60%" stop-color="#3B0764"/>
-      <stop offset="100%" stop-color="#4C1D95"/>
+      <stop offset="60%" stop-color="#2E1065"/>
+      <stop offset="100%" stop-color="#3B0764"/>
     </linearGradient>
-    <linearGradient id="barFront" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#5B21B6"/>
-      <stop offset="35%" stop-color="#8B5CF6"/>
-      <stop offset="65%" stop-color="#A78BFA"/>
-      <stop offset="100%" stop-color="#6D28D9"/>
+    <linearGradient id="legFront" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#4C1D95"/>
+      <stop offset="30%" stop-color="#7C3AED"/>
+      <stop offset="55%" stop-color="#A855F7"/>
+      <stop offset="80%" stop-color="#D946EF"/>
+      <stop offset="100%" stop-color="#EC4899"/>
     </linearGradient>
     <linearGradient id="barTop" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#DDD6FE"/>
-      <stop offset="50%" stop-color="#F5F3FF"/>
-      <stop offset="100%" stop-color="#DDD6FE"/>
+      <stop offset="0%" stop-color="#F0ABFC"/>
+      <stop offset="50%" stop-color="#FBCFE8"/>
+      <stop offset="100%" stop-color="#F472B6"/>
+    </linearGradient>
+    <linearGradient id="barFront" x1="0%" y1="0%" x2="100%" y2="30%">
+      <stop offset="0%" stop-color="#A21CAF"/>
+      <stop offset="35%" stop-color="#D946EF"/>
+      <stop offset="65%" stop-color="#EC4899"/>
+      <stop offset="100%" stop-color="#BE185D"/>
     </linearGradient>
   </defs>
 
   <rect width="120" height="120" rx="26" fill="#FAFAFA"/>
 
-  <g transform="translate(10,22) scale(0.267)">
-    <path d="M 200 0 L 190 8 L 13 280 L 25 275 Z" fill="url(#legSide)"/>
-    <path d="M 200 0 L 175 275 L 25 275 Z" fill="url(#legFront)"/>
-    <path d="M 80 185 Q 200 165 285 185 L 285 197 Q 200 177 80 197 Z" fill="url(#barTop)"/>
-    <path d="M 80 197 Q 200 177 285 197 L 285 235 Q 200 215 80 235 Z" fill="url(#barFront)"/>
-    <path d="M 200 0 L 210 8 L 387 280 L 375 275 Z" fill="url(#legSide)"/>
-    <path d="M 200 0 L 225 275 L 375 275 Z" fill="url(#legFront)"/>
+  <g transform="translate(7,17) scale(0.266)">
+    <path d="M 200 20 L 40 290 L 12 305 L 185 30 Z" fill="url(#legSide)"/>
+    <path d="M 120 195 Q 200 175 280 195 L 280 207 Q 200 187 120 207 Z" fill="url(#barTop)"/>
+    <path d="M 120 207 Q 200 187 280 207 L 280 240 Q 200 220 120 240 Z" fill="url(#barFront)"/>
+    <path d="M 200 20 L 175 290 L 40 290 Z" fill="url(#legFront)"/>
+    <path d="M 200 20 L 360 290 L 388 305 L 215 30 Z" fill="url(#legSide)"/>
+    <path d="M 200 20 L 225 290 L 360 290 Z" fill="url(#legFront)"/>
   </g>
 </svg>
