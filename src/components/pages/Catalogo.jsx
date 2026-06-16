@@ -1011,7 +1011,7 @@ export default function Catalogo() {
             {/* ── Modo: qué actualizar ── */}
             <div className="fg">
               <label>¿Qué actualizar?</label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+              <div className="bulk-mode-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
                 {[
                   { val: 'both',   icon: 'fa-layer-group', lbl: 'Costo + precios', hint: 'Sube ambos preservando margen' },
                   { val: 'cost',   icon: 'fa-tag',         lbl: 'Solo costo',      hint: 'No toca precios de venta' },
