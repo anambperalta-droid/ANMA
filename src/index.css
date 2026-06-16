@@ -1464,6 +1464,16 @@ td b{color:var(--txt);font-weight:600}
     overflow:visible!important;
     padding:0 0 calc(40px + env(safe-area-inset-bottom))!important;
   }
+  /* Modales detalle en mobile: full-screen bottom sheet (92vh) — sin huecos */
+  .cli-detail-card,
+  .prod-modal-card,
+  .pay-modal-card{
+    height:92vh!important;
+    min-height:92vh!important;
+    max-height:92vh!important;
+    border-radius:20px 20px 0 0!important;
+    overflow:hidden!important;
+  }
   .modal-lg,.modal-xl{max-width:100vw!important;width:100vw!important}
   .modal::before{content:'';display:block;width:36px;height:4px;border-radius:4px;background:var(--border2);margin:0 auto 14px;flex-shrink:0}
   .mh h3{font-size:16px}
@@ -1858,15 +1868,20 @@ td b{color:var(--txt);font-weight:600}
   width:calc(100vw - 32px);box-shadow:var(--sh-lg);
   animation:pgIn .2s ease both;margin:0 0 24px;
   display:flex;flex-direction:column;
-  /* SIN scroll interno + SIN altura mínima artificial.
-     El modal crece según su contenido (h-auto). Si el contenido cabe en el
-     viewport, NO hay scroll. Si lo excede, el overlay (.modal-bg) scrollea
-     la página entera. min-height bajo solo para evitar modales colapsados. */
   overflow:visible;
   padding:0 0 max(20px, env(safe-area-inset-bottom, 14px));
   height:auto;
   max-height:none;
   min-height:240px;
+}
+/* Modales DETALLE con tabs (ficha cliente, producto, pagos): aprovechan el viewport
+   vertical en lugar de cortarse a la mitad. Min-height garantiza presencia visual. */
+.cli-detail-card,
+.prod-modal-card,
+.pay-modal-card{
+  height:min(880px, 90vh)!important;
+  min-height:min(620px, 88vh)!important;
+  max-height:90vh!important;
 }
 /* Forzamos a que los body internos NO scrolleen — los componentes los
    declaran con overflow-y:auto + flex:1 inline, los neutralizamos acá.
