@@ -820,7 +820,7 @@ export default function Catalogo() {
       {/* Modal producto */}
       {modal && (
         <div className="modal-bg open" style={{ padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal-form-card prod-modal-card" style={{ maxWidth: 740, width: 'calc(100vw - 28px)', height: 'min(820px, 92dvh)' }}>
+          <div className="modal-form-card prod-modal-card" style={{ maxWidth: 740, width: 'calc(100vw - 28px)' }}>
             <div className="mh"><h3>{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
             {/* Banner borrador */}
             {hasDraft && (
