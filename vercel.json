@@ -14,8 +14,7 @@
     { "source": "/privacidad", "destination": "/privacidad.html" },
     { "source": "/terminos", "destination": "/terminos.html" },
     { "source": "/recursos", "destination": "/recursos/index.html" },
-    { "source": "/recursos/", "destination": "/recursos/index.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/recursos/", "destination": "/recursos/index.html" }
   ],
   "headers": [
     {
