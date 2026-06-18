@@ -6,6 +6,9 @@
     }
   ],
   "rewrites": [
+    { "source": "/", "destination": "/landing.html" },
+    { "source": "/app", "destination": "/index.html" },
+    { "source": "/app/(.*)", "destination": "/index.html" },
     { "source": "/landing.html", "destination": "/landing.html" },
     { "source": "/demo.html", "destination": "/demo.html" },
     { "source": "/privacidad", "destination": "/privacidad.html" },
