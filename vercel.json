@@ -5,12 +5,12 @@
       "schedule": "0 9 * * *"
     }
   ],
+"redirects": [
+    { "source": "/", "destination": "/landing.html", "permanent": false }
+  ],
   "rewrites": [
-    { "source": "/", "destination": "/landing.html" },
+    { "source": "/login", "destination": "/index.html" },
     { "source": "/app", "destination": "/index.html" },
-    { "source": "/app", "destination": "/index.html" },
-    { "source": "/login", "destination": "/index.html" }, 
-    { "source": "/app/(.*)", "destination": "/index.html" },
     { "source": "/app/(.*)", "destination": "/index.html" },
     { "source": "/landing.html", "destination": "/landing.html" },
     { "source": "/demo.html", "destination": "/demo.html" },
