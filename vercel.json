@@ -1,15 +1,9 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/", "destination": "/landing.html" },
-    { "source": "/login", "destination": "/index.html" },
-    { "source": "/app", "destination": "/index.html" },
-    { "source": "/app/(.*)", "destination": "/index.html" },
-    { "source": "/demo", "destination": "/demo.html" },
-    { "source": "/privacidad", "destination": "/privacidad.html" },
-    { "source": "/terminos", "destination": "/terminos.html" },
-    { "source": "/recursos", "destination": "/recursos/index.html" },
-    { "source": "/recursos/", "destination": "/recursos/index.html" }
+    { "source": "/login", "destination": "/app" },
+    { "source": "/app", "destination": "/app" },
+    { "source": "/app/(.*)", "destination": "/app" }
   ],
   "headers": [
     {
