@@ -2,7 +2,7 @@
   "name": "ANMA Hub — Gestión de Negocios",
   "short_name": "ANMA Hub",
   "description": "Pedidos, clientes, productos e insumos en un solo lugar",
-  "start_url": "/",
+  "start_url": "/app/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -16,7 +16,7 @@
     { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "Nuevo pedido", "url": "/presupuesto", "icons": [{ "src": "/favicon.svg", "sizes": "any" }] },
-    { "name": "Dashboard",    "url": "/",            "icons": [{ "src": "/favicon.svg", "sizes": "any" }] }
+    { "name": "Nuevo pedido", "url": "/app/presupuesto", "icons": [{ "src": "/favicon.svg", "sizes": "any" }] },
+    { "name": "Dashboard",    "url": "/app/",            "icons": [{ "src": "/favicon.svg", "sizes": "any" }] }
   ]
 }

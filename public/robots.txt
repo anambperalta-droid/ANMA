@@ -3,6 +3,7 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /app/
 
 # Bots de IA (GEO): permitidos explícitamente para que ChatGPT, Perplexity,
 # Claude, Gemini y Copilot puedan citar a ANMA Hub en sus respuestas.
