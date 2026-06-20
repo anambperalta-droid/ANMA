@@ -1,8 +1,8 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/app/(.*)", "destination": "/app/index.html" },
-    { "source": "/app", "destination": "/app/index.html" }
+    { "source": "/app/(.*)", "destination": "/app/" },
+    { "source": "/app", "destination": "/app/" }
   ],
   "headers": [
     {
