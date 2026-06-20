@@ -17,7 +17,7 @@ import { useAuth } from '../../context/AuthContext'
  * Diseño: bottom-sheet modal con stepper, sin overlay oscuro (no agresivo).
  * Mobile-first: card que sube desde abajo. Desktop: card centrada.
  */
-const TOUR_KEY = 'anma_welcome_tour_done'
+// Clave incluye userId para aislar el estado del tour entre usuarios en el mismo dispositivo
 const STEPS = [
   {
     icon: 'fa-chart-line', color: '#7C3AED',
@@ -58,7 +58,7 @@ export default function WelcomeTour() {
   useEffect(() => {
     if (loading || !user || !trial?.isTrial) return
     try {
-      const done = localStorage.getItem(TOUR_KEY)
+      const done = localStorage.getItem(`anma_welcome_tour_done_${user.id}`)
       if (!done) {
         // Pequeño delay para que la app cargue su estado antes del tour
         const t = setTimeout(() => setShow(true), 1200)
@@ -68,7 +68,7 @@ export default function WelcomeTour() {
   }, [user, trial?.isTrial, loading])
 
   const finish = () => {
-    try { localStorage.setItem(TOUR_KEY, new Date().toISOString()) } catch { /* ignorar */ }
+    try { localStorage.setItem(`anma_welcome_tour_done_${user?.id}`, new Date().toISOString()) } catch { /* ignorar */ }
     setExiting(true)
     setTimeout(() => { setShow(false); setExiting(false) }, 280)
   }

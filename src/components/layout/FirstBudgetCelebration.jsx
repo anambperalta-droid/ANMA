@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { useAuth } from '../../context/AuthContext'
 
 /**
  * FirstBudgetCelebration — overlay celebratorio al guardar el PRIMER presupuesto.
@@ -11,26 +12,26 @@ import { useEffect, useState, useRef } from 'react'
  *
  * Persistencia: 'anma_first_budget_done' en localStorage previene re-disparos.
  */
-const KEY = 'anma_first_budget_done'
+const key = (userId) => `anma_first_budget_done_${userId || 'anon'}`
 
-// ¿Es la primera vez? Helper público para que Presupuesto.jsx llame este flag.
-export function isFirstBudget() {
-  try { return !localStorage.getItem(KEY) } catch { return false }
+export function isFirstBudget(userId) {
+  try { return !localStorage.getItem(key(userId)) } catch { return false }
 }
 
-export function markFirstBudgetCelebrated() {
-  try { localStorage.setItem(KEY, new Date().toISOString()) } catch { /* ignorar */ }
+export function markFirstBudgetCelebrated(userId) {
+  try { localStorage.setItem(key(userId), new Date().toISOString()) } catch { /* ignorar */ }
 }
 
 export default function FirstBudgetCelebration() {
+  const { user } = useAuth()
   const [show, setShow]   = useState(false)
   const [exiting, setExiting] = useState(false)
   const dismissTimer = useRef(null)
 
   useEffect(() => {
     const onFire = () => {
-      if (!isFirstBudget()) return
-      markFirstBudgetCelebrated()
+      if (!isFirstBudget(user?.id)) return
+      markFirstBudgetCelebrated(user?.id)
       setShow(true)
       // Auto-dismiss después de 5s
       dismissTimer.current = setTimeout(close, 5000)

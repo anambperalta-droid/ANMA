@@ -3,7 +3,7 @@ import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
-import { fmt, db, dbW } from '../../lib/storage'
+import { fmt, db, dbW, dbDel } from '../../lib/storage'
 import { getCategoriesForRubro, getRubroMeta, catsAreOutdated, RUBROS } from '../../lib/rubros'
 import { getProductPlaceholder, getEmptyProducts } from '../../lib/voice'
 import EmptyHero from '../layout/EmptyHero'
@@ -90,7 +90,7 @@ export default function Catalogo() {
   const imgRef = useRef(null)
   const bodyRef = useRef(null)
   const [hasDraft, setHasDraft] = useState(null)
-  const DRAFT_KEY = 'anma_prod_draft'
+  // Draft usa db() (user-scoped) en vez de localStorage crudo
 
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
 
@@ -168,11 +168,10 @@ export default function Catalogo() {
       const prices = autoPrice(0)
       setForm({ ...EMPTY, cat: cats[0] || '', priceB2C: prices.b2c, priceB2B: prices.b2b })
       try {
-        const raw = localStorage.getItem(DRAFT_KEY)
-        if (raw) {
-          const d = JSON.parse(raw)
+        const d = db('prod_draft', null)
+        if (d) {
           if (d._ts && (Date.now() - d._ts) < 86400000) setHasDraft(d)
-          else localStorage.removeItem(DRAFT_KEY)
+          else dbDel('prod_draft')
         }
       } catch {}
     }
@@ -204,7 +203,7 @@ export default function Catalogo() {
   const save = () => {
     if (!form.name) { toast('Ingresá el nombre del producto.', 'er'); return }
     const data = { ...form, cat: form.cat ?? '', cost: num(form.cost), stock: num(form.stock), minStock: num(form.minStock), priceB2C: num(form.priceB2C), priceB2B: num(form.priceB2B), updatedAt: new Date().toISOString().slice(0,10) }
-    try { localStorage.removeItem(DRAFT_KEY) } catch {}
+    try { dbDel('prod_draft') } catch {}
     setHasDraft(null)
     saveEntity('products', data); setModal(false); toast('Producto guardado', 'ok')
   }
@@ -390,7 +389,7 @@ export default function Catalogo() {
   useEffect(() => {
     if (!modal) return
     const draft = { form, marginInput, _ts: Date.now() }
-    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)) } catch {}
+    try { dbW('prod_draft', draft) } catch {}
   }, [form, marginInput, modal]) // eslint-disable-line
 
   // ── Auto-detect: ¿el usuario tiene cats viejas para su rubro actual? ──
@@ -836,7 +835,7 @@ export default function Catalogo() {
                   setMarginInput(d.marginInput || '')
                   setHasDraft(null)
                 }}>Restaurar</button>
-                <button className="btn btn-ghost btn-sm" style={{ padding: '3px 10px', fontSize: 11, color: 'var(--txt3)' }} onClick={() => { try { localStorage.removeItem(DRAFT_KEY) } catch {}; setHasDraft(null) }}>Descartar</button>
+                <button className="btn btn-ghost btn-sm" style={{ padding: '3px 10px', fontSize: 11, color: 'var(--txt3)' }} onClick={() => { try { dbDel('prod_draft') } catch {}; setHasDraft(null) }}>Descartar</button>
                 <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--txt4)', fontSize: 14, lineHeight: 1, padding: 2 }} onClick={() => setHasDraft(null)}>×</button>
               </div>
             )}

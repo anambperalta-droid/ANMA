@@ -61,9 +61,9 @@ function getCurrentMilestone(trial) {
   return null
 }
 
-function wasShownToday(key) {
+function wasShownToday(key, userId) {
   try {
-    const raw = localStorage.getItem(STORAGE_PREFIX + key)
+    const raw = localStorage.getItem(STORAGE_PREFIX + (userId || 'anon') + '_' + key)
     if (!raw) return false
     return raw.slice(0, 10) === new Date().toISOString().slice(0, 10)
   } catch {
@@ -71,8 +71,8 @@ function wasShownToday(key) {
   }
 }
 
-function markShownToday(key) {
-  try { localStorage.setItem(STORAGE_PREFIX + key, new Date().toISOString()) } catch { /* ignorar */ }
+function markShownToday(key, userId) {
+  try { localStorage.setItem(STORAGE_PREFIX + (userId || 'anon') + '_' + key, new Date().toISOString()) } catch { /* ignorar */ }
 }
 
 export default function TrialReminderModal() {
@@ -86,9 +86,9 @@ export default function TrialReminderModal() {
     if (!m) return
     // Delay para no aparecer encima del WelcomeTour si es el primer login
     const delay = setTimeout(() => {
-      if (!wasShownToday(m)) {
+      if (!wasShownToday(m, user.id)) {
         setMilestone(m)
-        markShownToday(m)
+        markShownToday(m, user.id)
       }
     }, 2400)
     return () => clearTimeout(delay)
