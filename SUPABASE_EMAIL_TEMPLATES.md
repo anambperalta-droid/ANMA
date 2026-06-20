@@ -1,8 +1,22 @@
-# 📧 Supabase Auth — Email Templates UNIVERSALES (Pro + Regalos)
+# Supabase Auth — Email Templates UNIVERSALES (Hub + Regalos)
 
-## 🚨 ACTUALIZACIÓN 11/06/2026 — Links a prueba de prefetch (RE-PEGAR LOS 3 TEMPLATES)
+## ACTUALIZACIÓN 20/06/2026 — Rediseño sofisticado, sin emojis
 
-**Problema confirmado en producción** (Nicolas, reset password): los links con
+Los 3 templates se rediseñaron con estética premium: wordmark "ANMA" en vez de
+emoji-en-cuadrito, jerarquía tipográfica, espaciado generoso y paleta navy→violeta
+fiel a la marca. **Sin un solo emoji** (ni en subject ni en cuerpo).
+
+La lógica anti-prefetch (link directo con `token_hash`, ver sección abajo) se mantiene
+intacta. Los links usan `{{ .RedirectTo }}` — que desde el cambio de routing del
+20/06 ya apunta a `/app/bienvenida` automáticamente, sin tocar el template.
+
+**Acción requerida: re-pegar los 3 templates en el dashboard** (paso a paso abajo).
+
+---
+
+## ACTUALIZACIÓN 11/06/2026 — Links a prueba de prefetch
+
+**Problema confirmado en producción** (reset password): los links con
 `{{ .ConfirmationURL }}` pasan por el endpoint `/auth/v1/verify` de Supabase y son
 de **un solo uso**. Gmail, los antivirus y el propio Chrome de Android **pre-cargan**
 el link antes del click real → el token se consume → el usuario ve "Enlace no válido /
@@ -12,138 +26,111 @@ expirado" aunque haga click 1 minuto después de recibir el email.
 a la app** con `token_hash`, y la verificación la hace el JavaScript de la app
 (`verifyOtp`). Los scanners/prefetchers no ejecutan JS → el token no se gasta.
 
-Los 3 templates de abajo **ya están corregidos** con este formato:
 ```
 {{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery   ← reset
 {{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=signup     ← confirmación
 {{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite     ← invitación
 ```
-La app ya maneja `?token_hash=&type=` en `/bienvenida` (ambas apps, deployed).
-**Acción requerida: re-pegar los 3 templates en el dashboard** (paso a paso abajo).
+La app maneja `?token_hash=&type=` en `/app/bienvenida` (ambas apps, deployed).
 
 ---
 
-## ⚠️ Importante: por qué un solo template para las 2 apps
+## Importante: por qué un solo template para las 2 apps
 
-ANMA Hub (`anma-hub`) y ANMA Regalos (`anma-host`) comparten el **mismo proyecto Supabase** (`paxsvjdimqlfxnlipplx`). Los email templates son **globales al proyecto** — no se pueden tener distintos por sitio.
+ANMA Hub (`hub`) y ANMA Regalos (`host`) comparten el **mismo proyecto Supabase**
+(`paxsvjdimqlfxnlipplx`). Los email templates son **globales al proyecto** — no se
+pueden tener distintos por sitio.
 
-**Solución profesional:** templates con detección automática. Cuando el user se registra:
-- Desde anma-hub.vercel.app → pasamos `allowed_sites: ['hub']`
-- Desde anma-host.vercel.app → pasamos `allowed_sites: ['host']`
-
-El template usa esa variable y muestra el branding correcto. **Un solo HTML por template, ambas apps cubiertas.**
-
----
-
-## ¿Cómo funciona?
-
-Supabase manda los emails de autenticación **automáticamente** desde su SMTP cuando ocurren estos eventos:
-
-| Trigger | Cuándo | Template a editar |
-|---|---|---|
-| Signup | User completa registro (si confirmación email está ON) | **Confirm signup** |
-| Invitación | Admin invita a un operador desde `/admin` | **Invite user** |
-| Magic link | User pide login passwordless | **Magic Link or OTP** |
-| Reset password | User olvidó su contraseña | **Reset Password** |
-| Cambio email | User cambia su email | **Change Email Address** |
-
-URL directa a tu panel:
-👉 `https://supabase.com/dashboard/project/paxsvjdimqlfxnlipplx/auth/templates`
+**Solución:** templates con detección automática vía `{{ .Data.allowed_sites }}`
+(`['hub']` o `['host']`, según desde qué app se registró el user). Un solo HTML por
+template, ambas apps cubiertas con su branding.
 
 ---
 
-## 📋 Variables disponibles en los templates
+## Variables disponibles (Go templates)
 
-Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
-
-- `{{ .ConfirmationURL }}` — el link de acción (siempre presente)
-- `{{ .Token }}` — código OTP de 6 dígitos (alternativa al link)
-- `{{ .TokenHash }}` — hash del token
-- `{{ .SiteURL }}` — URL configurada en Supabase
+- `{{ .RedirectTo }}` — URL de retorno (ya incluye `/app/...`)
+- `{{ .TokenHash }}` — hash del token (link anti-prefetch)
 - `{{ .Email }}` — email del destinatario
-- `{{ .Data }}` — metadata custom pasada en `signUp({options: {data: {...}}})`
-
-**Las que usamos para detectar Pro vs Regalos:**
-- `{{ .Data.business_name }}` → el nombre del negocio
-- `{{ .Data.allowed_sites }}` → array `["hub"]` o `["host"]`
-- `{{ index .Data.allowed_sites 0 }}` → `"hub"` o `"host"` (primer elemento)
+- `{{ .Data.business_name }}` — nombre del negocio
+- `{{ index .Data.allowed_sites 0 }}` — `"hub"` o `"host"`
 
 ---
 
-## ✉️ Template 1 — Confirm Signup (BIENVENIDA)
+## Template 1 — Confirm Signup (BIENVENIDA)
 
-**Subject:** `🚀 ¡Bienvenido a ANMA! Activá tu cuenta`
+**Subject:** `Activá tu cuenta de ANMA`
 
 ```html
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:#f3f4f6">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 20px">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0f0a1e;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#0f0a1e;padding:48px 16px">
     <tr><td align="center">
-      <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.08)">
+      <table width="540" cellpadding="0" cellspacing="0" role="presentation" style="max-width:540px;width:100%;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 24px 60px rgba(76,29,149,.35)">
 
         {{ if eq (index .Data.allowed_sites 0) "host" }}
-        <!-- ═══ HEADER ANMA REGALOS (fucsia + violeta) ═══ -->
-        <tr><td style="background:linear-gradient(135deg,#7C3AED,#D946EF);padding:40px 32px;text-align:center">
-          <div style="display:inline-block;width:60px;height:60px;background:#fff;border-radius:18px;line-height:60px;margin-bottom:16px;font-size:28px">🎁</div>
-          <h1 style="color:#fff;margin:0;font-size:24px;font-weight:800;letter-spacing:-.3px">¡Bienvenido a ANMA Regalos!</h1>
-          <p style="color:rgba(255,255,255,.85);margin:6px 0 0;font-size:14px">7 días para descubrir cómo armás tus kits de regalo en minutos</p>
+        <!-- HEADER — ANMA Regalos -->
+        <tr><td style="background:linear-gradient(135deg,#2E1065 0%,#7C3AED 55%,#D946EF 100%);padding:48px 40px 40px;text-align:center">
+          <div style="color:#ffffff;font-size:14px;font-weight:700;letter-spacing:8px;text-transform:uppercase">ANMA</div>
+          <div style="color:rgba(255,255,255,.65);font-size:10.5px;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-top:4px">Regalos</div>
+          <div style="width:40px;height:2px;background:rgba(255,255,255,.35);margin:22px auto 0"></div>
         </td></tr>
         {{ else }}
-        <!-- ═══ HEADER ANMA HUB (violeta — fiel a la landing) ═══ -->
-        <tr><td style="background:linear-gradient(135deg,#4C1D95,#7C3AED 50%,#A78BFA);padding:40px 32px;text-align:center">
-          <div style="display:inline-block;width:60px;height:60px;background:#fff;border-radius:18px;line-height:60px;margin-bottom:16px;font-size:28px">🚀</div>
-          <h1 style="color:#fff;margin:0;font-size:24px;font-weight:800;letter-spacing:-.3px">¡Bienvenido a ANMA Hub!</h1>
-          <p style="color:rgba(255,255,255,.85);margin:6px 0 0;font-size:14px">7 días para descubrir cómo ANMA Hub ordena tu negocio</p>
+        <!-- HEADER — ANMA Hub -->
+        <tr><td style="background:linear-gradient(135deg,#1e1b4b 0%,#4C1D95 50%,#7C3AED 100%);padding:48px 40px 40px;text-align:center">
+          <div style="color:#ffffff;font-size:14px;font-weight:700;letter-spacing:8px;text-transform:uppercase">ANMA</div>
+          <div style="color:rgba(255,255,255,.65);font-size:10.5px;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-top:4px">Hub</div>
+          <div style="width:40px;height:2px;background:rgba(255,255,255,.35);margin:22px auto 0"></div>
         </td></tr>
         {{ end }}
 
-        <!-- Body -->
-        <tr><td style="padding:32px 36px">
-          <p style="color:#1f2937;font-size:15px;line-height:1.7;margin:0 0 20px">
-            Hola <strong>{{ .Data.business_name }}</strong>! 👋
+        <!-- BODY -->
+        <tr><td style="padding:44px 44px 40px">
+          <h1 style="color:#0f0a1e;margin:0 0 6px;font-size:25px;font-weight:700;letter-spacing:-.4px">Qué bueno tenerte</h1>
+          <p style="color:#6b7280;margin:0 0 28px;font-size:14px;line-height:1.6">
+            Hola {{ .Data.business_name }}, estás a un paso de empezar.
           </p>
-          <p style="color:#374151;font-size:14px;line-height:1.7;margin:0 0 24px">
-            Activá tu cuenta haciendo click en el botón de abajo. Te toma 5 segundos:
+          <p style="color:#374151;font-size:15px;line-height:1.7;margin:0 0 32px">
+            Tu espacio de trabajo en ANMA ya casi está listo. Confirmá tu email para
+            activar la cuenta y arrancar con tu prueba de 7 días.
           </p>
 
-          <!-- CTA con color dinámico según app -->
-          <table cellpadding="0" cellspacing="0" align="center">
-            <tr><td style="background:linear-gradient(135deg,{{ if eq (index .Data.allowed_sites 0) "host" }}#D946EF,#EC4899{{ else }}#059669,#10b981{{ end }});border-radius:12px;box-shadow:0 8px 24px rgba(124,58,237,.35)">
-              <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=signup" style="display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-size:15px;font-weight:700">
-                ✓ Confirmar mi email
+          <table cellpadding="0" cellspacing="0" role="presentation" style="margin:0 auto">
+            <tr><td style="border-radius:12px;background:linear-gradient(135deg,{{ if eq (index .Data.allowed_sites 0) "host" }}#7C3AED,#D946EF{{ else }}#5B21B6,#7C3AED{{ end }})">
+              <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=signup" style="display:inline-block;padding:15px 40px;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.2px">
+                Confirmar mi email
               </a>
             </td></tr>
           </table>
 
-          <p style="color:#6b7280;font-size:12px;line-height:1.6;margin:24px 0 0;text-align:center">
-            O copiá este link en tu navegador:<br>
+          <p style="color:#9ca3af;font-size:12px;line-height:1.6;margin:28px 0 0;text-align:center">
+            ¿El botón no funciona? Copiá este enlace en tu navegador:<br>
             <span style="color:#7C3AED;word-break:break-all">{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=signup</span>
           </p>
 
-          <!-- Tips dinámicos por app -->
-          <div style="margin-top:32px;padding:20px;background:#f9fafb;border-radius:12px;border-left:3px solid #7C3AED">
-            <p style="color:#1f2937;font-size:13px;font-weight:700;margin:0 0 10px">💡 Lo primero que podés hacer:</p>
-            <ul style="color:#4b5563;font-size:13px;line-height:1.7;margin:0;padding-left:20px">
+          <div style="margin-top:36px;padding:24px;background:#faf8ff;border-radius:14px;border:1px solid #ede9fe">
+            <p style="color:#4C1D95;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin:0 0 14px">Para empezar</p>
+            <table cellpadding="0" cellspacing="0" role="presentation" width="100%">
               {{ if eq (index .Data.allowed_sites 0) "host" }}
-                <li>Armar tu primer kit en <em>Catálogo</em></li>
-                <li>Cargar tu primer cliente desde <em>Clientes</em></li>
-                <li>Sumar packaging desde <em>Insumos</em></li>
+              <tr><td style="color:#374151;font-size:13.5px;line-height:1.6;padding:5px 0">Armá tu primer kit en <strong>Catálogo</strong></td></tr>
+              <tr><td style="color:#374151;font-size:13.5px;line-height:1.6;padding:5px 0">Sumá tu primer cliente desde <strong>Clientes</strong></td></tr>
+              <tr><td style="color:#374151;font-size:13.5px;line-height:1.6;padding:5px 0">Cargá packaging desde <strong>Insumos</strong></td></tr>
               {{ else }}
-                <li>Cargar tu primer cliente desde <em>Clientes</em></li>
-                <li>Armar tu primer presupuesto desde <em>Nuevo pedido</em></li>
-                <li>Importar tu catálogo CSV en <em>Productos</em></li>
+              <tr><td style="color:#374151;font-size:13.5px;line-height:1.6;padding:5px 0">Sumá tu primer cliente desde <strong>Clientes</strong></td></tr>
+              <tr><td style="color:#374151;font-size:13.5px;line-height:1.6;padding:5px 0">Armá tu primer presupuesto en <strong>Nuevo pedido</strong></td></tr>
+              <tr><td style="color:#374151;font-size:13.5px;line-height:1.6;padding:5px 0">Importá tu catálogo desde <strong>Productos</strong></td></tr>
               {{ end }}
-            </ul>
+            </table>
           </div>
         </td></tr>
 
-        <!-- Footer -->
-        <tr><td style="background:#f9fafb;padding:20px 36px;border-top:1px solid #e5e7eb;text-align:center">
-          <p style="color:#6b7280;font-size:11.5px;margin:0;line-height:1.6">
-            Si no te registraste vos, podés ignorar este email.<br>
-            {{ if eq (index .Data.allowed_sites 0) "host" }}ANMA Regalos{{ else }}ANMA Hub{{ end }}
+        <!-- FOOTER -->
+        <tr><td style="background:#faf8ff;padding:24px 44px;border-top:1px solid #f0ecfb;text-align:center">
+          <p style="color:#9ca3af;font-size:11.5px;margin:0;line-height:1.6">
+            Si no creaste esta cuenta, podés ignorar este mensaje.<br>
+            {{ if eq (index .Data.allowed_sites 0) "host" }}ANMA Regalos{{ else }}ANMA Hub{{ end }} · Tu negocio en un solo lugar
           </p>
         </td></tr>
       </table>
@@ -155,42 +142,54 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
 
 ---
 
-## 🔁 Template 2 — Reset Password
+## Template 2 — Reset Password
 
-**Subject:** `🔐 Recuperá tu acceso a ANMA`
+**Subject:** `Recuperá el acceso a tu cuenta`
 
 ```html
 <!DOCTYPE html>
 <html lang="es">
-<body style="margin:0;padding:0;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:#f3f4f6">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 20px">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0f0a1e;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#0f0a1e;padding:48px 16px">
     <tr><td align="center">
-      <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.08)">
+      <table width="540" cellpadding="0" cellspacing="0" role="presentation" style="max-width:540px;width:100%;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 24px 60px rgba(76,29,149,.35)">
 
-        <tr><td style="background:linear-gradient(135deg,#7C3AED,#a78bfa);padding:36px 32px;text-align:center">
-          <div style="display:inline-block;width:54px;height:54px;background:#fff;border-radius:16px;line-height:54px;margin-bottom:14px;font-size:24px">🔐</div>
-          <h1 style="color:#fff;margin:0;font-size:22px;font-weight:800">Recuperá tu acceso</h1>
+        <tr><td style="background:linear-gradient(135deg,#1e1b4b 0%,#4C1D95 50%,#7C3AED 100%);padding:48px 40px 40px;text-align:center">
+          <div style="color:#ffffff;font-size:14px;font-weight:700;letter-spacing:8px;text-transform:uppercase">ANMA</div>
+          <div style="width:40px;height:2px;background:rgba(255,255,255,.35);margin:22px auto 0"></div>
         </td></tr>
 
-        <tr><td style="padding:30px 36px">
-          <p style="color:#374151;font-size:14.5px;line-height:1.7;margin:0 0 20px">
-            Recibimos un pedido para resetear tu contraseña. Hacé click acá para elegir una nueva:
+        <tr><td style="padding:44px 44px 40px">
+          <h1 style="color:#0f0a1e;margin:0 0 8px;font-size:25px;font-weight:700;letter-spacing:-.4px">Recuperá tu acceso</h1>
+          <p style="color:#374151;font-size:15px;line-height:1.7;margin:0 0 32px">
+            Recibimos un pedido para restablecer tu contraseña. Elegí una nueva desde
+            el botón de abajo.
           </p>
-          <table cellpadding="0" cellspacing="0" align="center">
-            <tr><td style="background:linear-gradient(135deg,#7C3AED,#6D28D9);border-radius:12px">
-              <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery" style="display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-size:14.5px;font-weight:700">
-                Cambiar mi contraseña
+
+          <table cellpadding="0" cellspacing="0" role="presentation" style="margin:0 auto">
+            <tr><td style="border-radius:12px;background:linear-gradient(135deg,#5B21B6,#7C3AED)">
+              <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery" style="display:inline-block;padding:15px 40px;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.2px">
+                Elegir nueva contraseña
               </a>
             </td></tr>
           </table>
-          <p style="color:#6b7280;font-size:12px;margin:24px 0 0;text-align:center;line-height:1.6">
-            <strong>Si no fuiste vos</strong>, ignorá este email. Tu contraseña actual sigue funcionando.<br><br>
-            El link vence en 1 hora por seguridad.
+
+          <p style="color:#9ca3af;font-size:12px;line-height:1.6;margin:28px 0 0;text-align:center">
+            ¿El botón no funciona? Copiá este enlace en tu navegador:<br>
+            <span style="color:#7C3AED;word-break:break-all">{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery</span>
           </p>
+
+          <div style="margin-top:32px;padding:18px 22px;background:#faf8ff;border-radius:12px;border:1px solid #ede9fe">
+            <p style="color:#6b7280;font-size:12.5px;line-height:1.7;margin:0">
+              Si no pediste este cambio, ignorá este mensaje: tu contraseña actual sigue
+              funcionando. Por seguridad, el enlace vence en 1 hora.
+            </p>
+          </div>
         </td></tr>
 
-        <tr><td style="background:#f9fafb;padding:18px 32px;border-top:1px solid #e5e7eb;text-align:center">
-          <p style="color:#9ca3af;font-size:11px;margin:0">ANMA · Tu negocio en un solo lugar</p>
+        <tr><td style="background:#faf8ff;padding:24px 44px;border-top:1px solid #f0ecfb;text-align:center">
+          <p style="color:#9ca3af;font-size:11.5px;margin:0">ANMA · Tu negocio en un solo lugar</p>
         </td></tr>
       </table>
     </td></tr>
@@ -199,53 +198,64 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
 </html>
 ```
 
-> **Nota:** este template no necesita branching Pro/Regalos porque el reset password es un mensaje neutro. La URL que recibe el user ya lo lleva al dominio correcto donde hizo el reset (anma-hub o anma-host).
+> **Nota:** este template no necesita branching Hub/Regalos — el reset es neutro y la
+> URL ya lleva al user al dominio correcto donde hizo el pedido.
 
 ---
 
-## 👥 Template 3 — Invite User (admin invita a operador)
+## Template 3 — Invite User (admin invita a operador)
 
-**Subject:** `🎯 Te invitaron a colaborar en ANMA`
+**Subject:** `Te invitaron a colaborar en ANMA`
 
 ```html
 <!DOCTYPE html>
 <html lang="es">
-<body style="margin:0;padding:0;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:#f3f4f6">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 20px">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0f0a1e;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#0f0a1e;padding:48px 16px">
     <tr><td align="center">
-      <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.08)">
+      <table width="540" cellpadding="0" cellspacing="0" role="presentation" style="max-width:540px;width:100%;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 24px 60px rgba(76,29,149,.35)">
 
         {{ if eq (index .Data.allowed_sites 0) "host" }}
-        <tr><td style="background:linear-gradient(135deg,#7C3AED,#D946EF);padding:36px 32px;text-align:center">
-          <div style="display:inline-block;width:54px;height:54px;background:#fff;border-radius:16px;line-height:54px;margin-bottom:14px;font-size:24px">🎁</div>
-          <h1 style="color:#fff;margin:0;font-size:22px;font-weight:800">Te invitaron a ANMA Regalos</h1>
+        <tr><td style="background:linear-gradient(135deg,#2E1065 0%,#7C3AED 55%,#D946EF 100%);padding:48px 40px 40px;text-align:center">
+          <div style="color:#ffffff;font-size:14px;font-weight:700;letter-spacing:8px;text-transform:uppercase">ANMA</div>
+          <div style="color:rgba(255,255,255,.65);font-size:10.5px;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-top:4px">Regalos</div>
+          <div style="width:40px;height:2px;background:rgba(255,255,255,.35);margin:22px auto 0"></div>
         </td></tr>
         {{ else }}
-        <tr><td style="background:linear-gradient(135deg,#4C1D95,#7C3AED 50%,#6366F1);padding:36px 32px;text-align:center">
-          <div style="display:inline-block;width:54px;height:54px;background:#fff;border-radius:16px;line-height:54px;margin-bottom:14px;font-size:24px">🎯</div>
-          <h1 style="color:#fff;margin:0;font-size:22px;font-weight:800">Te invitaron a ANMA Hub</h1>
+        <tr><td style="background:linear-gradient(135deg,#1e1b4b 0%,#4C1D95 50%,#7C3AED 100%);padding:48px 40px 40px;text-align:center">
+          <div style="color:#ffffff;font-size:14px;font-weight:700;letter-spacing:8px;text-transform:uppercase">ANMA</div>
+          <div style="color:rgba(255,255,255,.65);font-size:10.5px;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-top:4px">Hub</div>
+          <div style="width:40px;height:2px;background:rgba(255,255,255,.35);margin:22px auto 0"></div>
         </td></tr>
         {{ end }}
 
-        <tr><td style="padding:30px 36px">
-          <p style="color:#374151;font-size:14.5px;line-height:1.7;margin:0 0 14px">
-            Hola! Acabás de ser invitado a trabajar en el workspace de
+        <tr><td style="padding:44px 44px 40px">
+          <h1 style="color:#0f0a1e;margin:0 0 8px;font-size:25px;font-weight:700;letter-spacing:-.4px">Te sumaron al equipo</h1>
+          <p style="color:#374151;font-size:15px;line-height:1.7;margin:0 0 14px">
+            Te invitaron a colaborar en el espacio de trabajo de
             <strong>{{ .Data.business_name }}</strong>.
           </p>
-          <p style="color:#374151;font-size:14px;line-height:1.7;margin:0 0 22px">
-            Aceptá la invitación y elegí tu contraseña para entrar:
+          <p style="color:#374151;font-size:15px;line-height:1.7;margin:0 0 32px">
+            Aceptá la invitación y creá tu contraseña para entrar.
           </p>
-          <table cellpadding="0" cellspacing="0" align="center">
-            <tr><td style="background:linear-gradient(135deg,{{ if eq (index .Data.allowed_sites 0) "host" }}#D946EF,#EC4899{{ else }}#7C3AED,#6366F1{{ end }});border-radius:12px">
-              <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite" style="display:inline-block;padding:14px 32px;color:#fff;text-decoration:none;font-size:14.5px;font-weight:700">
+
+          <table cellpadding="0" cellspacing="0" role="presentation" style="margin:0 auto">
+            <tr><td style="border-radius:12px;background:linear-gradient(135deg,{{ if eq (index .Data.allowed_sites 0) "host" }}#7C3AED,#D946EF{{ else }}#5B21B6,#7C3AED{{ end }})">
+              <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite" style="display:inline-block;padding:15px 40px;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.2px">
                 Aceptar invitación
               </a>
             </td></tr>
           </table>
+
+          <p style="color:#9ca3af;font-size:12px;line-height:1.6;margin:28px 0 0;text-align:center">
+            ¿El botón no funciona? Copiá este enlace en tu navegador:<br>
+            <span style="color:#7C3AED;word-break:break-all">{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite</span>
+          </p>
         </td></tr>
 
-        <tr><td style="background:#f9fafb;padding:18px 32px;border-top:1px solid #e5e7eb;text-align:center">
-          <p style="color:#9ca3af;font-size:11px;margin:0">
+        <tr><td style="background:#faf8ff;padding:24px 44px;border-top:1px solid #f0ecfb;text-align:center">
+          <p style="color:#9ca3af;font-size:11.5px;margin:0">
             {{ if eq (index .Data.allowed_sites 0) "host" }}ANMA Regalos{{ else }}ANMA Hub{{ end }} · Acceso colaborativo
           </p>
         </td></tr>
@@ -258,70 +268,62 @@ Supabase usa **Go templates** (mismo motor que Hugo). Variables expuestas:
 
 ---
 
-## ⚙️ Cómo configurarlo paso a paso
+## Cómo configurarlo paso a paso
 
 ### 1. Entrá al panel de templates
-👉 `https://supabase.com/dashboard/project/paxsvjdimqlfxnlipplx/auth/templates`
+`https://supabase.com/dashboard/project/paxsvjdimqlfxnlipplx/auth/templates`
 
 (Si estás en el panel general: Authentication → Emails → Templates)
 
 ### 2. Para cada uno de los 3 templates (Confirm signup, Reset Password, Invite user):
-- **Subject** (campo "Subject heading"): pegá el subject que dice arriba (con emoji incluido)
-- **Message body**: cliqueá **"Source"** o **"HTML"** (NO el modo visual), borrá todo el contenido por defecto y pegá el bloque HTML completo
-- Botón verde **Save changes**
+- **Subject**: pegá el subject que dice arriba (sin emoji)
+- **Message body**: cliqueá **"Source"** / **"HTML"** (NO el modo visual), borrá todo
+  el contenido por defecto y pegá el bloque HTML completo
+- Botón **Save changes**
 
 ### 3. URL Configuration (CRÍTICO para que los links funcionen)
-En el sidebar de Authentication → **URL Configuration**:
+Authentication → **URL Configuration**:
 
-- **Site URL**: `https://anmahub.com` (dominio propio desde 12/06/2026)
-- **Redirect URLs** (Add URL para cada uno):
+- **Site URL**: `https://anmahub.com`
+- **Redirect URLs**:
   - `https://anmahub.com/**`
   - `https://www.anmahub.com/**`
-  - `https://anma-hub.vercel.app/**` (alias legacy, mantener)
+  - `https://anma-hub.vercel.app/**` (alias legacy)
   - `https://anma-host.vercel.app/**`
-  - `http://localhost:5173/**` (para dev local)
-  - `http://localhost:5174/**` (si corrés ambas apps en paralelo)
+  - `http://localhost:5173/**`
+  - `http://localhost:5174/**`
 
-Esto garantiza que el `{{ .ConfirmationURL }}` redirija al dominio correcto desde donde el user se registró.
+> El `**` cubre `/app/bienvenida` y cualquier subruta — no hace falta listarlas una por una.
 
-### 4. Probá enviando un signup desde Pro y otro desde Regalos
-- Registrate desde `https://anma-hub.vercel.app/registro` → te debe llegar email **violeta-verde "ANMA Hub"** 🚀
-- Registrate (con otro email) desde `https://anma-host.vercel.app/registro` → te debe llegar email **violeta-fucsia "ANMA Regalos"** 🎁
+### 4. Probá enviando un signup desde cada app
+- Desde `https://anmahub.com/app/registro` → email **navy-violeta "ANMA Hub"**
+- Desde `https://anma-host.vercel.app/registro` (con otro email) → email **violeta-fucsia "ANMA Regalos"**
 
-Si recibís el mismo, revisá el código de Registro.jsx — debe estar pasando `allowed_sites: ['hub']` o `['host']` en `signUp.options.data`.
-
----
-
-## 🛟 ¿Qué hago si ya pegué el viejo template solo "ANMA Hub"?
-
-**Borrá lo pegado y pegá la versión nueva**. El template anterior no rompe nada (manda emails OK), pero todos los users — incluso los que se registran desde Regalos — reciben branding de Pro.
-
-La nueva versión **detecta automáticamente** desde qué app vino el signup y muestra el branding apropiado.
+Si recibís el branding equivocado, revisá que Registro.jsx pase `allowed_sites: ['hub']`
+o `['host']` en `signUp.options.data`.
 
 ---
 
-## 📦 SMTP propio (recomendado en producción)
+## SMTP propio (recomendado al crecer)
 
-Por default Supabase usa su SMTP con límite de ~3-4 emails/hora.
+Por default Supabase usa su SMTP con límite de ~3-4 emails/hora. Si crecés:
+- **Authentication → Emails → SMTP Settings**
+- Opciones: Gmail SMTP (100/día con [App Password](https://myaccount.google.com/apppasswords)),
+  Brevo (300/día gratis), MailerSend (3.000/mes gratis)
 
-Si crecés y necesitás más volumen:
-- **Authentication → Emails → SMTP Settings** (botón "Set up SMTP" arriba)
-- Opciones simples:
-  - **Gmail SMTP** (con [App Password](https://myaccount.google.com/apppasswords) — 100/día gratis)
-  - **Brevo** (300 emails/día gratis) — `smtp-relay.brevo.com:587`
-  - **MailerSend** (3.000/mes gratis) — `smtp.mailersend.net:587`
-
-**No es urgente.** El SMTP default de Supabase alcanza para los primeros ~50 signups/mes que vas a tener.
+No es urgente — el SMTP default alcanza para los primeros ~50 signups/mes.
 
 ---
 
-## ❓ Preguntas frecuentes
+## Preguntas frecuentes
 
-**¿Y el TrialReminderModal del día 5/7? ¿Lo configuro acá?**
-No. Esos NO son emails — son modales **dentro de la app**, que ya pusimos en el código. No requieren config en Supabase.
+**¿El TrialReminderModal del día 5/7 se configura acá?**
+No. Esos son modales **dentro de la app**, ya están en el código. No tocan Supabase.
 
-**¿Y cuando el user paga $120k? ¿Le llega un email?**
-Hoy NO automático. Mercado Pago le manda el comprobante de pago. Vos te enterás vía el Admin (Realtime + browser notification). Si querés mandar un email custom de "Pago confirmado", lo agregamos en Parte 3 con una Edge Function.
+**¿Cuando el user paga $120k le llega un email?**
+Hoy no automático. Mercado Pago manda el comprobante. Vos te enterás vía el Admin
+(Realtime + browser notification). Un email custom de "Pago confirmado" requeriría una
+Edge Function.
 
 **¿Las invitaciones a operadores andan?**
-Sí, automáticamente — Supabase Auth las maneja. El template 3 (Invite user) es el que reciben.
+Sí, Supabase Auth las maneja. El template 3 (Invite user) es el que reciben.
