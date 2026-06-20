@@ -1,5 +1,29 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    { "source": "/login", "destination": "/app/login", "permanent": true },
+    { "source": "/registro", "destination": "/app/registro", "permanent": true },
+    { "source": "/bienvenida", "destination": "/app/bienvenida", "permanent": true },
+    { "source": "/onboarding", "destination": "/app/onboarding", "permanent": true },
+    { "source": "/activar", "destination": "/app/activar", "permanent": true },
+    { "source": "/alta", "destination": "/app/alta", "permanent": true },
+    { "source": "/portal-proveedor", "destination": "/app/portal-proveedor", "permanent": true },
+    { "source": "/pago-exitoso", "destination": "/app/pago-exitoso", "permanent": true },
+    { "source": "/pago-pendiente", "destination": "/app/pago-pendiente", "permanent": true },
+    { "source": "/pago-error", "destination": "/app/pago-error", "permanent": true },
+    { "source": "/presupuesto", "destination": "/app/presupuesto", "permanent": true },
+    { "source": "/presupuesto/:id", "destination": "/app/presupuesto/:id", "permanent": true },
+    { "source": "/clientes", "destination": "/app/clientes", "permanent": true },
+    { "source": "/catalogo", "destination": "/app/catalogo", "permanent": true },
+    { "source": "/insumos", "destination": "/app/insumos", "permanent": true },
+    { "source": "/proveedores", "destination": "/app/proveedores", "permanent": true },
+    { "source": "/logistica", "destination": "/app/logistica", "permanent": true },
+    { "source": "/mensajes", "destination": "/app/mensajes", "permanent": true },
+    { "source": "/config", "destination": "/app/config", "permanent": true },
+    { "source": "/importador", "destination": "/app/importador", "permanent": true },
+    { "source": "/mi-cuenta", "destination": "/app/mi-cuenta", "permanent": true },
+    { "source": "/admin", "destination": "/app/admin", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/app/(.*)", "destination": "/app/" },
     { "source": "/app", "destination": "/app/" }
