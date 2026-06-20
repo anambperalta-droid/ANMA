@@ -366,7 +366,7 @@ export default function Proveedores() {
     if (ph.length)    payload.ph = ph
     const json = JSON.stringify(payload)
     const b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-    const url = `${window.location.origin}/portal-proveedor?d=${b64}`
+    const url = `${window.location.origin}/app/portal-proveedor?d=${b64}`
     if (s.wa) {
       const waNum = s.wa.replace(/\D/g, '')
       const text = `Hola ${s.contact || s.name}! Te paso este portal con el resumen de lo que te compramos, condiciones acordadas y los productos que necesito reponer:\n\n${url}\n\nVálido por 30 días.`

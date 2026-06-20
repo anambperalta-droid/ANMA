@@ -365,7 +365,7 @@ export default function Bienvenida() {
     const hubHosts = ['anmahub.com', 'www.anmahub.com', 'anma-hub.vercel.app']
     const hostHost = 'anma-host.vercel.app'
     if (siteMeta === 'hub' && !hubHosts.includes(currentHost) && currentHost !== 'localhost') {
-      window.location.replace('https://anmahub.com/')
+      window.location.replace('https://anmahub.com/app/')
       return
     }
     if (siteMeta === 'host' && currentHost !== hostHost && currentHost !== 'localhost') {

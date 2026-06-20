@@ -162,7 +162,7 @@ export function AuthProvider({ children }) {
         : 'https://anmahub.com'
     // Sin query extra: el template de email agrega ?token_hash=...&type=recovery
     // sobre esta URL (link directo a la app, inmune al prefetch de Gmail/Chrome).
-    const redirectTo = `${base}/bienvenida`
+    const redirectTo = `${base}/app/bienvenida`
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo })
     if (error) throw new Error(error.message)
   }, [])

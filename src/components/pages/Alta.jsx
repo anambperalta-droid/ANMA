@@ -32,7 +32,7 @@ export default function Alta({ appName = 'ANMA Hub' }) {
     if (f.company) q.set('co', f.company)
     if (f.wa)      q.set('cw', f.wa)
     if (f.email)   q.set('ce', f.email)
-    return `${window.location.origin}/clientes?${q.toString()}`
+    return `${window.location.origin}/app/clientes?${q.toString()}`
   }
 
   const deepLink = buildLink(form)

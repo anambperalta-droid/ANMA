@@ -105,7 +105,7 @@ export default function TrialReminderModal() {
 
   const goActivate = () => {
     // Llevamos al user a la página de activación (que dispara MP)
-    window.location.href = '/activar'
+    window.location.href = '/app/activar'
     close()
   }
 

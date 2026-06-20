@@ -123,7 +123,7 @@ export default function Login() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/bienvenida${nextUrl ? '?next=' + encodeURIComponent(nextUrl) : ''}`,
+        redirectTo: `${window.location.origin}/app/bienvenida${nextUrl ? '?next=' + encodeURIComponent(nextUrl) : ''}`,
         queryParams: { access_type: 'offline', prompt: 'select_account' },
       },
     })

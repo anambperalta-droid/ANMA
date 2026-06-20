@@ -27,6 +27,8 @@ Infra compartida: **un solo proyecto Supabase** (`paxsvjdimqlfxnlipplx`) — Aut
 - `BrowserRouter` usa `basename="/app"` → todas las rutas React son relativas a `/app/`
 - `vercel.json`: rewrites `/app` y `/app/(.*)` → `dist/app/index.html`
 
+⚠️ **REGLA CRÍTICA de URLs (Hub):** `navigate()` y `<Link>` de react-router ya respetan el `basename="/app"` automáticamente. PERO cualquier URL construida a mano con `window.location.origin + '/ruta'`, `window.location.href = '/ruta'`, o un `redirectTo`/`emailRedirectTo` de Supabase debe incluir `/app` explícito (ej: `${window.location.origin}/app/bienvenida`). Esto aplica a: auth redirects (Login, Registro, reset password en AuthContext), back_urls de MP (mercadopago.js + api/mp-create-preference.js), y links compartidos (Alta→/app/clientes, Clientes→/app/alta, Proveedores→/app/portal-proveedor). En Regalos NO aplica (no tiene split /app).
+
 ---
 
 ## Datos y sync

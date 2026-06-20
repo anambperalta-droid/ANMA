@@ -201,7 +201,7 @@ export default function Registro() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/bienvenida${nextUrl ? '?next=' + encodeURIComponent(nextUrl) : ''}`,
+        redirectTo: `${window.location.origin}/app/bienvenida${nextUrl ? '?next=' + encodeURIComponent(nextUrl) : ''}`,
         queryParams: { access_type: 'offline', prompt: 'select_account' },
       },
     })
@@ -253,7 +253,7 @@ export default function Registro() {
           referrer:            acq.referrer            || null,
           landing_page:        acq.landing_page        || null,
         },
-        emailRedirectTo: `${window.location.origin}/bienvenida`,
+        emailRedirectTo: `${window.location.origin}/app/bienvenida`,
       },
     })
 
