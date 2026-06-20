@@ -1,5 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Versión = timestamp del build. Lo inyectamos como __BUILD_VERSION__ para
 // que la UI pueda mostrar la versión que el usuario está corriendo y detectar
@@ -14,6 +18,10 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      input: {
+        index: resolve(__dirname, 'index.html'),
+        app: resolve(__dirname, 'app/index.html'),
+      },
       output: {
         // Vendors en chunks propios: cambian poco entre deploys, así el browser
         // los mantiene cacheados y solo re-descarga el código de la app.

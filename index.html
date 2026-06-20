@@ -1,45 +1,2282 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>ANMA Hub | Acceso a tu Cuenta</title>
-    <!-- PWA -->
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#7C3AED" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="ANMA Hub" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<html lang="es-AR">
+<head>
+<title>ANMA Hub | Escalá tu negocio con un sistema de gestión fluido.</title>
+  <meta name="description" content="Transformá el caos diario en un sistema fluido. ANMA te devuelve el aire y la claridad necesarios para escalar tu negocio sin perder tu foco en el proceso.">
+  <meta name="robots" content="index, follow">
+<meta property="og:title" content="ANMA Hub | Escalá tu negocio con un sistema de gestión fluido.">
+<script>
+/* Dominio canónico: el alias vercel.app redirige a anmahub.com (página estática, sin datos locales) */
+if (location.hostname === 'anma-hub.vercel.app') location.replace('https://anmahub.com' + location.pathname + location.search)
+</script>
+<script>
+/* Captura first-touch de canal (UTM + referrer) ANTES de que el visitor
+   navegue a /registro. Se ejecuta solo si todavía no capturamos en la sesión. */
+(function(){try{
+  if (sessionStorage.getItem('anma_acquisition')) return;
+  var u = new URL(location.href), s = u.searchParams, ref = document.referrer || '';
+  var src = (s.get('utm_source')||'').toLowerCase();
+  var hasData = src || s.get('utm_medium') || s.get('utm_campaign') || ref;
+  if (!hasData) return;
+  var ch = 'directo';
+  if (src.indexOf('instagram')>=0 || src==='ig') ch='instagram';
+  else if (src.indexOf('whatsapp')>=0 || src==='wa') ch='whatsapp';
+  else if (src.indexOf('facebook')>=0 || src==='fb') ch='facebook';
+  else if (src.indexOf('tiktok')>=0) ch='tiktok';
+  else if (src.indexOf('google')>=0) ch='google';
+  else if (src.indexOf('referido')>=0 || src.indexOf('referral')>=0) ch='referido';
+  else if (ref.indexOf('instagram.com')>=0) ch='instagram';
+  else if (ref.indexOf('wa.me')>=0 || ref.indexOf('whatsapp')>=0) ch='whatsapp';
+  else if (ref.indexOf('google.')>=0) ch='google';
+  else if (ref.indexOf('facebook.com')>=0) ch='facebook';
+  else if (ref) { try { ch = new URL(ref).hostname.replace('www.',''); } catch(e){} }
+  sessionStorage.setItem('anma_acquisition', JSON.stringify({
+    acquisition_channel: ch,
+    acquisition_source: s.get('utm_source')||null,
+    utm_medium: s.get('utm_medium')||null,
+    utm_campaign: s.get('utm_campaign')||null,
+    utm_content: s.get('utm_content')||null,
+    referrer: ref||null,
+    landing_page: location.href.slice(0,500)
+  }));
+}catch(e){}})();
+</script>
+<meta property="og:description" content="Gestioná clientes, pedidos y stock desde una sola pantalla, con comunicación cercana con tus clientes. Probá 7 días gratis.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anmahub.com/">
+<meta property="og:image" content="https://anmahub.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ANMA Hub — El centro de control para tu negocio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ANMA Hub — El centro de control para tu negocio">
+<meta name="twitter:description" content="Gestioná clientes, pedidos y stock desde una sola pantalla, con comunicación cercana con tus clientes. Probá 7 días gratis.">
+<meta name="twitter:image" content="https://anmahub.com/og-image.png">
+<meta name="keywords" content="gestión de negocio, presupuestos online, Argentina, administración pymes, control de stock, clientes, automatización WhatsApp, reemplazar Excel, paz mental emprendedora, ANMA Hub">
+<link rel="canonical" href="https://anmahub.com/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"ANMA Hub","description":"Plataforma de gestión integral para tiendas de indumentaria, decoración y hogar, tecnología y almacenes. Presupuestos, clientes, stock con variantes y comunicación por WhatsApp en un solo lugar.","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"30000","priceCurrency":"ARS","priceSpecification":{"@type":"UnitPriceSpecification","price":"30000","priceCurrency":"ARS","billingDuration":"P1M"}},"url":"https://anmahub.com","inLanguage":"es-AR","audience":{"@type":"BusinessAudience","name":"Tiendas de indumentaria, decoración y hogar, tecnología y electrónica, almacenes y distribuidoras de Argentina"},"featureList":["Presupuestos PDF","Gestión de clientes B2C y B2B","Control de stock con variantes (talles, colores, modelos)","Dos listas de precios: público y mayorista","Logística de envíos","Seguimiento por WhatsApp","Cobros con Mercado Pago","Dashboard con métricas"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"¿Sé cuáles de mis productos y clientes realmente me dejan margen?","acceptedAnswer":{"@type":"Answer","text":"Sí. Cada venta registra el costo real en el momento (snapshot), así que ANMA calcula ganancia neta por producto, cliente y categoría. Detectás concentración de riesgo (qué cliente factura un porcentaje crítico del trimestre), descubrís qué productos te están haciendo trabajar para nada y tomás decisiones de pricing con datos, no con sensación."}},
+{"@type":"Question","name":"Tengo miles de productos con variantes (talles, colores o modelos), ¿es difícil cargarlos?","acceptedAnswer":{"@type":"Answer","text":"Para nada. La interfaz está pensada para que la carga de catálogos e inventario sea rápida y sin fricciones visuales. Podés estructurar variantes y costos en minutos para que tu stock real se descuente automáticamente con cada venta."}},
+{"@type":"Question","name":"¿Cómo funciona el seguimiento por WhatsApp?","acceptedAnswer":{"@type":"Answer","text":"El sistema agrupa tus contactos según su estado operativo actual. Con un solo clic, podés abrir WhatsApp con plantillas predefinidas listas para enviar un mensaje de recontacto amable o re-vincular clientes que dejaron presupuestos pendientes."}},
+{"@type":"Question","name":"¿Realmente es gratis empezar?","acceptedAnswer":{"@type":"Answer","text":"Sí. Podés registrarte y empezar a usar las funciones clave para ordenar tu operación hoy mismo. No te pedimos tarjeta de crédito ni hay configuraciones técnicas ocultas. La prueba dura 7 días completos."}}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>window.tailwind={config:{corePlugins:{preflight:false}}}</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{margin:0;font-family:'Inter',sans-serif;color:#0F172A;background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:11px;font-weight:700;font-size:15px;cursor:pointer;border:none;font-family:inherit;transition:transform .2s,box-shadow .2s,background .2s}
+.btn-primary{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.32)}
+.btn-primary:hover{background:#047857;transform:translateY(-2px);box-shadow:0 8px 24px rgba(5,150,105,.42)}
+.btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
+.btn-ghost:hover{background:rgba(255,255,255,.1)}
+.btn-dark{background:#0F172A;color:#fff}
+.btn-dark:hover{background:#1e293b;transform:translateY(-2px)}
+.btn-wa{background:#25D366;color:#fff;box-shadow:0 4px 14px rgba(37,211,102,.32)}
+.btn-wa:hover{background:#1eb957;transform:translateY(-2px)}
 
-    <!-- Preconnect: abre DNS+TLS en paralelo (fonts, iconos, supabase) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preconnect" href="https://paxsvjdimqlfxnlipplx.supabase.co">
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb}
+.nav-in{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:19px;letter-spacing:-.5px}
+.logo-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#7c3aed,#059669);display:flex;align-items:center;justify-content:center;color:#fff}
+.nav-links{display:flex;gap:28px;font-size:14px;font-weight:500;color:#475569}
+.nav-links a:hover{color:#0F172A}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.nav-cta .btn{padding:9px 16px;font-size:13px}
 
-    <!-- Fonts & Icons — no-bloqueantes: media=print + swap a all en onload,
-         así el primer paint no espera a los CDNs externos -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    </noscript>
-    <!-- Microsoft Clarity (heatmaps + grabaciones) -->
-    <script type="text/javascript">
-      (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "x6m6t83r6u");
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+/* Burger menu mobile — slide-down panel */
+.nav-burger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:#1E1B4B;font-size:18px;border-radius:8px;transition:background .15s}
+.nav-burger:hover{background:#f1f5f9}
+.nav-menu-mobile{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(15,23,42,.08);padding:8px 0;flex-direction:column;z-index:60}
+.nav-menu-mobile.open{display:flex}
+.nav-menu-mobile a{padding:14px 22px;font-size:14.5px;font-weight:600;color:#1E1B4B;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-menu-mobile a:last-child{border-bottom:none}
+.nav-menu-mobile a:hover{background:#F5F3FF;color:#7C3AED}
+.nav-menu-mobile a i{font-size:13px;color:#94A3B8;width:18px;text-align:center}
+@media(max-width:780px){
+  .nav-links{display:none}
+  .nav-burger{display:inline-flex;align-items:center;justify-content:center;margin-right:4px;font-size:20px;padding:6px 10px}
+  .nav-in{gap:6px}
+  /* En mobile el logo queda centrado entre burger y CTAs */
+  .logo{flex:1;justify-content:flex-start}
+}
+@media(max-width:480px){
+  /* En pantallas muy chicas: ocultamos "Probar gratis" para no apilar y dejamos solo Ingresar */
+  .nav-cta .btn-primary{display:none}
+  .nav-burger{padding:6px 8px;font-size:19px}
+}
+
+/* HERO */
+.hero{position:relative;background:linear-gradient(145deg,#1a0636 0%,#2d0a57 25%,#4c1d95 60%,#6d28d9 85%,#7c3aed 100%);color:#fff;padding:60px 0 72px;overflow:hidden}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px)}
+.hero::before{width:520px;height:520px;top:-180px;right:-180px;background:radial-gradient(circle,rgba(124,58,237,.5),transparent 70%)}
+.hero::after{width:360px;height:360px;bottom:-140px;left:-90px;background:radial-gradient(circle,rgba(5,150,105,.3),transparent 70%)}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;font-size:12px;font-weight:600;color:#c4b5fd;margin-bottom:14px}
+.eyebrow .pulse-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.7)}70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+@keyframes ctaGlow{0%,100%{box-shadow:0 8px 32px rgba(5,150,105,.45)}50%{box-shadow:0 10px 44px rgba(5,150,105,.72),0 0 80px rgba(5,150,105,.18)}}
+
+/* CTA hero — dominancia visual */
+.cta-primary-btn{display:inline-flex;align-items:center;gap:13px;background:linear-gradient(135deg,#059669 0%,#047857 100%);color:#fff;padding:19px 36px;border-radius:15px;font-size:17px;font-weight:800;text-decoration:none;letter-spacing:-.3px;transition:transform .2s,box-shadow .2s;animation:ctaGlow 3.5s ease-in-out infinite;white-space:nowrap}
+.cta-primary-btn:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(5,150,105,.65)!important;animation:none}
+.cta-secondary-btn{display:inline-flex;align-items:center;gap:10px;color:rgba(255,255,255,.7);font-size:14.5px;font-weight:600;text-decoration:none;transition:color .15s;white-space:nowrap}
+.cta-secondary-btn:hover{color:#fff}
+.cta-play-circle{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,border-color .15s}
+.cta-secondary-btn:hover .cta-play-circle{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5)}
+
+/* Social proof chips */
+.sp-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:12px 20px;transition:border-color .2s,transform .2s,box-shadow .2s}
+.sp-chip:hover{border-color:#7c3aed;transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,58,237,.1)}
+.sp-chip-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sp-chip-icon i{color:#7c3aed;font-size:15px}
+.sp-chip span{font-size:14px;font-weight:700;color:#1e293b}
+
+@media(max-width:640px){
+  .cta-primary-btn{width:100%;justify-content:center;font-size:16px;padding:17px 28px}
+  .cta-secondary-btn{font-size:13.5px}
+  .sp-chip{padding:10px 14px}
+  .sp-chip span{font-size:13px}
+}
+.h1{font-size:54px;line-height:1.05;font-weight:900;letter-spacing:-1.5px;margin:0 0 14px}
+.h1 em{font-style:normal;background:linear-gradient(90deg,#c4b5fd,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:18px;color:rgba(255,255,255,.78);max-width:540px;margin:0 0 20px;line-height:1.6}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end}
+.hero-cta-btn{width:200px;justify-content:center}
+.hero-demo-group{display:flex;flex-direction:column;align-items:center;gap:5px}
+.hero-demo-tag{font-size:11px;color:rgba(255,255,255,.62);font-weight:600;margin:0;font-style:italic;letter-spacing:.2px}
+.hero-trust{display:flex;align-items:center;gap:18px;font-size:13px;color:rgba(255,255,255,.65);flex-wrap:wrap;margin-top:4px}
+.hero-trust i{color:#34d399}
+.mock{position:relative;background:#0F172A;border-radius:18px;padding:14px;box-shadow:0 30px 80px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.08);transform:rotate(-1.5deg);transition:transform .4s}
+.mock:hover{transform:rotate(0)}
+.mock-bar{display:flex;gap:6px;margin-bottom:10px;align-items:center}
+.mock-bar span{width:11px;height:11px;border-radius:50%;background:#475569}
+.mock-bar span:first-child{background:#ef4444}
+.mock-bar span:nth-child(2){background:#f59e0b}
+.mock-bar span:nth-child(3){background:#10b981}
+@media(max-width:920px){.hero{padding:40px 0 52px}.hero-grid{grid-template-columns:1fr;gap:32px}.h1{font-size:38px}}
+
+/* SECTIONS */
+section{padding:52px 0}
+.eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#f1f5f9;color:#7c3aed;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.h2{font-size:38px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin:0 0 14px;color:#0F172A}
+.sub{font-size:17px;color:#475569;max-width:640px;margin:0 0 28px;line-height:1.65}
+.center{text-align:center;margin-left:auto;margin-right:auto}
+
+/* PILARES */
+.pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.pillar-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:28px;transition:transform .2s,border-color .2s,box-shadow .2s}
+.pillar-card:hover{transform:translateY(-3px);border-color:#7c3aed;box-shadow:0 10px 32px rgba(124,58,237,.08)}
+.pillar-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#7c3aed15,#05966915);color:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.pillar-card-hd{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.pillar-card h4{font-size:16px;margin:0;font-weight:800;color:#0F172A}
+.pillar-card p{font-size:14px;color:#475569;margin:0;line-height:1.65}
+@media(max-width:780px){.pillar-grid{grid-template-columns:1fr}}
+
+/* ── DEMO APP SHELL ── */
+.app-shell-wrap{background:#0F172A;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07)}
+.app-chrome-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:#0a0a1a;border-bottom:1px solid #1e293b}
+.app-chrome-dots{display:flex;gap:6px}
+.app-chrome-dots span{width:11px;height:11px;border-radius:50%}
+.app-chrome-dots span:nth-child(1){background:#ef4444}
+.app-chrome-dots span:nth-child(2){background:#f59e0b}
+.app-chrome-dots span:nth-child(3){background:#10b981}
+.app-chrome-url{background:#1e293b;border-radius:6px;padding:4px 14px;font-size:11px;color:#64748b;font-family:monospace}
+.app-layout{display:flex;height:540px;overflow:hidden}
+/* sidebar */
+.app-nav{width:196px;background:#1a1040;flex-shrink:0;display:flex;flex-direction:column;padding:10px 0;border-right:1px solid rgba(255,255,255,.06)}
+.app-nav-logo{display:flex;align-items:center;gap:8px;padding:6px 14px 14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:6px}
+.app-nav-logo-mark{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#7c3aed,#059669);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;flex-shrink:0}
+.app-nav-logo span{font-size:14px;font-weight:900;color:#fff;letter-spacing:-.3px}
+.app-nav-item{display:flex;align-items:center;gap:9px;padding:8px 14px;font-size:13px;color:rgba(255,255,255,.55);cursor:pointer;border-radius:7px;margin:0 6px 1px;transition:all .15s;font-weight:500;border:none;background:none;font-family:inherit;width:calc(100% - 12px);text-align:left}
+.app-nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+.app-nav-item.nav-active{background:rgba(124,58,237,.3);color:#fff;font-weight:700}
+.app-nav-item i{width:15px;text-align:center;font-size:12px;flex-shrink:0}
+.app-nav-section{font-size:9px;font-weight:800;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1.2px;padding:10px 14px 4px;margin-top:4px}
+/* main */
+.app-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#f8fafc}
+.app-topbar{padding:11px 20px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.app-topbar-left{font-size:13px;color:#64748b;font-weight:500}
+.app-topbar-left b{color:#0F172A;font-weight:800}
+.app-topbar-left .crit-badge{color:#dc2626;font-weight:700}
+.app-topbar-actions{display:flex;gap:8px}
+.app-btn{font-size:12px;padding:7px 14px;border-radius:8px;font-weight:700;border:none;cursor:default;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.app-btn-primary{background:#059669;color:#fff}
+.app-btn-secondary{background:#fff;color:#334155;border:1.5px solid #e2e8f0}
+/* views */
+.app-view{flex:1;overflow-y:auto;display:none;flex-direction:column}
+.app-view.av-active{display:flex}
+/* kpi row */
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px 20px;flex-shrink:0}
+.kpi-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px 16px}
+.kpi-label{font-size:9px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.kpi-num{font-size:30px;font-weight:900;color:#0F172A;line-height:1}
+.kpi-num.knum-ok{color:#16a34a}
+.kpi-num.knum-warn{color:#f59e0b}
+.kpi-num.knum-crit{color:#dc2626}
+/* table */
+.app-tbl-wrap{padding:0 20px 20px;flex:1}
+.app-tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;border:1.5px solid #e2e8f0}
+.app-tbl thead tr{background:#f8fafc;border-bottom:1.5px solid #e2e8f0}
+.app-tbl th{padding:10px 14px;font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;text-align:left;white-space:nowrap}
+.app-tbl tbody tr{border-bottom:1px solid #f1f5f9}
+.app-tbl tbody tr:last-child{border-bottom:none}
+.app-tbl td{padding:11px 14px;color:#334155;vertical-align:middle;white-space:nowrap}
+.app-tbl td b{color:#0F172A;font-weight:700;display:block}
+.app-tbl td small{color:#94a3b8;font-size:11px}
+/* status pills */
+.sp{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:700}
+.sp::before{content:"•";font-size:16px;line-height:0;margin-top:1px}
+.sp-activo{background:#dcfce7;color:#15803d}
+.sp-stock-ok{background:#dcfce7;color:#15803d}
+.sp-stock-bajo{background:#fef9c3;color:#92400e}
+.sp-sin-stock{background:#fee2e2;color:#dc2626}
+.sp-inactivo{background:#f1f5f9;color:#64748b}
+/* table actions */
+.t-edit{background:none;border:none;color:#94a3b8;cursor:default;font-size:14px;padding:3px 5px}
+.t-del{background:none;border:none;color:#fca5a5;cursor:default;font-size:14px;padding:3px 5px}
+.t-wa{background:none;border:none;color:#16a34a;cursor:default;font-size:15px;padding:3px 5px}
+/* margin color */
+.mg-hi{color:#16a34a;font-weight:800}
+.mg-mid{color:#f59e0b;font-weight:800}
+.mg-lo{color:#dc2626;font-weight:800}
+
+/* PARA QUIEN */
+.para-quien{background:linear-gradient(180deg,#fafbfc 0%,#fff 100%)}
+.pq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.pq{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:22px;text-align:center;transition:transform .2s,border-color .2s}
+.pq:hover{transform:translateY(-3px);border-color:#7c3aed}
+.pq i{font-size:26px;color:#7c3aed;margin-bottom:12px}
+.pq h5{font-size:14px;margin:0 0 4px;font-weight:700}
+.pq p{font-size:12px;color:#64748b;margin:0}
+@media(max-width:780px){.pq-grid{grid-template-columns:1fr 1fr}}
+
+/* FAQ */
+.faq-wrap{max-width:780px;margin:0 auto}
+.faq{border:1px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden;background:#fff}
+.faq summary{padding:18px 22px;font-weight:700;font-size:15px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:#0F172A}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";width:22px;height:22px;flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c3aed' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;transition:transform .2s ease}
+.faq[open] summary::after{content:"";transform:rotate(180deg)}
+.faq[open] summary{border-bottom:1px solid #f1f5f9}
+.faq-body{padding:18px 22px;font-size:14px;color:#475569;line-height:1.7}
+
+/* CONTACTO */
+.contact{background:#fafbfc}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+.contact-info h3{font-size:24px;font-weight:800;margin:0 0 14px}
+.contact-info p{font-size:15px;color:#475569;margin:0 0 28px;line-height:1.65}
+.contact-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid #e5e7eb}
+.contact-item:first-of-type{border-top:none}
+.contact-item-icon{width:42px;height:42px;border-radius:11px;background:#7c3aed15;color:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.contact-item .l{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:2px}
+.contact-item .v{font-size:14.5px;color:#0F172A;font-weight:600}
+.contact-item .v a:hover{color:#7c3aed}
+.form{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:32px;position:relative}
+.form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form label{display:block;font-size:11px;font-weight:700;color:#374151;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase}
+.form input,.form textarea,.form select{width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;color:#0F172A;background:#fafbfc;outline:none;transition:border-color .2s,box-shadow .2s;box-sizing:border-box}
+.form input:focus,.form textarea:focus,.form select:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.1);background:#fff}
+.form .fg{margin-bottom:14px}
+.form textarea{resize:vertical;min-height:90px}
+.form .privacy{font-size:11px;color:#64748b;margin:10px 0 0;line-height:1.5;text-align:center}
+.form .privacy a{color:#7c3aed;font-weight:600}
+.form .honeypot{position:absolute;left:-9999px;opacity:0;pointer-events:none}
+.form-success{display:none;text-align:center;padding:30px 20px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;color:#166534}
+.form-success.show{display:block}
+.form-success i{font-size:36px;color:#16a34a;margin-bottom:8px;display:block}
+.form-success b{font-size:16px;display:block;margin-bottom:4px}
+@media(max-width:920px){.contact-grid{grid-template-columns:1fr;gap:36px}.form .row{grid-template-columns:1fr}}
+
+/* DEMO REAL */
+.demo-section{background:#0F172A;padding:52px 0}
+.demo-section-head{text-align:center;max-width:680px;margin:0 auto 32px}
+.demo-section-head h2{font-size:32px;font-weight:900;color:#fff;letter-spacing:-.8px;margin:0 0 10px}
+.demo-section-head p{font-size:15px;color:rgba(255,255,255,.6);margin:0}
+.demo-shell{border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.06)}
+.demo-topbar{background:#111827;padding:9px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.demo-dots{display:flex;gap:5px}
+.demo-dot{width:10px;height:10px;border-radius:50%}
+.demo-url-bar{flex:1;background:#1e293b;color:#64748b;font-size:10px;font-family:monospace;padding:4px 12px;border-radius:5px;text-align:center}
+.demo-tabs{display:flex;gap:2px;background:#111827;padding:10px 14px 0;border:1px solid rgba(255,255,255,.07);border-bottom:none;border-radius:14px 14px 0 0}
+.demo-tab{padding:9px 18px;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.55);border-radius:8px 8px 0 0;cursor:pointer;display:inline-flex;align-items:center;gap:7px;border:1px solid transparent;border-bottom:none;transition:background .15s,color .15s}
+.demo-tab:hover:not(.active){background:rgba(255,255,255,.04);color:rgba(255,255,255,.85)}
+.demo-tab.active{background:#f8fafc;color:#0F172A;border-color:rgba(255,255,255,.07);font-weight:700}
+.demo-tab.active i{color:#7c3aed}
+/* App shell se conecta al tab strip — sin border-radius arriba */
+#demo .app-shell-wrap{border-radius:0 0 14px 14px;border-top:none}
+.demo-tab i{font-size:11px}
+.demo-panel{display:none}
+.demo-panel.active{display:block}
+.demo-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;border-bottom:1px solid #e2e8f0}
+.demo-toolbar-left{display:flex;align-items:center;gap:8px}
+.demo-toolbar-left h5{font-size:13px;font-weight:800;color:#0F172A;margin:0}
+.demo-count{font-size:11px;background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:99px;font-weight:600}
+.demo-btn-new{background:#059669;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:7px;white-space:nowrap}
+.dtable{width:100%;border-collapse:collapse;background:#f8fafc}
+.dtable th{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:8px 14px;background:#f8fafc;border-bottom:1px solid #e2e8f0;text-align:left;white-space:nowrap}
+.dtable td{font-size:12.5px;color:#334155;padding:9px 14px;border-bottom:1px solid #f1f5f9;vertical-align:middle;background:#fff}
+.dtable tr:last-child td{border-bottom:none}
+.dtable tr:hover td{background:#fafbff}
+.row-red td{border-left:3px solid #ef4444}
+.row-warn td{border-left:3px solid #f59e0b}
+.dbadge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:99px;font-size:10.5px;font-weight:700;white-space:nowrap}
+.dbadge-green{background:#dcfce7;color:#15803d}
+.dbadge-blue{background:#dbeafe;color:#1d4ed8}
+.dbadge-purple{background:#ede9fe;color:#7c3aed}
+.dbadge-amber{background:#fef3c7;color:#92400e}
+.dbadge-red{background:#fee2e2;color:#dc2626}
+.dstatus{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.ddot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ddot-g{background:#16a34a}
+.ddot-r{background:#dc2626}
+.ddot-a{background:#f59e0b}
+.dwa{color:#25D366;font-size:15px}
+.dact{display:inline-flex;width:26px;height:26px;border-radius:7px;background:#f1f5f9;align-items:center;justify-content:center;font-size:10px;color:#64748b}
+.dnum-ok{color:#16a34a;font-weight:700}
+.dnum-low{color:#dc2626;font-weight:700}
+.dnum-warn{color:#f59e0b;font-weight:700}
+.dmarg{font-size:11px;font-weight:800;padding:2px 5px;border-radius:5px;background:#dcfce7;color:#15803d}
+
+/* FLOAT WA */
+.fab-wa{position:fixed;bottom:24px;right:24px;width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 24px rgba(37,211,102,.5);z-index:60;transition:transform .25s}
+.fab-wa:hover{transform:scale(1.08)}
+
+/* Hero mock floating chips */
+.mock-wrap{position:relative}
+.mock-notify{position:absolute;top:-18px;right:24px;background:#fff;border-radius:99px;padding:8px 18px 8px 12px;display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:#0F172A;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:3;border:1px solid rgba(0,0,0,.06);white-space:nowrap;animation:floatChip 3s ease-in-out infinite}
+.mock-notify .ndot{width:8px;height:8px;border-radius:50%;background:#10b981;flex-shrink:0;box-shadow:0 0 0 3px rgba(16,185,129,.25);animation:pulse 2s infinite}
+.mock-badge{position:absolute;bottom:-16px;left:18px;background:linear-gradient(135deg,#7c3aed,#059669);border-radius:14px;padding:11px 18px;display:flex;gap:16px;z-index:3;box-shadow:0 8px 24px rgba(124,58,237,.45)}
+.mock-badge .bstat{text-align:center}
+.mock-badge .bv{font-size:16px;font-weight:800;color:#fff;line-height:1.1}
+.mock-badge .bl{font-size:9px;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.mock-badge .bdiv{width:1px;background:rgba(255,255,255,.2)}
+@keyframes floatChip{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media(max-width:700px){.mock-notify{font-size:10px;right:10px}.mock-badge{display:none}}
+
+/* FOOTER */
+footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:20px}
+.foot-brand .logo{color:#fff}
+.foot-brand p{font-size:13px;margin:14px 0 18px;line-height:1.65;max-width:340px}
+.foot-soc{display:flex;gap:10px}
+.foot-soc a{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;transition:background .2s}
+.foot-soc a:hover{background:#7c3aed}
+.foot-col h6{font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin:0 0 14px}
+.foot-col a{display:block;font-size:13.5px;padding:5px 0;color:rgba(255,255,255,.6);transition:color .2s}
+.foot-col a:hover{color:#fff}
+.foot-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-size:12px;color:rgba(255,255,255,.5)}
+.foot-bot .badges{display:flex;gap:14px;align-items:center}
+.foot-bot .badges span{display:inline-flex;align-items:center;gap:5px}
+.foot-bot .badges i{color:#34d399}
+/* Footer compacto en mobile: 2 columnas, padding reducido, links chicos */
+@media(max-width:780px){
+  .foot-grid{grid-template-columns:1fr 1fr;gap:24px 18px}
+  .foot-brand{grid-column:1/-1}
+  .foot-brand p{font-size:12.5px;margin:10px 0 14px;max-width:none}
+  .foot-col h6{font-size:10.5px;margin:0 0 10px}
+  .foot-col a{font-size:13px;padding:4px 0}
+  footer{padding:28px 0 16px}
+}
+@media(max-width:480px){
+  .foot-grid{grid-template-columns:1fr 1fr;gap:20px 14px}
+  .foot-col a{font-size:12.5px;padding:3px 0;line-height:1.5}
+}
+
+/* PRICING mobile */
+@media(max-width:680px){
+  .pricing-card-inner{flex-direction:column!important}
+  .pricing-left{padding-right:0!important;padding-bottom:24px!important;border-right:none!important;border-bottom:1px solid #3d1b5c!important}
+  .pricing-right{padding-left:0!important;padding-top:24px!important}
+}
+
+/* ── TABLET 920px ── */
+@media(max-width:920px){
+  .h1{font-size:36px!important;letter-spacing:-.8px!important}
+  .hero-grid{gap:28px!important}
+  .kpi-strip{grid-template-columns:1fr 1fr!important}
+  #caracteristicas-grid{grid-template-columns:1fr!important;gap:40px!important}
+  #para-quien-grid{grid-template-columns:1fr!important}
+}
+
+/* ── MOBILE 680px ── */
+@media(max-width:680px){
+  .wrap{padding:0 16px!important}
+  .feat-grid{grid-template-columns:1fr!important}
+  .app-nav{display:none!important}
+  .app-layout{height:360px!important}
+  .kpi-strip{grid-template-columns:1fr 1fr!important;padding:12px!important;gap:8px!important}
+  .kpi-num{font-size:22px!important}
+  .demo-tabs{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
+  .demo-tab{white-space:nowrap!important;font-size:11px!important;padding:7px 12px!important}
+  .dtable td,.dtable th{font-size:11px!important;padding:7px 10px!important}
+  .app-tbl td,.app-tbl th{white-space:normal!important;font-size:11px!important}
+  .app-topbar-actions{display:none!important}
+  .mock-wrap{display:none!important}
+  .hero-grid>div:first-child{text-align:center}
+  .cta-primary-btn{width:100%!important;justify-content:center!important}
+  .hero-ctas{justify-content:center!important}
+  .hero-trust{justify-content:center!important}
+  .lead{margin-left:auto!important;margin-right:auto!important}
+  .mobile-cta-bar{display:flex!important}
+  /* Secciones nuevas sin .wrap — reducir padding y añadir horizontal */
+  #sec-empathy{padding:52px 16px!important}
+  #para-quien{padding:52px 16px!important}
+  #como-funciona{padding:52px 0!important}
+  #sec-caracteristicas{padding:52px 0!important}
+  #faq{padding:52px 0!important}
+  #pricing{padding:44px 0!important}
+  #contact{padding:60px 16px!important}
+  /* ROI block: apilar texto y stats en vertical */
+  .roi-stats-col{min-width:auto!important;width:100%!important}
+  .roi-stats-col > a{width:100%!important;box-sizing:border-box!important}
+  /* Para quién: reducir padding de tarjetas */
+  #para-quien-grid > div{padding:24px 20px!important}
+  /* Características: para quién inner max-width */
+  #sec-empathy > div{padding:0!important}
+}
+
+/* ── MOBILE 540px ── */
+@media(max-width:540px){
+  .h1{font-size:28px!important;letter-spacing:-.4px!important;line-height:1.1!important}
+  .lead{font-size:15px!important;max-width:100%!important}
+  .hero{padding:36px 0 48px!important}
+  .h2{font-size:24px!important;letter-spacing:-.4px!important}
+  .sub{font-size:15px!important}
+  .hero-ctas{flex-direction:column!important;align-items:center!important}
+  .wa-cta-btn{font-size:15px!important;padding:16px 24px!important;width:100%!important;max-width:340px!important;justify-content:center!important}
+  .contact-wa-block{padding:44px 16px!important}
+  .faq summary{font-size:14px!important;padding:14px 16px!important}
+  .faq-body{padding:14px 16px!important}
+  .nav-cta .btn{font-size:12px!important;padding:8px 12px!important}
+  .pillar-card{padding:20px!important}
+  .app-layout{height:300px!important}
+  .kpi-strip{grid-template-columns:1fr 1fr!important}
+  /* Reducir más en mobile pequeño */
+  #sec-empathy{padding:40px 16px!important}
+  #para-quien{padding:40px 16px!important}
+  #como-funciona{padding:40px 0!important}
+  #sec-caracteristicas{padding:40px 0!important}
+  #faq{padding:40px 0!important}
+  #contact{padding:52px 16px!important}
+  #pricing{padding:36px 0!important}
+  /* Números del proceso: reducir tamaño en mobile */
+  .paso-num{font-size:56px!important;letter-spacing:-2px!important}
+  /* CTA final: botón full-width en mobile */
+  #contact a.cta-primary-btn{width:100%!important;padding:17px 24px!important;justify-content:center!important}
+}
+
+/* ── TESTIMONIOS ── */
+@media(max-width:860px){.testi-grid{grid-template-columns:1fr!important}}
+@media(min-width:540px) and (max-width:860px){.testi-grid{grid-template-columns:1fr 1fr!important}}
+
+/* ── MOBILE 400px ── */
+@media(max-width:400px){
+  .h1{font-size:22px!important;line-height:1.08!important}
+  /* Mantener 2 columnas en footer incluso en pantallas ultra-pequeñas — más compacto */
+  .foot-grid{grid-template-columns:1fr 1fr!important;gap:18px 12px!important}
+  .foot-col a{font-size:12px!important;padding:3px 0!important}
+  .hero-trust{gap:8px!important;font-size:11px!important}
+  /* Ocultar botón Ingresar para no sobrecargar nav */
+  .nav-btn-login{display:none!important}
+  .cta-primary-btn{font-size:15px!important;padding:15px 18px!important}
+  /* Paso números aún más pequeños */
+  .paso-num{font-size:44px!important}
+}
+
+/* CONTACTO — nuevo bloque WA */
+.contact-wa-block{background:#fff;padding:60px 20px;text-align:center}
+.contact-wa-block h3{font-size:26px;font-weight:800;color:#0F172A;margin:0 0 10px;letter-spacing:-.4px}
+.contact-wa-block p{font-size:15px;color:#475569;margin:0 0 32px;line-height:1.65;max-width:520px;margin-left:auto;margin-right:auto}
+.wa-cta-btn{display:inline-flex;align-items:center;gap:12px;background:#25D366;color:#fff;text-decoration:none;padding:18px 36px;border-radius:16px;font-size:17px;font-weight:800;box-shadow:0 12px 32px rgba(37,211,102,.35);transition:transform .2s,box-shadow .2s;line-height:1}
+.wa-cta-btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(37,211,102,.45)}
+.wa-cta-btn i{font-size:22px}
+.contact-email-link{display:inline-flex;align-items:center;gap:7px;margin-top:22px;font-size:13px;color:#64748b;text-decoration:none;font-weight:600;transition:color .2s}
+.contact-email-link:hover{color:#7c3aed}
+.contact-email-link i{font-size:13px}
+
+/* STICKY MOBILE CTA BAR */
+.mobile-cta-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fff;border-top:1px solid #e5e7eb;padding:12px 16px;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.1)}
+.mobile-cta-bar a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:12px;font-weight:700;font-size:14px;text-decoration:none}
+.mobile-cta-bar .mb-primary{background:#059669;color:#fff}
+.mobile-cta-bar .mb-ghost{background:#f1f5f9;color:#0F172A}
+@media(max-width:680px){body{padding-bottom:76px}.fab-wa{display:none!important}}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE FIXES — Mobile UX hardening
+   ═══════════════════════════════════════════════ */
+
+/* iOS safe-area inset para sticky CTA bar */
+@supports(padding:max(0px)){
+  .mobile-cta-bar{padding-bottom:max(12px,env(safe-area-inset-bottom))!important}
+  @media(max-width:680px){body{padding-bottom:calc(76px + env(safe-area-inset-bottom))!important}}
+}
+
+/* Evitar zoom iOS en links/inputs (mínimo 16px en interactivos críticos) */
+.faq summary,.form input,.form textarea,.form select{font-size:16px}
+
+/* Touch targets accesibles en navegación */
+@media(max-width:780px){
+  /* NAV — compacto pero visible */
+  .nav-in{padding:11px 0!important;gap:8px}
+  .logo{font-size:15.5px!important;letter-spacing:-.3px}
+  .logo-mark{width:28px!important;height:28px!important;font-size:12px}
+  .nav-cta{gap:6px!important;flex-shrink:0}
+  .nav-cta .btn{padding:8px 12px!important;font-size:12px!important;white-space:nowrap}
+  .nav-cta .btn i{font-size:11px}
+}
+
+@media(max-width:680px){
+  /* ── HERO ── */
+  .hero{padding:32px 0 52px!important}
+  .eyebrow{font-size:10.5px!important;padding:5px 11px!important;line-height:1.4;max-width:100%;white-space:normal;text-align:center}
+  .eyebrow strong{display:inline}
+  .lead{font-size:15px!important;margin-bottom:22px!important;line-height:1.6!important}
+  .hero-ctas{gap:14px!important;margin-bottom:18px!important;flex-direction:column;align-items:stretch}
+  /* CTA secundario "Ver Demo" centrado bajo el botón principal */
+  .hero-ctas .cta-secondary-btn,.hero-ctas > a[href="/demo.html"]{align-self:center!important;justify-content:center!important}
+  /* Micro-garantías: 1 línea por garantía, centradas, separación cómoda
+     (el div usa estilos inline → necesita !important para pisarlos) */
+  .hero-trust{flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:10px!important;margin-top:18px!important;font-size:10.5px!important}
+
+  /* ── DEMO INTERACTIVO ── scroll horizontal con indicador */
+  #demo{padding:40px 0!important}
+  #demo .wrap{padding:0 12px!important}
+  #demo .demo-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:10px 10px 0 0}
+  #demo .demo-tabs::-webkit-scrollbar{display:none}
+  #demo .app-shell-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
+  #demo .app-shell-wrap::-webkit-scrollbar{height:6px}
+  #demo .app-shell-wrap::-webkit-scrollbar-thumb{background:rgba(124,58,237,.4);border-radius:99px}
+  #demo .app-layout{min-width:560px;height:auto!important;max-height:none!important}
+  #demo .app-view{min-width:560px}
+  #demo .app-tbl-wrap{padding:0 14px 14px!important}
+  #demo .app-tbl th,#demo .app-tbl td{font-size:11px!important;padding:7px 9px!important;white-space:nowrap!important}
+  #demo .demo-section-head h2,#demo h2{font-size:22px!important;letter-spacing:-.4px!important;line-height:1.2!important}
+  #demo .demo-section-head p,#demo > .wrap > div > p{font-size:13px!important}
+  /* Hint visual: desliza */
+  #demo .app-shell-wrap::after{content:"← desliza →";display:block;font-size:10px;color:rgba(255,255,255,.4);text-align:center;padding:6px 0;background:rgba(0,0,0,.3)}
+
+  /* ── ROI BLOCK ── reducir padding y tipografía */
+  section > .wrap > div[style*="border-radius:22px"]{padding:28px 22px!important;gap:22px!important;border-radius:18px!important}
+  section > .wrap > div[style*="border-radius:22px"] h3{font-size:20px!important;line-height:1.25!important;letter-spacing:-.3px!important}
+  section > .wrap > div[style*="border-radius:22px"] p{font-size:13.5px!important;line-height:1.65!important}
+  .roi-stats-col{flex:1 1 100%!important;min-width:0!important;width:100%!important}
+  .roi-stats-col > div div[style*="font-size:24px"]{font-size:22px!important}
+
+  /* ── PRICING ── tarjeta compacta */
+  #pricing{padding:44px 0!important}
+  #pricing > div{padding:0 14px!important}
+  #pricing > div > div[style*="background:#1a0b2e"]{padding:24px 20px!important;border-radius:18px!important}
+  #pricing h2{font-size:22px!important;letter-spacing:-.3px!important;line-height:1.2!important}
+  #pricing h2 br{display:none}
+  .pricing-left span[style*="font-size:56px"]{font-size:42px!important;letter-spacing:-1.5px!important}
+  .pricing-left span[style*="font-size:19px"]{font-size:15px!important}
+  .pricing-left span[style*="font-size:26px"]{font-size:22px!important;letter-spacing:-.5px!important}
+  .pricing-left span[style*="font-size:12px;font-weight:600"]{font-size:11px!important}
+  .pricing-right{padding-top:20px!important;gap:14px!important}
+  .pricing-right h4{font-size:13.5px!important}
+  .pricing-right p{font-size:11.5px!important;line-height:1.5!important}
+  /* Pie personalización: stack vertical */
+  #pricing > div > div[style*="rgba(26,11,46,.6)"]{flex-direction:column!important;gap:8px!important;padding:14px 18px!important;text-align:center}
+  #pricing > div > div[style*="rgba(26,11,46,.6)"] > div[style*="width:1px"]{display:none}
+
+  /* ── CTA FINAL ── */
+  #contact{padding:64px 16px!important}
+  #contact h2{font-size:24px!important;line-height:1.18!important;letter-spacing:-.5px!important;margin-bottom:16px!important}
+  #contact h2 br{display:none}
+  #contact > div > p{font-size:15px!important;line-height:1.65!important;margin-bottom:24px!important}
+  #contact a.cta-primary-btn{width:100%!important;padding:16px 22px!important;font-size:15.5px!important;justify-content:center;box-sizing:border-box}
+
+  /* ── EMPATÍA ── */
+  #sec-empathy{padding:48px 16px!important}
+  #sec-empathy h2{font-size:26px!important;line-height:1.15!important;letter-spacing:-.4px!important}
+  #sec-empathy h3{font-size:17px!important;line-height:1.35!important;margin-bottom:18px!important}
+  #sec-empathy p{font-size:14.5px!important;line-height:1.7!important;text-align:left}
+
+  /* ── CÓMO FUNCIONA ── */
+  #como-funciona{padding:48px 0!important}
+  #como-funciona > .wrap > div:first-child{margin-bottom:36px!important}
+  #como-funciona h2{font-size:24px!important;line-height:1.2!important}
+  #como-funciona h2 br{display:none}
+  #como-funciona > .wrap > div:first-child p{font-size:14.5px!important}
+  #como-funciona .grid{gap:36px!important}
+  #como-funciona h3{font-size:17px!important}
+  #como-funciona .paso-num{font-size:52px!important;letter-spacing:-2px!important;margin-bottom:2px!important}
+
+  /* ── CARACTERÍSTICAS ── */
+  #sec-caracteristicas{padding:48px 0!important}
+  #sec-caracteristicas h2{font-size:24px!important;letter-spacing:-.3px!important;line-height:1.18!important}
+  #sec-caracteristicas h2 br{display:none}
+  #sec-caracteristicas > .wrap > div:first-child p{font-size:14.5px!important}
+  #sec-caracteristicas blockquote{font-size:13.5px!important;padding-left:14px!important;max-width:100%!important;display:block!important}
+  .feat-grid{gap:12px!important}
+  .feat-grid > div{padding:20px 18px!important}
+  .feat-grid h4{font-size:14.5px!important}
+  .feat-grid p{font-size:13px!important;line-height:1.6!important}
+
+  /* ── TESTIMONIOS ── */
+  .testi-grid{gap:14px!important}
+  .testi-grid > div{padding:22px 20px!important}
+  .testi-grid p{font-size:14px!important;line-height:1.65!important}
+
+  /* ── PARA QUIÉN ── */
+  #para-quien{padding:48px 16px!important}
+  #para-quien h2{font-size:24px!important;letter-spacing:-.3px!important}
+  #para-quien > div > div:first-child p{font-size:14.5px!important}
+  #para-quien-grid{gap:16px!important}
+  #para-quien-grid > div{padding:24px 22px!important;border-radius:16px!important}
+  #para-quien-grid h3{font-size:17px!important;margin-bottom:8px!important}
+  #para-quien-grid p{font-size:13.5px!important;line-height:1.65!important}
+
+  /* ── FAQ ── */
+  #faq{padding:52px 0!important}
+  #faq h2{font-size:24px!important;letter-spacing:-.3px!important;line-height:1.2!important}
+  #faq h2 br{display:none}
+  .faq summary{padding:16px 18px!important;font-size:14px!important;gap:10px;align-items:flex-start}
+  .faq summary::after{margin-top:2px}
+  .faq-body{padding:14px 18px 18px!important;font-size:13.5px!important;line-height:1.65!important}
+
+  /* ── FOOTER ── */
+  footer{padding:32px 0 90px!important}
+  .foot-grid{gap:24px!important}
+  .foot-col a{padding:7px 0!important;min-height:36px;display:flex;align-items:center}
+
+  /* Sticky CTA bar — más compacto en mobile, tap target ok */
+  .mobile-cta-bar{padding:10px 12px!important;gap:8px!important}
+  .mobile-cta-bar a{padding:13px 10px!important;font-size:13.5px!important;line-height:1.2;text-align:center}
+}
+
+/* Móviles muy chicos */
+@media(max-width:420px){
+  .logo{font-size:14px!important}
+  .nav-cta .btn{padding:7px 10px!important;font-size:11.5px!important}
+  .h1{font-size:24px!important;letter-spacing:-.3px!important;line-height:1.12!important}
+  .lead{font-size:14px!important}
+  .cta-primary-btn{font-size:14.5px!important;padding:15px 20px!important;letter-spacing:-.2px}
+  .pricing-left span[style*="font-size:56px"]{font-size:36px!important}
+  #demo .app-layout,#demo .app-view{min-width:500px}
+  #contact h2{font-size:22px!important}
+  #sec-empathy h2,#sec-caracteristicas h2,#para-quien h2,#faq h2,#como-funciona h2,#pricing h2{font-size:22px!important}
+  .mobile-cta-bar a{font-size:12.5px!important;padding:12px 8px!important}
+}
+
+/* Asegurar que ninguna sección desborde horizontalmente */
+@media(max-width:680px){
+  section{max-width:100vw;overflow-x:hidden}
+  #demo{overflow-x:hidden}
+  #demo .app-shell-wrap{max-width:100%}
+}
+
+/* ═══ TAILWIND FALLBACK ═══
+   La landing usa clases de Tailwind via CDN. Si el CDN no carga (red lenta,
+   bloqueador, CSP), estos fallbacks locales replican las clases usadas para
+   que la página NUNCA se vea rota. Cuando Tailwind carga, pisa estos valores
+   con resultado idéntico. */
+.font-black{font-weight:900}
+.font-extrabold{font-weight:800}
+.font-bold{font-weight:700}
+.font-semibold{font-weight:600}
+.font-medium{font-weight:500}
+.font-normal{font-weight:400}
+.tracking-tight{letter-spacing:-.025em}
+.tracking-wider{letter-spacing:.05em}
+.leading-relaxed{line-height:1.625}
+.leading-tight{line-height:1.25}
+.uppercase{text-transform:uppercase}
+.text-center{text-align:center}
+.text-xs{font-size:12px}
+.text-sm{font-size:14px}
+.text-base{font-size:16px}
+.text-lg{font-size:18px}
+.text-xl{font-size:20px}
+.text-2xl{font-size:24px}
+.text-3xl{font-size:30px}
+.text-4xl{font-size:36px}
+.block{display:block}
+.select-none{user-select:none}
+.flex{display:flex}
+.inline-flex{display:inline-flex}
+.items-center{align-items:center}
+.justify-center{justify-content:center}
+.flex-wrap{flex-wrap:wrap}
+.gap-2{gap:8px}
+.gap-6{gap:24px}
+.gap-12{gap:48px}
+.grid{display:grid}
+.grid-cols-1{grid-template-columns:1fr}
+.mt-6{margin-top:24px}
+.mb-3{margin-bottom:12px}
+.mb-4{margin-bottom:16px}
+.mx-auto{margin-left:auto;margin-right:auto}
+.px-4{padding-left:16px;padding-right:16px}
+.max-w-2xl{max-width:672px}
+.text-balance{text-wrap:balance}
+.transition-colors{transition:color .15s,background-color .15s}
+.h-4{height:16px}
+.w-4{width:16px}
+@media(min-width:640px){
+  .sm\:text-base{font-size:16px}
+  .sm\:text-lg{font-size:18px}
+  .sm\:text-2xl{font-size:24px}
+  .sm\:text-4xl{font-size:36px}
+}
+@media(min-width:768px){
+  .md\:text-lg{font-size:18px}
+  .md\:text-4xl{font-size:36px}
+}
+@media(min-width:1024px){
+  .lg\:grid-cols-3{grid-template-columns:repeat(3,1fr)}
+  .lg\:justify-start{justify-content:flex-start}
+}
+@media(max-width:1023px){
+  .pasos-grid{grid-template-columns:1fr!important}
+}
+</style>
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "x6m6t83r6u");
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-in">
+    <button class="nav-burger" id="nav-burger" aria-label="Abrir menú" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <a href="#top" class="logo">
+      <img class="logo-mark" src="/logoanma.jpeg" alt="ANMA Hub" width="32" height="32">
+      ANMA Hub
+    </a>
+    <nav class="nav-links">
+      <a href="#para-quien">Para quién</a>
+      <a href="/demo.html">Demo</a>
+      <a href="#pricing">Planes</a>
+      <a href="/recursos/">Recursos</a>
+      <a href="#faq">Preguntas</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="/app/registro" class="btn btn-primary" style="padding:9px 16px;font-size:13px"><i class="fa-solid fa-rocket"></i> Probar gratis</a>
+      <a href="/app/login" class="btn btn-dark nav-btn-login"><i class="fa-solid fa-arrow-right-to-bracket"></i> Ingresar</a>
+    </div>
+  </div>
+  <!-- Menú mobile desplegable -->
+  <div class="nav-menu-mobile" id="nav-menu-mobile">
+    <a href="#para-quien"><i class="fa-solid fa-users"></i> Para quién</a>
+    <a href="/demo.html"><i class="fa-solid fa-play"></i> Demo en vivo</a>
+    <a href="#pricing"><i class="fa-solid fa-tag"></i> Planes</a>
+    <a href="/recursos/"><i class="fa-solid fa-book-open"></i> Recursos</a>
+    <a href="#faq"><i class="fa-solid fa-circle-question"></i> Preguntas</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><span class="pulse-dot"></span> 💬 Fidelizá a tus clientes y mantenelos al tanto de cada pedido <strong style="color:#34d399">sin esfuerzo</strong></span>
+      <h1 class="h1 font-black tracking-tight text-balance">De los presupuestos al cobro, todo <em>en un solo lugar</em></h1>
+      <p class="lead text-balance">Gestioná tus clientes, pedidos y stock real desde una sola pantalla. Diseñado para emprendedores que necesitan moverse rápido, mantener una comunicación fluida y trabajar sin caos operativo.</p>
+      <!-- CTA: foco único + enlace secundario mínimo -->
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:22px">
+        <a href="/app/registro" class="cta-primary-btn">
+          Empezar a gestionar gratis
+        </a>
+        <a href="/demo.html" class="hover:text-white transition-colors" style="font-size:14.5px;font-weight:600;color:rgba(255,255,255,.5);text-decoration:underline;text-underline-offset:4px;white-space:nowrap">
+          Ver Demo
+        </a>
+      </div>
+
+      <!-- Micro-garantías (sin Tailwind — tamaños fijos inline para que NUNCA exploten) -->
+      <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:24px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.48)" class="hero-trust">
+        <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:rgba(255,255,255,.32);flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Listo en 60 segundos
+        </span>
+        <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:rgba(255,255,255,.32);flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          No requiere tarjeta de crédito
+        </span>
+        <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:rgba(255,255,255,.32);flex-shrink:0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Diseñado por y para emprendedores
+        </span>
+      </div>
+    </div>
+    <div class="mock-wrap">
+      <div class="mock-notify">
+        <span class="ndot"></span>
+        💸 Cobraste · Ana Clara · $65.000
+      </div>
+
+      <div class="mock">
+        <div class="mock-bar" style="margin-bottom:8px">
+          <span></span><span></span><span></span>
+        </div>
+
+        <div style="background:#fff;border-radius:10px;padding:0;min-height:420px;display:flex;overflow:hidden">
+
+          <!-- SIDEBAR -->
+          <div style="width:52px;background:#0F172A;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid #1e293b">
+            <div style="padding:8px 0 7px;border-bottom:1px solid #1e293b;display:flex;justify-content:center;align-items:center">
+              <img src="/favicon.svg" alt="" style="width:24px;height:24px;border-radius:7px;display:block">
+            </div>
+            <div style="padding:6px 4px;display:flex;flex-direction:column;gap:1px">
+              <div style="padding:5px 4px;border-radius:6px;background:#1e293b">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:1.5px">
+                  <i class="fa-solid fa-gauge-high" style="font-size:9px;color:#7c3aed"></i>
+                  <span style="font-size:5px;color:#a78bfa;font-weight:700;line-height:1">Dashboard</span>
+                </div>
+              </div>
+              <div style="padding:5px 4px;border-radius:6px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:1.5px">
+                  <i class="fa-solid fa-plus" style="font-size:9px;color:#475569"></i>
+                  <span style="font-size:5px;color:#64748b;line-height:1">Nuevo ped.</span>
+                </div>
+              </div>
+              <div style="padding:5px 4px;border-radius:6px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:1.5px">
+                  <i class="fa-solid fa-users" style="font-size:9px;color:#475569"></i>
+                  <span style="font-size:5px;color:#64748b;line-height:1">Clientes</span>
+                </div>
+              </div>
+              <div style="padding:5px 4px;border-radius:6px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:1.5px">
+                  <i class="fa-solid fa-box" style="font-size:9px;color:#475569"></i>
+                  <span style="font-size:5px;color:#64748b;line-height:1">Productos</span>
+                </div>
+              </div>
+              <div style="padding:5px 4px;border-radius:6px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:1.5px">
+                  <i class="fa-solid fa-layer-group" style="font-size:9px;color:#475569"></i>
+                  <span style="font-size:5px;color:#64748b;line-height:1">Insumos</span>
+                </div>
+              </div>
+              <div style="padding:5px 4px;border-radius:6px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:1.5px">
+                  <i class="fa-solid fa-truck" style="font-size:9px;color:#475569"></i>
+                  <span style="font-size:5px;color:#64748b;line-height:1">Proveed.</span>
+                </div>
+              </div>
+              <div style="padding:5px 4px;border-radius:6px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:1.5px">
+                  <i class="fa-solid fa-route" style="font-size:9px;color:#475569"></i>
+                  <span style="font-size:5px;color:#64748b;line-height:1">Logística</span>
+                </div>
+              </div>
+              <div style="padding:5px 4px;border-radius:6px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:1.5px">
+                  <i class="fa-brands fa-whatsapp" style="font-size:9px;color:#475569"></i>
+                  <span style="font-size:5px;color:#64748b;line-height:1">Mens. WA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MAIN CONTENT -->
+          <div style="flex:1;background:#f8fafc;display:flex;flex-direction:column;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#fff;border-bottom:1px solid #e2e8f0;flex-shrink:0">
+              <div style="display:flex;align-items:center;gap:5px">
+                <div style="width:16px;height:16px;background:#f1f5f9;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#64748b"><i class="fa-solid fa-table-columns"></i></div>
+                <span style="font-size:10px;font-weight:800;color:#0F172A;letter-spacing:-.3px">Dashboard</span>
+              </div>
+              <div style="display:flex;gap:4px;align-items:center">
+                <div style="width:17px;height:17px;border-radius:5px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:7px;color:#64748b"><i class="fa-regular fa-eye"></i></div>
+                <div style="width:17px;height:17px;border-radius:5px;background:#fee2e2;display:flex;align-items:center;justify-content:center;font-size:6px;color:#ef4444;position:relative">
+                  <i class="fa-solid fa-bell"></i>
+                  <span style="position:absolute;top:2px;right:2px;width:4px;height:4px;background:#ef4444;border-radius:50%;border:1px solid #fff"></span>
+                </div>
+                <div style="width:17px;height:17px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#059669);display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:700">A</div>
+                <span style="font-size:7px;padding:2px 6px;background:#dcfce7;color:#065f46;border-radius:5px;font-weight:700;border:1px solid #bbf7d0">Guardado</span>
+              </div>
+            </div>
+
+            <div style="flex:1;padding:7px;overflow:hidden;display:flex;flex-direction:column;gap:6px">
+              <div>
+                <div style="display:flex;gap:4px;margin-bottom:5px;align-items:center">
+                  <span style="font-size:7px;padding:2px 6px;border:1px solid #e2e8f0;border-radius:5px;color:#475569;font-weight:600;background:#fff;display:inline-flex;align-items:center;gap:2px"><i class="fa-regular fa-calendar" style="font-size:5px"></i> Este mes</span>
+                  <span style="font-size:7px;padding:2px 6px;border:1px solid #e2e8f0;border-radius:5px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:2px"><i class="fa-solid fa-download" style="font-size:5px"></i> Exportar</span>
+                  <span style="font-size:7px;padding:2px 8px;background:#10b981;border-radius:5px;color:#fff;font-weight:700;margin-left:auto">+ Nuevo presupuesto</span>
+                </div>
+                <div style="display:flex;gap:1px;background:#e2e8f0;border-radius:6px;padding:2px">
+                  <span style="font-size:7px;padding:2px 7px;background:#fff;border-radius:4px;color:#92400e;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.07)">Resumen</span>
+                  <span style="font-size:7px;padding:2px 6px;color:#64748b">Presupuestos</span>
+                  <span style="font-size:7px;padding:2px 6px;color:#64748b">Análisis</span>
+                  <span style="font-size:7px;padding:2px 5px;color:#64748b">Seguimiento <span style="background:#e2e8f0;border-radius:99px;padding:0 3px;font-size:6px">2</span></span>
+                </div>
+              </div>
+
+              <div>
+                <div style="display:flex;align-items:center;gap:4px;margin-bottom:4px">
+                  <span style="font-size:8px;color:#f59e0b">⚡</span>
+                  <span style="font-size:7px;font-weight:800;color:#0F172A;text-transform:uppercase;letter-spacing:.5px">HOY IMPORTA</span>
+                  <span style="font-size:6px;color:#64748b;background:#f1f5f9;padding:1px 4px;border-radius:99px;font-weight:600">6</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+                  <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:7px;padding:6px">
+                    <div style="display:flex;align-items:center;gap:3px;margin-bottom:3px">
+                      <div style="width:13px;height:13px;border-radius:4px;background:#ef4444;display:flex;align-items:center;justify-content:center;font-size:5px;color:#fff;flex-shrink:0"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                      <span style="font-size:6px;font-weight:800;color:#dc2626;text-transform:uppercase">COBROS VENCIDOS</span>
+                    </div>
+                    <div style="font-size:13px;font-weight:900;color:#0F172A;line-height:1">4 <span style="font-size:7px;font-weight:500;color:#64748b">pedidos</span></div>
+                    <div style="font-size:6px;color:#dc2626;font-weight:600;margin-top:2px">$917.305 sin cobrar · entrega ya pasó</div>
+                  </div>
+                  <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:6px">
+                    <div style="display:flex;align-items:center;gap:3px;margin-bottom:3px">
+                      <div style="width:13px;height:13px;border-radius:4px;background:#92400e;display:flex;align-items:center;justify-content:center;font-size:5px;color:#fff;flex-shrink:0"><i class="fa-solid fa-comment-dots"></i></div>
+                      <span style="font-size:6px;font-weight:800;color:#92400e;text-transform:uppercase">A CONFIRMAR</span>
+                    </div>
+                    <div style="font-size:13px;font-weight:900;color:#0F172A;line-height:1">2 <span style="font-size:7px;font-weight:500;color:#64748b">seguimientos</span></div>
+                    <div style="font-size:6px;color:#78716c;margin-top:2px">Enviados hace 3+ días — recordales</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px">
+                <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:5px">
+                  <div style="font-size:5.5px;color:#94a3b8;text-transform:uppercase;margin-bottom:2px">Ventas Brutas</div>
+                  <div style="font-size:9px;font-weight:900;color:#0F172A;letter-spacing:-.3px">$2.46M</div>
+                  <div style="font-size:5.5px;color:#10b981;font-weight:700">↑92%</div>
+                </div>
+                <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:5px">
+                  <div style="font-size:5.5px;color:#94a3b8;text-transform:uppercase;margin-bottom:2px">Ingresos Caja</div>
+                  <div style="font-size:9px;font-weight:900;color:#0F172A;letter-spacing:-.3px">$1.71M</div>
+                  <div style="font-size:5.5px;color:#10b981;font-weight:700">↑329%</div>
+                </div>
+                <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:5px">
+                  <div style="font-size:5.5px;color:#94a3b8;text-transform:uppercase;margin-bottom:2px">Ticket Prom.</div>
+                  <div style="font-size:9px;font-weight:900;color:#0F172A;letter-spacing:-.3px">$246k</div>
+                </div>
+                <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:5px">
+                  <div style="font-size:5.5px;color:#94a3b8;text-transform:uppercase;margin-bottom:2px">Presupuestos</div>
+                  <div style="font-size:9px;font-weight:900;color:#0F172A;letter-spacing:-.3px">10</div>
+                </div>
+              </div>
+
+              <div style="background:#fff;border:1px solid #e2e8f0;border-radius:7px;overflow:hidden">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border-bottom:1px solid #f1f5f9">
+                  <div style="display:flex;align-items:center;gap:4px">
+                    <i class="fa-solid fa-box-open" style="font-size:7px;color:#7c3aed"></i>
+                    <span style="font-size:7.5px;font-weight:700;color:#0F172A">Catálogo de Productos</span>
+                  </div>
+                  <span style="font-size:6.5px;padding:2px 6px;background:#10b981;border-radius:4px;color:#fff;font-weight:700">+ Nuevo</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 50px 48px 44px 26px 26px;gap:2px;padding:3px 8px;background:#f8fafc;border-bottom:1px solid #f1f5f9">
+                  <span style="font-size:5px;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.4px">Producto</span>
+                  <span style="font-size:5px;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.4px">Categoría</span>
+                  <span style="font-size:5px;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.4px">Proveedor</span>
+                  <span style="font-size:5px;color:#94a3b8;text-transform:uppercase;font-weight:700;text-align:right;letter-spacing:.4px">P. Público</span>
+                  <span style="font-size:5px;color:#94a3b8;text-transform:uppercase;font-weight:700;text-align:center;letter-spacing:.4px">%</span>
+                  <span style="font-size:5px;color:#94a3b8;text-transform:uppercase;font-weight:700;text-align:right;letter-spacing:.4px">Stock</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 50px 48px 44px 26px 26px;gap:2px;padding:4px 8px;border-bottom:1px solid #f9fafb;align-items:center">
+                  <div><div style="font-size:6.5px;font-weight:800;color:#0F172A;line-height:1.2">Branding completo</div><div style="font-size:5px;color:#94a3b8">SKU: SRV-BRD-01</div></div>
+                  <span style="font-size:5.5px;padding:1px 4px;background:#ede9fe;color:#7c3aed;border-radius:10px;font-weight:700;white-space:nowrap">Servicio</span>
+                  <span style="font-size:5.5px;color:#94a3b8">—</span>
+                  <span style="font-size:6.5px;font-weight:700;color:#059669;text-align:right">$95.000</span>
+                  <span style="font-size:6px;font-weight:800;color:#16a34a;background:#dcfce7;border-radius:4px;padding:0 3px;text-align:center">66%</span>
+                  <span style="font-size:6.5px;font-weight:700;color:#94a3b8;text-align:right">—</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 50px 48px 44px 26px 26px;gap:2px;padding:4px 8px;border-bottom:1px solid #f9fafb;align-items:center">
+                  <div><div style="font-size:6.5px;font-weight:800;color:#0F172A;line-height:1.2">Diseño web (5 sec)</div><div style="font-size:5px;color:#94a3b8">SKU: SRV-WEB-05</div></div>
+                  <span style="font-size:5.5px;padding:1px 4px;background:#ede9fe;color:#7c3aed;border-radius:10px;font-weight:700;white-space:nowrap">Servicio</span>
+                  <span style="font-size:5.5px;color:#94a3b8">—</span>
+                  <span style="font-size:6.5px;font-weight:700;color:#059669;text-align:right">$145.000</span>
+                  <span style="font-size:6px;font-weight:800;color:#16a34a;background:#dcfce7;border-radius:4px;padding:0 3px;text-align:center">67%</span>
+                  <span style="font-size:6.5px;font-weight:700;color:#94a3b8;text-align:right">—</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 50px 48px 44px 26px 26px;gap:2px;padding:4px 8px;align-items:center;border-left:2px solid #f59e0b">
+                  <div><div style="font-size:6.5px;font-weight:800;color:#0F172A;line-height:1.2">Catálogo impreso</div><div style="font-size:5px;color:#94a3b8">SKU: FIS-CAT-A4</div></div>
+                  <span style="font-size:5.5px;padding:1px 4px;background:#dcfce7;color:#15803d;border-radius:10px;font-weight:700;white-space:nowrap">Físico</span>
+                  <span style="font-size:5.5px;color:#64748b">Imp. Norte</span>
+                  <span style="font-size:6.5px;font-weight:700;color:#059669;text-align:right">$12.500</span>
+                  <span style="font-size:6px;font-weight:800;color:#f59e0b;background:#fef9c3;border-radius:4px;padding:0 3px;text-align:center">58%</span>
+                  <span style="font-size:6.5px;font-weight:700;color:#f59e0b;text-align:right">8 ⚠</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mock-badge">
+        <div class="bstat"><div class="bv">$3.8M</div><div class="bl">facturado</div></div>
+        <div class="bdiv"></div>
+        <div class="bstat"><div class="bv">8</div><div class="bl">clientes activos</div></div>
+        <div class="bdiv"></div>
+        <div class="bstat"><div class="bv">2</div><div class="bl">stock bajo</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMPATÍA -->
+<section id="sec-empathy" style="padding:80px 24px;background:#fff">
+  <div style="max-width:860px;margin:0 auto;text-align:center">
+    <h2 class="font-extrabold tracking-tight text-balance font-sans" style="color:#0F172A;margin:0 0 14px;line-height:1.08;font-size:clamp(30px,4.5vw,48px);letter-spacing:-1px">
+      Un respiro para tu día a día
+    </h2>
+    <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-balance" style="color:#7c3aed;margin:0 0 24px;line-height:1.3">
+      Tu negocio ordenado, tu cabeza libre
+    </h3>
+    <p class="text-base sm:text-lg leading-relaxed text-balance font-normal" style="color:#475569;max-width:760px;margin:0 auto 18px;line-height:1.8">
+      ANMA no es solo un sistema de gestión; es tu aliada para <strong style="color:#0F172A">automatizar las tareas repetitivas</strong> que te quitan energía.
+    </p>
+    <p class="text-base sm:text-lg leading-relaxed text-balance font-normal" style="color:#475569;max-width:760px;margin:0 auto;line-height:1.8">
+      Organizá tus pedidos en segundos, mantené tu <strong style="color:#0F172A">stock siempre al día</strong> y construí una <strong style="color:#0F172A">relación más cercana con tus clientes</strong> enviándoles actualizaciones claras sobre sus compras. Menos tiempo frente a la pantalla, más tiempo para hacer crecer tu marca.
+    </p>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section id="como-funciona" style="padding:72px 0 80px;background:#f8fafc;border-top:1px solid #e5e7eb">
+  <div class="wrap">
+
+    <!-- Encabezado -->
+    <div class="text-center" style="max-width:720px;margin:0 auto 64px">
+      <div class="eyebrow-dark" style="margin-bottom:16px">Cómo funciona</div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 text-balance" style="margin:0 0 16px;line-height:1.1;color:#0F172A">
+        Tres pasos para pasar del caos operativo<br class="hidden sm:block"> a las decisiones inteligentes
+      </h2>
+      <p class="text-lg text-slate-600 text-balance" style="margin:0 auto;max-width:580px;line-height:1.65;color:#475569">
+        ANMA se integra de forma natural con el flujo de tu día a día, centralizando los datos donde realmente impactan en tu caja.
+      </p>
+    </div>
+
+    <!-- Pasos -->
+    <div class="pasos-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px;text-align:center;max-width:1020px;margin:0 auto;padding:0 4px">
+
+      <!-- Paso 01 -->
+      <div style="position:relative;padding:0 8px">
+        <span class="paso-num text-indigo-100 font-black block select-none" style="font-size:80px;line-height:1;margin-bottom:4px;color:#c4b5fd;letter-spacing:-4px">01</span>
+        <div style="width:48px;height:3px;background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:99px;margin:0 auto 20px"></div>
+        <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900" style="margin:0 0 12px;color:#0F172A">
+          Consolidás tu catálogo y clientes
+        </h3>
+        <p class="text-slate-600 text-sm sm:text-base leading-relaxed" style="max-width:320px;margin:0 auto;color:#475569">
+          Organizás tus productos, variantes (talles, colores o modelos) y base de contactos en minutos. Una interfaz limpia diseñada para que la carga inicial sea rápida, intuitiva y sin fricciones técnicas.
+        </p>
+      </div>
+
+      <!-- Paso 02 -->
+      <div style="position:relative;padding:0 8px">
+        <span class="paso-num text-indigo-100 font-black block select-none" style="font-size:80px;line-height:1;margin-bottom:4px;color:#c4b5fd;letter-spacing:-4px">02</span>
+        <div style="width:48px;height:3px;background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:99px;margin:0 auto 20px"></div>
+        <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900" style="margin:0 0 12px;color:#0F172A">
+          Centralizás el flujo de pedidos
+        </h3>
+        <p class="text-slate-600 text-sm sm:text-base leading-relaxed" style="max-width:320px;margin:0 auto;color:#475569">
+          Emitís presupuestos profesionales y registrás tus ventas mayoristas o minoristas. El sistema se encarga de dar de baja el stock y ordenar los estados de cobro y señas de forma totalmente automática.
+        </p>
+      </div>
+
+      <!-- Paso 03 -->
+      <div style="position:relative;padding:0 8px">
+        <span class="paso-num text-indigo-100 font-black block select-none" style="font-size:80px;line-height:1;margin-bottom:4px;color:#c4b5fd;letter-spacing:-4px">03</span>
+        <div style="width:48px;height:3px;background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:99px;margin:0 auto 20px"></div>
+        <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900" style="margin:0 0 12px;color:#0F172A">
+          Analizás rendimiento y tomás aire
+        </h3>
+        <p class="text-slate-600 text-sm sm:text-base leading-relaxed" style="max-width:320px;margin:0 auto;color:#475569">
+          Accedés a la radiografía real de tu negocio. Visualizás tus ganancias limpias, detectás cobros vencidos al instante y tomás decisiones comerciales con datos duros, recuperando el control de tu tiempo.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PILARES -->
+<section style="padding:48px 0;background:#fff">
+  <div class="wrap">
+    <div class="pillar-grid">
+      <div class="pillar-card">
+        <div class="pillar-card-hd"><div class="pillar-icon"><i class="fa-solid fa-gauge-high"></i></div><h4>Todo a la vista</h4></div>
+        <p>Un tablero principal para entender la salud del negocio al toque. Entrás, mirás y ya sabés dónde estás parado.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-card-hd"><div class="pillar-icon"><i class="fa-solid fa-feather"></i></div><h4>Gestión liviana</h4></div>
+        <p>Organizá tus entregas y tareas diarias sin fricción. Diseñado para ser intuitivo: si sabés usar un celular, sabés usar ANMA Hub.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-card-hd"><div class="pillar-icon"><i class="fa-solid fa-bolt"></i></div><h4>En tiempo real</h4></div>
+        <p>Tu información segura y al día, sin archivos duplicados. Tu negocio viaja con vos, ordenado y bajo control.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO REAL -->
+<section id="demo" style="padding:64px 0 72px;background:#0F172A">
+  <div class="wrap">
+    <div class="text-center max-w-2xl mx-auto px-4" style="margin-bottom:28px">
+      <span class="inline-flex items-center gap-2 mb-4" style="padding:5px 14px;background:rgba(124,58,237,.18);color:#a78bfa;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;border:1px solid rgba(124,58,237,.28)">Vista real del sistema</span>
+      <h2 class="text-3xl md:text-4xl font-black tracking-tight leading-tight mb-3" style="color:#fff">Así se ve ANMA Hub por dentro</h2>
+      <p class="text-base md:text-lg font-medium" style="color:rgba(255,255,255,.6);line-height:1.65">Pantallas reales del sistema — navegá entre secciones</p>
+    </div>
+
+    <!-- Segmented control: vista actual del demo -->
+    <div class="demo-tabs" role="tablist" aria-label="Vista del demo">
+      <div class="demo-tab active" data-tab="dashboard" role="tab"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
+      <div class="demo-tab" data-tab="presupuestos" role="tab"><i class="fa-solid fa-file-invoice-dollar"></i> Presupuestos</div>
+      <div class="demo-tab" data-tab="clientes" role="tab"><i class="fa-solid fa-users"></i> Clientes</div>
+      <div class="demo-tab" data-tab="catalogo" role="tab"><i class="fa-solid fa-cube"></i> Productos</div>
+    </div>
+
+    <div class="app-shell-wrap">
+
+      <!-- app layout: sidebar + main -->
+      <div class="app-layout">
+
+        <!-- ── SIDEBAR (espejo real de la app) ── -->
+        <nav class="app-nav">
+          <div class="app-nav-logo">
+            <img class="app-nav-logo-mark" src="/logoanma.jpg" alt="">
+            <span>ANMA Hub</span>
+          </div>
+          <div class="app-nav-section">Ventas</div>
+          <div class="app-nav-item nav-active" id="nav-dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
+          <div class="app-nav-item" id="nav-presupuesto"><i class="fa-solid fa-file-invoice-dollar"></i> Nuevo pedido</div>
+          <div class="app-nav-item" id="nav-clientes"><i class="fa-solid fa-users"></i> Clientes</div>
+          <div class="app-nav-section">Inventario</div>
+          <div class="app-nav-item" id="nav-catalogo"><i class="fa-solid fa-cube"></i> Productos</div>
+          <div class="app-nav-item" id="nav-insumos"><i class="fa-solid fa-boxes-stacked"></i> Insumos</div>
+          <div class="app-nav-item" id="nav-proveedores"><i class="fa-solid fa-industry"></i> Proveedores</div>
+          <div class="app-nav-section">Operaciones</div>
+          <div class="app-nav-item" id="nav-logistica"><i class="fa-solid fa-truck-fast"></i> Logística</div>
+          <div class="app-nav-item" id="nav-mensajes"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
+          <div class="app-nav-section">Sistema</div>
+          <div class="app-nav-item" id="nav-config"><i class="fa-solid fa-gear"></i> Configuración</div>
+        </nav>
+
+        <!-- ── MAIN: vistas con tabs ── -->
+        <div class="app-main">
+
+          <!-- Panel: Dashboard (espejo de Historial.jsx) -->
+          <div class="app-view av-active" id="panel-dashboard">
+
+          <!-- topbar real -->
+          <div class="app-topbar">
+            <div class="app-topbar-left">
+              <b>Dashboard</b>
+              &nbsp;·&nbsp;
+              <span style="color:#64748b">Junio · 2026</span>
+            </div>
+            <div class="app-topbar-actions">
+              <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-regular fa-calendar" style="font-size:10px"></i> Este mes <i class="fa-solid fa-chevron-down" style="font-size:8px;color:#94a3b8"></i></span>
+              <span class="app-btn app-btn-primary" style="font-size:11px;padding:6px 13px"><i class="fa-solid fa-plus"></i> Nuevo pedido</span>
+            </div>
+          </div>
+
+          <!-- sub-tabs reales: Resumen / Presupuestos / Análisis / Seguimiento -->
+          <div style="display:flex;gap:2px;padding:8px 20px 0;background:#fff;border-bottom:1px solid #e2e8f0;flex-shrink:0">
+            <div style="font-size:12px;font-weight:700;color:#7c3aed;padding:7px 14px;border-bottom:2px solid #7c3aed;cursor:default;margin-bottom:-1px">Resumen</div>
+            <div style="font-size:12px;color:#94a3b8;padding:7px 14px;cursor:default;font-weight:500">Presupuestos</div>
+            <div style="font-size:12px;color:#94a3b8;padding:7px 14px;cursor:default;font-weight:500">Análisis</div>
+            <div style="font-size:12px;color:#94a3b8;padding:7px 14px;cursor:default;display:flex;align-items:center;gap:6px;font-weight:500">Seguimiento <span style="background:#fee2e2;color:#dc2626;border-radius:99px;padding:1px 7px;font-size:10px;font-weight:800">1</span></div>
+          </div>
+
+          <!-- contenido dashboard -->
+          <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column">
+
+            <!-- HOY IMPORTA (espejo exacto de Historial.jsx líneas 1070-1141) -->
+            <div style="padding:14px 20px 0;flex-shrink:0">
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+                <i class="fa-solid fa-bolt" style="color:#f59e0b;font-size:12px"></i>
+                <h3 style="margin:0;font-size:11px;font-weight:800;color:#0F172A;text-transform:uppercase;letter-spacing:.06em">Hoy importa</h3>
+                <span style="font-size:10px;background:#f1f5f9;color:#475569;border-radius:10px;padding:1px 8px;font-weight:700">3</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
+                <!-- Cobros vencidos -->
+                <div style="background:linear-gradient(135deg,rgba(220,38,38,.06),rgba(220,38,38,.02));border:1.5px solid rgba(220,38,38,.25);border-radius:14px;padding:12px 14px">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                    <div style="width:30px;height:30px;border-radius:9px;background:#DC2626;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:9.5px;font-weight:700;color:#DC2626;text-transform:uppercase;letter-spacing:.06em">Cobros vencidos</div>
+                      <div style="font-size:17px;font-weight:800;color:#0F172A;line-height:1.1">1 <span style="font-size:10.5px;color:#64748b;font-weight:500">pedido</span></div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color:#DC2626;font-size:11px"></i>
+                  </div>
+                  <div style="font-size:11px;color:#475569;line-height:1.4"><b style="color:#DC2626;font-variant-numeric:tabular-nums">$63.420</b> sin cobrar · entrega ya pasó</div>
+                </div>
+                <!-- Entregas hoy -->
+                <div style="background:linear-gradient(135deg,rgba(217,119,6,.07),rgba(217,119,6,.02));border:1.5px solid rgba(217,119,6,.25);border-radius:14px;padding:12px 14px">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                    <div style="width:30px;height:30px;border-radius:9px;background:#D97706;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px"><i class="fa-solid fa-truck-fast"></i></div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:9.5px;font-weight:700;color:#D97706;text-transform:uppercase;letter-spacing:.06em">Entregas hoy</div>
+                      <div style="font-size:17px;font-weight:800;color:#0F172A;line-height:1.1">1 <span style="font-size:10.5px;color:#64748b;font-weight:500">pedido</span></div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color:#D97706;font-size:11px"></i>
+                  </div>
+                  <div style="font-size:11px;color:#475569;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Distribuidora del Sur</div>
+                </div>
+                <!-- A confirmar -->
+                <div style="background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(124,58,237,.02));border:1.5px solid #7c3aed;border-radius:14px;padding:12px 14px">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                    <div style="width:30px;height:30px;border-radius:9px;background:#7c3aed;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px"><i class="fa-solid fa-comments"></i></div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:9.5px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.06em">A confirmar</div>
+                      <div style="font-size:17px;font-weight:800;color:#0F172A;line-height:1.1">1 <span style="font-size:10.5px;color:#64748b;font-weight:500">seguimiento</span></div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color:#7c3aed;font-size:11px"></i>
+                  </div>
+                  <div style="font-size:11px;color:#475569;line-height:1.4">Enviado hace 3+ días — recordale</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- KPIs bento (Ventas Brutas, Ingresos Caja, Ticket Promedio, Presupuestos) -->
+            <div class="kpi-strip">
+              <div class="kpi-card">
+                <div class="kpi-label">Ventas Brutas</div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
+                  <div class="kpi-num" style="font-size:22px">$554.850</div>
+                  <span style="font-size:10px;font-weight:700;color:#16A34A;background:rgba(22,163,74,.10);padding:2px 6px;border-radius:5px">↑18%</span>
+                </div>
+                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="18" style="display:block;margin-top:5px"><polyline points="0,18 14,16 28,14 42,12 56,10 70,7 84,5 100,3" fill="none" stroke="#7c3aed" stroke-width="1.4" opacity=".45"/></svg>
+              </div>
+              <div class="kpi-card" style="background:#f0fdf4;border-left:3px solid #16A34A">
+                <div class="kpi-label">Ingresos Caja</div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
+                  <div class="kpi-num knum-ok" style="font-size:22px">$274.500</div>
+                  <span style="font-size:10px;font-weight:700;color:#16A34A;background:rgba(22,163,74,.10);padding:2px 6px;border-radius:5px">↑24%</span>
+                </div>
+                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="18" style="display:block;margin-top:5px"><polyline points="0,19 14,17 28,18 42,13 56,11 70,10 84,7 100,5" fill="none" stroke="#16A34A" stroke-width="1.4" opacity=".45"/></svg>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">Ticket Promedio</div>
+                <div class="kpi-num" style="font-size:22px">$92.475</div>
+                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="18" style="display:block;margin-top:5px"><polyline points="0,12 14,14 28,9 42,15 56,8 70,11 84,9 100,7" fill="none" stroke="#7c3aed" stroke-width="1.4" opacity=".45"/></svg>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">Presupuestos</div>
+                <div class="kpi-num" style="font-size:22px">6</div>
+                <div style="font-size:10px;color:#94a3b8;margin-top:3px">Conv. 67% · 4 cerrados</div>
+              </div>
+            </div>
+
+            <!-- Tabla Últimos presupuestos (columnas reales del Resumen) -->
+            <div class="app-tbl-wrap" style="padding-top:0">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:12.5px;font-weight:700;color:#0F172A">Últimos presupuestos</span>
+                <span style="font-size:11px;color:#7c3aed;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:default">Ver todos <i class="fa-solid fa-arrow-right" style="font-size:9px"></i></span>
+              </div>
+              <table class="app-tbl">
+                <thead><tr>
+                  <th style="width:68px">N°</th><th>Cliente</th><th style="text-align:right;width:100px">Total</th><th style="width:130px">Estado</th><th style="width:38px"></th>
+                </tr></thead>
+                <tbody>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0024</b></td>
+                    <td><b>Distribuidora del Sur</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$187.450</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6;display:inline-block"></span>Enviado</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0023</b></td>
+                    <td><b>Café Andino</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$94.200</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#16A34A;display:inline-block"></span>Confirmado</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0022</b></td>
+                    <td><b>Estudio Mendoza</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$145.000</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#15803D;display:inline-block"></span>Entregado</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0021</b></td>
+                    <td><b>Marta Lugones</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$32.800</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#D97706;display:inline-block"></span>En producción</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0020</b></td>
+                    <td><b>Bazar San Telmo</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$76.500</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6;display:inline-block"></span>Enviado</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0019</b></td>
+                    <td><b>Diego Romero</b></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$18.900</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#16A34A;display:inline-block"></span>Confirmado</span></td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div><!-- /contenido dashboard -->
+
+          </div><!-- /panel-dashboard -->
+
+          <!-- Panel: Presupuestos (espejo de Historial.jsx → tab "Presupuestos") -->
+          <div class="app-view" id="panel-presupuestos">
+            <div class="app-topbar">
+              <div class="app-topbar-left"><b>Presupuestos</b>&nbsp;·&nbsp;<span style="color:#64748b">6 en el período</span></div>
+              <div class="app-topbar-actions">
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-solid fa-magnifying-glass" style="font-size:9px"></i> Buscar</span>
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-solid fa-filter" style="font-size:9px"></i> Todos los estados <i class="fa-solid fa-chevron-down" style="font-size:8px;color:#94a3b8"></i></span>
+                <span class="app-btn app-btn-primary" style="font-size:11px;padding:6px 13px"><i class="fa-solid fa-plus"></i> Nuevo pedido</span>
+              </div>
+            </div>
+            <!-- chips de filtro rápido -->
+            <div style="display:flex;gap:6px;padding:8px 20px;background:#fff;border-bottom:1px solid #e2e8f0;flex-wrap:wrap">
+              <span style="font-size:10.5px;padding:4px 10px;background:#7c3aed;color:#fff;border-radius:99px;font-weight:700">Todos · 6</span>
+              <span style="font-size:10.5px;padding:4px 10px;background:#f1f5f9;color:#475569;border-radius:99px;font-weight:600">Sin cobrar · 1</span>
+              <span style="font-size:10.5px;padding:4px 10px;background:#f1f5f9;color:#475569;border-radius:99px;font-weight:600">Atrasados · 1</span>
+              <span style="font-size:10.5px;padding:4px 10px;background:#f1f5f9;color:#475569;border-radius:99px;font-weight:600">Alta ganancia</span>
+            </div>
+            <div style="flex:1;overflow-y:auto;background:#f8fafc;padding:12px 20px">
+              <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden">
+              <table class="app-tbl" style="border:none;border-radius:0">
+                <thead><tr>
+                  <th style="width:74px">N°</th><th>Cliente</th><th style="text-align:right;width:108px">Total</th><th style="width:130px">Pago</th><th style="width:140px">Estado</th><th style="width:80px">Fecha</th><th style="width:38px"></th>
+                </tr></thead>
+                <tbody>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0024</b></td>
+                    <td><b>Distribuidora del Sur</b><small>Marcos Sánchez</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$187.450</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#D97706"><span style="width:7px;height:7px;border-radius:50%;background:#D97706"></span>Seña abonada</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6"></span>Enviado</span></td>
+                    <td style="font-size:12px;color:#16A34A;font-weight:700">Hoy</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0023</b></td>
+                    <td><b>Café Andino</b><small>Lucía Paredes</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$94.200</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#16A34A"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A"></span>Pagado</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#16A34A"></span>Confirmado</span></td>
+                    <td style="font-size:12px;color:#334155">22/05</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0022</b></td>
+                    <td><b>Estudio Mendoza</b><small>Equipo Estudio</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$145.000</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#16A34A"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A"></span>Pagado</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#15803D"></span>Entregado</span></td>
+                    <td style="font-size:12px;color:#334155">18/05</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0021</b></td>
+                    <td><b>Marta Lugones</b><small>—</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$32.800</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#D97706"><span style="width:7px;height:7px;border-radius:50%;background:#D97706"></span>Seña abonada</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#D97706"></span>En producción</span></td>
+                    <td style="font-size:12px;color:#334155">15/05</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr style="background:#fef2f2">
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0020</b></td>
+                    <td><b>Bazar San Telmo</b><small>Romina Gómez</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$76.500</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#DC2626"><span style="width:7px;height:7px;border-radius:50%;background:#DC2626"></span>Pago pendiente</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#3B82F6"></span>Enviado</span></td>
+                    <td style="font-size:12px;color:#DC2626;font-weight:700">11/05</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                  <tr>
+                    <td style="font-variant-numeric:tabular-nums"><b>P-0019</b></td>
+                    <td><b>Diego Romero</b><small>—</small></td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$18.900</td>
+                    <td><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#16A34A"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A"></span>Pagado</span></td>
+                    <td><span style="display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:12px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#16A34A"></span>Confirmado</span></td>
+                    <td style="font-size:12px;color:#334155">04/05</td>
+                    <td style="text-align:center"><i class="fa-solid fa-ellipsis-vertical" style="color:#94a3b8;font-size:11px"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div><!-- /panel-presupuestos -->
+
+          <!-- Panel: Clientes (espejo de Clientes.jsx, tabla zt-tbl) -->
+          <div class="app-view" id="panel-clientes">
+            <div class="app-topbar">
+              <div class="app-topbar-left"><b>Clientes</b>&nbsp;·&nbsp;<span style="color:#64748b">5 activos</span></div>
+              <div class="app-topbar-actions">
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-solid fa-magnifying-glass" style="font-size:9px"></i> Buscar</span>
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-solid fa-file-import" style="font-size:9px"></i> Importar</span>
+                <span class="app-btn app-btn-primary" style="font-size:11px;padding:6px 13px"><i class="fa-solid fa-plus"></i> Nuevo cliente</span>
+              </div>
+            </div>
+            <div style="flex:1;overflow-y:auto;background:#f8fafc;padding:12px 20px">
+              <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden">
+              <table class="app-tbl" style="border:none;border-radius:0">
+                <thead><tr>
+                  <th>Empresa / Contacto</th>
+                  <th style="text-align:center;width:54px" title="WhatsApp"><i class="fa-brands fa-whatsapp" style="color:#6B7280;font-size:13px"></i></th>
+                  <th style="text-align:center;width:54px" title="Email"><i class="fa-solid fa-envelope" style="color:#6B7280;font-size:12px"></i></th>
+                  <th style="width:130px">Rubro</th>
+                  <th style="width:130px">Última actividad</th>
+                  <th style="text-align:right;width:108px">Acciones</th>
+                </tr></thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span title="Activo — hace 0d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                        <div><div style="font-weight:600;font-size:13px;color:#0F172A;line-height:1.3">Distribuidora del Sur</div><div style="font-size:11px;color:#6B7280;margin-top:1px">Marcos Sánchez</div></div>
+                      </div>
+                    </td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+                    <td style="font-size:12px;font-weight:500;color:#475569">Mayorista</td>
+                    <td style="font-size:12px;color:#6B7280;font-variant-numeric:tabular-nums">06/06/2026</td>
+                    <td style="text-align:right">
+                      <div style="display:inline-flex;gap:4px;justify-content:flex-end">
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-pen"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FECACA;background:#FEF2F2;color:#DC2626;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-trash"></i></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span title="Activo — hace 14d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                        <div><div style="font-weight:600;font-size:13px;color:#0F172A;line-height:1.3">Café Andino</div><div style="font-size:11px;color:#6B7280;margin-top:1px">Lucía Paredes</div></div>
+                      </div>
+                    </td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+                    <td style="font-size:12px;font-weight:500;color:#475569">Gastronomía</td>
+                    <td style="font-size:12px;color:#6B7280;font-variant-numeric:tabular-nums">22/05/2026</td>
+                    <td style="text-align:right">
+                      <div style="display:inline-flex;gap:4px;justify-content:flex-end">
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-pen"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FECACA;background:#FEF2F2;color:#DC2626;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-trash"></i></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span title="Activo — hace 18d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                        <div><div style="font-weight:600;font-size:13px;color:#0F172A;line-height:1.3">Estudio Mendoza</div><div style="font-size:11px;color:#6B7280;margin-top:1px">Equipo Estudio</div></div>
+                      </div>
+                    </td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+                    <td style="text-align:center"><span style="color:#94a3b8;font-size:11px">—</span></td>
+                    <td style="font-size:12px;font-weight:500;color:#475569">Servicios</td>
+                    <td style="font-size:12px;color:#6B7280;font-variant-numeric:tabular-nums">18/05/2026</td>
+                    <td style="text-align:right">
+                      <div style="display:inline-flex;gap:4px;justify-content:flex-end">
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-pen"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FECACA;background:#FEF2F2;color:#DC2626;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-trash"></i></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span title="Tibio — hace 26d" style="width:7px;height:7px;border-radius:50%;background:#D97706;flex-shrink:0;display:inline-block"></span>
+                        <div><div style="font-weight:600;font-size:13px;color:#0F172A;line-height:1.3">Bazar San Telmo</div><div style="font-size:11px;color:#6B7280;margin-top:1px">Romina Gómez</div></div>
+                      </div>
+                    </td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#EFF6FF;color:#2563EB;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-envelope"></i></span></td>
+                    <td style="font-size:12px;font-weight:500;color:#475569">Comercio</td>
+                    <td style="font-size:12px;color:#D97706;font-weight:700;font-variant-numeric:tabular-nums">11/05/2026</td>
+                    <td style="text-align:right">
+                      <div style="display:inline-flex;gap:4px;justify-content:flex-end">
+                        <span title="Recontactar — sin actividad >30d" style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FEF3C7;background:#FEF9C3;color:#EAB308;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-bolt"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-pen"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FECACA;background:#FEF2F2;color:#DC2626;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-trash"></i></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span title="Activo — hace 21d" style="width:7px;height:7px;border-radius:50%;background:#16A34A;flex-shrink:0;display:inline-block"></span>
+                        <div><div style="font-weight:600;font-size:13px;color:#0F172A;line-height:1.3">Marta Lugones</div></div>
+                      </div>
+                    </td>
+                    <td style="text-align:center"><span style="display:inline-flex;width:24px;height:24px;border-radius:6px;background:#DCFCE7;color:#16A34A;align-items:center;justify-content:center;font-size:11px"><i class="fa-brands fa-whatsapp"></i></span></td>
+                    <td style="text-align:center"><span style="color:#94a3b8;font-size:11px">—</span></td>
+                    <td style="font-size:12px;color:#94a3b8">—</td>
+                    <td style="font-size:12px;color:#6B7280;font-variant-numeric:tabular-nums">15/05/2026</td>
+                    <td style="text-align:right">
+                      <div style="display:inline-flex;gap:4px;justify-content:flex-end">
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-pen"></i></span>
+                        <span style="display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid #FECACA;background:#FEF2F2;color:#DC2626;align-items:center;justify-content:center;font-size:10px"><i class="fa-solid fa-trash"></i></span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div><!-- /panel-clientes -->
+
+          <!-- Panel: Productos (espejo de Catalogo.jsx) -->
+          <div class="app-view" id="panel-catalogo">
+            <div class="app-topbar">
+              <div class="app-topbar-left"><b>Productos</b>&nbsp;·&nbsp;<span style="color:#64748b">5 ítems</span></div>
+              <div class="app-topbar-actions">
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #FECACA;border-radius:7px;color:#DC2626;background:#FEF2F2;display:inline-flex;align-items:center;gap:5px;font-weight:700"><i class="fa-solid fa-triangle-exclamation" style="font-size:9px"></i> Stock crítico · 2</span>
+                <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-solid fa-percent" style="font-size:9px"></i> Precios</span>
+                <span class="app-btn app-btn-primary" style="font-size:11px;padding:6px 13px"><i class="fa-solid fa-plus"></i> Nuevo producto</span>
+              </div>
+            </div>
+            <div style="flex:1;overflow-y:auto;background:#f8fafc;padding:12px 20px">
+              <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden">
+              <table class="app-tbl" style="border:none;border-radius:0">
+                <thead><tr>
+                  <th>Producto</th>
+                  <th style="width:110px">Categoría</th>
+                  <th style="width:110px">Proveedor</th>
+                  <th style="text-align:right;width:80px">Costo</th>
+                  <th style="text-align:right;width:96px">P. Público</th>
+                  <th style="text-align:right;width:96px">P. Mayorista</th>
+                  <th style="text-align:center;width:72px">% Margen</th>
+                  <th style="text-align:right;width:74px">Stock</th>
+                  <th style="text-align:right;width:48px"></th>
+                </tr></thead>
+                <tbody>
+                  <tr>
+                    <td><div style="font-weight:800;color:#0F172A">Pack mayorista x30</div><div style="font-size:10px;color:#94a3b8">SKU: PCK-MAY-30</div></td>
+                    <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#EDE9FE;color:#7c3aed;padding:3px 10px;border-radius:99px;white-space:nowrap">Mayorista</span></td>
+                    <td style="font-size:12px;color:#475569">Imp. del Norte</td>
+                    <td style="text-align:right;font-size:12px;color:#64748b;font-variant-numeric:tabular-nums">$1.860</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$3.140</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$2.620</td>
+                    <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803d">41%</span></td>
+                    <td style="text-align:right;font-weight:700;color:#16A34A;font-variant-numeric:tabular-nums">24</td>
+                    <td style="text-align:center"><i class="fa-solid fa-pen" style="color:#94a3b8;font-size:10px"></i></td>
+                  </tr>
+                  <tr style="border-left:3px solid #f59e0b">
+                    <td><div style="font-weight:800;color:#0F172A">Modelo Lux Premium</div><div style="font-size:10px;color:#94a3b8">SKU: MOD-LUX</div></td>
+                    <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#FFE4E6;color:#BE185D;padding:3px 10px;border-radius:99px;white-space:nowrap">Indumentaria</span></td>
+                    <td style="font-size:12px;color:#475569">Textil Sur</td>
+                    <td style="text-align:right;font-size:12px;color:#64748b;font-variant-numeric:tabular-nums">$4.200</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$9.500</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$7.800</td>
+                    <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803d">45%</span></td>
+                    <td style="text-align:right;font-weight:700;color:#D97706;font-variant-numeric:tabular-nums">8 <i class="fa-solid fa-triangle-exclamation" style="font-size:9px"></i></td>
+                    <td style="text-align:center"><i class="fa-solid fa-pen" style="color:#94a3b8;font-size:10px"></i></td>
+                  </tr>
+                  <tr>
+                    <td><div style="font-weight:800;color:#0F172A">Servicio mensual de gestión</div><div style="font-size:10px;color:#94a3b8">SKU: SRV-MES</div></td>
+                    <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#DBEAFE;color:#1D4ED8;padding:3px 10px;border-radius:99px;white-space:nowrap">Servicio</span></td>
+                    <td style="font-size:12px;color:#94a3b8">—</td>
+                    <td style="text-align:right;font-size:12px;color:#64748b;font-variant-numeric:tabular-nums">$45.000</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$145.000</td>
+                    <td style="text-align:right;font-size:12px;color:#94a3b8">—</td>
+                    <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803d">69%</span></td>
+                    <td style="text-align:right;font-size:12px;color:#94a3b8">—</td>
+                    <td style="text-align:center"><i class="fa-solid fa-pen" style="color:#94a3b8;font-size:10px"></i></td>
+                  </tr>
+                  <tr style="border-left:3px solid #ef4444">
+                    <td><div style="font-weight:800;color:#0F172A">Insumos pack base</div><div style="font-size:10px;color:#94a3b8">SKU: INS-BAS</div></td>
+                    <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#FEF3C7;color:#92400E;padding:3px 10px;border-radius:99px;white-space:nowrap">Insumo</span></td>
+                    <td style="font-size:12px;color:#475569">Plásticos AR</td>
+                    <td style="text-align:right;font-size:12px;color:#64748b;font-variant-numeric:tabular-nums">$890</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$1.580</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$1.350</td>
+                    <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803d">44%</span></td>
+                    <td style="text-align:right;font-weight:800;color:#DC2626;font-variant-numeric:tabular-nums">0</td>
+                    <td style="text-align:center"><i class="fa-solid fa-pen" style="color:#94a3b8;font-size:10px"></i></td>
+                  </tr>
+                  <tr>
+                    <td><div style="font-weight:800;color:#0F172A">Catálogo impreso A5</div><div style="font-size:10px;color:#94a3b8">SKU: CAT-A5</div></td>
+                    <td><span style="display:inline-flex;font-size:10.5px;font-weight:700;background:#E0F2FE;color:#0369A1;padding:3px 10px;border-radius:99px;white-space:nowrap">Marketing</span></td>
+                    <td style="font-size:12px;color:#475569">Imp. del Norte</td>
+                    <td style="text-align:right;font-size:12px;color:#64748b;font-variant-numeric:tabular-nums">$1.100</td>
+                    <td style="text-align:right;font-weight:700;color:#059669;font-variant-numeric:tabular-nums">$2.800</td>
+                    <td style="text-align:right;font-size:12px;color:#94a3b8">—</td>
+                    <td style="text-align:center"><span style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;background:#DCFCE7;color:#15803d">61%</span></td>
+                    <td style="text-align:right;font-weight:700;color:#16A34A;font-variant-numeric:tabular-nums">42</td>
+                    <td style="text-align:center"><i class="fa-solid fa-pen" style="color:#94a3b8;font-size:10px"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div><!-- /panel-catalogo -->
+
+        </div><!-- /app-main -->
+      </div><!-- /app-layout -->
+
+    </div><!-- /app-shell-wrap -->
+
+    <p style="text-align:center;margin:22px 0 0;font-size:12.5px;color:rgba(255,255,255,.4)">
+      <i class="fa-solid fa-circle-info" style="margin-right:6px;color:rgba(255,255,255,.3)"></i>
+      Vista interactiva · Hacé click en cada sección para explorar. Los datos son ilustrativos, la estructura es idéntica al sistema en producción.
+    </p>
+  </div>
+</section>
+
+<!-- CARACTERÍSTICAS -->
+<section id="sec-caracteristicas" style="padding:80px 0;background:#fff;border-top:1px solid #e5e7eb">
+  <div class="wrap">
+
+    <!-- Header centrado -->
+    <div style="max-width:780px;margin:0 auto 52px;text-align:center">
+      <span class="eyebrow-dark" style="margin-bottom:18px">Todo en uno</span>
+      <h2 class="font-extrabold tracking-tight text-balance" style="color:#0F172A;margin:0 0 18px;line-height:1.08;font-size:clamp(26px,3.8vw,40px)">
+        Un solo registro, el control absoluto<br class="hidden sm:block"> de tu stock, clientes y caja
+      </h2>
+      <p class="text-balance" style="color:#64748b;margin:0 0 20px;line-height:1.75;font-size:17px">
+        Centralizar no significa sumar más tareas: significa dejar de hacer trabajo doble. Cada venta registrada ordena el resto automáticamente.
+      </p>
+      <blockquote style="border-left:2px solid #7c3aed;padding-left:16px;color:#64748b;margin:0 auto;font-style:italic;font-size:15px;font-weight:500;line-height:1.65;text-align:left;max-width:520px;display:inline-block">
+        La tranquilidad de saber exactamente dónde estás parado, sin depender de planillas ni de tu memoria.
+      </blockquote>
+    </div>
+
+    <!-- Grid 3 columnas -->
+    <div class="feat-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1060px;margin:0 auto">
+
+      <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="fa-solid fa-file-invoice-dollar" style="color:#7c3aed;font-size:16px"></i>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">Ventas sin fricciones</h4></div>
+        <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Presupuestos y mensajes de WhatsApp listos para enviar desde una sola pantalla.</p>
+      </div>
+
+      <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="fa-solid fa-people-group" style="color:#7c3aed;font-size:16px"></i>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">Comunidad a mano</h4></div>
+        <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Historia de clientes organizada para una atención personalizada que te diferencia.</p>
+      </div>
+
+      <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="fa-solid fa-box-open" style="color:#7c3aed;font-size:16px"></i>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">Inventario en tiempo real</h4></div>
+        <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Stock que se descuenta solo con cada venta. Nunca más conteo manual.</p>
+      </div>
+
+      <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="fa-solid fa-truck-fast" style="color:#7c3aed;font-size:16px"></i>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">Logística inteligente</h4></div>
+        <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Tarifas por zona y alertas automáticas si algo se atrasa en la entrega.</p>
+      </div>
+
+      <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="fa-brands fa-whatsapp" style="color:#7c3aed;font-size:18px"></i>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">WhatsApp pre-armado</h4></div>
+        <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Plantillas para presupuestos, recordatorios y seguimientos. Consistencia sin esfuerzo.</p>
+      </div>
+
+      <div style="background:#fafbfc;border:1px solid #e8eaf0;border-radius:16px;padding:26px 22px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="fa-solid fa-chart-line" style="color:#7c3aed;font-size:16px"></i>
+        </div><h4 style="margin:0;font-size:15px;font-weight:800;color:#0F172A;line-height:1.2">Tus números, sin vueltas</h4></div>
+        <p style="margin:0;font-size:13px;color:#64748b;line-height:1.7">Gráficos claros que te dicen cómo viene el mes. Decisiones con datos, no con intuición.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section style="padding:56px 0;background:#fafbfc">
+  <div class="wrap">
+    <div style="text-align:center;max-width:680px;margin:0 auto 36px">
+      <span class="eyebrow-dark">Lo que dicen nuestros clientes</span>
+      <h2 class="h2">Negocios reales, resultados reales</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:980px;margin:0 auto" class="testi-grid">
+
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:28px 26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,.04)">
+        <div style="display:flex;gap:3px">
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+        </div>
+        <p style="font-size:14.5px;color:#334155;line-height:1.7;margin:0;font-style:italic">"Antes tardaba 40 minutos en armar un presupuesto. Ahora lo hago en 5. El cliente lo recibe por WhatsApp y ya está. No puedo creer que funcionara con Excel todo este tiempo."</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:14px;border-top:1px solid #f1f5f9">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0">M</div>
+          <div>
+            <div style="font-size:13.5px;font-weight:800;color:#0F172A">Marcos D.</div>
+            <div style="font-size:11.5px;color:#64748b">Distribuidora · Buenos Aires</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:28px 26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,.04);border-color:#7c3aed;border-width:1.5px">
+        <div style="display:flex;gap:3px">
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+        </div>
+        <p style="font-size:14.5px;color:#334155;line-height:1.7;margin:0;font-style:italic">"Tenía todo en cuadernos y mensajes de WhatsApp perdidos. Con ANMA arranco el lunes y en 10 minutos sé exactamente qué cobré, qué falta y qué cliente necesito llamar. Me cambió la cabeza."</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:14px;border-top:1px solid #f1f5f9">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#d946ef,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0">V</div>
+          <div>
+            <div style="font-size:13.5px;font-weight:800;color:#0F172A">Valeria R.</div>
+            <div style="font-size:11.5px;color:#64748b">Estudio de diseño · Córdoba</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:28px 26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,.04)">
+        <div style="display:flex;gap:3px">
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+          <i class="fa-solid fa-star" style="color:#f59e0b;font-size:13px"></i>
+        </div>
+        <p style="font-size:14.5px;color:#334155;line-height:1.7;margin:0;font-style:italic">"Lo que más me sorprendió fue el soporte. Tengo una duda, mando un mensaje por WhatsApp y en menos de una hora lo resuelvo. Nunca tuve eso con ningún sistema."</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:14px;border-top:1px solid #f1f5f9">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#059669,#0d9488);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0">G</div>
+          <div>
+            <div style="font-size:13.5px;font-weight:800;color:#0F172A">Gustavo P.</div>
+            <div style="font-size:11.5px;color:#64748b">Taller de producción · Rosario</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA intermedio -->
+    <div style="text-align:center;margin-top:36px">
+      <a href="/app/registro" class="btn btn-primary" style="padding:14px 30px;font-size:15px"><i class="fa-solid fa-rocket"></i> Probalo gratis — sin tarjeta de crédito</a>
+      <p style="font-size:12px;color:#94a3b8;margin:10px 0 0">7 días de prueba completa. Sin compromiso.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUIÉN -->
+<section id="para-quien" style="padding:80px 24px;background:#f8fafc;border-top:1px solid #e5e7eb">
+  <div style="max-width:1020px;margin:0 auto">
+
+    <div style="text-align:center;max-width:660px;margin:0 auto 48px">
+      <span class="eyebrow-dark" style="margin-bottom:16px">Para quién es</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance text-center" style="color:#0F172A;margin:0 0 16px;line-height:1.1">
+        Diseñado para la realidad de tu rubro
+      </h2>
+      <p class="text-lg text-balance text-center" style="color:#64748b;margin:0 auto;max-width:580px;line-height:1.65">
+        Vendas al público, a empresas o de las dos formas, ANMA se adapta al ritmo de tu inventario: variantes, listas de precios, señas y cuentas corrientes en una sola pantalla.
+      </p>
+    </div>
+
+    <div id="para-quien-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto">
+
+      <!-- Indumentaria -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:32px 30px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+          <div style="width:44px;height:44px;border-radius:12px;border:1.5px solid #DDD6FE;display:flex;align-items:center;justify-content:center;color:#7c3aed;flex-shrink:0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 4 L20 6 L22 11 L18 13 L18 20 Q18 21 17 21 L7 21 Q6 21 6 20 L6 13 L2 11 L4 6 L8 4"/>
+              <path d="M8 4 Q12 7 16 4"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold tracking-tight" style="color:#0F172A;margin:0;line-height:1.2">
+            Tiendas de indumentaria
+          </h3>
+        </div>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:#64748b;margin:0;line-height:1.75">
+          Talles, colores y temporadas sin duplicar productos. Registrá señas, avisale al cliente cuando llega su talle y mirá qué tenés en percha o depósito al instante.
+        </p>
+      </div>
+
+      <!-- Decoración -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:32px 30px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+          <div style="width:44px;height:44px;border-radius:12px;border:1.5px solid #DDD6FE;display:flex;align-items:center;justify-content:center;color:#7c3aed;flex-shrink:0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 11 L4 16 L20 16 L20 11"/>
+              <path d="M4 11 Q4 8 6 8 L8 8 Q9 8 9 9 L9 13 L15 13 L15 9 Q15 8 16 8 L18 8 Q20 8 20 11"/>
+              <path d="M5 16 L5 19"/>
+              <path d="M19 16 L19 19"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold tracking-tight" style="color:#0F172A;margin:0;line-height:1.2">
+            Decoración y hogar
+          </h3>
+        </div>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:#64748b;margin:0;line-height:1.75">
+          Pedidos a encargo, productos con variantes de diseño y entregas coordinadas. Presupuestá en minutos, cobrá la seña y mantené al cliente al tanto de cada etapa.
+        </p>
+      </div>
+
+      <!-- Tecnología -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:32px 30px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+          <div style="width:44px;height:44px;border-radius:12px;border:1.5px solid #DDD6FE;display:flex;align-items:center;justify-content:center;color:#7c3aed;flex-shrink:0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="5" width="16" height="11" rx="1.5"/>
+              <path d="M2 19 L22 19"/>
+              <path d="M10 19 L14 19" stroke-opacity=".4"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold tracking-tight" style="color:#0F172A;margin:0;line-height:1.2">
+            Tecnología y electrónica
+          </h3>
+        </div>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:#64748b;margin:0;line-height:1.75">
+          Modelos, números de serie y precios que cambian todo el tiempo. Actualizá tu lista en un clic, manejá precio público y mayorista en paralelo y cotizá sin vender bajo costo.
+        </p>
+      </div>
+
+      <!-- Almacén / distribución -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:32px 30px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+          <div style="width:44px;height:44px;border-radius:12px;border:1.5px solid #DDD6FE;display:flex;align-items:center;justify-content:center;color:#7c3aed;flex-shrink:0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9 L4 4 L20 4 L21 9"/>
+              <path d="M3 9 Q3 11 5 11 Q7 11 7 9"/>
+              <path d="M7 9 Q7 11 9 11 Q11 11 11 9"/>
+              <path d="M11 9 Q11 11 13 11 Q15 11 15 9"/>
+              <path d="M15 9 Q15 11 17 11 Q19 11 19 9"/>
+              <path d="M19 9 Q19 11 21 11" stroke-opacity=".6"/>
+              <path d="M5 11 L5 20 L19 20 L19 11"/>
+              <path d="M10 20 L10 15 L14 15 L14 20"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold tracking-tight" style="color:#0F172A;margin:0;line-height:1.2">
+            Almacén y distribución
+          </h3>
+        </div>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:#64748b;margin:0;line-height:1.75">
+          Rotación alta y reposición constante. Controlá stock con alertas de mínimos, gestioná proveedores y llevá las cuentas corrientes de tus clientes mayoristas sin planillas.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ROI BLOCK -->
+<section style="padding:48px 0;background:#fff">
+  <div class="wrap">
+    <div style="max-width:860px;margin:0 auto;background:linear-gradient(135deg,#1a0636 0%,#2d0a57 45%,#3b1278 100%);border-radius:22px;padding:40px 44px;display:flex;flex-wrap:wrap;gap:32px;align-items:center;justify-content:space-between">
+      <div style="flex:1;min-width:260px">
+        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(52,211,153,.12);color:#34d399;font-size:10px;font-weight:800;text-transform:uppercase;padding:4px 12px;border-radius:20px;letter-spacing:1px;margin-bottom:16px">
+          <i class="fa-solid fa-hourglass-half" style="font-size:9px"></i> Tu tiempo tiene valor
+        </span>
+        <h3 class="font-extrabold tracking-tight" style="color:#fff;font-size:28px;letter-spacing:-.6px;margin:0 0 14px;line-height:1.2">¿Cuántas horas por semana perdés en WhatsApp, Excel y papeles sueltos?</h3>
+        <p style="color:rgba(255,255,255,.6);font-size:14.5px;line-height:1.75;margin:0">Los negocios que usan ANMA reportan ahorrar entre <strong style="color:#34d399;font-weight:700">6 y 10 horas semanales</strong> en tareas administrativas. Tiempo real para vender, producir o simplemente respirar.</p>
+      </div>
+      <div class="roi-stats-col" style="flex:0 0 auto;display:flex;flex-direction:column;gap:12px;min-width:210px">
+        <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 18px">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(99,102,241,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-clock" style="color:#c4b5fd;font-size:14px"></i>
+          </div>
+          <div>
+            <div style="color:#fff;font-size:30px;font-weight:900;letter-spacing:-1.2px;line-height:1">-8 hs</div>
+            <div style="color:rgba(255,255,255,.5);font-size:11.5px;margin-top:4px">por semana en admin</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 18px">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(16,185,129,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-arrow-trend-up" style="color:#6ee7b7;font-size:14px"></i>
+          </div>
+          <div>
+            <div style="color:#fff;font-size:30px;font-weight:900;letter-spacing:-1.2px;line-height:1">+30%</div>
+            <div style="color:rgba(255,255,255,.5);font-size:11.5px;margin-top:4px">en seguimiento de cobros</div>
+          </div>
+        </div>
+        <a href="/app/registro" style="display:flex;align-items:center;justify-content:center;background:#059669;color:#fff;text-decoration:none;padding:14px;border-radius:12px;font-weight:800;font-size:14px;box-shadow:0 8px 20px rgba(5,150,105,.35);transition:background .15s" onmouseover="this.style.background='#047857'" onmouseout="this.style.background='#059669'">
+          Empezar a gestionar gratis
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVERSIÓN / PRECIO -->
+<section id="pricing" style="padding:64px 0 56px;background:#0b0214">
+  <div style="max-width:960px;margin:0 auto;padding:0 20px">
+
+    <!-- Urgencia -->
+    <div style="text-align:center;margin-bottom:20px">
+      <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(217,70,239,.12);border:1px solid rgba(217,70,239,.28);color:#d946ef;font-size:12px;font-weight:700;padding:6px 16px;border-radius:99px">
+        <span style="width:7px;height:7px;border-radius:50%;background:#d946ef;display:inline-block;animation:pulse 2s infinite"></span>
+        ✨ Te acompañamos a configurar tu negocio paso a paso, sin vueltas
+      </span>
+    </div>
+
+    <!-- Encabezado -->
+    <div style="text-align:center;margin-bottom:28px">
+      <h2 class="font-extrabold tracking-tight text-balance" style="color:#fff;font-size:32px;margin:0 0 10px;line-height:1.1;letter-spacing:-.6px">
+        Una sola inversión<br>Tu operación, ordenada desde el primer día
+      </h2>
+      <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">Implementación personalizada, llave en mano y con soporte real desde el arranque.</p>
+    </div>
+
+    <!-- Tarjeta principal -->
+    <div style="background:#1a0b2e;border:1px solid #3d1b5c;border-radius:24px;padding:30px 36px;box-shadow:0 20px 40px rgba(0,0,0,.55);margin-bottom:14px">
+      <div class="pricing-card-inner" style="display:flex;flex-wrap:wrap;gap:0;align-items:stretch">
+
+        <!-- ── IZQUIERDA: foco visual ── -->
+        <div class="pricing-left" style="flex:1;min-width:240px;padding-right:32px;border-right:1px solid #3d1b5c;display:flex;flex-direction:column;gap:10px">
+
+          <!-- Badge plan -->
+          <span style="background:rgba(124,58,237,.22);color:#c4b5fd;font-size:10px;font-weight:800;text-transform:uppercase;padding:4px 13px;border-radius:20px;letter-spacing:1px;align-self:flex-start">Plan Gestión Integral</span>
+
+          <!-- Precio principal -->
+          <div>
+            <div style="display:flex;align-items:baseline;gap:5px;line-height:1">
+              <span style="color:#fff;font-size:56px;font-weight:900;letter-spacing:-2.5px;line-height:1">$30.000</span>
+              <span style="color:#c4b5fd;font-size:19px;font-weight:700">/ mes</span>
+            </div>
+            <p style="color:#64748b;font-size:12.5px;margin:6px 0 0;line-height:1.5">Costo fijo mensual por infraestructura segura y soporte continuo.</p>
+          </div>
+
+          <!-- Bloque pago de ingreso -->
+          <div style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.22);border-radius:12px;padding:12px 14px">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">
+              <i class="fa-solid fa-circle-info" style="color:#c4b5fd;font-size:12px"></i>
+              <span style="color:#c4b5fd;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px">Pago de ingreso</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:6px">
+              <span style="color:#fff;font-size:26px;font-weight:900;letter-spacing:-1px;line-height:1">$120.000</span>
+              <span style="color:#c4b5fd;font-size:12px;font-weight:600">por única vez</span>
+            </div>
+            <p style="color:#cbd5e1;font-size:11.5px;margin:0;line-height:1.55">
+              Incluye el <strong style="color:#fff">Setup Inicial llave en mano</strong> (configuración y carga de datos) + <strong style="color:#c4b5fd">tu primer mes totalmente cubierto.</strong>
+            </p>
+            <p style="color:#64748b;font-size:11px;margin:5px 0 0;line-height:1.4">
+              El abono mensual de $30.000 comienza recién desde el segundo mes.
+            </p>
+          </div>
+
+          <!-- CTA principal — va a /activar (auto-redirige a /registro si no está logueado) -->
+          <a href="/app/activar" style="display:block;background:linear-gradient(135deg,#059669,#047857);color:#fff;text-decoration:none;padding:14px;border-radius:12px;font-weight:800;font-size:14px;text-align:center;box-shadow:0 8px 24px rgba(5,150,105,.35);transition:transform .15s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(5,150,105,.45)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(5,150,105,.35)'">
+            <i class="fa-solid fa-bolt" style="margin-right:6px"></i> Activar mi plan ahora
+          </a>
+
+          <!-- Aclaración del flujo: registrarse → pagar (transparencia para no perder usuarios confundidos) -->
+          <p style="font-size:11px;color:#94a3b8;text-align:center;margin:0;line-height:1.5">
+            <i class="fa-solid fa-circle-info" style="color:#6ee7b7;margin-right:4px"></i>Necesitás una cuenta para poder pagar. Si no tenés, te llevamos a registrarte (gratis, 30 segundos) y después al pago seguro con Mercado Pago.
+          </p>
+
+          <!-- Sin contratos -->
+          <p style="font-size:11.5px;color:#475569;text-align:center;margin:0;line-height:1.5">
+            <i class="fa-solid fa-circle-check" style="color:#6ee7b7;margin-right:4px"></i>Sin contratos de permanencia. Cancelá cuando quieras.
+          </p>
+
+          <!-- Trial gratuito — en una sola línea -->
+          <div style="text-align:center;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+            <p style="color:#475569;font-size:11.5px;margin:0">¿Querés probar antes de hablar?</p>
+            <a href="/app/registro" style="display:inline-flex;align-items:center;gap:6px;color:#c4b5fd;font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap">
+              Probá gratis 7 días sin tarjeta
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;stroke-width:2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- ── DERECHA: entregables ── -->
+        <div class="pricing-right" style="flex:1;min-width:240px;padding-left:32px;display:flex;flex-direction:column;justify-content:space-between;gap:14px">
+
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(124,58,237,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <i class="fa-solid fa-layer-group" style="color:#c4b5fd;font-size:14px"></i>
+            </div>
+            <div>
+              <h4 style="color:#fff;font-size:14px;font-weight:700;margin:0 0 4px">Ecosistema ANMA Hub completo</h4>
+              <p style="color:#64748b;font-size:12px;margin:0;line-height:1.55">Pedidos, clientes, logística, proveedores, métricas y presupuestos en una sola pantalla.</p>
+            </div>
+          </div>
+
+          <div style="height:1px;background:rgba(255,255,255,.05)"></div>
+
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(37,211,102,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <i class="fa-brands fa-whatsapp" style="color:#6ee7b7;font-size:16px"></i>
+            </div>
+            <div>
+              <h4 style="color:#fff;font-size:14px;font-weight:700;margin:0 0 4px">Soporte humano por WhatsApp</h4>
+              <p style="color:#64748b;font-size:12px;margin:0;line-height:1.55">Una persona real que te responde y resuelve. Sin tickets, sin bots.</p>
+            </div>
+          </div>
+
+          <div style="height:1px;background:rgba(255,255,255,.05)"></div>
+
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(245,158,11,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <i class="fa-solid fa-file-import" style="color:#fbbf24;font-size:14px"></i>
+            </div>
+            <div>
+              <h4 style="color:#fff;font-size:14px;font-weight:700;margin:0 0 4px">Migración asistida sin costo</h4>
+              <p style="color:#64748b;font-size:12px;margin:0;line-height:1.55">Pasamos tus clientes, productos y stock desde Excel o papeles, listos para operar el primer día.</p>
+            </div>
+          </div>
+
+          <div style="height:1px;background:rgba(255,255,255,.05)"></div>
+
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(124,58,237,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <i class="fa-solid fa-shield-halved" style="color:#c4b5fd;font-size:14px"></i>
+            </div>
+            <div>
+              <h4 style="color:#fff;font-size:14px;font-weight:700;margin:0 0 4px">Infraestructura de alta disponibilidad</h4>
+              <p style="color:#64748b;font-size:12px;margin:0;line-height:1.55">Tus datos protegidos con encriptación de extremo a extremo y respaldos automáticos diarios.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Pie: personalización -->
+    <div style="background:rgba(26,11,46,.6);border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:14px 22px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap">
+      <p style="color:#cbd5e1;font-size:13.5px;font-weight:500;margin:0">¿Necesitás funciones exclusivas para tu operación?</p>
+      <div style="width:1px;height:18px;background:#3d1b5c;flex-shrink:0"></div>
+      <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Quer%C3%ADa%20consultar%20sobre%20personalizaci%C3%B3n%20de%20ANMA." target="_blank" style="color:#c4b5fd;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px">
+        Consultar personalización
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;stroke-width:2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding:80px 0;background:#f8fafc;border-top:1px solid #e5e7eb">
+  <div class="wrap">
+
+    <div style="text-align:center;max-width:700px;margin:0 auto 48px">
+      <span class="eyebrow-dark" style="margin-bottom:16px">Preguntas frecuentes</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance text-center" style="color:#0F172A;margin:0;line-height:1.1">
+        Despejá tus dudas y empezá<br class="hidden sm:block"> a gestionar con claridad
+      </h2>
+    </div>
+
+    <div class="faq-wrap">
+
+      <details class="faq" open>
+        <summary>¿Sé cuáles de mis productos y clientes realmente me dejan margen?</summary>
+        <div class="faq-body">Sí, y esto es lo que más diferencia a ANMA. Cada venta registra el costo real en el momento (snapshot), así que el sistema calcula ganancia neta por producto, cliente y categoría — sin que dependa del precio actualizado de los insumos. Detectás concentración de riesgo (qué cliente factura el 40% del trimestre), descubrís qué productos te están haciendo trabajar para nada y tomás decisiones de pricing con datos reales, no con sensación.</div>
+      </details>
+
+      <details class="faq">
+        <summary>Tengo miles de productos con variantes (talles, colores o modelos), ¿es difícil cargarlos?</summary>
+        <div class="faq-body">Para nada. La interfaz está pensada para que la carga de catálogos e inventario sea rápida y sin fricciones visuales. Podés estructurar variantes y costos en minutos para que tu stock real se descuente automáticamente con cada venta.</div>
+      </details>
+
+      <details class="faq">
+        <summary>¿Cómo funciona el seguimiento por WhatsApp?</summary>
+        <div class="faq-body">El sistema agrupa tus contactos según su estado operativo actual. Con un solo clic, podés abrir WhatsApp con plantillas predefinidas listas para enviar un mensaje de recontacto amable o re-vincular clientes que dejaron presupuestos pendientes.</div>
+      </details>
+
+      <details class="faq">
+        <summary>¿Realmente es gratis empezar?</summary>
+        <div class="faq-body">Sí. Podés registrarte y empezar a usar las funciones clave para ordenar tu operación hoy mismo. No te pedimos tarjeta de crédito ni hay configuraciones técnicas ocultas. Queremos que pruebes el sistema y recuperes tu tranquilidad.</div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="contact" style="padding:96px 16px;background:radial-gradient(ellipse 80% 60% at 50% 50%,#1e0a4a 0%,#0b0214 65%);text-align:center">
+  <div style="max-width:900px;margin:0 auto">
+
+    <h2 class="font-extrabold tracking-tight text-white text-balance" style="color:#fff;margin:0 0 18px;line-height:1.12;letter-spacing:-1.2px;font-size:clamp(28px,4vw,42px)">
+      Recuperá el control de tus números<br> y volvé a tomar aire
+    </h2>
+
+    <p class="text-balance" style="max-width:560px;margin:0 auto 36px;line-height:1.7;color:#94a3b8;font-size:17px">
+      Dejá atrás las planillas colgadas, los chats perdidos y la incertidumbre operativa. Uní todo en ANMA y liderá tu negocio con datos reales.
+    </p>
+
+    <a href="/app/registro" class="cta-primary-btn" style="font-size:17px;padding:19px 44px">
+      Empezar a gestionar gratis ahora
+    </a>
+
+    <span class="block text-xs font-semibold" style="color:#64748b;margin-top:18px;text-transform:uppercase;letter-spacing:1.5px;font-size:11px">
+      Sin contratos &nbsp;·&nbsp; Sin tarjetas &nbsp;·&nbsp; Configuración inmediata
+    </span>
+
+  </div>
+</section>
+
+<!-- WA FLOAT — solo desktop -->
+<a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quer%C3%ADa%20hacerles%20una%20consulta." target="_blank" class="fab-wa" title="Chatear por WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+
+<!-- STICKY MOBILE CTA BAR -->
+<div class="mobile-cta-bar">
+  <a href="/app/registro" class="mb-primary">Empezar a gestionar gratis</a>
+  <a href="/demo.html" class="mb-ghost">Ver Demo</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="logo" style="color:#fff"><img class="logo-mark" src="/logoanma.jpg" alt="ANMA Hub" width="32" height="32"> ANMA Hub</div>
+        <p>Plataforma de gestión integral para tu negocio, pensada para tu día a día.</p>
+        <div class="foot-soc">
+          <a href="mailto:holaanmahub@gmail.com" title="Soporte por email"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h6>Producto</h6>
+        <a href="#para-quien">Para quién</a>
+        <a href="/demo.html">Demo en vivo</a>
+        <a href="#pricing">Planes</a>
+        <a href="/app/login">Ingresar</a>
+      </div>
+      <div class="foot-col">
+        <h6>Recursos</h6>
+        <a href="/recursos/">Ver todas las guías</a>
+        <a href="/recursos/excel-vs-sistema-de-gestion.html">Excel vs. sistema de gestión</a>
+        <a href="/recursos/control-de-stock-tienda-de-ropa.html">Control de stock (indumentaria)</a>
+        <a href="#faq">Preguntas frecuentes</a>
+        <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Quer%C3%ADa%20pedir%20una%20demo%20guiada%20de%20ANMA." target="_blank">Demo guiada</a>
+      </div>
+      <div class="foot-col">
+        <h6>Legal</h6>
+        <a href="/terminos">Términos y Condiciones</a>
+        <a href="/privacidad">Política de Privacidad</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div>© <span id="y"></span> ANMA Hub</div>
+      <div class="badges">
+        <span><i class="fa-solid fa-shield-halved"></i> SSL</span>
+        <span><i class="fa-solid fa-database"></i> Backups diarios</span>
+        <span><i class="fa-solid fa-headset"></i> Soporte humano</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('y').textContent = new Date().getFullYear();
+
+// ── Burger menu (mobile) ──
+(function(){
+  var burger = document.getElementById('nav-burger');
+  var menu = document.getElementById('nav-menu-mobile');
+  if (!burger || !menu) return;
+  burger.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(open));
+    burger.innerHTML = open
+      ? '<i class="fa-solid fa-xmark"></i>'
+      : '<i class="fa-solid fa-bars"></i>';
+  });
+  // Cerrar al clickear un link del menú
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+      burger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    });
+  });
+  // Cerrar al clickear fuera
+  document.addEventListener('click', function(e){
+    if (!menu.classList.contains('open')) return;
+    if (menu.contains(e.target) || burger.contains(e.target)) return;
+    menu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+  });
+})();
+
+// ── Sticky CTA bar: ocultar en la zona del hero (cuando ya hay un CTA visible) ──
+// Reaparece al scrollear, y se oculta de nuevo cerca del footer para no taparlo.
+(function(){
+  var bar = document.querySelector('.mobile-cta-bar');
+  if (!bar) return;
+  var footer = document.querySelector('footer');
+  function update(){
+    var y = window.scrollY || window.pageYOffset;
+    var winH = window.innerHeight;
+    // Mostrar después de scrollear ~70% del viewport (ya pasó el hero principal)
+    var shouldShow = y > winH * 0.7;
+    // Ocultar cerca del footer (para no tapar links y CTA del final)
+    if (footer) {
+      var fTop = footer.getBoundingClientRect().top + y;
+      if (y + winH > fTop - 80) shouldShow = false;
+    }
+    bar.style.transform = shouldShow ? 'translateY(0)' : 'translateY(110%)';
+    bar.style.opacity = shouldShow ? '1' : '0';
+    bar.style.pointerEvents = shouldShow ? 'auto' : 'none';
+  }
+  bar.style.transition = 'transform .25s ease, opacity .2s ease';
+  bar.style.transform = 'translateY(110%)';
+  bar.style.opacity = '0';
+  bar.style.pointerEvents = 'none';
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+
+
+// Tab → sidebar nav item mapping (según rutas reales de la app).
+// OJO: la lista de Presupuestos vive en Dashboard (Historial → tab Presupuestos),
+// NO en "Nuevo pedido" (que es el wizard de creación). Mapear ahí sería incoherente.
+var tabNavMap = {
+  dashboard: 'nav-dashboard',
+  presupuestos: 'nav-dashboard',
+  clientes: 'nav-clientes',
+  catalogo: 'nav-catalogo'
+};
+document.querySelectorAll('.demo-tab').forEach(function(tab){
+  tab.addEventListener('click', function(){
+    var target = this.dataset.tab;
+    // Tabs
+    document.querySelectorAll('.demo-tab').forEach(function(t){ t.classList.remove('active'); });
+    this.classList.add('active');
+    // Panels
+    document.querySelectorAll('.app-main .app-view').forEach(function(p){ p.classList.remove('av-active'); });
+    var el = document.getElementById('panel-' + target);
+    if (el) el.classList.add('av-active');
+    // Sidebar sync
+    document.querySelectorAll('.app-nav .app-nav-item').forEach(function(n){ n.classList.remove('nav-active'); });
+    var navId = tabNavMap[target];
+    if (navId){ var ni = document.getElementById(navId); if(ni) ni.classList.add('nav-active'); }
+  });
+});
+
+// Formulario de contacto removido — conversión directa via WhatsApp
+</script>
+
+</body>
 </html>
-<!-- deploy-marker: 2026-04-15T13:18:04Z ANMA-PRO-HUB -->

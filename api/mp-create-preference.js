@@ -73,9 +73,9 @@ export default async function handler(req, res) {
       external_reference: `${workspaceId}|${kind}`,
       statement_descriptor: 'ANMA HUB',
       back_urls: {
-        success: `${baseUrl}/pago-exitoso`,
-        pending: `${baseUrl}/pago-pendiente`,
-        failure: `${baseUrl}/pago-error`,
+        success: `${baseUrl}/app/pago-exitoso`,
+        pending: `${baseUrl}/app/pago-pendiente`,
+        failure: `${baseUrl}/app/pago-error`,
       },
       auto_return: 'approved',
       notification_url: `${baseUrl}/api/mp-webhook`,

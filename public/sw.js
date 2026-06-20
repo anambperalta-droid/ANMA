@@ -7,7 +7,7 @@ const CACHE_VER = 'anma-pro-v4'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
-const PRECACHE = ['/', '/index.html', '/manifest.webmanifest', '/favicon.svg']
+const PRECACHE = ['/', '/index.html', '/app/index.html', '/manifest.webmanifest', '/favicon.svg']
 
 const BYPASS_PATTERNS = [
   'supabase.co', 'googleapis.com', 'gstatic.com',
@@ -74,7 +74,7 @@ self.addEventListener('fetch', e => {
       return fresh
     } catch {
       const cached = await caches.match(request)
-      return cached || caches.match('/index.html')
+      return cached || caches.match(url.pathname.startsWith('/app') ? '/app/index.html' : '/index.html')
     }
   })())
 })
