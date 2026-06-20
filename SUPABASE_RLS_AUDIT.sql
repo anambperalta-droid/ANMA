@@ -1,185 +1,81 @@
 -- ═══════════════════════════════════════════════════════════════════
--- ANMA Hub — RLS Audit & Hardening
--- Ejecutar en: Supabase Dashboard → SQL Editor
+-- ANMA — VERIFICACIÓN de RLS (READ-ONLY)
 -- ═══════════════════════════════════════════════════════════════════
 --
--- Este script:
---  1. Habilita RLS en workspaces y memberships (si no está activo)
---  2. Crea políticas mínimas correctas
---  3. Verifica el estado actual
+-- ⚠️ ESTE ARCHIVO YA NO CREA POLÍTICAS.
 --
--- IDEMPOTENTE: se puede correr más de una vez sin romper nada.
+-- El RLS real de ANMA vive en las migraciones (fuente de verdad):
+--   supabase/migrations/20260424_workspaces_rbac.sql
+--     → workspaces, memberships, audit_log, anma_user_data + helpers + trigger
+--   supabase/migrations/20260523_normalized_schema.sql
+--     → business_profiles + 11 tablas pro_*/regalos_* con RLS por workspace+rol
+--   supabase/migrations/20260602_onboarding_rubro_tipo_venta.sql
+--
+-- La versión anterior de este archivo era incompleta (le faltaba anma_user_data
+-- y las tablas normalizadas) y usaba un patrón owner_id que no coincide con el
+-- esquema real (workspaces.id = auth.users.id). NO la uses.
+--
+-- Este script SOLO LEE el estado actual. Pegá todo en el SQL Editor → Run.
+-- Compará el resultado con lo "esperado" que está al pie.
 -- ═══════════════════════════════════════════════════════════════════
 
 
--- ─────────────────────────────────────────────────────────────────
--- PASO 0 — Verificar estado actual de RLS
--- ─────────────────────────────────────────────────────────────────
--- Correlo primero SIN hacer cambios para ver qué hay:
-
+-- ── 1. ¿RLS habilitado en cada tabla con datos de inquilinos? ──────
 SELECT
-  schemaname,
   tablename,
-  rowsecurity   AS rls_enabled,
-  forcerowsecurity AS rls_forced
+  CASE WHEN rowsecurity THEN 'ON' ELSE '*** OFF — REVISAR ***' END AS rls
 FROM pg_tables
 WHERE schemaname = 'public'
-  AND tablename IN ('workspaces', 'memberships', 'workspace_payments')
+  AND tablename IN (
+    'workspaces','memberships','audit_log','anma_user_data','business_profiles',
+    'workspace_payments',
+    'pro_clients','pro_suppliers','pro_products','pro_insumos','pro_stock_moves','pro_budgets',
+    'regalos_clients','regalos_products','regalos_budgets','regalos_assignments'
+  )
+ORDER BY rls, tablename;
+
+
+-- ── 2. ¿Existen las funciones helper que usan las políticas? ───────
+SELECT proname AS funcion_helper
+FROM pg_proc
+WHERE pronamespace = 'public'::regnamespace
+  AND proname IN ('my_workspace_ids','my_workspace_ids_text','is_global_admin','my_role')
+ORDER BY proname;
+
+
+-- ── 3. ¿Cuántas políticas tiene cada tabla? ───────────────────────
+SELECT tablename, COUNT(*) AS politicas
+FROM pg_policies
+WHERE schemaname = 'public'
+  AND tablename IN (
+    'workspaces','memberships','audit_log','anma_user_data','business_profiles',
+    'workspace_payments',
+    'pro_clients','pro_suppliers','pro_products','pro_insumos','pro_stock_moves','pro_budgets',
+    'regalos_clients','regalos_products','regalos_budgets','regalos_assignments'
+  )
+GROUP BY tablename
 ORDER BY tablename;
 
--- También ver las políticas existentes:
-SELECT tablename, policyname, cmd, qual
-FROM pg_policies
-WHERE schemaname = 'public'
-  AND tablename IN ('workspaces', 'memberships', 'workspace_payments')
-ORDER BY tablename, policyname;
+
+-- ── 4. ¿El trigger de auto-creación de workspace está activo? ──────
+SELECT tgname AS trigger_name
+FROM pg_trigger
+WHERE tgname = 'on_auth_user_created_ws';
 
 
--- ─────────────────────────────────────────────────────────────────
--- PASO 1 — TABLA: workspaces
--- ─────────────────────────────────────────────────────────────────
-ALTER TABLE workspaces ENABLE ROW LEVEL SECURITY;
-
--- Admin global: acceso total
-DROP POLICY IF EXISTS workspaces_admin_all ON workspaces;
-CREATE POLICY workspaces_admin_all ON workspaces
-  FOR ALL TO authenticated
-  USING  (auth.jwt() ->> 'email' = 'ana.mbperalta@gmail.com')
-  WITH CHECK (auth.jwt() ->> 'email' = 'ana.mbperalta@gmail.com');
-
--- Owner del workspace: lee y edita SU workspace
-DROP POLICY IF EXISTS workspaces_owner_rw ON workspaces;
-CREATE POLICY workspaces_owner_rw ON workspaces
-  FOR ALL TO authenticated
-  USING (
-    id IN (
-      SELECT workspace_id FROM memberships
-      WHERE user_id = auth.uid()
-        AND role = 'owner'
-        AND status = 'active'
-    )
-  )
-  WITH CHECK (
-    id IN (
-      SELECT workspace_id FROM memberships
-      WHERE user_id = auth.uid()
-        AND role = 'owner'
-        AND status = 'active'
-    )
-  );
-
--- Operator/Viewer: solo lectura de su workspace
-DROP POLICY IF EXISTS workspaces_member_read ON workspaces;
-CREATE POLICY workspaces_member_read ON workspaces
-  FOR SELECT TO authenticated
-  USING (
-    id IN (
-      SELECT workspace_id FROM memberships
-      WHERE user_id = auth.uid()
-        AND status = 'active'
-    )
-  );
-
--- Inserción al registrarse: un user puede crear UN workspace (el suyo)
--- La constraint de business logic (un owner = un workspace) se maneja en
--- la Edge Function invite-user y en Bienvenida.jsx, no solo en RLS.
-DROP POLICY IF EXISTS workspaces_insert_own ON workspaces;
-CREATE POLICY workspaces_insert_own ON workspaces
-  FOR INSERT TO authenticated
-  WITH CHECK (
-    -- El workspace que se está insertando debe tener al user como owner
-    -- en memberships. Como memberships se inserta en el mismo momento,
-    -- usamos el id del workspace nuevo = auth.uid() (patrón ANMA actual).
-    id = auth.uid()
-    OR auth.jwt() ->> 'email' = 'ana.mbperalta@gmail.com'
-  );
-
-
--- ─────────────────────────────────────────────────────────────────
--- PASO 2 — TABLA: memberships
--- ─────────────────────────────────────────────────────────────────
-ALTER TABLE memberships ENABLE ROW LEVEL SECURITY;
-
--- Admin global: acceso total
-DROP POLICY IF EXISTS memberships_admin_all ON memberships;
-CREATE POLICY memberships_admin_all ON memberships
-  FOR ALL TO authenticated
-  USING  (auth.jwt() ->> 'email' = 'ana.mbperalta@gmail.com')
-  WITH CHECK (auth.jwt() ->> 'email' = 'ana.mbperalta@gmail.com');
-
--- Cualquier miembro activo puede leer las memberships de SU workspace
--- (necesario para que Config → Equipo muestre la lista de miembros)
-DROP POLICY IF EXISTS memberships_workspace_read ON memberships;
-CREATE POLICY memberships_workspace_read ON memberships
-  FOR SELECT TO authenticated
-  USING (
-    workspace_id IN (
-      SELECT workspace_id FROM memberships m2
-      WHERE m2.user_id = auth.uid()
-        AND m2.status = 'active'
-    )
-  );
-
--- Solo el owner puede insertar nuevas memberships (invitar miembros)
-DROP POLICY IF EXISTS memberships_owner_insert ON memberships;
-CREATE POLICY memberships_owner_insert ON memberships
-  FOR INSERT TO authenticated
-  WITH CHECK (
-    workspace_id IN (
-      SELECT workspace_id FROM memberships m2
-      WHERE m2.user_id = auth.uid()
-        AND m2.role = 'owner'
-        AND m2.status = 'active'
-    )
-    OR auth.jwt() ->> 'email' = 'ana.mbperalta@gmail.com'
-  );
-
--- Solo el owner puede actualizar memberships (cambiar rol, desactivar)
-DROP POLICY IF EXISTS memberships_owner_update ON memberships;
-CREATE POLICY memberships_owner_update ON memberships
-  FOR UPDATE TO authenticated
-  USING (
-    workspace_id IN (
-      SELECT workspace_id FROM memberships m2
-      WHERE m2.user_id = auth.uid()
-        AND m2.role = 'owner'
-        AND m2.status = 'active'
-    )
-    OR auth.jwt() ->> 'email' = 'ana.mbperalta@gmail.com'
-  );
-
--- Un user puede "salir" del workspace (actualizar su propia membership)
-DROP POLICY IF EXISTS memberships_self_leave ON memberships;
-CREATE POLICY memberships_self_leave ON memberships
-  FOR UPDATE TO authenticated
-  USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
-
-
--- ─────────────────────────────────────────────────────────────────
--- PASO 3 — workspace_payments (ya en SUPABASE_MP_MIGRATION.sql)
--- ─────────────────────────────────────────────────────────────────
--- Solo verificación — ya tiene RLS habilitado y las dos políticas:
---   payments_admin_all   → admin puede todo
---   payments_owner_read  → owner puede leer sus propios pagos
-
--- Confirmar que está habilitado:
-SELECT rowsecurity FROM pg_tables WHERE tablename = 'workspace_payments';
-
-
--- ─────────────────────────────────────────────────────────────────
--- PASO 4 — Verificación final (correr al terminar)
--- ─────────────────────────────────────────────────────────────────
-SELECT
-  tablename,
-  policyname,
-  cmd
-FROM pg_policies
-WHERE schemaname = 'public'
-  AND tablename IN ('workspaces', 'memberships', 'workspace_payments')
-ORDER BY tablename, cmd;
-
--- Resultado esperado: cada tabla debe tener políticas para SELECT, INSERT,
--- UPDATE — y admin con ALL. Si una tabla aparece vacía, RLS fue habilitado
--- pero sin políticas: NADIE puede acceder (incluidos usuarios legítimos).
+-- ═══════════════════════════════════════════════════════════════════
+-- RESULTADO ESPERADO
+-- ═══════════════════════════════════════════════════════════════════
+-- Query 1: las 16 tablas con rls = 'ON'. Si alguna dice OFF → falta
+--          aplicar la migración correspondiente.
+-- Query 2: las 4 funciones helper presentes.
+-- Query 3: cada tabla con 1+ políticas (la mayoría 3-4: select/insert/update/delete).
+-- Query 4: una fila con on_auth_user_created_ws.
+--
+-- SI HAY GAPS (alguna tabla OFF, función faltante, 0 políticas):
+--   Re-correr las migraciones en orden — son idempotentes (IF NOT EXISTS +
+--   drop-policy-if-exists), no rompen nada al re-ejecutarse:
+--     1) 20260424_workspaces_rbac.sql
+--     2) 20260523_normalized_schema.sql
+--     3) 20260602_onboarding_rubro_tipo_venta.sql
 -- ═══════════════════════════════════════════════════════════════════
