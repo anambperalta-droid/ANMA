@@ -5,6 +5,7 @@ import { useData } from './context/DataContext'
 import Login from './components/layout/Login'
 import AppShell from './components/layout/AppShell'
 import ErrorBoundary from './components/layout/ErrorBoundary'
+import PWAInstall from './components/layout/PWAInstall'
 
 // Páginas secundarias lazy: no forman parte del flujo principal post-login,
 // así el bundle inicial solo carga Login + AppShell.
@@ -83,6 +84,9 @@ export default function App() {
         } />
       </Routes>
       </Suspense>
+      {/* Banner de instalación PWA — a nivel App para que aparezca también en
+          login/registro (antes solo estaba en AppShell = post-login). */}
+      <PWAInstall />
     </ErrorBoundary>
   )
 }

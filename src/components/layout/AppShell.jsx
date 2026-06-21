@@ -11,7 +11,6 @@ import CommandPalette from './CommandPalette'
 import TaskFab from './TaskFab'
 import BottomNav from './BottomNav'
 import BottomSheet, { BottomSheetItem } from './BottomSheet'
-import PWAInstall from './PWAInstall'
 import TrialBanner from './TrialBanner'
 import PaymentDueBanner from './PaymentDueBanner'
 import WelcomeTour from './WelcomeTour'
@@ -411,7 +410,6 @@ function AppShellInner() {
           <BottomSheetItem icon="fa-gear" label="Configuración" sub="Personalización y datos" onClick={() => goSheet('/config')} iconBg="var(--surface2)" iconColor="var(--txt2)" />
         )}
       </BottomSheet>
-      <PWAInstall />
       <WelcomeTour />
       <FirstBudgetCelebration />
       <TrialReminderModal />
