@@ -127,6 +127,10 @@ a{color:inherit;text-decoration:none}
 .hero::before{width:520px;height:520px;top:-180px;right:-180px;background:radial-gradient(circle,rgba(124,58,237,.5),transparent 70%)}
 .hero::after{width:360px;height:360px;bottom:-140px;left:-90px;background:radial-gradient(circle,rgba(5,150,105,.3),transparent 70%)}
 .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+/* min-width:0 permite que las columnas se encojan por debajo de su contenido.
+   Sin esto, el mockup (tabla nowrap + sidebar 196px) fuerza ~700px de ancho y
+   el celu hace zoom-out para que entre (se ve "alejado"). */
+.hero-grid>*{min-width:0}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;font-size:12px;font-weight:600;color:#c4b5fd;margin-bottom:14px}
 .eyebrow .pulse-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:pulse 2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.7)}70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
@@ -206,7 +210,7 @@ section{padding:52px 0}
 @media(max-width:780px){.pillar-grid{grid-template-columns:1fr}}
 
 /* ── DEMO APP SHELL ── */
-.app-shell-wrap{background:#0F172A;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07)}
+.app-shell-wrap{background:#0F172A;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07);max-width:100%}
 .app-chrome-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:#0a0a1a;border-bottom:1px solid #1e293b}
 .app-chrome-dots{display:flex;gap:6px}
 .app-chrome-dots span{width:11px;height:11px;border-radius:50%}
@@ -226,7 +230,7 @@ section{padding:52px 0}
 .app-nav-item i{width:15px;text-align:center;font-size:12px;flex-shrink:0}
 .app-nav-section{font-size:9px;font-weight:800;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1.2px;padding:10px 14px 4px;margin-top:4px}
 /* main */
-.app-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#f8fafc}
+.app-main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:#f8fafc}
 .app-topbar{padding:11px 20px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .app-topbar-left{font-size:13px;color:#64748b;font-weight:500}
 .app-topbar-left b{color:#0F172A;font-weight:800}
