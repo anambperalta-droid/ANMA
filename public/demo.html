@@ -354,7 +354,11 @@ td b{color:var(--txt);font-weight:600}
   .brow-back span,.brow-cta span{display:none}
   /* KPIs 2×2 como la app real en mobile (1 col solo se siente vacío) */
   .bento{grid-template-columns:1fr 1fr;gap:10px}
-  .bento-kpi{padding:14px 14px 12px}
+  /* El chart debe abarcar las 2 columnas del grid mobile. Sin esto mantiene
+     span 4 del breakpoint 960px y rompe el grid a 4 columnas angostas → las
+     KPI quedan recortadas ("VE BR", "$5!"). */
+  .bento-chart{grid-column:span 2}
+  .bento-kpi{padding:14px 14px 12px;min-width:0}
   .bento-kpi .kpi-val{font-size:20px}
   .cgrid,.wa-grid,.cfg-grid{grid-template-columns:1fr}
   .tb-search{display:none}
