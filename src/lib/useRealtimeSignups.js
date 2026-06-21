@@ -74,8 +74,8 @@ export function sendBrowserNotification(title, opts = {}) {
   if (Notification.permission !== 'granted') return null
   try {
     return new Notification(title, {
-      icon: '/favicon.svg',
-      badge: '/favicon.svg',
+      icon: '/icon-192.png',
+      badge: '/icon-192.png',
       requireInteraction: false,
       ...opts,
     })
