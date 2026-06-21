@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#7C3AED">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ANMA Hub">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>ANMA Hub | Escalá tu negocio con un sistema de gestión fluido.</title>
   <meta name="description" content="Transformá el caos diario en un sistema fluido. ANMA te devuelve el aire y la claridad necesarios para escalar tu negocio sin perder tu foco en el proceso.">
   <meta name="robots" content="index, follow">
@@ -10,6 +15,12 @@
 <script>
 /* Dominio canónico: el alias vercel.app redirige a anmahub.com (página estática, sin datos locales) */
 if (location.hostname === 'anma-hub.vercel.app') location.replace('https://anmahub.com' + location.pathname + location.search)
+/* PWA instalada: si la landing se abre en modo standalone (app instalada con el
+   start_url viejo "/", de antes de migrar a /app), redirigir a la app. Arregla
+   las PWAs ya instaladas SIN requerir reinstalación. */
+if ((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true) {
+  if (!location.pathname.startsWith('/app')) location.replace('/app/')
+}
 </script>
 <script>
 /* Captura first-touch de canal (UTM + referrer) ANTES de que el visitor
