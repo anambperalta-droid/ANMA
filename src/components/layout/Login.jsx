@@ -80,17 +80,6 @@ function relativeDays(iso) {
   return `hace ${Math.floor(days / 30)} m.`
 }
 
-// Monograma ANMA Hub: "A" completa de trazo continuo + bucle abierto
-// enganchado en la pierna derecha (hub). Mismo diseño que favicon.svg, en blanco.
-// ANMA Hub — versión white-on-dark sobria (Login/Registro tienen fondo violeta).
-// Misma geometría que el favicon: A monograma de trazo limpio + crossbar.
-const AnmaLogo = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 100 100" fill="none">
-    <path d="M 22 84 L 50 16 L 78 84" stroke="#fff" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M 33 64 L 67 64" stroke="#fff" strokeWidth="8" strokeLinecap="round"/>
-  </svg>
-)
-
 export default function Login() {
   const [email, setEmail] = useState(() => {
     try { return localStorage.getItem(LS_EMAIL_KEY) || '' } catch { return '' }
@@ -291,11 +280,12 @@ export default function Login() {
         .lp-top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
         .lp-logo{
           width:46px;height:46px;border-radius:13px;flex-shrink:0;
-          background:linear-gradient(135deg,#7c3aed 0%,#a855f7 60%,#ec4899 100%);
+          background:#fff;
           display:flex;align-items:center;justify-content:center;
           box-shadow:0 8px 24px rgba(124,58,237,.4);
           animation:lp-ring 2.6s ease-out 1.2s 1;
         }
+        .lp-logo img{width:80%;height:80%;object-fit:contain;display:block}
         .lp-brand-txt{display:flex;flex-direction:column;line-height:1}
         .lp-brand-name{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px}
         .lp-brand-tag{font-size:11px;color:rgba(255,255,255,.5);margin-top:3px;letter-spacing:.3px}
@@ -444,7 +434,7 @@ export default function Login() {
 
         <form className="lp-card" onSubmit={e => { e.preventDefault(); handleLogin() }}>
           <div className="lp-top">
-            <div className="lp-logo"><AnmaLogo /></div>
+            <div className="lp-logo"><img src="/favicon-a.png" alt="ANMA" /></div>
             <div className="lp-brand-txt">
               <span className="lp-brand-name">ANMA</span>
               <span className="lp-brand-tag">Centro de mando</span>

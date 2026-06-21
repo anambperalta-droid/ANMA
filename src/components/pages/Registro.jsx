@@ -31,15 +31,6 @@ async function preFlightAuthReset() {
   nukeStaleAuthState()
 }
 
-// Monograma ANMA Hub: "A" completa de trazo continuo + bucle abierto
-// enganchado en la pierna derecha (hub). Mismo diseño que favicon.svg, en blanco.
-// ANMA Hub — white-on-dark sobrio (fondo violeta del registro).
-const AnmaLogo = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 100 100" fill="none">
-    <path d="M 22 84 L 50 16 L 78 84" stroke="#fff" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M 33 64 L 67 64" stroke="#fff" strokeWidth="8" strokeLinecap="round"/>
-  </svg>
-)
 
 const GoogleIcon = () => (
   <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
@@ -84,8 +75,9 @@ const CSS = `
     animation:rg-in .55s cubic-bezier(.2,.7,.2,1) both; }
 
   .rg-brand { display:flex;align-items:center;gap:12px;margin-bottom:26px }
-  .rg-logo { width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#7c3aed,#a855f7,#ec4899);
-    display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(124,58,237,.4);flex-shrink:0 }
+  .rg-logo { width:46px;height:46px;border-radius:13px;background:#fff;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(124,58,237,.4);flex-shrink:0;overflow:hidden }
+  .rg-logo img { width:80%;height:80%;object-fit:contain;display:block }
   .rg-brand-name { font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1 }
   .rg-brand-tag  { font-size:11px;color:rgba(255,255,255,.45);margin-top:3px }
 
@@ -313,7 +305,7 @@ export default function Registro() {
 
           {/* Brand */}
           <div className="rg-brand">
-            <div className="rg-logo"><AnmaLogo /></div>
+            <div className="rg-logo"><img src="/favicon-a.png" alt="ANMA" /></div>
             <div>
               <div className="rg-brand-name">ANMA Hub</div>
               <div className="rg-brand-tag">{isActivateFlow ? 'Plan Gestión Integral · $120.000 + setup' : '7 días gratis · Sin tarjeta'}</div>
