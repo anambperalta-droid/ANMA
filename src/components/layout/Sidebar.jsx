@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useData } from '../../context/DataContext'
-import { RUBROS, TIPOS_VENTA } from '../../lib/rubros'
 import { prefetchRoute } from '../../lib/routes'
 
 // `perm` define quién ve cada entrada (owner ve todo, operator solo los que coincidan).
@@ -54,18 +53,6 @@ export default function Sidebar({ open, onClose, collapsed }) {
             <div className="s">{sub}</div>
           </div>
         </div>
-        {/* Chip de perfil comercial: rubro + tipoVenta. Solo si están definidos. */}
-        {(c.rubro || c.tipoVenta) && (() => {
-          const rubroMeta = RUBROS.find(r => r.val === c.rubro)
-          const tipoMeta  = TIPOS_VENTA.find(t => t.val === c.tipoVenta)
-          return (
-            <div className="sb-profile-chip" title={`${rubroMeta?.label || ''}${tipoMeta ? ' · ' + tipoMeta.label : ''}`}>
-              {rubroMeta && <span><i className={`fa-solid ${rubroMeta.fa} sb-chip-ico`} style={{ fontSize: 10, opacity: .8 }} /> {rubroMeta.label}</span>}
-              {rubroMeta && tipoMeta && <span className="sb-chip-sep">·</span>}
-              {tipoMeta && <span><i className={`fa-solid ${tipoMeta.fa} sb-chip-ico`} style={{ fontSize: 10, opacity: .8 }} /> {tipoMeta.label}</span>}
-            </div>
-          )
-        })()}
       </div>
       <nav className="sb-nav">
         {NAV.map((item, i) => {
