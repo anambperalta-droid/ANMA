@@ -186,12 +186,12 @@ section{padding:52px 0}
 .sub{font-size:17px;color:#475569;max-width:640px;margin:0 0 28px;line-height:1.65}
 .center{text-align:center;margin-left:auto;margin-right:auto}
 
-/* Aire en mobile — más respiro entre secciones y dentro de los encabezados
-   (replicando la sensación espaciosa de la sección Recursos) */
+/* Aire en mobile — más respiro entre secciones SIN achicar la tipografía
+   (los títulos quedan grandes y prominentes, solo se agrega espacio) */
 @media(max-width:640px){
   section{padding:56px 0}
-  .h2{font-size:30px;letter-spacing:-.5px;line-height:1.2;margin-bottom:16px}
-  .sub{font-size:16px;line-height:1.7;margin-bottom:30px}
+  .h2{line-height:1.18;margin-bottom:16px}
+  .sub{line-height:1.7;margin-bottom:30px}
   .eyebrow-dark{margin-bottom:16px}
 }
 
