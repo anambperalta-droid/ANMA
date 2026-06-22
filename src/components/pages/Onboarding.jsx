@@ -107,8 +107,8 @@ export default function Onboarding() {
       background: '#FAFAFB',
     },
     inputFocus: { borderColor: '#7C3AED', boxShadow: '0 0 0 4px rgba(124,58,237,.08)', background: '#fff' },
-    grid4: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(132px, 1fr))', gap: 10 },
-    grid3: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 10 },
+    grid4: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 11 },
+    grid3: { display: 'grid', gridTemplateColumns: '1fr', gap: 10 },
     cta: {
       width: '100%', padding: '15px 20px', borderRadius: 13, border: 'none',
       background: 'linear-gradient(135deg,#7C3AED,#9D5CF5)', color: '#fff',
@@ -298,29 +298,31 @@ function SelectCard({ fa, label, sub, selected, onClick }) {
   const base = {
     border: `1.5px solid ${selected ? '#7C3AED' : '#E5E7EB'}`,
     background: selected ? '#F5F3FF' : '#fff',
-    borderRadius: 12, padding: '14px 12px',
+    borderRadius: 14, padding: '15px 16px',
     cursor: 'pointer', fontFamily: 'inherit',
-    display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'flex-start',
+    display: 'flex', flexDirection: 'row', gap: 13, alignItems: 'center',
     transition: 'all .15s', textAlign: 'left',
-    boxShadow: selected ? '0 4px 14px rgba(124,58,237,.14), 0 0 0 3px rgba(124,58,237,.07)' : '0 1px 2px rgba(0,0,0,.03)',
-    position: 'relative', minHeight: 96,
+    boxShadow: selected ? '0 6px 18px rgba(124,58,237,.16), 0 0 0 3px rgba(124,58,237,.08)' : '0 1px 3px rgba(0,0,0,.04)',
+    position: 'relative', width: '100%',
   }
   return (
     <button type="button" onClick={onClick} style={base}
-      onMouseEnter={e => { if (!selected) e.currentTarget.style.borderColor = '#C4B5FD' }}
-      onMouseLeave={e => { if (!selected) e.currentTarget.style.borderColor = '#E5E7EB' }}>
+      onMouseEnter={e => { if (!selected) { e.currentTarget.style.borderColor = '#C4B5FD'; e.currentTarget.style.transform = 'translateY(-1px)' } }}
+      onMouseLeave={e => { if (!selected) { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.transform = 'none' } }}>
       <div style={{
-        width: 36, height: 36, borderRadius: 11,
-        background: selected ? 'linear-gradient(135deg,#7C3AED,#9D5CF5)' : 'transparent',
-        border: selected ? 'none' : '1.5px solid #DDD6FE',
+        width: 42, height: 42, borderRadius: 12, flexShrink: 0,
+        background: selected ? 'linear-gradient(135deg,#7C3AED,#9D5CF5)' : '#F5F3FF',
+        border: selected ? 'none' : '1.5px solid #EDE9FE',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        marginBottom: 5, transition: 'background .15s, border-color .15s',
+        transition: 'background .15s, border-color .15s',
         boxShadow: selected ? '0 3px 10px rgba(124,58,237,.3)' : 'none',
       }}>
-        <LineIcon fa={fa} size={20} color={selected ? '#fff' : '#7C3AED'} />
+        <LineIcon fa={fa} size={21} color={selected ? '#fff' : '#7C3AED'} />
       </div>
-      <div style={{ fontSize: 13.5, fontWeight: 800, color: selected ? '#6D28D9' : '#1E1B4B', letterSpacing: '-.1px' }}>{label}</div>
-      <div style={{ fontSize: 10.5, color: '#6B7280', lineHeight: 1.35 }}>{sub}</div>
+      <div style={{ flex: 1, minWidth: 0, paddingRight: selected ? 18 : 0 }}>
+        <div style={{ fontSize: 14, fontWeight: 800, color: selected ? '#6D28D9' : '#1E1B4B', letterSpacing: '-.1px', lineHeight: 1.2 }}>{label}</div>
+        <div style={{ fontSize: 11, color: '#6B7280', lineHeight: 1.4, marginTop: 2 }}>{sub}</div>
+      </div>
       {selected && (
         <div style={{
           position: 'absolute', top: 9, right: 9,
