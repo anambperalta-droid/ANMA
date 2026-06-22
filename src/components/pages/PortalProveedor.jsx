@@ -175,7 +175,7 @@ export default function PortalProveedor() {
         {products.length > 0 && (
           <div className="pp-card" style={S.section}>
             <div style={S.sectionHead}>
-              <h3 style={S.sectionTitle}><i className="fa fa-box-open" style={{ marginRight: 8, color: '#7C3AED' }} />Productos que te compro</h3>
+              <h3 style={S.sectionTitle}><i className="fa fa-box-open" style={{ marginRight: 8, color: '#7C3AED' }} />Detalle de productos</h3>
               <button onClick={copyAllProducts} style={S.copyBtn}>
                 <i className={`fa fa-${copied ? 'check' : 'copy'}`} /> {copied ? 'Copiado' : 'Copiar lista'}
               </button>
@@ -408,11 +408,11 @@ const S = {
   },
 
   // Table
-  table: { width: '100%', borderCollapse: 'collapse', fontSize: 13, minWidth: 380 },
+  table: { width: '100%', borderCollapse: 'collapse', fontSize: 15, minWidth: 400 },
   thead: { borderBottom: '2px solid #EDE9FE' },
-  th: { textAlign: 'left', padding: '8px 8px', fontSize: 10, color: '#6B7280', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.6px' },
+  th: { textAlign: 'left', padding: '11px 10px', fontSize: 11, color: '#6B7280', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.6px' },
   tr: { borderBottom: '1px solid #F5F3FF', transition: 'background .15s' },
-  td: { padding: '11px 8px', color: '#1E1B4B' },
+  td: { padding: '15px 10px', color: '#1E1B4B' },
   statusReorder: {
     background: '#FEE2E2', color: '#DC2626', padding: '3px 8px',
     borderRadius: 12, fontSize: 9.5, fontWeight: 800, letterSpacing: '.3px',
