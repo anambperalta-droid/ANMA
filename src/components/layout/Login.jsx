@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { persistAcquisitionAcrossOAuth } from '../../lib/acquisitionTracking'
+import InstallButton from './InstallButton'
 
 const APP_VERSION = 'v1.4'
 const APP_YEAR = new Date().getFullYear()
@@ -521,7 +522,7 @@ export default function Login() {
           }}>
             ¿No tenés cuenta?{' '}
             <a
-              href="/registro"
+              href="/app/registro"
               style={{
                 color: '#a78bfa', fontWeight: 700, textDecoration: 'none',
                 borderBottom: '1px dashed rgba(167,139,250,.5)', paddingBottom: 1,
@@ -530,6 +531,11 @@ export default function Login() {
               Registrate gratis →
             </a>
           </div>
+
+          <InstallButton
+            label="Instalar app en mi celular"
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, margin: '0 auto 6px', background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.18)', color: 'rgba(255,255,255,.85)', borderRadius: 10, padding: '10px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
+          />
 
           <div className="lp-divider">o</div>
 

@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useData } from '../../context/DataContext'
 import { prefetchRoute } from '../../lib/routes'
+import InstallButton from './InstallButton'
 
 // `perm` define quién ve cada entrada (owner ve todo, operator solo los que coincidan).
 // `ownerOnly: true` = oculto para operator siempre.
@@ -100,6 +101,10 @@ export default function Sidebar({ open, onClose, collapsed }) {
         )}
       </nav>
       <div className="sb-foot">
+        <InstallButton
+          label="Instalar app"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, width: '100%', background: 'rgba(124,58,237,.18)', border: '1px solid rgba(124,58,237,.35)', color: '#fff', borderRadius: 9, padding: '9px 10px', fontSize: 12.5, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', marginBottom: 8 }}
+        />
         <div className="sb-user" onClick={logout}>
           <div className="sb-ava">{(userName[0] || 'A').toUpperCase()}</div>
           <div><div className="sb-uname">{userName}</div><div className="sb-urole">{role === 'operator' ? 'Operador · Cerrar sesión' : 'Cerrar sesión'}</div></div>
