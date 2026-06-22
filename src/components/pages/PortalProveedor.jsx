@@ -77,7 +77,7 @@ export default function PortalProveedor() {
   if (error) return (
     <div style={S.errorWrap}>
       <div style={S.errorCard}>
-        <div style={{ fontSize: 48, marginBottom: 12 }}>⚠️</div>
+        <div style={{ fontSize: 38, marginBottom: 14, color: '#DC2626' }}><i className="fa fa-triangle-exclamation" /></div>
         <h2 style={S.errorTitle}>Link no válido</h2>
         <p style={S.errorMsg}>{error}</p>
         <p style={S.errorHint}>Pedí a tu cliente un nuevo enlace.</p>
@@ -114,16 +114,17 @@ export default function PortalProveedor() {
 
         {/* HEADER */}
         <div className="pp-card" style={S.hero}>
+          <div style={S.heroWordmark}>ANMA</div>
           <div style={S.heroPill}>Portal de Proveedor</div>
           <h1 style={S.heroTitle}>
-            Hola {data.contact || data.supplierName} <span style={{ display: 'inline-block', animation: 'pp-pulse 2s ease-in-out infinite' }}>👋</span>
+            Hola {data.contact || data.supplierName}
           </h1>
           <p style={S.heroSub}>
             <b>{data.ownerName || 'Tu cliente'}</b> te comparte un resumen de la operación que tienen juntos. Este portal es de solo lectura — sin necesidad de cuenta.
           </p>
           {expDate && (
             <div style={S.heroValid}>
-              <span style={{ fontSize: 13 }}>📅</span>
+              <i className="fa fa-calendar-day" style={{ fontSize: 12 }} />
               <span>Válido hasta <b style={{ color: '#fff' }}>{expDate}</b>{daysLeft !== null && daysLeft <= 7 && (
                 <span style={S.expiringSoon}>· {daysLeft === 0 ? 'vence hoy' : daysLeft === 1 ? 'vence mañana' : `${daysLeft} días`}</span>
               )}</span>
@@ -136,7 +137,7 @@ export default function PortalProveedor() {
           <div className="pp-card" style={S.reorderCard}>
             <div style={S.reorderHead}>
               <div style={S.urgentBadge}>
-                <span style={{ display: 'inline-block', animation: 'pp-pulse 1.5s ease-in-out infinite' }}>🚨</span> URGENTE
+                <i className="fa fa-triangle-exclamation" /> URGENTE
               </div>
               <div style={{ flex: 1 }}>
                 <h3 style={S.reorderTitle}>Necesito reponer {reorder.length} producto{reorder.length !== 1 ? 's' : ''}</h3>
@@ -174,7 +175,7 @@ export default function PortalProveedor() {
         {products.length > 0 && (
           <div className="pp-card" style={S.section}>
             <div style={S.sectionHead}>
-              <h3 style={S.sectionTitle}>📦 Productos que te compro</h3>
+              <h3 style={S.sectionTitle}><i className="fa fa-box-open" style={{ marginRight: 8, color: '#7C3AED' }} />Productos que te compro</h3>
               <button onClick={copyAllProducts} style={S.copyBtn}>
                 <i className={`fa fa-${copied ? 'check' : 'copy'}`} /> {copied ? 'Copiado' : 'Copiar lista'}
               </button>
@@ -215,7 +216,7 @@ export default function PortalProveedor() {
         {/* HISTORIAL DE PRECIOS */}
         {(data.priceHistory || []).length > 0 && (
           <div className="pp-card" style={S.section}>
-            <h3 style={S.sectionTitle}>📊 Cambios de precio recientes</h3>
+            <h3 style={S.sectionTitle}><i className="fa fa-chart-line" style={{ marginRight: 8, color: '#7C3AED' }} />Cambios de precio recientes</h3>
             <p style={S.sectionSub}>Para mantener todo claro y transparente entre ambas partes.</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {data.priceHistory.slice(0, 8).map((h, i) => {
@@ -244,18 +245,18 @@ export default function PortalProveedor() {
         {/* CONDICIONES */}
         {(data.paymentTerm || data.leadTime) && (
           <div className="pp-card" style={S.section}>
-            <h3 style={S.sectionTitle}>⚙️ Condiciones acordadas</h3>
+            <h3 style={S.sectionTitle}><i className="fa fa-sliders" style={{ marginRight: 8, color: '#7C3AED' }} />Condiciones acordadas</h3>
             <div style={S.condsGrid}>
               {data.paymentTerm && (
                 <div style={S.condCard}>
-                  <div style={S.condIcon}>💳</div>
+                  <div style={S.condIcon}><i className="fa fa-credit-card" /></div>
                   <div style={S.condLabel}>Plazo de pago</div>
                   <div style={S.condValue}>{data.paymentTerm} <span style={S.condUnit}>días</span></div>
                 </div>
               )}
               {data.leadTime && (
                 <div style={S.condCard}>
-                  <div style={S.condIcon}>🚚</div>
+                  <div style={S.condIcon}><i className="fa fa-truck-fast" /></div>
                   <div style={S.condLabel}>Lead time entrega</div>
                   <div style={S.condValue}>{data.leadTime} <span style={S.condUnit}>días</span></div>
                 </div>
@@ -266,7 +267,7 @@ export default function PortalProveedor() {
 
         {/* CONFIRMACIÓN / CTA */}
         <div className="pp-card" style={S.ctaCard}>
-          <div style={{ fontSize: 36, marginBottom: 6 }}>{confirmed ? '✅' : '🤝'}</div>
+          <div style={{ fontSize: 30, marginBottom: 8, color: confirmed ? '#16A34A' : '#7C3AED' }}><i className={`fa ${confirmed ? 'fa-circle-check' : 'fa-handshake'}`} /></div>
           <h3 style={S.ctaTitle}>
             {confirmed ? '¡Gracias por confirmar!' : '¿Podés cumplir con esto?'}
           </h3>
@@ -325,14 +326,18 @@ const S = {
 
   // Hero
   hero: {
-    background: 'linear-gradient(135deg, #7C3AED 0%, #6D28D9 50%, #059669 100%)',
+    background: 'linear-gradient(135deg, #1e1b4b 0%, #4C1D95 55%, #7C3AED 100%)',
     borderRadius: 18,
     padding: '26px 26px 30px',
     color: '#fff',
     marginBottom: 14,
-    boxShadow: '0 12px 40px rgba(124,58,237,.28)',
+    boxShadow: '0 12px 40px rgba(76,29,149,.32)',
     position: 'relative',
     overflow: 'hidden',
+  },
+  heroWordmark: {
+    fontSize: 12, fontWeight: 700, letterSpacing: '6px', textTransform: 'uppercase',
+    color: 'rgba(255,255,255,.7)', marginBottom: 14,
   },
   heroPill: {
     fontSize: 10.5, opacity: .85, textTransform: 'uppercase',
