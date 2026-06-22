@@ -484,7 +484,7 @@ td b{color:var(--txt);font-weight:600}
 .modal .modal-actions,.modal .ma{margin-top:16px}
 .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:450;animation:pgIn .2s ease both}
 .mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.mh h3{font-size:17px;font-weight:800;color:var(--txt);letter-spacing:-.3px}
+.mh h3{margin:0;font-size:17px;font-weight:800;color:var(--txt);letter-spacing:-.3px;display:flex;align-items:center}
 .mclose{width:30px;height:30px;border-radius:8px;background:var(--surface2);border:1.5px solid var(--border);color:var(--txt2);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
 .mclose:hover{background:var(--red-lt);color:var(--red);border-color:var(--red)}
 /* .mfooter base defined above with .modal */

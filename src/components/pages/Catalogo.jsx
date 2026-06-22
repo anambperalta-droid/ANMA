@@ -839,7 +839,7 @@ export default function Catalogo() {
       {modal && (
         <div className="modal-bg open" style={{ padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
           <div className="modal-form-card prod-modal-card" style={{ width: '100%', maxWidth: 740, maxHeight: '95vh', display: 'flex', flexDirection: 'column' }}>
-            <div className="mh"><h3>{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
+            <div className="mh"><h3><i className="fa fa-box" style={{ marginRight: 8, color: 'var(--brand)' }} />{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
             {/* Banner borrador */}
             {hasDraft && (
               <div style={{ flexShrink: 0, background: '#FFFBEB', borderBottom: '1px solid #FDE68A', padding: '9px 16px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
