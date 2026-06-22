@@ -1387,8 +1387,9 @@ export default function Historial() {
   const insights = useMemo(() => {
     const out = []
 
-    // 1) Concentración de ventas (top cliente)
-    if (topClients.length > 0 && totBudgeted > 0) {
+    // 1) Concentración de ventas (top cliente). Mínimo 3 ventas confirmadas:
+    // con 1-2 ventas, "100% en un cliente" es trivial, no una señal real.
+    if (topClients.length > 0 && totBudgeted > 0 && confirmed.length >= 3) {
       const topPct = Math.round((topClients[0][1] / Math.max(1, confirmed.reduce((s, b) => s + (b.total || 0), 0))) * 100)
       if (topPct >= 60) {
         out.push({
@@ -1411,8 +1412,9 @@ export default function Historial() {
       }
     }
 
-    // 2) Tendencia de ventas (delta brutas)
-    if (deltaBrutas !== null) {
+    // 2) Tendencia de ventas (delta brutas). Requiere volumen mínimo en AMBOS
+    // períodos: un -54% calculado sobre 1 venta previa no es una tendencia.
+    if (deltaBrutas !== null && periodBudgets.length >= 3 && prevPeriodBudgets.length >= 3) {
       if (deltaBrutas >= 25) {
         out.push({
           tone: 'success',
@@ -1490,7 +1492,7 @@ export default function Historial() {
     }
 
     // 6) Ticket promedio (vs anterior)
-    if (period === 'thismonth' && prevPeriodBudgets.length > 0 && periodBudgets.length > 0) {
+    if (period === 'thismonth' && prevPeriodBudgets.length >= 3 && periodBudgets.length >= 3) {
       const prevAvg = Math.round(prevTotBudgeted / prevPeriodBudgets.length)
       if (prevAvg > 0) {
         const ticketDelta = Math.round((avgTicket - prevAvg) / prevAvg * 100)
