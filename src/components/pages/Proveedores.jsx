@@ -129,7 +129,7 @@ export default function Proveedores() {
 
   const setF = (k, v) => setForm(f => ({ ...f, [k]: v }))
   const EMPTY_FORM = { name: '', contact: '', wa: '', rubro: '', email: '', notes: '', cuit: '', ivaCondition: '', paymentTerm: '', cbu: '', leadTime: '' }
-  const openEdit = (s) => { setForm(s ? { ...s } : { ...EMPTY_FORM }); setModal(true) }
+  const openEdit = (s) => { setDetailSupplier(null); setForm(s ? { ...s } : { ...EMPTY_FORM }); setModal(true) }
   const save = () => {
     if (!form.name) { toast('Ingresá el nombre del proveedor.', 'er'); return }
     saveEntity('suppliers', form); setModal(false); toast('Proveedor guardado', 'ok')
