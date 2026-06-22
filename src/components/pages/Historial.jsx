@@ -1121,11 +1121,22 @@ export default function Historial() {
     return seguimiento.slice(0, 3)
   }, [seguimiento])
 
-  // Stock crítico para carousel
+  // Stock crítico para carousel. Productos con variantes: cada variante baja
+  // genera su propia alerta ("Producto · Talle M"), independiente.
   const lowStockProducts = useMemo(() => {
-    return products
-      .filter(p => p.minStock > 0 && (p.stock || 0) <= p.minStock)
-      .sort((a, b) => ((a.stock || 0) / (a.minStock || 1)) - ((b.stock || 0) / (b.minStock || 1)))
+    const entries = []
+    products.forEach(p => {
+      if (p.variants?.length) {
+        p.variants.forEach(v => {
+          const min = Number(v.minStock) || 0, st = Number(v.stock) || 0
+          if (min > 0 && st <= min) entries.push({ id: `${p.id}__${v.id}`, name: `${p.name} · ${v.label}`, stock: st, minStock: min })
+        })
+      } else if ((p.minStock || 0) > 0 && (p.stock || 0) <= p.minStock) {
+        entries.push({ id: p.id, name: p.name, stock: p.stock || 0, minStock: p.minStock })
+      }
+    })
+    return entries
+      .sort((a, b) => (a.stock / (a.minStock || 1)) - (b.stock / (b.minStock || 1)))
       .slice(0, 3)
   }, [products])
   const lowStockInsumos = useMemo(() => {

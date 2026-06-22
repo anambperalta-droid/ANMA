@@ -3,6 +3,7 @@ import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, cfg, db, dbW } from '../../lib/storage'
+import { isLowStock, lowVariants } from '../../lib/stock'
 
 export default function Proveedores() {
   const { get, set, saveEntity, deleteEntity } = useData()
@@ -146,7 +147,7 @@ export default function Proveedores() {
   const { allLowStockBySupplier, totalLowStock } = useMemo(() => {
     const groups = []
     suppliers.forEach(s => {
-      const items = (productsBySupplier.get(String(s.id)) || []).filter(p => p.minStock > 0 && (p.stock || 0) <= p.minStock)
+      const items = (productsBySupplier.get(String(s.id)) || []).filter(p => isLowStock(p))
       if (items.length) groups.push({ s, items })
     })
     groups.sort((a, b) => b.items.length - a.items.length)
@@ -157,7 +158,11 @@ export default function Proveedores() {
   const sendReorderWA = (s, items) => {
     if (!s.wa) { toast('Este proveedor no tiene WhatsApp cargado', 'er'); return }
     const num = s.wa.replace(/\D/g, '')
-    const lines = items.map(p => `• ${p.name} — necesito reponer (stock: ${p.stock || 0}, mín: ${p.minStock})`).join('\n')
+    const lines = items.map(p => {
+      const lv = lowVariants(p)
+      if (lv.length) return `• ${p.name}: ${lv.map(v => `${v.label} (stock ${v.stock}, mín ${v.minStock})`).join(', ')}`
+      return `• ${p.name} — necesito reponer (stock: ${p.stock || 0}, mín: ${p.minStock})`
+    }).join('\n')
     const text = `Hola ${s.contact || s.name}, te paso pedido de reposición:\n\n${lines}\n\nGracias!`
     window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, '_blank')
   }
@@ -352,7 +357,7 @@ export default function Proveedores() {
         const o = { n: pp.name, c: Number(pp.cost) || 0 }
         if (pp.stock)    o.st = pp.stock
         if (pp.minStock) o.m  = pp.minStock
-        if (pp.minStock > 0 && (pp.stock || 0) <= pp.minStock) o.r = 1
+        if (isLowStock(pp)) o.r = 1
         return o
       }),
     }

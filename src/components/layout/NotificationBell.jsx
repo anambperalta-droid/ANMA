@@ -182,9 +182,25 @@ function buildAlerts(budgets, products, insumos) {
 
   // ── STOCK ALERTS (products) ──
   ;(products || []).forEach(p => {
+    if (!p.name) return
+    // Productos con variantes: cada variante con minStock>0 se alerta sola.
+    if (p.variants?.length) {
+      p.variants.forEach(v => {
+        const stock = Number(v.stock ?? 0)
+        const minStock = Number(v.minStock ?? 0)
+        if (minStock <= 0) return
+        const vname = `${p.name} · ${v.label}`
+        if (stock === 0) {
+          alerts.push({ id: `stock0-${p.id}-${v.id}`, level: 'critical', category: 'stock', icon: 'fa-box-open', title: `Sin stock: ${vname}`, body: 'Esta variante se agotó — reponela antes de aceptar nuevos pedidos', route: '/catalogo', ts: 0 })
+        } else if (stock <= minStock) {
+          alerts.push({ id: `stocklow-${p.id}-${v.id}`, level: 'warning', category: 'stock', icon: 'fa-box', title: `Te quedan solo ${stock} de ${vname}`, body: `Mínimo configurado: ${minStock} — es momento de reponer`, route: '/catalogo', ts: 0 })
+        }
+      })
+      return
+    }
     const stock = Number(p.stock ?? -1)
     const minStock = Number(p.minStock ?? 0)
-    if (!p.name || stock < 0) return
+    if (stock < 0) return
     const pid = typeof p.id === 'number' ? p.id : 0
     if (stock === 0 && minStock >= 0) {
       alerts.push({
