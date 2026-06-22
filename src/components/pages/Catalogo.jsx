@@ -8,7 +8,7 @@ import { getCategoriesForRubro, getRubroMeta, catsAreOutdated, RUBROS } from '..
 import { getProductPlaceholder, getEmptyProducts } from '../../lib/voice'
 import EmptyHero from '../layout/EmptyHero'
 
-const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '' }
+const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '', variants: [] }
 
 const compressImage = (file, maxBytes = 180000) => new Promise((resolve) => {
   const reader = new FileReader()
@@ -124,6 +124,15 @@ export default function Catalogo() {
   const setF = (k, v) => setForm(f => ({ ...f, [k]: v }))
   const num = (v) => { const n = Number(v); return isNaN(n) ? 0 : n }
 
+  // ── Variantes (talle/color/modelo) — cada una con su stock. Opcional:
+  // si el producto tiene variantes, el stock total es la suma de ellas. ──
+  const formVariants = form.variants || []
+  const variantTotal = formVariants.reduce((s, v) => s + num(v.stock), 0)
+  const newVariantId = () => 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)
+  const addVariant = () => setForm(f => ({ ...f, variants: [...(f.variants || []), { id: newVariantId(), label: '', stock: 0 }] }))
+  const updVariant = (id, key, val) => setForm(f => ({ ...f, variants: (f.variants || []).map(v => v.id === id ? { ...v, [key]: val } : v) }))
+  const delVariant = (id) => setForm(f => ({ ...f, variants: (f.variants || []).filter(v => v.id !== id) }))
+
   const autoPrice = (cost) => ({
     b2c: Math.round(num(cost) * (1 + (rules.b2c?.margin || 40) / 100)),
     b2b: Math.round(num(cost) * (1 + (rules.b2b?.margin || 25) / 100)),
@@ -202,7 +211,11 @@ export default function Catalogo() {
 
   const save = () => {
     if (!form.name) { toast('Ingresá el nombre del producto.', 'er'); return }
-    const data = { ...form, cat: form.cat ?? '', cost: num(form.cost), stock: num(form.stock), minStock: num(form.minStock), priceB2C: num(form.priceB2C), priceB2B: num(form.priceB2B), updatedAt: new Date().toISOString().slice(0,10) }
+    // Variantes: descartamos las sin etiqueta; el stock total del producto es
+    // la suma de las variantes (si tiene). Productos sin variantes: stock simple.
+    const cleanVariants = (form.variants || []).filter(v => (v.label || '').trim()).map(v => ({ id: v.id, label: v.label.trim(), stock: num(v.stock) }))
+    const stockVal = cleanVariants.length ? cleanVariants.reduce((s, v) => s + v.stock, 0) : num(form.stock)
+    const data = { ...form, cat: form.cat ?? '', cost: num(form.cost), variants: cleanVariants, stock: stockVal, minStock: num(form.minStock), priceB2C: num(form.priceB2C), priceB2B: num(form.priceB2B), updatedAt: new Date().toISOString().slice(0,10) }
     try { dbDel('prod_draft') } catch {}
     setHasDraft(null)
     saveEntity('products', data); setModal(false); toast('Producto guardado', 'ok')
@@ -636,6 +649,11 @@ export default function Catalogo() {
                         <div>
                           <div style={{ fontWeight: 800 }}>{p.name}</div>
                           {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
+                          {p.variants?.length > 0 && (
+                            <div style={{ fontSize: 10, color: 'var(--brand)', fontWeight: 600, marginTop: 1 }}>
+                              <i className="fa fa-layer-group" style={{ fontSize: 9 }} /> {p.variants.length} variantes
+                            </div>
+                          )}
                         </div>
                       </div>
                     </td>
@@ -942,10 +960,36 @@ export default function Catalogo() {
                 </span>
                 <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Inventario</span>
               </div>
-              <div className="grid2" style={{ gap: '0 16px' }}>
-                <div className="fg" style={{ marginBottom: 0 }}><label>Stock actual</label><input tabIndex={9} type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} placeholder="0" /></div>
-                <div className="fg" style={{ marginBottom: 0 }}><label>Stock mínimo (alerta)</label><input tabIndex={10} type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} placeholder="0" /></div>
-              </div>
+              {formVariants.length === 0 ? (
+                <>
+                  <div className="grid2" style={{ gap: '0 16px' }}>
+                    <div className="fg" style={{ marginBottom: 0 }}><label>Stock actual</label><input tabIndex={9} type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} placeholder="0" /></div>
+                    <div className="fg" style={{ marginBottom: 0 }}><label>Stock mínimo (alerta)</label><input tabIndex={10} type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} placeholder="0" /></div>
+                  </div>
+                  <button type="button" onClick={addVariant} className="btn btn-ghost btn-sm" style={{ marginTop: 12, color: 'var(--brand)' }}>
+                    <i className="fa fa-layer-group" /> Manejar por variantes (talle, color…)
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.05em' }}>Variantes</span>
+                    <span style={{ fontSize: 12.5, color: 'var(--txt3)' }}>Stock total: <b style={{ color: 'var(--txt)' }}>{variantTotal}</b></span>
+                  </div>
+                  {formVariants.map(v => (
+                    <div key={v.id} style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'center' }}>
+                      <input style={{ flex: 1, minWidth: 0 }} value={v.label} onChange={e => updVariant(v.id, 'label', e.target.value)} placeholder="Talle / color (ej: M Rojo)" />
+                      <input style={{ width: 84, flexShrink: 0 }} type="number" value={v.stock} onChange={e => updVariant(v.id, 'stock', e.target.value)} placeholder="0" />
+                      <button type="button" className="btn btn-ghost btn-sm" style={{ color: 'var(--red)', flexShrink: 0, padding: '6px 9px' }} onClick={() => delVariant(v.id)} title="Quitar variante"><i className="fa fa-trash" /></button>
+                    </div>
+                  ))}
+                  <div style={{ display: 'flex', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
+                    <button type="button" onClick={addVariant} className="btn btn-ghost btn-sm" style={{ color: 'var(--brand)' }}><i className="fa fa-plus" /> Agregar variante</button>
+                    <button type="button" onClick={() => setForm(f => ({ ...f, variants: [] }))} className="btn btn-ghost btn-sm" style={{ color: 'var(--txt3)' }}>Volver a stock simple</button>
+                  </div>
+                  <div className="fg" style={{ marginBottom: 0, marginTop: 14 }}><label>Stock mínimo (alerta sobre el total)</label><input type="number" value={form.minStock} onChange={e => setF('minStock', e.target.value)} placeholder="0" /></div>
+                </>
+              )}
             </div>
 
             {/* ── ACORDEÓN: Configuración avanzada ── */}

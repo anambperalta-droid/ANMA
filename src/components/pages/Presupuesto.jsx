@@ -1423,6 +1423,8 @@ export default function Presupuesto() {
                     </tr></thead>
                     <tbody>
                       {items.map((it, i) => {
+                        const prodMatch = it.productId ? products.find(p => p.id === it.productId) : null
+                        const variantOpts = prodMatch?.variants || []
                         const overStock = it.stockAvailable !== undefined && num(it.qty) > it.stockAvailable
                         return (
                           <tr key={i}
@@ -1443,6 +1445,8 @@ export default function Presupuesto() {
                                     ...x, name: p.name,
                                     costUnit: p.cost || 0,
                                     productId: p.id,
+                                    // Producto nuevo: limpiamos la variante anterior (que elija de nuevo).
+                                    variantId: null, variant: '',
                                     priceUnit: catalogPriceFor(p, canalEffective(form.canalVenta)) || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
                                     stockAvailable: p.stock || 0,
                                   }))
@@ -1451,7 +1455,19 @@ export default function Presupuesto() {
                                 inputStyle={{ padding: '0 8px', fontSize: 12, height: 36, boxSizing: 'border-box' }}
                               />
                             </td>
-                            <td style={{ verticalAlign: 'middle' }}><input type="text" value={it.variant || ''} onChange={e => updateItem(i, 'variant', e.target.value)} placeholder="Color / talle" style={{ padding: '0 6px', fontSize: 12, width: '100%', height: 36, boxSizing: 'border-box' }} /></td>
+                            <td style={{ verticalAlign: 'middle' }}>
+                              {variantOpts.length > 0 ? (
+                                <select value={it.variantId || ''} onChange={e => {
+                                  const v = variantOpts.find(x => x.id === e.target.value)
+                                  setItems(prev => prev.map((x, k) => k !== i ? x : { ...x, variantId: v ? v.id : null, variant: v ? v.label : '', stockAvailable: v ? (Number(v.stock) || 0) : (prodMatch?.stock || 0) }))
+                                }} style={{ padding: '0 6px', fontSize: 12, width: '100%', height: 36, boxSizing: 'border-box' }}>
+                                  <option value="">Elegí variante…</option>
+                                  {variantOpts.map(v => <option key={v.id} value={v.id}>{v.label} ({v.stock})</option>)}
+                                </select>
+                              ) : (
+                                <input type="text" value={it.variant || ''} onChange={e => updateItem(i, 'variant', e.target.value)} placeholder="Color / talle" style={{ padding: '0 6px', fontSize: 12, width: '100%', height: 36, boxSizing: 'border-box' }} />
+                              )}
+                            </td>
                             <td style={{ textAlign: 'center', fontSize: 11, color: overStock ? 'var(--red)' : 'var(--txt3)', fontWeight: overStock ? 700 : 400, verticalAlign: 'middle' }}>
                               {it.stockAvailable !== undefined ? it.stockAvailable : '—'}
                               {overStock && <i className="fa fa-triangle-exclamation" style={{ color: 'var(--red)', marginLeft: 2, fontSize: 9 }} />}
@@ -1490,6 +1506,8 @@ export default function Presupuesto() {
                 {/* ─── Mobile: card list — visible only on mobile via CSS ─── */}
                 <div className="mob-items-list">
                   {items.map((it, i) => {
+                    const prodMatch = it.productId ? products.find(p => p.id === it.productId) : null
+                    const variantOpts = prodMatch?.variants || []
                     const overStock = it.stockAvailable !== undefined && num(it.qty) > it.stockAvailable
                     return (
                       <div key={i} className="mob-item-card">
@@ -1506,6 +1524,7 @@ export default function Presupuesto() {
                                   ...x, name: p.name,
                                   costUnit: p.cost || 0,
                                   productId: p.id,
+                                  variantId: null, variant: '',
                                   priceUnit: catalogPriceFor(p, canalEffective(form.canalVenta)) || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
                                   stockAvailable: p.stock || 0,
                                 }))
@@ -1528,13 +1547,27 @@ export default function Presupuesto() {
                         {/* Fila 2: Variante (compact) + Stock chip (solo si hay info) */}
                         <div className="mic-meta-row">
                           <div className="mic-field" style={{ flex: 1, minWidth: 0 }}>
-                            <input
-                              type="text"
-                              value={it.variant || ''}
-                              onChange={e => updateItem(i, 'variant', e.target.value)}
-                              placeholder="Variante (color, talle...)"
-                              className="mic-variant-input"
-                            />
+                            {variantOpts.length > 0 ? (
+                              <select
+                                className="mic-variant-input"
+                                value={it.variantId || ''}
+                                onChange={e => {
+                                  const v = variantOpts.find(x => x.id === e.target.value)
+                                  setItems(prev => prev.map((x, k) => k !== i ? x : { ...x, variantId: v ? v.id : null, variant: v ? v.label : '', stockAvailable: v ? (Number(v.stock) || 0) : (prodMatch?.stock || 0) }))
+                                }}
+                              >
+                                <option value="">Elegí variante…</option>
+                                {variantOpts.map(v => <option key={v.id} value={v.id}>{v.label} ({v.stock})</option>)}
+                              </select>
+                            ) : (
+                              <input
+                                type="text"
+                                value={it.variant || ''}
+                                onChange={e => updateItem(i, 'variant', e.target.value)}
+                                placeholder="Variante (color, talle...)"
+                                className="mic-variant-input"
+                              />
+                            )}
                           </div>
                           {it.stockAvailable !== undefined && (
                             <span className={`mic-stock-chip ${overStock ? 'is-over' : ''}`}>

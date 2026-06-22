@@ -331,7 +331,14 @@ export function DataProvider({ children }) {
       })
       const idx = products.findIndex(x => x.id === item.productId)
       if (idx > -1) {
-        products[idx] = { ...products[idx], stock: (products[idx].stock || 0) + qty, lastMove: today, updatedAt: Date.now() }
+        const p = products[idx]
+        if (item.variantId && p.variants?.length) {
+          const variants = p.variants.map(v => v.id === item.variantId ? { ...v, stock: (Number(v.stock) || 0) + qty } : v)
+          const total = variants.reduce((s, v) => s + (Number(v.stock) || 0), 0)
+          products[idx] = { ...p, variants, stock: total, lastMove: today, updatedAt: Date.now() }
+        } else {
+          products[idx] = { ...p, stock: (p.stock || 0) + qty, lastMove: today, updatedAt: Date.now() }
+        }
       }
     })
 
@@ -377,7 +384,14 @@ export function DataProvider({ children }) {
       })
       const idx = products.findIndex(x => x.id === item.productId)
       if (idx > -1) {
-        products[idx] = { ...products[idx], stock: Math.max(0, (products[idx].stock || 0) - qty), lastMove: today, updatedAt: Date.now() }
+        const p = products[idx]
+        if (item.variantId && p.variants?.length) {
+          const variants = p.variants.map(v => v.id === item.variantId ? { ...v, stock: Math.max(0, (Number(v.stock) || 0) - qty) } : v)
+          const total = variants.reduce((s, v) => s + (Number(v.stock) || 0), 0)
+          products[idx] = { ...p, variants, stock: total, lastMove: today, updatedAt: Date.now() }
+        } else {
+          products[idx] = { ...p, stock: Math.max(0, (p.stock || 0) - qty), lastMove: today, updatedAt: Date.now() }
+        }
       }
     })
 
