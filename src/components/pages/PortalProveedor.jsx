@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
+import { supabase } from '../../lib/supabase'
 
 /**
  * Portal público de proveedor (sin auth) — ANMA Hub.
@@ -13,19 +14,14 @@ export default function PortalProveedor() {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-    try {
-      const params = new URLSearchParams(loc.search)
-      const d = params.get('d')
-      if (!d) { setError('Link inválido o vencido'); return }
-      const json = decodeURIComponent(escape(atob(d.replace(/-/g, '+').replace(/_/g, '/'))))
-      const raw = JSON.parse(json)
+    // Normaliza payload v2 (keys cortas) y v1 (keys largas — backward compat)
+    const applyRaw = (raw) => {
       const exp = raw.e || raw.exp || 0
       if (exp && Date.now() > exp) {
         setError('Este link ya venció. Pedí uno nuevo a tu cliente.')
         return
       }
-      // Normaliza payload v2 (keys cortas) y v1 (keys largas — backward compat)
-      const norm = {
+      setData({
         supplierName: raw.s || raw.supplierName || '',
         contact:      raw.c || raw.contact || '',
         paymentTerm:  raw.pt || raw.paymentTerm || '',
@@ -33,7 +29,7 @@ export default function PortalProveedor() {
         ownerName:    raw.o || raw.ownerName || '',
         ownerWa:      raw.w || raw.ownerWa || '',
         brandColor:   raw.bc || raw.brandColor || '',
-        exp:          exp,
+        exp,
         products: (raw.p || raw.products || []).map(pr => ({
           name:     pr.n  || pr.name || '',
           cost:     pr.c  ?? pr.cost ?? 0,
@@ -42,11 +38,33 @@ export default function PortalProveedor() {
           reorder:  pr.r === 1 || pr.reorder === true,
         })),
         priceHistory: raw.ph || raw.priceHistory || [],
-      }
-      setData(norm)
-    } catch (e) {
-      setError('No se pudo abrir el link. Verificá que esté completo.')
+      })
     }
+
+    const params = new URLSearchParams(loc.search)
+    const id = params.get('id')
+    const d = params.get('d')
+
+    // Short-link: ?id= → traemos el payload de Supabase por la función pública.
+    if (id) {
+      supabase.rpc('get_portal_link', { link_id: id }).then(({ data: payload, error }) => {
+        if (error || !payload) { setError('Link inválido o vencido. Pedí uno nuevo a tu cliente.'); return }
+        try { applyRaw(payload) } catch { setError('No se pudo abrir el link.') }
+      })
+      return
+    }
+
+    // Legacy: ?d=base64 embebido en la URL.
+    if (d) {
+      try {
+        applyRaw(JSON.parse(decodeURIComponent(escape(atob(d.replace(/-/g, '+').replace(/_/g, '/'))))))
+      } catch {
+        setError('No se pudo abrir el link. Verificá que esté completo.')
+      }
+      return
+    }
+
+    setError('Link inválido o vencido')
   }, [loc.search])
 
   const fmt = (n) => '$ ' + Number(n || 0).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })

@@ -4,6 +4,7 @@ import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, cfg, db, dbW } from '../../lib/storage'
 import { isLowStock, lowVariants } from '../../lib/stock'
+import { supabase } from '../../lib/supabase'
 
 export default function Proveedores() {
   const { get, set, saveEntity, deleteEntity } = useData()
@@ -343,7 +344,7 @@ export default function Proveedores() {
   }
 
   /* ── Generar link de portal para el proveedor (payload corto v2) ── */
-  const sharePortalLink = (s) => {
+  const sharePortalLink = async (s) => {
     if (!s) return
     const prods = supplierProducts(s)
     const c = cfg()
@@ -369,9 +370,19 @@ export default function Proveedores() {
     if (brandColor)   payload.bc = brandColor
     const ph = (s.priceHistory || []).slice(-8).reverse()
     if (ph.length)    payload.ph = ph
-    const json = JSON.stringify(payload)
-    const b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-    const url = `${window.location.origin}/app/portal-proveedor?d=${b64}`
+    // Short-link: guardamos el payload en Supabase y compartimos un id corto.
+    // Si la tabla no existe o falla, caemos al link largo embebido (?d=).
+    let url
+    try {
+      const id = (crypto?.randomUUID?.() || (Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2))).replace(/-/g, '').slice(0, 16)
+      const { error } = await supabase.from('portal_links').insert({ id, payload, expires_at: new Date(payload.e).toISOString() })
+      if (error) throw error
+      url = `${window.location.origin}/app/portal-proveedor?id=${id}`
+    } catch {
+      const json = JSON.stringify(payload)
+      const b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+      url = `${window.location.origin}/app/portal-proveedor?d=${b64}`
+    }
     if (s.wa) {
       const waNum = s.wa.replace(/\D/g, '')
       const text = `Hola ${s.contact || s.name}! Te paso este portal con el resumen de lo que te compramos, condiciones acordadas y los productos que necesito reponer:\n\n${url}\n\nVálido por 30 días.`
