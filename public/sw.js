@@ -3,8 +3,9 @@
    Stale-while-revalidate para imágenes/fonts.
    Bypass total para Supabase y APIs.
    v5: fuerza limpieza de caché tras agregar el viewport meta a la landing.
+   v6: limpia los íconos viejos cacheados tras actualizar el logo (favicon/PWA).
 */
-const CACHE_VER = 'anma-pro-v5'
+const CACHE_VER = 'anma-pro-v6'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
