@@ -268,12 +268,12 @@ export default function Login() {
           background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
 
         .lp-card{
-          position:relative;z-index:1;width:100%;max-width:480px;
+          position:relative;z-index:1;width:100%;max-width:540px;
           background:rgba(255,255,255,.06);
           backdrop-filter:blur(28px) saturate(180%);
           -webkit-backdrop-filter:blur(28px) saturate(180%);
           border:1px solid rgba(255,255,255,.12);
-          border-radius:28px;padding:44px 42px 36px;
+          border-radius:28px;padding:48px 46px 40px;
           box-shadow:0 24px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08);
           animation:lp-card-in .6s cubic-bezier(.2,.7,.2,1) both;
         }
