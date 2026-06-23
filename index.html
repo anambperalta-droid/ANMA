@@ -201,6 +201,9 @@ a{color:inherit;text-decoration:none}
 section{padding:52px 0}
 .eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#f1f5f9;color:#7c3aed;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
 .h2{font-family:'Fraunces',serif;font-size:44px;font-weight:600;letter-spacing:-.8px;line-height:1.12;margin:0 0 14px;color:#0F172A;text-wrap:balance}
+.h2 em{font-style:normal;background:linear-gradient(90deg,#c4b5fd,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.h2.h2-light{color:#fff}
+.h2.h2-light em{background:linear-gradient(90deg,#c4b5fd,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{font-size:17.5px;color:#475569;max-width:600px;margin:0 0 28px;line-height:1.65;text-wrap:pretty}
 .lead{text-wrap:pretty}
 p{text-wrap:pretty}
@@ -1071,8 +1074,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 <!-- EMPATÍA -->
 <section id="sec-empathy" style="padding:60px 24px;background:#fff">
   <div style="max-width:860px;margin:0 auto;text-align:center">
-    <h2 class="font-extrabold tracking-tight text-balance font-sans" style="color:#0F172A;margin:0 0 14px;line-height:1.08;font-size:clamp(30px,4.5vw,48px);letter-spacing:-1px">
-      Un respiro para tu día a día
+    <h2 class="h2" style="font-size:clamp(30px,4.5vw,48px)">
+      Un respiro <em>para tu día a día</em>
     </h2>
     <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-balance" style="color:#7c3aed;margin:0 0 24px;line-height:1.3">
       Tu negocio ordenado, tu cabeza libre
@@ -1093,8 +1096,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     <!-- Encabezado -->
     <div class="text-center" style="max-width:720px;margin:0 auto 64px">
       <div class="eyebrow-dark" style="margin-bottom:16px">Cómo funciona</div>
-      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 text-balance" style="margin:0 0 16px;line-height:1.1;color:#0F172A">
-        Tres pasos para pasar del caos operativo<br class="hidden sm:block"> a las decisiones inteligentes
+      <h2 class="h2" style="font-size:clamp(28px,4vw,44px)">
+        Tres pasos para pasar del caos operativo<br class="hidden sm:block"> <em>a las decisiones inteligentes</em>
       </h2>
       <p class="text-lg text-slate-600 text-balance" style="margin:0 auto;max-width:580px;line-height:1.65;color:#475569">
         ANMA se integra de forma natural con el flujo de tu día a día, centralizando los datos donde realmente impactan en tu caja.
@@ -1169,7 +1172,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   <div class="wrap">
     <div class="text-center max-w-2xl mx-auto px-4" style="margin-bottom:28px">
       <span class="inline-flex items-center gap-2 mb-4" style="padding:5px 14px;background:rgba(124,58,237,.18);color:#a78bfa;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;border:1px solid rgba(124,58,237,.28)">Vista real del sistema</span>
-      <h2 class="text-3xl md:text-4xl font-black tracking-tight leading-tight mb-3" style="color:#fff">Así se ve ANMA Hub por dentro</h2>
+      <h2 class="h2 h2-light" style="font-size:clamp(28px,4vw,44px)">Así se ve <em>ANMA Hub por dentro</em></h2>
       <p class="text-base md:text-lg font-medium" style="color:rgba(255,255,255,.6);line-height:1.65">Pantallas reales del sistema — navegá entre secciones</p>
     </div>
 
@@ -1683,8 +1686,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     <!-- Header centrado -->
     <div style="max-width:780px;margin:0 auto 52px;text-align:center">
       <span class="eyebrow-dark" style="margin-bottom:18px">Todo en uno</span>
-      <h2 class="font-extrabold tracking-tight text-balance" style="color:#0F172A;margin:0 0 18px;line-height:1.08;font-size:clamp(26px,3.8vw,40px)">
-        Un solo registro, el control absoluto<br class="hidden sm:block"> de tu stock, clientes y caja
+      <h2 class="h2" style="font-size:clamp(26px,3.8vw,40px)">
+        Un solo registro, <em>el control absoluto</em><br class="hidden sm:block"> de tu stock, clientes y caja
       </h2>
       <p class="text-balance" style="color:#64748b;margin:0 0 20px;line-height:1.75;font-size:17px">
         Centralizar no significa sumar más tareas: significa dejar de hacer trabajo doble. Cada venta registrada ordena el resto automáticamente.
@@ -1754,7 +1757,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   <div class="wrap">
     <div style="text-align:center;max-width:680px;margin:0 auto 36px">
       <span class="eyebrow-dark">Lo que dicen nuestros clientes</span>
-      <h2 class="h2">Negocios reales, resultados reales</h2>
+      <h2 class="h2">Negocios reales, <em>resultados reales</em></h2>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:980px;margin:0 auto" class="testi-grid">
 
@@ -1828,8 +1831,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 
     <div style="text-align:center;max-width:660px;margin:0 auto 48px">
       <span class="eyebrow-dark" style="margin-bottom:16px">Para quién es</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance text-center" style="color:#0F172A;margin:0 0 16px;line-height:1.1">
-        Diseñado para la realidad de tu rubro
+      <h2 class="h2" style="font-size:clamp(28px,4vw,44px);text-align:center">
+        Diseñado para <em>la realidad de tu rubro</em>
       </h2>
       <p class="text-lg text-balance text-center" style="color:#64748b;margin:0 auto;max-width:580px;line-height:1.65">
         Vendas al público, a empresas o de las dos formas, ANMA se adapta al ritmo de tu inventario: variantes, listas de precios, señas y cuentas corrientes en una sola pantalla.
@@ -1975,8 +1978,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 
     <!-- Encabezado -->
     <div style="text-align:center;margin-bottom:28px">
-      <h2 class="font-extrabold tracking-tight text-balance" style="color:#fff;font-size:32px;margin:0 0 10px;line-height:1.1;letter-spacing:-.6px">
-        Una sola inversión<br>Tu operación, ordenada desde el primer día
+      <h2 class="h2 h2-light" style="font-size:32px;margin:0 0 10px">
+        Una sola inversión<br><em>Tu operación, ordenada desde el primer día</em>
       </h2>
       <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">Implementación personalizada, llave en mano y con soporte real desde el arranque.</p>
     </div>
@@ -2117,8 +2120,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 
     <div style="text-align:center;max-width:700px;margin:0 auto 48px">
       <span class="eyebrow-dark" style="margin-bottom:16px">Preguntas frecuentes</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance text-center" style="color:#0F172A;margin:0;line-height:1.1">
-        Despejá tus dudas y empezá<br class="hidden sm:block"> a gestionar con claridad
+      <h2 class="h2" style="font-size:clamp(28px,4vw,44px);text-align:center;margin:0">
+        Despejá tus dudas y empezá<br class="hidden sm:block"> <em>a gestionar con claridad</em>
       </h2>
     </div>
 
@@ -2152,8 +2155,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 <section id="contact" style="padding:72px 16px;background:radial-gradient(ellipse 80% 60% at 50% 50%,#1e0a4a 0%,#0b0214 65%);text-align:center">
   <div style="max-width:900px;margin:0 auto">
 
-    <h2 class="font-extrabold tracking-tight text-white text-balance" style="color:#fff;margin:0 0 18px;line-height:1.12;letter-spacing:-1.2px;font-size:clamp(28px,4vw,42px)">
-      Recuperá el control de tus números<br> y volvé a tomar aire
+    <h2 class="h2 h2-light" style="font-size:clamp(28px,4vw,42px)">
+      Recuperá el control de tus números<br> <em>y volvé a tomar aire</em>
     </h2>
 
     <p class="text-balance" style="max-width:560px;margin:0 auto 36px;line-height:1.7;color:#94a3b8;font-size:17px">
