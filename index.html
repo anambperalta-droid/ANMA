@@ -262,13 +262,16 @@ p{text-wrap:pretty}
 .app-view{flex:1;overflow-y:auto;display:none;flex-direction:column}
 .app-view.av-active{display:flex}
 /* kpi row */
-.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px 20px;flex-shrink:0}
-.kpi-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px 16px}
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:18px 20px;flex-shrink:0}
+.kpi-card{background:#fff;border:1px solid rgba(15,23,42,.06);border-radius:18px;padding:22px 22px 18px;position:relative;box-shadow:0 1px 3px rgba(15,23,42,.04),0 4px 12px -6px rgba(15,23,42,.06);transition:box-shadow .25s,transform .15s,border-color .2s}
+.kpi-card:hover{box-shadow:0 2px 6px rgba(15,23,42,.06),0 12px 32px -10px rgba(15,23,42,.12);transform:translateY(-1px);border-color:rgba(124,58,237,.18)}
+.kpi-card-key{background:linear-gradient(180deg,rgba(34,197,94,.04) 0%,#fff 35%);border-color:rgba(34,197,94,.22)}
+.kpi-card-key::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:18px 18px 0 0;background:linear-gradient(90deg,#16A34A,#22C55E,#16A34A)}
 .kpi-label{font-size:9px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
-.kpi-num{font-size:30px;font-weight:900;color:#0F172A;line-height:1}
-.kpi-num.knum-ok{color:#16a34a}
-.kpi-num.knum-warn{color:#f59e0b}
-.kpi-num.knum-crit{color:#dc2626}
+.kpi-label{font-size:10.5px;font-weight:700;color:#94A3B8;letter-spacing:.085em;text-transform:uppercase;line-height:1.2}
+.kpi-num{font-size:28px;font-weight:800;color:#0F172A;letter-spacing:-.03em;line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi-dot{position:absolute;top:18px;right:18px;width:6px;height:6px;border-radius:50%;opacity:.7}
+.kpi-delta{font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;line-height:1.2;white-space:nowrap;flex-shrink:0}
 /* table */
 .app-tbl-wrap{padding:0 20px 20px;flex:1}
 .app-tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;border:1.5px solid #e2e8f0}
@@ -449,7 +452,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 @media(max-width:920px){
   .h1{font-size:36px!important;letter-spacing:-.8px!important}
   .hero-grid{gap:28px!important}
-  .kpi-strip{grid-template-columns:1fr 1fr!important}
+  .kpi-strip{grid-template-columns:1fr 1fr!important;gap:10px!important}
   #caracteristicas-grid{grid-template-columns:1fr!important;gap:40px!important}
   #para-quien-grid{grid-template-columns:1fr!important}
 }
@@ -462,6 +465,9 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   .app-layout{height:360px!important}
   .kpi-strip{grid-template-columns:1fr 1fr!important;padding:12px!important;gap:8px!important}
   .kpi-num{font-size:22px!important}
+  .kpi-card{padding:14px!important;border-radius:14px!important}
+  .kpi-card svg{display:none!important}
+  .kpi-dot{display:none!important}
   .demo-tabs{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
   .demo-tab{white-space:nowrap!important;font-size:11px!important;padding:7px 12px!important}
   .dtable td,.dtable th{font-size:11px!important;padding:7px 10px!important}
@@ -506,7 +512,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   .nav-cta .btn{font-size:12px!important;padding:8px 12px!important}
   .pillar-card{padding:20px!important}
   .app-layout{height:300px!important}
-  .kpi-strip{grid-template-columns:1fr 1fr!important}
+  .kpi-strip{grid-template-columns:1fr 1fr!important;gap:10px!important}
   /* Reducir más en mobile pequeño */
   #sec-empathy{padding:40px 16px!important}
   #para-quien{padding:40px 16px!important}
@@ -1208,6 +1214,9 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
           <div class="app-nav-item" id="nav-mensajes"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
           <div class="app-nav-section">Sistema</div>
           <div class="app-nav-item" id="nav-config"><i class="fa-solid fa-gear"></i> Configuración</div>
+          <div class="app-nav-section">Tu cuenta</div>
+          <div class="app-nav-item"><i class="fa-solid fa-user"></i> Mi cuenta</div>
+          <div class="app-nav-item"><i class="fa-solid fa-cloud-arrow-down"></i> Backup</div>
         </nav>
 
         <!-- ── MAIN: vistas con tabs ── -->
@@ -1216,23 +1225,32 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
           <!-- Panel: Dashboard (espejo de Historial.jsx) -->
           <div class="app-view av-active" id="panel-dashboard">
 
-          <!-- topbar real -->
+          <!-- topbar (espejo de Topbar.jsx) -->
           <div class="app-topbar">
             <div class="app-topbar-left">
+              <i class="fa fa-table-columns" style="font-size:12px;color:#94a3b8;margin-right:6px"></i>
               <b>Dashboard</b>
-              &nbsp;·&nbsp;
-              <span style="color:#64748b">Junio · 2026</span>
             </div>
+            <div style="flex:1"></div>
             <div class="app-topbar-actions">
-              <span style="font-size:11px;padding:5px 11px;border:1px solid #e2e8f0;border-radius:7px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:5px;font-weight:600"><i class="fa-regular fa-calendar" style="font-size:10px"></i> Este mes <i class="fa-solid fa-chevron-down" style="font-size:8px;color:#94a3b8"></i></span>
-              <span class="app-btn app-btn-primary" style="font-size:11px;padding:6px 13px"><i class="fa-solid fa-plus"></i> Nuevo pedido</span>
+              <span style="width:36px;height:36px;border-radius:10px;background:#f1f5f9;color:#94a3b8;display:inline-flex;align-items:center;justify-content:center;font-size:14px"><i class="fa fa-eye"></i></span>
+              <span style="width:36px;height:36px;border-radius:10px;background:#FEF3C7;color:#D97706;display:inline-flex;align-items:center;justify-content:center;font-size:14px;position:relative"><i class="fa fa-bell"></i><span style="position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#DC2626;border:1.5px solid #fff"></span></span>
+              <span style="width:36px;height:36px;border-radius:10px;background:#EDE9FE;color:#7C3AED;display:inline-flex;align-items:center;justify-content:center;font-size:15px"><i class="fa fa-brain"></i></span>
+              <span style="width:36px;height:36px;border-radius:10px;background:#f1f5f9;color:#64748b;display:inline-flex;align-items:center;justify-content:center;font-size:14px"><i class="fa fa-moon"></i></span>
             </div>
           </div>
 
-          <!-- sub-tabs reales: Resumen / Presupuestos / Análisis / Seguimiento -->
+          <!-- action bar: Este mes / Exportar / + Nuevo pedido -->
+          <div style="display:flex;align-items:center;gap:10px;padding:14px 20px 0;background:#fff;flex-shrink:0">
+            <span style="font-size:12px;padding:6px 12px;border:1px solid #e2e8f0;border-radius:8px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:default"><i class="fa-regular fa-calendar" style="font-size:10px"></i> Este mes <i class="fa-solid fa-chevron-down" style="font-size:8px;color:#94a3b8"></i></span>
+            <span style="font-size:12px;padding:6px 12px;border:1px solid #e2e8f0;border-radius:8px;color:#475569;background:#fff;display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:default"><i class="fa-solid fa-arrow-up-from-bracket" style="font-size:10px"></i> Exportar</span>
+            <span class="app-btn app-btn-primary" style="font-size:12px;padding:7px 14px;border-radius:8px"><i class="fa-solid fa-plus"></i> Nuevo pedido</span>
+          </div>
+
+          <!-- sub-tabs: Resumen / Pedidos / Análisis / Seguimiento -->
           <div style="display:flex;gap:2px;padding:8px 20px 0;background:#fff;border-bottom:1px solid #e2e8f0;flex-shrink:0">
             <div style="font-size:12px;font-weight:700;color:#7c3aed;padding:7px 14px;border-bottom:2px solid #7c3aed;cursor:default;margin-bottom:-1px">Resumen</div>
-            <div style="font-size:12px;color:#94a3b8;padding:7px 14px;cursor:default;font-weight:500">Presupuestos</div>
+            <div style="font-size:12px;color:#94a3b8;padding:7px 14px;cursor:default;font-weight:500">Pedidos</div>
             <div style="font-size:12px;color:#94a3b8;padding:7px 14px;cursor:default;font-weight:500">Análisis</div>
             <div style="font-size:12px;color:#94a3b8;padding:7px 14px;cursor:default;display:flex;align-items:center;gap:6px;font-weight:500">Seguimiento <span style="background:#fee2e2;color:#dc2626;border-radius:99px;padding:1px 7px;font-size:10px;font-weight:800">1</span></div>
           </div>
@@ -1287,33 +1305,41 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
               </div>
             </div>
 
-            <!-- KPIs bento (Ventas Brutas, Ingresos Caja, Ticket Promedio, Presupuestos) -->
+            <!-- KPIs bento (espejo exacto de KpiCard en Historial.jsx) -->
             <div class="kpi-strip">
               <div class="kpi-card">
+                <span class="kpi-dot" style="background:#7c3aed"></span>
                 <div class="kpi-label">Ventas Brutas</div>
-                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
-                  <div class="kpi-num" style="font-size:22px">$554.850</div>
-                  <span style="font-size:10px;font-weight:700;color:#16A34A;background:rgba(22,163,74,.10);padding:2px 6px;border-radius:5px">↑18%</span>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10;margin-top:4px">
+                  <div class="kpi-num">$554.850</div>
+                  <span class="kpi-delta" style="color:#15803D;background:rgba(34,197,94,.10)">↑18%</span>
                 </div>
-                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="18" style="display:block;margin-top:5px"><polyline points="0,18 14,16 28,14 42,12 56,10 70,7 84,5 100,3" fill="none" stroke="#7c3aed" stroke-width="1.4" opacity=".45"/></svg>
+                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="20" style="display:block;margin-top:8px"><polyline points="0,18 14,16 28,14 42,12 56,10 70,7 84,5 100,3" fill="none" stroke="#7c3aed" stroke-width="1.4" opacity=".45"/></svg>
               </div>
-              <div class="kpi-card" style="background:#f0fdf4;border-left:3px solid #16A34A">
+              <div class="kpi-card kpi-card-key">
+                <span class="kpi-dot" style="background:#16A34A"></span>
                 <div class="kpi-label">Ingresos Caja</div>
-                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
-                  <div class="kpi-num knum-ok" style="font-size:22px">$274.500</div>
-                  <span style="font-size:10px;font-weight:700;color:#16A34A;background:rgba(22,163,74,.10);padding:2px 6px;border-radius:5px">↑24%</span>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10;margin-top:4px">
+                  <div class="kpi-num">$274.500</div>
+                  <span class="kpi-delta" style="color:#15803D;background:rgba(34,197,94,.10)">↑24%</span>
                 </div>
-                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="18" style="display:block;margin-top:5px"><polyline points="0,19 14,17 28,18 42,13 56,11 70,10 84,7 100,5" fill="none" stroke="#16A34A" stroke-width="1.4" opacity=".45"/></svg>
+                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="20" style="display:block;margin-top:8px"><polyline points="0,19 14,17 28,18 42,13 56,11 70,10 84,7 100,5" fill="none" stroke="#16A34A" stroke-width="1.4" opacity=".45"/></svg>
               </div>
               <div class="kpi-card">
+                <span class="kpi-dot" style="background:#7c3aed"></span>
                 <div class="kpi-label">Ticket Promedio</div>
-                <div class="kpi-num" style="font-size:22px">$92.475</div>
-                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="18" style="display:block;margin-top:5px"><polyline points="0,12 14,14 28,9 42,15 56,8 70,11 84,9 100,7" fill="none" stroke="#7c3aed" stroke-width="1.4" opacity=".45"/></svg>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10;margin-top:4px">
+                  <div class="kpi-num">$92.475</div>
+                </div>
+                <svg viewBox="0 0 100 22" preserveAspectRatio="none" width="100%" height="20" style="display:block;margin-top:8px"><polyline points="0,12 14,14 28,9 42,15 56,8 70,11 84,9 100,7" fill="none" stroke="#7c3aed" stroke-width="1.4" opacity=".45"/></svg>
               </div>
               <div class="kpi-card">
+                <span class="kpi-dot" style="background:#7c3aed"></span>
                 <div class="kpi-label">Presupuestos</div>
-                <div class="kpi-num" style="font-size:22px">6</div>
-                <div style="font-size:10px;color:#94a3b8;margin-top:3px">Conv. 67% · 4 cerrados</div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10;margin-top:4px">
+                  <div class="kpi-num">6</div>
+                </div>
+                <div style="font-size:10.5px;color:#94a3b8;margin-top:6px">Conversión 67% · 4 cerrados</div>
               </div>
             </div>
 
