@@ -288,7 +288,7 @@ export default function Login() {
         }
         .lp-logo img{width:80%;height:80%;object-fit:contain;display:block}
         .lp-brand-txt{display:flex;flex-direction:column;line-height:1}
-        .lp-brand-name{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px}
+        .lp-brand-name{font-family:'Poppins',sans-serif;font-size:20px;font-weight:600;color:#fff;letter-spacing:.2px}
         .lp-brand-tag{font-size:11px;color:rgba(255,255,255,.5);margin-top:3px;letter-spacing:.3px}
 
         .lp-greet{
