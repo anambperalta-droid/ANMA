@@ -268,17 +268,17 @@ export default function Login() {
           background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
 
         .lp-card{
-          position:relative;z-index:1;width:100%;max-width:420px;
+          position:relative;z-index:1;width:100%;max-width:480px;
           background:rgba(255,255,255,.06);
           backdrop-filter:blur(28px) saturate(180%);
           -webkit-backdrop-filter:blur(28px) saturate(180%);
           border:1px solid rgba(255,255,255,.12);
-          border-radius:24px;padding:36px 34px 28px;
+          border-radius:28px;padding:44px 42px 36px;
           box-shadow:0 24px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08);
           animation:lp-card-in .6s cubic-bezier(.2,.7,.2,1) both;
         }
 
-        .lp-top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+        .lp-top{display:flex;align-items:center;gap:14px;margin-bottom:26px}
         .lp-logo{
           width:46px;height:46px;border-radius:13px;flex-shrink:0;
           background:#fff;
@@ -292,27 +292,27 @@ export default function Login() {
         .lp-brand-tag{font-size:11px;color:rgba(255,255,255,.5);margin-top:3px;letter-spacing:.3px}
 
         .lp-greet{
-          font-size:24px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2;
-          margin-bottom:6px;animation:lp-fade .5s .15s ease both
+          font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2;
+          margin-bottom:8px;animation:lp-fade .5s .15s ease both
         }
         .lp-greet em{font-style:normal;background:linear-gradient(90deg,#a78bfa,#ec4899);-webkit-background-clip:text;background-clip:text;color:transparent}
         .lp-sub{
-          font-size:13px;color:rgba(255,255,255,.6);margin-bottom:22px;line-height:1.55;
+          font-size:13.5px;color:rgba(255,255,255,.6);margin-bottom:26px;line-height:1.55;
           animation:lp-fade .5s .25s ease both
         }
         .lp-sub b{color:rgba(255,255,255,.85);font-weight:600}
 
-        .lp-fg{margin-bottom:14px}
+        .lp-fg{margin-bottom:18px}
         .lp-lbl{
           display:flex;justify-content:space-between;align-items:center;
           font-size:10.5px;font-weight:700;color:rgba(255,255,255,.7);
           margin-bottom:7px;letter-spacing:.7px;text-transform:uppercase
         }
         .lp-inp{
-          width:100%;padding:13px 15px;box-sizing:border-box;
+          width:100%;padding:15px 18px;box-sizing:border-box;
           background:rgba(255,255,255,.07);
           border:1.5px solid rgba(255,255,255,.12);
-          border-radius:12px;font-size:14px;color:#fff;outline:none;
+          border-radius:14px;font-size:15px;color:#fff;outline:none;
           transition:border-color .2s,background .2s,box-shadow .2s;
           font-family:'Inter',sans-serif;
         }
@@ -345,10 +345,10 @@ export default function Login() {
         .lp-caps{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:10.5px;color:#fbbf24;font-weight:600}
 
         .lp-btn{
-          width:100%;padding:14px;margin-top:8px;
+          width:100%;padding:16px;margin-top:10px;
           background:linear-gradient(135deg,#059669 0%,#10b981 100%);
-          color:#fff;border:none;border-radius:12px;
-          font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;
+          color:#fff;border:none;border-radius:14px;
+          font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
           box-shadow:0 8px 24px rgba(5,150,105,.4),inset 0 1px 0 rgba(255,255,255,.18);
           transition:transform .15s,box-shadow .25s,filter .2s;
           display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.2px;
@@ -359,17 +359,17 @@ export default function Login() {
 
         .lp-divider{
           display:flex;align-items:center;gap:10px;
-          margin:18px 0 12px;font-size:10.5px;color:rgba(255,255,255,.35);
+          margin:20px 0 14px;font-size:10.5px;color:rgba(255,255,255,.35);
           text-transform:uppercase;letter-spacing:1.2px;font-weight:600
         }
         .lp-divider::before,.lp-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.10)}
 
         .lp-google{
           display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
-          padding:13px;background:#fff;color:#1f1f1f;border:none;border-radius:12px;
-          font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;
+          padding:15px;background:#fff;color:#1f1f1f;border:none;border-radius:14px;
+          font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
           box-shadow:0 4px 18px rgba(0,0,0,.28);
-          transition:transform .15s,box-shadow .2s;margin-bottom:16px;
+          transition:transform .15s,box-shadow .2s;margin-bottom:18px;
         }
         .lp-google:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.38)}
         .lp-google:disabled{opacity:.6;cursor:not-allowed;transform:none}
@@ -420,8 +420,8 @@ export default function Login() {
         .lp-modal-send:disabled{opacity:.6;cursor:not-allowed}
 
         @media(max-width:480px){
-          .lp-card{padding:30px 24px 24px;border-radius:20px}
-          .lp-greet{font-size:21px}
+          .lp-card{padding:32px 24px 26px;border-radius:22px}
+          .lp-greet{font-size:22px}
           /* iOS zoom prevention: inputs necesitan font-size ≥16px */
           .lp-inp{font-size:16px!important;padding:14px 15px!important}
         }
