@@ -171,7 +171,7 @@ a{color:inherit;text-decoration:none}
   .sp-chip{padding:10px 14px}
   .sp-chip span{font-size:13px}
 }
-.h1{font-family:'Fraunces',serif;font-size:56px;line-height:1.06;font-weight:600;letter-spacing:-1.4px;margin:0 0 14px}
+.h1{font-family:'Fraunces',serif;font-size:56px;line-height:1.06;font-weight:600;letter-spacing:-1.4px;margin:0 0 14px;text-wrap:balance}
 .h1 em{font-style:normal;background:linear-gradient(90deg,#c4b5fd,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{font-size:18px;color:rgba(255,255,255,.78);max-width:540px;margin:0 0 20px;line-height:1.6}
 .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end}
@@ -200,16 +200,18 @@ a{color:inherit;text-decoration:none}
 /* SECTIONS */
 section{padding:52px 0}
 .eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#f1f5f9;color:#7c3aed;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
-.h2{font-family:'Fraunces',serif;font-size:40px;font-weight:600;letter-spacing:-.7px;line-height:1.14;margin:0 0 14px;color:#0F172A}
-.sub{font-size:17px;color:#475569;max-width:640px;margin:0 0 28px;line-height:1.65}
+.h2{font-family:'Fraunces',serif;font-size:44px;font-weight:600;letter-spacing:-.8px;line-height:1.12;margin:0 0 14px;color:#0F172A;text-wrap:balance}
+.sub{font-size:17.5px;color:#475569;max-width:600px;margin:0 0 28px;line-height:1.65;text-wrap:pretty}
+.lead{text-wrap:pretty}
+p{text-wrap:pretty}
 .center{text-align:center;margin-left:auto;margin-right:auto}
 
 /* Aire en mobile — más respiro entre secciones SIN achicar la tipografía
    (los títulos quedan grandes y prominentes, solo se agrega espacio) */
 @media(max-width:640px){
-  section{padding:56px 0}
-  .h2{line-height:1.18;margin-bottom:16px}
-  .sub{line-height:1.7;margin-bottom:30px}
+  section{padding:48px 0}
+  .h2{font-size:32px;letter-spacing:-.5px;line-height:1.18;margin-bottom:14px}
+  .sub{font-size:16.5px;line-height:1.7;margin-bottom:26px}
   .eyebrow-dark{margin-bottom:16px}
 }
 
@@ -1067,7 +1069,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- EMPATÍA -->
-<section id="sec-empathy" style="padding:80px 24px;background:#fff">
+<section id="sec-empathy" style="padding:60px 24px;background:#fff">
   <div style="max-width:860px;margin:0 auto;text-align:center">
     <h2 class="font-extrabold tracking-tight text-balance font-sans" style="color:#0F172A;margin:0 0 14px;line-height:1.08;font-size:clamp(30px,4.5vw,48px);letter-spacing:-1px">
       Un respiro para tu día a día
@@ -1085,7 +1087,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- CÓMO FUNCIONA -->
-<section id="como-funciona" style="padding:72px 0 80px;background:#f8fafc;border-top:1px solid #e5e7eb">
+<section id="como-funciona" style="padding:56px 0 60px;background:#f6f4fc;border-top:1px solid #ece8f6">
   <div class="wrap">
 
     <!-- Encabezado -->
@@ -1675,7 +1677,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- CARACTERÍSTICAS -->
-<section id="sec-caracteristicas" style="padding:80px 0;background:#fff;border-top:1px solid #e5e7eb">
+<section id="sec-caracteristicas" style="padding:60px 0;background:#fff;border-top:1px solid #f0eef6">
   <div class="wrap">
 
     <!-- Header centrado -->
@@ -1748,7 +1750,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- TESTIMONIOS -->
-<section style="padding:56px 0;background:#fafbfc">
+<section style="padding:52px 0;background:#f6f4fc">
   <div class="wrap">
     <div style="text-align:center;max-width:680px;margin:0 auto 36px">
       <span class="eyebrow-dark">Lo que dicen nuestros clientes</span>
@@ -1815,13 +1817,13 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     <!-- CTA intermedio -->
     <div style="text-align:center;margin-top:36px">
       <a href="/app/registro" class="btn btn-primary" style="padding:14px 30px;font-size:15px"><i class="fa-solid fa-rocket"></i> Probalo gratis — sin tarjeta de crédito</a>
-      <p style="font-size:12px;color:#94a3b8;margin:10px 0 0">7 días de prueba completa. Sin compromiso.</p>
+      <p style="font-size:13px;color:#475569;font-weight:600;margin:11px 0 0">7 días de prueba completa. Sin compromiso.</p>
     </div>
   </div>
 </section>
 
 <!-- PARA QUIÉN -->
-<section id="para-quien" style="padding:80px 24px;background:#f8fafc;border-top:1px solid #e5e7eb">
+<section id="para-quien" style="padding:60px 24px;background:#f6f4fc;border-top:1px solid #ece8f6">
   <div style="max-width:1020px;margin:0 auto">
 
     <div style="text-align:center;max-width:660px;margin:0 auto 48px">
@@ -2110,7 +2112,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- FAQ -->
-<section id="faq" style="padding:80px 0;background:#f8fafc;border-top:1px solid #e5e7eb">
+<section id="faq" style="padding:60px 0;background:#f6f4fc;border-top:1px solid #ece8f6">
   <div class="wrap">
 
     <div style="text-align:center;max-width:700px;margin:0 auto 48px">
@@ -2147,7 +2149,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- CTA FINAL -->
-<section id="contact" style="padding:96px 16px;background:radial-gradient(ellipse 80% 60% at 50% 50%,#1e0a4a 0%,#0b0214 65%);text-align:center">
+<section id="contact" style="padding:72px 16px;background:radial-gradient(ellipse 80% 60% at 50% 50%,#1e0a4a 0%,#0b0214 65%);text-align:center">
   <div style="max-width:900px;margin:0 auto">
 
     <h2 class="font-extrabold tracking-tight text-white text-balance" style="color:#fff;margin:0 0 18px;line-height:1.12;letter-spacing:-1.2px;font-size:clamp(28px,4vw,42px)">
