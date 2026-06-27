@@ -255,6 +255,12 @@ export default function Registro() {
       return
     }
 
+    // Avisar a Ana del nuevo registro (no bloquea el flujo si falla)
+    try {
+      const { notifyAdminSignup } = await import('../../lib/systemEmail')
+      notifyAdminSignup({ businessName: cleanBiz, email: cleanEmail, source: 'email' })
+    } catch { /* no-op */ }
+
     if (data?.session?.user) {
       injectSeedData(data.session.user.id, cleanBiz)
       clearAcquisitionData()   // limpiar después del signUp exitoso

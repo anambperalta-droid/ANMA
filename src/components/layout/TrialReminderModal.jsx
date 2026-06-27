@@ -75,6 +75,15 @@ function markShownToday(key, userId) {
   try { localStorage.setItem(STORAGE_PREFIX + (userId || 'anon') + '_' + key, new Date().toISOString()) } catch { /* ignorar */ }
 }
 
+// Email al usuario: UNA sola vez por etapa (no por día) para no spamear.
+const EMAIL_PREFIX = 'anma_trial_email_'
+function trialEmailAlreadySent(key, userId) {
+  try { return !!localStorage.getItem(EMAIL_PREFIX + (userId || 'anon') + '_' + key) } catch { return false }
+}
+function markTrialEmailSent(key, userId) {
+  try { localStorage.setItem(EMAIL_PREFIX + (userId || 'anon') + '_' + key, new Date().toISOString()) } catch { /* ignorar */ }
+}
+
 export default function TrialReminderModal() {
   const { trial, user, loading } = useAuth()
   const [milestone, setMilestone] = useState(null)
@@ -84,6 +93,20 @@ export default function TrialReminderModal() {
     if (loading || !user || !trial) return
     const m = getCurrentMilestone(trial)
     if (!m) return
+
+    // Email al usuario — una sola vez por etapa (independiente del modal).
+    if (!trialEmailAlreadySent(m, user.id)) {
+      markTrialEmailSent(m, user.id)
+      import('../../lib/systemEmail')
+        .then(({ notifyUserTrial }) => notifyUserTrial({
+          email: user.email,
+          businessName: user.user_metadata?.business_name,
+          phase: m,
+          daysLeft: trial.daysLeft,
+        }))
+        .catch(() => {})
+    }
+
     // Delay para no aparecer encima del WelcomeTour si es el primer login
     const delay = setTimeout(() => {
       if (!wasShownToday(m, user.id)) {

@@ -109,6 +109,14 @@ export function AuthProvider({ children }) {
             },
           }).then(() => {
             injectSeedData(session.user.id, meta.full_name || meta.name || '')
+            // Avisar a Ana del nuevo registro vía Google (no bloquea si falla)
+            import('../lib/systemEmail')
+              .then(({ notifyAdminSignup }) => notifyAdminSignup({
+                businessName: meta.full_name || meta.name || '',
+                email: session.user.email,
+                source: 'google',
+              }))
+              .catch(() => {})
           })
         } else if (meta.is_trial) {
           // Seed data para usuario email (si no fue inyectado aún)
