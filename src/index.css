@@ -1037,7 +1037,7 @@ td b{color:var(--txt);font-weight:600}
   .hist-tbl tbody tr{
     display:grid!important;
     grid-template-columns:auto 1fr auto;
-    grid-template-areas:'sel num acc' 'sel cli acc' 'sel estado total';
+    grid-template-areas:'sel num acc' 'sel cli acc' 'sel estado total' 'sel gan gan';
     align-items:center;column-gap:12px;row-gap:5px;
     background:var(--surface);border:1px solid var(--border);border-radius:16px;
     padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(15,23,42,.05);
@@ -1059,6 +1059,9 @@ td b{color:var(--txt);font-weight:600}
   /* Total: destacado abajo derecha con etiqueta */
   .hist-tbl td[data-cell="total"]{grid-area:total;text-align:right!important;font-size:18px!important;align-self:center}
   .hist-tbl td[data-cell="total"]::before{content:attr(data-label);display:block;font-size:9px;font-weight:700;color:var(--txt4);text-transform:uppercase;letter-spacing:.05em;text-align:right;margin-bottom:1px}
+  /* Ganancia: línea de stats abajo (a lo ancho), con etiqueta */
+  .hist-tbl td[data-cell="gan"]{grid-area:gan;text-align:left!important;font-size:12px!important;margin-top:2px;padding-top:6px!important;border-top:1px solid var(--border)!important}
+  .hist-tbl td[data-cell="gan"]::before{content:attr(data-label) ': ';font-size:11px;font-weight:600;color:var(--txt4);text-transform:none;letter-spacing:0}
   /* Acciones: arriba a la derecha */
   .hist-tbl td[data-cell="acc"]{grid-area:acc;justify-self:end;align-self:start}
   .hist-tbl td[data-cell="acc"]>div{gap:8px!important}

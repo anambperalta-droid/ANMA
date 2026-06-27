@@ -2079,7 +2079,7 @@ export default function Historial() {
                         )}
                       </td>
                       <td data-cell="total" data-label="Total" style={{ textAlign: 'right', fontWeight: 800, color: 'var(--money)', fontVariantNumeric: 'tabular-nums', fontFamily: 'ui-monospace,SFMono-Regular,monospace', fontSize: 13 }}>{money(b.total)}</td>
-                      <td className="col-hide-mobile" style={{ textAlign: 'right', color: hidden ? 'var(--txt4)' : '#16A34A', fontWeight: 700, fontVariantNumeric: 'tabular-nums', fontFamily: 'ui-monospace,SFMono-Regular,monospace', fontSize: 12 }}>{money(b.totalGain)}</td>
+                      <td className="col-hide-mobile" data-cell="gan" data-label="Ganancia" style={{ textAlign: 'right', color: hidden ? 'var(--txt4)' : '#16A34A', fontWeight: 700, fontVariantNumeric: 'tabular-nums', fontFamily: 'ui-monospace,SFMono-Regular,monospace', fontSize: 12 }}>{money(b.totalGain)}</td>
                       <td data-cell="estado" data-label="Estado" style={{ whiteSpace: 'nowrap' }}>
                         <div>
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
