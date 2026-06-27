@@ -924,7 +924,10 @@ export default function Historial() {
   } = useMemo(() => {
     const n = now
     const prevYM = (() => { const d = new Date(n.getFullYear(), n.getMonth() - 1, 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}` })()
-    const totBudgeted = periodBudgets.reduce((s, b) => s + (b.total || 0), 0)
+    // Ventas Brutas: excluye PERDIDOS (un presupuesto rechazado no es una venta).
+    // Coincide con el sparkline de brutas, que ya los excluía.
+    const nonLost     = periodBudgets.filter(b => b.status !== 'lost')
+    const totBudgeted = nonLost.reduce((s, b) => s + (b.total || 0), 0)
     const confirmed   = periodBudgets.filter(b => b.status === 'confirmed')
     // Pagados: incluye los NO perdidos + los perdidos donde te quedaste con la seña (keptDeposit:true).
     // Si marcaste un pedido perdido y devolviste la plata, NO cuenta como ingreso.
@@ -933,7 +936,10 @@ export default function Historial() {
       return b.payStatus === 'paid' || b.payStatus === 'partial'
     })
     const totCobrado  = pagados.reduce((s, b) => s + cobrado(b), 0)
-    const avgTicket   = periodBudgets.length ? Math.round(totBudgeted / periodBudgets.length) : 0
+    // Ticket promedio: sobre ventas NO perdidas (coherente con Ventas Brutas).
+    const avgTicket   = nonLost.length ? Math.round(totBudgeted / nonLost.length) : 0
+    // Conversión: confirmados sobre el TOTAL de presupuestos del período (incluye
+    // perdidos en el denominador — son parte del embudo de conversión).
     const convRate    = periodBudgets.length ? Math.round(confirmed.length / periodBudgets.length * 100) + '%' : '—'
 
     let prevPeriodBudgets = []
@@ -952,7 +958,8 @@ export default function Historial() {
       prevPeriodBudgets = budgets.filter(b => b.date?.startsWith(String(n.getFullYear() - 1)))
     }
     const prevPagados      = prevPeriodBudgets.filter(b => b.payStatus === 'paid' || b.payStatus === 'partial')
-    const prevTotBudgeted  = prevPeriodBudgets.reduce((s, b) => s + (b.total || 0), 0)
+    // Excluye perdidos, igual que totBudgeted, para que el % de variación sea justo.
+    const prevTotBudgeted  = prevPeriodBudgets.filter(b => b.status !== 'lost').reduce((s, b) => s + (b.total || 0), 0)
     const prevTotCobrado   = prevPagados.reduce((s, b) => s + cobrado(b), 0)
     const deltaBrutas      = prevTotBudgeted > 0 ? Math.round((totBudgeted - prevTotBudgeted) / prevTotBudgeted * 100) : null
     const deltaCaja        = prevTotCobrado  > 0 ? Math.round((totCobrado  - prevTotCobrado)  / prevTotCobrado  * 100) : null
