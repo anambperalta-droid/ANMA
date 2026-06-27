@@ -1095,7 +1095,7 @@ export default function Catalogo() {
             </div>
 
             {selectedIds.size === 0 && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: 12 }}>
                 <div className="fg">
                   <label>Proveedor</label>
                   <select value={priceSupplier} onChange={e => setPriceSupplier(e.target.value)}>
