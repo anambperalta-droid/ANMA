@@ -3,6 +3,7 @@
    Se muestra cuando el trial de 7 días venció
    y el usuario aún no está suscrito.
 ───────────────────────────────────────── */
+import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
 const WA_LINK = 'https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Vi%20la%20web%20de%20ANMA%20y%20quier%C3%B3%20suscribirme%20al%20plan.'
@@ -63,15 +64,26 @@ export default function TrialExpirado() {
         .te-item i { color:#34d399;font-size:11px;flex-shrink:0 }
 
         /* CTA */
+        /* CTA primario: pagar y reactivar (autogestión) */
+        .te-pay-btn {
+          display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+          padding:17px;background:linear-gradient(135deg,#059669,#047857);color:#fff;border:none;border-radius:14px;
+          font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;text-decoration:none;
+          box-shadow:0 12px 32px rgba(5,150,105,.4);transition:transform .15s,box-shadow .2s;
+          margin-bottom:12px;letter-spacing:-.2px;
+        }
+        .te-pay-btn:hover { transform:translateY(-2px);box-shadow:0 16px 40px rgba(5,150,105,.5) }
+        .te-pay-btn i { font-size:15px }
+
         .te-wa-btn {
           display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
-          padding:16px;background:#25D366;color:#fff;border:none;border-radius:14px;
-          font-size:15.5px;font-weight:800;cursor:pointer;font-family:inherit;text-decoration:none;
-          box-shadow:0 10px 28px rgba(37,211,102,.35);transition:transform .15s,box-shadow .2s;
+          padding:14px;background:rgba(37,211,102,.12);color:#34d399;border:1px solid rgba(37,211,102,.3);border-radius:14px;
+          font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;
+          transition:background .2s,transform .15s;
           margin-bottom:10px;
         }
-        .te-wa-btn:hover { transform:translateY(-2px);box-shadow:0 14px 36px rgba(37,211,102,.45) }
-        .te-wa-btn i { font-size:20px }
+        .te-wa-btn:hover { background:rgba(37,211,102,.2);transform:translateY(-1px) }
+        .te-wa-btn i { font-size:17px }
 
         .te-secondary { font-size:12px;color:rgba(255,255,255,.38);margin:0 }
         .te-logout { background:none;border:none;color:rgba(255,255,255,.38);font-size:12px;
@@ -113,17 +125,18 @@ export default function TrialExpirado() {
             </div>
           </div>
 
+          <Link to="/activar" className="te-pay-btn">
+            <i className="fa fa-lock" />
+            Reactivar ahora con Mercado Pago
+          </Link>
+
           <a href={WA_LINK} target="_blank" rel="noreferrer" className="te-wa-btn">
             <i className="fa-brands fa-whatsapp" />
-            Quiero suscribirme — Hablemos ahora
+            Prefiero coordinar por WhatsApp
           </a>
 
           <p className="te-secondary">
-            ¿Tenés dudas?{' '}
-            <a href={WA_LINK} target="_blank" rel="noreferrer"
-               style={{ color:'#a78bfa', fontWeight:700, fontSize:12 }}>
-              Escribinos por WhatsApp
-            </a>
+            Pago seguro con tarjeta, débito o transferencia. Tus datos te esperan intactos.
           </p>
 
           <br />
