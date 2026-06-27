@@ -2051,10 +2051,10 @@ export default function Historial() {
                   const overdue = dDays !== null && dDays <= 0 && !['confirmed', 'lost'].includes(b.status)
                   return (
                     <tr key={b.id} className={selectedIds.has(b.id) ? 'selected' : ''} style={selectedIds.has(b.id) ? { background: 'var(--brand-xlt)' } : undefined}>
-                      <td><input type="checkbox" checked={selectedIds.has(b.id)} onChange={() => toggleSelect(b.id)} /></td>
-                      <td style={{ fontSize: 12.5, fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: 'var(--txt)' }}>{b.num || '—'}</td>
+                      <td data-cell="sel"><input type="checkbox" checked={selectedIds.has(b.id)} onChange={() => toggleSelect(b.id)} /></td>
+                      <td data-cell="num" style={{ fontSize: 12.5, fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: 'var(--txt)' }}>{b.num || '—'}</td>
                       <td className="col-hide-mobile" style={{ fontSize: 12.5, fontVariantNumeric: 'tabular-nums', color: 'var(--txt3)' }}>{fmtDate(b.date)}</td>
-                      <td style={{ maxWidth: 200 }}>
+                      <td data-cell="cli" style={{ maxWidth: 200 }}>
                         <button
                           type="button"
                           onClick={(e) => { e.stopPropagation(); setPreviewBudget(b) }}
@@ -2078,9 +2078,9 @@ export default function Historial() {
                           </div>
                         )}
                       </td>
-                      <td style={{ textAlign: 'right', fontWeight: 800, color: 'var(--money)', fontVariantNumeric: 'tabular-nums', fontFamily: 'ui-monospace,SFMono-Regular,monospace', fontSize: 13 }}>{money(b.total)}</td>
+                      <td data-cell="total" data-label="Total" style={{ textAlign: 'right', fontWeight: 800, color: 'var(--money)', fontVariantNumeric: 'tabular-nums', fontFamily: 'ui-monospace,SFMono-Regular,monospace', fontSize: 13 }}>{money(b.total)}</td>
                       <td className="col-hide-mobile" style={{ textAlign: 'right', color: hidden ? 'var(--txt4)' : '#16A34A', fontWeight: 700, fontVariantNumeric: 'tabular-nums', fontFamily: 'ui-monospace,SFMono-Regular,monospace', fontSize: 12 }}>{money(b.totalGain)}</td>
-                      <td style={{ whiteSpace: 'nowrap' }}>
+                      <td data-cell="estado" data-label="Estado" style={{ whiteSpace: 'nowrap' }}>
                         <div>
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                             <span style={{ width: 7, height: 7, borderRadius: '50%', background: DOT_STATUS[b.status] || '#94A3B8', flexShrink: 0, display: 'inline-block' }} />
@@ -2153,7 +2153,7 @@ export default function Historial() {
                           )
                         })()}
                       </td>
-                      <td>
+                      <td data-cell="acc">
                         <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                           <button className="hist-act" onClick={() => editB(b.id)} title="Editar"
                             onMouseEnter={e => e.currentTarget.style.color = 'var(--brand)'}
@@ -2186,7 +2186,7 @@ export default function Historial() {
                     </tr>
                   )
                 }) : (
-                  <tr><td colSpan={12}><div className="empty"><div className="ico"><i className="fa fa-file-invoice" /></div><p>No hay presupuestos con este filtro</p></div></td></tr>
+                  <tr className="hist-empty-row"><td colSpan={12}><div className="empty"><div className="ico"><i className="fa fa-file-invoice" /></div><p>No hay presupuestos con este filtro</p></div></td></tr>
                 )}
               </tbody>
             </table>
