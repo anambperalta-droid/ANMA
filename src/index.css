@@ -782,6 +782,8 @@ td b{color:var(--txt);font-weight:600}
 
 .wiz-tip{margin-top:10px;padding:9px 12px;background:var(--brand-xlt);border:1px solid rgba(124,58,237,.18);border-radius:10px;font-size:11px;color:var(--brand);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
 .wiz-tip i{margin-top:2px;flex-shrink:0;opacity:.75}
+.wiz-tip-x{flex-shrink:0;background:none;border:none;color:var(--brand);opacity:.5;cursor:pointer;padding:2px 4px;margin:-2px -4px -2px 0;font-size:13px;line-height:1;font-family:inherit;border-radius:6px;transition:opacity .15s,background .15s}
+.wiz-tip-x:hover{opacity:1;background:rgba(124,58,237,.12)}
 @media(max-width:640px){
   .wiz-tip{margin-top:8px;padding:8px 11px;font-size:10.5px;line-height:1.45}
   .wiz-tip i{font-size:11px}
@@ -1036,29 +1038,32 @@ td b{color:var(--txt);font-weight:600}
     display:grid!important;
     grid-template-columns:auto 1fr auto;
     grid-template-areas:'sel num acc' 'sel cli acc' 'sel estado total';
-    align-items:center;column-gap:10px;row-gap:4px;
+    align-items:center;column-gap:12px;row-gap:5px;
     background:var(--surface);border:1px solid var(--border);border-radius:16px;
     padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(15,23,42,.05);
   }
   .hist-tbl tbody tr:active{background:var(--surface2)}
-  .hist-tbl td{display:block!important;border:none!important;padding:0!important;font-size:13px!important}
-  /* Checkbox: columna izquierda, alineado arriba */
-  .hist-tbl td[data-cell="sel"]{grid-area:sel;align-self:start;padding-top:2px!important}
+  /* Ocultar TODAS las celdas por defecto; mostrar solo las marcadas (evita que
+     reaparezcan las col-hide-mobile y rompan el grid) */
+  .hist-tbl tbody td{display:none!important}
+  .hist-tbl tbody td[data-cell]{display:block!important;border:none!important;padding:0!important}
+  /* Checkbox a la izquierda */
+  .hist-tbl td[data-cell="sel"]{grid-area:sel;align-self:start;padding-top:3px!important}
   /* N°: referencia chica y tenue arriba */
-  .hist-tbl td[data-cell="num"]{grid-area:num;font-size:11px!important;color:var(--txt4)!important;font-weight:700!important}
-  /* Cliente = título de la card */
+  .hist-tbl td[data-cell="num"]{grid-area:num;font-size:11px!important;color:var(--txt4)!important;font-weight:700!important;letter-spacing:.02em}
+  /* Cliente = título de la card, con N° pequeño antes */
   .hist-tbl td[data-cell="cli"]{grid-area:cli;max-width:none!important}
-  .hist-tbl td[data-cell="cli"] [data-cli]{font-size:15.5px!important;white-space:normal!important;text-decoration:none!important}
-  /* Estado: abajo a la izquierda */
+  .hist-tbl td[data-cell="cli"] [data-cli]{font-size:15.5px!important;font-weight:800!important;white-space:normal!important;text-decoration:none!important;line-height:1.25!important}
+  /* Estado: abajo izquierda */
   .hist-tbl td[data-cell="estado"]{grid-area:estado;white-space:normal!important;align-self:center}
-  /* Total: destacado abajo a la derecha */
-  .hist-tbl td[data-cell="total"]{grid-area:total;text-align:right!important;font-size:17px!important;align-self:center}
+  /* Total: destacado abajo derecha con etiqueta */
+  .hist-tbl td[data-cell="total"]{grid-area:total;text-align:right!important;font-size:18px!important;align-self:center}
   .hist-tbl td[data-cell="total"]::before{content:attr(data-label);display:block;font-size:9px;font-weight:700;color:var(--txt4);text-transform:uppercase;letter-spacing:.05em;text-align:right;margin-bottom:1px}
-  /* Acciones: arriba a la derecha, fila de iconos */
+  /* Acciones: arriba a la derecha */
   .hist-tbl td[data-cell="acc"]{grid-area:acc;justify-self:end;align-self:start}
-  .hist-tbl td[data-cell="acc"]>div{gap:6px!important}
+  .hist-tbl td[data-cell="acc"]>div{gap:8px!important}
   /* Estado vacío: tarjeta simple sin grid */
-  .hist-tbl tbody tr.hist-empty-row{display:block!important;grid-template-areas:none}
+  .hist-tbl tbody tr.hist-empty-row{display:block!important;grid-template-areas:none;text-align:center}
   .hist-tbl tbody tr.hist-empty-row td{display:block!important}
   /* Budget detail modal header */
   .dm-head{flex-wrap:wrap;gap:8px}

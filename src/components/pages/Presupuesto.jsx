@@ -10,6 +10,33 @@ import { buildBudgetWA } from '../../lib/voice'
 
 const emptyItem = () => ({ name: '', variant: '', qty: 1, costUnit: '', priceUnit: '' })
 
+/* Tip de ayuda descartable. Al cerrar uno, se ocultan TODOS (el usuario que ya
+   conoce la app no los necesita). Persiste en localStorage. */
+const TIPS_KEY = 'anma_hide_wiztips'
+function WizTip({ children, style }) {
+  const [hidden, setHidden] = useState(() => {
+    try { return localStorage.getItem(TIPS_KEY) === '1' } catch { return false }
+  })
+  useEffect(() => {
+    const h = () => setHidden(true)
+    window.addEventListener('anma:hide-wiztips', h)
+    return () => window.removeEventListener('anma:hide-wiztips', h)
+  }, [])
+  if (hidden) return null
+  const dismiss = () => {
+    try { localStorage.setItem(TIPS_KEY, '1') } catch { /* ignore */ }
+    window.dispatchEvent(new Event('anma:hide-wiztips'))
+  }
+  return (
+    <div className="wiz-tip" style={style}>
+      <div style={{ flex: 1, minWidth: 0 }}>{children}</div>
+      <button type="button" onClick={dismiss} className="wiz-tip-x" title="No mostrar estos consejos" aria-label="Cerrar consejo">
+        <i className="fa fa-xmark" />
+      </button>
+    </div>
+  )
+}
+
 /* ── ProductAutocomplete ────────────────────────────────────────────────
    Input predictivo con dropdown relativo (renderizado en portal con
    posición fixed para no quedar cortado por overflow del padre). Filtra
@@ -1371,9 +1398,9 @@ export default function Presupuesto() {
                     <input type="email" value={form.clientEmail} onChange={e => setF('clientEmail', e.target.value)} placeholder="cliente@email.com" />
                   </div>
                 </div>
-                <div className="wiz-tip">
+                <WizTip>
                   <i className="fa fa-lightbulb" /> Buscá un contacto existente o creá uno nuevo escribiendo el nombre.
-                </div>
+                </WizTip>
               </>
             )}
 
@@ -1615,9 +1642,9 @@ export default function Presupuesto() {
                 <button className="tbl-add-btn" onClick={addItem}>
                   <i className="fa fa-plus" /> Agregar producto
                 </button>
-                <div className="wiz-tip">
+                <WizTip>
                   <i className="fa fa-lightbulb" /> Escribí el nombre del producto para autocompletar desde tu catálogo — el costo y precio se llenan solos.
-                </div>
+                </WizTip>
               </>
             )}
 
@@ -1961,9 +1988,9 @@ export default function Presupuesto() {
                     </div>
                   </div>
                 </div>
-                <div className="wiz-tip" style={{ marginTop: 14 }}>
+                <WizTip style={{ marginTop: 14 }}>
                   <i className="fa fa-circle-check" /> Todo listo. Al confirmar guardás el presupuesto y volvés al dashboard.
-                </div>
+                </WizTip>
               </>
             )}
 

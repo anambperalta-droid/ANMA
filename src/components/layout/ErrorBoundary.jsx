@@ -1,18 +1,23 @@
 import { Component } from 'react'
+import { isChunkLoadError, maybeReloadOnChunkError } from '../../lib/chunkReload'
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props)
     // Auto-expandimos detalles para que el user vea EL ERROR REAL al instante.
     // Antes el detalle quedaba colapsado y eso no nos servía para diagnosticar.
-    this.state = { hasError: false, error: null, showDetails: true, copied: false }
+    this.state = { hasError: false, error: null, showDetails: true, copied: false, reloading: false }
   }
 
   static getDerivedStateFromError(error) {
+    // Si es un chunk viejo (deploy nuevo), no mostramos el error: recargamos.
+    if (isChunkLoadError(error)) return { hasError: true, error, reloading: true }
     return { hasError: true, error }
   }
 
   componentDidCatch(error, info) {
+    // Chunk viejo → auto-reload una vez (trae la versión nueva sin que el user haga nada).
+    if (maybeReloadOnChunkError(error)) return
     console.error('[ANMA] Error no capturado:', error, info)
   }
 
@@ -30,6 +35,16 @@ export default class ErrorBoundary extends Component {
 
   render() {
     if (!this.state.hasError) return this.props.children
+
+    // Chunk viejo: pantalla neutra mientras recarga (no "Algo salió mal")
+    if (this.state.reloading) {
+      return (
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: 'linear-gradient(180deg,#FAFAFB 0%,#F5F3FF 100%)', fontFamily: 'Inter, system-ui, sans-serif', color: '#7C3AED' }}>
+          <i className="fa fa-arrows-rotate fa-spin" style={{ fontSize: 26 }} />
+          <p style={{ fontSize: 14, color: '#64748B', margin: 0 }}>Actualizando a la última versión…</p>
+        </div>
+      )
+    }
 
     const { error, showDetails } = this.state
 
