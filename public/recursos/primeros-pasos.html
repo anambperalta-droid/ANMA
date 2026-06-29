@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Primeros pasos con ANMA Hub — En 10 minutos ya estás operando</title>
+<meta name="description" content="Guía rápida y visual para arrancar con ANMA Hub: configurás tu negocio, cargás productos y clientes, y hacés tu primer pedido. Sin tutoriales largos.">
+<link rel="canonical" href="https://anmahub.com/recursos/primeros-pasos">
+<meta property="og:title" content="Primeros pasos con ANMA Hub — En 10 minutos ya estás operando">
+<meta property="og:description" content="Guía rápida y visual para arrancar sin perder el día en tutoriales.">
+<meta property="og:url" content="https://anmahub.com/recursos/primeros-pasos">
+<meta property="og:image" content="https://anmahub.com/og-image.png">
+<meta property="og:type" content="article">
+<link rel="icon" href="/favicon-32.png" type="image/png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+
+:root{
+  --brand:#7C3AED; --brand2:#C026D3; --brand-dk:#5B21B6;
+  --emerald:#10B981; --emerald-dk:#047857;
+  --ink:#1b1530; --txt:#3c3753; --txt2:#6a6680; --txt3:#94909f;
+  --line:#ece8f2; --bg:#fdfcfa; --surf:#f7f4fb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--txt);
+  font-family:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;
+  font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;
+}
+
+/* ── Nav ── */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:15px 26px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(253,252,250,.85);backdrop-filter:blur(12px);z-index:10}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-weight:600;color:var(--ink);text-decoration:none;font-size:18.5px;letter-spacing:.2px}
+.logo img{width:30px;height:30px;border-radius:8px}
+.nav-r{display:flex;align-items:center;gap:18px}
+.nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--txt);font-weight:600;font-size:14px;text-decoration:none}
+.nav-back:hover{color:var(--brand)}
+.nav-back::before{content:'←';font-size:15px}
+.nav .cta{background:var(--brand);color:#fff;text-decoration:none;font-weight:600;font-size:13.5px;padding:10px 20px;border-radius:10px;transition:.15s}
+.nav .cta:hover{background:var(--brand-dk);transform:translateY(-1px)}
+@media(max-width:520px){.nav-back span{display:none}.nav-r{gap:12px}}
+
+/* ── Hero ── */
+.hero{max-width:780px;margin:0 auto;padding:64px 26px 24px;text-align:center}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#f7f4fb,#fbf5fe);border:1px solid #e9ddfb;color:var(--brand-dk);font-size:12.5px;font-weight:700;padding:8px 16px;border-radius:99px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
+.hero .eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 0 3px rgba(16,185,129,.2)}
+.hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(36px,6vw,56px);line-height:1.06;letter-spacing:-1.3px;color:var(--ink);margin-bottom:18px;text-wrap:balance}
+.hero h1 em{font-style:italic;background:linear-gradient(120deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:19px;color:var(--txt);max-width:580px;margin:0 auto;line-height:1.55}
+
+/* ── Stats bar ── */
+.stats{max-width:780px;margin:32px auto 0;padding:0 26px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+.stat-n{font-family:'Fraunces',serif;font-size:28px;font-weight:600;color:var(--brand);line-height:1}
+.stat-l{font-size:12.5px;color:var(--txt2);margin-top:6px;font-weight:500}
+@media(max-width:520px){.stat-n{font-size:23px}.stat-l{font-size:11.5px}}
+
+/* ── Stepper visual ── */
+.intro{max-width:780px;margin:60px auto 28px;padding:0 26px}
+.intro h2{font-family:'Fraunces',serif;font-weight:600;font-size:13px;color:var(--brand);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.intro p{color:var(--txt);font-size:16px}
+
+/* ── Steps ── */
+.steps{max-width:820px;margin:0 auto;padding:0 26px 24px;position:relative}
+.step{position:relative;display:flex;gap:24px;padding:36px 0;border-bottom:1px dashed var(--line)}
+.step:last-child{border-bottom:none}
+.step-rail{flex-shrink:0;display:flex;flex-direction:column;align-items:center;position:relative}
+.step-num{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-dk));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:600;font-size:22px;box-shadow:0 8px 24px -8px rgba(124,58,237,.55);z-index:2;position:relative}
+.step-rail::after{content:'';position:absolute;top:54px;bottom:-36px;left:50%;width:2px;background:linear-gradient(180deg,var(--brand) 0%,transparent 100%);opacity:.25;transform:translateX(-50%)}
+.step:last-child .step-rail::after{display:none}
+.step-body{flex:1;min-width:0;padding-top:4px}
+.step-meta{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.step-time{display:inline-flex;align-items:center;gap:5px;background:var(--surf);color:var(--brand-dk);font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:99px;letter-spacing:.3px}
+.step-time::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--brand)}
+.step-tag{font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px}
+.step h3{font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.2;color:var(--ink);margin:0 0 10px;letter-spacing:-.4px;text-wrap:balance}
+.step .desc{color:var(--txt);font-size:15.5px;margin-bottom:18px;line-height:1.6}
+.step .desc b{color:var(--ink);font-weight:600}
+.checklist{list-style:none;padding:0;margin:0 0 18px;display:flex;flex-direction:column;gap:10px}
+.checklist li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:var(--txt);line-height:1.55}
+.checklist li::before{content:'';flex-shrink:0;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),var(--emerald-dk));margin-top:3px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px -1px rgba(16,185,129,.4)}
+.checklist li::after{content:'✓';position:absolute;color:#fff;font-size:11px;font-weight:700;margin-left:3.5px;margin-top:3.5px}
+.checklist li b{color:var(--ink);font-weight:600}
+.tip{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-left:3px solid #f59e0b;border-radius:4px 12px 12px 4px;padding:13px 16px;font-size:14px;color:#78350f;line-height:1.55}
+.tip b{color:#92400e;font-weight:700;font-family:'Fraunces',serif;font-size:13.5px;display:block;margin-bottom:2px;letter-spacing:.2px}
+
+@media(max-width:600px){
+  .step{gap:16px;padding:30px 0}
+  .step-num{width:44px;height:44px;font-size:18px}
+  .step-rail::after{top:44px}
+  .step h3{font-size:22px}
+}
+
+/* ── Bonus row ── */
+.bonus{max-width:820px;margin:32px auto 0;padding:0 26px}
+.bonus-head{text-align:center;margin-bottom:24px}
+.bonus-head .lbl{display:inline-block;background:#fff;border:1px solid var(--line);color:var(--brand);font-size:11px;font-weight:800;padding:5px 12px;border-radius:99px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px}
+.bonus-head h2{font-family:'Fraunces',serif;font-weight:600;font-size:30px;color:var(--ink);letter-spacing:-.5px;text-wrap:balance}
+.bonus-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.bonus-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;transition:.2s;cursor:default;position:relative;overflow:hidden}
+.bonus-card:hover{transform:translateY(-3px);box-shadow:0 16px 36px -16px rgba(124,58,237,.22);border-color:#e9d5ff}
+.bonus-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--surf),#fbf5fe);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px;color:var(--brand)}
+.bonus-card h4{font-family:'Fraunces',serif;font-weight:600;font-size:17px;color:var(--ink);margin-bottom:6px}
+.bonus-card p{font-size:13.5px;color:var(--txt2);line-height:1.55}
+
+/* ── Final CTA ── */
+.final{max-width:780px;margin:64px auto 0;padding:0 26px 80px}
+.box-cta{background:linear-gradient(150deg,#120327 0%,#2d0a57 50%,#5b21b6 100%);border-radius:24px;padding:48px 36px;text-align:center;position:relative;overflow:hidden}
+.box-cta::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:520px;height:520px;background:radial-gradient(circle,rgba(192,38,211,.35),transparent 62%);pointer-events:none}
+.box-cta h2{font-family:'Fraunces',serif;color:#fff;font-size:32px;margin:0 0 12px;letter-spacing:-.5px;position:relative;text-wrap:balance}
+.box-cta p{color:rgba(255,255,255,.78);font-size:16px;margin:0 0 26px;line-height:1.55;position:relative;max-width:480px;margin-left:auto;margin-right:auto}
+.box-cta .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative}
+.box-cta a.primary{background:#fff;color:var(--brand-dk);text-decoration:none;font-weight:700;padding:15px 32px;border-radius:12px;font-size:15px;transition:.15s;box-shadow:0 10px 28px -8px rgba(0,0,0,.4)}
+.box-cta a.primary:hover{transform:translateY(-2px)}
+.box-cta a.ghost{color:rgba(255,255,255,.92);text-decoration:none;font-weight:600;padding:15px 24px;font-size:14.5px;border:1px solid rgba(255,255,255,.25);border-radius:12px;transition:.15s}
+.box-cta a.ghost:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.45)}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font-size:13px;color:var(--txt3)}
+footer a{color:var(--brand);text-decoration:none}
+.foot-rich{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-bottom:8px}
+.foot-credit{font-size:11.5px;margin-top:6px}
+
+@media(max-width:520px){
+  .hero{padding:44px 22px 20px}
+  .hero h1{font-size:clamp(32px,8vw,42px)}
+  .hero p{font-size:17px}
+  .stats{grid-template-columns:repeat(3,1fr);gap:8px;padding:0 22px}
+  .stat{padding:14px 8px}
+  .bonus-head h2{font-size:25px}
+  .box-cta{padding:36px 24px}
+  .box-cta h2{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="logo"><img src="/favicon-a.png" alt=""> ANMA Hub</a>
+  <span class="nav-r"><a href="/recursos/" class="nav-back"><span>Recursos</span></a><a href="/app/registro" class="cta">Probar gratis</a></span>
+</nav>
+
+<section class="hero">
+  <span class="eyebrow">Guía de inicio</span>
+  <h1>De cero a tu primer pedido en <em>10 minutos</em></h1>
+  <p>No vas a leer un tutorial de 40 páginas. 5 pasos cortos, en orden, con lo que de verdad importa para empezar a vender hoy.</p>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="stat-n">5</div><div class="stat-l">pasos</div></div>
+  <div class="stat"><div class="stat-n">~10'</div><div class="stat-l">tiempo total</div></div>
+  <div class="stat"><div class="stat-n">0$</div><div class="stat-l">7 días gratis</div></div>
+</div>
+
+<section class="intro">
+  <h2>Antes de arrancar</h2>
+  <p>No necesitás cargar todo tu catálogo ni todos tus clientes el primer día. La idea es lo contrario: cargás <b>lo mínimo</b> para mandar tu primer pedido, y el resto va entrando solo a medida que usás la app.</p>
+</section>
+
+<section class="steps">
+
+  <!-- PASO 1 -->
+  <div class="step">
+    <div class="step-rail"><div class="step-num">1</div></div>
+    <div class="step-body">
+      <div class="step-meta">
+        <span class="step-time">2 min</span>
+        <span class="step-tag">Configuración › Negocio</span>
+      </div>
+      <h3>Tu negocio: nombre, logo y formas de pago</h3>
+      <p class="desc">Es lo único que necesitás antes de mandar tu primer presupuesto. Sin esto, los documentos salen incompletos y vas a tener que rehacerlos. <b>Hacelo una vez y te olvidás.</b></p>
+      <ul class="checklist">
+        <li><b>Nombre del negocio</b> tal como querés que aparezca en presupuestos y mensajes.</li>
+        <li><b>Logo</b> (subí el que ya usás — no diseñes uno nuevo ahora).</li>
+        <li><b>CUIT, dirección y teléfono</b> si los vas a facturar.</li>
+        <li><b>Formas de pago</b> que aceptás: efectivo, transferencia, MercadoPago, tarjetas.</li>
+      </ul>
+      <div class="tip"><b>Tip rioplatense</b>Si todavía no tenés CUIT o trabajás en negro / monotributo simple, dejalo vacío. ANMA igual te emite presupuestos con el nombre fantasía — fiscalizás cuando crezcas.</div>
+    </div>
+  </div>
+
+  <!-- PASO 2 -->
+  <div class="step">
+    <div class="step-rail"><div class="step-num">2</div></div>
+    <div class="step-body">
+      <div class="step-meta">
+        <span class="step-time">4 min</span>
+        <span class="step-tag">Productos</span>
+      </div>
+      <h3>Cargá tus 20 productos top (no los 200)</h3>
+      <p class="desc">El error clásico es querer subir el catálogo entero el primer día. <b>No.</b> Cargá los 20 que más vendés — esos son el 80% de tu facturación. El resto los agregás cuando los necesites en el momento de la venta (lleva 30 segundos por producto).</p>
+      <ul class="checklist">
+        <li><b>Nombre y precio</b> de cada uno (lo único obligatorio).</li>
+        <li><b>Categoría</b> si tenés rubros distintos: te deja filtrar rápido después.</li>
+        <li><b>Stock inicial</b> si querés que ANMA descuente solo cuando vendas.</li>
+        <li><b>¿Tenés precios mayoristas?</b> Activá la segunda lista — se aplica sola por tipo de cliente.</li>
+      </ul>
+      <div class="tip"><b>Si ya tenés un Excel</b>Importá en bloque desde <b>Productos › Importar</b>. En 2 minutos pasás 200 productos sin tipear uno.</div>
+    </div>
+  </div>
+
+  <!-- PASO 3 -->
+  <div class="step">
+    <div class="step-rail"><div class="step-num">3</div></div>
+    <div class="step-body">
+      <div class="step-meta">
+        <span class="step-time">2 min</span>
+        <span class="step-tag">Clientes</span>
+      </div>
+      <h3>Sumá los 10 clientes que ya sabés que vuelven</h3>
+      <p class="desc">No es la base del CRM de toda tu vida — son los que pasan seguido y los que tienen algo pendiente con vos (seña, saldo, pedido en curso). Lo demás se carga al vuelo con cada venta nueva.</p>
+      <ul class="checklist">
+        <li><b>Nombre y WhatsApp</b> — el botón verde sale solo desde la ficha.</li>
+        <li><b>Tipo de cliente</b>: público o mayorista (define qué lista de precios aplica).</li>
+        <li><b>Notas libres</b>: "le gusta el negro", "paga a 30 días", "es la hermana de Caro".</li>
+      </ul>
+      <div class="tip"><b>Bonus que te hace quedar bien</b>Cuando vuelva esa clienta dentro de 3 meses, ANMA te muestra qué se llevó la última vez. Acordarte sin esfuerzo es una ventaja injusta.</div>
+    </div>
+  </div>
+
+  <!-- PASO 4 -->
+  <div class="step">
+    <div class="step-rail"><div class="step-num">4</div></div>
+    <div class="step-body">
+      <div class="step-meta">
+        <span class="step-time">90 seg</span>
+        <span class="step-tag">Nuevo pedido</span>
+      </div>
+      <h3>Hacé tu primer pedido (el momento "ah, era esto")</h3>
+      <p class="desc">Acá se ve para qué sirve todo lo anterior. Hacé un pedido real — el próximo que entre, o uno de prueba con un cliente conocido. <b>Vas a sentir la diferencia entre armarlo a mano vs. armarlo en 90 segundos.</b></p>
+      <ul class="checklist">
+        <li>Elegís el cliente: precio mayorista o público se aplica solo.</li>
+        <li>Sumás productos: el stock se descuenta solo, los totales se calculan solos.</li>
+        <li>Confirmás: el PDF se genera con tu logo, datos y numeración secuencial.</li>
+        <li><b>Enviás por WhatsApp</b> con un clic — el mensaje sale pre-armado.</li>
+      </ul>
+      <div class="tip"><b>Cuando lo mandés</b>Ese cliente recibe un PDF profesional, no una captura desprolija. Eso solo ya cambia cómo te ven.</div>
+    </div>
+  </div>
+
+  <!-- PASO 5 -->
+  <div class="step">
+    <div class="step-rail"><div class="step-num">5</div></div>
+    <div class="step-body">
+      <div class="step-meta">
+        <span class="step-time">2 min</span>
+        <span class="step-tag">Dashboard</span>
+      </div>
+      <h3>Mirá tu primer dato: qué te muestra el Dashboard</h3>
+      <p class="desc">Después de cada pedido, el Dashboard se actualiza solo: presupuestos abiertos, cobranzas pendientes, productos por reponer, clientes que hace tiempo que no compran. <b>Es el panel que vas a abrir cada mañana</b> para saber qué resolver primero.</p>
+      <ul class="checklist">
+        <li><b>Lo urgente</b>: presupuestos sin respuesta, cobros vencidos, stock bajo.</li>
+        <li><b>Lo importante</b>: clientes dormidos hace +60 días, pedidos en logística.</li>
+        <li><b>Lo que vendiste</b>: facturación de la semana y top productos.</li>
+      </ul>
+      <div class="tip"><b>Hábito de 5 minutos</b>Cada mañana, abrí el Dashboard antes de cualquier otra cosa. Resolvés lo urgente del día sin que te explote en la cara a las 7 PM.</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- BONUS -->
+<section class="bonus">
+  <div class="bonus-head">
+    <span class="lbl">Cuando estés lista</span>
+    <h2>Lo que sumás después</h2>
+  </div>
+  <div class="bonus-grid">
+    <div class="bonus-card">
+      <div class="bonus-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13h2l3-3 4 4 5-5 4 4M3 18h18"/></svg></div>
+      <h4>Proveedores</h4>
+      <p>Cargás a quién le comprás y a qué precio. ANMA te avisa cuando un costo sube más del promedio.</p>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="14" height="11" rx="1"/><path d="M15 9h4l3 3v5h-7"/><circle cx="6.5" cy="18.5" r="2"/><circle cx="17.5" cy="18.5" r="2"/></svg></div>
+      <h4>Logística</h4>
+      <p>Integración con ViaCargo: generás envíos sin salir de ANMA y rastreás todo en una sola pantalla.</p>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+      <h4>Mensajes WA</h4>
+      <p>Plantillas pre-armadas para presupuestos, seguimientos y postventa. No improvisás cada vez.</p>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7L9 18l-5-5"/></svg></div>
+      <h4>Insumos</h4>
+      <p>Materiales que usás para armar productos (cajas, bolsas, etiquetas). Se descuentan solos cuando vendés.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="final">
+  <div class="box-cta">
+    <h2>Listo. ¿Empezamos?</h2>
+    <p>7 días gratis, sin tarjeta. Si te trabás en algún paso, escribinos por WhatsApp y te ayudamos en vivo.</p>
+    <div class="btns">
+      <a class="primary" href="/app/registro">Crear mi cuenta gratis →</a>
+      <a class="ghost" href="/demo.html">Ver demo primero</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-rich">
+    <a href="/">ANMA Hub</a>
+    <a href="/recursos/">Todas las guías</a>
+    <a href="/demo.html">Ver demo</a>
+    <a href="/app/registro">Probar gratis</a>
+    <a href="/privacidad">Privacidad</a>
+  </div>
+  <div class="foot-credit">© 2026 ANMA Hub · Hecho en Argentina con la cabeza fría</div>
+</footer>
+
+</body>
+</html>
