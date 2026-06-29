@@ -12,6 +12,7 @@
 <meta property="og:image" content="https://anmahub.com/og-image.png">
 <meta property="og:type" content="article">
 <link rel="icon" href="/favicon-32.png" type="image/png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
 
@@ -165,6 +166,86 @@ footer a{color:var(--brand)}
   .box-cta{padding:36px 24px}
   .box-cta h2{font-size:24px}
 }
+
+/* ── Mapa visual de pantalla principal ── */
+.screen-map{max-width:1180px;margin:36px auto 0;padding:0 26px}
+.screen-map-inner{background:linear-gradient(180deg,#1a0420 0%,#2d0a57 100%);border-radius:20px;padding:24px;box-shadow:0 20px 50px -20px rgba(124,58,237,.45);overflow:hidden;position:relative}
+.screen-map-bar{display:flex;align-items:center;gap:8px;padding:0 4px 12px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}
+.screen-map-bar span{width:9px;height:9px;border-radius:50%;background:#475569}
+.screen-map-bar span:nth-child(1){background:#ef4444}
+.screen-map-bar span:nth-child(2){background:#f59e0b}
+.screen-map-bar span:nth-child(3){background:#10b981}
+.screen-map-url{margin-left:auto;font-size:10.5px;color:rgba(255,255,255,.4);font-family:monospace;background:rgba(255,255,255,.06);padding:3px 10px;border-radius:6px}
+.screen-grid{display:grid;grid-template-columns:200px 1fr;gap:16px;min-height:280px}
+.screen-side{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;gap:2px}
+.screen-side-lbl{font-size:9px;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;padding:8px 10px 4px}
+.screen-side-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:500;transition:.15s;cursor:default}
+.screen-side-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.screen-side-item.active{background:rgba(124,58,237,.25);color:#fff;font-weight:700}
+.screen-side-item i{width:14px;text-align:center;font-size:12px;opacity:.85}
+.screen-main{background:#fafbfc;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.screen-main-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.screen-main-top h4{font-family:'Fraunces',serif;font-size:15px;color:var(--ink);font-weight:600}
+.screen-main-action{display:inline-flex;align-items:center;gap:5px;background:var(--brand);color:#fff;font-size:10.5px;font-weight:700;padding:5px 10px;border-radius:7px}
+.screen-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.screen-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px;display:flex;flex-direction:column;gap:3px}
+.screen-card-lbl{font-size:8.5px;font-weight:800;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px}
+.screen-card-num{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--ink)}
+.screen-card-num.warn{color:#dc2626}
+.screen-card-num.ok{color:var(--emerald-dk)}
+.screen-hint{font-size:11.5px;color:rgba(255,255,255,.55);text-align:center;margin-top:14px;font-style:italic}
+@media(max-width:780px){
+  .screen-grid{grid-template-columns:1fr}
+  .screen-side{flex-direction:row;flex-wrap:wrap;gap:4px;padding:8px}
+  .screen-side-lbl{display:none}
+  .screen-side-item{flex:0 0 auto;padding:6px 10px;font-size:11px}
+  .screen-cards{grid-template-columns:1fr 1fr}
+}
+
+/* ── Action → React block ── */
+.action-react{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:stretch;margin:0 0 18px;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.ar-step{padding:18px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.ar-lbl{font-size:9.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px}
+.ar-content{display:flex;align-items:flex-start;gap:10px;flex:1}
+.ar-ico{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:var(--brand-lt);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid #ece1fb}
+.ar-body{flex:1;min-width:0;font-size:13.5px;color:var(--ink);font-weight:600;line-height:1.35}
+.ar-body small{display:block;font-size:11.5px;color:var(--txt2);font-weight:500;margin-top:2px;line-height:1.45}
+.ar-arrow{align-self:center;color:var(--brand);opacity:.5;padding:0 4px;font-size:16px}
+.ar-step.ar-result .ar-ico{background:#fff7ed;color:#ea580c;border-color:#fed7aa}
+.ar-step.ar-benefit .ar-ico{background:var(--emerald-lt);color:var(--emerald-dk);border-color:#a7f3d0}
+.ar-step.ar-benefit .ar-lbl{color:var(--emerald-dk)}
+.ar-step.ar-result .ar-lbl{color:#ea580c}
+@media(max-width:680px){
+  .action-react{grid-template-columns:1fr;gap:0}
+  .ar-step{border-bottom:1px solid var(--line)}
+  .ar-step:last-child{border-bottom:none}
+  .ar-arrow{align-self:flex-start;padding:0 16px 8px;transform:rotate(90deg);height:auto}
+}
+
+/* ── Botones / iconos reales referenciados ── */
+.btn-ref{display:inline-flex;align-items:center;gap:5px;background:var(--surf);border:1px solid var(--line);color:var(--ink);font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:7px;font-family:inherit;line-height:1.4;vertical-align:middle;margin:0 1px}
+.btn-ref i{font-size:11px;color:var(--brand);width:13px;text-align:center}
+.btn-ref.btn-ref-primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+.btn-ref.btn-ref-primary i{color:#fff}
+.btn-ref.btn-ref-wa{background:#dcfce7;color:#15803d;border-color:#86efac}
+.btn-ref.btn-ref-wa i{color:#16a34a}
+.btn-ref.btn-ref-danger{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
+.btn-ref.btn-ref-danger i{color:#dc2626}
+
+/* ── Bloque "Conexión con tu día" ── */
+.connect{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--brand-lt) 0%,#fbf5fe 100%);border:1px solid #e9ddfb;border-radius:14px;padding:14px 18px;margin:0 0 18px}
+.connect-ico{flex-shrink:0;width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-dk));color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 4px 12px -4px rgba(124,58,237,.5)}
+.connect-body{flex:1;min-width:0;font-size:13.5px;color:var(--brand-dk);line-height:1.5}
+.connect-body b{font-weight:700;color:var(--ink)}
+
+/* ── Lista de pasos numerados con icono ── */
+.numbered{margin:0 0 18px;padding:0;list-style:none;counter-reset:numstep}
+.numbered li{counter-increment:numstep;display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.numbered li:last-child{border-bottom:none}
+.numbered li::before{content:counter(numstep);flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;font-family:'Fraunces',serif}
+.numbered li .step-body{flex:1;min-width:0;font-size:14px;color:var(--txt);line-height:1.55;padding-top:3px}
+.numbered li .step-body b{color:var(--ink);font-weight:600}
+.numbered li .step-body small{display:block;margin-top:3px;font-size:12.5px;color:var(--txt2)}
 </style>
 </head>
 <body>
@@ -175,9 +256,9 @@ footer a{color:var(--brand)}
 </nav>
 
 <section class="hero">
-  <span class="eyebrow">Manual completo</span>
-  <h1>Conocé ANMA Hub <em>pestaña por pestaña</em></h1>
-  <p>9 secciones de la app explicadas con flujos visuales, tips reales y errores que conviene evitar. Vas a poder operar como si la conocieras hace meses.</p>
+  <span class="eyebrow">Manual de usuario</span>
+  <h1>ANMA Hub <em>en Acción</em></h1>
+  <p>Manual de consulta rápida: cada sección con su flujo <b>Acción → Reacción → Conexión</b>. Iconos reales de la app, pasos numerados, y para qué te sirve cada uno en tu día.</p>
 </section>
 
 <!-- Progress bar -->
@@ -202,6 +283,49 @@ footer a{color:var(--brand)}
   </div>
 </div>
 
+<!-- ── INICIO RÁPIDO: mapa visual de la pantalla principal ── -->
+<section class="screen-map">
+  <div class="screen-map-inner">
+    <div class="screen-map-bar">
+      <span></span><span></span><span></span>
+      <span class="screen-map-url">anmahub.com/app</span>
+    </div>
+    <div class="screen-grid">
+      <aside class="screen-side">
+        <div class="screen-side-lbl">Ventas</div>
+        <div class="screen-side-item active"><i class="fa-solid fa-chart-line"></i> Dashboard</div>
+        <div class="screen-side-item"><i class="fa-solid fa-file-invoice-dollar"></i> Nuevo pedido</div>
+        <div class="screen-side-item"><i class="fa-solid fa-users"></i> Clientes</div>
+        <div class="screen-side-lbl">Inventario</div>
+        <div class="screen-side-item"><i class="fa-solid fa-cube"></i> Productos</div>
+        <div class="screen-side-item"><i class="fa-solid fa-boxes-stacked"></i> Insumos</div>
+        <div class="screen-side-item"><i class="fa-solid fa-industry"></i> Proveedores</div>
+        <div class="screen-side-lbl">Operaciones</div>
+        <div class="screen-side-item"><i class="fa-solid fa-truck-fast"></i> Logística</div>
+        <div class="screen-side-item"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</div>
+        <div class="screen-side-lbl">Ayuda</div>
+        <div class="screen-side-item"><i class="fa-solid fa-book-open"></i> Guía</div>
+        <div class="screen-side-item"><i class="fa-solid fa-gear"></i> Configuración</div>
+      </aside>
+      <div class="screen-main">
+        <div class="screen-main-top">
+          <h4>Dashboard</h4>
+          <span class="screen-main-action"><i class="fa-solid fa-plus"></i> Nuevo</span>
+        </div>
+        <div class="screen-cards">
+          <div class="screen-card"><div class="screen-card-lbl">Urgente hoy</div><div class="screen-card-num warn">3</div></div>
+          <div class="screen-card"><div class="screen-card-lbl">Por cobrar</div><div class="screen-card-num">$84k</div></div>
+          <div class="screen-card"><div class="screen-card-lbl">Vendido mes</div><div class="screen-card-num ok">$420k</div></div>
+          <div class="screen-card"><div class="screen-card-lbl">Clientes activos</div><div class="screen-card-num">18</div></div>
+          <div class="screen-card"><div class="screen-card-lbl">Stock bajo</div><div class="screen-card-num warn">2</div></div>
+          <div class="screen-card"><div class="screen-card-lbl">En logística</div><div class="screen-card-num">5</div></div>
+        </div>
+      </div>
+    </div>
+    <p class="screen-hint">Sidebar a la izquierda · Dashboard al centro · Botón <b style="color:#fff">+ Nuevo</b> arriba a la derecha</p>
+  </div>
+</section>
+
 <div class="layout">
 
   <!-- TOC sticky -->
@@ -225,244 +349,471 @@ footer a{color:var(--brand)}
     <!-- 1 CONFIGURACIÓN -->
     <section class="sec" id="config">
       <div class="sec-head">
-        <div class="sec-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <div class="sec-num"><i class="fa-solid fa-gear" style="font-size:22px"></i></div>
         <div class="sec-titles">
           <span class="sec-tag">01 · Punto de partida</span>
           <h2>Configurá tu negocio</h2>
         </div>
       </div>
-      <p class="why">Tu marca es lo primero que ven tus clientes en cada presupuesto. <b>Una buena config inicial</b> hace que cada documento que mandes se vea profesional desde el día uno — y se hace una sola vez en la vida.</p>
+      <p class="why">Logo, datos fiscales y formas de cobro. <b>Una sola vez</b> — y cada PDF que mandes ya sale con tu marca puesta.</p>
 
-      <div class="flow">
-        <div class="flow-step"><div class="flow-ico flow-ico-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div><div class="flow-txt">Subís tu logo</div><div class="flow-sub">PNG o JPG nítido</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V7l9-4 9 4v14M9 21v-8h6v8M3 21h18"/></svg></div><div class="flow-txt">Datos del negocio</div><div class="flow-sub">Nombre, CUIT, dirección</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><div class="flow-txt">Formas de pago</div><div class="flow-sub">Efectivo, MP, transferencia</div></div>
+      <div class="action-react">
+        <div class="ar-step">
+          <span class="ar-lbl">Tu acción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-gear"></i></div>
+            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-gear"></i>Configuración</span><small>Sidebar, sección Sistema</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-result">
+          <span class="ar-lbl">Reacción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-window-maximize"></i></div>
+            <div class="ar-body">Se abre el panel con pestañas<small>Negocio · Marca · Pagos · Equipo</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-benefit">
+          <span class="ar-lbl">Para qué</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-stamp"></i></div>
+            <div class="ar-body">Tu PDF sale firmado<small>Logo, CUIT y datos en cada documento</small></div>
+          </div>
+        </div>
       </div>
 
-      <div class="chips">
-        <div class="chip chip-tip"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15.09 8.26 22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><span><b>Tip de experta</b>El logo que subas se usa en presupuestos, mails y la portada del PDF. Asegurate que sea legible en chico.</span></div>
-        <div class="chip chip-warn"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg></span><span><b>Error común</b>Postergar la config y mandar el primer presupuesto sin logo: el cliente ve un documento genérico y desconfía.</span></div>
+      <ol class="numbered">
+        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-image"></i>Marca</span>:</b> subís logo (PNG/JPG, máx 2MB), color principal y eslogan opcional.</div></li>
+        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-building"></i>Negocio</span>:</b> razón social, CUIT, dirección y teléfono.<small>Sin CUIT, dejalo vacío — igual emite presupuestos.</small></div></li>
+        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-credit-card"></i>Pagos</span>:</b> activá las formas que aceptás (efectivo, transferencia, MP, tarjetas).</div></li>
+        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-floppy-disk"></i>Guardar</span></b> y listo.</div></li>
+      </ol>
+
+      <div class="connect">
+        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="connect-body"><b>Tu día a día:</b> mandar una cotización a una clienta nueva y que vea tu marca ya genera otra impresión que un mensaje suelto de WhatsApp.</div>
       </div>
 
-      <a href="/app/config" class="sec-cta">Ir a Configuración <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/app/config" class="sec-cta">Ir a Configuración <i class="fa-solid fa-arrow-right"></i></a>
     </section>
 
     <!-- 2 PRODUCTOS -->
     <section class="sec" id="productos">
       <div class="sec-head">
-        <div class="sec-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg></div>
+        <div class="sec-num"><i class="fa-solid fa-cube" style="font-size:22px"></i></div>
         <div class="sec-titles">
           <span class="sec-tag">02 · Tu catálogo</span>
           <h2>Productos</h2>
         </div>
       </div>
-      <p class="why">No cargues todo de una. <b>Empezá por los 20 productos que más vendés</b> — el resto entra solo a medida que los uses en pedidos reales. La idea no es tener un inventario perfecto, es <em>poder vender</em>.</p>
+      <p class="why">Lo que vendés con su precio, stock y variantes. <b>Empezá por los 20 que más rotan</b> — el resto entra solo cuando lo uses.</p>
 
-      <div class="flow">
-        <div class="flow-step"><div class="flow-ico flow-ico-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></div><div class="flow-txt">Nombre + precio</div><div class="flow-sub">Lo único obligatorio</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div><div class="flow-txt">Categoría + stock</div><div class="flow-sub">Para filtrar y descontar</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="flow-txt">2 listas de precios</div><div class="flow-sub">Público + mayorista</div></div>
+      <div class="action-react">
+        <div class="ar-step">
+          <span class="ar-lbl">Tu acción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-cube"></i></div>
+            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-cube"></i>Productos</span><small>Sidebar, sección Inventario</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-result">
+          <span class="ar-lbl">Reacción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-table-list"></i></div>
+            <div class="ar-body">Ves tu catálogo en tabla<small>Buscador, filtros y stock visible</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-benefit">
+          <span class="ar-lbl">Para qué</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-bolt"></i></div>
+            <div class="ar-body">Cotizás en segundos<small>Nada de buscar precios en chats</small></div>
+          </div>
+        </div>
       </div>
 
-      <div class="chips">
-        <div class="chip chip-tip"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15.09 8.26 22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><span><b>Importá tu Excel</b>Si ya tenés productos en una planilla, importás en bloque desde <b>Productos › Importar</b>. 2 minutos vs. tipear 200.</span></div>
-        <div class="chip chip-warn"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg></span><span><b>Error común</b>Cargar 500 productos "por las dudas" y abandonar la app al tercer día. Mejor 20 buenos que 500 mediocres.</span></div>
+      <ol class="numbered">
+        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo producto</span></b> arriba a la derecha.</div></li>
+        <li><div class="step-body"><b>Completás nombre y precio</b> — único campo obligatorio.<small>El resto (categoría, stock, foto) es opcional pero ayuda.</small></div></li>
+        <li><div class="step-body"><b>Activás precio mayorista</b> si trabajás con dos listas. Se aplica solo según el tipo de cliente.</div></li>
+        <li><div class="step-body"><b>¿Ya tenés Excel?</b> Tocá <span class="btn-ref"><i class="fa-solid fa-file-import"></i>Importar</span> y subí el archivo — 200 productos en 2 minutos.</div></li>
+      </ol>
+
+      <div class="connect">
+        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="connect-body"><b>Tu día a día:</b> entra un cliente preguntando "¿tenés esto?" — buscás en el catálogo, lo agregás a la cotización y se la mandás antes que termine la conversación.</div>
       </div>
 
-      <a href="/app/catalogo" class="sec-cta">Ir a Productos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/app/catalogo" class="sec-cta">Ir a Productos <i class="fa-solid fa-arrow-right"></i></a>
     </section>
 
     <!-- 3 CLIENTES -->
     <section class="sec" id="clientes">
       <div class="sec-head">
-        <div class="sec-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="sec-num"><i class="fa-solid fa-users" style="font-size:22px"></i></div>
         <div class="sec-titles">
           <span class="sec-tag">03 · Tu base de contactos</span>
           <h2>Clientes</h2>
         </div>
       </div>
-      <p class="why">Cada cliente tiene su ficha con historial, saldo y botón de WhatsApp directo. <b>No cargues a todos los que conocés</b> — empezá por los 10 que vuelven seguido y los que tienen algo pendiente con vos.</p>
+      <p class="why">Cada cliente con su ficha, historial y WhatsApp directo. <b>Solo cargá a los que vuelven</b> — el resto se anota al vuelo en cada venta.</p>
 
-      <div class="flow">
-        <div class="flow-step"><div class="flow-ico flow-ico-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="flow-txt">Datos básicos</div><div class="flow-sub">Nombre + WhatsApp</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11H1l8-8 8 8h-8z M15 13h8l-8 8-8-8h8z"/></svg></div><div class="flow-txt">Tipo de cliente</div><div class="flow-sub">Público o mayorista</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></div><div class="flow-txt">Notas privadas</div><div class="flow-sub">"Le gusta el negro"</div></div>
+      <div class="action-react">
+        <div class="ar-step">
+          <span class="ar-lbl">Tu acción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-users"></i></div>
+            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-users"></i>Clientes</span><small>Sidebar, sección Ventas</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-result">
+          <span class="ar-lbl">Reacción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-id-card"></i></div>
+            <div class="ar-body">Ves tu base con saldos<small>Quién debe, quién hace tiempo no compra</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-benefit">
+          <span class="ar-lbl">Para qué</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-brands fa-whatsapp"></i></div>
+            <div class="ar-body">Le escribís en un toque<small>WhatsApp con su nombre y contexto</small></div>
+          </div>
+        </div>
       </div>
 
-      <div class="chips">
-        <div class="chip chip-tip"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15.09 8.26 22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><span><b>Ventaja injusta</b>El historial de cada cliente muestra qué compró y cuándo. La próxima vez sabés qué proponerle sin hacer memoria.</span></div>
-        <div class="chip chip-warn"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg></span><span><b>Error común</b>Olvidar marcar el tipo (público/mayorista) y cobrar la lista equivocada por inercia. ANMA aplica el precio correcto solo.</span></div>
+      <ol class="numbered">
+        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo cliente</span></b> arriba a la derecha.</div></li>
+        <li><div class="step-body"><b>Nombre y WhatsApp</b> — lo mínimo. El número activa el botón verde de chat.</div></li>
+        <li><div class="step-body"><b>Marcás tipo</b> <span class="btn-ref"><i class="fa-solid fa-tag"></i>Público</span> o <span class="btn-ref"><i class="fa-solid fa-tag"></i>Mayorista</span>.<small>ANMA aplica la lista correcta sin que pienses.</small></div></li>
+        <li><div class="step-body"><b>Sumás notas</b>: "le gusta el negro", "paga a 30 días", "alérgica al maní". Quedan en la ficha para siempre.</div></li>
+        <li><div class="step-body"><b>Desde la ficha tocás</b> <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Mensaje</span> para abrir el chat con plantilla pre-armada.</div></li>
+      </ol>
+
+      <div class="connect">
+        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="connect-body"><b>Tu día a día:</b> vuelve María tres meses después — abrís su ficha y ves que se llevó las botas marrones. Le proponés la cartera que combina sin tener que recordarlo.</div>
       </div>
 
-      <a href="/app/clientes" class="sec-cta">Ir a Clientes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/app/clientes" class="sec-cta">Ir a Clientes <i class="fa-solid fa-arrow-right"></i></a>
     </section>
 
     <!-- 4 PROVEEDORES -->
     <section class="sec" id="proveedores">
       <div class="sec-head">
-        <div class="sec-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+        <div class="sec-num"><i class="fa-solid fa-industry" style="font-size:22px"></i></div>
         <div class="sec-titles">
-          <span class="sec-tag">04 · Tus mayoristas</span>
+          <span class="sec-tag">04 · A quién le comprás</span>
           <h2>Proveedores</h2>
         </div>
       </div>
-      <p class="why">Tu margen empieza en la compra. <b>Registrar a quién le comprás y a qué precio</b> te avisa cuando un costo subió más del promedio — y te deja negociar desde el dato, no desde la sensación.</p>
+      <p class="why">Tu margen empieza en la compra. <b>Cada precio registrado</b> es un dato para negociar después.</p>
 
-      <div class="flow">
-        <div class="flow-step"><div class="flow-ico flow-ico-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9M14 17H5M17 20v-3M17 8V5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg></div><div class="flow-txt">Cargás proveedor</div><div class="flow-sub">Nombre + contacto</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></div><div class="flow-txt">Registrás compras</div><div class="flow-sub">Precio + cantidad</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="flow-txt">Alertas de costos</div><div class="flow-sub">Aumentos detectados</div></div>
+      <div class="action-react">
+        <div class="ar-step">
+          <span class="ar-lbl">Tu acción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-industry"></i></div>
+            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-industry"></i>Proveedores</span><small>Sidebar, sección Inventario</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-result">
+          <span class="ar-lbl">Reacción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="ar-body">Ves su histórico de precios<small>Cuándo y cuánto aumentó cada uno</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-benefit">
+          <span class="ar-lbl">Para qué</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="ar-body">Cuidás el margen<small>Negociás con números, no con la sensación</small></div>
+          </div>
+        </div>
       </div>
 
-      <div class="chips">
-        <div class="chip chip-tip"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15.09 8.26 22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><span><b>Regla del 2</b>Tené al menos 2 proveedores por categoría. Que el primero sepa que tenés opción es la mejor negociación.</span></div>
-        <div class="chip chip-warn"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg></span><span><b>Error común</b>Confiar en la memoria. Los aumentos del 5% se cuelan sin que los notes — hasta que el margen no cierra.</span></div>
+      <ol class="numbered">
+        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo proveedor</span></b> arriba a la derecha.</div></li>
+        <li><div class="step-body"><b>Cargás datos</b>: razón social, contacto, condición de pago (contado, 30, 60 días).</div></li>
+        <li><div class="step-body"><b>Registrás cada compra</b> con <span class="btn-ref"><i class="fa-solid fa-cart-plus"></i>Nueva compra</span> dentro de la ficha. ANMA guarda precio, cantidad y fecha.</div></li>
+        <li><div class="step-body"><b>Cuando un costo sube</b> arriba del promedio, ANMA te lo marca en el dashboard.<small>Tip: cargá al menos 2 proveedores por insumo crítico. La negociación cambia cuando saben que tenés opción.</small></div></li>
+      </ol>
+
+      <div class="connect">
+        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="connect-body"><b>Tu día a día:</b> tu proveedor de cajas te avisa de un aumento del 12%. Abrís su ficha, ves que la suba real fue 6 meses atrás del 8%, y le respondés con argumento — no con sorpresa.</div>
       </div>
 
-      <a href="/app/proveedores" class="sec-cta">Ir a Proveedores <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/app/proveedores" class="sec-cta">Ir a Proveedores <i class="fa-solid fa-arrow-right"></i></a>
     </section>
 
     <!-- 5 INSUMOS -->
     <section class="sec" id="insumos">
       <div class="sec-head">
-        <div class="sec-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+        <div class="sec-num"><i class="fa-solid fa-boxes-stacked" style="font-size:22px"></i></div>
         <div class="sec-titles">
           <span class="sec-tag">05 · Tu trastienda</span>
           <h2>Insumos</h2>
         </div>
       </div>
-      <p class="why">Los materiales que usás para armar productos (cajas, bolsas, etiquetas, hilos). Se descuentan solos con cada venta para que <b>nunca te quedes en mitad de un pedido importante</b> por no haber repuesto a tiempo.</p>
+      <p class="why">Materiales para armar productos (cajas, etiquetas, hilos). <b>Se descuentan solos en cada venta</b> para que no te falten en plena temporada.</p>
 
-      <div class="flow">
-        <div class="flow-step"><div class="flow-ico flow-ico-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><div class="flow-txt">Cargás el insumo</div><div class="flow-sub">Con costo unitario</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8v8M8 8v8M3 12h18"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><div class="flow-txt">Asignás al producto</div><div class="flow-sub">"Cada caja usa 1 moño"</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="flow-txt">Stock descontado</div><div class="flow-sub">Automático en cada venta</div></div>
+      <div class="action-react">
+        <div class="ar-step">
+          <span class="ar-lbl">Tu acción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-boxes-stacked"></i>Insumos</span><small>Sidebar, sección Inventario</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-result">
+          <span class="ar-lbl">Reacción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-link"></i></div>
+            <div class="ar-body">Ves los insumos vinculados<small>Quién depende de qué material</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-benefit">
+          <span class="ar-lbl">Para qué</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-bell"></i></div>
+            <div class="ar-body">Alerta antes que falte<small>Reponés antes que se corte la venta</small></div>
+          </div>
+        </div>
       </div>
 
-      <div class="chips">
-        <div class="chip chip-tip"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15.09 8.26 22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><span><b>Tip de experta</b>Configurá un stock mínimo. ANMA te avisa antes de quedarte sin material en temporada alta.</span></div>
-        <div class="chip chip-warn"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg></span><span><b>Error común</b>No contabilizar los insumos en el costo: el margen del producto se ve mejor en el papel que en la realidad.</span></div>
+      <ol class="numbered">
+        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo insumo</span></b> y cargás nombre, costo unitario y stock actual.</div></li>
+        <li><div class="step-body"><b>Definís stock mínimo</b> — el número que dispara la alerta amarilla.</div></li>
+        <li><div class="step-body"><b>Lo asociás a un producto</b>: "cada caja regalo usa 1 caja kraft + 2 metros de cinta + 1 etiqueta".</div></li>
+        <li><div class="step-body"><b>Cada venta lo descuenta solo.</b> Cuando bajás del mínimo, aparece en <span class="btn-ref btn-ref-danger"><i class="fa-solid fa-triangle-exclamation"></i>Stock bajo</span> del Dashboard.</div></li>
+      </ol>
+
+      <div class="connect">
+        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="connect-body"><b>Tu día a día:</b> es viernes de Día de la Madre, vendiste 40 cajas y no te diste cuenta que las etiquetas se acabaron. Con la alerta de stock bajo, esa situación no vuelve a pasar.</div>
       </div>
 
-      <a href="/app/insumos" class="sec-cta">Ir a Insumos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/app/insumos" class="sec-cta">Ir a Insumos <i class="fa-solid fa-arrow-right"></i></a>
     </section>
 
     <!-- 6 PEDIDOS -->
     <section class="sec" id="pedidos">
       <div class="sec-head">
-        <div class="sec-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+        <div class="sec-num"><i class="fa-solid fa-file-invoice-dollar" style="font-size:22px"></i></div>
         <div class="sec-titles">
           <span class="sec-tag">06 · El corazón de la app</span>
           <h2>Pedidos y Presupuestos</h2>
         </div>
       </div>
-      <p class="why">Acá conectás todo lo anterior. <b>En 90 segundos</b> tenés un PDF profesional listo para mandar por WhatsApp con un clic. Los precios y stock se aplican solos según el cliente.</p>
+      <p class="why">Acá se conecta todo. <b>En 90 segundos</b>: cotización armada, PDF profesional, mensaje listo por WhatsApp.</p>
 
-      <div class="flow">
-        <div class="flow-step"><div class="flow-ico flow-ico-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div><div class="flow-txt">Elegís cliente</div><div class="flow-sub">Precio aplicado solo</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div><div class="flow-txt">Sumás productos</div><div class="flow-sub">Stock se descuenta</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div class="flow-txt">Enviás por WhatsApp</div><div class="flow-sub">PDF + mensaje listo</div></div>
+      <div class="action-react">
+        <div class="ar-step">
+          <span class="ar-lbl">Tu acción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+            <div class="ar-body">Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo pedido</span><small>Sidebar o FAB inferior en mobile</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-result">
+          <span class="ar-lbl">Reacción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-file-pdf"></i></div>
+            <div class="ar-body">PDF generado con tu marca<small>Numeración secuencial, total y formas de pago</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-benefit">
+          <span class="ar-lbl">Para qué</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-brands fa-whatsapp"></i></div>
+            <div class="ar-body">Lo mandás en un clic<small>Mensaje pre-armado al WhatsApp del cliente</small></div>
+          </div>
+        </div>
       </div>
 
-      <div class="chips">
-        <div class="chip chip-tip"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15.09 8.26 22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><span><b>Numeración automática</b>Cada presupuesto tiene número secuencial. Después podés filtrar y buscar sin pelearte.</span></div>
-        <div class="chip chip-warn"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg></span><span><b>Error común</b>No hacer seguimiento al presupuesto no contestado. El Dashboard te muestra los "abiertos hace +7 días".</span></div>
+      <ol class="numbered">
+        <li><div class="step-body"><b>Elegís cliente</b> (ANMA aplica precio público o mayorista solo).<small>Si es nuevo, lo creás en el momento sin salir del pedido.</small></div></li>
+        <li><div class="step-body"><b>Sumás productos</b> tocando <span class="btn-ref"><i class="fa-solid fa-plus"></i>Agregar ítem</span>. Stock e insumos se descuentan automáticamente al confirmar.</div></li>
+        <li><div class="step-body"><b>Revisás el total</b>, agregás descuento si corresponde, y tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-check"></i>Confirmar</span>.</div></li>
+        <li><div class="step-body"><b>Aparecen 3 botones</b>: <span class="btn-ref"><i class="fa-solid fa-file-pdf"></i>Ver PDF</span> · <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>WhatsApp</span> · <span class="btn-ref"><i class="fa-solid fa-dollar-sign"></i>Cobrar</span>.</div></li>
+        <li><div class="step-body"><b>Después seguís</b>: el pedido aparece en el Dashboard con su estado (pendiente, cobrado, en logística).</div></li>
+      </ol>
+
+      <div class="connect">
+        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="connect-body"><b>Tu día a día:</b> te escriben por WhatsApp pidiendo cotización. En vez de armarla a mano y mandarla con tres mensajes, sacás un PDF prolijo en 2 minutos. Cerrás más ventas porque respondés rápido y profesional.</div>
       </div>
 
-      <a href="/app/presupuesto" class="sec-cta">Crear pedido <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/app/presupuesto" class="sec-cta">Crear pedido <i class="fa-solid fa-arrow-right"></i></a>
     </section>
 
     <!-- 7 LOGÍSTICA -->
     <section class="sec" id="logistica">
       <div class="sec-head">
-        <div class="sec-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="11" rx="1"/><path d="M15 9h4l3 3v5h-7"/><circle cx="6.5" cy="18.5" r="2"/><circle cx="17.5" cy="18.5" r="2"/></svg></div>
+        <div class="sec-num"><i class="fa-solid fa-truck-fast" style="font-size:22px"></i></div>
         <div class="sec-titles">
           <span class="sec-tag">07 · Cómo llega</span>
           <h2>Logística</h2>
         </div>
       </div>
-      <p class="why">Integración nativa con <b>ViaCargo</b>. Generás el envío desde el mismo pedido, rastreás el estado en tiempo real y la clienta ve dónde está su paquete — todo desde una sola pantalla.</p>
+      <p class="why">Integración con <b>ViaCargo</b>. Generás la guía, mandás el tracking y el cliente deja de preguntar.</p>
 
-      <div class="flow">
-        <div class="flow-step"><div class="flow-ico flow-ico-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="flow-txt">Dirección + sucursal</div><div class="flow-sub">Auto desde el cliente</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 1-1 9-9 9s-9-8-9-9 1-9 9-9 9 8 9 9z"/></svg></div><div class="flow-txt">Generás guía</div><div class="flow-sub">Imprimible en PDF</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div><div class="flow-txt">Seguimiento</div><div class="flow-sub">Tracking en vivo</div></div>
+      <div class="action-react">
+        <div class="ar-step">
+          <span class="ar-lbl">Tu acción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-truck-fast"></i></div>
+            <div class="ar-body">Desde el pedido tocás <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Asignar envío</span><small>O entrás por Logística en sidebar</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-result">
+          <span class="ar-lbl">Reacción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-barcode"></i></div>
+            <div class="ar-body">Se genera la guía<small>PDF imprimible con código de tracking</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-benefit">
+          <span class="ar-lbl">Para qué</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-location-arrow"></i></div>
+            <div class="ar-body">Cliente sigue su paquete<small>Sin escribirte cada hora</small></div>
+          </div>
+        </div>
       </div>
 
-      <div class="chips">
-        <div class="chip chip-tip"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15.09 8.26 22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><span><b>Cliente tranquilo</b>Mandale el link de seguimiento por WhatsApp con un clic. Deja de preguntar "¿llegó?" todos los días.</span></div>
-        <div class="chip chip-warn"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg></span><span><b>Error común</b>Generar la guía sin confirmar la sucursal con el cliente. Después es plata extra de redespacho.</span></div>
+      <ol class="numbered">
+        <li><div class="step-body"><b>La dirección se toma del cliente</b> — confirma con él si la sucursal es correcta.<small>Cambiar destino después cuesta plata de redespacho.</small></div></li>
+        <li><div class="step-body"><b>Elegís servicio</b>: a sucursal, a domicilio, retiro en local. ANMA calcula el costo.</div></li>
+        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-print"></i>Generar guía</span></b> y se descarga el PDF para imprimir y pegar en el paquete.</div></li>
+        <li><div class="step-body"><b>Compartís tracking</b> con <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Enviar link</span>. El cliente sigue su paquete en vivo.</div></li>
+      </ol>
+
+      <div class="connect">
+        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="connect-body"><b>Tu día a día:</b> en vez de responder "¿ya llegó?" 5 veces por día, el cliente mira el link y se autocontrolla. Ganás 30 minutos diarios para vender, no para coordinar.</div>
       </div>
 
-      <a href="/app/logistica" class="sec-cta">Ir a Logística <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/app/logistica" class="sec-cta">Ir a Logística <i class="fa-solid fa-arrow-right"></i></a>
     </section>
 
     <!-- 8 MENSAJES -->
     <section class="sec" id="mensajes">
       <div class="sec-head">
-        <div class="sec-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+        <div class="sec-num"><i class="fa-brands fa-whatsapp" style="font-size:22px"></i></div>
         <div class="sec-titles">
           <span class="sec-tag">08 · Tu voz, pre-armada</span>
           <h2>Mensajes WhatsApp</h2>
         </div>
       </div>
-      <p class="why">Plantillas listas para los 5 momentos clave: <b>presupuesto, seguimiento, confirmación, postventa y reactivación.</b> No escribís lo mismo 50 veces por día — y nunca olvidás un "muchas gracias".</p>
+      <p class="why">5 plantillas para los momentos clave: <b>cotización, seguimiento, listo, postventa, reactivación</b>. Tu voz sin tipear desde cero.</p>
 
-      <div class="flow">
-        <div class="flow-step"><div class="flow-ico flow-ico-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></div><div class="flow-txt">Editás plantillas</div><div class="flow-sub">Con tu tono</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 12l-4 4-4-4M12 8v8"/></svg></div><div class="flow-txt">Variables auto</div><div class="flow-sub">Nombre, monto, fecha</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 2 13 11 22 2"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg></div><div class="flow-txt">Mandás en 1 clic</div><div class="flow-sub">Desde la ficha</div></div>
+      <div class="action-react">
+        <div class="ar-step">
+          <span class="ar-lbl">Tu acción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-brands fa-whatsapp"></i></div>
+            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-brands fa-whatsapp"></i>Mensajes WA</span><small>Sidebar, sección Operaciones</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-result">
+          <span class="ar-lbl">Reacción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-pen-to-square"></i></div>
+            <div class="ar-body">Ves las plantillas editables<small>Con variables {nombre} {monto} {fecha}</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-benefit">
+          <span class="ar-lbl">Para qué</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-paper-plane"></i></div>
+            <div class="ar-body">Mandás desde cada ficha<small>WhatsApp abre con el texto personalizado</small></div>
+          </div>
+        </div>
       </div>
 
-      <div class="chips">
-        <div class="chip chip-tip"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15.09 8.26 22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><span><b>Postventa = ventas</b>El mensaje que dice "hace 60 días te llevaste X, llegó Y que combina" convierte 5x más que un genérico.</span></div>
-        <div class="chip chip-warn"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg></span><span><b>Error común</b>Mandar el mismo mensaje copy-paste a todos. El cliente se da cuenta y deja de abrir tus mensajes.</span></div>
+      <ol class="numbered">
+        <li><div class="step-body"><b>Editás cada plantilla</b> tocando <span class="btn-ref"><i class="fa-solid fa-pen"></i>Editar</span> al lado. Usás tu tono real.</div></li>
+        <li><div class="step-body"><b>Insertás variables</b> tocando los chips: <span class="btn-ref">{nombre}</span> <span class="btn-ref">{monto}</span> <span class="btn-ref">{fecha}</span>.<small>Se reemplazan solas según el cliente cuando mandés.</small></div></li>
+        <li><div class="step-body"><b>Activás un mensaje desde:</b><br>· Ficha de cliente · Detalle de pedido · Tablero de seguimiento del Dashboard.</div></li>
+        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Enviar</span></b> y se abre WhatsApp con el chat del cliente y el mensaje listo.</div></li>
+      </ol>
+
+      <div class="connect">
+        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="connect-body"><b>Tu día a día:</b> bloque de 20 minutos los martes para reactivar clientes que hace +60 días no compran. Con plantilla personalizada por última compra, recuperás 2-3 ventas que se habían dormido — todas las semanas.</div>
       </div>
 
-      <a href="/app/mensajes" class="sec-cta">Ir a Mensajes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/app/mensajes" class="sec-cta">Ir a Mensajes <i class="fa-solid fa-arrow-right"></i></a>
     </section>
 
     <!-- 9 DASHBOARD -->
     <section class="sec" id="dashboard">
       <div class="sec-head">
-        <div class="sec-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></div>
+        <div class="sec-num"><i class="fa-solid fa-chart-line" style="font-size:22px"></i></div>
         <div class="sec-titles">
           <span class="sec-tag">09 · Tu mañana, de un vistazo</span>
           <h2>Dashboard</h2>
         </div>
       </div>
-      <p class="why">El panel que vas a abrir <em>cada mañana</em>. Te muestra qué resolver primero sin que tengas que pensar: <b>lo urgente, lo importante y lo que vendiste</b> — los tres bloques de información que mueven el negocio.</p>
+      <p class="why">El panel que abrís <em>cada mañana</em>. Te muestra qué resolver primero: <b>lo urgente, lo importante, lo facturado</b>.</p>
 
-      <div class="flow">
-        <div class="flow-step"><div class="flow-ico" style="background:#FEF2F2;color:#DC2626;border:1px solid #fecaca;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div class="flow-txt">Urgente hoy</div><div class="flow-sub">Cobros, presupuestos abiertos</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="flow-txt">Importante</div><div class="flow-sub">Clientes dormidos, stock bajo</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-step"><div class="flow-ico flow-ico-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="flow-txt">Facturación</div><div class="flow-sub">Semana + top productos</div></div>
+      <div class="action-react">
+        <div class="ar-step">
+          <span class="ar-lbl">Tu acción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-chart-line"></i>Dashboard</span><small>Sidebar — primera pestaña</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-result">
+          <span class="ar-lbl">Reacción</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-table-cells-large"></i></div>
+            <div class="ar-body">Ves 3 bloques en grid<small>Urgente hoy · Pendientes · Vendido</small></div>
+          </div>
+        </div>
+        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="ar-step ar-benefit">
+          <span class="ar-lbl">Para qué</span>
+          <div class="ar-content">
+            <div class="ar-ico"><i class="fa-solid fa-mug-hot"></i></div>
+            <div class="ar-body">Empezás el día con foco<small>Sabés qué resolver primero</small></div>
+          </div>
+        </div>
       </div>
 
-      <div class="chips">
-        <div class="chip chip-tip"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15.09 8.26 22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><span><b>Hábito de 5 minutos</b>Abrilo cada mañana antes de WhatsApp. Resolvés lo urgente del día sin que te explote a las 7 PM.</span></div>
-        <div class="chip chip-warn"><span class="chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg></span><span><b>Error común</b>Mirar solo la facturación e ignorar las alertas. Lo que no atendés hoy es lo que te paga 3 meses tarde.</span></div>
+      <ol class="numbered">
+        <li><div class="step-body"><b>Bloque <span class="btn-ref btn-ref-danger"><i class="fa-solid fa-triangle-exclamation"></i>Urgente hoy</span></b>: cobros vencidos, presupuestos abiertos hace +7 días, stock crítico.</div></li>
+        <li><div class="step-body"><b>Bloque <span class="btn-ref"><i class="fa-solid fa-bullseye"></i>Pendientes</span></b>: clientes dormidos +60 días, pedidos en logística esperando seguimiento.</div></li>
+        <li><div class="step-body"><b>Bloque <span class="btn-ref"><i class="fa-solid fa-chart-pie"></i>Facturación</span></b>: total semana, top 5 productos, comparativa vs. mes anterior.</div></li>
+        <li><div class="step-body"><b>Cada card es clickeable</b> y te lleva al detalle para resolver el ítem.<small>Ejemplo: tocás "3 cobros vencidos" y vas directo a la lista filtrada.</small></div></li>
+      </ol>
+
+      <div class="connect">
+        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="connect-body"><b>Tu día a día:</b> abrís ANMA antes que WhatsApp. En 5 minutos sabés qué necesita tu atención y qué puede esperar. Dejás de apagar incendios a las 7 PM porque ya viste cada alerta a las 9 AM.</div>
       </div>
 
-      <a href="/app/" class="sec-cta">Ir al Dashboard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/app/" class="sec-cta">Ir al Dashboard <i class="fa-solid fa-arrow-right"></i></a>
     </section>
 
   </main>
