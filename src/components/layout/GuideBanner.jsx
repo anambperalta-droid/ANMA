@@ -43,9 +43,7 @@ export default function GuideBanner() {
         <span>Conocé cada sección de la app paso a paso — flujos visuales, tips y errores comunes.</span>
       </div>
       <a
-        href="/recursos/guia"
-        target="_blank"
-        rel="noopener noreferrer"
+        href="/guia"
         style={{
           flexShrink: 0,
           background: '#7C3AED', color: '#fff',

@@ -22,7 +22,7 @@ import { flushSync as flushCloudSync } from '../../lib/sync'
 // Code splitting + prefetch caching centralizados en lib/routes.js
 import {
   Historial, Presupuesto, Clientes, Catalogo, Proveedores, Logistica,
-  Mensajes, Insumos, Config, Admin, Importador, MiCuenta, NotFound,
+  Mensajes, Insumos, Config, Admin, Importador, MiCuenta, NotFound, Guia,
 } from '../../lib/routes'
 
 const PRIORITIES = [
@@ -396,6 +396,7 @@ function AppShellInner() {
               <Route path="/config" element={<Guard perm="config.access"><Config /></Guard>} />
               <Route path="/importador" element={<Guard perm="config.access"><Importador /></Guard>} />
               <Route path="/mi-cuenta" element={<MiCuenta />} />
+              <Route path="/guia" element={<Guia />} />
               <Route path="/admin" element={<AdminGuard><Admin /></AdminGuard>} />
               {/* Catch-all: 404 con contexto (sidebar + topbar siguen visibles) */}
               <Route path="*" element={<NotFound />} />

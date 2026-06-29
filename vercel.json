@@ -22,7 +22,8 @@
     { "source": "/config", "destination": "/app/config", "permanent": true },
     { "source": "/importador", "destination": "/app/importador", "permanent": true },
     { "source": "/mi-cuenta", "destination": "/app/mi-cuenta", "permanent": true },
-    { "source": "/admin", "destination": "/app/admin", "permanent": true }
+    { "source": "/admin", "destination": "/app/admin", "permanent": true },
+    { "source": "/guia", "destination": "/app/guia", "permanent": true }
   ],
   "rewrites": [
     { "source": "/app/(.*)", "destination": "/app/" },
