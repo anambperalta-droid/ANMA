@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Playbook de Captación — ANMA Hub</title>
+<meta name="description" content="Plan de ataque para captar clientes en frío: visitas, mensajes, SEO y AEO. Documento interno.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="/favicon-32.png" type="image/png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root{
+  --brand:#7C3AED; --brand2:#C026D3; --brand-dk:#5B21B6; --brand-lt:#F5EFFE;
+  --emerald:#10B981; --emerald-dk:#047857; --emerald-lt:#ECFDF5;
+  --amber:#F59E0B; --amber-lt:#FFFBEB; --amber-dk:#92400E;
+  --rose:#E11D74; --rose-lt:#FDF2F8;
+  --ink:#1b1530; --txt:#3c3753; --txt2:#6a6680; --txt3:#94909f;
+  --line:#ece8f2; --bg:#fdfcfa; --surf:#f7f4fb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+svg{display:block}
+a{color:inherit;text-decoration:none}
+
+/* ── Nav ── */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:15px 26px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(253,252,250,.88);backdrop-filter:blur(12px);z-index:50}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-weight:600;color:var(--ink);font-size:18.5px}
+.logo img{width:30px;height:30px;border-radius:8px}
+.nav-r{display:flex;align-items:center;gap:18px}
+.nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--txt);font-weight:600;font-size:14px}
+.nav-back:hover{color:var(--brand)}
+.nav-back::before{content:'←';font-size:15px}
+.nav .private-tag{background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;letter-spacing:.3px;display:inline-flex;align-items:center;gap:6px}
+.nav .private-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:#f59e0b}
+@media(max-width:520px){.nav-back span{display:none}.nav .private-tag{display:none}}
+
+/* ── Hero ── */
+.hero{max-width:780px;margin:0 auto;padding:64px 26px 32px;text-align:center}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--brand-lt),#fbf5fe);border:1px solid #e9ddfb;color:var(--brand-dk);font-size:12px;font-weight:700;padding:8px 16px;border-radius:99px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
+.hero .eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 3px rgba(225,29,116,.2)}
+.hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(36px,5.5vw,52px);line-height:1.06;letter-spacing:-1.3px;color:var(--ink);margin-bottom:14px;text-wrap:balance}
+.hero h1 em{font-style:italic;background:linear-gradient(120deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:18px;color:var(--txt);max-width:580px;margin:0 auto;line-height:1.55}
+
+/* ── Resumen ejecutivo ── */
+.exec{max-width:780px;margin:36px auto 0;padding:0 26px}
+.exec-inner{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 28px;box-shadow:0 8px 24px -16px rgba(124,58,237,.18)}
+.exec-lbl{font-size:10.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:8px}
+.exec h2{font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:var(--ink);line-height:1.3;margin-bottom:10px;letter-spacing:-.3px}
+.exec p{color:var(--txt);font-size:15.5px;line-height:1.6}
+.exec p b{color:var(--ink);font-weight:600}
+
+/* ── Layout: TOC + content ── */
+.layout{max-width:1180px;margin:48px auto 0;padding:0 26px;display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start}
+@media(max-width:920px){.layout{grid-template-columns:1fr;gap:24px}}
+
+.toc{position:sticky;top:90px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 4px 12px -8px rgba(16,24,40,.08)}
+.toc-lbl{font-size:10.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:14px}
+.toc ol{list-style:none;padding:0;counter-reset:toc}
+.toc li{counter-increment:toc;margin-bottom:2px}
+.toc a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--txt);transition:.15s}
+.toc a:hover{background:var(--surf);color:var(--brand-dk)}
+.toc a.active{background:var(--brand-lt);color:var(--brand-dk)}
+.toc a::before{content:counter(toc,decimal-leading-zero);font-size:10.5px;font-weight:800;color:var(--txt3);min-width:18px;font-variant-numeric:tabular-nums}
+.toc a.active::before{color:var(--brand)}
+@media(max-width:920px){
+  .toc{position:static;padding:14px 16px}
+  .toc ol{display:flex;flex-wrap:wrap;gap:6px}
+  .toc li{margin:0}
+  .toc a{padding:6px 12px;font-size:12.5px;border:1px solid var(--line);border-radius:99px}
+  .toc a::before{display:none}
+}
+
+/* ── Section ── */
+.sec{padding:28px 0 56px;border-bottom:1px solid var(--line);scroll-margin-top:80px}
+.sec:last-child{border-bottom:none;padding-bottom:32px}
+.sec-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:6px}
+.sec-num{flex-shrink:0;width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--brand-lt),#fbf5fe);color:var(--brand);display:flex;align-items:center;justify-content:center;border:1px solid #ece1fb;box-shadow:0 6px 18px -10px rgba(124,58,237,.4)}
+.sec-num i{font-size:22px}
+.sec-titles{flex:1;min-width:0;padding-top:4px}
+.sec-tag{display:inline-block;font-size:10.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
+.sec h2{font-family:'Fraunces',serif;font-size:28px;font-weight:600;line-height:1.15;color:var(--ink);letter-spacing:-.5px;margin-bottom:6px;text-wrap:balance}
+.sec .why{font-size:15.5px;color:var(--txt);line-height:1.6;margin:14px 0 22px}
+.sec .why b{color:var(--ink);font-weight:600}
+@media(max-width:600px){
+  .sec-num{width:48px;height:48px;border-radius:12px}
+  .sec-num i{font-size:18px}
+  .sec h2{font-size:24px}
+}
+
+/* ── Subsection ── */
+.sub{margin:24px 0 18px}
+.sub h3{font-family:'Fraunces',serif;font-size:19px;color:var(--ink);font-weight:600;margin-bottom:6px;letter-spacing:-.2px;display:flex;align-items:center;gap:8px}
+.sub h3 i{color:var(--brand);font-size:15px}
+.sub p{font-size:14.5px;color:var(--txt);line-height:1.6}
+.sub p b{color:var(--ink);font-weight:600}
+
+/* ── Lista numerada ── */
+.numbered{margin:0 0 18px;padding:0;list-style:none;counter-reset:numstep}
+.numbered li{counter-increment:numstep;display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.numbered li:last-child{border-bottom:none}
+.numbered li::before{content:counter(numstep);flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;font-family:'Fraunces',serif}
+.numbered li .step-body{flex:1;min-width:0;font-size:14.5px;color:var(--txt);line-height:1.55;padding-top:3px}
+.numbered li .step-body b{color:var(--ink);font-weight:600}
+.numbered li .step-body small{display:block;margin-top:4px;font-size:12.5px;color:var(--txt2);line-height:1.5}
+
+/* ── Bullet list con check ── */
+.checks{list-style:none;padding:0;margin:0 0 18px;display:flex;flex-direction:column;gap:10px}
+.checks li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:var(--txt);line-height:1.55}
+.checks li::before{content:'';flex-shrink:0;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),var(--emerald-dk));margin-top:3px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700}
+.checks li::after{content:'';position:absolute}
+.checks li{position:relative}
+.checks li b{color:var(--ink);font-weight:600}
+
+/* ── Template / script box ── */
+.tpl{background:#fff;border:1px solid var(--line);border-radius:14px;margin:0 0 18px;overflow:hidden;box-shadow:0 4px 14px -10px rgba(16,24,40,.1)}
+.tpl-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(135deg,#fafbfc,#f7f4fb);border-bottom:1px solid var(--line)}
+.tpl-head-l{display:flex;align-items:center;gap:8px}
+.tpl-head-ico{width:28px;height:28px;border-radius:8px;background:var(--brand-lt);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:13px}
+.tpl-head-ico.wa{background:#dcfce7;color:#15803d}
+.tpl-head-ico.mail{background:#dbeafe;color:#1e40af}
+.tpl-head-ico.dm{background:#fce7f3;color:#be185d}
+.tpl-head-ico.voice{background:#fef3c7;color:#92400e}
+.tpl-name{font-size:13px;font-weight:700;color:var(--ink)}
+.tpl-context{font-size:11.5px;color:var(--txt2);font-weight:500}
+.tpl-body{padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.7;color:var(--ink);white-space:pre-wrap;background:#fdfcfa}
+.tpl-body em{font-style:normal;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif}
+.tpl-foot{padding:10px 16px;background:#fafbfc;border-top:1px solid var(--line);font-size:12px;color:var(--txt2);font-style:italic}
+
+/* ── Tabla ── */
+.tbl-wrap{overflow-x:auto;margin:0 0 18px;border:1px solid var(--line);border-radius:14px;background:#fff}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{background:#fafbfc;font-size:11px;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.6px;padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+table.t td{padding:11px 14px;color:var(--txt);border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+table.t tbody tr:last-child td{border-bottom:none}
+table.t td b{color:var(--ink);font-weight:600}
+
+/* ── Chip / pill ── */
+.chip{display:inline-flex;align-items:center;gap:5px;background:var(--surf);color:var(--ink);font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:7px;vertical-align:middle;margin:1px}
+.chip i{font-size:10px;color:var(--brand)}
+.chip.ok{background:var(--emerald-lt);color:var(--emerald-dk)}
+.chip.warn{background:var(--amber-lt);color:var(--amber-dk)}
+.chip.brand{background:var(--brand);color:#fff}
+.chip.brand i{color:#fff}
+
+/* ── Callout ── */
+.callout{display:flex;gap:14px;background:linear-gradient(135deg,var(--brand-lt) 0%,#fbf5fe 100%);border:1px solid #e9ddfb;border-radius:14px;padding:16px 18px;margin:0 0 18px}
+.callout-ico{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand-dk));color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+.callout-body{flex:1;min-width:0;font-size:14px;color:var(--brand-dk);line-height:1.55}
+.callout-body b{font-weight:700;color:var(--ink);font-family:'Fraunces',serif;display:block;margin-bottom:3px;font-size:13.5px}
+.callout.warn{background:var(--amber-lt);border-color:#fde68a}
+.callout.warn .callout-ico{background:linear-gradient(135deg,var(--amber),var(--amber-dk))}
+.callout.warn .callout-body{color:var(--amber-dk)}
+
+/* ── Día tabs (semana modelo) ── */
+.week{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:0 0 18px}
+@media(max-width:780px){.week{grid-template-columns:1fr 1fr}}
+.day{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;transition:.15s}
+.day:hover{border-color:var(--brand);box-shadow:0 6px 16px -10px rgba(124,58,237,.3)}
+.day-name{font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.day-h{font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.25}
+.day-list{list-style:none;padding:0;margin:0;font-size:12.5px;color:var(--txt);line-height:1.5}
+.day-list li{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px}
+.day-list li::before{content:'·';color:var(--brand);font-weight:700;flex-shrink:0}
+
+/* ── Final CTA ── */
+.final{max-width:780px;margin:48px auto 0;padding:0 26px 80px}
+.box-cta{background:linear-gradient(150deg,#120327 0%,#2d0a57 50%,#5b21b6 100%);border-radius:24px;padding:42px 36px;text-align:center;position:relative;overflow:hidden}
+.box-cta::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:520px;height:520px;background:radial-gradient(circle,rgba(192,38,211,.35),transparent 62%);pointer-events:none}
+.box-cta h2{font-family:'Fraunces',serif;color:#fff;font-size:26px;margin:0 0 10px;letter-spacing:-.5px;position:relative;text-wrap:balance}
+.box-cta p{color:rgba(255,255,255,.78);font-size:15px;margin:0;line-height:1.55;position:relative;max-width:480px;margin-left:auto;margin-right:auto}
+
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font-size:13px;color:var(--txt3)}
+.foot-credit{font-size:11.5px;margin-top:6px}
+
+@media(max-width:520px){
+  .hero{padding:44px 22px 20px}
+  .hero p{font-size:16px}
+  .tpl-body{font-size:12.5px;padding:14px}
+  .box-cta{padding:32px 24px}
+  .box-cta h2{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="logo"><img src="/favicon-a.png" alt=""> ANMA Hub</a>
+  <span class="nav-r">
+    <span class="private-tag">Documento interno</span>
+    <a href="/recursos/" class="nav-back"><span>Recursos</span></a>
+  </span>
+</nav>
+
+<section class="hero">
+  <span class="eyebrow">Playbook · Octubre 2026</span>
+  <h1>Plan de ataque para <em>captar clientes</em></h1>
+  <p>Tácticas concretas, scripts listos y métricas semanales. Pensado para que una sola persona pueda ejecutarlo sin agencia, sin presupuesto y sin sonar a vendedor.</p>
+</section>
+
+<!-- Resumen ejecutivo -->
+<div class="exec">
+  <div class="exec-inner">
+    <div class="exec-lbl">Resumen ejecutivo</div>
+    <h2>El objetivo: 10 nuevas cuentas activas en 90 días</h2>
+    <p>Para llegar ahí necesitás <b>20 conversaciones reales por semana</b> (visitas + WhatsApps + DMs). El playbook está armado en bloques de 5 días: lunes y miércoles para outreach, martes y jueves para visitas presenciales, viernes para contenido + medición. El resto se compra con disciplina, no con presupuesto.</p>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="toc-lbl">Secciones</div>
+    <ol>
+      <li><a href="#oferta">La oferta irresistible</a></li>
+      <li><a href="#semana">Tu semana modelo</a></li>
+      <li><a href="#visitas">Canal A · Visitas</a></li>
+      <li><a href="#cold">Canal B · WhatsApp y email</a></li>
+      <li><a href="#dm">Canal C · Instagram DM</a></li>
+      <li><a href="#referidos">Canal D · Referidos</a></li>
+      <li><a href="#seo">Posicionamiento Google + IA</a></li>
+      <li><a href="#contenido">Contenido que trae leads</a></li>
+      <li><a href="#metricas">Métricas semanales</a></li>
+      <li><a href="#errores">Errores a evitar</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <!-- 1 OFERTA -->
+    <section class="sec" id="oferta">
+      <div class="sec-head">
+        <div class="sec-num"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="sec-titles">
+          <span class="sec-tag">01 · El "qué" antes del "cómo"</span>
+          <h2>La oferta irresistible</h2>
+        </div>
+      </div>
+      <p class="why">Antes de salir a vender, definí <b>qué exactamente estás ofreciendo</b>. La diferencia entre "te ofrezco mi software" y "te ordeno la operación en 7 días o no pagás" es lo que separa una conversación normal de una venta cerrada.</p>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-stamp"></i> Tu propuesta en una línea</h3>
+        <p><b>"Ordeno tu negocio en 10 minutos, lo configuro con vos en una llamada de 30 minutos, y si en 7 días no recuperaste tiempo, no pagás el primer mes."</b></p>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-gift"></i> El bonus stack (lo que sumás sin cobrar más)</h3>
+        <ol class="numbered">
+          <li><div class="step-body"><b>Setup gratuito</b> (sesión de 30 min para configurar la app con tus datos reales).<small>Valor percibido: $25.000</small></div></li>
+          <li><div class="step-body"><b>Migración de productos y clientes</b> desde tu Excel o WhatsApp.<small>Valor percibido: $15.000</small></div></li>
+          <li><div class="step-body"><b>3 plantillas de mensajes</b> WhatsApp adaptadas a tu rubro.<small>Valor percibido: $8.000</small></div></li>
+          <li><div class="step-body"><b>Guía de 9 secciones</b> y soporte 1×1 por WhatsApp el primer mes.<small>Valor percibido: $20.000</small></div></li>
+          <li><div class="step-body"><b>7 días gratis</b>, sin tarjeta. Y si en una semana no notás la diferencia, no cobramos.<small>Riesgo cero para el cliente.</small></div></li>
+        </ol>
+        <div class="callout">
+          <div class="callout-ico"><i class="fa-solid fa-lightbulb"></i></div>
+          <div class="callout-body"><b>Por qué funciona</b>Hormozi lo llama "value stack": cuando el valor percibido (~$68k) supera 10× el precio ($30k/mes), la decisión deja de ser racional y se vuelve obvia.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-shield-halved"></i> La garantía que cierra la venta</h3>
+        <p><b>"Si en 7 días no recuperaste por lo menos 3 horas de trabajo manual, te devuelvo lo que pagaste y nos despedimos amigas."</b></p>
+        <p>La garantía no se usa casi nunca (la app cumple), pero <b>elimina el último obstáculo</b> mental antes de decir que sí.</p>
+      </div>
+    </section>
+
+    <!-- 2 SEMANA -->
+    <section class="sec" id="semana">
+      <div class="sec-head">
+        <div class="sec-num"><i class="fa-solid fa-calendar-week"></i></div>
+        <div class="sec-titles">
+          <span class="sec-tag">02 · Ritmo y consistencia</span>
+          <h2>Tu semana modelo</h2>
+        </div>
+      </div>
+      <p class="why">La captación falla por falta de consistencia, no por falta de tácticas. <b>3 horas por día, 5 días por semana</b>. No más, no menos. La constancia compite con cualquier presupuesto de ads.</p>
+
+      <div class="week">
+        <div class="day">
+          <div class="day-name">Lun</div>
+          <div class="day-h">Outreach digital</div>
+          <ul class="day-list">
+            <li>20 mensajes WA en frío</li>
+            <li>10 DMs Instagram</li>
+            <li>3 emails fríos</li>
+          </ul>
+        </div>
+        <div class="day">
+          <div class="day-name">Mar</div>
+          <div class="day-h">Visitas presenciales</div>
+          <ul class="day-list">
+            <li>5 comercios de la zona</li>
+            <li>Dejar folleto + tarjeta</li>
+            <li>Anotar en hoja</li>
+          </ul>
+        </div>
+        <div class="day">
+          <div class="day-name">Mié</div>
+          <div class="day-h">Follow-ups + contenido</div>
+          <ul class="day-list">
+            <li>Re-contactar quien no respondió</li>
+            <li>1 post Instagram</li>
+            <li>1 reel corto</li>
+          </ul>
+        </div>
+        <div class="day">
+          <div class="day-name">Jue</div>
+          <div class="day-h">Visitas + demos</div>
+          <ul class="day-list">
+            <li>5 visitas más</li>
+            <li>2-3 demos agendadas</li>
+            <li>Llamadas pendientes</li>
+          </ul>
+        </div>
+        <div class="day">
+          <div class="day-name">Vie</div>
+          <div class="day-h">Cierres + métricas</div>
+          <ul class="day-list">
+            <li>Cerrar pendientes</li>
+            <li>Cargar números</li>
+            <li>Pedir 2 referidos</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-ico"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="callout-body"><b>Cuenta semanal típica</b>30 outreach digital + 10 visitas + 3 demos = 1 cliente nuevo. <b>10 clientes en 90 días</b> es realista con esta cadencia.</div>
+      </div>
+    </section>
+
+    <!-- 3 VISITAS -->
+    <section class="sec" id="visitas">
+      <div class="sec-head">
+        <div class="sec-num"><i class="fa-solid fa-shop"></i></div>
+        <div class="sec-titles">
+          <span class="sec-tag">03 · El que más cierra</span>
+          <h2>Canal A · Visitas presenciales</h2>
+        </div>
+      </div>
+      <p class="why">Es el canal con más conversión (1 de cada 5 visitas termina probando la app). Toma tiempo pero el cliente que vino así, se queda. <b>Visitas el martes y jueves</b>, 5 comercios cada vez.</p>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-magnifying-glass"></i> Cómo elegir a qué comercios visitar</h3>
+        <ol class="numbered">
+          <li><div class="step-body"><b>Rubros que ya funcionan en ANMA</b>: indumentaria, decoración, regalería, almacenes, distribuidoras chicas, tecnología/electrónica.</div></li>
+          <li><div class="step-body"><b>Zona acotada</b>: 8-10 cuadras alrededor de un punto. Optimizás tiempo de viaje.</div></li>
+          <li><div class="step-body"><b>Tamaño correcto</b>: 1 a 3 empleados, dueña presente, ya tiene Instagram activo.<small>Demasiado chico = no paga. Demasiado grande = ya usa otro sistema.</small></div></li>
+        </ol>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-comments"></i> El script de la visita (45 segundos)</h3>
+        <div class="tpl">
+          <div class="tpl-head">
+            <div class="tpl-head-l">
+              <div class="tpl-head-ico voice"><i class="fa-solid fa-microphone"></i></div>
+              <div>
+                <div class="tpl-name">Apertura presencial</div>
+                <div class="tpl-context">Tras saludar a la dueña</div>
+              </div>
+            </div>
+            <span class="chip">45 seg</span>
+          </div>
+          <div class="tpl-body">Hola, soy Ana de ANMA Hub. ¿Me das 30 segundos?
+
+Trabajo con comercios chicos como el tuyo ayudándolos a ordenar
+presupuestos, stock y cobros en una sola app — sin Excel, todo en
+el celular.
+
+Te dejo el folleto. Lo único que te pido es que la mires y, si te
+hace sentido, me escribas. Sin compromiso.
+
+¿Cómo te llamás? Te paso una guía visual que armé.</div>
+          <div class="tpl-foot">Lo que evitás: presentación larga, jerga técnica, sensación de "venta".</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-file-lines"></i> Qué llevar en la visita</h3>
+        <ul class="checks">
+          <li><b>Folleto A5</b> con 3 cosas máximo: qué hace ANMA, captura del dashboard, tu WhatsApp con QR.</li>
+          <li><b>Tarjetas</b> profesionales con tu nombre + WhatsApp + URL de la guía.</li>
+          <li><b>Hoja Excel</b> impresa para anotar: comercio, contacto, fecha, "para reactivar el X".</li>
+          <li><b>Celular cargado</b> con la app abierta para mostrar 30 segundos de demo si lo piden.</li>
+        </ul>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="callout-body"><b>Error a evitar</b>No vendas en la primera visita. Tu objetivo es <b>dejar la marca</b> y abrir una conversación por WhatsApp. La venta se cierra al 3er contacto, no al 1ro.</div>
+      </div>
+    </section>
+
+    <!-- 4 WHATSAPP -->
+    <section class="sec" id="cold">
+      <div class="sec-head">
+        <div class="sec-num"><i class="fa-brands fa-whatsapp"></i></div>
+        <div class="sec-titles">
+          <span class="sec-tag">04 · El más escalable</span>
+          <h2>Canal B · WhatsApp y email en frío</h2>
+        </div>
+      </div>
+      <p class="why">El lunes le dedicás 1 hora a esto. <b>20 WhatsApps + 3 emails personalizados</b>. Convierten 1 de cada 15, pero sumás base muy rápido.</p>
+
+      <div class="sub">
+        <h3><i class="fa-brands fa-whatsapp"></i> Plantilla 1 · WhatsApp primer contacto</h3>
+        <div class="tpl">
+          <div class="tpl-head">
+            <div class="tpl-head-l">
+              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div>
+                <div class="tpl-name">Primer mensaje · Cold</div>
+                <div class="tpl-context">Después de mirar 30 segundos su Instagram</div>
+              </div>
+            </div>
+            <span class="chip ok">cierra 1 de 12</span>
+          </div>
+          <div class="tpl-body">Hola <em>{nombre}</em>, ¿qué tal?
+
+Te vi en Instagram, me encantó <em>{detalle puntual del IG}</em>.
+
+Trabajo con marcas chicas como la tuya ayudándolas a ordenar
+pedidos y stock en una sola app. Te paso una guía visual que
+armé, sin compromiso:
+
+anmahub.com/recursos/guia
+
+Si te hace sentido, charlamos cuando quieras.</div>
+          <div class="tpl-foot">Lo clave: el "detalle puntual" personalizado prueba que no es copy-paste.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-brands fa-whatsapp"></i> Plantilla 2 · Follow-up (a los 3 días)</h3>
+        <div class="tpl">
+          <div class="tpl-head">
+            <div class="tpl-head-l">
+              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div>
+                <div class="tpl-name">Re-contacto</div>
+                <div class="tpl-context">Si no respondió la primera</div>
+              </div>
+            </div>
+            <span class="chip ok">cierra 1 de 8</span>
+          </div>
+          <div class="tpl-body">Hola <em>{nombre}</em>, te vuelvo a escribir por las dudas.
+
+Sumé un artículo nuevo que te puede servir si trabajás
+con <em>{rubro específico}</em>:
+
+anmahub.com/recursos/<em>{slug-relevante}</em>
+
+Sin presión. Si te hace clic alguna vez, estoy.</div>
+          <div class="tpl-foot">El "sin presión" baja la guardia. Le da algo de valor (artículo), no le pide nada.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-envelope"></i> Plantilla 3 · Email frío a comercios con web</h3>
+        <div class="tpl">
+          <div class="tpl-head">
+            <div class="tpl-head-l">
+              <div class="tpl-head-ico mail"><i class="fa-solid fa-envelope"></i></div>
+              <div>
+                <div class="tpl-name">Email B2C/B2B chico</div>
+                <div class="tpl-context">Asunto: <em>"Idea rápida para {nombre comercio}"</em></div>
+              </div>
+            </div>
+            <span class="chip ok">cierra 1 de 25</span>
+          </div>
+          <div class="tpl-body">Hola, soy Ana de ANMA Hub.
+
+Te escribo porque vi tu web/Instagram y me parece que podemos
+ahorrarte 10 horas por semana en gestión.
+
+ANMA es la app que usás para:
+· Mandar presupuestos por WhatsApp en 1 clic
+· Ver stock y clientes desde el celu
+· Cobrar con MercadoPago integrado
+
+Te invito a probarla 7 días gratis, sin tarjeta, y te configuramos
+todo en una llamada de 30 minutos.
+
+Si te interesa, respondé este mail o escribime al WhatsApp:
++54 9 11 6945-6863
+
+Sin compromiso. Si no es para vos, no te molesto más.
+
+Saludos,
+Ana
+ANMA Hub · anmahub.com</div>
+          <div class="tpl-foot">Bullets cortos. Garantía implícita ("sin compromiso"). Llamada a acción doble (mail o WA).</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-ico"><i class="fa-solid fa-database"></i></div>
+        <div class="callout-body"><b>De dónde sacar los contactos</b>Google Maps de tu zona, hashtags de Instagram por rubro (#regaleriaargentina, #indumentariaba), grupos de Facebook de emprendedores, listas de comercios de la cámara local.</div>
+      </div>
+    </section>
+
+    <!-- 5 INSTAGRAM DM -->
+    <section class="sec" id="dm">
+      <div class="sec-head">
+        <div class="sec-num"><i class="fa-brands fa-instagram"></i></div>
+        <div class="sec-titles">
+          <span class="sec-tag">05 · Donde están tus clientes</span>
+          <h2>Canal C · Instagram DM</h2>
+        </div>
+      </div>
+      <p class="why">Los comercios chicos viven en Instagram. <b>10 DMs por día</b> a cuentas que te seguís de cerca. Convierte mejor que email cuando va precedido de interacción real.</p>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-list-check"></i> El pre-trabajo (lo que la mayoría se saltea)</h3>
+        <ol class="numbered">
+          <li><div class="step-body"><b>Sigue 20 cuentas nuevas por semana</b> de tu rubro objetivo. Comentá 3 publicaciones de cada una con algo genuino (no "qué lindo").</div></li>
+          <li><div class="step-body"><b>Compartí sus historias</b> a las tuyas con un comentario que aporte. Te ven la cara.</div></li>
+          <li><div class="step-body"><b>Reaccioná a sus stories</b> con voz. Es 10× más memorable que un emoji.</div></li>
+        </ol>
+        <div class="callout">
+          <div class="callout-ico"><i class="fa-solid fa-quote-left"></i></div>
+          <div class="callout-body"><b>Filosofía Gary Vee · Jab Jab Jab Right Hook</b>3 interacciones de valor antes de pedir cualquier cosa. El DM que viene después de eso tiene 4× más respuesta.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-brands fa-instagram"></i> Plantilla 4 · DM después de interacción</h3>
+        <div class="tpl">
+          <div class="tpl-head">
+            <div class="tpl-head-l">
+              <div class="tpl-head-ico dm"><i class="fa-brands fa-instagram"></i></div>
+              <div>
+                <div class="tpl-name">DM cálido</div>
+                <div class="tpl-context">Tras 2-3 interacciones previas en sus posts</div>
+              </div>
+            </div>
+            <span class="chip ok">cierra 1 de 6</span>
+          </div>
+          <div class="tpl-body">Hola <em>{nombre}</em>!
+
+Te vengo siguiendo hace un rato, me re gustó <em>{post puntual}</em>.
+
+Te escribo porque armé una app pensada para marcas como la tuya
+(<em>{rubro}</em>) — para ordenar presupuestos, clientes y stock
+desde el celular.
+
+¿Querés que te la muestre por video-call de 15 min?
+Sin venderte nada, solo para ver si te suma.</div>
+          <div class="tpl-foot">"Sin venderte nada" desactiva la defensa. La pregunta es chica (15 min, no 1 hora).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 REFERIDOS -->
+    <section class="sec" id="referidos">
+      <div class="sec-head">
+        <div class="sec-num"><i class="fa-solid fa-handshake"></i></div>
+        <div class="sec-titles">
+          <span class="sec-tag">06 · El que escala solo</span>
+          <h2>Canal D · Referidos</h2>
+        </div>
+      </div>
+      <p class="why">El cliente feliz es tu mejor vendedora. <b>Pedile 2 referidos cada viernes</b> al que ya usa la app y está contento. Sin programa formal de premios — funciona mejor pedir favor con motivo.</p>
+
+      <div class="sub">
+        <h3><i class="fa-brands fa-whatsapp"></i> Plantilla 5 · Pedido de referido</h3>
+        <div class="tpl">
+          <div class="tpl-head">
+            <div class="tpl-head-l">
+              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div>
+                <div class="tpl-name">Activar referido</div>
+                <div class="tpl-context">A cliente activo, viernes a la mañana</div>
+              </div>
+            </div>
+            <span class="chip ok">cierra 1 de 3</span>
+          </div>
+          <div class="tpl-body">Hola <em>{nombre}</em>, ¿cómo va con ANMA esta semana?
+
+Te quería pedir un favor: ¿se te ocurre alguna conocida del rubro
+a la que le podría sumar lo que estás usando vos?
+
+No te pido que la convenzas, solo el contacto. Yo me presento.
+
+Si me referís a alguien que se queda, te regalo el próximo mes.</div>
+          <div class="tpl-foot">"Se te ocurre alguna" baja la presión. El incentivo se menciona al final, sin ser el motivo.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-star"></i> Sistema de testimonios (combo con referidos)</h3>
+        <ol class="numbered">
+          <li><div class="step-body"><b>Al cliente del mes 2</b>: pedí <b>video corto</b> de 30 segundos donde diga su nombre, qué hace y qué cambió desde ANMA.<small>Lo que captás en video le da 10× más credibilidad que texto.</small></div></li>
+          <li><div class="step-body"><b>Subilo a Reels + LinkedIn + landing.</b> 1 testimonio bueno trae 3-4 conversaciones nuevas al mes.</div></li>
+          <li><div class="step-body"><b>Etiquetalas siempre</b>. Ven el video con su cara y lo comparten.</div></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7 SEO + AEO -->
+    <section class="sec" id="seo">
+      <div class="sec-head">
+        <div class="sec-num"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+        <div class="sec-titles">
+          <span class="sec-tag">07 · Que te encuentren sin moverte</span>
+          <h2>Posicionamiento Google + IA</h2>
+        </div>
+      </div>
+      <p class="why">SEO clásico tarda 3-6 meses pero después trae leads en piloto automático. <b>AEO</b> (Answer Engine Optimization) es lo nuevo: aparecer cuando alguien le pregunta a ChatGPT, Perplexity o Google AI Overviews.</p>
+
+      <div class="sub">
+        <h3><i class="fa-brands fa-google"></i> SEO clásico · 5 acciones de impacto</h3>
+        <ol class="numbered">
+          <li><div class="step-body"><b>Cada artículo apunta a una pregunta real de Google</b>.<small>Ej: "Cómo controlar el stock de una tienda de ropa" tiene 720 búsquedas/mes. "Tips de stock" tiene 30.</small></div></li>
+          <li><div class="step-body"><b>El título es la pregunta exacta</b> + tu marca al final. Nada de creatividad rara.</div></li>
+          <li><div class="step-body"><b>Schema.org FAQPage en cada artículo</b> — ya está en los publicados. Hace que aparezcas en "Otras preguntas" de Google.</div></li>
+          <li><div class="step-body"><b>Linkeá artículos entre sí</b> (internal linking). Mínimo 3 links por artículo a otros tuyos.</div></li>
+          <li><div class="step-body"><b>Pedile a Google Search Console que indexe cada artículo nuevo</b> el mismo día que lo publicás.</div></li>
+        </ol>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-robot"></i> AEO · Aparecer en respuestas de IA</h3>
+        <table class="t">
+          <thead>
+            <tr><th>Qué hacer</th><th>Por qué funciona</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Respuesta corta al inicio del artículo</b> (1-2 oraciones que respondan la pregunta del título antes del primer h2).</td>
+              <td>ChatGPT y Perplexity citan los primeros 200 caracteres como "fuente".</td>
+            </tr>
+            <tr>
+              <td><b>Estructura H2 con preguntas naturales</b>: "¿Cuánto cuesta?" "¿Cuánto tarda?" "¿Sirve para mi rubro?".</td>
+              <td>Los LLMs scrapean H2 buscando preguntas que sus usuarios escriben.</td>
+            </tr>
+            <tr>
+              <td><b>Tablas comparativas</b> (ANMA vs Excel, ANMA vs competencia).</td>
+              <td>Las IA reproducen tablas íntegras cuando responden "comparar X con Y".</td>
+            </tr>
+            <tr>
+              <td><b>Citar números y fuentes</b>: "según un estudio de X" o "el promedio de la industria es Y".</td>
+              <td>Los LLMs priorizan contenido con datos atribuibles.</td>
+            </tr>
+            <tr>
+              <td><b>Estar en Reddit, Quora, Foros del rubro</b> con respuestas sustanciosas (no spam).</td>
+              <td>ChatGPT entrena con Reddit y lo cita seguido.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          <div class="callout-ico"><i class="fa-solid fa-flask"></i></div>
+          <div class="callout-body"><b>Test mensual</b>Una vez por mes, escribí en ChatGPT y Perplexity: "¿Qué sistema de gestión me recomendás para una tienda chica en Argentina?". Si no aparece ANMA, falta trabajo. Ajustá según qué fuentes citan.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-arrow-up-right-from-square"></i> Cómo mejorar los artículos ya publicados</h3>
+        <p>Tenés 13 artículos en <a href="/recursos/" style="color:var(--brand);font-weight:600">/recursos/</a>. El checklist para cada uno:</p>
+        <ul class="checks">
+          <li><b>Respuesta de 2 oraciones al inicio</b> antes del primer h2 (para AI Overviews).</li>
+          <li><b>3 H2 son preguntas reales</b> que la gente escribe en Google.</li>
+          <li><b>FAQ al final</b> con 4-5 preguntas más específicas que las del cuerpo.</li>
+          <li><b>3 links internos</b> mínimo a otros artículos tuyos.</li>
+          <li><b>1 CTA a la guía</b> (/recursos/guia) y 1 al registro.</li>
+          <li><b>Última modificación visible</b> ("Actualizado: 28 de junio de 2026"). Google premia contenido fresco.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 8 CONTENIDO -->
+    <section class="sec" id="contenido">
+      <div class="sec-head">
+        <div class="sec-num"><i class="fa-solid fa-video"></i></div>
+        <div class="sec-titles">
+          <span class="sec-tag">08 · Donde ya están mirando</span>
+          <h2>Contenido que trae leads</h2>
+        </div>
+      </div>
+      <p class="why">No hace falta volverse influencer. <b>1 reel + 1 post por semana</b>, cada uno con propósito claro. La consistencia importa más que la cantidad.</p>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-clapperboard"></i> Las 4 fórmulas de contenido que funcionan</h3>
+        <table class="t">
+          <thead>
+            <tr><th>Tipo</th><th>Ejemplo concreto</th><th>Para</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>El antes y el después</b></td>
+              <td>"Así tenía los pedidos antes de ANMA / así los tengo ahora" (split-screen del Excel caótico vs el dashboard).</td>
+              <td>Reels</td>
+            </tr>
+            <tr>
+              <td><b>El behind-the-scenes</b></td>
+              <td>"Hoy estoy mejorando esta función porque me lo pidió una clienta de Mendoza" (Gary Vee style: documentar, no crear).</td>
+              <td>Stories + LinkedIn</td>
+            </tr>
+            <tr>
+              <td><b>La lista útil</b></td>
+              <td>"3 errores que cometés con tu stock que te están haciendo perder plata" (carrusel de 6 slides).</td>
+              <td>Posts Instagram</td>
+            </tr>
+            <tr>
+              <td><b>El caso real</b></td>
+              <td>"Marina tenía 200 pedidos para Día de la Madre. Así los manejó" (con su permiso y etiquetada).</td>
+              <td>Reels + LinkedIn</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-calendar-check"></i> Calendario semanal de contenido</h3>
+        <ol class="numbered">
+          <li><div class="step-body"><b>Lunes</b>: 1 post con tip útil (carrusel).</div></li>
+          <li><div class="step-body"><b>Miércoles</b>: 1 reel con caso/antes-después.</div></li>
+          <li><div class="step-body"><b>Jueves</b>: 1 story interactiva (encuesta o pregunta).</div></li>
+          <li><div class="step-body"><b>Viernes</b>: 1 post en LinkedIn (perspectiva profesional, formato más extenso).</div></li>
+        </ol>
+        <div class="callout">
+          <div class="callout-ico"><i class="fa-solid fa-link"></i></div>
+          <div class="callout-body"><b>Bio y CTAs</b>Tu bio de Instagram tiene que tener un solo link: <chip class="chip">anmahub.com/recursos/guia</chip>. No tu landing. La guía convierte 4× más porque es valor antes de pedir nada.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 METRICAS -->
+    <section class="sec" id="metricas">
+      <div class="sec-head">
+        <div class="sec-num"><i class="fa-solid fa-chart-pie"></i></div>
+        <div class="sec-titles">
+          <span class="sec-tag">09 · Lo que no se mide no se mejora</span>
+          <h2>Métricas semanales</h2>
+        </div>
+      </div>
+      <p class="why">Una sola planilla, 5 minutos los viernes. <b>Lo que mido es lo que mejora</b>. No analytics complicado: cuentitas honestas.</p>
+
+      <table class="t">
+        <thead>
+          <tr><th>Métrica</th><th>Meta semanal</th><th>Cómo medir</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Visitas presenciales</b></td><td>10</td><td>Hoja de visitas (con fecha y comercio)</td></tr>
+          <tr><td><b>WhatsApps en frío</b></td><td>20</td><td>Excel con nombre, fecha, respuesta</td></tr>
+          <tr><td><b>DMs Instagram</b></td><td>10</td><td>Notas del celu</td></tr>
+          <tr><td><b>Demos agendadas</b></td><td>3</td><td>Calendar</td></tr>
+          <tr><td><b>Registros nuevos</b></td><td>4</td><td>Admin de ANMA</td></tr>
+          <tr><td><b>Clientes activos nuevos</b></td><td>1</td><td>Admin de ANMA</td></tr>
+          <tr><td><b>Posts publicados</b></td><td>4</td><td>Calendario de IG</td></tr>
+          <tr><td><b>Tasa de respuesta WA</b></td><td>&gt;20%</td><td>respondidos / enviados</td></tr>
+          <tr><td><b>Posiciones SEO seguidas</b></td><td>5 keywords</td><td>Google Search Console</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <div class="callout-ico"><i class="fa-solid fa-trophy"></i></div>
+        <div class="callout-body"><b>La métrica que importa de verdad</b><b>CAC</b> (costo de adquirir un cliente): horas que invertiste en captarlo. Si te cuesta más de 5 horas por cliente, algo del proceso necesita ajuste.</div>
+      </div>
+    </section>
+
+    <!-- 10 ERRORES -->
+    <section class="sec" id="errores">
+      <div class="sec-head">
+        <div class="sec-num"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="sec-titles">
+          <span class="sec-tag">10 · Las trampas comunes</span>
+          <h2>Errores a evitar</h2>
+        </div>
+      </div>
+
+      <ol class="numbered">
+        <li><div class="step-body"><b>Mandar el mismo mensaje a 50 personas.</b> Una semana de personalización supera un mes de copy-paste.</div></li>
+        <li><div class="step-body"><b>Hablar de "features" en vez de "resultados".</b> Nadie compra "gestión de stock", compra "dejar de quedarme sin productos en el momento equivocado".</div></li>
+        <li><div class="step-body"><b>Insistir más de 3 veces sin respuesta.</b> Después de la tercera, anotalo en "reactivar dentro de 60 días" y movete.</div></li>
+        <li><div class="step-body"><b>Dejar la captación cuando empezás a tener clientes.</b> El pipeline se enfría rápido. Mantenés el ritmo aunque tengas semanas buenas.</div></li>
+        <li><div class="step-body"><b>No medir.</b> Sin números, no sabés qué canal funciona. Y sin saber, mejorás a ciegas.</div></li>
+        <li><div class="step-body"><b>Sonar a vendedor.</b> El "te ofrezco una solución integral" mata la conversación antes de empezar. Hablá como le hablarías a una amiga que tiene un comercio.</div></li>
+      </ol>
+    </section>
+
+  </main>
+</div>
+
+<!-- CTA FINAL -->
+<section class="final">
+  <div class="box-cta">
+    <h2>Este playbook es vivo</h2>
+    <p>Actualizalo cada 30 días con lo que funcionó. Lo que no funcionó, sacalo. La táctica que cerró un cliente esta semana puede no cerrar el próximo mes — el ritmo de ejecución sí se mantiene.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-credit">© 2026 ANMA Hub · Documento interno · Versión 1.0 · Octubre 2026</div>
+</footer>
+
+<script>
+const tocLinks = document.querySelectorAll('.toc a');
+const sections = document.querySelectorAll('.sec');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      const id = en.target.id;
+      tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>
