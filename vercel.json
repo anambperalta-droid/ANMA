@@ -1,5 +1,8 @@
 {
   "cleanUrls": true,
+  "crons": [
+    { "path": "/api/cron-daily", "schedule": "0 11 * * *" }
+  ],
   "redirects": [
     { "source": "/login", "destination": "/app/login", "permanent": true },
     { "source": "/registro", "destination": "/app/registro", "permanent": true },
