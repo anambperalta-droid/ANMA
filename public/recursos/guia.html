@@ -246,6 +246,33 @@ footer a{color:var(--brand)}
 .numbered li .step-body{flex:1;min-width:0;font-size:14px;color:var(--txt);line-height:1.55;padding-top:3px}
 .numbered li .step-body b{color:var(--ink);font-weight:600}
 .numbered li .step-body small{display:block;margin-top:3px;font-size:12.5px;color:var(--txt2)}
+
+/* ── Wizard track: mapa de los 4 pasos reales del formulario ── */
+.wiz-track{display:flex;align-items:flex-start;gap:4px;margin:0 0 24px;padding:18px 14px;background:#fff;border:1px solid var(--line);border-radius:16px}
+.wiz-node{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;text-align:center}
+.wiz-node::after{content:'';position:absolute;top:19px;left:calc(50% + 24px);width:calc(100% - 24px);height:2px;background:var(--line)}
+.wiz-node:last-child::after{display:none}
+.wiz-node-num{width:38px;height:38px;border-radius:50%;background:var(--brand-lt);color:var(--brand);border:1.5px solid #ece1fb;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:600;font-size:16px;z-index:1}
+.wiz-node-lbl{font-size:12px;font-weight:700;color:var(--ink)}
+.wiz-node-sub{font-size:10.5px;color:var(--txt3);line-height:1.3}
+@media(max-width:640px){
+  .wiz-track{padding:14px 10px}
+  .wiz-node-num{width:32px;height:32px;font-size:14px}
+  .wiz-node-lbl{font-size:10.5px}
+  .wiz-node-sub{display:none}
+  .wiz-node::after{top:16px}
+}
+
+/* ── Step-detail card: desglose de un paso del wizard ── */
+.wiz-detail{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:0 0 14px;position:relative;border-left:3px solid var(--brand)}
+.wiz-detail-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wiz-detail-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;font-family:'Fraunces',serif}
+.wiz-detail-h b{font-family:'Fraunces',serif;font-size:16px;color:var(--ink);font-weight:600}
+.wiz-detail ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
+.wiz-detail ul li{font-size:13.5px;color:var(--txt);line-height:1.5;padding-left:16px;position:relative}
+.wiz-detail ul li::before{content:'—';position:absolute;left:0;color:var(--txt3)}
+.wiz-detail ul li b{color:var(--ink);font-weight:600}
+.wiz-detail-note{margin-top:10px;font-size:12.5px;color:var(--txt2);background:var(--surf);border-radius:8px;padding:8px 12px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -327,7 +354,7 @@ footer a{color:var(--brand)}
           <span class="ar-lbl">Reacción</span>
           <div class="ar-content">
             <div class="ar-ico"><i class="fa-solid fa-window-maximize"></i></div>
-            <div class="ar-body">Se abre el panel con pestañas<small>Negocio · Marca · Pagos · Equipo</small></div>
+            <div class="ar-body">Se abre el panel con 8 pestañas<small>Identidad y contacto · Comercial · Listas · Módulos · Pagos · Integraciones · Equipo · Cuenta</small></div>
           </div>
         </div>
         <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
@@ -340,11 +367,13 @@ footer a{color:var(--brand)}
         </div>
       </div>
 
+      <p class="why" style="margin:22px 0 10px"><b>Para arrancar hoy, solo necesitás 3 de las 8 pestañas.</b> Las demás (Listas, Módulos, Integraciones, Equipo, Cuenta) las vas a usar más adelante, a medida que el negocio lo pida.</p>
+
       <ol class="numbered">
-        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-image"></i>Marca</span>:</b> subís logo (PNG/JPG, máx 2MB), color principal y eslogan opcional.</div></li>
-        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-building"></i>Negocio</span>:</b> razón social, CUIT, dirección y teléfono.<small>Sin CUIT, dejalo vacío — igual emite presupuestos.</small></div></li>
-        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-credit-card"></i>Pagos</span>:</b> activá las formas que aceptás (efectivo, transferencia, MP, tarjetas).</div></li>
-        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-floppy-disk"></i>Guardar</span></b> y listo.</div></li>
+        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-building"></i>Identidad y contacto</span>:</b> subís logo (PNG/JPG, máx 300 KB), elegís color principal y de acento, cargás nombre del negocio, email, WhatsApp, Instagram y dirección.</div></li>
+        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-dollar-sign"></i>Comercial</span>:</b> moneda, margen y seña por defecto, tu rubro y tipo de venta (público / mayorista / ambos). Si facturás, tildás <span class="btn-ref"><i class="fa-solid fa-file-invoice-dollar"></i>Mostrar IVA</span> y ahí aparecen razón social, CUIT y condición frente al IVA.<small>Sin factura, dejá el tilde apagado — igual emitís presupuestos.</small></div></li>
+        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-credit-card"></i>Pagos</span>:</b> activá Mercado Pago (con tu Access Token) y/o transferencia bancaria con tu CBU o alias.</div></li>
+        <li><div class="step-body"><b>Guardás cada pestaña por separado</b> — no hay un botón único al final, cada sección tiene el suyo.</div></li>
       </ol>
 
       <div class="connect">
@@ -446,15 +475,26 @@ footer a{color:var(--brand)}
 
       <ol class="numbered">
         <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo cliente</span></b> arriba a la derecha.</div></li>
-        <li><div class="step-body"><b>Nombre y WhatsApp</b> — lo mínimo. El número activa el botón verde de chat.</div></li>
+        <li><div class="step-body"><b>Nombre y WhatsApp</b> — lo mínimo. El número activa el chat verde directo desde la ficha.</div></li>
         <li><div class="step-body"><b>Marcás tipo</b> <span class="btn-ref"><i class="fa-solid fa-tag"></i>Público</span> o <span class="btn-ref"><i class="fa-solid fa-tag"></i>Mayorista</span>.<small>ANMA aplica la lista de precios correcta automáticamente.</small></div></li>
-        <li><div class="step-body"><b>Sumás notas</b>: "le gusta el negro", "paga a 30 días", "alérgica al maní". Quedan en la ficha para siempre.</div></li>
-        <li><div class="step-body"><b>Desde la ficha tocás</b> <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Mensaje</span> para abrir el chat con plantilla pre-armada.</div></li>
+        <li><div class="step-body"><b>Al abrir un cliente</b> vas a ver 3 pestañas: <span class="btn-ref"><i class="fa-solid fa-address-card"></i>Información</span>, <span class="btn-ref"><i class="fa-solid fa-clock-rotate-left"></i>Historial</span> y <span class="btn-ref"><i class="fa-solid fa-note-sticky"></i>Notas</span>.</div></li>
       </ol>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-layer-group"></i> Qué encontrás en cada pestaña</h3>
+        <table class="t">
+          <thead><tr><th>Pestaña</th><th>Qué muestra</th></tr></thead>
+          <tbody>
+            <tr><td><b><i class="fa-solid fa-address-card" style="color:var(--brand);margin-right:6px"></i>Información</b></td><td>WhatsApp, email y rubro del cliente. Debajo, 3 números clave: total vendido, último pedido y cantidad de presupuestos.</td></tr>
+            <tr><td><b><i class="fa-solid fa-clock-rotate-left" style="color:var(--brand);margin-right:6px"></i>Historial</b></td><td>Lista de todos los presupuestos hechos a ese cliente, con estado y monto. Tocás uno y lo ves completo.</td></tr>
+            <tr><td><b><i class="fa-solid fa-note-sticky" style="color:var(--brand);margin-right:6px"></i>Notas</b></td><td>Notas de seguimiento con fecha: "le gusta el negro", "paga a 30 días", "prefiere que le escriban a la tarde". Quedan guardadas para siempre.</td></tr>
+          </tbody>
+        </table>
+      </div>
 
       <div class="connect">
         <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> vuelve María tres meses después — abrís su ficha y ves que se llevó las botas marrones. Le proponés la cartera que combina sin tener que recordarlo.</div>
+        <div class="connect-body"><b>Tu día a día:</b> vuelve María tres meses después — abrís su ficha, mirás el Historial y ves que se llevó las botas marrones. Le proponés la cartera que combina sin tener que recordarlo.</div>
       </div>
 
       <a href="/app/clientes" class="sec-cta">Ir a Clientes <i class="fa-solid fa-arrow-right"></i></a>
@@ -499,14 +539,26 @@ footer a{color:var(--brand)}
 
       <ol class="numbered">
         <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo proveedor</span></b> arriba a la derecha.</div></li>
-        <li><div class="step-body"><b>Cargás datos</b>: razón social, contacto, condición de pago (contado, 30, 60 días).</div></li>
-        <li><div class="step-body"><b>Registrás cada compra</b> con <span class="btn-ref"><i class="fa-solid fa-cart-plus"></i>Nueva compra</span> dentro de la ficha. ANMA guarda precio, cantidad y fecha.</div></li>
-        <li><div class="step-body"><b>Cuando un costo sube</b> arriba del promedio, ANMA te lo marca en el dashboard.<small>Tip: cargá al menos 2 proveedores por insumo crítico. La negociación cambia cuando saben que tenés opción.</small></div></li>
+        <li><div class="step-body"><b>Cargás datos</b>: WhatsApp, email, rubro, CUIT, condición frente al IVA, plazo de pago y lead time (días de entrega).</div></li>
+        <li><div class="step-body"><b>Al abrir un proveedor</b> vas a ver 4 pestañas: <span class="btn-ref"><i class="fa-solid fa-address-card"></i>Información</span>, <span class="btn-ref"><i class="fa-solid fa-box-open"></i>Productos</span>, <span class="btn-ref"><i class="fa-solid fa-tag"></i>Precios</span> y <span class="btn-ref"><i class="fa-solid fa-note-sticky"></i>Notas</span>.</div></li>
       </ol>
+
+      <div class="sub">
+        <h3><i class="fa-solid fa-layer-group"></i> Qué encontrás en cada pestaña</h3>
+        <table class="t">
+          <thead><tr><th>Pestaña</th><th>Qué muestra</th></tr></thead>
+          <tbody>
+            <tr><td><b><i class="fa-solid fa-address-card" style="color:var(--brand);margin-right:6px"></i>Información</b></td><td>Contacto, CUIT, condición de IVA, plazo de pago, lead time, CBU/alias. Debajo, cantidad de productos y costo total asociado.</td></tr>
+            <tr><td><b><i class="fa-solid fa-box-open" style="color:var(--brand);margin-right:6px"></i>Productos</b></td><td>Los productos que le comprás a este proveedor en particular.</td></tr>
+            <tr><td><b><i class="fa-solid fa-tag" style="color:var(--brand);margin-right:6px"></i>Precios</b></td><td>Histórico de precio por producto: cada cambio con fecha y variación en %. Tocás el lápiz para registrar un precio nuevo.</td></tr>
+            <tr><td><b><i class="fa-solid fa-note-sticky" style="color:var(--brand);margin-right:6px"></i>Notas</b></td><td>Notas libres sobre condiciones de pago, entregas o acuerdos particulares.</td></tr>
+          </tbody>
+        </table>
+      </div>
 
       <div class="connect">
         <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> tu proveedor de cajas te avisa de un aumento del 12%. Abrís su ficha, ves que la suba real fue 6 meses atrás del 8%, y le respondés con argumento — no con sorpresa.</div>
+        <div class="connect-body"><b>Tu día a día:</b> tu proveedor de cajas te avisa de un aumento del 12%. Abrís su pestaña Precios, ves que la suba real fue 6 meses atrás del 8%, y le respondés con argumento — no con sorpresa.<small>Tip: cargá al menos 2 proveedores por insumo crítico. La negociación cambia cuando saben que tenés opción.</small></div>
       </div>
 
       <a href="/app/proveedores" class="sec-cta">Ir a Proveedores <i class="fa-solid fa-arrow-right"></i></a>
@@ -573,7 +625,14 @@ footer a{color:var(--brand)}
           <h2>Pedidos y Presupuestos</h2>
         </div>
       </div>
-      <p class="why">Acá se conecta todo. <b>En 90 segundos</b>: cotización armada, PDF profesional, mensaje listo por WhatsApp.</p>
+      <p class="why">Acá se conecta todo lo anterior. Es un formulario de <b>4 pasos guiados</b> — no hay que llenar todo de una, cada paso te pide solo lo suyo.</p>
+
+      <div class="wiz-track">
+        <div class="wiz-node"><div class="wiz-node-num">1</div><div class="wiz-node-lbl">Cliente</div><div class="wiz-node-sub">Contacto y datos</div></div>
+        <div class="wiz-node"><div class="wiz-node-num">2</div><div class="wiz-node-lbl">Productos</div><div class="wiz-node-sub">Ítems del pedido</div></div>
+        <div class="wiz-node"><div class="wiz-node-num">3</div><div class="wiz-node-lbl">Entrega</div><div class="wiz-node-sub">Envío y precio</div></div>
+        <div class="wiz-node"><div class="wiz-node-num">4</div><div class="wiz-node-lbl">Confirmar</div><div class="wiz-node-sub">Revisar y enviar</div></div>
+      </div>
 
       <div class="action-react">
         <div class="ar-step">
@@ -601,17 +660,57 @@ footer a{color:var(--brand)}
         </div>
       </div>
 
-      <ol class="numbered">
-        <li><div class="step-body"><b>Elegís cliente</b> (ANMA aplica precio público o mayorista solo).<small>Si es nuevo, lo creás en el momento sin salir del pedido.</small></div></li>
-        <li><div class="step-body"><b>Sumás productos</b> tocando <span class="btn-ref"><i class="fa-solid fa-plus"></i>Agregar ítem</span>. Stock e insumos se descuentan automáticamente al confirmar.</div></li>
-        <li><div class="step-body"><b>Revisás el total</b>, agregás descuento si corresponde, y tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-check"></i>Confirmar</span>.</div></li>
-        <li><div class="step-body"><b>Aparecen 3 botones</b>: <span class="btn-ref"><i class="fa-solid fa-file-pdf"></i>Ver PDF</span> · <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>WhatsApp</span> · <span class="btn-ref"><i class="fa-solid fa-dollar-sign"></i>Cobrar</span>.</div></li>
-        <li><div class="step-body"><b>Después seguís</b>: el pedido aparece en el Dashboard con su estado (pendiente, cobrado, en logística).</div></li>
-      </ol>
+      <div class="wiz-detail">
+        <div class="wiz-detail-h"><div class="wiz-detail-num">1</div><b>Cliente</b></div>
+        <ul>
+          <li>Elegís uno existente o cargás uno nuevo <b>sin salir del formulario</b>.</li>
+          <li>Contacto o nombre de empresa (uno de los dos, obligatorio) + WhatsApp.</li>
+          <li>El precio público o mayorista se aplica solo, según el tipo de cliente.</li>
+        </ul>
+      </div>
+
+      <div class="wiz-detail">
+        <div class="wiz-detail-h"><div class="wiz-detail-num">2</div><b>Productos</b></div>
+        <ul>
+          <li>Buscás en tu catálogo y sumás ítems con cantidad y precio.</li>
+          <li>Necesitás <b>al menos un producto con nombre</b> para poder avanzar al paso siguiente.</li>
+          <li>Insumos y stock se descuentan automáticamente al guardar.</li>
+        </ul>
+      </div>
+
+      <div class="wiz-detail">
+        <div class="wiz-detail-h"><div class="wiz-detail-num">3</div><b>Entrega</b></div>
+        <ul>
+          <li><b>Modalidad</b> (retiro, envío, showroom...) y <b>fecha pactada</b>.</li>
+          <li><b>Estado del pedido</b>: borrador, enviado, confirmado, en producción, entregado o cancelado.</li>
+          <li><b>Estado de pago</b>: pendiente, seña abonada o pagado.</li>
+          <li><b>Margen, seña y descuento</b> en porcentaje — se recalculan solos en el total.</li>
+          <li>Si el envío es "a cotizar", tildás la casilla y el PDF muestra esa leyenda en vez de un precio.</li>
+        </ul>
+        <div class="wiz-detail-note"><i class="fa-solid fa-circle-info" style="margin-right:6px;color:var(--brand)"></i>Este es el paso con más campos — pero ninguno es obligatorio para avanzar. Completá lo que tengas y volvé después si hace falta.</div>
+      </div>
+
+      <div class="wiz-detail">
+        <div class="wiz-detail-h"><div class="wiz-detail-num">4</div><b>Confirmar</b></div>
+        <ul>
+          <li>Ves un resumen de Cliente, Productos y Entrega — con botón <b>Editar</b> en cada bloque para corregir sin volver atrás.</li>
+          <li>Totales desglosados: subtotal, descuento, IVA (si aplica) y seña.</li>
+          <li>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-floppy-disk"></i>Guardar Presupuesto</span> — ese es el botón que lo crea.</li>
+        </ul>
+      </div>
+
+      <div class="wiz-detail" style="border-left-color:#25D366">
+        <div class="wiz-detail-h"><div class="wiz-detail-num" style="background:#25D366">✓</div><b>Después de guardar</b></div>
+        <ul>
+          <li><span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Enviar</span> manda el presupuesto por WhatsApp con mensaje pre-armado.</li>
+          <li><span class="btn-ref"><i class="fa-solid fa-eye"></i>Vista previa</span> y <span class="btn-ref"><i class="fa-solid fa-file-pdf"></i>PDF</span> para revisar o descargar el documento.</li>
+          <li>Si tenés Mercado Pago activo, un botón manda también el link de cobro.</li>
+        </ul>
+      </div>
 
       <div class="connect">
         <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> te escriben por WhatsApp pidiendo cotización. En vez de armarla a mano y mandarla con tres mensajes, sacás un PDF prolijo en 2 minutos. Cerrás más ventas porque respondés rápido y profesional.</div>
+        <div class="connect-body"><b>Tu día a día:</b> te escriben por WhatsApp pidiendo cotización. En vez de armarla a mano y mandarla con tres mensajes, completás los 4 pasos y sacás un PDF prolijo en pocos minutos. Cerrás más ventas porque respondés rápido y profesional.</div>
       </div>
 
       <a href="/app/presupuesto" class="sec-cta">Crear pedido <i class="fa-solid fa-arrow-right"></i></a>
@@ -626,14 +725,14 @@ footer a{color:var(--brand)}
           <h2>Logística</h2>
         </div>
       </div>
-      <p class="why">Integración con <b>ViaCargo</b>. Generás la guía, mandás el tracking y el cliente deja de preguntar.</p>
+      <p class="why">Cargás cada envío con <b>Vía Cargo, Andreani u otro</b>, pegás el código de tracking y compartís el link por WhatsApp con el cliente.</p>
 
       <div class="action-react">
         <div class="ar-step">
           <span class="ar-lbl">Tu acción</span>
           <div class="ar-content">
             <div class="ar-ico"><i class="fa-solid fa-truck-fast"></i></div>
-            <div class="ar-body">Desde el pedido tocás <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Asignar envío</span><small>O entrás por Logística en sidebar</small></div>
+            <div class="ar-body">Desde el pedido tocás <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Nuevo envío</span><small>O entrás por Logística en sidebar</small></div>
           </div>
         </div>
         <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
@@ -641,24 +740,25 @@ footer a{color:var(--brand)}
           <span class="ar-lbl">Reacción</span>
           <div class="ar-content">
             <div class="ar-ico"><i class="fa-solid fa-barcode"></i></div>
-            <div class="ar-body">Se genera la guía<small>PDF imprimible con código de tracking</small></div>
+            <div class="ar-body">Guardás carrier + tracking<small>Vía Cargo, Andreani u otro</small></div>
           </div>
         </div>
         <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
         <div class="ar-step ar-benefit">
           <span class="ar-lbl">Para qué</span>
           <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-location-arrow"></i></div>
-            <div class="ar-body">Cliente sigue su paquete<small>Sin escribirte cada hora</small></div>
+            <div class="ar-ico"><i class="fa-brands fa-whatsapp"></i></div>
+            <div class="ar-body">Compartís el link<small>El cliente sigue su paquete solo</small></div>
           </div>
         </div>
       </div>
 
       <ol class="numbered">
-        <li><div class="step-body"><b>La dirección se toma del cliente</b> — confirma con él si la sucursal es correcta.<small>Cambiar destino después cuesta plata de redespacho.</small></div></li>
-        <li><div class="step-body"><b>Elegís servicio</b>: a sucursal, a domicilio, retiro en local. ANMA calcula el costo.</div></li>
-        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-print"></i>Generar guía</span></b> y se descarga el PDF para imprimir y pegar en el paquete.</div></li>
-        <li><div class="step-body"><b>Compartís tracking</b> con <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Enviar link</span>. El cliente sigue su paquete en vivo.</div></li>
+        <li><div class="step-body"><b>Confirmás la dirección</b> con el cliente antes de despachar.<small>Cambiar destino después cuesta redespacho.</small></div></li>
+        <li><div class="step-body"><b>Elegís el carrier</b>: <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Vía Cargo</span> · <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Andreani</span> · <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Otro</span>.<small>Cada uno abre el link directo al seguimiento oficial cuando pegás el código.</small></div></li>
+        <li><div class="step-body"><b>Cargás remito, bultos, peso y flete</b> (opcional). Podés dejar solo el mínimo — cliente, dirección, carrier y tracking.</div></li>
+        <li><div class="step-body"><b>Compartís el tracking</b> con <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Enviar link</span> — se abre WhatsApp con mensaje pre-armado y el link al seguimiento oficial.</div></li>
+        <li><div class="step-body"><b>Actualizás el estado</b> (En camino · Entregado · Con problema) desde la lista o la ficha.</div></li>
       </ol>
 
       <div class="connect">
@@ -678,7 +778,7 @@ footer a{color:var(--brand)}
           <h2>Mensajes WhatsApp</h2>
         </div>
       </div>
-      <p class="why">5 plantillas para los momentos clave: <b>cotización, seguimiento, listo, postventa, reactivación</b>. Tu voz sin tipear desde cero.</p>
+      <p class="why"><b>Plantillas ya cargadas</b> organizadas en <b>5 solapas</b> del embudo comercial. Editás las que quieras, sumás nuevas y mandás por WhatsApp con datos reales del pedido.</p>
 
       <div class="action-react">
         <div class="ar-step">
@@ -693,7 +793,7 @@ footer a{color:var(--brand)}
           <span class="ar-lbl">Reacción</span>
           <div class="ar-content">
             <div class="ar-ico"><i class="fa-solid fa-pen-to-square"></i></div>
-            <div class="ar-body">Ves las plantillas editables<small>Con variables {nombre} {monto} {fecha}</small></div>
+            <div class="ar-body">Ves las plantillas por etapa<small>Captación · Presupuestos · Pagos · Logística · Post-Venta</small></div>
           </div>
         </div>
         <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
@@ -707,10 +807,11 @@ footer a{color:var(--brand)}
       </div>
 
       <ol class="numbered">
-        <li><div class="step-body"><b>Editás cada plantilla</b> tocando <span class="btn-ref"><i class="fa-solid fa-pen"></i>Editar</span> al lado. Usás tu tono real.</div></li>
-        <li><div class="step-body"><b>Insertás variables</b> tocando los chips: <span class="btn-ref">{nombre}</span> <span class="btn-ref">{monto}</span> <span class="btn-ref">{fecha}</span>.<small>Se reemplazan solas según el cliente cuando mandés.</small></div></li>
-        <li><div class="step-body"><b>Activás un mensaje desde:</b><br>· Ficha de cliente · Detalle de pedido · Tablero de seguimiento del Dashboard.</div></li>
-        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Enviar</span></b> y se abre WhatsApp con el chat del cliente y el mensaje listo.</div></li>
+        <li><div class="step-body"><b>Elegís la solapa</b>: <span class="btn-ref"><i class="fa-solid fa-bullhorn"></i>Captación</span> · <span class="btn-ref"><i class="fa-solid fa-file-invoice-dollar"></i>Presupuestos</span> · <span class="btn-ref"><i class="fa-solid fa-credit-card"></i>Pagos</span> · <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Logística</span> · <span class="btn-ref"><i class="fa-solid fa-heart"></i>Post-Venta</span>.</div></li>
+        <li><div class="step-body"><b>Editás cada plantilla</b> con <span class="btn-ref"><i class="fa-solid fa-pen"></i>Editar</span>. Podés cambiar el texto o crear nuevas — usás tu tono real.</div></li>
+        <li><div class="step-body"><b>Usás las variables</b> — se completan solas con datos del pedido: <span class="btn-ref">&#123;&#123;nombre&#125;&#125;</span> <span class="btn-ref">&#123;&#123;negocio&#125;&#125;</span> <span class="btn-ref">&#123;&#123;producto&#125;&#125;</span> <span class="btn-ref">&#123;&#123;precio&#125;&#125;</span> <span class="btn-ref">&#123;&#123;fecha&#125;&#125;</span>.</div></li>
+        <li><div class="step-body"><b>Disparás desde:</b> ficha de cliente · detalle de pedido · lista de envíos · Dashboard.</div></li>
+        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Enviar</span></b> y se abre WhatsApp con el chat del cliente y el mensaje listo — solo revisás y mandás.</div></li>
       </ol>
 
       <div class="connect">
@@ -730,7 +831,7 @@ footer a{color:var(--brand)}
           <h2>Dashboard</h2>
         </div>
       </div>
-      <p class="why">El panel que abrís <em>cada mañana</em>. Te muestra qué resolver primero: <b>lo urgente, lo importante, lo facturado</b>.</p>
+      <p class="why">El panel que abrís <em>cada mañana</em>. <b>4 pestañas</b> (Resumen · Pedidos · Análisis · Seguimiento) con selector de período (7d · 30d · mes · año · custom) y export CSV.</p>
 
       <div class="action-react">
         <div class="ar-step">
@@ -745,7 +846,7 @@ footer a{color:var(--brand)}
           <span class="ar-lbl">Reacción</span>
           <div class="ar-content">
             <div class="ar-ico"><i class="fa-solid fa-table-cells-large"></i></div>
-            <div class="ar-body">Ves 3 bloques en grid<small>Urgente hoy · Pendientes · Vendido</small></div>
+            <div class="ar-body">Ves KPIs + seguimiento<small>Resumen · Pedidos · Análisis · Seguimiento</small></div>
           </div>
         </div>
         <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
@@ -758,11 +859,45 @@ footer a{color:var(--brand)}
         </div>
       </div>
 
+      <div class="wiz-detail">
+        <div class="wiz-detail-h"><div class="wiz-detail-num"><i class="fa fa-house" style="font-size:10px"></i></div><b>Resumen</b></div>
+        <ul>
+          <li><b>KPIs del período</b>: facturado, margen, pedidos generados, tasa de conversión, ticket promedio, top clientes.</li>
+          <li>Comparativa contra el período anterior (delta % en verde o rojo).</li>
+          <li>Grilla tipo bento — los cards clave arrancan más grandes.</li>
+        </ul>
+      </div>
+
+      <div class="wiz-detail">
+        <div class="wiz-detail-h"><div class="wiz-detail-num"><i class="fa fa-receipt" style="font-size:10px"></i></div><b>Pedidos</b></div>
+        <ul>
+          <li>Lista completa de pedidos del período, ordenable y con búsqueda.</li>
+          <li>Estado (borrador, enviado, confirmado, en producción, entregado), monto, cliente y fecha.</li>
+          <li>Botón <span class="btn-ref"><i class="fa-solid fa-download"></i>Exportar CSV</span> para Excel o contadora.</li>
+        </ul>
+      </div>
+
+      <div class="wiz-detail">
+        <div class="wiz-detail-h"><div class="wiz-detail-num"><i class="fa fa-chart-bar" style="font-size:10px"></i></div><b>Análisis</b></div>
+        <ul>
+          <li>Distribución por estado, evolución mensual, top clientes por facturación, top productos.</li>
+          <li>Margen real vs. margen objetivo — detectás si estás cotizando bajo.</li>
+        </ul>
+      </div>
+
+      <div class="wiz-detail" style="border-left-color:#EA580C">
+        <div class="wiz-detail-h"><div class="wiz-detail-num" style="background:#EA580C"><i class="fa fa-bell" style="font-size:10px"></i></div><b>Seguimiento · lo urgente</b></div>
+        <ul>
+          <li><b>Semáforo por días hasta la entrega comprometida</b>: rojo (crítico ≤7d), naranja (urgente 8-14d), amarillo, verde.</li>
+          <li>Presupuestos <b>enviados sin respuesta</b> — para reactivar con la plantilla "Recordatorio suave" de Mensajes.</li>
+          <li>El contador junto al nombre de la pestaña te avisa cuántos casos hay pendientes.</li>
+        </ul>
+        <div class="wiz-detail-note"><i class="fa-solid fa-circle-info" style="margin-right:6px;color:var(--brand)"></i>Esta es la pestaña que abrís primero cada mañana — el resto del dashboard es contexto, esta es acción.</div>
+      </div>
+
       <ol class="numbered">
-        <li><div class="step-body"><b>Bloque <span class="btn-ref btn-ref-danger"><i class="fa-solid fa-triangle-exclamation"></i>Urgente hoy</span></b>: cobros vencidos, presupuestos abiertos hace +7 días, stock crítico.</div></li>
-        <li><div class="step-body"><b>Bloque <span class="btn-ref"><i class="fa-solid fa-bullseye"></i>Pendientes</span></b>: clientes dormidos +60 días, pedidos en logística esperando seguimiento.</div></li>
-        <li><div class="step-body"><b>Bloque <span class="btn-ref"><i class="fa-solid fa-chart-pie"></i>Facturación</span></b>: total semana, top 5 productos, comparativa vs. mes anterior.</div></li>
-        <li><div class="step-body"><b>Cada card es clickeable</b> y te lleva al detalle para resolver el ítem.<small>Ejemplo: tocás "3 cobros vencidos" y vas directo a la lista filtrada.</small></div></li>
+        <li><div class="step-body"><b>Elegís el período</b> con el dropdown <span class="btn-ref"><i class="fa-solid fa-calendar"></i>Período</span> (7d, 30d, este mes, año, custom).</div></li>
+        <li><div class="step-body"><b>Botón <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo pedido</span></b> arriba a la derecha — el atajo más rápido para empezar a cotizar.</div></li>
       </ol>
 
       <div class="connect">
