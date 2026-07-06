@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, db, dbW, dbDel } from '../../lib/storage'
+import MoneyInput from '../common/MoneyInput'
 import { isLowStock } from '../../lib/stock'
 import { getCategoriesForRubro, getRubroMeta, catsAreOutdated, RUBROS } from '../../lib/rubros'
 import { getProductPlaceholder, getEmptyProducts } from '../../lib/voice'
@@ -902,7 +903,13 @@ export default function Catalogo() {
                     <i className="fa fa-arrow-trend-down" style={{ color: 'var(--txt3)', fontSize: 10 }} />
                     Costo del producto
                   </label>
-                  <input tabIndex={5} type="number" value={form.cost} onChange={e => onCostChange(e.target.value)} placeholder="0" min="0" />
+                  <MoneyInput
+                    tabIndex={5}
+                    value={form.cost === '' ? '' : Number(form.cost)}
+                    onChange={v => onCostChange(v)}
+                    allowEmpty
+                    placeholder="0"
+                  />
                 </div>
                 <div className="cat-price-arrow" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 2, color: 'var(--txt4)', fontSize: 14, fontWeight: 700 }}>→</div>
                 <div className="fg" style={{ marginBottom: 0 }}>

@@ -1169,6 +1169,13 @@ export default function Historial() {
   const totGain = pagados.reduce((s, b) => s + ganCobrada(b), 0)
 
   const editB = (id) => nav(`/presupuesto/${id}`)
+
+  // ── Duplicar pedido — abre /presupuesto con los datos precargados ──
+  const duplicateBudget = (b) => {
+    dbW('presupDuplicate', { source: b, at: Date.now() })
+    nav('/presupuesto')
+  }
+
   const copyWA = (b) => {
     const text = `Hola ${b.contact || ''}! Te envío el presupuesto ${b.num} por ${fmt(b.total)}. Quedamos a disposición!`
     navigator.clipboard.writeText(text).then(() => toast('Mensaje WA copiado', 'ok'))
@@ -1795,6 +1802,7 @@ export default function Historial() {
                                   >
                                     {[
                                       { icon: 'fa-pen', label: 'Editar', action: () => { editB(b.id); setOpenMenuId(null) } },
+                                      { icon: 'fa-copy', label: 'Duplicar', action: () => { duplicateBudget(b); setOpenMenuId(null) } },
                                       { icon: 'fa-brands fa-whatsapp', label: 'WhatsApp', action: () => { copyWA(b); setOpenMenuId(null) } },
                                       { icon: 'fa-paper-plane', label: 'Re-enviar', action: () => { handleResend(b); setOpenMenuId(null) } },
                                     ].map((item, idx) => (
@@ -2161,6 +2169,11 @@ export default function Historial() {
                             onMouseEnter={e => e.currentTarget.style.color = 'var(--brand)'}
                             onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}>
                             <i className="fa fa-pen" style={{ fontSize: 12 }} />
+                          </button>
+                          <button className="hist-act" onClick={() => duplicateBudget(b)} title="Duplicar como nuevo pedido"
+                            onMouseEnter={e => e.currentTarget.style.color = 'var(--brand)'}
+                            onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}>
+                            <i className="fa fa-copy" style={{ fontSize: 12 }} />
                           </button>
                           <button className="hist-act" onClick={() => copyWA(b)} title="WhatsApp"
                             onMouseEnter={e => e.currentTarget.style.color = '#25D366'}

@@ -391,7 +391,8 @@ export default function Presupuesto() {
   const marginPct = c.defaultMargin || 40
 
   /* ── Draft persistence ── */
-  const DRAFT_KEY = 'presupDraft'  // user-scoped via dbW/db/dbDel
+  const DRAFT_KEY     = 'presupDraft'      // user-scoped via dbW/db/dbDel
+  const DUPLICATE_KEY = 'presupDuplicate'  // seteado por Historial cuando duplicás
 
   useEffect(() => {
     if (id) {
@@ -422,6 +423,34 @@ export default function Presupuesto() {
         setMarginBudgetedSaved(typeof b.marginBudgeted === 'number' ? b.marginBudgeted : null)
       }
     } else {
+      // Prioridad 1: si hay un "duplicado" pendiente (usuario tocó "Duplicar"
+      // en el Historial), lo cargamos como base para el nuevo pedido.
+      const dup = db(DUPLICATE_KEY, null)
+      if (dup?.source) {
+        const b = dup.source
+        setForm({
+          contact: b.contact || '', company: b.company || '', wa: b.wa || '', clientEmail: b.clientEmail || '',
+          delivery: b.delivery || '', deliveryDate: '',  // fecha en blanco: la nueva es distinta
+          shipCost: b.shipCost || 0, shipCharged: b.shipCharged !== false,
+          status: 'draft',  // arranca como borrador
+          noteInt: b.noteInt || '', noteCli: b.noteCli || '',
+          payStatus: 'pending',  // nunca copiamos el pago del original
+          margin: b.margin ?? c.defaultMargin ?? 40,
+          deposit: b.deposit ?? c.defaultDeposit ?? 50,
+          logoCost: b.logoCost || 0,
+          discount: b.discount || 0,
+          dispatchInsumos: b.dispatchInsumos || [],
+          viajeId: null, logisticaParadas: [], comisionista: '', viajeFecha: '',
+          logisticaCharged: false, logisticaShowDetail: false,
+          canalVenta: b.canalVenta || (_tipoVenta === 'ambos' ? 'minorista' : _tipoVenta),
+        })
+        if (b.items?.length) setItems(b.items)
+        toast(`Duplicado del pedido ${b.num || `#${b.id}`} — ajustá lo que necesites y guardá`, 'ok')
+        // Limpiamos el marcador y el borrador viejo (el duplicado los reemplaza)
+        dbDel(DUPLICATE_KEY)
+        dbDel(DRAFT_KEY)
+        return
+      }
       // Restaurar borrador si existe
       const saved = db(DRAFT_KEY, null)
       if (saved) {
