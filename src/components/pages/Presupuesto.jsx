@@ -2163,7 +2163,7 @@ export default function Presupuesto() {
                 </div>
               )
             })()}
-            {feats.margenTabla && <div className="cp-row"><span className="cp-lbl">Ganancia</span><span className="cp-val" style={calc.costPending ? { color: '#F59E0B', fontStyle: 'italic', fontWeight: 700 } : { color: '#86EFAC' }}>{calc.costPending ? 'Pendiente' : fmt(calc.gain)}</span></div>}
+            {feats.margenTabla && <div className="cp-row"><span className="cp-lbl">Ganancia</span><span className="cp-val" style={calc.costPending ? { color: '#F59E0B', fontStyle: 'italic', fontWeight: 700 } : (calc.gain < 0 ? { color: '#FCA5A5', fontWeight: 800 } : { color: '#86EFAC' })}>{calc.costPending ? 'Pendiente' : fmt(calc.gain)}</span></div>}
             {feats.margenTabla && (() => {
               const target = num(form.margin)
               const real = Number(calc.marginReal) || 0
