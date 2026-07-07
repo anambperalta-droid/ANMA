@@ -11,7 +11,7 @@ import { getCategoriesForRubro, getRubroMeta, catsAreOutdated, RUBROS } from '..
 import { getProductPlaceholder, getEmptyProducts } from '../../lib/voice'
 import EmptyHero from '../layout/EmptyHero'
 
-const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '', variants: [] }
+const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '', variants: [], tipo: 'producto', componentes: [] }
 
 const compressImage = (file, maxBytes = 180000) => new Promise((resolve) => {
   const reader = new FileReader()
@@ -91,6 +91,14 @@ export default function Catalogo() {
   const [loading, setLoading] = useState(true)
   const [showCostInfo, setShowCostInfo] = useState(false)
   const [form, setForm] = useState({ ...EMPTY })
+  /* ── Modo del producto: simple vs combo ──
+     Un combo es un paquete de productos ya existentes en el catálogo
+     (ej: "Combo Verano" = 2 tazas + 1 remera). El costo se calcula
+     automático desde los componentes; el precio B2C/B2B se calcula
+     con el margen (o el usuario lo edita manual). Los componentes son
+     referencias a productos por ID — no duplicamos data.
+     Al descontar stock en el pedido, se descuenta cada componente. */
+  const [productMode, setProductMode] = useState('producto')  // 'producto' | 'combo'
   const [bulkCat, setBulkCat] = useState('')
   const [bulkData, setBulkData] = useState('')
   const [csvPreview, setCsvPreview] = useState([])
@@ -201,8 +209,12 @@ export default function Catalogo() {
   const open = (p) => {
     setShowAdvanced(false)
     setHasDraft(null)
+    // Detectar modo: si el producto tiene tipo='combo', arrancar en modo combo
+    // (con su lista de componentes). Los productos legacy sin tipo son 'producto'.
+    const isCombo = p?.tipo === 'combo'
+    setProductMode(isCombo ? 'combo' : 'producto')
     if (p) {
-      setForm({ ...EMPTY, ...p, cat: p.cat ?? '', image: p.image || '' })
+      setForm({ ...EMPTY, ...p, cat: p.cat ?? '', image: p.image || '', componentes: p.componentes || [] })
       const c = num(p.cost); const pr = num(p.priceB2C)
       setMarginInput(c > 0 && pr > 0 ? String(Math.round((pr - c) / c * 100)) : String(rules.b2c?.margin || 40))
     } else {
@@ -219,6 +231,63 @@ export default function Catalogo() {
       } catch {}
     }
     setModal(true)
+  }
+
+  // ── Combo helpers ────────────────────────────────────────────────
+  // Cálculo del costo del combo desde sus componentes:
+  //   comboCost = Σ (producto.cost × qty) para cada componente
+  // Se recalcula al vuelo cuando cambia la lista o algún costo de producto.
+  const comboCost = useMemo(() => {
+    if (productMode !== 'combo') return 0
+    const componentes = form.componentes || []
+    return componentes.reduce((sum, comp) => {
+      const p = (products || []).find(x => Number(x.id) === Number(comp.productId))
+      const cost = p ? num(p.cost) : 0
+      return sum + cost * Math.max(0, num(comp.qty) || 0)
+    }, 0)
+  }, [productMode, form.componentes, products])
+
+  // Sync automático: cuando el combo cambia costo, actualizar precios B2C/B2B
+  // usando el margen actual. Solo si el usuario NO editó los precios manual.
+  useEffect(() => {
+    if (productMode !== 'combo' || !modal) return
+    const m = parseFloat(marginInput)
+    if (!isNaN(m) && comboCost > 0) {
+      setForm(f => ({
+        ...f,
+        cost: comboCost,
+        priceB2C: Math.round(comboCost * (1 + m / 100)),
+        priceB2B: Math.round(comboCost * (1 + (rules.b2b?.margin || 25) / 100)),
+      }))
+    } else if (comboCost === 0) {
+      setForm(f => ({ ...f, cost: 0 }))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [comboCost, productMode, modal])
+
+  const addComboComp = (product) => {
+    if (!product?.id) return
+    // Si ya existe, aumenta qty. Si no, agrega nuevo.
+    setForm(f => {
+      const list = f.componentes || []
+      const existingIdx = list.findIndex(c => Number(c.productId) === Number(product.id))
+      if (existingIdx >= 0) {
+        return { ...f, componentes: list.map((c, i) => i === existingIdx ? { ...c, qty: num(c.qty) + 1 } : c) }
+      }
+      return { ...f, componentes: [...list, { productId: product.id, qty: 1 }] }
+    })
+  }
+  const updateComboComp = (productId, field, val) => {
+    setForm(f => ({
+      ...f,
+      componentes: (f.componentes || []).map(c => Number(c.productId) === Number(productId) ? { ...c, [field]: val } : c),
+    }))
+  }
+  const removeComboComp = (productId) => {
+    setForm(f => ({
+      ...f,
+      componentes: (f.componentes || []).filter(c => Number(c.productId) !== Number(productId)),
+    }))
   }
 
   const onCostChange = (v) => {
@@ -245,11 +314,36 @@ export default function Catalogo() {
 
   const save = ({ keepOpen = false } = {}) => {
     if (!form.name) { toast('Ingresá el nombre del producto.', 'er'); return }
-    // Variantes: descartamos las sin etiqueta; el stock total del producto es
-    // la suma de las variantes (si tiene). Productos sin variantes: stock simple.
-    const cleanVariants = (form.variants || []).filter(v => (v.label || '').trim()).map(v => ({ id: v.id, label: v.label.trim(), stock: num(v.stock), minStock: num(v.minStock) }))
+    // Validación específica de combo: al menos 1 componente con qty > 0
+    if (productMode === 'combo') {
+      const validComps = (form.componentes || []).filter(c => c.productId && num(c.qty) > 0)
+      if (validComps.length === 0) {
+        toast('Agregá al menos un componente al combo.', 'er'); return
+      }
+    }
+    // Variantes: solo aplican al modo producto. En combos ignoramos.
+    const cleanVariants = productMode === 'combo'
+      ? []
+      : (form.variants || []).filter(v => (v.label || '').trim()).map(v => ({ id: v.id, label: v.label.trim(), stock: num(v.stock), minStock: num(v.minStock) }))
     const stockVal = cleanVariants.length ? cleanVariants.reduce((s, v) => s + v.stock, 0) : num(form.stock)
-    const data = { ...form, cat: form.cat ?? '', cost: num(form.cost), variants: cleanVariants, stock: stockVal, minStock: num(form.minStock), priceB2C: num(form.priceB2C), priceB2B: num(form.priceB2B), updatedAt: new Date().toISOString().slice(0,10) }
+    // Combo: costo se toma del cálculo automático (comboCost); componentes limpios.
+    const finalCost = productMode === 'combo' ? comboCost : num(form.cost)
+    const cleanComponentes = productMode === 'combo'
+      ? (form.componentes || []).filter(c => c.productId && num(c.qty) > 0).map(c => ({ productId: c.productId, qty: num(c.qty) }))
+      : []
+    const data = {
+      ...form,
+      cat: form.cat ?? '',
+      cost: finalCost,
+      variants: cleanVariants,
+      stock: stockVal,
+      minStock: num(form.minStock),
+      priceB2C: num(form.priceB2C),
+      priceB2B: num(form.priceB2B),
+      tipo: productMode,
+      componentes: cleanComponentes,
+      updatedAt: new Date().toISOString().slice(0,10),
+    }
     try { dbDel('prod_draft') } catch {}
     setHasDraft(null)
     saveEntity('products', data)
@@ -706,11 +800,23 @@ export default function Catalogo() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         {p.image && <img src={p.image} alt={p.name} loading="lazy" decoding="async" style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 6, border: '1px solid var(--border)', flexShrink: 0 }} />}
                         <div>
-                          <div style={{ fontWeight: 800 }}>{p.name}</div>
+                          <div style={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                            <span>{p.name}</span>
+                            {p.tipo === 'combo' && (
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, background: 'linear-gradient(135deg,#FBBF24,#F59E0B)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '2px 7px', borderRadius: 10, letterSpacing: .3, textTransform: 'uppercase' }} title={`Combo con ${(p.componentes || []).length} componente${(p.componentes || []).length !== 1 ? 's' : ''}`}>
+                                <i className="fa fa-boxes-stacked" style={{ fontSize: 8 }} /> Combo
+                              </span>
+                            )}
+                          </div>
                           {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
                           {p.variants?.length > 0 && (
                             <div style={{ fontSize: 10, color: 'var(--brand)', fontWeight: 600, marginTop: 1 }}>
                               <i className="fa fa-layer-group" style={{ fontSize: 9 }} /> {p.variants.length} variantes
+                            </div>
+                          )}
+                          {p.tipo === 'combo' && (p.componentes || []).length > 0 && (
+                            <div style={{ fontSize: 10, color: '#B45309', fontWeight: 600, marginTop: 1 }}>
+                              <i className="fa fa-link" style={{ fontSize: 9 }} /> {p.componentes.length} componente{p.componentes.length !== 1 ? 's' : ''}
                             </div>
                           )}
                         </div>
@@ -897,7 +1003,7 @@ export default function Catalogo() {
       {modal && (
         <div className="modal-bg open" style={{ padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
           <div className="modal-form-card prod-modal-card" style={{ width: '100%', maxWidth: 740 }}>
-            <div className="mh"><h3><i className="fa fa-box" style={{ marginRight: 8, color: 'var(--brand)' }} />{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
+            <div className="mh"><h3><i className={`fa ${productMode === 'combo' ? 'fa-boxes-stacked' : 'fa-box'}`} style={{ marginRight: 8, color: productMode === 'combo' ? '#F59E0B' : 'var(--brand)' }} />{form.id ? 'Editar' : 'Nuevo'} {productMode === 'combo' ? 'combo' : 'producto'}</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
             {/* Banner borrador */}
             {hasDraft && (
               <div style={{ flexShrink: 0, background: '#FFFBEB', borderBottom: '1px solid #FDE68A', padding: '9px 16px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
@@ -921,6 +1027,44 @@ export default function Catalogo() {
                 overflow-y:auto + flex:1 + min-height:0 con !important, no
                 necesitamos duplicarlo inline. Solo padding. */}
             <div ref={bodyRef} style={{ padding: '18px 22px 4px' }}>
+
+            {/* ── Toggle Producto / Combo (solo al crear, no al editar).
+                Editar un combo mantiene el modo; para convertir un producto
+                simple en combo hay que crearlo de cero (evita corrupción). */}
+            {!form.id && (
+              <div style={{ display: 'flex', gap: 8, marginBottom: 14, background: 'var(--surface2)', padding: 5, borderRadius: 10, border: '1px solid var(--border)' }}>
+                <button
+                  type="button"
+                  onClick={() => setProductMode('producto')}
+                  style={{
+                    flex: 1, padding: '10px 14px', border: 'none', borderRadius: 8,
+                    background: productMode === 'producto' ? 'var(--surface)' : 'transparent',
+                    color: productMode === 'producto' ? 'var(--brand)' : 'var(--txt3)',
+                    fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                    boxShadow: productMode === 'producto' ? '0 2px 6px rgba(0,0,0,.08)' : 'none',
+                    transition: 'all .15s',
+                  }}
+                >
+                  <i className="fa fa-box" style={{ fontSize: 12 }} /> Producto simple
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProductMode('combo')}
+                  style={{
+                    flex: 1, padding: '10px 14px', border: 'none', borderRadius: 8,
+                    background: productMode === 'combo' ? 'linear-gradient(135deg,#FBBF24,#F59E0B)' : 'transparent',
+                    color: productMode === 'combo' ? '#fff' : 'var(--txt3)',
+                    fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                    boxShadow: productMode === 'combo' ? '0 4px 12px rgba(245,158,11,.35)' : 'none',
+                    transition: 'all .15s',
+                  }}
+                >
+                  <i className="fa fa-boxes-stacked" style={{ fontSize: 12 }} /> Combo / Pack
+                </button>
+              </div>
+            )}
 
             {/* ── CARD 1: Datos del producto ── */}
             <div style={{ background: 'var(--surface2)', borderRadius: 14, padding: '18px 22px', marginBottom: 16, border: '1px solid var(--border)' }}>
@@ -963,13 +1107,35 @@ export default function Catalogo() {
                     <i className="fa fa-arrow-trend-down" style={{ color: 'var(--txt3)', fontSize: 10 }} />
                     Costo del producto
                   </label>
-                  <MoneyInput
-                    tabIndex={5}
-                    value={form.cost === '' ? '' : Number(form.cost)}
-                    onChange={v => onCostChange(v)}
-                    allowEmpty
-                    placeholder="0"
-                  />
+                  {productMode === 'combo' ? (
+                    // En modo Combo el costo es auto-calculado desde los componentes.
+                    // Se muestra readonly con indicador visual para evitar confusión.
+                    <div style={{
+                      padding: '10px 12px',
+                      background: comboCost > 0 ? '#F0FDF4' : 'var(--surface)',
+                      border: `1.5px solid ${comboCost > 0 ? '#86EFAC' : 'var(--border)'}`,
+                      borderRadius: 8,
+                      fontSize: 13,
+                      fontWeight: 800,
+                      color: comboCost > 0 ? '#059669' : 'var(--txt4)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
+                    }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: .5 }}>
+                        <i className="fa fa-calculator" style={{ fontSize: 10 }} /> Auto
+                      </span>
+                      <span style={{ fontVariantNumeric: 'tabular-nums' }}>
+                        {comboCost > 0 ? `$${comboCost.toLocaleString('es-AR')}` : '— Agregá componentes'}
+                      </span>
+                    </div>
+                  ) : (
+                    <MoneyInput
+                      tabIndex={5}
+                      value={form.cost === '' ? '' : Number(form.cost)}
+                      onChange={v => onCostChange(v)}
+                      allowEmpty
+                      placeholder="0"
+                    />
+                  )}
                 </div>
                 <div className="cat-price-arrow" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 2, color: 'var(--txt4)', fontSize: 14, fontWeight: 700 }}>→</div>
                 <div className="fg" style={{ marginBottom: 0 }}>
@@ -1048,7 +1214,125 @@ export default function Catalogo() {
               )}
             </div>
 
-            {/* ── CARD 3: Inventario ── */}
+            {/* ── CARD COMBO: constructor de componentes ──
+                Solo en modo combo. Lista de productos referenciados con qty.
+                El costo del combo se calcula automático desde acá y se
+                actualiza en la card 2 (readonly cuando es combo). */}
+            {productMode === 'combo' && (
+              <div style={{ background: 'linear-gradient(135deg, #FFFBEB, #FEF3C7)', borderRadius: 14, padding: '18px 22px', marginBottom: 16, border: '1.5px solid #FBBF24' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 14 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+                    <span style={{ width: 30, height: 30, borderRadius: 8, background: 'linear-gradient(135deg,#FBBF24,#F59E0B)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <i className="fa fa-boxes-stacked" style={{ fontSize: 13, color: '#fff' }} />
+                    </span>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: 13, fontWeight: 800, color: '#92400E' }}>¿Qué lleva este combo?</div>
+                      <div style={{ fontSize: 10.5, color: '#B45309', marginTop: 1 }}>Elegí productos ya cargados y cuántos entran en <b>1 combo</b></div>
+                    </div>
+                  </div>
+                  {(form.componentes || []).length > 0 && (
+                    <span style={{ background: '#FEF3C7', color: '#92400E', fontSize: 10, padding: '3px 9px', borderRadius: 12, fontWeight: 800, whiteSpace: 'nowrap', border: '1px solid #FDE68A' }}>
+                      {form.componentes.length} {form.componentes.length === 1 ? 'item' : 'items'}
+                    </span>
+                  )}
+                </div>
+
+                {/* Lista de componentes agregados */}
+                {(form.componentes || []).length > 0 && (
+                  <div style={{ background: 'rgba(255,255,255,.85)', borderRadius: 10, border: '1px solid #FDE68A', marginBottom: 12, overflow: 'hidden' }}>
+                    {/* Headers */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 70px 100px 26px', gap: 8, padding: '8px 12px 6px', fontSize: 9, fontWeight: 800, color: '#92400E', textTransform: 'uppercase', letterSpacing: .5, background: 'rgba(251,191,36,.08)', borderBottom: '1px solid #FDE68A' }}>
+                      <span>Producto</span>
+                      <span style={{ textAlign: 'center' }}>Cant.</span>
+                      <span style={{ textAlign: 'right' }}>Subtotal</span>
+                      <span />
+                    </div>
+                    {(form.componentes || []).map((comp, idx) => {
+                      const p = products.find(x => Number(x.id) === Number(comp.productId))
+                      const productName = p?.name || '(producto eliminado)'
+                      const productCost = p ? num(p.cost) : 0
+                      const q = num(comp.qty) || 0
+                      const subtotal = productCost * q
+                      const stockAvail = p ? num(p.stock) : 0
+                      const stockOk = q > 0 && stockAvail >= q
+                      return (
+                        <div key={comp.productId} style={{ display: 'grid', gridTemplateColumns: '1fr 70px 100px 26px', gap: 8, alignItems: 'center', padding: '8px 12px', background: idx % 2 === 0 ? '#fff' : 'rgba(254,243,199,.35)', borderBottom: idx < form.componentes.length - 1 ? '1px solid rgba(253,230,138,.5)' : 'none' }}>
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--txt)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{productName}</div>
+                            <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>
+                              <span style={{ fontVariantNumeric: 'tabular-nums' }}>${productCost.toLocaleString('es-AR')} c/u</span>
+                              {p && (
+                                <span style={{ marginLeft: 6, color: stockOk ? '#059669' : '#DC2626' }}>
+                                  · stock {stockAvail}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <input
+                            type="number" min="1" step="1"
+                            value={comp.qty}
+                            onChange={e => updateComboComp(comp.productId, 'qty', Math.max(1, parseInt(e.target.value) || 1))}
+                            style={{ padding: '6px 6px', border: '1px solid var(--border)', borderRadius: 6, fontSize: 12, fontFamily: 'inherit', textAlign: 'center', width: '100%', boxSizing: 'border-box' }}
+                          />
+                          <div style={{ textAlign: 'right', fontSize: 12.5, fontWeight: 800, color: '#059669', fontVariantNumeric: 'tabular-nums' }}>
+                            ${subtotal.toLocaleString('es-AR')}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeComboComp(comp.productId)}
+                            style={{ width: 22, height: 22, border: '1px solid #FECACA', background: '#FFF1F2', color: '#DC2626', borderRadius: 5, cursor: 'pointer', fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            title="Quitar del combo"
+                          >
+                            <i className="fa fa-xmark" />
+                          </button>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+
+                {/* Buscador de productos para agregar */}
+                <div style={{ background: 'rgba(255,255,255,.85)', borderRadius: 10, padding: '10px 12px', border: '1.5px dashed #FBBF24' }}>
+                  <div style={{ fontSize: 11, fontWeight: 800, color: '#92400E', textTransform: 'uppercase', letterSpacing: 0.4, marginBottom: 8 }}>
+                    <i className="fa fa-plus-circle" style={{ marginRight: 4 }} />Agregar producto al combo
+                  </div>
+                  <select
+                    value=""
+                    onChange={e => {
+                      const id = Number(e.target.value)
+                      if (!id) return
+                      const prod = products.find(x => Number(x.id) === id)
+                      if (prod) addComboComp(prod)
+                    }}
+                    style={{ width: '100%', padding: '8px 10px', border: '1.5px solid #FDE68A', borderRadius: 8, fontSize: 13, fontFamily: 'inherit', color: 'var(--txt)', background: 'var(--surface)' }}
+                  >
+                    <option value="">— Elegí un producto del catálogo —</option>
+                    {(products || [])
+                      .filter(p => p.tipo !== 'combo')  // no combos anidados
+                      .filter(p => !(form.componentes || []).some(c => Number(c.productId) === Number(p.id)))  // no repetir
+                      .map(p => (
+                        <option key={p.id} value={p.id}>{p.name} — ${num(p.cost).toLocaleString('es-AR')} · stock {num(p.stock)}</option>
+                      ))}
+                  </select>
+                </div>
+
+                {/* Total costo del combo */}
+                {comboCost > 0 && (
+                  <div style={{ marginTop: 12, padding: '10px 14px', background: 'linear-gradient(135deg,#F0FDF4,#ECFDF5)', borderRadius: 10, border: '1.5px solid #6EE7B7', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ fontSize: 10.5, fontWeight: 800, color: '#059669', textTransform: 'uppercase', letterSpacing: .6 }}>
+                      <i className="fa fa-calculator" style={{ marginRight: 5 }} />Costo del combo
+                    </div>
+                    <div style={{ fontSize: 20, fontWeight: 900, color: '#059669', fontVariantNumeric: 'tabular-nums' }}>${comboCost.toLocaleString('es-AR')}</div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ── CARD 3: Inventario ──
+                En modo Combo NO se muestra: el stock se calcula al vuelo desde
+                los componentes (Presupuesto: stock_combo = MIN(componente_stock / qty)).
+                No tiene sentido tener stock propio para un combo. */}
+            {productMode !== 'combo' && (
             <div style={{ background: 'var(--surface2)', borderRadius: 14, padding: '18px 22px', marginBottom: 16, border: '1px solid var(--border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
                 <span style={{ width: 26, height: 26, borderRadius: 8, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -1098,6 +1382,7 @@ export default function Catalogo() {
                 </>
               )}
             </div>
+            )}{/* /card 3 Inventario — solo modo producto */}
 
             {/* ── ACORDEÓN: Configuración avanzada ── */}
             <button onClick={() => setShowAdvanced(s => !s)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '11px 16px', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, fontWeight: 600, color: 'var(--txt2)', marginBottom: showAdvanced ? 0 : 6, transition: 'background .15s' }}>
