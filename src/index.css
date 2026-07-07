@@ -1037,7 +1037,7 @@ td b{color:var(--txt);font-weight:600}
   .hist-tbl tbody tr{
     display:grid!important;
     grid-template-columns:auto 1fr auto;
-    grid-template-areas:'sel num acc' 'sel cli acc' 'sel estado total' 'sel gan gan';
+    grid-template-areas:'sel num acc' 'sel cli acc' 'sel total total' 'sel estado pago' 'sel gan gan';
     align-items:center;column-gap:12px;row-gap:5px;
     background:var(--surface);border:1px solid var(--border);border-radius:16px;
     padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(15,23,42,.05);
@@ -1056,9 +1056,12 @@ td b{color:var(--txt);font-weight:600}
   .hist-tbl td[data-cell="cli"] [data-cli]{font-size:15.5px!important;font-weight:800!important;white-space:normal!important;text-decoration:none!important;line-height:1.25!important}
   /* Estado: abajo izquierda */
   .hist-tbl td[data-cell="estado"]{grid-area:estado;white-space:normal!important;align-self:center}
-  /* Total: destacado abajo derecha con etiqueta */
-  .hist-tbl td[data-cell="total"]{grid-area:total;text-align:right!important;font-size:18px!important;align-self:center}
+  /* Total: destacado con etiqueta, ancho completo */
+  .hist-tbl td[data-cell="total"]{grid-area:total;text-align:right!important;font-size:18px!important;align-self:center;padding-top:4px!important;border-top:1px solid var(--border)!important;margin-top:2px}
   .hist-tbl td[data-cell="total"]::before{content:attr(data-label);display:block;font-size:9px;font-weight:700;color:var(--txt4);text-transform:uppercase;letter-spacing:.05em;text-align:right;margin-bottom:1px}
+  /* Pago: al lado del estado, con acción prominente */
+  .hist-tbl td[data-cell="pago"]{grid-area:pago;justify-self:end;align-self:center;white-space:normal!important}
+  .hist-tbl td[data-cell="pago"]>div{align-items:flex-end!important}
   /* Ganancia: línea de stats abajo (a lo ancho), con etiqueta */
   .hist-tbl td[data-cell="gan"]{grid-area:gan;text-align:left!important;font-size:12px!important;margin-top:2px;padding-top:6px!important;border-top:1px solid var(--border)!important}
   .hist-tbl td[data-cell="gan"]::before{content:attr(data-label) ': ';font-size:11px;font-weight:600;color:var(--txt4);text-transform:none;letter-spacing:0}

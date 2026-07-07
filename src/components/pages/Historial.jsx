@@ -2053,7 +2053,7 @@ export default function Historial() {
                   Ganancia{sortArrow('gain')}
                   {hidden && <i className="fa fa-eye-slash" style={{ marginLeft: 4, fontSize: 9, color: 'var(--txt4)' }} />}
                 </th>
-                <th>Estado</th><th className="col-hide-mobile">Pago</th><th>Acciones</th>
+                <th>Estado</th><th>Pago</th><th>Acciones</th>
               </tr></thead>
               <tbody>
                 {filteredBudgets.length ? filteredBudgets.map(b => {
@@ -2109,10 +2109,11 @@ export default function Historial() {
                           )}
                         </div>
                       </td>
-                      <td className="col-hide-mobile" style={{ whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+                      <td data-cell="pago" data-label="Pago" style={{ whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                         {/* Celda PAGO minimalista (07/07):
                             Patron Stripe/QuickBooks — chip estado + 1 acción/dato.
-                            Detalle completo vive en el modal Pagos. */}
+                            Detalle completo vive en el modal Pagos.
+                            data-cell="pago" para que aparezca en el card layout responsive. */}
                         {(() => {
                           const totalDue    = b.totalFinal || b.total || 0
                           const paid        = cobrado(b)
