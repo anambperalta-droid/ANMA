@@ -784,7 +784,10 @@ export default function Presupuesto() {
     // later. Revenue (total) and depositAmt always reflect the current form so
     // payment tracking stays accurate.
     const frozenTotalCost = wasStockDeducted ? (prevBudget.totalCost ?? calc.baseCost) : calc.baseCost
-    const totalGain       = calc.total - frozenTotalCost
+    // Solo guardamos totalGain si tenemos costos de TODOS los items (hasFullCostData).
+    // Sin costos completos → guardar null. El Historial usa null para "Pendiente"
+    // en vez de mostrar una ganancia inflada por items con costo=0.
+    const totalGain = calc.costPending ? null : (calc.total - frozenTotalCost)
 
     const saveForm = { ...form, shipCost: 0, shipCharged: false, envioACotizar: form.envioACotizar !== false, logoCost: num(form.logoCost), margin: num(form.margin), deposit: num(form.deposit), payStatus: form.payStatus || 'pending', logisticaCharged: form.logisticaCharged === true, logisticaShowDetail: form.logisticaShowDetail === true }
     // Si los costos están pendientes (algún ítem sin costUnit) NO congelamos un margen 0 engañoso.
