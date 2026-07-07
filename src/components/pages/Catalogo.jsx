@@ -61,14 +61,16 @@ export default function Catalogo() {
   const [modal, setModal] = useState(false)
   const [quickOpen, setQuickOpen] = useState(false)
 
-  // Quick-create: crea el producto con solo nombre + costo. Después el usuario
-  // puede editar la ficha completa desde el catálogo si quiere agregar más info.
+  // Quick-create: crea el producto con solo nombre + costo (+ proveedor
+  // opcional si hay proveedores cargados). Después el usuario puede editar
+  // la ficha completa desde el catálogo si quiere agregar más info.
   const handleQuickSave = (payload, { keepOpen } = {}) => {
     if (!payload?.name) return
     saveEntity('products', {
       name: payload.name,
       cat:  payload.cat || '',
       cost: Number(payload.cost) || 0,
+      supplierId: payload.supplierId || '',
       stock: null,
       variants: [],
       minStock: 0,
@@ -984,7 +986,14 @@ export default function Catalogo() {
                       <i className="fa fa-tag" style={{ color: 'var(--green)', fontSize: 10 }} />
                       Precio de Venta {showB2B ? '(Público)' : ''}
                     </label>
-                    <input tabIndex={7} type="number" value={form.priceB2C} onChange={e => onPriceChange(e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--green)', borderWidth: 2 }} />
+                    <MoneyInput
+                      tabIndex={7}
+                      value={form.priceB2C === '' ? '' : Number(form.priceB2C)}
+                      onChange={v => onPriceChange(v)}
+                      allowEmpty
+                      placeholder="0"
+                      style={{ borderColor: 'var(--green)', borderWidth: 2 }}
+                    />
                   </div>
                 )}
                 {!showB2C && showB2B && (
@@ -995,17 +1004,31 @@ export default function Catalogo() {
                         <i className="fa fa-handshake" style={{ color: 'var(--brand)', fontSize: 10 }} />
                         Precio Mayorista
                       </label>
-                      <input tabIndex={7} type="number" value={form.priceB2B} onChange={e => setF('priceB2B', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--brand)', borderWidth: 2 }} />
+                      <MoneyInput
+                        tabIndex={7}
+                        value={form.priceB2B === '' ? '' : Number(form.priceB2B)}
+                        onChange={v => setF('priceB2B', v)}
+                        allowEmpty
+                        placeholder="0"
+                        style={{ borderColor: 'var(--brand)', borderWidth: 2 }}
+                      />
                     </div>
                   </>
                 )}
               </div>
-              {num(form.cost) > 0 && showB2C && num(form.priceB2C) > 0 && (
-                <div style={{ marginTop: 12, padding: '9px 13px', borderRadius: 9, background: num(form.priceB2C) > num(form.cost) ? 'rgba(16,185,129,.08)' : 'rgba(239,68,68,.08)', border: `1px solid ${num(form.priceB2C) > num(form.cost) ? 'rgba(16,185,129,.25)' : 'rgba(239,68,68,.25)'}`, fontSize: 12, color: num(form.priceB2C) > num(form.cost) ? 'var(--green)' : 'var(--red)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <i className={`fa fa-arrow-${num(form.priceB2C) > num(form.cost) ? 'trend-up' : 'trend-down'}`} />
-                  Ganancia por unidad: ${(num(form.priceB2C) - num(form.cost)).toLocaleString('es-AR')} · Margen real: {marginInput || 0}%
-                </div>
-              )}
+              {num(form.cost) > 0 && showB2C && num(form.priceB2C) > 0 && (() => {
+                // Margen real = (precio - costo) / costo × 100. Antes se mostraba
+                // el marginInput del usuario, que es lo que él quería, no lo real.
+                const gain    = num(form.priceB2C) - num(form.cost)
+                const realPct = num(form.cost) > 0 ? Math.round(gain / num(form.cost) * 100) : 0
+                const isProfit = gain > 0
+                return (
+                  <div style={{ marginTop: 12, padding: '9px 13px', borderRadius: 9, background: isProfit ? 'rgba(16,185,129,.08)' : 'rgba(239,68,68,.08)', border: `1px solid ${isProfit ? 'rgba(16,185,129,.25)' : 'rgba(239,68,68,.25)'}`, fontSize: 12, color: isProfit ? 'var(--green)' : 'var(--red)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <i className={`fa fa-arrow-${isProfit ? 'trend-up' : 'trend-down'}`} />
+                    Ganancia por unidad: ${gain.toLocaleString('es-AR')} · Margen real: {realPct}%
+                  </div>
+                )
+              })()}
               {/* Segundo input de precio solo cuando hay AMBOS canales activos */}
               {showB2C && showB2B && (
                 <div className="fg" style={{ marginTop: 14, marginBottom: 0 }}>
@@ -1013,7 +1036,14 @@ export default function Catalogo() {
                     <i className="fa fa-handshake" style={{ color: 'var(--brand)', fontSize: 10 }} />
                     Precio Mayorista (B2B)
                   </label>
-                  <input tabIndex={8} type="number" value={form.priceB2B} onChange={e => setF('priceB2B', e.target.value)} placeholder="0" min="0" style={{ borderColor: 'var(--brand)', borderWidth: 2 }} />
+                  <MoneyInput
+                    tabIndex={8}
+                    value={form.priceB2B === '' ? '' : Number(form.priceB2B)}
+                    onChange={v => setF('priceB2B', v)}
+                    allowEmpty
+                    placeholder="0"
+                    style={{ borderColor: 'var(--brand)', borderWidth: 2 }}
+                  />
                 </div>
               )}
             </div>
@@ -1129,12 +1159,13 @@ export default function Catalogo() {
         </div>
       )}
 
-      {/* ── Modal quick-create (nombre + costo) ── */}
+      {/* ── Modal quick-create (nombre + costo + proveedor opcional) ── */}
       <QuickProductModal
         open={quickOpen}
         onClose={() => setQuickOpen(false)}
         onSave={handleQuickSave}
         defaultCat={cats[0] || ''}
+        suppliers={suppliers}
       />
 
       {/* Modal actualizar precios masivo */}
