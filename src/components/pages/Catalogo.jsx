@@ -313,7 +313,7 @@ export default function Catalogo() {
   }
 
   const save = ({ keepOpen = false } = {}) => {
-    if (!form.name) { toast('Ingresá el nombre del producto.', 'er'); return }
+    if (!form.name) { toast(`Ingresá el nombre del ${productMode === 'combo' ? 'combo' : 'producto'}.`, 'er'); return }
     // Validación específica de combo: al menos 1 componente con qty > 0
     if (productMode === 'combo') {
       const validComps = (form.componentes || []).filter(c => c.productId && num(c.qty) > 0)
@@ -359,10 +359,10 @@ export default function Catalogo() {
         const nameInput = document.querySelector('.modal input:first-of-type')
         if (nameInput) nameInput.focus()
       }, 30)
-      toast('Producto guardado — cargá el siguiente', 'ok')
+      toast(`${productMode === 'combo' ? 'Combo' : 'Producto'} guardado — cargá el siguiente`, 'ok')
     } else {
       setModal(false)
-      toast('Producto guardado', 'ok')
+      toast(`${productMode === 'combo' ? 'Combo' : 'Producto'} guardado`, 'ok')
     }
   }
 
@@ -1036,32 +1036,40 @@ export default function Catalogo() {
                 <button
                   type="button"
                   onClick={() => setProductMode('producto')}
+                  title="Un item individual del catálogo"
                   style={{
-                    flex: 1, padding: '7px 12px', border: 'none', borderRadius: 6,
+                    flex: productMode === 'producto' ? 2 : 1, minWidth: 0,
+                    padding: '7px 10px', border: 'none', borderRadius: 6,
                     background: productMode === 'producto' ? 'var(--surface)' : 'transparent',
-                    color: productMode === 'producto' ? 'var(--brand)' : 'var(--txt3)',
-                    fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                    color: productMode === 'producto' ? 'var(--brand)' : 'var(--txt4)',
+                    fontSize: productMode === 'producto' ? 12 : 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
                     boxShadow: productMode === 'producto' ? '0 1px 4px rgba(0,0,0,.06)' : 'none',
-                    transition: 'all .15s',
+                    opacity: productMode === 'producto' ? 1 : .65,
+                    transition: 'all .18s',
+                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                   }}
                 >
-                  <i className="fa fa-box" style={{ fontSize: 11 }} /> Producto simple
+                  <i className="fa fa-box" style={{ fontSize: 11 }} /> Producto{productMode === 'producto' ? ' simple' : ''}
                 </button>
                 <button
                   type="button"
                   onClick={() => setProductMode('combo')}
+                  title="Paquete de varios productos (ej: 2 tazas + 1 remera)"
                   style={{
-                    flex: 1, padding: '7px 12px', border: 'none', borderRadius: 6,
+                    flex: productMode === 'combo' ? 2 : 1, minWidth: 0,
+                    padding: '7px 10px', border: 'none', borderRadius: 6,
                     background: productMode === 'combo' ? 'linear-gradient(135deg,#FBBF24,#F59E0B)' : 'transparent',
-                    color: productMode === 'combo' ? '#fff' : 'var(--txt3)',
-                    fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                    color: productMode === 'combo' ? '#fff' : 'var(--txt4)',
+                    fontSize: productMode === 'combo' ? 12 : 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
                     boxShadow: productMode === 'combo' ? '0 2px 8px rgba(245,158,11,.28)' : 'none',
-                    transition: 'all .15s',
+                    opacity: productMode === 'combo' ? 1 : .65,
+                    transition: 'all .18s',
+                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                   }}
                 >
-                  <i className="fa fa-boxes-stacked" style={{ fontSize: 11 }} /> Combo / Pack
+                  <i className="fa fa-boxes-stacked" style={{ fontSize: 11 }} /> Combo{productMode === 'combo' ? ' / Pack' : ''}
                 </button>
               </div>
             )}
@@ -1074,11 +1082,11 @@ export default function Catalogo() {
                 <span style={{ width: 22, height: 22, borderRadius: 6, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <i className="fa fa-tag" style={{ fontSize: 10, color: 'var(--brand)' }} />
                 </span>
-                <span style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Datos del producto</span>
+                <span style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Datos del {productMode === 'combo' ? 'combo' : 'producto'}</span>
               </div>
               {/* Fila 1: Nombre ancho + SKU corto */}
               <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '10px 12px', marginBottom: 10 }}>
-                <div className="fg" style={{ marginBottom: 0 }}><label>Nombre *</label><input autoFocus tabIndex={1} type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder={getProductPlaceholder(c.rubro)} /></div>
+                <div className="fg" style={{ marginBottom: 0 }}><label>Nombre *</label><input autoFocus tabIndex={1} type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder={productMode === 'combo' ? 'Ej: Combo Verano · Pack Regalo' : getProductPlaceholder(c.rubro)} /></div>
                 <div className="fg" style={{ marginBottom: 0 }}><label>SKU / Código</label><input tabIndex={2} type="text" value={form.sku || ''} onChange={e => setF('sku', e.target.value)} placeholder="Opcional" /></div>
               </div>
               {/* Fila 2: Categoría + Proveedor */}
@@ -1111,7 +1119,7 @@ export default function Catalogo() {
                 <div className="fg" style={{ marginBottom: 0 }}>
                   <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     <i className="fa fa-arrow-trend-down" style={{ color: 'var(--txt3)', fontSize: 10 }} />
-                    Costo del producto
+                    Costo {productMode === 'combo' ? 'del combo' : 'del producto'}
                   </label>
                   {productMode === 'combo' ? (
                     // En modo Combo el costo es auto-calculado desde los componentes.
