@@ -1456,9 +1456,12 @@ export default function Presupuesto() {
               <>
                 <PaneHeader icon="fa-box-open" title="Paso 2 · Productos" subtitle="Agregá los ítems que incluye el pedido" />
                 {_tipoVenta === 'ambos' && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', marginBottom: 10, background: '#FAFAFB', border: '1px solid #ECECF1', borderRadius: 10 }}>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: 0.3 }}>Canal de este presupuesto</div>
-                    <div style={{ display: 'inline-flex', background: '#fff', border: '1px solid #E5E7EB', borderRadius: 8, padding: 2, gap: 2 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', marginBottom: 10, background: '#FAFAFB', border: '1px solid #ECECF1', borderRadius: 10, flexWrap: 'wrap' }}>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: 0.3, display: 'flex', alignItems: 'center', gap: 5 }}>
+                      Canal
+                      <i className="fa fa-circle-info" style={{ fontSize: 10, color: '#9CA3AF', cursor: 'help' }} title="Define qué precio del catálogo se usa al agregar productos (Público o Mayorista)" />
+                    </div>
+                    <div style={{ display: 'inline-flex', background: '#fff', border: '1px solid #E5E7EB', borderRadius: 8, padding: 2, gap: 2, flex: '1 1 auto', minWidth: 0 }}>
                       {[
                         { val: 'minorista', label: 'Público', icon: '🛍️' },
                         { val: 'mayorista', label: 'Mayorista', icon: '📦' },
@@ -1470,16 +1473,15 @@ export default function Presupuesto() {
                             type="button"
                             onClick={() => setF('canalVenta', opt.val)}
                             style={{
-                              padding: '6px 12px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: 'none', cursor: 'pointer',
+                              flex: 1, padding: '7px 12px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: 'none', cursor: 'pointer',
                               background: active ? 'var(--brand)' : 'transparent',
                               color: active ? '#fff' : '#6B7280',
-                              transition: 'all .15s',
+                              transition: 'all .15s', whiteSpace: 'nowrap',
                             }}
                           >{opt.icon} {opt.label}</button>
                         )
                       })}
                     </div>
-                    <div style={{ fontSize: 10, color: '#9CA3AF', marginLeft: 'auto' }}>Determina qué precio del catálogo se usa al agregar productos</div>
                   </div>
                 )}
                 <div className="tbl-card items-scroll" style={{ overflowX: 'auto' }}>
