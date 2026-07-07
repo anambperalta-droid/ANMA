@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { fmt, db, dbW, dbDel } from '../../lib/storage'
+import MoneyInput from '../common/MoneyInput'
 import { getMPConfig, createPaymentLink, getBankConfig, buildBankInfoText } from '../../lib/mercadopago'
 import { pushBudget, getSheetsConfig } from '../../lib/sheets'
 import { buildBudgetWA } from '../../lib/voice'
@@ -1771,7 +1772,7 @@ export default function Presupuesto() {
                     <input type="number" inputMode="numeric" value={form.margin} onFocus={selectOnFocus} onChange={e => setMarginAndReprice(e.target.value)} onBlur={e => { if (e.target.value === '') setMarginAndReprice(0) }} min="0" max="100" />
                   </div>
                   <div className="fg"><label>Seña (%)</label><input type="number" inputMode="numeric" value={form.deposit} onFocus={selectOnFocus} onChange={e => setF('deposit', e.target.value)} onBlur={e => { if (e.target.value === '') setF('deposit', 0) }} min="0" max="100" /></div>
-                  <div className="fg"><label>Logo x u. ($)</label><input type="number" inputMode="numeric" value={form.logoCost} onFocus={selectOnFocus} onChange={e => setF('logoCost', e.target.value)} onBlur={e => { if (e.target.value === '') setF('logoCost', 0) }} min="0" /></div>
+                  <div className="fg"><label>Logo x u.</label><MoneyInput value={form.logoCost === '' ? '' : Number(form.logoCost)} onChange={v => setF('logoCost', v)} allowEmpty placeholder="0" /></div>
                   {feats.descuentoCliente && (
                     <div className="fg">
                       <label>Descuento (%)</label>
