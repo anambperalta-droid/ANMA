@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, db, dbW, dbDel } from '../../lib/storage'
 import MoneyInput from '../common/MoneyInput'
+import QuickProductModal from '../common/QuickProductModal'
 import { isLowStock } from '../../lib/stock'
 import { getCategoriesForRubro, getRubroMeta, catsAreOutdated, RUBROS } from '../../lib/rubros'
 import { getProductPlaceholder, getEmptyProducts } from '../../lib/voice'
@@ -58,6 +59,24 @@ export default function Catalogo() {
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('all')
   const [modal, setModal] = useState(false)
+  const [quickOpen, setQuickOpen] = useState(false)
+
+  // Quick-create: crea el producto con solo nombre + costo. Después el usuario
+  // puede editar la ficha completa desde el catálogo si quiere agregar más info.
+  const handleQuickSave = (payload, { keepOpen } = {}) => {
+    if (!payload?.name) return
+    saveEntity('products', {
+      name: payload.name,
+      cat:  payload.cat || '',
+      cost: Number(payload.cost) || 0,
+      stock: null,
+      variants: [],
+      minStock: 0,
+      priceB2C: 0, priceB2B: 0,
+      updatedAt: new Date().toISOString().slice(0, 10),
+    })
+    toast(keepOpen ? 'Producto cargado — seguí con el próximo' : 'Producto cargado', 'ok')
+  }
   const [bulkModal, setBulkModal] = useState(false)
   const [csvModal, setCsvModal] = useState(false)
   const [moveModal, setMoveModal] = useState(null)
@@ -211,7 +230,7 @@ export default function Catalogo() {
     if (c > 0 && !isNaN(p) && p > 0) setMarginInput(String(Math.round((p - c) / c * 100)))
   }
 
-  const save = () => {
+  const save = ({ keepOpen = false } = {}) => {
     if (!form.name) { toast('Ingresá el nombre del producto.', 'er'); return }
     // Variantes: descartamos las sin etiqueta; el stock total del producto es
     // la suma de las variantes (si tiene). Productos sin variantes: stock simple.
@@ -220,7 +239,24 @@ export default function Catalogo() {
     const data = { ...form, cat: form.cat ?? '', cost: num(form.cost), variants: cleanVariants, stock: stockVal, minStock: num(form.minStock), priceB2C: num(form.priceB2C), priceB2B: num(form.priceB2B), updatedAt: new Date().toISOString().slice(0,10) }
     try { dbDel('prod_draft') } catch {}
     setHasDraft(null)
-    saveEntity('products', data); setModal(false); toast('Producto guardado', 'ok')
+    saveEntity('products', data)
+    if (keepOpen) {
+      // Modo carga en cadena — mantenemos categoría y proveedor (contexto que
+      // suele repetirse entre productos del mismo lote) y reseteamos el resto.
+      setForm(f => ({
+        ...f,
+        id: undefined, name: '', cost: '', priceB2C: '', priceB2B: '',
+        stock: '', minStock: '', variants: [], sku: '', image: '',
+      }))
+      setTimeout(() => {
+        const nameInput = document.querySelector('.modal input:first-of-type')
+        if (nameInput) nameInput.focus()
+      }, 30)
+      toast('Producto guardado — cargá el siguiente', 'ok')
+    } else {
+      setModal(false)
+      toast('Producto guardado', 'ok')
+    }
   }
 
   const del = (id) => confirm('¿Eliminar producto?', () => { deleteEntity('products', id); toast('Producto eliminado', 'in') })
@@ -483,6 +519,14 @@ export default function Catalogo() {
               </button>
             </div>
           </div>
+          <button
+            className="cli-pill"
+            onClick={() => setQuickOpen(true)}
+            title="Cargar producto rápido — solo nombre + costo"
+            style={{ background: 'linear-gradient(135deg, rgba(251,191,36,.12), rgba(245,158,11,.10))', borderColor: '#FBBF24', color: '#B45309' }}
+          >
+            <i className="fa fa-bolt" style={{ color: '#F59E0B' }} /><span>Rápido</span>
+          </button>
           <button className="cli-pill-new" onClick={() => open()}>
             <i className="fa fa-plus" /><span>Nuevo</span>
           </button>
@@ -1053,10 +1097,31 @@ export default function Catalogo() {
             )}
 
             </div>
-            <div className="mfooter"><button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button><button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar</button></div>
+            <div className="mfooter">
+              <button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button>
+              {!form.id && (
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => save({ keepOpen: true })}
+                  title="Guardar y cargar otro producto sin cerrar el modal"
+                  style={{ borderColor: 'var(--brand)', color: 'var(--brand)' }}
+                >
+                  <i className="fa fa-plus" /> Guardar + otro
+                </button>
+              )}
+              <button className="btn btn-primary" onClick={() => save()}><i className="fa fa-floppy-disk" /> Guardar</button>
+            </div>
           </div>
         </div>
       )}
+
+      {/* ── Modal quick-create (nombre + costo) ── */}
+      <QuickProductModal
+        open={quickOpen}
+        onClose={() => setQuickOpen(false)}
+        onSave={handleQuickSave}
+        defaultCat={cats[0] || ''}
+      />
 
       {/* Modal actualizar precios masivo */}
       {priceUpdateModal && (
