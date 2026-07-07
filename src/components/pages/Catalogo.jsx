@@ -115,6 +115,17 @@ export default function Catalogo() {
 
   useEffect(() => { const t = setTimeout(() => setLoading(false), 80); return () => clearTimeout(t) }, [])
 
+  // Al abrir el modal (o cambiar de producto en edición), volver el scroll
+  // interno arriba para que el usuario vea el header y no un fragmento del
+  // formulario cortado por la mitad.
+  useEffect(() => {
+    if (modal && bodyRef.current) {
+      requestAnimationFrame(() => {
+        try { bodyRef.current.scrollTop = 0 } catch { /* ignore */ }
+      })
+    }
+  }, [modal, form.id])
+
   const products = get('products')
   const suppliers = get('suppliers')
   const cats = c.productCats || []
@@ -883,7 +894,7 @@ export default function Catalogo() {
       {/* Modal producto */}
       {modal && (
         <div className="modal-bg open" style={{ padding: '14px' }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal-form-card prod-modal-card" style={{ width: '100%', maxWidth: 740, maxHeight: '95vh', display: 'flex', flexDirection: 'column' }}>
+          <div className="modal-form-card prod-modal-card" style={{ width: '100%', maxWidth: 740 }}>
             <div className="mh"><h3><i className="fa fa-box" style={{ marginRight: 8, color: 'var(--brand)' }} />{form.id ? 'Editar' : 'Nuevo'} producto</h3><button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button></div>
             {/* Banner borrador */}
             {hasDraft && (
@@ -903,7 +914,10 @@ export default function Catalogo() {
                 <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--txt4)', fontSize: 14, lineHeight: 1, padding: 2 }} onClick={() => setHasDraft(null)}>×</button>
               </div>
             )}
-            {/* Body — flujo natural, sin scroll interno ni flex:1 que estire/clipee */}
+            {/* Body — scroll interno para que el header y footer queden fijos.
+                El CSS de .prod-modal-card > div (que no sea mh/mfooter) le agrega
+                overflow-y:auto + flex:1 + min-height:0 con !important, no
+                necesitamos duplicarlo inline. Solo padding. */}
             <div ref={bodyRef} style={{ padding: '18px 22px 4px' }}>
 
             {/* ── CARD 1: Datos del producto ── */}

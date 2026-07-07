@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Guía completa de ANMA Hub — Sección por sección | ANMA Hub</title>
+<!-- Cuando la guía se renderiza dentro de un iframe (post-login), forzamos que
+     todos los links naveguen la ventana top en vez del propio iframe, para
+     evitar dashboards duplicados. Al abrir la guía suelta, _top === self,
+     así que no cambia el comportamiento. -->
+<base target="_top">
+<script>
+  // Los links con hash (#seccion) deben seguir navegando DENTRO del iframe,
+  // no reventar el top window. Sobreescribimos target al montar el DOM.
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('a[href^="#"]').forEach(a => a.removeAttribute('target'))
+  })
+</script>
 <meta name="description" content="Manual visual de ANMA Hub: cómo configurar tu marca, cargar productos, clientes, proveedores, pedidos, logística y mensajes. Una pestaña por sección.">
 <link rel="canonical" href="https://anmahub.com/recursos/guia">
 <meta property="og:title" content="Guía completa de ANMA Hub">
