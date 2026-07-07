@@ -1026,57 +1026,63 @@ export default function Catalogo() {
                 El CSS de .prod-modal-card > div (que no sea mh/mfooter) le agrega
                 overflow-y:auto + flex:1 + min-height:0 con !important, no
                 necesitamos duplicarlo inline. Solo padding. */}
-            <div ref={bodyRef} style={{ padding: '18px 22px 4px' }}>
+            <div ref={bodyRef} style={{ padding: '14px 18px 4px' }}>
 
             {/* ── Toggle Producto / Combo (solo al crear, no al editar).
                 Editar un combo mantiene el modo; para convertir un producto
                 simple en combo hay que crearlo de cero (evita corrupción). */}
             {!form.id && (
-              <div style={{ display: 'flex', gap: 8, marginBottom: 14, background: 'var(--surface2)', padding: 5, borderRadius: 10, border: '1px solid var(--border)' }}>
+              <div style={{ display: 'flex', gap: 6, marginBottom: 10, background: 'var(--surface2)', padding: 4, borderRadius: 8, border: '1px solid var(--border)' }}>
                 <button
                   type="button"
                   onClick={() => setProductMode('producto')}
                   style={{
-                    flex: 1, padding: '10px 14px', border: 'none', borderRadius: 8,
+                    flex: 1, padding: '7px 12px', border: 'none', borderRadius: 6,
                     background: productMode === 'producto' ? 'var(--surface)' : 'transparent',
                     color: productMode === 'producto' ? 'var(--brand)' : 'var(--txt3)',
-                    fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                    boxShadow: productMode === 'producto' ? '0 2px 6px rgba(0,0,0,.08)' : 'none',
+                    fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+                    boxShadow: productMode === 'producto' ? '0 1px 4px rgba(0,0,0,.06)' : 'none',
                     transition: 'all .15s',
                   }}
                 >
-                  <i className="fa fa-box" style={{ fontSize: 12 }} /> Producto simple
+                  <i className="fa fa-box" style={{ fontSize: 11 }} /> Producto simple
                 </button>
                 <button
                   type="button"
                   onClick={() => setProductMode('combo')}
                   style={{
-                    flex: 1, padding: '10px 14px', border: 'none', borderRadius: 8,
+                    flex: 1, padding: '7px 12px', border: 'none', borderRadius: 6,
                     background: productMode === 'combo' ? 'linear-gradient(135deg,#FBBF24,#F59E0B)' : 'transparent',
                     color: productMode === 'combo' ? '#fff' : 'var(--txt3)',
-                    fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                    boxShadow: productMode === 'combo' ? '0 4px 12px rgba(245,158,11,.35)' : 'none',
+                    fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+                    boxShadow: productMode === 'combo' ? '0 2px 8px rgba(245,158,11,.28)' : 'none',
                     transition: 'all .15s',
                   }}
                 >
-                  <i className="fa fa-boxes-stacked" style={{ fontSize: 12 }} /> Combo / Pack
+                  <i className="fa fa-boxes-stacked" style={{ fontSize: 11 }} /> Combo / Pack
                 </button>
               </div>
             )}
 
-            {/* ── CARD 1: Datos del producto ── */}
-            <div style={{ background: 'var(--surface2)', borderRadius: 14, padding: '18px 22px', marginBottom: 16, border: '1px solid var(--border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-                <span style={{ width: 26, height: 26, borderRadius: 8, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <i className="fa fa-tag" style={{ fontSize: 11, color: 'var(--brand)' }} />
+            {/* ── CARD 1: Datos del producto — compactada (07/07).
+                 Padding reducido, header más chico, grid con 2fr/1fr para
+                 que Nombre sea el ancho útil (no 50/50 con SKU corto). */}
+            <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '12px 16px', marginBottom: 12, border: '1px solid var(--border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 10 }}>
+                <span style={{ width: 22, height: 22, borderRadius: 6, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <i className="fa fa-tag" style={{ fontSize: 10, color: 'var(--brand)' }} />
                 </span>
-                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Datos del producto</span>
+                <span style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Datos del producto</span>
               </div>
-              <div className="grid2" style={{ gap: '14px 16px' }}>
+              {/* Fila 1: Nombre ancho + SKU corto */}
+              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '10px 12px', marginBottom: 10 }}>
                 <div className="fg" style={{ marginBottom: 0 }}><label>Nombre *</label><input autoFocus tabIndex={1} type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder={getProductPlaceholder(c.rubro)} /></div>
                 <div className="fg" style={{ marginBottom: 0 }}><label>SKU / Código</label><input tabIndex={2} type="text" value={form.sku || ''} onChange={e => setF('sku', e.target.value)} placeholder="Opcional" /></div>
+              </div>
+              {/* Fila 2: Categoría + Proveedor */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 12px' }}>
                 <div className="fg" style={{ marginBottom: 0 }}><label>Categoría</label>
                   <select value={form.cat} onChange={e => setF('cat', e.target.value)}>
                     <option value="">Sin categoría</option>
@@ -1093,13 +1099,13 @@ export default function Catalogo() {
               </div>
             </div>
 
-            {/* ── CARD 2: Costo · Margen · Precio ── */}
-            <div style={{ background: 'var(--surface2)', borderRadius: 14, padding: '18px 22px', marginBottom: 16, border: '1px solid var(--border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-                <span style={{ width: 26, height: 26, borderRadius: 8, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <i className="fa fa-coins" style={{ fontSize: 11, color: 'var(--brand)' }} />
+            {/* ── CARD 2: Costo · Margen · Precio (compactada 07/07) ── */}
+            <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '12px 16px', marginBottom: 12, border: '1px solid var(--border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 10 }}>
+                <span style={{ width: 22, height: 22, borderRadius: 6, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <i className="fa fa-coins" style={{ fontSize: 10, color: 'var(--brand)' }} />
                 </span>
-                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Costo · Margen · Precio</span>
+                <span style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Costo · Margen · Precio</span>
               </div>
               <div className="cat-price-calc" style={{ display: 'grid', gridTemplateColumns: '1fr 28px 1fr 28px 1fr', gap: '0 8px', alignItems: 'end' }}>
                 <div className="fg" style={{ marginBottom: 0 }}>
@@ -1219,7 +1225,7 @@ export default function Catalogo() {
                 El costo del combo se calcula automático desde acá y se
                 actualiza en la card 2 (readonly cuando es combo). */}
             {productMode === 'combo' && (
-              <div style={{ background: 'linear-gradient(135deg, #FFFBEB, #FEF3C7)', borderRadius: 14, padding: '18px 22px', marginBottom: 16, border: '1.5px solid #FBBF24' }}>
+              <div style={{ background: 'linear-gradient(135deg, #FFFBEB, #FEF3C7)', borderRadius: 12, padding: '12px 16px', marginBottom: 12, border: '1.5px solid #FBBF24' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 14 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
                     <span style={{ width: 30, height: 30, borderRadius: 8, background: 'linear-gradient(135deg,#FBBF24,#F59E0B)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -1333,12 +1339,12 @@ export default function Catalogo() {
                 los componentes (Presupuesto: stock_combo = MIN(componente_stock / qty)).
                 No tiene sentido tener stock propio para un combo. */}
             {productMode !== 'combo' && (
-            <div style={{ background: 'var(--surface2)', borderRadius: 14, padding: '18px 22px', marginBottom: 16, border: '1px solid var(--border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-                <span style={{ width: 26, height: 26, borderRadius: 8, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <i className="fa fa-boxes-stacked" style={{ fontSize: 11, color: 'var(--brand)' }} />
+            <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '12px 16px', marginBottom: 12, border: '1px solid var(--border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 10 }}>
+                <span style={{ width: 22, height: 22, borderRadius: 6, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <i className="fa fa-boxes-stacked" style={{ fontSize: 10, color: 'var(--brand)' }} />
                 </span>
-                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Inventario</span>
+                <span style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Inventario</span>
               </div>
               {formVariants.length === 0 ? (
                 <>
