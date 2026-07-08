@@ -70,11 +70,29 @@ export default function Insumos() {
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('all')
   const [showLowOnly, setShowLowOnly] = useState(false)
+  const [sortField, setSortField] = useState(() => { try { return localStorage.getItem('ins_sort_f') || 'recent' } catch { return 'recent' } })
+  const [sortDir, setSortDir] = useState(() => { try { return localStorage.getItem('ins_sort_d') || 'desc' } catch { return 'desc' } })
   const [modal, setModal] = useState(false)
   const [moveModal, setMoveModal] = useState(null)
   const [form, setForm] = useState({ ...EMPTY })
   const [moveForm, setMoveForm] = useState({ type: 'in', qty: '', purchaseCost: '', note: '' })
   const [tab, setTab] = useState('list')
+
+  const toggleSort = (field) => {
+    if (sortField === field) {
+      const nd = sortDir === 'asc' ? 'desc' : 'asc'
+      setSortDir(nd)
+      try { localStorage.setItem('ins_sort_d', nd) } catch {}
+    } else {
+      setSortField(field); setSortDir('asc')
+      try { localStorage.setItem('ins_sort_f', field); localStorage.setItem('ins_sort_d', 'asc') } catch {}
+    }
+  }
+
+  const sortIcon = (field) => {
+    if (sortField !== field) return <i className="fa fa-sort" style={{ fontSize: 8, marginLeft: 4, opacity: .3 }} />
+    return <i className={`fa fa-sort-${sortDir === 'asc' ? 'up' : 'down'}`} style={{ fontSize: 9, marginLeft: 4, color: 'var(--brand)' }} />
+  }
   const [showAdvancedModal, setShowAdvancedModal] = useState(false)
   const [showCalc, setShowCalc] = useState(false)
   const [alertDismissed, setAlertDismissed] = useState(() => {
@@ -103,8 +121,23 @@ export default function Insumos() {
         (x.subcat || '').toLowerCase().includes(s)
       )
     }
-    return f.sort((a, b) => (b.id || 0) - (a.id || 0))
-  }, [insumos, catFilter, showLowOnly, search])
+    const arr = [...f]
+    if (sortField === 'recent') {
+      arr.sort((a, b) => (b.id || 0) - (a.id || 0))
+    } else {
+      const dir = sortDir === 'asc' ? 1 : -1
+      arr.sort((a, b) => {
+        if (sortField === 'name') {
+          const av = (a.name || '').toLowerCase(), bv = (b.name || '').toLowerCase()
+          return av < bv ? -1 * dir : av > bv ? 1 * dir : 0
+        }
+        if (sortField === 'cost')  return ((Number(a.cost) || 0) - (Number(b.cost) || 0)) * dir
+        if (sortField === 'stock') return ((a.stock || 0) - (b.stock || 0)) * dir
+        return 0
+      })
+    }
+    return arr
+  }, [insumos, catFilter, showLowOnly, search, sortField, sortDir])
 
   const lowStock = useMemo(() => insumos.filter(x => stockLevel(x.stock, x.minStock) === 'low'), [insumos])
   const totalValue = insumos.reduce((s, x) => s + (x.stock || 0) * (Number(x.cost) || 0), 0)
@@ -178,6 +211,25 @@ export default function Insumos() {
 
   const supplierName = (id) => { const s = suppliers.find(x => x.id === id); return s ? s.name : '—' }
 
+  const exportCsv = () => {
+    if (!filtered.length) { toast('Sin datos para exportar', 'er'); return }
+    const rows = [['Nombre', 'Categoria', 'Subcategoria', 'Unidad', 'Stock', 'Stock minimo', 'Costo unitario', 'Valor total', 'Proveedor']]
+    filtered.forEach(x => rows.push([
+      x.name || '', catLabel(x.cat), x.subcat || '', x.unit || 'un',
+      x.stock || 0, x.minStock || 0, Number(x.cost) || 0,
+      ((x.stock || 0) * (Number(x.cost) || 0)).toFixed(2),
+      supplierName(x.supplierId),
+    ]))
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n')
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url; a.download = `insumos-${new Date().toISOString().slice(0, 10)}.csv`
+    document.body.appendChild(a); a.click(); a.remove()
+    setTimeout(() => URL.revokeObjectURL(url), 100)
+    toast('CSV exportado', 'ok')
+  }
+
   const quickPlus = (item) => {
     recordStockMove({ type: 'in', insumoId: item.id, qty: 1, costAtTime: Number(item.cost) || 0, ref: item.name, note: '+1 rápido' })
     toast(`+1 ${item.unit || 'un'} → ${item.name}`, 'ok')
@@ -192,13 +244,41 @@ export default function Insumos() {
   return (
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>
       <div className="ph">
-        <div className="ph-right">
-          <button className="btn btn-primary" onClick={openNew} style={{ minHeight: 44 }}><i className="fa fa-plus" /> Nuevo insumo</button>
+        <div className="ph-right" style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <button className="btn btn-ghost btn-sm ins-hide-mob" onClick={exportCsv} title="Exportar CSV" style={{ minHeight: 40 }}>
+            <i className="fa fa-file-arrow-down" /> Exportar
+          </button>
+          <button className="btn btn-primary ins-hide-mob" onClick={openNew} style={{ minHeight: 44 }}><i className="fa fa-plus" /> Nuevo insumo</button>
         </div>
       </div>
 
-      {/* ── KPIs ── */}
-      <div className="bento bento-kpis-4" style={{ marginBottom: 14 }}>
+      {/* ── KPI strip mobile (compacto, solo lo esencial) ── */}
+      <div className="ins-kpi-strip">
+        <div className={`ins-kpi-chip ${lowStock.length > 0 ? 'alert' : 'ok'}`} onClick={() => { if (lowStock.length > 0) setShowLowOnly(v => !v) }}>
+          <i className={`fa fa-${lowStock.length > 0 ? 'triangle-exclamation' : 'circle-check'}`} />
+          <div>
+            <div className="lbl">Stock bajo</div>
+            <div className="val">{lowStock.length === 0 ? 'Todo OK' : `${lowStock.length} ${lowStock.length === 1 ? 'insumo' : 'insumos'}`}</div>
+          </div>
+        </div>
+        <div className="ins-kpi-chip neutral">
+          <i className="fa fa-coins" />
+          <div>
+            <div className="lbl">Valor stock</div>
+            <div className="val">{fmt(totalValue)}</div>
+          </div>
+        </div>
+        <div className="ins-kpi-chip neutral">
+          <i className="fa fa-boxes-stacked" />
+          <div>
+            <div className="lbl">Total</div>
+            <div className="val">{insumos.length}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── KPIs desktop ── */}
+      <div className="bento bento-kpis-4 ins-hide-mob" style={{ marginBottom: 14 }}>
         <div className="bento-kpi" style={{ borderLeft: '3px solid var(--brand)', padding: '12px 14px 10px' }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Total insumos</div>
           <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.1 }}>{insumos.length}</div>
@@ -270,6 +350,32 @@ export default function Insumos() {
                 <option value="all">Todas las categorías</option>
                 {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
               </select>
+              <select
+                className="ins-filter-sel ins-only-mob"
+                value={`${sortField}:${sortDir}`}
+                onChange={e => {
+                  const [f, d] = e.target.value.split(':')
+                  setSortField(f); setSortDir(d)
+                  try { localStorage.setItem('ins_sort_f', f); localStorage.setItem('ins_sort_d', d) } catch {}
+                }}
+              >
+                <option value="recent:desc">Más recientes</option>
+                <option value="name:asc">Nombre A-Z</option>
+                <option value="name:desc">Nombre Z-A</option>
+                <option value="stock:asc">Stock ↑</option>
+                <option value="stock:desc">Stock ↓</option>
+                <option value="cost:asc">Costo ↑</option>
+                <option value="cost:desc">Costo ↓</option>
+              </select>
+              <button
+                onClick={() => setShowLowOnly(v => !v)}
+                className={`ins-chip-toggle${showLowOnly ? ' active' : ''}`}
+                title="Filtrar solo stock bajo"
+              >
+                <i className="fa fa-triangle-exclamation" style={{ fontSize: 10 }} />
+                Stock bajo
+                {lowStock.length > 0 && <span className="cnt">{lowStock.length}</span>}
+              </button>
             </div>
 
             {/* ── Mobile: pill cards ── */}
@@ -330,9 +436,9 @@ export default function Insumos() {
                 <table className="tbl">
                   <thead>
                     <tr>
-                      <th>Insumo</th>
+                      <th className="tbl-sort" onClick={() => toggleSort('name')}>Insumo {sortIcon('name')}</th>
                       <th>Unidad</th>
-                      <th style={{ textAlign: 'right' }}>Costo U.</th>
+                      <th className="tbl-sort" style={{ textAlign: 'right' }} onClick={() => toggleSort('cost')}>Costo U. {sortIcon('cost')}</th>
                       <th>Proveedor</th>
                       <th style={{ textAlign: 'right', color: 'var(--txt3)', fontWeight: 500 }}>Última act.</th>
                       <th></th>
@@ -516,6 +622,13 @@ export default function Insumos() {
             </div>
           )}
         </>
+      )}
+
+      {/* ── FAB mobile — Nuevo insumo siempre accesible ── */}
+      {tab === 'list' && (
+        <button className="ins-fab" onClick={openNew} title="Nuevo insumo" aria-label="Nuevo insumo">
+          <i className="fa fa-plus" />
+        </button>
       )}
 
       {/* ── Modal: crear / editar insumo — FRICCION CERO ── */}
