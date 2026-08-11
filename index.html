@@ -408,72 +408,60 @@ p{text-wrap:pretty}
 @media(max-width:700px){.mock-notify{font-size:10px;right:10px}.mock-badge{display:none}}
 
 /* ═════════════════════════════════════════════
-   HERO INSIGHT CARD · inteligencia comercial
+   HERO INSIGHT CARD · editorial style
    ═════════════════════════════════════════════ */
-.hero-insight-wrap{position:relative;padding:14px 0 34px}
-.insight-card{background:#fff;border-radius:22px;padding:26px 26px 22px;box-shadow:0 30px 80px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.08);position:relative;z-index:2}
+.hero-insight-wrap{position:relative;padding:18px 0 40px}
+.insight-card{background:#fff;border-radius:24px;padding:34px 32px 28px;box-shadow:0 40px 100px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06);position:relative;z-index:2;text-align:center;overflow:hidden}
+.insight-card::before{content:"";position:absolute;top:-40%;right:-30%;width:400px;height:400px;background:radial-gradient(circle,rgba(124,58,237,.08),transparent 60%);pointer-events:none;z-index:0}
+.insight-card > *{position:relative;z-index:1}
 
-/* Chip flotante superior — actividad viva */
-.insight-chip{position:absolute;top:-8px;right:20px;background:#fff;border-radius:99px;padding:8px 16px 8px 12px;display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;color:#0F172A;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:5;border:1px solid rgba(0,0,0,.05);white-space:nowrap;animation:floatChip 3.2s ease-in-out infinite}
-.insight-chip b{color:#059669;font-weight:800}
-.insight-chip-dot{width:8px;height:8px;border-radius:50%;background:#10b981;flex-shrink:0;box-shadow:0 0 0 3px rgba(16,185,129,.22);animation:pulse 2s infinite}
+/* Chip flotante superior */
+.insight-chip{position:absolute;top:-8px;right:24px;background:#fff;border-radius:99px;padding:7px 14px 7px 10px;display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:#0F172A;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:5;border:1px solid rgba(0,0,0,.05);white-space:nowrap;animation:floatChip 3.2s ease-in-out infinite}
+.insight-chip-dot{width:7px;height:7px;border-radius:50%;background:#10b981;flex-shrink:0;box-shadow:0 0 0 3px rgba(16,185,129,.22);animation:pulse 2s infinite}
 
-/* Header */
-.insight-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px}
-.insight-hd-left{display:flex;align-items:center;gap:12px;min-width:0}
-.insight-hd-icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#7c3aed;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.insight-hd-title{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:#0F172A;letter-spacing:-.2px;line-height:1.2}
-.insight-hd-sub{font-size:11.5px;color:#94a3b8;font-weight:600;margin-top:3px;letter-spacing:.1px}
-.insight-hd-tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;color:#059669;text-transform:uppercase;letter-spacing:.6px;background:#dcfce7;padding:5px 11px;border-radius:99px;flex-shrink:0}
-.insight-hd-tag-dot{width:6px;height:6px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:pulse 2s infinite}
+/* Tag categoría */
+.insight-tag{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:1.4px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);padding:7px 14px;border-radius:99px;margin-bottom:20px;border:1px solid rgba(124,58,237,.15)}
 
-/* Rows */
-.insight-rows{display:flex;flex-direction:column;gap:16px;margin-bottom:22px}
-.insight-row{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
-.insight-row-info{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline}
-.insight-row-name{font-size:13.5px;font-weight:700;color:#0F172A}
-.insight-row-value{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:#0F172A;letter-spacing:-.3px}
-.insight-row-track{height:7px;background:#f1f5f9;border-radius:99px;overflow:hidden}
-.insight-row-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa);border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
-.insight-row-bar.warn{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
-.insight-row-margin{font-size:10.5px;font-weight:800;letter-spacing:.3px;white-space:nowrap}
-.insight-row-margin.up{color:#059669}
-.insight-row-margin.down{color:#dc2626}
+/* Titular editorial · el HERO real del componente */
+.insight-headline{font-family:'Fraunces',serif;font-size:30px;font-weight:600;color:#0F172A;line-height:1.15;letter-spacing:-1px;margin:0 0 24px;text-wrap:balance}
+.insight-headline em{font-style:normal;background:linear-gradient(120deg,#7c3aed 0%,#a855f7 50%,#c084fc 100%);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
 
-/* Callout — insight en voz humana */
-.insight-callout{display:flex;gap:12px;padding:14px 16px;background:linear-gradient(135deg,#f5f3ff,#faf5ff);border-radius:12px;border:1px solid #ede9fe;align-items:flex-start}
-.insight-callout-icon{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.insight-callout p{font-size:13px;color:#475569;line-height:1.55;margin:0}
-.insight-callout p b{color:#7c3aed;font-weight:800}
+/* Visual central — donut chart */
+.insight-visual{display:flex;justify-content:center;margin:0 0 22px;filter:drop-shadow(0 12px 30px rgba(124,58,237,.15))}
+.insight-visual svg{max-width:200px;height:auto}
+
+/* Sub mensaje */
+.insight-sub{font-size:14.5px;color:#475569;line-height:1.6;margin:0 0 22px;text-wrap:balance;max-width:340px;margin-left:auto;margin-right:auto}
+.insight-sub b{color:#0F172A;font-weight:700}
+
+/* Chips inferiores */
+.insight-chips-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding-top:22px;border-top:1px solid #f1f5f9}
+.insight-mini-chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#7c3aed;background:#f5f3ff;padding:6px 12px;border-radius:99px;border:1px solid #ede9fe}
+.insight-mini-chip.warn{color:#b45309;background:#fef3c7;border-color:#fde68a}
 
 /* Badge flotante inferior */
-.insight-badge{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#7c3aed,#059669);border-radius:16px;padding:14px 22px;display:flex;gap:22px;z-index:3;box-shadow:0 12px 32px rgba(124,58,237,.5);white-space:nowrap}
+.insight-badge{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#7c3aed,#5b21b6 50%,#059669);border-radius:16px;padding:14px 22px;display:flex;gap:22px;z-index:3;box-shadow:0 14px 34px rgba(124,58,237,.55);white-space:nowrap}
 .ib-stat{text-align:center}
 .ib-num{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#fff;line-height:1;letter-spacing:-.5px}
 .ib-lbl{font-size:9.5px;color:rgba(255,255,255,.78);text-transform:uppercase;letter-spacing:.5px;margin-top:5px;font-weight:700}
 .ib-div{width:1px;background:rgba(255,255,255,.28)}
 
 @media(max-width:920px){
-  .hero-insight-wrap{max-width:480px;margin:0 auto;padding:14px 0 40px}
+  .hero-insight-wrap{max-width:480px;margin:0 auto;padding:18px 0 46px}
 }
 @media(max-width:540px){
-  .insight-card{padding:22px 20px 20px;border-radius:18px}
-  .insight-hd{margin-bottom:18px}
-  .insight-hd-title{font-size:14.5px}
-  .insight-hd-sub{font-size:10.5px}
-  .insight-hd-icon{width:34px;height:34px}
-  .insight-hd-tag{font-size:9px;padding:4px 9px}
-  .insight-rows{gap:14px;margin-bottom:18px}
-  .insight-row-name{font-size:12.5px}
-  .insight-row-value{font-size:14.5px}
-  .insight-row-margin{font-size:9.5px}
-  .insight-callout{padding:12px 14px;gap:10px}
-  .insight-callout p{font-size:12px;line-height:1.5}
-  .insight-callout-icon{width:26px;height:26px}
+  .insight-card{padding:28px 22px 22px;border-radius:20px}
+  .insight-tag{font-size:9.5px;padding:6px 12px;letter-spacing:1.2px;margin-bottom:16px}
+  .insight-headline{font-size:24px;letter-spacing:-.6px;line-height:1.18;margin-bottom:18px}
+  .insight-visual{margin-bottom:18px}
+  .insight-visual svg{max-width:170px}
+  .insight-sub{font-size:13.5px;margin-bottom:18px}
+  .insight-chips-row{padding-top:18px;gap:6px}
+  .insight-mini-chip{font-size:10.5px;padding:5px 10px}
   .insight-badge{padding:11px 18px;gap:16px;bottom:0}
   .ib-num{font-size:18px}
   .ib-lbl{font-size:8.5px}
-  .insight-chip{font-size:11px;right:12px;top:-6px;padding:7px 13px 7px 10px}
+  .insight-chip{font-size:10.5px;right:14px;top:-6px;padding:6px 12px 6px 9px}
 }
 
 /* FOOTER */
@@ -932,77 +920,70 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     </div>
     <div class="hero-insight-wrap">
 
-      <!-- Chip flotante — muestra actividad real del negocio -->
+      <!-- Chip flotante superior -->
       <div class="insight-chip">
         <span class="insight-chip-dot"></span>
-        Nuevo cobro · <b>$65.000</b> de Ana Clara
+        Análisis actualizado
       </div>
 
-      <!-- Insight card principal -->
+      <!-- Insight card editorial -->
       <div class="insight-card">
 
-        <!-- Header -->
-        <div class="insight-hd">
-          <div class="insight-hd-left">
-            <div class="insight-hd-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            </div>
-            <div>
-              <div class="insight-hd-title">Ganancia real por producto</div>
-              <div class="insight-hd-sub">Últimos 30 días</div>
-            </div>
-          </div>
-          <span class="insight-hd-tag">
-            <span class="insight-hd-tag-dot"></span>
-            En vivo
+        <!-- Tag categoría -->
+        <div class="insight-tag">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Insight de este mes
+        </div>
+
+        <!-- Titular editorial gigante -->
+        <h3 class="insight-headline">
+          El <em>42%</em> de tu ganancia<br>
+          viene de un <em>solo cliente</em>
+        </h3>
+
+        <!-- Visual central: donut chart minimalista -->
+        <div class="insight-visual">
+          <svg viewBox="0 0 220 220" width="200" height="200" aria-hidden="true">
+            <defs>
+              <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#7c3aed"/>
+                <stop offset="60%" stop-color="#a78bfa"/>
+                <stop offset="100%" stop-color="#c084fc"/>
+              </linearGradient>
+            </defs>
+            <circle cx="110" cy="110" r="88" fill="none" stroke="#f1f5f9" stroke-width="22"/>
+            <circle cx="110" cy="110" r="88" fill="none" stroke="url(#ringGrad)" stroke-width="22" stroke-dasharray="232 553" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 110 110)"/>
+            <text x="110" y="112" text-anchor="middle" font-family="Fraunces, serif" font-size="52" font-weight="700" fill="#0F172A" letter-spacing="-2">42<tspan font-size="30" dy="-14">%</tspan></text>
+            <text x="110" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="800" fill="#94a3b8" letter-spacing="1.5">DE $442K TOTAL</text>
+          </svg>
+        </div>
+
+        <!-- Sub-mensaje corto -->
+        <p class="insight-sub">
+          <b>Ana Clara</b> te aporta <b>$186k</b>. Si se va, perdés casi la mitad del mes.
+        </p>
+
+        <!-- Chips inferiores -->
+        <div class="insight-chips-row">
+          <span class="insight-mini-chip">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Detectado por ANMA
           </span>
-        </div>
-
-        <!-- Rows -->
-        <div class="insight-rows">
-          <div class="insight-row">
-            <div class="insight-row-info">
-              <span class="insight-row-name">Branding completo</span>
-              <span class="insight-row-value">$342k</span>
-            </div>
-            <div class="insight-row-track"><div class="insight-row-bar" style="width:92%"></div></div>
-            <span class="insight-row-margin up">+58% margen</span>
-          </div>
-
-          <div class="insight-row">
-            <div class="insight-row-info">
-              <span class="insight-row-name">Diseño web</span>
-              <span class="insight-row-value">$186k</span>
-            </div>
-            <div class="insight-row-track"><div class="insight-row-bar" style="width:67%"></div></div>
-            <span class="insight-row-margin up">+42% margen</span>
-          </div>
-
-          <div class="insight-row">
-            <div class="insight-row-info">
-              <span class="insight-row-name">Catálogo impreso</span>
-              <span class="insight-row-value">$12k</span>
-            </div>
-            <div class="insight-row-track"><div class="insight-row-bar warn" style="width:22%"></div></div>
-            <span class="insight-row-margin down">-8% margen</span>
-          </div>
-        </div>
-
-        <!-- Callout: insight en voz humana -->
-        <div class="insight-callout">
-          <div class="insight-callout-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          </div>
-          <p>Tu producto estrella está dejando <b>3× más margen</b> que el promedio de tu catálogo.</p>
+          <span class="insight-mini-chip warn">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+            Riesgo de concentración
+          </span>
         </div>
 
       </div>
 
       <!-- Badge flotante inferior -->
       <div class="insight-badge">
-        <div class="ib-stat"><div class="ib-num">$3.8M</div><div class="ib-lbl">Facturado · 30 días</div></div>
+        <div class="ib-stat"><div class="ib-num">$3.8M</div><div class="ib-lbl">Facturado</div></div>
         <div class="ib-div"></div>
-        <div class="ib-stat"><div class="ib-num">+18%</div><div class="ib-lbl">Vs. mes anterior</div></div>
+        <div class="ib-stat"><div class="ib-num">18</div><div class="ib-lbl">Clientes</div></div>
+        <div class="ib-div"></div>
+        <div class="ib-stat"><div class="ib-num">+22%</div><div class="ib-lbl">Vs. mes ant.</div></div>
       </div>
 
     </div>
