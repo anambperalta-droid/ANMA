@@ -594,21 +594,25 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   #contact a.cta-primary-btn{width:100%!important;padding:17px 24px!important;justify-content:center!important}
 }
 
-/* ── TESTIMONIOS · hero stats layout ── */
-.testi-stat{transition:background .2s}
-.testi-stat:hover{background:linear-gradient(180deg,rgba(124,58,237,.03),transparent)}
-@media(max-width:860px){
-  .testi-stats{grid-template-columns:1fr!important;padding:12px 4px!important}
-  .testi-stat{border-right:none!important;border-bottom:1px solid #f0eef6;padding:26px 24px!important}
-  .testi-stat:last-child{border-bottom:none}
-}
+/* ── TESTIMONIOS · antes vs ahora ── */
+.testi-stat{text-align:center;padding:0 8px}
+.testi-stat-tag{display:inline-block;font-size:10.5px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:1.4px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);padding:6px 13px;border-radius:99px;margin-bottom:22px;border:1px solid rgba(124,58,237,.15)}
+.testi-stat-num{font-family:'Fraunces',serif;font-size:88px;font-weight:600;color:#0F172A;line-height:1;letter-spacing:-3.5px;margin-bottom:18px;display:inline-flex;align-items:baseline;justify-content:center;gap:6px}
+.testi-stat-unit{font-family:'Fraunces',serif;font-size:38px;font-weight:600;color:#7c3aed;letter-spacing:-1px}
+.testi-stat-title{font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:#0F172A;letter-spacing:-.3px;margin:0 0 12px;line-height:1.25}
+.testi-stat-old{font-size:12.5px;color:#94a3b8;margin:0 0 14px;font-weight:500;line-height:1.4}
+.testi-stat-old s{color:#c4b5fd;text-decoration-thickness:1.5px;text-decoration-color:#ddd6fe}
+.testi-stat-desc{font-size:13.5px;color:#475569;line-height:1.55;margin:0;max-width:280px;margin-left:auto;margin-right:auto}
+
+@media(max-width:860px){.testi-stats{grid-template-columns:1fr!important;gap:44px!important}}
+@media(min-width:540px) and (max-width:860px){.testi-stats{grid-template-columns:1fr 1fr!important;gap:44px 32px!important}}
 @media(max-width:540px){
-  .testi-stats{border-radius:16px!important;padding:8px 4px!important}
-  .testi-stat{padding:22px 20px!important}
-  .testi-stat > div[style*="Fraunces"] span:first-child{font-size:17px!important}
-  .testi-stat > div[style*="Fraunces"] span:last-child{font-size:36px!important;letter-spacing:-1px!important}
-  .testi-stat h4{font-size:15px!important}
-  .testi-stat p{font-size:13px!important}
+  .testi-stat-tag{font-size:9.5px;padding:5px 11px;margin-bottom:16px;letter-spacing:1.2px}
+  .testi-stat-num{font-size:68px;letter-spacing:-2.5px;margin-bottom:14px;gap:4px}
+  .testi-stat-unit{font-size:30px}
+  .testi-stat-title{font-size:17px;margin-bottom:10px}
+  .testi-stat-old{font-size:12px;margin-bottom:12px}
+  .testi-stat-desc{font-size:13px}
 }
 
 /* ── MOBILE 400px ── */
@@ -1616,46 +1620,39 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- TESTIMONIOS -->
-<section style="padding:56px 0;background:radial-gradient(125% 85% at 50% 0%,#f0e9fb,#f9f7fd 60%)">
+<section style="padding:64px 0 72px;background:radial-gradient(125% 85% at 50% 0%,#f0e9fb,#f9f7fd 60%)">
   <div class="wrap">
-    <div style="text-align:center;max-width:680px;margin:0 auto 44px">
-      <span class="eyebrow-dark">El cambio real</span>
+    <div style="text-align:center;max-width:680px;margin:0 auto 56px">
+      <span class="eyebrow-dark">Antes vs. ahora</span>
       <h2 class="h2">De trabajar a los saltos, <em>a decidir con datos</em></h2>
-      <p style="font-size:14.5px;color:#64748b;margin:14px auto 0;max-width:520px;line-height:1.6">Tres situaciones que probablemente vivís hoy — y cómo cambian con ANMA Hub.</p>
     </div>
-    <div class="testi-stats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;max-width:1040px;margin:0 auto;background:#fff;border:1px solid #ece8f6;border-radius:20px;padding:40px 20px;box-shadow:0 4px 24px rgba(124,58,237,.05)">
+    <div class="testi-stats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:44px;max-width:1040px;margin:0 auto">
 
-      <!-- Caso 1: Tiempo de presupuestos -->
-      <div class="testi-stat" style="padding:8px 32px;border-right:1px solid #f0eef6;text-align:left">
-        <div style="display:flex;align-items:baseline;gap:10px;font-family:'Fraunces',serif;margin-bottom:16px;flex-wrap:wrap">
-          <span style="font-size:20px;font-weight:500;color:#a78bfa;text-decoration:line-through;text-decoration-color:#ddd6fe;text-decoration-thickness:2px">40 min</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;align-self:center"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          <span style="font-size:46px;font-weight:600;color:#0F172A;letter-spacing:-1.4px;line-height:1">5 min</span>
-        </div>
-        <h4 style="font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:#0F172A;margin:0 0 6px;letter-spacing:-.2px">Cada presupuesto listo</h4>
-        <p style="font-size:13.5px;color:#64748b;line-height:1.55;margin:0">Precios actuales, cálculo automático, enviado por WhatsApp con un clic.</p>
+      <!-- Stat 1: Presupuestos -->
+      <div class="testi-stat">
+        <span class="testi-stat-tag">Presupuestos</span>
+        <div class="testi-stat-num">5<span class="testi-stat-unit">min</span></div>
+        <h4 class="testi-stat-title">Cada presupuesto listo</h4>
+        <p class="testi-stat-old">Antes: <s>40 min haciendo cuentas a mano</s></p>
+        <p class="testi-stat-desc">Precios actuales, cálculo automático, enviado por WhatsApp.</p>
       </div>
 
-      <!-- Caso 2: Control del negocio -->
-      <div class="testi-stat" style="padding:8px 32px;border-right:1px solid #f0eef6;text-align:left">
-        <div style="display:flex;align-items:baseline;gap:10px;font-family:'Fraunces',serif;margin-bottom:16px;flex-wrap:wrap">
-          <span style="font-size:20px;font-weight:500;color:#a78bfa;text-decoration:line-through;text-decoration-color:#ddd6fe;text-decoration-thickness:2px">Cuadernos</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;align-self:center"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          <span style="font-size:46px;font-weight:600;color:#0F172A;letter-spacing:-1.4px;line-height:1">10 min</span>
-        </div>
-        <h4 style="font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:#0F172A;margin:0 0 6px;letter-spacing:-.2px">Cada lunes ordenado</h4>
-        <p style="font-size:13.5px;color:#64748b;line-height:1.55;margin:0">Qué cobraste, qué falta entregar y a quién llamar hoy. De un vistazo.</p>
+      <!-- Stat 2: Control semanal -->
+      <div class="testi-stat">
+        <span class="testi-stat-tag">Control semanal</span>
+        <div class="testi-stat-num">10<span class="testi-stat-unit">min</span></div>
+        <h4 class="testi-stat-title">Cada lunes ordenado</h4>
+        <p class="testi-stat-old">Antes: <s>cuadernos y mensajes perdidos</s></p>
+        <p class="testi-stat-desc">Qué cobraste, qué falta entregar y a quién llamar hoy.</p>
       </div>
 
-      <!-- Caso 3: Inteligencia comercial -->
-      <div class="testi-stat" style="padding:8px 32px;text-align:left">
-        <div style="display:flex;align-items:baseline;gap:10px;font-family:'Fraunces',serif;margin-bottom:16px;flex-wrap:wrap">
-          <span style="font-size:20px;font-weight:500;color:#a78bfa;text-decoration:line-through;text-decoration-color:#ddd6fe;text-decoration-thickness:2px">Intuición</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;align-self:center"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          <span style="font-size:46px;font-weight:600;color:#0F172A;letter-spacing:-1.4px;line-height:1">Datos</span>
-        </div>
-        <h4 style="font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:#0F172A;margin:0 0 6px;letter-spacing:-.2px">Cada decisión con margen</h4>
-        <p style="font-size:13.5px;color:#64748b;line-height:1.55;margin:0">Qué productos y clientes te dan ganancia real, para dejar de trabajar para nada.</p>
+      <!-- Stat 3: Decisiones (inteligencia comercial) -->
+      <div class="testi-stat">
+        <span class="testi-stat-tag">Decisiones</span>
+        <div class="testi-stat-num">3<span class="testi-stat-unit">×</span></div>
+        <h4 class="testi-stat-title">Más margen visible</h4>
+        <p class="testi-stat-old">Antes: <s>decisiones al ojo, sin datos</s></p>
+        <p class="testi-stat-desc">Ves qué productos y clientes te dan ganancia real.</p>
       </div>
 
     </div>
