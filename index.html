@@ -76,7 +76,7 @@ if ((window.matchMedia && window.matchMedia('(display-mode: standalone)').matche
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"¿Cuánto sale el sistema de gestión ANMA? ¿Hay costos ocultos?","acceptedAnswer":{"@type":"Answer","text":"Un solo plan de $30.000 ARS por mes, con los primeros 7 días gratis y sin tarjeta. No hay setup, ni permanencia, ni versión pro escondida: todas las funciones vienen incluidas. Cancelás cuando quieras desde tu cuenta."}},
+{"@type":"Question","name":"¿Cuánto sale el sistema de gestión ANMA? ¿Hay costos ocultos?","acceptedAnswer":{"@type":"Answer","text":"Probás 7 días gratis y sin tarjeta. Si seguís, hay un pago inicial de $120.000 que incluye el setup llave en mano (configuración y carga de tus datos) y tu primer mes. Desde el segundo mes, $30.000 ARS por mes, sin permanencia: cancelás cuando quieras."}},
 {"@type":"Question","name":"¿Migro mis datos desde Excel? ¿Puedo cargar productos con variantes?","acceptedAnswer":{"@type":"Answer","text":"No arrancás con la cuenta vacía. Nos pasás tu Excel como esté y te dejamos productos y clientes operativos en ANMA. Podés sumar variantes de talle, color o modelo con costo y precio distintos, y el stock real se descuenta solo con cada venta."}},
 {"@type":"Question","name":"¿Mis datos son míos? ¿Los puedo exportar cuando quiera?","acceptedAnswer":{"@type":"Answer","text":"Sí, siempre. Tu información se respalda todos los días encriptada, y podés exportar clientes, ventas, stock y catálogo a Excel o CSV desde cada pantalla. Si un día te vas, te llevás todo tu histórico."}},
 {"@type":"Question","name":"¿Cómo cobro con Mercado Pago desde ANMA?","acceptedAnswer":{"@type":"Answer","text":"Registrás cada cobro de Mercado Pago dentro del pedido y ANMA descuenta del saldo automáticamente. Como los pagos entre cuentas de Mercado Pago en Argentina son gratis (por CVU o alias), no pagás comisión por cobrar."}},
@@ -900,6 +900,17 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   #para-quien{padding:32px 16px!important}
   #contact{padding:46px 16px!important}
 }
+
+/* ── Flujo de pago (3 pasos claros) ── */
+.pay-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:860px;margin:0 auto 22px}
+.pay-step{background:rgba(255,255,255,.04);border:1px solid rgba(124,58,237,.22);border-radius:14px;padding:16px 18px;text-align:left}
+.pay-step-n{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;background:rgba(124,58,237,.28);color:#c4b5fd;font-size:12px;font-weight:800;margin-bottom:10px}
+.pay-step h4{color:#fff;font-size:14px;font-weight:700;margin:0 0 4px}
+.pay-step p{color:#94a3b8;font-size:12.5px;line-height:1.5;margin:0}
+.pay-step p b{color:#fff;font-weight:700}
+.pay-step.pay-free{border-color:rgba(52,211,153,.4)}
+.pay-step.pay-free .pay-step-n{background:rgba(52,211,153,.2);color:#6ee7b7}
+@media(max-width:680px){.pay-flow{grid-template-columns:1fr;gap:8px;margin-bottom:18px}}
 </style>
 <!-- Microsoft Clarity -->
 <script type="text/javascript">
@@ -1273,7 +1284,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
       </div>
       <div class="why-copy">
         <span class="why-eyebrow">Tu tiempo vale</span>
-        <h3 class="why-h">Recuperá tus horas.<br>Volvé a respirar.</h3>
+        <h3 class="why-h">Menos planillas y vueltas.<br>Más tiempo para tu negocio.</h3>
         <a href="/app/registro" class="why-cta">
           Empezar a gestionar gratis
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -1301,6 +1312,25 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
         Una sola inversión<br><em>Tu operación, ordenada desde el primer día</em>
       </h2>
       <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">Implementación personalizada, llave en mano y con soporte real desde el arranque.</p>
+    </div>
+
+    <!-- Flujo de pago: 3 pasos claros -->
+    <div class="pay-flow">
+      <div class="pay-step pay-free">
+        <span class="pay-step-n">1</span>
+        <h4>Probás gratis</h4>
+        <p>7 días completos, sin tarjeta.</p>
+      </div>
+      <div class="pay-step">
+        <span class="pay-step-n">2</span>
+        <h4>Arrancás</h4>
+        <p>Pago inicial de <b>$120.000</b>: setup llave en mano + tu primer mes.</p>
+      </div>
+      <div class="pay-step">
+        <span class="pay-step-n">3</span>
+        <h4>Seguís</h4>
+        <p>Desde el 2º mes, <b>$30.000</b> por mes. Cancelás cuando quieras.</p>
+      </div>
     </div>
 
     <!-- Tarjeta principal -->
@@ -1448,7 +1478,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 
       <details class="faq" open>
         <summary>¿Cuánto sale el sistema de gestión ANMA? ¿Hay costos ocultos?</summary>
-        <div class="faq-body">Un solo plan de <b>$30.000 ARS por mes</b>, con los primeros <b>7 días gratis</b> y sin tarjeta. No hay setup, ni permanencia, ni versión pro escondida: todas las funciones vienen incluidas. Cancelás cuando quieras desde tu cuenta.</div>
+        <div class="faq-body">Probás <b>7 días gratis</b> y sin tarjeta. Si seguís, hay un <b>pago inicial de $120.000</b> que incluye el setup llave en mano (configuración y carga de tus datos) y tu primer mes. Desde el segundo mes, <b>$30.000 por mes</b>, sin permanencia: cancelás cuando quieras.</div>
       </details>
 
       <details class="faq">
