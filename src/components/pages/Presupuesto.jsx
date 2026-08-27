@@ -1777,19 +1777,21 @@ export default function Presupuesto() {
                     <input type="number" inputMode="numeric" value={form.margin} onFocus={selectOnFocus} onChange={e => setMarginAndReprice(e.target.value)} onBlur={e => { if (e.target.value === '') setMarginAndReprice(0) }} min="0" max="100" />
                   </div>
                   <div className="fg">
-                    <label>Seña (%)</label>
+                    <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
+                      <span>Seña (%)</span>
+                      <span style={{ display: 'inline-flex', gap: 3 }}>
+                        {[50, 100].map(p => {
+                          const active = Number(form.deposit) === p
+                          return (
+                            <button type="button" key={p} onClick={() => setF('deposit', p)} tabIndex={-1} title={`Seña ${p}%`}
+                              style={{ padding: '1px 8px', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', borderRadius: 5, lineHeight: 1.7, border: active ? '1px solid var(--brand)' : '1px solid var(--border, #E5E7EB)', background: active ? 'var(--brand)' : 'transparent', color: active ? '#fff' : 'var(--text-muted)' }}>
+                              {p}
+                            </button>
+                          )
+                        })}
+                      </span>
+                    </label>
                     <input type="number" inputMode="numeric" value={form.deposit} onFocus={selectOnFocus} onChange={e => setF('deposit', e.target.value)} onBlur={e => { if (e.target.value === '') setF('deposit', 0) }} min="0" max="100" />
-                    <div style={{ display: 'flex', gap: 5, marginTop: 6 }}>
-                      {[25, 50, 100].map(p => {
-                        const active = Number(form.deposit) === p
-                        return (
-                          <button type="button" key={p} onClick={() => setF('deposit', p)}
-                            style={{ flex: 1, padding: '5px 0', fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', borderRadius: 6, border: active ? '1px solid var(--brand)' : '1px solid var(--border, #E5E7EB)', background: active ? 'var(--brand)' : 'transparent', color: active ? '#fff' : 'var(--text-muted)', transition: 'all .15s' }}>
-                            {p}%
-                          </button>
-                        )
-                      })}
-                    </div>
                   </div>
                   <div className="fg"><label>Logo x u.</label><MoneyInput value={form.logoCost === '' ? '' : Number(form.logoCost)} onChange={v => setF('logoCost', v)} allowEmpty placeholder="0" /></div>
                   {feats.descuentoCliente && (
