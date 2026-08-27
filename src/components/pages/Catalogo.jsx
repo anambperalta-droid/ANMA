@@ -439,12 +439,18 @@ export default function Catalogo() {
     let count = 0
     const newCats = []  // categorías nuevas detectadas en la 3ra columna
     lines.forEach(l => {
-      const parts = l.split(',')
+      // Separador flexible: coma, tab, o 2+ espacios (pegado desde Excel/planilla)
+      let parts = l.split(/\s*,\s*|\t+| {2,}/).map(s => s.trim()).filter(Boolean)
+      // Fallback espacios simples: "Nombre 12500 Categoría" → el número es el costo
+      if (parts.length < 2) {
+        const m = l.match(/^(.+?)\s+(\d[\d.]*)\s*(.*)$/)
+        if (m) parts = [m[1].trim(), m[2].trim(), m[3].trim()].filter(Boolean)
+      }
       if (parts.length >= 2) {
-        const name = parts[0].trim()
-        const cost = Number(parts[1].trim()) || 0
+        const name = parts[0]
+        const cost = Number(String(parts[1]).replace(/[^\d]/g, '')) || 0
         // 3ra columna OPCIONAL = categoría de ESA línea. Si no está, usa el selector.
-        const lineCat = parts[2] ? parts[2].trim() : ''
+        const lineCat = parts[2] || ''
         let cat = bulkCat || cats[0] || ''
         if (lineCat) {
           const matched = cats.find(x => x.toLowerCase() === lineCat.toLowerCase())
@@ -457,6 +463,7 @@ export default function Catalogo() {
         count++
       }
     })
+    if (count === 0) { toast('No se reconoció ningún producto. Cada línea: nombre, costo (y categoría opcional), separados por coma o tab.', 'in'); return }
     if (newCats.length > 0) updateConfig({ productCats: [...cats, ...newCats] })
     setBulkModal(false); setBulkData('')
     toast(`${count} productos importados${newCats.length ? ` · ${newCats.length} categoría${newCats.length !== 1 ? 's' : ''} nueva${newCats.length !== 1 ? 's' : ''}` : ''}`, 'ok')
