@@ -1950,8 +1950,10 @@ export default function Historial() {
             .hist-tbl table{border-collapse:collapse;min-width:860px}
             /* Mobile: el sistema de tarjetas vive en index.css (grid con areas).
                Acá solo apagamos el modo tabla del componente (min-width + columnas
-               sticky) para que ese grid actue a ancho completo sin cortarse. */
-            @media(max-width:640px){
+               sticky) para que ese grid actue a ancho completo sin cortarse.
+               Breakpoint 768px = MISMO que el card system global (index.css:987).
+               Si no coincide, entre 640-768 la tabla se fuerza a 860px y se corta. */
+            @media(max-width:768px){
               .hist-tbl table{min-width:0!important}
               .hist-tbl thead th,.hist-tbl tbody td{position:static!important;left:auto!important;right:auto!important;box-shadow:none!important}
             }
