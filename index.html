@@ -902,16 +902,17 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 }
 
 /* ── Flujo de pago (3 pasos claros) ── */
-.pay-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:860px;margin:0 auto 22px}
-.pay-step{background:rgba(255,255,255,.04);border:1px solid rgba(124,58,237,.22);border-radius:14px;padding:16px 18px;text-align:left}
-.pay-step-n{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;background:rgba(124,58,237,.28);color:#c4b5fd;font-size:12px;font-weight:800;margin-bottom:10px}
-.pay-step h4{color:#fff;font-size:14px;font-weight:700;margin:0 0 4px}
+.pay-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 auto 14px}
+.pay-step{background:rgba(255,255,255,.04);border:1px solid rgba(124,58,237,.22);border-radius:16px;padding:20px 22px;text-align:left}
+.pay-step-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.pay-step-n{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;background:rgba(124,58,237,.28);color:#c4b5fd;font-size:12px;font-weight:800;flex-shrink:0}
+.pay-step h4{color:#fff;font-size:14px;font-weight:700;margin:0}
 .pay-step p{color:#94a3b8;font-size:12.5px;line-height:1.5;margin:0}
 .pay-step p b{color:#fff;font-weight:700}
 .pay-step.pay-free{border-color:rgba(52,211,153,.4)}
 .pay-step.pay-free .pay-step-n{background:rgba(52,211,153,.2);color:#6ee7b7}
-@media(max-width:680px){.pay-flow{grid-template-columns:1fr;gap:8px;margin-bottom:18px}}
-.pay-step-amt{font-family:'Fraunces',serif;color:#fff;font-size:32px;font-weight:600;letter-spacing:-1px;line-height:1;margin:12px 0 6px}
+@media(max-width:680px){.pay-flow{grid-template-columns:1fr;gap:8px;margin-bottom:14px}}
+.pay-step-amt{font-family:'Fraunces',serif;color:#fff;font-size:32px;font-weight:600;letter-spacing:-1px;line-height:1;margin:0 0 6px}
 .pay-step-amt span{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#c4b5fd;letter-spacing:0}
 .pay-step.pay-free .pay-step-amt{color:#6ee7b7}
 @media(max-width:680px){.pay-step-amt{font-size:28px}}
@@ -971,8 +972,9 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
         <a href="/app/registro" class="cta-primary-btn">
           Empezar a gestionar gratis
         </a>
-        <a href="/demo.html" class="hover:text-white transition-colors" style="font-size:14.5px;font-weight:600;color:rgba(255,255,255,.5);text-decoration:underline;text-underline-offset:4px;white-space:nowrap">
-          Ver Demo
+        <a href="/demo.html" style="display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:700;color:#fff;border:1.5px solid rgba(255,255,255,.28);padding:15px 26px;border-radius:13px;white-space:nowrap;transition:background .15s,border-color .15s" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(255,255,255,.5)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(255,255,255,.28)'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none"/></svg>
+          Ver demo
         </a>
       </div>
 
@@ -1017,7 +1019,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
               viene de un <em>solo cliente</em>
             </h3>
             <p class="insight-sub">
-              Si se va, perdés casi <b>medio mes</b> de facturación.
+              Si se va, perdés casi <b>medio mes</b> de facturación
             </p>
           </div>
           <div class="insight-body-visual">
@@ -1181,10 +1183,10 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     <div style="text-align:center;max-width:660px;margin:0 auto 32px">
       <span class="eyebrow-dark" style="margin-bottom:16px">Para quién es</span>
       <h2 class="h2" style="font-size:clamp(28px,4vw,44px);text-align:center">
-        Cada rubro tiene su ritmo. <em>El tuyo también.</em>
+        Cada rubro tiene su ritmo, <em>el tuyo también</em>
       </h2>
       <p class="text-lg text-balance text-center" style="color:#64748b;margin:0 auto;max-width:580px;line-height:1.65">
-        Vendas al público, a empresas o de las dos formas, ANMA se adapta al ritmo de tu inventario: variantes, listas de precios, señas y cuentas corrientes en una sola pantalla
+        Vendas al público, a mayoristas o a los dos: variantes, listas de precios, señas y cuentas corrientes, en una sola pantalla
       </p>
     </div>
 
@@ -1321,20 +1323,17 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     <!-- Flujo de pago: 3 pasos claros -->
     <div class="pay-flow">
       <div class="pay-step pay-free">
-        <span class="pay-step-n">1</span>
-        <h4>Probás gratis</h4>
+        <div class="pay-step-head"><span class="pay-step-n">1</span><h4>Probás gratis</h4></div>
         <div class="pay-step-amt">Gratis</div>
         <p>7 días completos, sin tarjeta</p>
       </div>
       <div class="pay-step">
-        <span class="pay-step-n">2</span>
-        <h4>Arrancás</h4>
+        <div class="pay-step-head"><span class="pay-step-n">2</span><h4>Arrancás</h4></div>
         <div class="pay-step-amt">$120.000</div>
         <p>Setup llave en mano + tu primer mes</p>
       </div>
       <div class="pay-step">
-        <span class="pay-step-n">3</span>
-        <h4>Seguís</h4>
+        <div class="pay-step-head"><span class="pay-step-n">3</span><h4>Seguís</h4></div>
         <div class="pay-step-amt">$30.000 <span>/ mes</span></div>
         <p>Desde el 2º mes · cancelás cuando quieras</p>
       </div>
@@ -1534,7 +1533,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     <div class="foot-grid">
       <div class="foot-brand">
         <div class="logo" style="color:#fff"><img class="logo-mark" src="/favicon-a.png" alt="ANMA Hub" width="32" height="32"> ANMA Hub</div>
-        <p>Plataforma de gestión integral para tu negocio, pensada para tu día a día.</p>
+        <p>Plataforma de gestión integral para tu negocio, pensada para tu día a día</p>
         <div class="foot-soc">
           <a href="mailto:holaanmahub@gmail.com" title="Soporte por email"><i class="fa-solid fa-envelope"></i></a>
         </div>
