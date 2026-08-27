@@ -1016,16 +1016,16 @@ export default function Clientes() {
       {modal && (
         <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
           {/* Card con overrides inline para garantizar h-auto sin min-height artificial */}
-          <div className="modal-form-card" style={{ maxWidth: 680, maxHeight: '92dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden', margin: 'auto' }} onClick={e => e.stopPropagation()}>
-            {/* Header — fijo */}
-            <div style={{ padding: '18px 28px 14px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+          <div className="modal-form-card" style={{ maxWidth: 680, minHeight: 'auto', height: 'auto', maxHeight: 'none', overflow: 'visible' }}>
+            {/* Header */}
+            <div style={{ padding: '18px 28px 14px', borderBottom: '1px solid var(--border)' }}>
               <div className="mh" style={{ margin: 0, paddingBottom: 0, borderBottom: 'none' }}>
                 <h3>{form.id ? 'Editar' : 'Agregar'} cliente</h3>
                 <button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button>
               </div>
             </div>
-            {/* Body — scrollea solo el medio si el contenido es largo; header y footer quedan fijos */}
-            <div style={{ padding: '18px 28px 4px', flex: 1, overflowY: 'auto', minHeight: 0 }}>
+            {/* Body — flujo natural, sin scroll interno, sin altura fija. */}
+            <div style={{ padding: '18px 28px 4px', overflow: 'visible', minHeight: 'auto', maxHeight: 'none', height: 'auto' }}>
 
             {/* ── Extraer datos de texto ── */}
             <div style={{ marginBottom: 14, borderRadius: 10, border: `1.5px solid ${pasteMode ? 'rgba(37,211,102,.4)' : 'var(--border)'}`, overflow: 'hidden', transition: 'border-color .2s' }}>
@@ -1314,8 +1314,12 @@ export default function Clientes() {
 
       {/* MODAL IMPORTAR CSV */}
       {importModal && (
-        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) { setImportModal(false); setCsvPreview([]) } }}>
-          <div className="modal-form-card" style={{ width: '100%', maxWidth: 600, background: 'var(--surface)', borderRadius: 16, display: 'flex', flexDirection: 'column', overflow: 'hidden', maxHeight: '92dvh', margin: 'auto' }} onClick={e => e.stopPropagation()}>
+        <div className="modal-bg open" style={{ alignItems: 'flex-end', padding: 0 }} onClick={e => { if (e.target === e.currentTarget) { setImportModal(false); setCsvPreview([]) } }}>
+          <div style={{ width: '100%', maxWidth: 640, background: 'var(--surface)', borderRadius: '20px 20px 0 0', display: 'flex', flexDirection: 'column', maxHeight: '92dvh', overflow: 'hidden', boxShadow: '0 -8px 40px rgba(0,0,0,.18)', animation: 'slideUp .25s cubic-bezier(.32,.72,0,1) both' }}>
+            {/* Handle */}
+            <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 10, paddingBottom: 4, flexShrink: 0 }}>
+              <div style={{ width: 36, height: 4, borderRadius: 4, background: 'var(--border2)' }} />
+            </div>
             {/* Header */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 20px 12px', flexShrink: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -1327,8 +1331,8 @@ export default function Clientes() {
               </div>
               <button className="mclose" onClick={() => { setImportModal(false); setCsvPreview([]) }}><i className="fa fa-xmark" /></button>
             </div>
-            {/* Body — patrón Regalos: scrollea solo el medio si hace falta; header/footer siempre visibles */}
-            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '14px 24px 8px', WebkitOverflowScrolling: 'touch' }}>
+            {/* Body — scrollable, SIN altura fija */}
+            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '4px 20px 8px', WebkitOverflowScrolling: 'touch' }}>
               {/* Tips compactos */}
               {csvPreview.length === 0 && (
                 <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
@@ -1353,9 +1357,9 @@ export default function Clientes() {
               {csvPreview.length === 0 && (
                 <>
                   <div onDragOver={e => { e.preventDefault(); setIsDragging(true) }} onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget)) setIsDragging(false) }} onDrop={e => { e.preventDefault(); setIsDragging(false); processFile(e.dataTransfer.files[0]) }} onClick={() => fileRef.current?.click()}
-                    style={{ border: `2px dashed ${isDragging ? 'var(--brand)' : 'var(--border)'}`, background: isDragging ? 'var(--brand-xlt)' : 'var(--surface2)', borderRadius: 14, padding: '22px 20px', textAlign: 'center', cursor: 'pointer', transition: 'all .2s', marginBottom: 10 }}>
-                    <div style={{ width: 44, height: 44, borderRadius: '50%', background: isDragging ? 'var(--brand-dim)' : 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}>
-                      <i className="fa fa-cloud-arrow-up" style={{ fontSize: 18, color: isDragging ? 'var(--brand)' : 'var(--txt3)' }} />
+                    style={{ border: `2px dashed ${isDragging ? 'var(--brand)' : 'var(--border)'}`, background: isDragging ? 'var(--brand-xlt)' : 'var(--surface2)', borderRadius: 14, padding: '36px 20px', textAlign: 'center', cursor: 'pointer', transition: 'all .2s', marginBottom: 10 }}>
+                    <div style={{ width: 56, height: 56, borderRadius: '50%', background: isDragging ? 'var(--brand-dim)' : 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+                      <i className="fa fa-cloud-arrow-up" style={{ fontSize: 22, color: isDragging ? 'var(--brand)' : 'var(--txt3)' }} />
                     </div>
                     <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--txt)', marginBottom: 5 }}>{isDragging ? '¡Soltá el archivo acá!' : 'Arrastrá tu archivo acá'}</div>
                     <div style={{ fontSize: 12, color: 'var(--txt3)', marginBottom: 14 }}>o hacé clic para seleccionar</div>
