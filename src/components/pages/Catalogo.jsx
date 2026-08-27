@@ -437,16 +437,29 @@ export default function Catalogo() {
   const doBulk = () => {
     const lines = bulkData.split('\n').filter(l => l.trim())
     let count = 0
+    const newCats = []  // categorías nuevas detectadas en la 3ra columna
     lines.forEach(l => {
       const parts = l.split(',')
       if (parts.length >= 2) {
+        const name = parts[0].trim()
         const cost = Number(parts[1].trim()) || 0
+        // 3ra columna OPCIONAL = categoría de ESA línea. Si no está, usa el selector.
+        const lineCat = parts[2] ? parts[2].trim() : ''
+        let cat = bulkCat || cats[0] || ''
+        if (lineCat) {
+          const matched = cats.find(x => x.toLowerCase() === lineCat.toLowerCase())
+            || newCats.find(x => x.toLowerCase() === lineCat.toLowerCase())
+          if (matched) { cat = matched }
+          else { cat = lineCat; newCats.push(lineCat) }  // categoría nueva → se crea sola
+        }
         const prices = autoPrice(cost)
-        saveEntity('products', { name: parts[0].trim(), cat: bulkCat || cats[0] || '', cost, supplierId: '', stock: 0, minStock: 0, priceB2C: prices.b2c, priceB2B: prices.b2b, unit: 'unidad' })
+        saveEntity('products', { name, cat, cost, supplierId: '', stock: 0, minStock: 0, priceB2C: prices.b2c, priceB2B: prices.b2b, unit: 'unidad' })
         count++
       }
     })
-    setBulkModal(false); setBulkData(''); toast(`${count} productos importados`, 'ok')
+    if (newCats.length > 0) updateConfig({ productCats: [...cats, ...newCats] })
+    setBulkModal(false); setBulkData('')
+    toast(`${count} productos importados${newCats.length ? ` · ${newCats.length} categoría${newCats.length !== 1 ? 's' : ''} nueva${newCats.length !== 1 ? 's' : ''}` : ''}`, 'ok')
   }
 
   const handleCsvFile = (e) => {
@@ -1630,7 +1643,7 @@ export default function Catalogo() {
                 </div>
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-.3px' }}>Carga masiva de productos</div>
-                  <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>Un producto por línea: nombre, costo</div>
+                  <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>Un producto por línea: nombre, costo y categoría (opcional)</div>
                 </div>
               </div>
               <button className="mclose" onClick={() => setBulkModal(false)}><i className="fa fa-xmark" /></button>
@@ -1639,11 +1652,11 @@ export default function Catalogo() {
               <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '12px 16px', marginBottom: 16, border: '1px solid var(--border)' }}>
                 <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--brand)', marginBottom: 4 }}>Formato de entrada</div>
                 <div style={{ fontSize: 12, color: 'var(--txt2)', lineHeight: 1.7 }}>
-                  Una línea por producto: <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>Nombre del producto, costo</code>
+                  Una línea por producto: <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>Nombre, costo, categoría</code>
                 </div>
-                <div style={{ marginTop: 6, fontSize: 11, color: 'var(--txt3)' }}>Ej: <code>{getProductPlaceholder(c.rubro).replace(/^Ej:\s*/, '')}, 2500</code></div>
+                <div style={{ marginTop: 6, fontSize: 11, color: 'var(--txt3)', lineHeight: 1.6 }}>La <b style={{ color: 'var(--txt2)' }}>categoría</b> es opcional y va por línea, así podés cargar <b style={{ color: 'var(--txt2)' }}>rubros distintos de una sola vez</b>. Si la dejás vacía, se usa la de abajo. Las categorías nuevas se crean solas.</div>
               </div>
-              <div className="fg"><label>Categoría</label><select value={bulkCat} onChange={e => setBulkCat(e.target.value)}>{cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}</select></div>
+              <div className="fg"><label>Categoría por defecto <span style={{ fontWeight: 400, color: 'var(--txt4)', fontSize: 11 }}>(para las líneas sin categoría)</span></label><select value={bulkCat} onChange={e => setBulkCat(e.target.value)}>{cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}</select></div>
               <div className="fg" style={{ marginBottom: 8 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                   <label style={{ margin: 0 }}>Datos de productos</label>
@@ -1653,7 +1666,7 @@ export default function Catalogo() {
                     </span>
                   )}
                 </div>
-                <textarea value={bulkData} onChange={e => setBulkData(e.target.value)} rows={10} placeholder={'Remera algodón, 2500\nPantalón cargo, 4800\nCampera impermeable, 8900'} style={{ fontFamily: 'monospace', fontSize: 12, resize: 'vertical' }} />
+                <textarea value={bulkData} onChange={e => setBulkData(e.target.value)} rows={10} placeholder={'Remera algodón, 2500, Remeras\nPantalón cargo, 4800, Pantalones\nCampera impermeable, 8900, Camperas'} style={{ fontFamily: 'monospace', fontSize: 12, resize: 'vertical' }} />
               </div>
             </div>
             <div className="mfooter" style={{ flexShrink: 0, borderTop: '1px solid var(--border)', padding: '12px 20px' }}>
