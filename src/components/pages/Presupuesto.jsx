@@ -606,9 +606,9 @@ export default function Presupuesto() {
 
   /* ── Logística / Comisionista — paradas atribuidas a ESTE presupuesto ── */
   const PARADA_TIPOS = [
-    { val: 'insumos',    lbl: '📥 Retiro Insumos',  hint: 'Buscar mercadería en proveedor' },
-    { val: 'mercaderia', lbl: '📦 Retiro Producto', hint: 'Levantar producto terminado' },
-    { val: 'entrega',    lbl: '🚚 Entrega Pedido',  hint: 'Entregar al cliente' },
+    { val: 'insumos',    lbl: 'Retiro Insumos',  hint: 'Buscar mercadería en proveedor' },
+    { val: 'mercaderia', lbl: 'Retiro Producto', hint: 'Levantar producto terminado' },
+    { val: 'entrega',    lbl: 'Entrega Pedido',  hint: 'Entregar al cliente' },
   ]
   const addParada = (tipo = 'entrega') =>
     setF('logisticaParadas', [...(form.logisticaParadas || []), { tipo, descripcion: '', costo: 0 }])
@@ -1330,17 +1330,17 @@ export default function Presupuesto() {
         box-shadow:0 0 0 3px rgba(124,58,237,.08);
       }
       @media(max-width:640px){
+        /* 2 filas alineadas: [tipo | costo | borrar] arriba · descripción full abajo */
         .logi-parada-row{
-          display:grid!important;grid-template-columns:1fr 28px!important;
-          gap:6px 8px!important;padding:10px 8px!important;
+          display:grid!important;grid-template-columns:1fr 96px 30px!important;
+          gap:7px 8px!important;padding:10px!important;
           background:var(--surface2)!important;border-radius:10px!important;
-          margin-bottom:6px!important;border-bottom:none!important;
-          align-items:center!important;
+          margin-bottom:7px!important;border-bottom:none!important;align-items:center!important;
         }
-        .logi-parada-row > select{grid-column:1 / 2;font-size:12px!important;padding:7px 8px!important}
-        .logi-parada-row > input[type=text]{grid-column:1 / 3;font-size:12.5px!important;padding:8px 10px!important;background:var(--surface)!important;border:1px solid var(--border)!important}
-        .logi-parada-row > input[type=number]{grid-column:1 / 2;font-size:13px!important;font-weight:700!important;padding:8px 10px!important;background:var(--surface)!important;border:1px solid var(--border)!important;text-align:right!important}
-        .logi-parada-row > button{grid-column:2 / 3;grid-row:1 / 4;align-self:start;margin-top:4px}
+        .logi-parada-row > :nth-child(1){grid-column:1;grid-row:1;font-size:12.5px!important;padding:8px 9px!important;background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:7px!important}
+        .logi-parada-row > :nth-child(3){grid-column:2;grid-row:1;font-size:13px!important;font-weight:700!important;padding:8px 9px!important;background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:7px!important;text-align:right!important}
+        .logi-parada-row > :nth-child(4){grid-column:3;grid-row:1;justify-self:center;align-self:center!important;margin:0!important}
+        .logi-parada-row > :nth-child(2){grid-column:1 / -1;grid-row:2;font-size:12.5px!important;padding:8px 10px!important;background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:7px!important}
       }
       /* ── Logística section card (al final de Paso 3) ── */
       .logi-section-card{
@@ -1355,9 +1355,9 @@ export default function Presupuesto() {
       .logi-section-hd-l{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
       .logi-section-ico{
         width:34px;height:34px;border-radius:10px;
-        background:linear-gradient(135deg,#FEF3C7,#FDE68A);
+        background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#B45309;
         display:flex;align-items:center;justify-content:center;
-        font-size:17px;flex-shrink:0;
+        font-size:15px;flex-shrink:0;
       }
       .logi-section-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
       .logi-section-title{
@@ -1479,7 +1479,7 @@ export default function Presupuesto() {
               <>
                 <PaneHeader icon="fa-box-open" title="Paso 2 · Productos" subtitle="Agregá los ítems que incluye el pedido" />
                 {_tipoVenta === 'ambos' && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', marginBottom: 10, background: '#FAFAFB', border: '1px solid #ECECF1', borderRadius: 10, flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', marginBottom: 10, background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, flexWrap: 'wrap' }}>
                     <div style={{ fontSize: 11, fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: 0.3, display: 'flex', alignItems: 'center', gap: 5 }}>
                       Canal
                       <i className="fa fa-circle-info" style={{ fontSize: 10, color: '#9CA3AF', cursor: 'help' }} title="Define qué precio del catálogo se usa al agregar productos (Público o Mayorista)" />
@@ -1772,7 +1772,7 @@ export default function Presupuesto() {
                 </div>
 
                 {/* Fila 3: checkbox envío a cotizar — visual menos invasivo */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: '#FAFAFB', borderRadius: 8, border: '1px solid #ECECF1', marginBottom: 14, marginTop: 2 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: 'var(--surface2)', borderRadius: 8, border: '1px solid var(--border)', marginBottom: 14, marginTop: 2 }}>
                   <input type="checkbox" id="envCotizar" checked={form.envioACotizar !== false} onChange={e => setF('envioACotizar', e.target.checked)} style={{ width: 'auto', cursor: 'pointer' }} />
                   <label htmlFor="envCotizar" style={{ fontSize: 12, color: 'var(--txt2)', cursor: 'pointer', margin: 0, textTransform: 'none', letterSpacing: 0, fontWeight: 500 }}>
                     Envío a cotizar — mostrar leyenda en PDF
@@ -1831,7 +1831,7 @@ export default function Presupuesto() {
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap', gap: 8 }}>
                       <div>
                         <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                          <span>📦</span> Insumos Operativos de Despacho
+                          <i className="fa fa-box-open" style={{ color: 'var(--brand)', fontSize: 13 }} /> Insumos Operativos de Despacho
                         </div>
                         <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
                           Packaging y materiales del envío — invisibles para el cliente, impactan en tu costo real
@@ -1921,7 +1921,7 @@ export default function Presupuesto() {
                 <div className="logi-section-card" style={{ marginTop: 18 }}>
                   <div className="logi-section-hd">
                     <div className="logi-section-hd-l">
-                      <div className="logi-section-ico">🚚</div>
+                      <div className="logi-section-ico"><i className="fa fa-truck-fast" /></div>
                       <div className="logi-section-tx">
                         <div className="logi-section-title">Logística / Comisionista</div>
                         <div className="logi-section-hint">Opcional · suma al costo total</div>
