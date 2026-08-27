@@ -814,6 +814,29 @@ export default function Presupuesto() {
       ...(willDeductStock ? { costSnapshot: { date: new Date().toISOString().slice(0, 10), baseCost: calc.baseCost, dispatchCost: calc.dispatchCost, viajesCost: calc.viajesCost } } : {}),
     })
 
+    // ── Captura automática del cliente (punto de venta) ─────────────────────
+    // Si el pedido es para alguien que todavía no está en tu lista, lo agregamos
+    // solo. Así nunca cargás un cliente aparte — se capturan de los pedidos.
+    if (savedBudget && (String(form.contact || '').trim() || String(form.company || '').trim())) {
+      const cliList = get('clients') || []
+      const norm = s => String(s || '').trim().toLowerCase()
+      const waDigits = String(form.wa || '').replace(/\D/g, '')
+      const exists = cliList.some(c =>
+        (norm(c.contact) && norm(c.contact) === norm(form.contact)) ||
+        (norm(c.company) && norm(c.company) === norm(form.company)) ||
+        (waDigits && String(c.wa || '').replace(/\D/g, '') === waDigits)
+      )
+      if (!exists) {
+        saveEntity('clients', {
+          contact: String(form.contact || '').trim(),
+          company: String(form.company || '').trim(),
+          wa: form.wa || '', email: form.clientEmail || '',
+          rubro: '', notes: '', discount: 0,
+        })
+        toast('Cliente nuevo agregado a tu lista', 'ok')
+      }
+    }
+
     // ── Sincronización Logística ⇄ Presupuesto ──────────────────────────────
     // Persistimos las paradas en la entidad global 'viajes' para que el módulo
     // de Logística las vea sin duplicar la carga. Cada parada queda etiquetada
