@@ -1718,7 +1718,7 @@ export default function Presupuesto() {
                   </div>
                   <div className="fg">
                     <label>Fecha pactada</label>
-                    <input type="date" value={form.deliveryDate} onChange={e => setF('deliveryDate', e.target.value)} {...(editId ? {} : { min: todayISO() })} />
+                    <input type="date" value={form.deliveryDate} onChange={e => setF('deliveryDate', e.target.value)} />
                     {form.deliveryDate && isWeekend(form.deliveryDate) && (
                       <div style={{ fontSize: 10, color: 'var(--amber,#F59E0B)', marginTop: 3 }}>
                         <i className="fa fa-triangle-exclamation" /> Es fin de semana. Verificá si entregás ese día.
@@ -1893,7 +1893,7 @@ export default function Presupuesto() {
                   {feats.notasInternas && (
                     <div className="fg"><label>Nota interna</label><textarea value={form.noteInt} onChange={e => setF('noteInt', e.target.value)} rows={2} placeholder="Solo para vos..." /></div>
                   )}
-                  <div className="fg"><label>Nota al cliente (PDF)</label><textarea value={form.noteCli} onChange={e => setF('noteCli', e.target.value)} rows={2} placeholder="Visible en el presupuesto..." /></div>
+                  <div className="fg"><label>Nota al cliente (PDF)</label><textarea value={form.noteCli} onChange={e => setF('noteCli', e.target.value)} rows={2} placeholder="Visible en el presupuesto..." style={{ minHeight: 42 }} /></div>
                 </div>
 
                 {/* ─── 🚚 Logística / Comisionista — al FINAL del paso para no obstruir el flujo principal ─── */}

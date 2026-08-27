@@ -2088,8 +2088,8 @@ export default function Historial() {
                           </div>
                         )}
                       </td>
-                      <td data-cell="total" data-label="Total" style={{ textAlign: 'right', fontWeight: 800, color: 'var(--money)', fontVariantNumeric: 'tabular-nums', fontFamily: 'ui-monospace,SFMono-Regular,monospace', fontSize: 13 }}>{money(b.total)}</td>
-                      <td className="col-hide-mobile" data-cell="gan" data-label="Ganancia" style={{ textAlign: 'right', color: hidden ? 'var(--txt4)' : (b.totalGain == null ? 'var(--txt4)' : '#16A34A'), fontWeight: 700, fontVariantNumeric: 'tabular-nums', fontFamily: 'ui-monospace,SFMono-Regular,monospace', fontSize: 12, fontStyle: b.totalGain == null ? 'italic' : undefined }}>{b.totalGain == null ? 'Pendiente' : money(b.totalGain)}</td>
+                      <td data-cell="total" data-label="Total" style={{ textAlign: 'right', fontWeight: 800, color: 'var(--money)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.01em', fontSize: 13.5 }}>{money(b.total)}</td>
+                      <td className="col-hide-mobile" data-cell="gan" data-label="Ganancia" style={{ textAlign: 'right', color: hidden ? 'var(--txt4)' : (b.totalGain == null ? 'var(--txt4)' : '#16A34A'), fontWeight: 700, fontVariantNumeric: 'tabular-nums', letterSpacing: '-.01em', fontSize: 12.5, fontStyle: b.totalGain == null ? 'italic' : undefined }}>{b.totalGain == null ? 'Pendiente' : money(b.totalGain)}</td>
                       <td data-cell="estado" data-label="Estado" style={{ whiteSpace: 'nowrap' }}>
                         <div>
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
