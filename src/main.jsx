@@ -25,7 +25,18 @@ window.addEventListener('vite:preloadError', (e) => {
 // El SW v4 manda postMessage 'SW_ACTIVATED' al activarse → reload automático una vez.
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {})
+    // updateViaCache:'none' → el sw.js NUNCA se sirve de caché HTTP, así reg.update()
+    // siempre ve la versión nueva. + activamos el SW en espera al toque.
+    navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then(reg => {
+      reg.update()
+      if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING')
+      reg.addEventListener('updatefound', () => {
+        const nw = reg.installing
+        if (nw) nw.addEventListener('statechange', () => {
+          if (nw.state === 'installed' && navigator.serviceWorker.controller) nw.postMessage('SKIP_WAITING')
+        })
+      })
+    }).catch(() => {})
   })
   navigator.serviceWorker.addEventListener('message', (e) => {
     if (e.data?.type === 'SW_ACTIVATED') {
