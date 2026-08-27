@@ -451,6 +451,14 @@ td b{color:var(--txt);font-weight:600}
 .fg input::placeholder,.fg textarea::placeholder{color:var(--txt4)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+/* Paso 1 del wizard: mantener alineado en mobile — Contacto y Empresa full-width,
+   WhatsApp y Email en 2 columnas. Así no queda tan largo, sin apretar los nombres. */
+.grid2.wiz-client-grid{grid-template-columns:1fr 1fr!important;gap:12px}
+@media(max-width:680px){
+  .grid2.wiz-client-grid{gap:10px 12px}
+  .grid2.wiz-client-grid > .fg:nth-child(1),
+  .grid2.wiz-client-grid > .fg:nth-child(2){grid-column:1 / -1}
+}
 .grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
 @media(max-width:768px){.grid4{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.grid4{grid-template-columns:1fr}}

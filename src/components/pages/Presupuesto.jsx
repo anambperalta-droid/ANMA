@@ -1446,7 +1446,7 @@ export default function Presupuesto() {
             {currentStep === 1 && (
               <>
                 <PaneHeader icon="fa-user-tie" title="Paso 1 · Cliente" subtitle="¿A quién le estás haciendo el presupuesto?" />
-                <div className="grid2">
+                <div className="grid2 wiz-client-grid">
                   <div className="fg">
                     <label>Contacto (buscar en CRM)</label>
                     <ClientCombo clients={clients} value={form.contact} onSelect={handleClientSelect} onChange={val => setF('contact', val)} />
@@ -1464,7 +1464,7 @@ export default function Presupuesto() {
                     )}
                   </div>
                   <div className="fg">
-                    <label>Email del cliente</label>
+                    <label>Email</label>
                     <input type="email" value={form.clientEmail} onChange={e => setF('clientEmail', e.target.value)} placeholder="cliente@email.com" />
                   </div>
                 </div>
