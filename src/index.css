@@ -1402,8 +1402,10 @@ td b{color:var(--txt);font-weight:600}
   .bento{grid-template-columns:1fr 1fr!important;gap:12px!important;margin-bottom:16px}
   .bento-kpi{padding:16px 16px 14px!important;border-radius:14px!important}
   .bento-kpi .kpi-label,.bento-kpi .kpi-label-elegant{font-size:10px!important;margin-bottom:6px!important;letter-spacing:.08em!important}
-  .bento-kpi .kpi-val,.bento-kpi .kpi-val-elegant{font-size:22px!important;letter-spacing:-.03em!important}
-  .bento-kpi .kpi-delta-elegant{font-size:10px!important;padding:2px 7px!important}
+  .bento-kpi .kpi-val,.bento-kpi .kpi-val-elegant{font-size:25px!important;letter-spacing:-.03em!important}
+  /* Número y % en líneas separadas: el número se lee claro, el % debajo sin apretar */
+  .bento-kpi .kpi-val-row{flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;gap:5px!important;margin-top:6px!important}
+  .bento-kpi .kpi-delta-elegant{font-size:10.5px!important;padding:2px 8px!important}
   .bento-kpi svg{display:none!important}
   .kpi-glow{display:none!important}
   .bento-kpi [style*="borderLeft"]{border-left-width:2px!important}

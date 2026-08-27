@@ -38,7 +38,7 @@ function KpiCard({ label, value, delta, isKey, sparkData, sparkColor }) {
         background: accentColor, opacity: 0.7,
       }} />
       <div className="kpi-label-elegant">{label}</div>
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginTop: 4 }}>
+      <div className="kpi-val-row" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginTop: 4 }}>
         <div className="kpi-val-elegant" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</div>
         {hasDelta && (
           <span className="kpi-delta-elegant" style={{
