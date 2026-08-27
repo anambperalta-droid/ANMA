@@ -1948,7 +1948,22 @@ export default function Historial() {
           <style>{`
             .hist-tbl{overflow-x:auto;-webkit-overflow-scrolling:touch}
             .hist-tbl table{border-collapse:collapse;min-width:860px}
-            @media(max-width:640px){.hist-tbl table{min-width:520px}}
+            @media(max-width:640px){
+              .hist-tbl{overflow-x:visible!important}
+              .hist-tbl table{min-width:0!important;width:100%;display:block}
+              .hist-tbl thead{display:none}
+              .hist-tbl tbody{display:block}
+              .hist-tbl tbody tr{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+              .hist-tbl tbody tr.selected{border-color:var(--brand)}
+              .hist-tbl tbody td{display:flex!important;align-items:center;justify-content:space-between;gap:12px;padding:5px 0!important;border:none!important;position:static!important;left:auto!important;right:auto!important;box-shadow:none!important;background:transparent!important;white-space:normal!important;max-width:none!important;text-align:left!important}
+              .hist-tbl tbody td.col-hide-mobile{display:none!important}
+              .hist-tbl tbody td[data-label]::before{content:attr(data-label);font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;flex-shrink:0}
+              .hist-tbl tbody td[data-cell="sel"]{display:none!important}
+              .hist-tbl tbody td[data-cell="cli"]{order:-2;padding-bottom:9px!important;border-bottom:1px solid var(--border)!important;margin-bottom:3px}
+              .hist-tbl tbody td[data-cell="num"]{order:-1;color:var(--txt3)}
+              .hist-tbl tbody td[data-cell="num"]::before{content:"N°";font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;flex-shrink:0}
+              .hist-tbl tbody td[data-cell="acc"]{justify-content:flex-end;gap:4px;padding-top:9px!important;border-top:1px solid var(--border)!important;margin-top:3px}
+            }
             .hist-tbl th{padding:8px 10px;font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;border-bottom:1.5px solid var(--border);white-space:nowrap;background:var(--surface2)}
             .hist-tbl td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle;background:var(--surface)}
             .hist-tbl tr:last-child td{border-bottom:none}
