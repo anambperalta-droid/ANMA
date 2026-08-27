@@ -1863,11 +1863,11 @@ export default function Presupuesto() {
                           const ins = insumosList.find(x => x.id === Number(d.insumoId))
                           const lineCost = ins ? Number(ins.cost || 0) * Number(d.qty || 0) : 0
                           return (
-                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
+                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
                               <select
                                 value={d.insumoId || ''}
                                 onChange={e => updateDispatchInsumo(idx, 'insumoId', e.target.value)}
-                                style={{ flex: '1 1 180px', minWidth: 140 }}
+                                style={{ flex: 1, minWidth: 0, fontSize: 13 }}
                               >
                                 <option value="">— insumo —</option>
                                 <option value="" disabled>── Packaging ──</option>
@@ -1884,16 +1884,14 @@ export default function Presupuesto() {
                               <input
                                 type="number" min="1" value={d.qty}
                                 onChange={e => updateDispatchInsumo(idx, 'qty', e.target.value)}
-                                style={{ width: 64, textAlign: 'center' }}
+                                style={{ width: 54, textAlign: 'center', flexShrink: 0, fontSize: 13 }}
                                 placeholder="Cant."
                               />
-                              {ins && (
-                                <span style={{ fontSize: 11, color: 'var(--text-muted)', minWidth: 80, textAlign: 'right' }}>
-                                  {fmt(lineCost)}
-                                </span>
-                              )}
-                              <button type="button" className="btn btn-ghost btn-xs" onClick={() => removeDispatchInsumo(idx)} style={{ color: 'var(--red, #EF4444)', padding: '2px 6px' }}>
-                                <i className="fa fa-trash" />
+                              <span style={{ flexShrink: 0, minWidth: 60, textAlign: 'right', fontSize: 12, fontWeight: 700, color: ins ? 'var(--text-primary)' : 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>
+                                {ins ? fmt(lineCost) : '—'}
+                              </span>
+                              <button type="button" onClick={() => removeDispatchInsumo(idx)} title="Quitar" style={{ flexShrink: 0, width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', color: 'var(--red, #EF4444)', cursor: 'pointer', borderRadius: 7 }}>
+                                <i className="fa fa-trash" style={{ fontSize: 13 }} />
                               </button>
                             </div>
                           )
