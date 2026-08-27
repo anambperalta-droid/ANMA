@@ -226,6 +226,8 @@ export default function Clientes() {
   const fileRef = useRef(null)
   const [csvPreview, setCsvPreview] = useState([])
   const [isDragging, setIsDragging] = useState(false)
+  const [importTab, setImportTab] = useState('archivo')  // 'archivo' | 'pegar'
+  const [pasteNums, setPasteNums] = useState('')
   const [revinculModal, setRevinculModal] = useState(null)
   const [revinculMsg, setRevinculMsg] = useState('')
   const [selectedIds, setSelectedIds] = useState(new Set())
@@ -428,6 +430,32 @@ export default function Clientes() {
     setCsvPreview([]); setImportModal(false)
     if (fileRef.current) fileRef.current.value = ''
   }
+
+  const closeImportModal = () => {
+    setImportModal(false); setCsvPreview([]); setImportTab('archivo'); setPasteNums('')
+    if (fileRef.current) fileRef.current.value = ''
+  }
+
+  /* Parsear números pegados: flexible (nombre + número, solo número, etc.) */
+  const parsePastedNums = (raw) => {
+    const results = []
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean)
+    for (const line of lines) {
+      const m = line.match(/[\d][\d\s\-.()]{6,18}[\d]/)
+      if (!m) {
+        const name = line.replace(/^\d+[.)]\s*/, '').trim()
+        if (name.length >= 2) results.push({ company: name, contact: name, wa: '', email: '', rubro: '', notes: '' })
+        continue
+      }
+      let wa = m[0].replace(/[\s\-.() ]/g, '')
+      wa = wa.replace(/^00549?/, '').replace(/^549/, '').replace(/^54/, '').replace(/^0/, '')
+      let name = line.replace(m[0], '').replace(/[-–—,;:|[\](){}]+/g, ' ').replace(/\s+/g, ' ').trim()
+      name = name || `Contacto ${wa.slice(-4)}`
+      results.push({ company: name, contact: name, wa, email: '', rubro: '', notes: '' })
+    }
+    return results
+  }
+  const parsedPaste = parsePastedNums(pasteNums)
 
   /* ── O(1) client-budget lookup using precomputed map ── */
   const clientBudgets = (c) => {
@@ -1322,13 +1350,23 @@ export default function Clientes() {
                 <div style={{ width: 38, height: 38, borderRadius: 12, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)', fontSize: 17 }}><i className="fa fa-users" /></div>
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-.3px' }}>Importar clientes</div>
-                  <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>Subí un archivo de contactos o planilla CSV</div>
+                  <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>Subí un archivo o pegá los números directo</div>
                 </div>
               </div>
-              <button className="mclose" onClick={() => { setImportModal(false); setCsvPreview([]) }}><i className="fa fa-xmark" /></button>
+              <button className="mclose" onClick={closeImportModal}><i className="fa fa-xmark" /></button>
             </div>
-            {/* Body — scrollable, SIN altura fija */}
-            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '4px 20px 8px', WebkitOverflowScrolling: 'touch' }}>
+            {/* Tabs */}
+            <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+              {[{ id: 'archivo', icon: 'fa-cloud-arrow-up', label: 'Subir archivo' }, { id: 'pegar', icon: 'fa-paste', label: 'Pegar números' }].map(t => (
+                <button key={t.id} onClick={() => { setImportTab(t.id); setCsvPreview([]); setPasteNums('') }}
+                  style={{ flex: 1, padding: '11px 4px', fontSize: 13, fontWeight: importTab === t.id ? 700 : 500, color: importTab === t.id ? 'var(--brand)' : 'var(--txt3)', background: 'none', border: 'none', borderBottom: importTab === t.id ? '2.5px solid var(--brand)' : '2.5px solid transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, transition: 'all .15s', marginBottom: -1 }}>
+                  <i className={`fa ${t.icon}`} style={{ fontSize: 14 }} /> {t.label}
+                </button>
+              ))}
+            </div>
+            {/* Body — scrollable */}
+            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '16px 20px 8px', WebkitOverflowScrolling: 'touch' }}>
+              {importTab === 'archivo' && (<>
               {/* Tips compactos */}
               {csvPreview.length === 0 && (
                 <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
@@ -1391,10 +1429,58 @@ export default function Clientes() {
                   </div>
                 </div>
               )}
+              </>)}
+
+              {/* ── TAB: Pegar números ── */}
+              {importTab === 'pegar' && (
+                <div>
+                  <div style={{ padding: '12px 14px', borderRadius: 10, background: '#FFF7ED', border: '1.5px solid #FED7AA', marginBottom: 14, fontSize: 12 }}>
+                    <div style={{ fontWeight: 700, color: '#C2410C', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}><i className="fa fa-bolt" /> Cargá todos tus clientes ahora mismo — sin exportar nada</div>
+                    <div style={{ color: '#92400E', lineHeight: 1.6 }}>Abrí WhatsApp, entrá a cada chat de cliente y <b>copiá el número</b> desde el perfil del contacto. Pegalo acá (uno por línea) con o sin nombre. También podés pegar desde tus notas, agenda o cualquier lista.</div>
+                    <div style={{ marginTop: 8, display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: 11, color: '#92400E' }}>
+                      <span><i className="fa fa-circle-check" style={{ color: '#059669', marginRight: 4 }} /><b>11 9876 5432</b> — solo número</span>
+                      <span><i className="fa fa-circle-check" style={{ color: '#059669', marginRight: 4 }} /><b>María López 1145678901</b></span>
+                      <span><i className="fa fa-circle-check" style={{ color: '#059669', marginRight: 4 }} /><b>+54 9 11 2345 6789 - Florería Luz</b></span>
+                    </div>
+                  </div>
+                  <textarea value={pasteNums} onChange={e => setPasteNums(e.target.value)}
+                    placeholder={'Pegá o escribí los números de tus clientes:\n\n11 9876 5432\nMaría López  1145678901\n+54 9 11 2345 6789 - Farmacia Ruiz\nFlorería Luz  2216789012\n...'}
+                    style={{ width: '100%', minHeight: 180, borderRadius: 10, border: '1.5px solid var(--border)', padding: '12px 14px', fontSize: 13, fontFamily: 'inherit', lineHeight: 1.7, resize: 'vertical', outline: 'none', background: 'var(--surface)', color: 'var(--txt)', boxSizing: 'border-box' }}
+                    autoFocus />
+                  {parsedPaste.length > 0 && (
+                    <div style={{ marginTop: 12 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                        <span style={{ background: '#059669', color: '#fff', fontSize: 11, fontWeight: 800, padding: '3px 10px', borderRadius: 20 }}>{parsedPaste.length} contactos detectados</span>
+                        <span style={{ fontSize: 11, color: 'var(--txt3)' }}>— revisá y confirmá</span>
+                      </div>
+                      <div style={{ overflowX: 'auto', border: '1px solid var(--border)', borderRadius: 10, maxHeight: 240, overflowY: 'auto' }}>
+                        <table style={{ fontSize: 11, minWidth: 340 }}>
+                          <thead><tr><th style={{ width: 24 }}>#</th><th>Nombre / Empresa</th><th>WhatsApp</th></tr></thead>
+                          <tbody>
+                            {parsedPaste.slice(0, 30).map((c, i) => (<tr key={i}><td style={{ color: 'var(--txt4)', textAlign: 'center' }}>{i + 1}</td><td><b>{c.company}</b></td><td style={{ color: c.wa ? 'var(--txt)' : 'var(--txt4)', fontStyle: c.wa ? 'normal' : 'italic' }}>{c.wa || 'sin número'}</td></tr>))}
+                            {parsedPaste.length > 30 && <tr><td colSpan={3} style={{ textAlign: 'center', color: 'var(--txt3)', padding: '8px', fontStyle: 'italic' }}>…y {parsedPaste.length - 30} más</td></tr>}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                  {pasteNums.trim() && parsedPaste.length === 0 && (
+                    <div style={{ marginTop: 10, padding: '10px 14px', background: 'var(--surface2)', borderRadius: 8, fontSize: 12, color: 'var(--txt3)' }}><i className="fa fa-circle-info" style={{ marginRight: 6 }} />Escribí al menos un número o nombre para ver la vista previa.</div>
+                  )}
+                </div>
+              )}
             </div>
             <div className="mfooter" style={{ flexShrink: 0, borderTop: '1px solid var(--border)', padding: '12px 20px' }}>
-              <button className="btn btn-secondary" onClick={() => { setImportModal(false); setCsvPreview([]) }}>Cancelar</button>
-              <button className="btn btn-primary" onClick={doImport} disabled={!csvPreview.length}><i className="fa fa-file-import" /> {csvPreview.length > 0 ? `Importar ${csvPreview.length} clientes` : 'Importar'}</button>
+              <button className="btn btn-secondary" onClick={closeImportModal}>Cancelar</button>
+              {importTab === 'archivo' && (
+                <button className="btn btn-primary" onClick={doImport} disabled={!csvPreview.length}><i className="fa fa-file-import" /> {csvPreview.length > 0 ? `Importar ${csvPreview.length} clientes` : 'Importar'}</button>
+              )}
+              {importTab === 'pegar' && (
+                <button className="btn btn-primary" disabled={parsedPaste.length === 0}
+                  onClick={() => { parsedPaste.forEach(c => saveEntity('clients', { ...c })); toast(`${parsedPaste.length} clientes importados`, 'ok'); closeImportModal() }}>
+                  <i className="fa fa-user-plus" /> {parsedPaste.length > 0 ? `Agregar ${parsedPaste.length} clientes` : 'Agregar clientes'}
+                </button>
+              )}
             </div>
           </div>
         </div>
