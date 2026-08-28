@@ -1725,7 +1725,7 @@ export default function Presupuesto() {
               <>
                 <PaneHeader icon="fa-truck" title="Paso 3 · Entrega y precio" subtitle="Configurá modalidad, fechas y parámetros" />
                 {/* Fila 1: Entrega — modalidad + fecha */}
-                <div className="grid2">
+                <div className="grid2 wiz-2col">
                   <div className="fg"><label>Modalidad</label>
                     <select value={form.delivery} onChange={e => {
                       const val = e.target.value
@@ -1751,7 +1751,7 @@ export default function Presupuesto() {
                 </div>
 
                 {/* Fila 2: Estados — pedido + pago lado a lado (paralelos en el flujo del negocio) */}
-                <div className="grid2">
+                <div className="grid2 wiz-2col">
                   <div className="fg"><label>Estado del pedido</label>
                     <select value={form.status} onChange={e => setF('status', e.target.value)}>
                       <option value="draft">Borrador</option>

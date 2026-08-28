@@ -454,6 +454,8 @@ td b{color:var(--txt);font-weight:600}
 /* Paso 1 del wizard: mantener alineado en mobile — Contacto y Empresa full-width,
    WhatsApp y Email en 2 columnas. Así no queda tan largo, sin apretar los nombres. */
 .grid2.wiz-client-grid{grid-template-columns:1fr 1fr!important;gap:12px}
+/* Paso 3: modalidad|fecha y estado|pago siempre en 2 columnas (no apilar en mobile) */
+.grid2.wiz-2col{grid-template-columns:1fr 1fr!important;gap:10px}
 @media(max-width:680px){
   .grid2.wiz-client-grid{gap:10px 12px}
   .grid2.wiz-client-grid > .fg:nth-child(1),
