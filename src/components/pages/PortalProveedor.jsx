@@ -173,40 +173,36 @@ export default function PortalProveedor() {
           </div>
         )}
 
-        {/* RE-ORDEN URGENTE */}
+        {/* REPOSICIÓN PRIORITARIA (tono de marca, no alarma) */}
         {reorder.length > 0 && (
-          <div className="pp-card" style={S.reorderCard}>
-            <div style={S.reorderHead}>
-              <div style={S.urgentBadge}>
-                <i className="fa fa-triangle-exclamation" /> URGENTE
-              </div>
+          <div className="pp-card" style={{ ...S.reorderCard, background: '#F5F3FF', borderColor: '#DDD6FE' }}>
+            <div style={{ ...S.reorderHead, alignItems: 'center' }}>
+              <div style={{ ...S.urgentBadge, background: '#7C3AED' }}>PRIORITARIO</div>
               <div style={{ flex: 1 }}>
-                <h3 style={S.reorderTitle}>Necesito reponer {reorder.length} producto{reorder.length !== 1 ? 's' : ''}</h3>
-                <p style={S.reorderSub}>Stock por debajo del mínimo. Esperamos confirmación de plazo y disponibilidad.</p>
+                <h3 style={{ ...S.reorderTitle, color: '#1E1B4B' }}>{reorder.length} producto{reorder.length !== 1 ? 's' : ''} para reponer</h3>
               </div>
             </div>
             <div style={S.reorderList}>
-              {reorder.map((p, i) => (
-                <div key={i} style={S.reorderItem}>
-                  <div style={{ flex: 1 }}>
-                    <div style={S.reorderItemName}>{p.name}</div>
-                    <div style={S.reorderItemMeta}>
-                      Stock <b style={{ color: '#DC2626' }}>{p.stock || 0}</b> / mín. {p.minStock} · faltan {Math.max(1, (p.minStock || 0) - (p.stock || 0))}
-                    </div>
+              {reorder.map((p, i) => {
+                const need = Math.max(1, (p.minStock || 0) - (p.stock || 0))
+                return (
+                  <div key={i} style={S.reorderItem}>
+                    <div style={{ ...S.reorderItemName, flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</div>
+                    <div style={{ fontWeight: 700, fontSize: 13, color: '#7C3AED', whiteSpace: 'nowrap', fontFamily: "'Space Grotesk','Inter',sans-serif", marginRight: 10 }}>{need} u.</div>
+                    <div style={S.reorderItemCost}>{fmt(p.cost)} <span style={{ fontSize: 9, color: '#6366F1', fontWeight: 500 }}>/u</span></div>
                   </div>
-                  <div style={S.reorderItemCost}>{fmt(p.cost)} <span style={{ fontSize: 9, color: '#6366F1', fontWeight: 500 }}>/u</span></div>
-                </div>
-              ))}
+                )
+              })}
             </div>
             {reorderTotal > 0 && (
               <div style={S.reorderTotal}>
-                <span style={{ fontSize: 12, color: '#6B7280' }}>Estimado mínimo a reponer:</span>
-                <b style={{ fontSize: 18, color: '#DC2626' }}>{fmt(reorderTotal)}</b>
+                <span style={{ fontSize: 12, color: '#6B7280' }}>Total estimado de reposición</span>
+                <b style={{ fontSize: 18, color: '#1E1B4B', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{fmt(reorderTotal)}</b>
               </div>
             )}
-            {waLink('quería confirmarte el pedido urgente') && (
-              <a href={waLink('quería confirmarte el pedido urgente')} target="_blank" rel="noopener noreferrer" className="pp-btn-wa" style={S.btnUrgent}>
-                <i className="fa-brands fa-whatsapp" style={{ fontSize: 18 }} /> Confirmar pedido urgente por WhatsApp
+            {waLink('quería confirmarte la reposición del pedido') && (
+              <a href={waLink('quería confirmarte la reposición del pedido')} target="_blank" rel="noopener noreferrer" className="pp-btn-wa" style={{ ...S.btnUrgent, background: 'linear-gradient(135deg,#16A34A,#15803D)' }}>
+                <i className="fa-brands fa-whatsapp" style={{ fontSize: 18 }} /> Confirmar reposición por WhatsApp
               </a>
             )}
           </div>
