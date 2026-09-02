@@ -671,8 +671,11 @@ export default function Clientes() {
           .cli-mob-list{display:flex}
           .cli-ph-title{display:none!important}
           .cli-view-toggle{display:none!important}
-          .cli-pill{padding:7px 9px}
-          .cli-pill-new{padding:7px 12px}
+          .cli-pill{width:40px;height:40px;padding:0;justify-content:center}
+          .cli-pill span{display:none}
+          .cli-pill i{font-size:15px}
+          .cli-pill-new{height:40px;padding:0 16px}
+          .cli-pill-group{gap:8px}
         }
         @media(min-width:641px){
           .cli-mob-list{display:none!important}
@@ -839,7 +842,7 @@ export default function Clientes() {
                     </a>
                   )}
                   <button title="Editar cliente" onClick={() => openEdit(c)}
-                    style={{ width:30,height:30,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
+                    style={{ width:28,height:28,borderRadius:8,border:'none',background:'transparent',color:'var(--txt4)',cursor:'pointer',fontSize:12.5,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
                     <i className="fa fa-pen" />
                   </button>
                 </div>
