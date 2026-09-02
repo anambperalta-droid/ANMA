@@ -1772,7 +1772,7 @@ export default function Historial() {
                       <table>
                         <thead><tr><th className="c-num">N°</th><th className="c-cli">Cliente</th><th className="c-tot">Total</th><th className="c-est">Estado</th><th className="c-act"></th></tr></thead>
                         <tbody>
-                          {[...budgets].sort((a, b) => b.id - a.id).slice(0, 6).map(b => {
+                          {[...budgets].sort((a, b) => b.id - a.id).slice(0, 5).map(b => {
                             const cliName = b.company || b.contact || '—'
                             const matchedCli = (clients || []).find(c => (b.company && c.company === b.company) || (b.contact && c.contact === b.contact))
                             return (
