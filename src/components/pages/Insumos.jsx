@@ -668,7 +668,7 @@ export default function Insumos() {
                 style={{ background: showCalc ? 'rgba(99,102,241,.08)' : 'var(--surface2)', border: `1.5px solid ${showCalc ? 'rgba(99,102,241,.3)' : 'var(--border)'}`, borderRadius: 8, cursor: 'pointer', padding: '7px 12px', fontSize: 11.5, fontWeight: 700, color: showCalc ? 'var(--brand)' : 'var(--txt3)', display: 'flex', alignItems: 'center', gap: 6, width: '100%', marginTop: 10, transition: 'all .15s' }}
               >
                 <i className="fa fa-calculator" style={{ fontSize: 10 }} />
-                {showCalc ? 'Ocultar calculadora de fraccionamiento' : '🧮 Calcular costo por unidad desde un pack'}
+                {showCalc ? 'Ocultar calculadora de fraccionamiento' : 'Calcular costo por unidad desde un pack'}
                 <i className={`fa fa-chevron-${showCalc ? 'up' : 'down'}`} style={{ marginLeft: 'auto', fontSize: 9, opacity: .6 }} />
               </button>
 

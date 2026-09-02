@@ -163,7 +163,7 @@ export default function Alta({ appName = 'ANMA Hub' }) {
           ) : (
             /* ── ÉXITO ── */
             <div style={s.success}>
-              <div style={{ fontSize: 48, marginBottom: 8 }}>✅</div>
+              <div style={{ fontSize: 46, marginBottom: 8, color: '#16A34A' }}><i className="fa fa-circle-check" /></div>
               <h2 style={{ fontSize: 20, fontWeight: 800, color: '#1E1B4B', margin: '0 0 6px', letterSpacing: '-.4px' }}>¡Listo, {form.contact || form.company}!</h2>
               <p style={{ fontSize: 13, color: '#6B7280', margin: '0 0 20px', lineHeight: 1.6 }}>
                 {adminWa

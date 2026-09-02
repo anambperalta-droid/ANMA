@@ -629,7 +629,7 @@ export default function Presupuesto() {
     const bolsa = insumosList.find(i => { const n = i.name.toLowerCase(); return n.includes('bolsa') || n.includes('mailer') || n.includes('sobre') || n.includes('ecommerce') })
     if (bolsa) {
       setF('dispatchInsumos', [...(form.dispatchInsumos || []).filter(d => d.insumoId !== bolsa.id), { insumoId: bolsa.id, qty: 1 }])
-      toast('✉️ Bolsa eCommerce cargada', 'ok')
+      toast('Bolsa eCommerce cargada', 'ok')
     } else {
       toast('No encontré un insumo tipo bolsa. Cargá uno en /insumos.', 'er')
     }
@@ -640,7 +640,7 @@ export default function Presupuesto() {
     const preload = []
     if (caja) preload.push({ insumoId: caja.id, qty: 1 })
     if (protec) preload.push({ insumoId: protec.id, qty: 1 })
-    if (preload.length) { setF('dispatchInsumos', preload); toast('📦 Caja Frágil cargada', 'ok') }
+    if (preload.length) { setF('dispatchInsumos', preload); toast('Caja Frágil cargada', 'ok') }
     else toast('No encontré insumos de caja o protección. Cargá en /insumos.', 'er')
   }
 
@@ -665,10 +665,10 @@ export default function Presupuesto() {
       const preload = []
       if (caja) preload.push({ insumoId: caja.id, qty: 1 })
       if (protec) preload.push({ insumoId: protec.id, qty: 1 })
-      if (preload.length) { setF('dispatchInsumos', preload); toast('📦 Caja Frágil sugerida por los productos del carrito', 'ok') }
+      if (preload.length) { setF('dispatchInsumos', preload); toast('Caja Frágil sugerida por los productos del carrito', 'ok') }
     } else if (hasCloth) {
       const bolsa = insumosList.find(i => { const n = i.name.toLowerCase(); return n.includes('bolsa') || n.includes('mailer') || n.includes('sobre') })
-      if (bolsa) { setF('dispatchInsumos', [{ insumoId: bolsa.id, qty: 1 }]); toast('✉️ Bolsa eCommerce sugerida por los productos del carrito', 'ok') }
+      if (bolsa) { setF('dispatchInsumos', [{ insumoId: bolsa.id, qty: 1 }]); toast('Bolsa eCommerce sugerida por los productos del carrito', 'ok') }
     }
   }, [currentStep])
 
@@ -1487,8 +1487,8 @@ export default function Presupuesto() {
                     </div>
                     <div style={{ display: 'inline-flex', background: '#fff', border: '1px solid #E5E7EB', borderRadius: 8, padding: 2, gap: 2, flex: '1 1 auto', minWidth: 0 }}>
                       {[
-                        { val: 'minorista', label: 'Público', icon: '🛍️' },
-                        { val: 'mayorista', label: 'Mayorista', icon: '📦' },
+                        { val: 'minorista', label: 'Público', icon: 'fa-bag-shopping' },
+                        { val: 'mayorista', label: 'Mayorista', icon: 'fa-boxes-stacked' },
                       ].map(opt => {
                         const active = (form.canalVenta || 'minorista') === opt.val
                         return (
@@ -1502,7 +1502,7 @@ export default function Presupuesto() {
                               color: active ? '#fff' : '#6B7280',
                               transition: 'all .15s', whiteSpace: 'nowrap',
                             }}
-                          >{opt.icon} {opt.label}</button>
+                          ><i className={`fa ${opt.icon}`} style={{ marginRight: 5 }} />{opt.label}</button>
                         )
                       })}
                     </div>
@@ -1584,7 +1584,7 @@ export default function Presupuesto() {
                                     onFocus={selectOnFocus}
                                     onChange={e => { const r = parseTbl(e.target.value); updateItem(i, 'priceUnit', r === '' ? '' : Number(r)) }}
                                     onBlur={e => { if (e.target.value === '') updateItem(i, 'priceUnit', 0) }}
-                                    title={belowCost ? `⚠️ Precio menor al costo (${fmt(num(it.costUnit))})` : undefined}
+                                    title={belowCost ? `Precio menor al costo (${fmt(num(it.costUnit))})` : undefined}
                                     style={{
                                       padding: '0 8px', fontSize: 12, fontVariantNumeric: 'tabular-nums', fontFamily: 'inherit',
                                       width: '100%', textAlign: 'right', height: 36, boxSizing: 'border-box',
@@ -1840,10 +1840,10 @@ export default function Presupuesto() {
                       </div>
                       <div className="disp-quick" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                         <button type="button" className="btn btn-ghost btn-xs" onClick={loadBolsaEcommerce} title="Cargar Bolsa eCommerce / mailer">
-                          ✉️ Bolsa eCommerce
+                          <i className="fa fa-envelope" style={{ marginRight: 5 }} />Bolsa eCommerce
                         </button>
                         <button type="button" className="btn btn-ghost btn-xs" onClick={loadCajaFragil} title="Cargar Caja + protección para frágiles">
-                          📦 Caja Frágil
+                          <i className="fa fa-box" style={{ marginRight: 5 }} />Caja Frágil
                         </button>
                       </div>
                     </div>
@@ -2169,8 +2169,8 @@ export default function Presupuesto() {
             {feats.costoInterno && <div className="cp-row"><span className="cp-lbl">Costo proveedor</span><span className="cp-val" style={calc.costPending ? { color: '#F59E0B', fontStyle: 'italic', fontWeight: 700 } : undefined}>{calc.costPending ? 'Pendiente' : fmt(calc.totalCost)}</span></div>}
             {calc.logTotal > 0 && <div className="cp-row"><span className="cp-lbl">Impresión</span><span className="cp-val">{fmt(calc.logTotal)}</span></div>}
             {num(form.shipCost) > 0 && <div className="cp-row"><span className="cp-lbl">Envío</span><span className="cp-val">{fmt(num(form.shipCost))}</span></div>}
-            {calc.dispatchCost > 0 && <div className="cp-row"><span className="cp-lbl">📦 Despacho</span><span className="cp-val">{fmt(calc.dispatchCost)}</span></div>}
-            {calc.viajesCost > 0 && <div className="cp-row"><span className="cp-lbl">🚚 Logística</span><span className="cp-val">{fmt(calc.viajesCost)}</span></div>}
+            {calc.dispatchCost > 0 && <div className="cp-row"><span className="cp-lbl"><i className="fa fa-box" style={{ marginRight: 5, opacity: .7 }} />Despacho</span><span className="cp-val">{fmt(calc.dispatchCost)}</span></div>}
+            {calc.viajesCost > 0 && <div className="cp-row"><span className="cp-lbl"><i className="fa fa-truck" style={{ marginRight: 5, opacity: .7 }} />Logística</span><span className="cp-val">{fmt(calc.viajesCost)}</span></div>}
             {calc.discountAmt > 0 && (
               <div className="cp-row" style={{ borderTop: '1px dashed rgba(255,255,255,.10)', marginTop: 2, paddingTop: 4 }}>
                 <span className="cp-lbl" style={{ color: 'rgba(255,255,255,.55)', display: 'flex', alignItems: 'center', gap: 4 }}>

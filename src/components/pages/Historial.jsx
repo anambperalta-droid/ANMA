@@ -60,12 +60,12 @@ function KpiCard({ label, value, delta, isKey, sparkData, sparkColor, icon }) {
    Maneja un array de pagos {date, amount, method, notes} por presupuesto.
    El payStatus se recalcula automáticamente desde la suma vs totalFinal.   */
 const PAY_METHODS = [
-  { val: 'efectivo',      lbl: '💵 Efectivo' },
-  { val: 'transferencia', lbl: '🏦 Transferencia' },
-  { val: 'mp',            lbl: '🟦 Mercado Pago' },
-  { val: 'tarjeta',       lbl: '💳 Tarjeta' },
-  { val: 'cheque',        lbl: '🧾 Cheque' },
-  { val: 'otro',          lbl: '📌 Otro' },
+  { val: 'efectivo',      lbl: 'Efectivo' },
+  { val: 'transferencia', lbl: 'Transferencia' },
+  { val: 'mp',            lbl: 'Mercado Pago' },
+  { val: 'tarjeta',       lbl: 'Tarjeta' },
+  { val: 'cheque',        lbl: 'Cheque' },
+  { val: 'otro',          lbl: 'Otro' },
 ]
 function PaymentsModal({ budget, onSave, onClose }) {
   const today = new Date().toISOString().slice(0, 10)
@@ -255,12 +255,12 @@ function ReturnModal({ budget, onSave, onClose }) {
   const fmt = (v) => '$' + Number(v || 0).toLocaleString('es-AR')
 
   const REASONS = [
-    { k: 'defect',     l: '🔧 Producto defectuoso' },
-    { k: 'wrong',      l: '📦 Producto equivocado' },
-    { k: 'late',       l: '⏰ Llegó fuera de tiempo' },
-    { k: 'regret',     l: '🤔 Cliente se arrepintió' },
-    { k: 'damage',     l: '💔 Dañado en envío' },
-    { k: 'other',      l: '📝 Otro motivo' },
+    { k: 'defect',     l: 'Producto defectuoso' },
+    { k: 'wrong',      l: 'Producto equivocado' },
+    { k: 'late',       l: 'Llegó fuera de tiempo' },
+    { k: 'regret',     l: 'Cliente se arrepintió' },
+    { k: 'damage',     l: 'Dañado en envío' },
+    { k: 'other',      l: 'Otro motivo' },
   ]
 
   const setQty = (productId, qty) => {
@@ -403,12 +403,12 @@ function LossReasonModal({ budget, onSave, onClose }) {
   const [keptDeposit, setKeptDeposit] = useState(null)
   const fmtMoney = (v) => '$' + Number(v || 0).toLocaleString('es-AR')
   const REASONS = [
-    { k: 'price', l: '💰 Precio muy alto' },
-    { k: 'time', l: '⏰ No llegábamos con los tiempos' },
-    { k: 'competitor', l: '🏃 Eligió a un competidor' },
-    { k: 'no_response', l: '🔇 Cliente nunca respondió' },
-    { k: 'budget', l: '💸 Cliente no tenía presupuesto' },
-    { k: 'other', l: '📝 Otro motivo' },
+    { k: 'price', l: 'Precio muy alto' },
+    { k: 'time', l: 'No llegábamos con los tiempos' },
+    { k: 'competitor', l: 'Eligió a un competidor' },
+    { k: 'no_response', l: 'Cliente nunca respondió' },
+    { k: 'budget', l: 'Cliente no tenía presupuesto' },
+    { k: 'other', l: 'Otro motivo' },
   ]
   const finalReason = reason === 'other' ? other.trim() : (REASONS.find(r => r.k === reason)?.l.replace(/^\S+ /, '') || '')
   const canSave = finalReason && (!hasPayments || keptDeposit !== null)
@@ -2445,7 +2445,7 @@ export default function Historial() {
                 const totalPaid  = cobrado(b)
                 const remaining  = Math.max(0, totalDue - totalPaid)
                 const pays       = Array.isArray(b.payments) ? b.payments : []
-                const pcMethod = (val) => ({ efectivo:'💵 Efectivo', transferencia:'🏦 Transferencia', mp:'🟦 Mercado Pago', tarjeta:'💳 Tarjeta', cheque:'🧾 Cheque', otro:'📌 Otro' }[val] || val)
+                const pcMethod = (val) => ({ efectivo:'Efectivo', transferencia:'Transferencia', mp:'Mercado Pago', tarjeta:'Tarjeta', cheque:'Cheque', otro:'Otro' }[val] || val)
                 if (totalDue === 0 && totalPaid === 0) return null
                 return (
                   <div style={{ padding: '14px 16px', borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
