@@ -637,8 +637,8 @@ export default function Clientes() {
         .cli-pill:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-xlt)}
         .cli-pill:active{transform:scale(.95)}
         .cli-pill i{font-size:12px}
-        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:var(--color-principal);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 4px 14px var(--brand-dim)}
-        .cli-pill-new:hover{filter:brightness(1.08);transform:translateY(-1px)}
+        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
+        .cli-pill-new:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 10px 26px var(--brand-dim)}
         .cli-pill-new:active{transform:scale(.95)}
         .cli-pill-new i{font-size:11px}
 
@@ -650,9 +650,9 @@ export default function Clientes() {
         .cli-mob-id{flex:1;min-width:0;display:flex;align-items:center;gap:7px}
         .cli-mob-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
         .cli-mob-id-text{min-width:0;flex:1}
-        .cli-mob-company{font-weight:700;font-size:13px;color:var(--txt);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .cli-mob-company{font-weight:700;font-size:13.5px;color:var(--txt);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.2px}
         .cli-mob-contact{font-size:11px;color:#6B7280;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .cli-mob-mid{flex-shrink:0;width:68px;display:flex;flex-direction:column;align-items:center;gap:4px}
+        .cli-mob-mid{flex-shrink:0;display:flex;align-items:center;gap:6px}
         .cli-mob-cicons{display:flex;gap:5px}
         .cli-mob-ci{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;font-size:14px;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
         .cli-mob-ci:active{opacity:.7}
@@ -698,25 +698,21 @@ export default function Clientes() {
           <table>
             <colgroup>
               <col style={{ width: 36 }} />
-              <col style={{ width: 240 }} />
-              <col style={{ width: 40 }} />
-              <col style={{ width: 40 }} />
-              <col style={{ width: 160 }} />
-              <col style={{ width: 130 }} />
-              <col style={{ width: 110 }} />
+              <col />
+              <col style={{ width: 56 }} />
+              <col style={{ width: 56 }} />
+              <col style={{ width: 128 }} />
             </colgroup>
             <thead><tr>
               <th onClick={e => e.stopPropagation()} style={{ cursor:'default' }}><input type="checkbox" className="zt-chk" checked={isAllSelected} onChange={toggleSelectAll} /></th>
               <th style={{ textAlign: 'left' }}>Empresa / Contacto</th>
               <th style={{ textAlign: 'center' }} title="WhatsApp"><i className="fa-brands fa-whatsapp" style={{ color: '#6B7280', fontSize: 13 }} /></th>
               <th style={{ textAlign: 'center' }} title="Email"><i className="fa fa-envelope" style={{ color: '#6B7280', fontSize: 12 }} /></th>
-              <th style={{ textAlign: 'left' }} className="col-hide-mobile">Rubro</th>
-              <th style={{ textAlign: 'left' }}>Última actividad</th>
               <th style={{ textAlign: 'right' }}>Acciones</th>
             </tr></thead>
             <tbody>
               {loading ? [1,2,3,4,5].map(i => (
-                <tr key={i}><td colSpan={7}><div className="sk sk-text" style={{ height: 16, width: `${55 + Math.random() * 35}%` }} /></td></tr>
+                <tr key={i}><td colSpan={5}><div className="sk sk-text" style={{ height: 16, width: `${55 + Math.random() * 35}%` }} /></td></tr>
               )) : filtered.length ? filtered.map(c => {
                 const days = clientLastBudgetDays(c)
                 const dotColor = days === null ? '#CBD5E1' : days <= 15 ? '#16A34A' : days <= 45 ? '#D97706' : '#DC2626'
@@ -731,7 +727,7 @@ export default function Clientes() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         <span title={dotTip} style={{ width: 6, height: 6, borderRadius: '50%', background: dotColor, flexShrink: 0 }} />
                         <div>
-                          <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--txt)', lineHeight: 1.3 }}>{c.company || c.contact || '—'}</div>
+                          <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--txt)', lineHeight: 1.3, fontFamily: "'Space Grotesk','Inter',sans-serif", letterSpacing: '-.2px' }}>{c.company || c.contact || '—'}</div>
                           {c.contact && c.company && <div style={{ fontSize: 11, color: '#6B7280', marginTop: 1 }}>{c.contact}</div>}
                         </div>
                       </div>
@@ -751,16 +747,6 @@ export default function Clientes() {
                           <i className="fa fa-envelope" />
                         </a>
                       ) : <span style={{ color: 'var(--txt4)', fontSize: 11 }}>—</span>}
-                    </td>
-                    <td className="col-hide-mobile" style={{ textAlign: 'left' }}>
-                      {c.rubro
-                        ? <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--txt2)' }}>{c.rubro}</span>
-                        : <span style={{ color: 'var(--txt4)', fontSize: 11 }}>—</span>}
-                    </td>
-                    <td style={{ textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>
-                      {clientLastDate(c)
-                        ? <span style={{ fontSize: 12, fontWeight: 400, color: isCold ? '#DC2626' : '#6B7280' }}>{clientLastDate(c)}</span>
-                        : <span style={{ fontSize: 11, color: '#9CA3AF' }}>Sin pedidos</span>}
                     </td>
                     <td onClick={e => e.stopPropagation()}>
                       <div className="zt-acts">
@@ -784,7 +770,7 @@ export default function Clientes() {
                     </td>
                   </tr>
                 )
-              }) : <tr><td colSpan={7}>
+              }) : <tr><td colSpan={5}>
                 <EmptyHero
                   icon="fa-users"
                   title={vocab.emptyTitle}
@@ -936,9 +922,6 @@ export default function Clientes() {
                         <i className="fa fa-envelope" />
                       </a>
                     : <span className="cli-mob-ci-ph" />}
-                </div>
-                <div className="cli-mob-date" style={{ color: lastDate && isCold ? '#DC2626' : 'var(--txt3)' }}>
-                  {lastDate || <span style={{ color: 'var(--txt4)' }}>—</span>}
                 </div>
               </div>
 
