@@ -828,7 +828,7 @@ export default function Catalogo() {
                             )}
                           </div>
                           {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
-                          {supplierName(p.supplierId) && (
+                          {supplierName(p.supplierId) !== '—' && (
                             <div style={{ fontSize: 10, color: 'var(--txt3)', display: 'flex', alignItems: 'center', gap: 4 }}>
                               <i className="fa fa-store" style={{ fontSize: 8, opacity: .7 }} />{supplierName(p.supplierId)}
                             </div>
