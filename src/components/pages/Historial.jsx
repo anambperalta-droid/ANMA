@@ -1602,7 +1602,7 @@ export default function Historial() {
             </button>
             {showPeriodDrop && (
               <div
-                style={{ position: 'absolute', right: 0, top: 'calc(100% + 6px)', zIndex: 100, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.12)', minWidth: 180, overflow: 'hidden' }}
+                style={{ position: 'absolute', left: 0, top: 'calc(100% + 6px)', zIndex: 100, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,.12)', minWidth: 180, maxWidth: 'calc(100vw - 32px)', overflow: 'hidden' }}
                 onMouseLeave={() => setShowPeriodDrop(false)}
               >
                 {PERIODS.map(p => (

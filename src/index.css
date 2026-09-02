@@ -549,9 +549,10 @@ td b{color:var(--txt);font-weight:600}
 .seg-cli{font-size:12px;color:var(--txt2);margin-bottom:1px}
 .seg-co{font-size:11px;color:var(--txt3)}
 .seg-meta{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.seg-days .num{font-size:18px;font-weight:800;line-height:1}
+.seg-days .num{font-size:20px;font-weight:700;line-height:1;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
 .seg-days .lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.seg-total{font-size:13px;font-weight:700;color:var(--brand);white-space:nowrap}
+.seg-total{font-size:14px;font-weight:700;color:var(--brand);white-space:nowrap;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
+.seg-num{font-family:'Space Grotesk','Inter',sans-serif}
 .seg-actions{display:flex;flex-direction:column;gap:3px}
 .seg-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
 .seg-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:var(--txt2)}
@@ -1016,8 +1017,10 @@ td b{color:var(--txt);font-weight:600}
   .bento-chart-inner{flex-direction:column!important}
   .bento-chart-inner > *{flex:0 0 auto!important;min-width:0!important;width:100%!important}
   .bento-chart-inner > .bento-chart-noflex{flex:none!important;height:auto!important;min-height:0!important}
-  .seg-card{flex-direction:column;gap:8px}
-  .seg-meta{flex-direction:row;justify-content:space-between;width:100%}
+  .seg-card{display:grid!important;grid-template-columns:auto 1fr;grid-template-areas:'light info' 'meta meta';align-items:start;column-gap:12px;row-gap:10px;padding:14px 16px!important}
+  .seg-card .seg-light{grid-area:light}
+  .seg-card .seg-info{grid-area:info}
+  .seg-card .seg-meta{grid-area:meta;flex-direction:row;justify-content:space-between;align-items:center;width:100%;padding-top:10px;border-top:1px solid var(--border)}
   .period-pills{flex-wrap:wrap}
   .pill-row{flex-wrap:wrap;gap:6px}
   .modal{max-width:calc(100vw - 20px)!important}
