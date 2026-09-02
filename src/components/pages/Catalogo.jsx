@@ -713,11 +713,9 @@ export default function Catalogo() {
               </div>
             )}
           </div>
-          {/* Gestionar + Nuevo: fijos en extremo derecho con degradado en mobile */}
+          {/* Nuevo: fijo en extremo derecho con degradado en mobile.
+              (Gestión de categorías vive en Configuración → Categorías de productos) */}
           <div className="cat-actions-right">
-            <button className="cat-gestionar" onClick={() => setCatMgmtModal(true)} title="Gestionar categorías">
-              <i className="fa fa-sliders" /> Gestionar
-            </button>
             <button className="cat-nuevo-mob" onClick={() => open()} title="Nuevo producto">
               <i className="fa fa-plus" /> Nuevo
             </button>
