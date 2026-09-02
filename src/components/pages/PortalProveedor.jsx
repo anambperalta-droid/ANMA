@@ -67,6 +67,11 @@ export default function PortalProveedor() {
     setError('Link inválido o vencido')
   }, [loc.search])
 
+  // Título de pestaña profesional al compartir el link
+  useEffect(() => {
+    if (data) document.title = `Pedido · ${data.ownerName || 'ANMA'}`
+  }, [data])
+
   const fmt = (n) => '$ ' + Number(n || 0).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })
 
   const products = data?.products || []
@@ -363,7 +368,7 @@ const S = {
     display: 'inline-block', background: 'rgba(255,255,255,.14)',
     padding: '4px 10px', borderRadius: 12, backdropFilter: 'blur(8px)',
   },
-  heroTitle: { margin: 0, fontSize: 26, fontWeight: 800, letterSpacing: '-.6px', lineHeight: 1.15 },
+  heroTitle: { margin: 0, fontSize: 26, fontWeight: 700, letterSpacing: '-.6px', lineHeight: 1.15, fontFamily: "'Space Grotesk','Inter',sans-serif" },
   heroSub: { margin: '10px 0 0', fontSize: 14, opacity: .94, lineHeight: 1.55 },
   heroValid: {
     fontSize: 12, opacity: .9, marginTop: 16,
@@ -456,7 +461,7 @@ const S = {
   condCard: { background: 'linear-gradient(135deg,#F5F3FF,#F0FDF4)', borderRadius: 12, padding: '14px 16px', border: '1px solid #EDE9FE' },
   condIcon: { fontSize: 22, marginBottom: 4 },
   condLabel: { fontSize: 10, color: '#6B7280', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.6px' },
-  condValue: { fontSize: 22, fontWeight: 800, color: '#1E1B4B', marginTop: 3, letterSpacing: '-.5px' },
+  condValue: { fontSize: 22, fontWeight: 700, color: '#1E1B4B', marginTop: 3, letterSpacing: '-.5px', fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' },
   condUnit: { fontSize: 12, color: '#6B7280', fontWeight: 500 },
 
   // CTA
@@ -466,7 +471,7 @@ const S = {
     boxShadow: '0 4px 18px rgba(124,58,237,.10)',
     textAlign: 'center', border: '1.5px solid #EDE9FE',
   },
-  ctaTitle: { margin: '0 0 8px', fontSize: 18, color: '#1E1B4B', fontWeight: 800 },
+  ctaTitle: { margin: '0 0 8px', fontSize: 18, color: '#1E1B4B', fontWeight: 700, fontFamily: "'Space Grotesk','Inter',sans-serif" },
   ctaSub: { margin: '0 0 18px', fontSize: 13, color: '#6B7280', lineHeight: 1.55 },
   ctaButtons: { display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' },
   btnConfirm: {
