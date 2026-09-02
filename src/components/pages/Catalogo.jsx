@@ -677,13 +677,16 @@ export default function Catalogo() {
         .cli-pill-new:active{transform:scale(.95)}
         .cli-pill-new i{font-size:11px}
         @media(max-width:640px){
-          /* Barra de acciones compacta en mobile: íconos, sin texto, sin toggle de vista */
+          /* Barra de acciones (mobile): a la derecha; utilitarios como íconos y
+             "Nuevo" mantiene su texto como CTA. Sin toggle grilla/lista. */
           .cat-ph{display:block!important;margin-bottom:8px!important}
-          .cat-ph .ph-right{flex-wrap:wrap;justify-content:flex-start;gap:6px}
+          .cat-ph .ph-right{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:6px}
+          .cat-ph .cli-pill-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
           .cat-view-toggle{display:none!important}
-          .cat-ph .cli-pill,.cat-ph .cli-pill-new{width:40px;height:40px;padding:0!important;justify-content:center}
-          .cat-ph .cli-pill span,.cat-ph .cli-pill-new span{display:none}
-          .cat-ph .cli-pill i,.cat-ph .cli-pill-new i{font-size:14px}
+          .cat-ph .cli-pill{width:40px;height:40px;padding:0!important;justify-content:center}
+          .cat-ph .cli-pill span{display:none}
+          .cat-ph .cli-pill i{font-size:14px}
+          .cat-ph .cli-pill-new{height:40px;padding:0 16px!important}
         }
         @media(max-width:480px){.cat-price-calc{grid-template-columns:1fr!important}.cat-price-arrow{display:none!important}}
       `}</style>
@@ -733,9 +736,10 @@ export default function Catalogo() {
         .cat-nuevo-mob{display:none;align-items:center;gap:6px;height:38px;padding:0 14px;border-radius:9999px;border:none;background:var(--color-principal,#7C3AED);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;box-shadow:0 4px 14px var(--brand-dim,rgba(124,58,237,.2));transition:all .15s}
         .cat-nuevo-mob:active{transform:scale(.95)}
         .cat-nuevo-mob i{font-size:11px}
-        /* Botón primario "+ Nuevo" SOLO en mobile (en desktop ya existe en .cat-ph) */
+        /* En mobile "Nuevo" ahora vive en la barra de acciones (.cat-ph) → ocultamos
+           el botón duplicado que había en la fila de categoría. */
         @media(max-width:640px){
-          .cat-nuevo-mob{display:inline-flex}
+          .cat-nuevo-mob{display:none}
           .cat-gestionar{padding:0 12px!important}
         }
       `}</style>
