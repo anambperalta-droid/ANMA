@@ -79,6 +79,8 @@ export default function PortalProveedor() {
   const reorderTotal = useMemo(() =>
     reorder.reduce((s, p) => s + (Number(p.cost) || 0) * Math.max(1, (p.minStock || 0) - (p.stock || 0)), 0),
     [reorder])
+  const totalUnits = useMemo(() => products.reduce((s, p) => s + Math.max(1, p.stock || 0), 0), [products])
+  const totalValue = useMemo(() => products.reduce((s, p) => s + (Number(p.cost) || 0) * Math.max(1, p.stock || 0), 0), [products])
 
   const expDate = data?.exp ? new Date(data.exp).toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' }) : null
   const daysLeft = data?.exp ? Math.max(0, Math.ceil((data.exp - Date.now()) / 86400000)) : null
@@ -155,6 +157,22 @@ export default function PortalProveedor() {
           )}
         </div>
 
+        {/* RESUMEN DEL PEDIDO (scope de un vistazo) */}
+        {products.length > 0 && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginBottom: 12 }}>
+            {[
+              { label: 'Ítems', value: String(products.length) },
+              { label: 'Unidades', value: String(totalUnits) },
+              { label: 'Valor estimado', value: fmt(totalValue) },
+            ].map((t, i) => (
+              <div key={i} style={{ background: '#fff', border: '1px solid #EDE9FE', borderRadius: 12, padding: '13px 10px', textAlign: 'center', minWidth: 0 }}>
+                <div style={{ fontSize: 17, fontWeight: 700, color: '#1E1B4B', fontFamily: "'Space Grotesk','Inter',sans-serif", letterSpacing: '-.4px', fontVariantNumeric: 'tabular-nums', lineHeight: 1.15, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.value}</div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '.5px', marginTop: 5 }}>{t.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* RE-ORDEN URGENTE */}
         {reorder.length > 0 && (
           <div className="pp-card" style={S.reorderCard}>
@@ -223,7 +241,7 @@ export default function PortalProveedor() {
                       </td>
                       <td style={{ ...S.td, textAlign: 'center', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{qty}</td>
                       <td style={{ ...S.td, textAlign: 'right', color: '#374151', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</td>
-                      <td style={{ ...S.td, textAlign: 'right', fontWeight: 700, color: '#7C3AED', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost * qty)}</td>
+                      <td style={{ ...S.td, textAlign: 'right', fontWeight: 700, color: '#7C3AED', fontVariantNumeric: 'tabular-nums', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{fmt(p.cost * qty)}</td>
                     </tr>
                     )
                   })}
