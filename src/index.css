@@ -1498,7 +1498,7 @@ td b{color:var(--txt);font-weight:600}
   .analysis-grid{gap:8px!important}
 
   /* Lista tab filters compact */
-  .search-row{max-width:100%!important;flex:1 1 100%!important}
+  .search-row{flex:1 1 auto!important;min-width:0!important}
   .hist-tbl{border-radius:12px!important}
 
   /* Bento seg (status donut panel) */
