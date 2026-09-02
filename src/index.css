@@ -257,7 +257,8 @@ input,select,textarea{font-family:inherit}
 .ph-left h2{font-size:22px;font-weight:800;color:var(--txt);letter-spacing:-.6px;line-height:1.15;margin:0}
 .ph-left p{font-size:13px;color:var(--txt3);margin-top:5px;line-height:1.5;max-width:520px}
 .ph-right{display:flex;gap:8px;flex-shrink:0;align-items:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9999px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all var(--tr);white-space:nowrap;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 18px;border-radius:9999px;font-size:12.5px;font-weight:700;cursor:pointer;border:none;transition:all var(--tr);white-space:nowrap;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px}
+.btn>i,.btn>svg{font-size:13px}
 .btn:active{transform:scale(.95)}
 .btn-primary{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);color:#fff;box-shadow:0 6px 18px var(--brand-dim)}
 .btn-primary:hover{filter:brightness(1.05);box-shadow:0 10px 26px var(--brand-dim);transform:translateY(-1px)}
@@ -375,8 +376,8 @@ input,select,textarea{font-family:inherit}
 }
 
 /* ─── BADGES ─── */
-.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
-.badge::before{content:'●';font-size:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:700;letter-spacing:.01em}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
 .b-confirmed{background:var(--green-lt);color:var(--green)}
 .b-sent{background:var(--blue-lt);color:var(--blue)}
 .b-negotiating{background:var(--amber-lt);color:var(--amber)}
