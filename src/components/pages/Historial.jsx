@@ -27,17 +27,19 @@ function Sparkline({ data, color = 'var(--brand)', height = 22 }) {
   )
 }
 
-function KpiCard({ label, value, delta, isKey, sparkData, sparkColor }) {
+function KpiCard({ label, value, delta, isKey, sparkData, sparkColor, icon }) {
   const hasDelta = delta !== null && delta !== undefined
   const accentColor = sparkColor || 'var(--brand)'
   return (
     <div className={`bento-kpi ${isKey ? 'bento-kpi-key' : ''}`} style={{ position: 'relative' }}>
-      {/* Accent dot — sutil indicador de la métrica */}
-      <span aria-hidden="true" style={{
-        position: 'absolute', top: 18, right: 18, width: 6, height: 6, borderRadius: '50%',
-        background: accentColor, opacity: 0.7,
-      }} />
-      <div className="kpi-label-elegant">{label}</div>
+      <div className="kpi-head">
+        {icon && (
+          <span className="kpi-ic" aria-hidden="true" style={{ color: accentColor, background: `color-mix(in srgb, ${accentColor} 13%, transparent)` }}>
+            <i className={`fa ${icon}`} />
+          </span>
+        )}
+        <div className="kpi-label-elegant">{label}</div>
+      </div>
       <div className="kpi-val-row" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginTop: 4 }}>
         <div className="kpi-val-elegant" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</div>
         {hasDelta && (
@@ -726,7 +728,7 @@ function StatusDonut({ statuses, budgets, onSegmentClick }) {
             <title>{`${s.l}: ${s.n} (${Math.round(s.pct)}%) — click para filtrar`}</title>
           </circle>
         ))}
-        <text x="45" y="50" textAnchor="middle" fontSize="16" fontWeight="800" fill="var(--txt)">{budgets.length}</text>
+        <text x="45" y="50" textAnchor="middle" fontSize="16" fontWeight="700" fill="var(--txt)" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{budgets.length}</text>
       </svg>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
         {statuses.filter(s => budgets.filter(b => b.status === s.k).length > 0).length === 0 ? (
@@ -1674,7 +1676,7 @@ export default function Historial() {
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: '#DC2626', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-hand-holding-dollar" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, color: '#DC2626', textTransform: 'uppercase', letterSpacing: '.06em' }}>Cobros vencidos</div>
-                      <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)', lineHeight: 1.1 }}>{cobrosVencidos.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{cobrosVencidos.length === 1 ? 'pedido' : 'pedidos'}</span></div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{cobrosVencidos.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{cobrosVencidos.length === 1 ? 'pedido' : 'pedidos'}</span></div>
                     </div>
                     <i className="fa fa-arrow-right" style={{ color: '#DC2626', fontSize: 12 }} />
                   </div>
@@ -1692,7 +1694,7 @@ export default function Historial() {
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: '#D97706', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-truck-fast" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, color: '#D97706', textTransform: 'uppercase', letterSpacing: '.06em' }}>Entregas hoy</div>
-                      <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)', lineHeight: 1.1 }}>{entregasHoy.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{entregasHoy.length === 1 ? 'pedido' : 'pedidos'}</span></div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{entregasHoy.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{entregasHoy.length === 1 ? 'pedido' : 'pedidos'}</span></div>
                     </div>
                     <i className="fa fa-arrow-right" style={{ color: '#D97706', fontSize: 12 }} />
                   </div>
@@ -1710,7 +1712,7 @@ export default function Historial() {
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: 'var(--brand)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-comments" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.06em' }}>A confirmar</div>
-                      <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)', lineHeight: 1.1 }}>{aConfirmar.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>seguimientos</span></div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{aConfirmar.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>seguimientos</span></div>
                     </div>
                     <i className="fa fa-arrow-right" style={{ color: 'var(--brand)', fontSize: 12 }} />
                   </div>
@@ -1732,10 +1734,10 @@ export default function Historial() {
             </div>
           ) : (
             <div className="bento sk-fade-in">
-              {!opHideMetrics && <KpiCard label="Ventas Brutas" value={money(totBudgeted)} delta={hidden ? undefined : deltaBrutas} sparkData={hidden ? null : sparkBrutas} sparkColor="var(--brand)" />}
-              {!opHideMetrics && <KpiCard label="Ingresos Caja" value={money(totCobrado)} delta={hidden ? undefined : deltaCaja} sparkData={hidden ? null : sparkCaja} sparkColor="var(--green)" isKey />}
-              {!opHideMetrics && <KpiCard label="Ticket Promedio" value={avgTicket > 0 ? money(avgTicket) : '—'} sparkData={hidden ? null : sparkTicket} />}
-              <KpiCard label="Presupuestos" value={String(periodBudgets.length)} />
+              {!opHideMetrics && <KpiCard label="Ventas Brutas" value={money(totBudgeted)} delta={hidden ? undefined : deltaBrutas} sparkData={hidden ? null : sparkBrutas} sparkColor="var(--brand)" icon="fa-chart-column" />}
+              {!opHideMetrics && <KpiCard label="Ingresos Caja" value={money(totCobrado)} delta={hidden ? undefined : deltaCaja} sparkData={hidden ? null : sparkCaja} sparkColor="var(--green)" isKey icon="fa-wallet" />}
+              {!opHideMetrics && <KpiCard label="Ticket Promedio" value={avgTicket > 0 ? money(avgTicket) : '—'} sparkData={hidden ? null : sparkTicket} icon="fa-receipt" />}
+              <KpiCard label="Presupuestos" value={String(periodBudgets.length)} icon="fa-file-invoice" />
 
               {/* ── Izquierda (gráfico + tabla) + Derecha (donut + seguimiento) ── */}
               {!opHideMetrics && <div className="bento-wide bento-chart-inner" style={{ display: 'flex', gap: 14, gridColumn: '1 / -1', flexWrap: 'wrap', alignItems: 'flex-start' }}>
