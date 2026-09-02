@@ -240,7 +240,7 @@ input,select,textarea{font-family:inherit}
 .sb-ava{width:32px;height:32px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;flex-shrink:0}
 
 /* ─── MAIN AREA ─── */
-.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;height:100vh;max-width:calc(100vw - var(--sw));overflow:clip;transition:margin-left .3s ease,max-width .3s ease}
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:calc(100vw - var(--sw));overflow:clip;transition:margin-left .3s ease,max-width .3s ease}
 .topbar{height:60px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 22px;gap:12px;position:sticky;top:0;z-index:50;flex-shrink:0}
 .tb-page-title{display:block;font-size:17px;font-weight:800;color:var(--txt);letter-spacing:-.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tb-search{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:6px 12px;width:200px;cursor:pointer;transition:border-color var(--tr)}
@@ -1058,7 +1058,8 @@ td b{color:var(--txt);font-weight:600}
     grid-template-areas:
       'sel cli acc'
       'sel num total'
-      'sel estado pago';
+      'sel estado estado'
+      'sel pago pago';
     align-items:center;column-gap:10px;row-gap:9px;
     background:var(--surface);border:1px solid var(--border);border-radius:16px;
     padding:15px 16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(15,23,42,.04),0 6px 18px -10px rgba(15,23,42,.10);
@@ -1089,8 +1090,8 @@ td b{color:var(--txt);font-weight:600}
   .hist-tbl td[data-cell="estado"]{grid-area:estado;white-space:normal!important;align-self:center;display:flex!important;align-items:center;gap:6px;padding-top:6px!important;border-top:1px solid var(--border)!important}
   .hist-tbl td[data-cell="estado"] > div{width:100%!important}
   /* Pago: chip inline compacto lado a lado del estado */
-  .hist-tbl td[data-cell="pago"]{grid-area:pago;white-space:normal!important;align-self:center;display:flex!important;align-items:center;justify-content:flex-end;gap:6px;padding-top:6px!important;border-top:1px solid var(--border)!important}
-  .hist-tbl td[data-cell="pago"]>div{min-width:0!important;max-width:none!important;align-items:flex-end!important;gap:4px!important}
+  .hist-tbl td[data-cell="pago"]{grid-area:pago;white-space:normal!important;align-self:center;display:flex!important;align-items:center;justify-content:flex-start;gap:6px;padding-top:0!important;border-top:none!important}
+  .hist-tbl td[data-cell="pago"]>div{min-width:0!important;max-width:none!important;align-items:flex-start!important;gap:4px!important;flex-direction:row!important;flex-wrap:wrap!important}
   /* Estado vacío: tarjeta simple sin grid */
   .hist-tbl tbody tr.hist-empty-row{display:block!important;grid-template-areas:none;text-align:center}
   .hist-tbl tbody tr.hist-empty-row td{display:block!important}
