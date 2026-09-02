@@ -478,12 +478,13 @@ export default function Presupuesto() {
 
   const handleClientSelect = (client) => {
     setForm(f => ({ ...f, contact: client.contact || '', company: client.company || '', wa: client.wa || '', clientEmail: client.email || '' }))
-    const m = (c.defaultMargin || 40) / 100
     setItems(prev => prev.map(it => {
       if (!it.name || !it.costUnit) return it
       const match = products.find(p => p.name === it.name)
       if (match) {
-        const price = catalogPriceFor(match, canalEffective(form.canalVenta)) || Math.round(num(match.cost) * (1 + m))
+        // Misma fórmula que el resto (margen sobre precio), para que el
+        // "Margen real" del panel coincida con el objetivo — no markup sobre costo.
+        const price = catalogPriceFor(match, canalEffective(form.canalVenta)) || priceFromMargin(num(match.cost), form.margin, form.discount)
         return { ...it, priceUnit: price }
       }
       return it
@@ -500,7 +501,7 @@ export default function Presupuesto() {
           updated.costUnit = match.cost || 0
           updated.productId = match.id
           // Precio del catálogo según el tipo de venta (B2C para minorista/ambos, B2B para mayorista)
-          updated.priceUnit = catalogPriceFor(match, canalEffective(form.canalVenta)) || (num(match.cost) > 0 ? priceFromMargin(num(match.cost), form.margin) : 0)
+          updated.priceUnit = catalogPriceFor(match, canalEffective(form.canalVenta)) || (num(match.cost) > 0 ? priceFromMargin(num(match.cost), form.margin, form.discount) : 0)
           updated.stockAvailable = match.stock || 0
         }
       }
