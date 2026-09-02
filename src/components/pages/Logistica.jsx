@@ -93,9 +93,9 @@ const getTrackingUrl = (carrier, code) => {
    + modal-form-card con body scrolleable y footer sticky). Sincronización
    bidireccional con Presupuestos vía paradas.budgetId. */
 const PARADA_TIPOS = [
-  { val: 'insumos',    lbl: 'Retiro Insumos',   icon: '📥', color: '#7C3AED' },
-  { val: 'mercaderia', lbl: 'Retiro Mercadería',icon: '📦', color: '#2563EB' },
-  { val: 'entrega',    lbl: 'Entrega Pedido',   icon: '🚚', color: '#059669' },
+  { val: 'insumos',    lbl: 'Retiro Insumos',   icon: 'fa-box', color: '#7C3AED' },
+  { val: 'mercaderia', lbl: 'Retiro Mercadería',icon: 'fa-cart-shopping', color: '#2563EB' },
+  { val: 'entrega',    lbl: 'Entrega Pedido',   icon: 'fa-truck-fast', color: '#059669' },
 ]
 const tipoMeta = (t) => PARADA_TIPOS.find(x => x.val === t) || PARADA_TIPOS[0]
 
@@ -202,9 +202,9 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
           </div>
           <div className="card" style={{ padding: '12px 14px' }}>
             <div style={{ fontSize: 10, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em', fontWeight: 700 }}>Paradas totales</div>
-            <div style={{ fontSize: 22, fontWeight: 800, marginTop: 3 }}>{stats.totalParadas}</div>
+            <div style={{ fontSize: 22, fontWeight: 700, marginTop: 3, fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{stats.totalParadas}</div>
             <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 2 }}>
-              📥 {stats.tipoCount.insumos} · 📦 {stats.tipoCount.mercaderia} · 🚚 {stats.tipoCount.entrega}
+              <i className="fa fa-box" style={{ color: '#7C3AED' }} /> {stats.tipoCount.insumos} · <i className="fa fa-cart-shopping" style={{ color: '#2563EB' }} /> {stats.tipoCount.mercaderia} · <i className="fa fa-truck-fast" style={{ color: '#059669' }} /> {stats.tipoCount.entrega}
             </div>
           </div>
           <div className="card" style={{ padding: '12px 14px' }}>
@@ -243,9 +243,9 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
                     </div>
                     <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 2, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                       <span><b style={{ color: 'var(--txt2)' }}>{(v.paradas || []).length}</b> parada{(v.paradas || []).length !== 1 ? 's' : ''}</span>
-                      {conteo.insumos ? <span>📥 {conteo.insumos}</span> : null}
-                      {conteo.mercaderia ? <span>📦 {conteo.mercaderia}</span> : null}
-                      {conteo.entrega ? <span>🚚 {conteo.entrega}</span> : null}
+                      {conteo.insumos ? <span><i className="fa fa-box" style={{ color: '#7C3AED', fontSize: 10 }} /> {conteo.insumos}</span> : null}
+                      {conteo.mercaderia ? <span><i className="fa fa-cart-shopping" style={{ color: '#2563EB', fontSize: 10 }} /> {conteo.mercaderia}</span> : null}
+                      {conteo.entrega ? <span><i className="fa fa-truck-fast" style={{ color: '#059669', fontSize: 10 }} /> {conteo.entrega}</span> : null}
                       {budgetNums.length > 0 && <span style={{ color: 'var(--brand)' }}><i className="fa fa-link" style={{ fontSize: 9 }} /> {budgetNums.join(', ')}</span>}
                     </div>
                   </div>
@@ -267,7 +267,7 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
                       const meta = tipoMeta(p.tipo)
                       return (
                         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 0', borderBottom: i < v.paradas.length - 1 ? '1px dashed var(--border)' : 'none' }}>
-                          <span style={{ width: 22, fontSize: 13, textAlign: 'center', flexShrink: 0 }}>{meta.icon}</span>
+                          <span style={{ width: 22, fontSize: 13, textAlign: 'center', flexShrink: 0, color: meta.color }}><i className={`fa ${meta.icon}`} /></span>
                           <span style={{ fontSize: 11, color: meta.color, fontWeight: 700, minWidth: 110, flexShrink: 0 }}>{meta.lbl}</span>
                           <span style={{ flex: 1, fontSize: 12, color: 'var(--txt)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                             {p.descripcion || <span style={{ color: 'var(--txt4)', fontStyle: 'italic' }}>sin descripción</span>}
@@ -319,7 +319,7 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
                   <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                     {PARADA_TIPOS.map(t => (
                       <button key={t.val} type="button" className="btn btn-ghost btn-xs" onClick={() => addParada(t.val)} title={`Agregar ${t.lbl}`}>
-                        <span style={{ marginRight: 3 }}>{t.icon}</span> {t.lbl}
+                        <i className={`fa ${t.icon}`} style={{ marginRight: 5, color: t.color }} /> {t.lbl}
                       </button>
                     ))}
                   </div>
@@ -337,14 +337,14 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
                         <div key={i} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '10px 12px', borderLeft: `3px solid ${meta.color}` }}>
                           <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
                             <select value={p.tipo} onChange={e => updParada(i, 'tipo', e.target.value)} style={{ flex: '0 0 170px', fontSize: 12, padding: '6px 8px', height: 34 }}>
-                              {PARADA_TIPOS.map(t => <option key={t.val} value={t.val}>{t.icon} {t.lbl}</option>)}
+                              {PARADA_TIPOS.map(t => <option key={t.val} value={t.val}>{t.lbl}</option>)}
                             </select>
                             <input type="text" value={p.descripcion || ''} onChange={e => updParada(i, 'descripcion', e.target.value)} placeholder="Descripción (dónde / qué)" style={{ flex: 1, minWidth: 120, fontSize: 12, padding: '6px 10px', height: 34 }} />
                             <button className="btn btn-ghost btn-xs" onClick={() => delParada(i)} title="Quitar parada" style={{ color: 'var(--red)', flexShrink: 0 }}><i className="fa fa-trash" /></button>
                           </div>
                           <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
                             <div style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', gap: 6 }}>
-                              <span style={{ fontSize: 10, color: 'var(--txt3)', whiteSpace: 'nowrap' }}>📋 Presupuesto:</span>
+                              <span style={{ fontSize: 10, color: 'var(--txt3)', whiteSpace: 'nowrap' }}><i className="fa fa-file-invoice" style={{ marginRight: 4 }} />Presupuesto:</span>
                               <select value={p.budgetId || ''} onChange={e => { const id = Number(e.target.value) || null; const b = budgets.find(x => x.id === id); updParada(i, 'budgetId', id); updParada(i, 'budgetNum', b?.num || '') }} style={{ flex: 1, fontSize: 11, padding: '4px 6px', height: 30 }}>
                                 <option value="">— sin asociar —</option>
                                 {budgets.map(b => <option key={b.id} value={b.id}>{b.num || `#${b.id}`} · {b.contact || b.company || ''}</option>)}
