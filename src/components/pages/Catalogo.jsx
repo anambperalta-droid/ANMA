@@ -877,7 +877,9 @@ export default function Catalogo() {
                       <i className="fa fa-chevron-down" style={{ fontSize: 8, color: cc.color, marginLeft: -18, pointerEvents: 'none', opacity: .6 }} />
                     </td>
                     <td className="col-hide-mobile" style={{ fontSize: 11 }}>{supplierName(p.supplierId)}</td>
-                    {!opHideCosts && <td style={{ textAlign: 'right' }}>{fmt(p.cost)}</td>}
+                    {!opHideCosts && <td style={{ textAlign: 'right' }}>{Number(p.cost) > 0
+                      ? <span style={{ fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{fmt(p.cost)}</span>
+                      : <span title="Sin costo cargado — no vas a poder fijar bien el precio" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 10.5, fontWeight: 700, color: '#B45309', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 20, padding: '2px 9px', whiteSpace: 'nowrap' }}><i className="fa fa-triangle-exclamation" style={{ fontSize: 9 }} />Sin costo</span>}</td>}
                     {showB2C && <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>}
                     {showB2B && <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2B || autoPrice(p.cost).b2b)}</td>}
                     {!opHideCosts && <td className="col-hide-mobile" style={{ textAlign: 'center' }}>
@@ -948,7 +950,9 @@ export default function Catalogo() {
                   {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
                   <span className="prod-card-cat" style={{ background: cc.bg, color: cc.color }}>{p.cat || '—'}</span>
                   <div className="prod-card-price">{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</div>
-                  {!opHideCosts && <div className="prod-card-cost">Costo: {fmt(p.cost)}</div>}
+                  {!opHideCosts && (Number(p.cost) > 0
+                    ? <div className="prod-card-cost">Costo: {fmt(p.cost)}</div>
+                    : <div className="prod-card-cost" style={{ color: '#B45309', fontWeight: 700 }}><i className="fa fa-triangle-exclamation" style={{ fontSize: 9, marginRight: 4 }} />Sin costo</div>)}
                   {mp !== null && (
                     <div className="prod-card-margin" style={{ color: marginColor(mp) }}>{mp}% margen</div>
                   )}
