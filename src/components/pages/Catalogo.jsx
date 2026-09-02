@@ -681,7 +681,7 @@ export default function Catalogo() {
       `}</style>
 
       <div className="pill-row cat-pill-row">
-        <div className="search-row" style={{ maxWidth: 280 }}><i className="fa fa-magnifying-glass" /><input type="text" placeholder="Buscar producto o SKU..." value={search} onChange={e => setSearch(e.target.value)} /></div>
+        <div className="search-row"><i className="fa fa-magnifying-glass" /><input type="text" placeholder="Buscar producto o SKU..." value={search} onChange={e => setSearch(e.target.value)} /></div>
         {/* Contenedor scroll-horizontal en mobile, flex-wrap normal en desktop */}
         <div className="cat-scroll-row">
           <div className="cat-scroll-pills">
@@ -743,7 +743,7 @@ export default function Catalogo() {
           return (
             <div key={p.id} className="cat-mob-item" onClick={() => open(p)}>
               <input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)}
-                style={{ cursor: 'pointer', flexShrink: 0, width: 16, height: 16 }}
+                className="cat-mob-item-check"
                 onClick={e => e.stopPropagation()} />
               <div className="cat-mob-item-l">
                 {p.image
@@ -751,18 +751,15 @@ export default function Catalogo() {
                   : <div className="cat-mob-item-noimg"><i className="fa fa-box-open" style={{ color: cc.color, fontSize: 16, opacity: .6 }} /></div>
                 }
                 <div className="cat-mob-item-info">
-                  <span className="cat-mob-item-name">{p.name}</span>
+                  <span className="cat-mob-item-name"><span className="cat-mob-item-nametext">{p.name}</span></span>
                   {p.cat && <span className="cat-mob-item-cat">{p.cat}</span>}
                 </div>
                 <span className="cat-mob-item-price">{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</span>
               </div>
-              <div className="cat-mob-item-acts" onClick={e => e.stopPropagation()} style={{ display:'flex',gap:1,alignItems:'center' }}>
-                <button onClick={() => open(p)} title="Editar"
-                  style={{ width:28,height:28,borderRadius:8,border:'none',background:'transparent',color:'var(--txt4)',cursor:'pointer',fontSize:12.5,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,WebkitTapHighlightColor:'transparent' }}>
-                  <i className="fa fa-pen" />
-                </button>
-                <button onClick={() => del(p.id)} title="Eliminar"
-                  style={{ width:28,height:28,borderRadius:8,border:'none',background:'transparent',color:'#F87171',cursor:'pointer',fontSize:12.5,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,WebkitTapHighlightColor:'transparent' }}>
+              {/* Tocar la card ya abre para editar → el lápiz era redundante.
+                  Queda solo un delete discreto (gris; no compite con el nombre/precio). */}
+              <div className="cat-mob-item-acts" onClick={e => e.stopPropagation()}>
+                <button onClick={() => del(p.id)} title="Eliminar" className="cat-mob-del">
                   <i className="fa fa-trash" />
                 </button>
               </div>
