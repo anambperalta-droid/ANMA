@@ -147,8 +147,6 @@ export default function Catalogo() {
   const tipoVenta = c.tipoVenta || 'ambos'
   const showB2C = tipoVenta === 'minorista' || tipoVenta === 'ambos'
   const showB2B = tipoVenta === 'mayorista' || tipoVenta === 'ambos'
-  // Total de columnas opcionales activas — para calcular colSpan correctamente.
-  const priceColsActive = (showB2C ? 1 : 0) + (showB2B ? 1 : 0)
 
   const filtered = useMemo(() => {
     let f = products
@@ -793,7 +791,6 @@ export default function Catalogo() {
               </th>
               <th>Producto</th>
               <th className="col-hide-mobile">Categoría</th>
-              <th className="col-hide-mobile">Proveedor</th>
               {!opHideCosts && <th style={{ textAlign: 'right' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'flex-end' }}>
                   Costo
@@ -803,15 +800,12 @@ export default function Catalogo() {
                   </button>
                 </span>
               </th>}
-              {showB2C && <th style={{ textAlign: 'right' }} className="col-hide-mobile">P. Público</th>}
-              {showB2B && <th style={{ textAlign: 'right' }} className="col-hide-mobile">P. Mayorista</th>}
-              {!opHideCosts && <th style={{ textAlign: 'center' }} className="col-hide-mobile">% Margen</th>}
-              {showCostInfo && <th className="col-hide-mobile">Últ. actualización</th>}
+              {(showB2C || showB2B) && <th style={{ textAlign: 'right' }} className="col-hide-mobile">Precio{!opHideCosts ? ' · Margen' : ''}</th>}
               <th>Acciones</th>
             </tr></thead>
             <tbody>
               {loading ? [1,2,3,4].map(i => (
-                <tr key={i}><td colSpan={(showCostInfo ? 10 : 9) - (2 - priceColsActive)}><div className="sk sk-text" style={{ height: 18, width: `${50 + Math.random() * 40}%` }} /></td></tr>
+                <tr key={i}><td colSpan={6}><div className="sk sk-text" style={{ height: 18, width: `${50 + Math.random() * 40}%` }} /></td></tr>
               )) : filtered.length ? filtered.map(p => {
                 const isLow = isLowStock(p)
                 const mp = marginPct(p)
@@ -834,6 +828,11 @@ export default function Catalogo() {
                             )}
                           </div>
                           {p.sku && <div style={{ fontSize: 10, color: 'var(--txt3)' }}>SKU: {p.sku}</div>}
+                          {supplierName(p.supplierId) && (
+                            <div style={{ fontSize: 10, color: 'var(--txt3)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                              <i className="fa fa-store" style={{ fontSize: 8, opacity: .7 }} />{supplierName(p.supplierId)}
+                            </div>
+                          )}
                           {p.variants?.length > 0 && (
                             <div style={{ fontSize: 10, color: 'var(--brand)', fontWeight: 600, marginTop: 1 }}>
                               <i className="fa fa-layer-group" style={{ fontSize: 9 }} /> {p.variants.length} variantes
@@ -876,24 +875,38 @@ export default function Catalogo() {
                       </select>
                       <i className="fa fa-chevron-down" style={{ fontSize: 8, color: cc.color, marginLeft: -18, pointerEvents: 'none', opacity: .6 }} />
                     </td>
-                    <td className="col-hide-mobile" style={{ fontSize: 11 }}>{supplierName(p.supplierId)}</td>
-                    {!opHideCosts && <td style={{ textAlign: 'right' }}>{Number(p.cost) > 0
-                      ? <span style={{ fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{fmt(p.cost)}</span>
-                      : <span title="Sin costo cargado — no vas a poder fijar bien el precio" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 10.5, fontWeight: 700, color: '#B45309', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 20, padding: '2px 9px', whiteSpace: 'nowrap' }}><i className="fa fa-triangle-exclamation" style={{ fontSize: 9 }} />Sin costo</span>}</td>}
-                    {showB2C && <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2C || autoPrice(p.cost).b2c)}</td>}
-                    {showB2B && <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)' }}>{fmt(p.priceB2B || autoPrice(p.cost).b2b)}</td>}
-                    {!opHideCosts && <td className="col-hide-mobile" style={{ textAlign: 'center' }}>
-                      {mp !== null ? <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 800, color: marginColor(mp), background: marginColor(mp) + '18', padding: '2px 8px', borderRadius: 10 }}>{mp}%</span> : <span style={{ color: 'var(--txt4)', fontSize: 11 }}>—</span>}
+                    {!opHideCosts && <td style={{ textAlign: 'right' }}>
+                      {Number(p.cost) > 0
+                        ? <span style={{ fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{fmt(p.cost)}</span>
+                        : <span title="Sin costo cargado — no vas a poder fijar bien el precio" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 10.5, fontWeight: 700, color: '#B45309', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 20, padding: '2px 9px', whiteSpace: 'nowrap' }}><i className="fa fa-triangle-exclamation" style={{ fontSize: 9 }} />Sin costo</span>}
+                      {showCostInfo && (
+                        <div style={{ fontSize: 10, marginTop: 2 }}>
+                          {p.updatedAt ? (
+                            <span style={{ color: (() => { const d = Math.floor((Date.now() - new Date(p.updatedAt)) / 86400000); return d > 180 ? '#DC2626' : d > 60 ? '#D97706' : '#16A34A' })(), fontWeight: 600 }}>
+                              <i className="fa fa-clock" style={{ fontSize: 8, marginRight: 3, opacity: .8 }} />{(() => { const d = Math.floor((Date.now() - new Date(p.updatedAt)) / 86400000); if (d === 0) return 'Hoy'; if (d === 1) return 'Ayer'; if (d < 30) return `hace ${d}d`; if (d < 365) return `hace ${Math.floor(d/30)}m`; return `hace ${Math.floor(d/365)}a` })()}
+                            </span>
+                          ) : <span style={{ color: 'var(--txt4)' }}>—</span>}
+                        </div>
+                      )}
                     </td>}
-                    {showCostInfo && (
-                      <td className="col-hide-mobile" style={{ fontSize: 11 }}>
-                        {p.updatedAt ? (
-                          <span style={{ color: (() => { const d = Math.floor((Date.now() - new Date(p.updatedAt)) / 86400000); return d > 180 ? '#DC2626' : d > 60 ? '#D97706' : '#16A34A' })(), fontWeight: 600 }}>
-                            {(() => { const d = Math.floor((Date.now() - new Date(p.updatedAt)) / 86400000); if (d === 0) return 'Hoy'; if (d === 1) return 'Ayer'; if (d < 30) return `hace ${d}d`; if (d < 365) return `hace ${Math.floor(d/30)}m`; return `hace ${Math.floor(d/365)}a` })()}
-                          </span>
-                        ) : <span style={{ color: 'var(--txt4)' }}>—</span>}
-                      </td>
-                    )}
+                    {(showB2C || showB2B) && (() => {
+                      const pub = p.priceB2C || autoPrice(p.cost).b2c
+                      const may = p.priceB2B || autoPrice(p.cost).b2b
+                      const primary = showB2C ? pub : may
+                      return (
+                        <td className="col-hide-mobile" style={{ textAlign: 'right' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end' }}>
+                            <span style={{ fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 800, color: 'var(--money)' }}>{fmt(primary)}</span>
+                            {!opHideCosts && (mp !== null
+                              ? <span style={{ fontSize: 10.5, fontWeight: 800, color: marginColor(mp), background: marginColor(mp) + '18', padding: '1px 7px', borderRadius: 9 }}>{mp}%</span>
+                              : <span style={{ color: 'var(--txt4)', fontSize: 10.5 }}>—</span>)}
+                          </div>
+                          {showB2C && showB2B && (
+                            <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 2, fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>May. {fmt(may)}</div>
+                          )}
+                        </td>
+                      )
+                    })()}
                     <td><div style={{ display:'flex',gap:4,justifyContent:'flex-end' }}>
                       <button onClick={() => open(p)} title="Editar"
                         style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
@@ -906,7 +919,7 @@ export default function Catalogo() {
                     </div></td>
                   </tr>
                 )
-              }) : <tr><td colSpan={(showCostInfo ? 10 : 9) - (2 - priceColsActive)}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>{getEmptyProducts(c.rubro).title}</p></div></td></tr>}
+              }) : <tr><td colSpan={6}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>{getEmptyProducts(c.rubro).title}</p></div></td></tr>}
             </tbody>
           </table>
         </div>
