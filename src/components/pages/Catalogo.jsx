@@ -630,13 +630,13 @@ export default function Catalogo() {
       <div className="ph cat-ph" style={{ marginBottom: 6 }}>
         <div className="ph-right" style={{ gap: 6 }}>
           <div className="cli-pill-group">
-            <button className="cli-pill" onClick={() => { setPriceSupplier('all'); setPricePct(''); setPriceUpdateModal(true) }}>
+            <button className="cli-pill icon-compact" title="Actualizar precios" onClick={() => { setPriceSupplier('all'); setPricePct(''); setPriceUpdateModal(true) }}>
               <i className="fa fa-percent" /><span>Precios</span>
             </button>
-            <button className="cli-pill" onClick={() => { setCsvCat(cats[0] || ''); setCsvModal(true) }}>
+            <button className="cli-pill icon-compact" title="Exportar CSV" onClick={() => { setCsvCat(cats[0] || ''); setCsvModal(true) }}>
               <i className="fa fa-file-csv" /><span>Exportar</span>
             </button>
-            <button className="cli-pill" onClick={() => { setBulkCat(cats[0] || ''); setBulkModal(true) }}>
+            <button className="cli-pill icon-compact" title="Importar" onClick={() => { setBulkCat(cats[0] || ''); setBulkModal(true) }}>
               <i className="fa fa-file-import" /><span>Importar</span>
             </button>
             {/* ── View mode toggle ── */}
@@ -671,6 +671,9 @@ export default function Catalogo() {
         .cli-pill:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-xlt)}
         .cli-pill:active{transform:scale(.95)}
         .cli-pill i{font-size:12px}
+        .cli-pill.icon-compact{width:44px;padding:0;justify-content:center}
+        .cli-pill.icon-compact span{display:none}
+        .cli-pill.icon-compact i{font-size:14px}
         .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
         .cli-pill-new:hover{filter:brightness(1.08);transform:translateY(-1px)}
         .cli-pill-new:active{transform:scale(.95)}
@@ -806,12 +809,11 @@ export default function Catalogo() {
               {showB2B && <th style={{ textAlign: 'right' }} className="col-hide-mobile">P. Mayorista</th>}
               {!opHideCosts && <th style={{ textAlign: 'center' }} className="col-hide-mobile">% Margen</th>}
               {showCostInfo && <th className="col-hide-mobile">Últ. actualización</th>}
-              <th style={{ textAlign: 'right' }}>Stock</th>
               <th>Acciones</th>
             </tr></thead>
             <tbody>
               {loading ? [1,2,3,4].map(i => (
-                <tr key={i}><td colSpan={(showCostInfo ? 11 : 10) - (2 - priceColsActive)}><div className="sk sk-text" style={{ height: 18, width: `${50 + Math.random() * 40}%` }} /></td></tr>
+                <tr key={i}><td colSpan={(showCostInfo ? 10 : 9) - (2 - priceColsActive)}><div className="sk sk-text" style={{ height: 18, width: `${50 + Math.random() * 40}%` }} /></td></tr>
               )) : filtered.length ? filtered.map(p => {
                 const isLow = isLowStock(p)
                 const mp = marginPct(p)
@@ -892,12 +894,7 @@ export default function Catalogo() {
                         ) : <span style={{ color: 'var(--txt4)' }}>—</span>}
                       </td>
                     )}
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: isLow ? 'var(--red)' : 'var(--txt)' }}>{p.stock || 0}</td>
                     <td><div style={{ display:'flex',gap:4,justifyContent:'flex-end' }}>
-                      <button title="Movimiento de stock" onClick={() => openMove(p)}
-                        style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
-                        <i className="fa fa-arrows-rotate" />
-                      </button>
                       <button onClick={() => open(p)} title="Editar"
                         style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
                         <i className="fa fa-pen" />
@@ -909,7 +906,7 @@ export default function Catalogo() {
                     </div></td>
                   </tr>
                 )
-              }) : <tr><td colSpan={(showCostInfo ? 11 : 10) - (2 - priceColsActive)}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>{getEmptyProducts(c.rubro).title}</p></div></td></tr>}
+              }) : <tr><td colSpan={(showCostInfo ? 10 : 9) - (2 - priceColsActive)}><div className="empty"><div className="ico"><i className="fa fa-box-open" /></div><p>{getEmptyProducts(c.rubro).title}</p></div></td></tr>}
             </tbody>
           </table>
         </div>
