@@ -2175,38 +2175,41 @@ export default function Historial() {
                         })()}
                       </td>
                       <td data-cell="acc">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                          <button className="hist-act" onClick={() => editB(b.id)} title="Editar"
-                            onMouseEnter={e => e.currentTarget.style.color = 'var(--brand)'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}>
-                            <i className="fa fa-pen" style={{ fontSize: 12 }} />
-                          </button>
-                          <button className="hist-act" onClick={() => duplicateBudget(b)} title="Duplicar como nuevo pedido"
-                            onMouseEnter={e => e.currentTarget.style.color = 'var(--brand)'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}>
-                            <i className="fa fa-copy" style={{ fontSize: 12 }} />
-                          </button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, position: 'relative' }}>
                           <button className="hist-act" onClick={() => copyWA(b)} title="WhatsApp"
                             onMouseEnter={e => e.currentTarget.style.color = '#25D366'}
                             onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}>
-                            <i className="fa-brands fa-whatsapp" style={{ fontSize: 13 }} />
+                            <i className="fa-brands fa-whatsapp" style={{ fontSize: 14 }} />
                           </button>
-                          {b.stockDeducted && (
-                            <button className="hist-act" onClick={() => setReturnBudget(b)} title={(b.returns || []).length > 0 ? `Devoluciones: ${(b.returns || []).length} · Registrar otra` : 'Registrar devolución'}
-                              onMouseEnter={e => e.currentTarget.style.color = '#F59E0B'}
-                              onMouseLeave={e => e.currentTarget.style.color = (b.returns || []).length > 0 ? '#F59E0B' : '#D1D5DB'}
-                              style={{ color: (b.returns || []).length > 0 ? '#F59E0B' : undefined, position: 'relative' }}>
-                              <i className="fa fa-rotate-left" style={{ fontSize: 12 }} />
-                              {(b.returns || []).length > 0 && (
-                                <span style={{ position: 'absolute', top: -2, right: -2, background: '#F59E0B', color: '#fff', fontSize: 8, fontWeight: 800, borderRadius: '50%', width: 12, height: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{(b.returns || []).length}</span>
-                              )}
-                            </button>
+                          <button className="hist-act" onClick={e => { e.stopPropagation(); setOpenMenuId(openMenuId === b.id ? null : b.id) }} title="Más acciones"
+                            style={{ position: 'relative' }}>
+                            <i className="fa fa-ellipsis-vertical" style={{ fontSize: 14 }} />
+                            {b.stockDeducted && (b.returns || []).length > 0 && (
+                              <span style={{ position: 'absolute', top: -1, right: -1, background: '#F59E0B', color: '#fff', fontSize: 8, fontWeight: 800, borderRadius: '50%', width: 12, height: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{(b.returns || []).length}</span>
+                            )}
+                          </button>
+                          {openMenuId === b.id && (
+                            <div
+                              style={{ position: 'absolute', right: 0, top: '100%', marginTop: 4, zIndex: 200, background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 12, padding: 6, minWidth: 184, boxShadow: '0 12px 30px rgba(0,0,0,.16)' }}
+                              onClick={e => e.stopPropagation()}
+                            >
+                              {[
+                                { icon: 'fa-pen', label: 'Editar', action: () => { editB(b.id); setOpenMenuId(null) } },
+                                { icon: 'fa-copy', label: 'Duplicar', action: () => { duplicateBudget(b); setOpenMenuId(null) } },
+                                ...(b.stockDeducted ? [{ icon: 'fa-rotate-left', label: (b.returns || []).length > 0 ? `Devoluciones (${(b.returns || []).length})` : 'Registrar devolución', action: () => { setReturnBudget(b); setOpenMenuId(null) } }] : []),
+                                { icon: 'fa-trash', label: 'Eliminar', danger: true, action: () => { handleDelete(b); setOpenMenuId(null) } },
+                              ].map((item, idx) => (
+                                <button key={idx} onClick={item.action}
+                                  style={{ display: 'flex', alignItems: 'center', gap: 9, width: '100%', padding: '9px 11px', border: 'none', background: 'none', borderRadius: 8, cursor: 'pointer', fontSize: 12.5, fontFamily: 'inherit', color: item.danger ? 'var(--red)' : 'var(--txt)', textAlign: 'left' }}
+                                  onMouseEnter={e => e.currentTarget.style.background = item.danger ? 'rgba(239,68,68,.09)' : 'var(--surface2)'}
+                                  onMouseLeave={e => e.currentTarget.style.background = 'none'}
+                                >
+                                  <i className={`fa ${item.icon}`} style={{ width: 15, textAlign: 'center', color: item.danger ? 'var(--red)' : 'var(--brand)' }} />
+                                  {item.label}
+                                </button>
+                              ))}
+                            </div>
                           )}
-                          <button className="hist-act" onClick={() => handleDelete(b)} title="Eliminar"
-                            onMouseEnter={e => e.currentTarget.style.color = 'var(--red)'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}>
-                            <i className="fa fa-trash" style={{ fontSize: 12 }} />
-                          </button>
                         </div>
                       </td>
                     </tr>
