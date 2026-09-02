@@ -1049,19 +1049,20 @@ td b{color:var(--txt);font-weight:600}
        Fila 2: N° · Contacto  Total
        Fila 3: [Estado] [Pago] [Cobrar]      ← todo inline
      Ganancia inline con total como microtexto. */
-  .hist-tbl{overflow:visible!important;border:none!important;background:transparent!important;box-shadow:none!important;padding:0 0 90px!important}
-  .hist-tbl table,.hist-tbl tbody{display:block!important;width:100%!important}
+  .hist-tbl{overflow:visible!important;border:none!important;background:transparent!important;box-shadow:none!important;padding:0!important}
+  .hist-tbl table,.hist-tbl tbody{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important}
   .hist-tbl thead{display:none!important}
   .hist-tbl tbody tr{
     display:grid!important;
-    grid-template-columns:auto 1fr auto;
+    grid-template-columns:auto minmax(0,1fr) auto;
     grid-template-areas:
       'sel cli acc'
       'sel num total'
       'sel estado pago';
-    align-items:center;column-gap:10px;row-gap:6px;
-    background:var(--surface);border:1px solid var(--border);border-radius:14px;
-    padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 2px rgba(15,23,42,.04);
+    align-items:center;column-gap:10px;row-gap:9px;
+    background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:15px 16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(15,23,42,.04),0 6px 18px -10px rgba(15,23,42,.10);
+    max-width:100%;overflow:hidden;
   }
   .hist-tbl tbody tr:active{background:var(--surface2)}
   /* Todas ocultas por default; solo data-cell visibles. Ganancia se oculta
@@ -1076,8 +1077,8 @@ td b{color:var(--txt);font-weight:600}
   .hist-tbl td[data-cell="cli"] [data-cli]{font-size:15px!important;font-weight:800!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;text-decoration:none!important;line-height:1.2!important;color:var(--txt)!important}
   /* Acciones compactas arriba derecha */
   .hist-tbl td[data-cell="acc"]{grid-area:acc;justify-self:end;align-self:center}
-  .hist-tbl td[data-cell="acc"]>div{gap:2px!important}
-  .hist-tbl td[data-cell="acc"] .hist-act{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;padding:0!important}
+  .hist-tbl td[data-cell="acc"]>div{gap:6px!important}
+  .hist-tbl td[data-cell="acc"] .hist-act{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;padding:0!important;border-radius:10px!important}
   /* Meta izquierda: N° + contacto en la misma linea (mostrado via ::after
      con content del atributo custom cli-contact) */
   .hist-tbl td[data-cell="num"]{grid-area:num;font-size:11.5px!important;color:var(--txt3)!important;font-weight:600!important;letter-spacing:0;align-self:center;line-height:1.3}
