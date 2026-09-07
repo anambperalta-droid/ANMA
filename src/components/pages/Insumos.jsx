@@ -643,10 +643,15 @@ export default function Insumos() {
       {/* ── TAB: Movimientos ── */}
       {tab === 'moves' && (
         <>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 12, color: 'var(--txt3)' }}>{insumoMoves.length} movimiento{insumoMoves.length !== 1 ? 's' : ''} registrado{insumoMoves.length !== 1 ? 's' : ''}</span>
-            <button className="btn btn-ghost btn-sm" style={{ marginLeft: 'auto' }} onClick={() => setTab('list')}>
-              <i className="fa fa-arrow-left" style={{ marginRight: 4 }} />Volver a inventario
+          {/* Header slim mobile-first: contador + volver como ícono discreto */}
+          <div className="ins-moves-head">
+            <span className="ins-moves-count">
+              <i className="fa fa-arrows-rotate" />
+              {insumoMoves.length} movimiento{insumoMoves.length !== 1 ? 's' : ''}
+            </span>
+            <button className="ins-moves-back" onClick={() => setTab('list')} title="Volver a inventario" aria-label="Volver a inventario">
+              <i className="fa fa-arrow-left" />
+              <span className="ins-moves-back-lbl">Inventario</span>
             </button>
           </div>
           {insumoMoves.length === 0 ? (
@@ -661,48 +666,84 @@ export default function Insumos() {
               </button>
             </div>
           ) : (
-            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-              <table className="tbl">
-                <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th>Tipo</th>
-                    <th>Insumo</th>
-                    <th style={{ textAlign: 'right' }}>Cant.</th>
-                    <th className="col-hide-mobile" style={{ textAlign: 'right' }}>Costo Total</th>
-                    <th className="col-hide-mobile">Nota</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {insumoMoves.map(m => {
-                    const isIn = m.type === 'in' || m.type === 'return'
-                    const isAdjust = m.type === 'adjust'
-                    const insumo = insumos.find(x => x.id === m.insumoId)
-                    const costoTotal = m.costAtTime ? m.qty * m.costAtTime : null
-                    return (
-                      <tr key={m.id}>
-                        <td style={{ fontSize: 11, color: 'var(--txt3)', whiteSpace: 'nowrap' }}>{m.date}</td>
-                        <td><span className={`badge ${MOVE_CLS[m.type] || 'b-draft'}`}>{MOVE_TYPES[m.type] || m.type}</span></td>
-                        <td>
-                          <div style={{ fontWeight: 600, fontSize: 12 }}>{m.ref || insumo?.name || '—'}</div>
-                          {insumo?.subcat && <div style={{ fontSize: 10, color: '#64748B' }}>{insumo.subcat}</div>}
-                        </td>
-                        <td style={{ textAlign: 'right' }}>
-                          <span style={{ fontWeight: 800, fontSize: 13, color: isAdjust ? 'var(--brand)' : isIn ? '#16A34A' : '#DC2626', fontFamily: 'ui-monospace,SFMono-Regular,monospace' }}>
-                            {isAdjust ? '=' : isIn ? '+' : '−'}{m.qty}
-                          </span>
-                          {insumo?.unit && <span style={{ fontSize: 10, color: 'var(--txt4)', marginLeft: 3 }}>{insumo.unit}</span>}
-                        </td>
-                        <td className="col-hide-mobile" style={{ textAlign: 'right', fontWeight: 600, fontSize: 12 }}>
-                          {costoTotal !== null ? fmtDec(costoTotal) : <span style={{ color: 'var(--txt4)' }}>—</span>}
-                        </td>
-                        <td className="col-hide-mobile" style={{ fontSize: 11, color: 'var(--txt3)' }}>{m.note || '—'}</td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <>
+              {/* Mobile: lista de cards */}
+              <div className="ins-move-list">
+                {insumoMoves.map(m => {
+                  const isIn = m.type === 'in' || m.type === 'return'
+                  const isAdjust = m.type === 'adjust'
+                  const insumo = insumos.find(x => x.id === m.insumoId)
+                  const costoTotal = m.costAtTime ? m.qty * m.costAtTime : null
+                  const qtyColor = isAdjust ? 'var(--brand)' : isIn ? '#16A34A' : '#DC2626'
+                  const iconBg = isAdjust ? 'rgba(124,58,237,.12)' : isIn ? 'rgba(22,163,74,.12)' : 'rgba(220,38,38,.12)'
+                  return (
+                    <div key={m.id} className="ins-move-card">
+                      <div className="mov-icon" style={{ background: iconBg, color: qtyColor }}>
+                        <i className={`fa fa-${isAdjust ? 'equals' : isIn ? 'arrow-down' : 'arrow-up'}`} />
+                      </div>
+                      <div className="mov-body">
+                        <div className="mov-name">{m.ref || insumo?.name || '—'}</div>
+                        <div className="mov-meta">
+                          <span className={`badge ${MOVE_CLS[m.type] || 'b-draft'}`} style={{ fontSize: 9, padding: '1px 6px' }}>{MOVE_TYPES[m.type] || m.type}</span>
+                          <span className="mov-date">{m.date}</span>
+                          {m.note && <span className="mov-note" title={m.note}>· {m.note}</span>}
+                        </div>
+                      </div>
+                      <div className="mov-qty" style={{ color: qtyColor }}>
+                        <div className="mov-qty-num">
+                          {isAdjust ? '=' : isIn ? '+' : '−'}{m.qty}
+                        </div>
+                        <div className="mov-qty-unit">{shortUnit(insumo?.unit)}</div>
+                        {costoTotal !== null && <div className="mov-qty-cost">{fmtDec(costoTotal)}</div>}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+              {/* Desktop: tabla */}
+              <div className="card ins-move-tbl" style={{ padding: 0, overflow: 'hidden' }}>
+                <table className="tbl">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Tipo</th>
+                      <th>Insumo</th>
+                      <th style={{ textAlign: 'right' }}>Cant.</th>
+                      <th style={{ textAlign: 'right' }}>Costo Total</th>
+                      <th>Nota</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {insumoMoves.map(m => {
+                      const isIn = m.type === 'in' || m.type === 'return'
+                      const isAdjust = m.type === 'adjust'
+                      const insumo = insumos.find(x => x.id === m.insumoId)
+                      const costoTotal = m.costAtTime ? m.qty * m.costAtTime : null
+                      return (
+                        <tr key={m.id}>
+                          <td style={{ fontSize: 11, color: 'var(--txt3)', whiteSpace: 'nowrap' }}>{m.date}</td>
+                          <td><span className={`badge ${MOVE_CLS[m.type] || 'b-draft'}`}>{MOVE_TYPES[m.type] || m.type}</span></td>
+                          <td>
+                            <div style={{ fontWeight: 600, fontSize: 12 }}>{m.ref || insumo?.name || '—'}</div>
+                            {insumo?.subcat && <div style={{ fontSize: 10, color: '#64748B' }}>{insumo.subcat}</div>}
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+                            <span style={{ fontWeight: 800, fontSize: 13, color: isAdjust ? 'var(--brand)' : isIn ? '#16A34A' : '#DC2626', fontFamily: 'ui-monospace,SFMono-Regular,monospace' }}>
+                              {isAdjust ? '=' : isIn ? '+' : '−'}{m.qty}
+                            </span>
+                            {insumo?.unit && <span style={{ fontSize: 10, color: 'var(--txt4)', marginLeft: 3 }}>{shortUnit(insumo.unit)}</span>}
+                          </td>
+                          <td style={{ textAlign: 'right', fontWeight: 600, fontSize: 12 }}>
+                            {costoTotal !== null ? fmtDec(costoTotal) : <span style={{ color: 'var(--txt4)' }}>—</span>}
+                          </td>
+                          <td style={{ fontSize: 11, color: 'var(--txt3)' }}>{m.note || '—'}</td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </>
       )}

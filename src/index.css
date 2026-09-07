@@ -2226,6 +2226,70 @@ td b{color:var(--txt);font-weight:600}
   /* FAB "+ Nuevo insumo" eliminado — la creación vive en el BottomNav central,
      evita competencia visual con el FAB circular del nav. */
 
+  /* ── MOVIMIENTOS mobile — header slim + card list ── */
+  .ins-moves-head{
+    display:flex;align-items:center;gap:8px;
+    padding:6px 2px;margin:0 0 10px;min-height:36px;
+  }
+  .ins-moves-count{
+    flex:1;font-size:12px;color:var(--txt3);font-weight:600;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .ins-moves-count i{font-size:11px;opacity:.7}
+  .ins-moves-back{
+    display:inline-flex;align-items:center;gap:5px;
+    height:32px;padding:0 12px;border-radius:8px;
+    border:1px solid var(--border);background:var(--surface2);
+    color:var(--txt2);font-family:inherit;font-size:12px;font-weight:600;
+    cursor:pointer;transition:all .12s;-webkit-tap-highlight-color:transparent;
+  }
+  .ins-moves-back:hover{border-color:var(--brand);color:var(--brand)}
+  .ins-moves-back i{font-size:10px}
+  .ins-moves-back-lbl{display:inline}
+
+  /* Lista de cards mobile */
+  .ins-move-list{display:flex;flex-direction:column;gap:8px;padding-bottom:112px}
+  .ins-move-card{
+    display:flex;align-items:center;gap:12px;
+    padding:12px 14px;border-radius:14px;
+    background:var(--surface);border:1px solid var(--border);
+    transition:transform .12s,box-shadow .12s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ins-move-card:active{transform:scale(.99);box-shadow:0 3px 10px rgba(0,0,0,.05)}
+  .mov-icon{
+    width:36px;height:36px;border-radius:10px;flex-shrink:0;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:13px;
+  }
+  .mov-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+  .mov-name{
+    font-size:13.5px;font-weight:600;color:var(--txt);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    line-height:1.25;text-transform:capitalize;letter-spacing:-.01em;
+    font-family:'Space Grotesk','Inter',sans-serif;
+  }
+  .mov-meta{
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+    font-size:10.5px;color:var(--txt3);font-weight:500;
+    overflow:hidden;
+  }
+  .mov-date{font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
+  .mov-note{
+    color:var(--txt4);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    max-width:140px;
+  }
+  .mov-qty{
+    flex-shrink:0;text-align:right;
+    font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums;
+  }
+  .mov-qty-num{font-size:18px;font-weight:800;line-height:1;letter-spacing:-.03em}
+  .mov-qty-unit{font-size:10px;color:currentColor;opacity:.6;font-weight:600;margin-top:2px;text-transform:lowercase}
+  .mov-qty-cost{font-size:10.5px;color:var(--txt4);font-weight:500;margin-top:3px}
+
+  /* Ocultar tabla desktop en mobile */
+  .ins-move-tbl{display:none!important}
+
   /* ── Modal insumo como BOTTOM SHEET en mobile ──
      Se desliza desde abajo, ocupa full-width, top redondeado, drag-handle sutil. */
   .ins-detail-bg{align-items:flex-end!important;padding:0!important}
@@ -2250,6 +2314,10 @@ td b{color:var(--txt);font-weight:600}
 @media(min-width:641px){
   /* Botón filtro mobile: oculto en desktop (los selects se ven directo) */
   .ins-mob-filter-btn,.ins-mob-filter-panel{display:none!important}
+  /* Movimientos: mobile card list oculta, tabla visible */
+  .ins-move-list{display:none!important}
+  .ins-move-tbl{display:block!important}
+  .ins-moves-head{padding:0 0 6px}
 }
 
 .ins-statusbar{display:none}
