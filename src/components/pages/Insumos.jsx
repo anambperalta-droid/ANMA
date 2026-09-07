@@ -70,6 +70,7 @@ export default function Insumos() {
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('all')
   const [showLowOnly, setShowLowOnly] = useState(false)
+  const [showFiltersMob, setShowFiltersMob] = useState(false)   // mobile: panel de filtros colapsable
   const [sortField, setSortField] = useState(() => { try { return localStorage.getItem('ins_sort_f') || 'recent' } catch { return 'recent' } })
   const [sortDir, setSortDir] = useState(() => { try { return localStorage.getItem('ins_sort_d') || 'desc' } catch { return 'desc' } })
   const [modal, setModal] = useState(false)
@@ -305,13 +306,13 @@ export default function Insumos() {
         </div>
       )}
 
-      {/* Tabs */}
-      <div className="cfg-tabs" style={{ marginBottom: 14 }}>
+      {/* Tabs — segmented pill compacto en mobile (34px), diseño limpio */}
+      <div className="cfg-tabs ins-tabs">
         <div className={`tab-btn ${tab === 'list' ? 'active' : ''}`} onClick={() => setTab('list')}>
-          <i className="fa fa-boxes-stacked" style={{ marginRight: 6 }} />Inventario
+          <i className="fa fa-boxes-stacked" />Inventario
         </div>
         <div className={`tab-btn ${tab === 'moves' ? 'active' : ''}`} onClick={() => setTab('moves')}>
-          <i className="fa fa-arrows-rotate" style={{ marginRight: 6 }} />Movimientos
+          <i className="fa fa-arrows-rotate" />Movimientos
         </div>
       </div>
 
@@ -331,12 +332,23 @@ export default function Insumos() {
               </div>
             )}
 
-            {/* Filters — grid 2 cols en mobile, flow en desktop */}
+            {/* Filters — mobile: search + filter-icon (abre panel). Desktop: fila completa. */}
             <div className="ins-filter-grid">
               <div className="search-row ins-fg-search">
                 <i className="fa fa-magnifying-glass" />
                 <input type="text" placeholder="Buscar..." value={search} onChange={e => setSearch(e.target.value)} />
               </div>
+              {/* Botón filtro mobile — abre panel con Cat/Sort/StockBajo/Exportar */}
+              <button
+                type="button"
+                className={`ins-mob-filter-btn${showFiltersMob ? ' open' : ''}${(catFilter !== 'all' || showLowOnly) ? ' has-active' : ''}`}
+                onClick={() => setShowFiltersMob(v => !v)}
+                aria-label="Filtros"
+                aria-expanded={showFiltersMob}
+              >
+                <i className="fa fa-sliders" />
+                {(catFilter !== 'all' || showLowOnly) && <span className="ins-mob-filter-dot" />}
+              </button>
               <select className="ins-filter-sel ins-fg-cat" value={catFilter} onChange={e => setCatFilter(e.target.value)}>
                 <option value="all">Todas las categorías</option>
                 {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
@@ -366,6 +378,44 @@ export default function Insumos() {
                 {lowStock.length > 0 && <span className="cnt">{lowStock.length}</span>}
               </button>
             </div>
+
+            {/* Panel colapsable mobile — Cat/Sort/StockBajo/Exportar (visible al tocar filtro) */}
+            {showFiltersMob && (
+              <div className="ins-mob-filter-panel" onClick={e => e.stopPropagation()}>
+                <div className="ins-mob-filter-item">
+                  <span className="ins-mob-filter-lbl">Categoría</span>
+                  <select className="ins-mob-filter-sel" value={catFilter} onChange={e => setCatFilter(e.target.value)}>
+                    <option value="all">Todas</option>
+                    {cats.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
+                  </select>
+                </div>
+                <div className="ins-mob-filter-item">
+                  <span className="ins-mob-filter-lbl">Ordenar</span>
+                  <select className="ins-mob-filter-sel" value={`${sortField}:${sortDir}`}
+                    onChange={e => {
+                      const [f, d] = e.target.value.split(':')
+                      setSortField(f); setSortDir(d)
+                      try { localStorage.setItem('ins_sort_f', f); localStorage.setItem('ins_sort_d', d) } catch {}
+                    }}>
+                    <option value="recent:desc">Recientes</option>
+                    <option value="name:asc">Nombre A-Z</option>
+                    <option value="stock:desc">Stock ↓</option>
+                    <option value="stock:asc">Stock ↑</option>
+                    <option value="cost:desc">Costo ↓</option>
+                  </select>
+                </div>
+                <button className={`ins-mob-filter-toggle${showLowOnly ? ' active' : ''}`}
+                  onClick={() => setShowLowOnly(v => !v)}>
+                  <i className="fa fa-triangle-exclamation" />
+                  <span>Solo stock bajo</span>
+                  {lowStock.length > 0 && <span className="ins-mob-filter-cnt">{lowStock.length}</span>}
+                </button>
+                <button className="ins-mob-filter-action" onClick={() => { exportCsv(); setShowFiltersMob(false) }}>
+                  <i className="fa fa-file-arrow-down" />
+                  <span>Exportar CSV</span>
+                </button>
+              </div>
+            )}
 
             {/* ── Mobile: pill cards ── */}
             <div className="ins-mob-list">
@@ -887,6 +937,14 @@ export default function Insumos() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* FAB "+ Nuevo insumo" — solo mobile, cuando tab activo es "list". Reemplaza
+          al botón del top header en mobile (que se oculta) para liberar espacio. */}
+      {tab === 'list' && (
+        <button className="ins-fab-add" onClick={openNew} title="Nuevo insumo" aria-label="Nuevo insumo">
+          <i className="fa fa-plus" />
+        </button>
       )}
     </div>
   )

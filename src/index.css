@@ -2132,24 +2132,137 @@ td b{color:var(--txt);font-weight:600}
 }
 
 /* ── Status bar delgada (una línea, tap-to-filter) ── */
+/* ─── INSUMOS MOBILE — Header compacto (Paso 1 del rediseño) ─── */
+@media(max-width:640px){
+  /* Ocultar los botones "+ Nuevo" y "Exportar" del top header (los reemplazan
+     el FAB flotante y el menú de filtros respectivamente) */
+  .ins-actions .ins-act-new,
+  .ins-actions .ins-act-export{display:none!important}
+
+  /* Tabs Inventario/Movimientos — segmented pill compacto 34px */
+  .ins-tabs{
+    display:flex;background:var(--surface2);border:1px solid var(--border);
+    border-radius:10px;padding:3px;gap:2px;margin-bottom:10px;overflow:hidden;
+  }
+  .ins-tabs .tab-btn{
+    flex:1;height:32px;min-height:32px!important;padding:0 10px!important;
+    border-radius:7px!important;background:transparent!important;border:none!important;
+    color:var(--txt3)!important;font-size:12px!important;font-weight:600!important;
+    display:inline-flex!important;align-items:center;justify-content:center;gap:6px;
+    box-shadow:none!important;transition:background .12s,color .12s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ins-tabs .tab-btn.active{
+    background:var(--surface)!important;color:var(--brand)!important;
+    box-shadow:0 1px 2px rgba(0,0,0,.06)!important;font-weight:700!important;
+  }
+  .ins-tabs .tab-btn i{font-size:11px}
+
+  /* Filter row mobile — search + filter-icon en UNA sola fila */
+  .ins-filter-grid{
+    display:flex!important;align-items:center;gap:8px;
+    grid-template-columns:none!important;grid-template-areas:none!important;
+    margin-bottom:10px!important;
+  }
+  .ins-fg-search{flex:1;min-width:0}
+  .ins-fg-search .search-row{height:40px!important;max-width:none!important}
+  /* Selects viejos y chip alert: ocultos en mobile (viven ahora en el panel colapsable) */
+  .ins-filter-grid .ins-fg-cat,
+  .ins-filter-grid .ins-fg-sort,
+  .ins-filter-grid .ins-fg-alert{display:none!important}
+
+  /* Botón filtro mobile (⚙) */
+  .ins-mob-filter-btn{
+    width:40px;height:40px;border-radius:10px;
+    background:var(--surface2);border:1.5px solid var(--border);
+    color:var(--txt2);cursor:pointer;font-size:14px;flex-shrink:0;
+    display:inline-flex;align-items:center;justify-content:center;
+    position:relative;transition:all .12s;font-family:inherit;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ins-mob-filter-btn.has-active{border-color:var(--brand);color:var(--brand)}
+  .ins-mob-filter-btn.open{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .ins-mob-filter-btn:active{transform:scale(.95)}
+  .ins-mob-filter-dot{
+    position:absolute;top:6px;right:6px;
+    width:7px;height:7px;border-radius:50%;background:var(--brand);
+    border:1.5px solid var(--surface2);
+  }
+
+  /* Panel colapsable de filtros mobile */
+  .ins-mob-filter-panel{
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    padding:8px;margin-bottom:12px;
+    display:flex;flex-direction:column;gap:4px;
+    animation:pgIn .18s ease both;
+  }
+  .ins-mob-filter-item{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:6px 10px;
+  }
+  .ins-mob-filter-lbl{font-size:12px;font-weight:600;color:var(--txt3)}
+  .ins-mob-filter-sel{
+    height:34px;padding:0 30px 0 10px;
+    border:1px solid var(--border);border-radius:8px;background:var(--surface2);
+    color:var(--txt);font-size:12.5px;font-weight:600;font-family:inherit;cursor:pointer;
+    appearance:none;-webkit-appearance:none;max-width:60%;min-width:140px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat:no-repeat;background-position:right 10px center;background-size:11px;
+    outline:none;
+  }
+  .ins-mob-filter-toggle,
+  .ins-mob-filter-action{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 12px;border:none;background:transparent;
+    color:var(--txt2);font-family:inherit;font-size:13px;font-weight:600;
+    cursor:pointer;border-radius:8px;text-align:left;width:100%;
+    transition:background .12s;-webkit-tap-highlight-color:transparent;
+  }
+  .ins-mob-filter-toggle i,.ins-mob-filter-action i{width:18px;font-size:12.5px;text-align:center;color:var(--txt3)}
+  .ins-mob-filter-toggle:hover,.ins-mob-filter-action:hover{background:var(--surface2)}
+  .ins-mob-filter-toggle.active{background:#FEF2F2;color:#B91C1C}
+  .ins-mob-filter-toggle.active i{color:#DC2626}
+  .ins-mob-filter-cnt{margin-left:auto;background:#DC2626;color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;min-width:22px;text-align:center}
+
+  /* FAB "+ Nuevo insumo" flotante bottom-right (sobre el bottom nav) */
+  .ins-fab-add{
+    position:fixed;right:16px;bottom:96px;z-index:80;
+    width:56px;height:56px;border-radius:50%;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);
+    color:#fff;border:none;cursor:pointer;font-size:20px;
+    display:inline-flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 24px rgba(124,58,237,.4),0 4px 8px rgba(0,0,0,.15);
+    transition:transform .15s,box-shadow .15s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ins-fab-add:active{transform:scale(.92)}
+}
+@media(min-width:641px){
+  /* Botón filtro mobile: oculto en desktop (los selects se ven directo) */
+  .ins-mob-filter-btn,.ins-mob-filter-panel{display:none!important}
+}
+
 .ins-statusbar{display:none}
 @media(max-width:640px){
+  /* Status bar mobile — micro-chip inline (era una card gorda con padding
+     9×14 + border 1.5px). Ahora fila delgada 24px con dot color + meta gris. */
   .ins-statusbar{
     display:flex;align-items:center;gap:8px;
-    padding:9px 14px;border-radius:12px;margin-bottom:10px;
-    border:1.5px solid;-webkit-tap-highlight-color:transparent;
+    padding:2px 4px;margin:0 0 10px;
+    background:transparent!important;border:none!important;
+    -webkit-tap-highlight-color:transparent;
+    min-height:24px;
   }
-  .ins-statusbar.ok{background:#F0FDF4;border-color:#BBF7D0}
-  .ins-statusbar.alert{background:#FEF2F2;border-color:#FCA5A5;cursor:pointer}
-  .ins-statusbar.alert:active{transform:scale(.99)}
-  .ins-statusbar-ic{font-size:14px;flex-shrink:0}
-  .ins-statusbar.ok .ins-statusbar-ic{color:#16A34A}
-  .ins-statusbar.alert .ins-statusbar-ic{color:#DC2626}
-  .ins-statusbar-label{font-size:13px;font-weight:800;letter-spacing:-.01em;flex-shrink:0}
+  .ins-statusbar.alert{cursor:pointer}
+  .ins-statusbar-ic{font-size:10px;flex-shrink:0;width:8px;height:8px;display:inline-block;border-radius:50%;position:relative}
+  .ins-statusbar-ic::before{display:none}   /* oculta el ícono FA — usamos solo el dot */
+  .ins-statusbar.ok .ins-statusbar-ic{background:#16A34A;box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+  .ins-statusbar.alert .ins-statusbar-ic{background:#DC2626;box-shadow:0 0 0 3px rgba(220,38,38,.15)}
+  .ins-statusbar-label{font-size:11.5px;font-weight:700;letter-spacing:.01em;flex-shrink:0}
   .ins-statusbar.ok .ins-statusbar-label{color:#15803D}
   .ins-statusbar.alert .ins-statusbar-label{color:#B91C1C}
-  .ins-statusbar-meta{font-size:11.5px;color:var(--txt3);font-weight:600;margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .ins-statusbar-arrow{font-size:11px;color:#DC2626;flex-shrink:0;margin-left:4px}
+  .ins-statusbar-meta{font-size:11px;color:var(--txt4);font-weight:500;margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ins-statusbar-arrow{font-size:9px;color:#DC2626;flex-shrink:0;margin-left:2px;opacity:.7}
 }
 
 /* ── Card mobile V2: STOCK como hero ── */
