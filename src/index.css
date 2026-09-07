@@ -2254,16 +2254,32 @@ td b{color:var(--txt);font-weight:600}
 
 .ins-statusbar{display:none}
 @media(max-width:640px){
-  /* Status bar mobile — fila slim full-width (dot + label + meta a la derecha).
-     Es la ÚNICA info del header ahora (top de la página está oculto), así que
-     ocupa todo el ancho como banner discreto. */
+  /* Status bar mobile — banner discreto full-width con botón "+" integrado
+     a la derecha (acción clave: nuevo insumo). Es el ÚNICO acceso a "nuevo"
+     en el top, así que va destacado como botón de marca. */
   .ins-statusbar{
     display:flex;align-items:center;gap:8px;
     padding:6px 2px;margin:0 0 10px;
     background:transparent!important;border:none!important;
     -webkit-tap-highlight-color:transparent;
-    min-height:28px;width:100%;
+    min-height:36px;width:100%;
   }
+  .ins-statusbar-main{
+    display:flex;align-items:center;gap:8px;flex:1;min-width:0;
+  }
+  .ins-statusbar.alert .ins-statusbar-main{cursor:pointer}
+  /* Botón "+" al lado del status bar — CTA principal de nuevo insumo */
+  .ins-statusbar-add{
+    flex-shrink:0;width:34px;height:34px;border-radius:10px;border:none;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);
+    color:#fff;cursor:pointer;font-size:13px;
+    display:inline-flex;align-items:center;justify-content:center;
+    box-shadow:0 3px 10px var(--brand-dim,rgba(124,58,237,.3));
+    transition:transform .1s,box-shadow .15s;font-family:inherit;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ins-statusbar-add:active{transform:scale(.9)}
+  .ins-statusbar-add:hover{box-shadow:0 5px 14px var(--brand-dim,rgba(124,58,237,.4))}
   .ins-statusbar.alert{cursor:pointer}
   .ins-statusbar-ic{font-size:10px;flex-shrink:0;width:8px;height:8px;display:inline-block;border-radius:50%;position:relative}
   .ins-statusbar-ic::before{display:none}   /* oculta el ícono FA — usamos solo el dot */

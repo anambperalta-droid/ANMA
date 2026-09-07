@@ -277,18 +277,24 @@ export default function Insumos() {
         </div>
       </div>
 
-      {/* ── Status bar mobile (una línea delgada, tap-to-filter) ── */}
-      <div
-        className={`ins-statusbar ${lowStock.length > 0 ? 'alert' : 'ok'}`}
-        onClick={() => { if (lowStock.length > 0) setShowLowOnly(v => !v) }}
-        role={lowStock.length > 0 ? 'button' : undefined}
-      >
-        <i className={`ins-statusbar-ic fa fa-${lowStock.length > 0 ? 'triangle-exclamation' : 'circle-check'}`} />
-        <span className="ins-statusbar-label">
-          {lowStock.length === 0 ? 'Todo en orden' : `${lowStock.length} ${lowStock.length === 1 ? 'crítico' : 'críticos'}`}
-        </span>
-        <span className="ins-statusbar-meta">{insumos.length} ítems · {fmt(totalValue)}</span>
-        {lowStock.length > 0 && <i className="ins-statusbar-arrow fa fa-chevron-right" />}
+      {/* ── Status bar mobile — dot + label + meta + botón "+" para nuevo insumo ── */}
+      <div className={`ins-statusbar ${lowStock.length > 0 ? 'alert' : 'ok'}`}>
+        <div
+          className="ins-statusbar-main"
+          onClick={() => { if (lowStock.length > 0) setShowLowOnly(v => !v) }}
+          role={lowStock.length > 0 ? 'button' : undefined}
+        >
+          <i className={`ins-statusbar-ic fa fa-${lowStock.length > 0 ? 'triangle-exclamation' : 'circle-check'}`} />
+          <span className="ins-statusbar-label">
+            {lowStock.length === 0 ? 'Todo en orden' : `${lowStock.length} ${lowStock.length === 1 ? 'crítico' : 'críticos'}`}
+          </span>
+          <span className="ins-statusbar-meta">{insumos.length} ítems · {fmt(totalValue)}</span>
+          {lowStock.length > 0 && <i className="ins-statusbar-arrow fa fa-chevron-right" />}
+        </div>
+        {/* Botón "+" integrado al status bar — acción clave a mano derecha */}
+        <button className="ins-statusbar-add" onClick={openNew} title="Nuevo insumo" aria-label="Nuevo insumo">
+          <i className="fa fa-plus" />
+        </button>
       </div>
 
       {/* ── KPIs desktop ── */}
