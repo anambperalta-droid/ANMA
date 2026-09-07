@@ -117,23 +117,21 @@ export default function Sidebar({ open, onClose, collapsed }) {
             </div>
           )
         })}
+        {/* Mi cuenta + Backup consolidados bajo la sección "Sistema" (ya
+            renderizada por el NAV base). Antes vivían en una sección propia
+            "Tu cuenta" — Backup no es una acción de cuenta sino de datos, y
+            duplicaba jerarquía. */}
         {role === 'owner' && (
           <>
-            <div className="sb-sec">Tu cuenta</div>
             <div className={`sb-item ${loc.pathname === '/mi-cuenta' ? 'active' : ''}`} data-tip="Mi cuenta · Suscripción + datos" onClick={() => goTo('/mi-cuenta')}>
               <i className="fa fa-user-gear" /><span className="sb-lbl">Mi cuenta</span>
             </div>
-            <div className="sb-item" data-tip="Backup" onClick={doBackup}><i className="fa fa-cloud-arrow-down" /><span className="sb-lbl">Backup</span></div>
-          </>
-        )}
-        {isGlobalAdmin && (
-          <>
-            <div className="sb-sec">Super admin</div>
-            <div className={`sb-item ${loc.pathname === '/admin' ? 'active' : ''}`} data-tip="Admin · Workspaces" onClick={() => goTo('/admin')}>
-              <i className="fa fa-shield-halved" /><span className="sb-lbl">Admin · Workspaces</span>
+            <div className="sb-item" data-tip="Backup" onClick={doBackup}>
+              <i className="fa fa-cloud-arrow-down" /><span className="sb-lbl">Backup de datos</span>
             </div>
           </>
         )}
+        {/* Super Admin removido del nav — ahora vive como ícono discreto en el footer. */}
       </nav>
       {/* Ajustes rápidos — 1 fila horizontal de íconos compactos.
           Antes ocupaba 3 filas × 44px = ~140px (comía la nav). Ahora ~48px total.
@@ -172,7 +170,8 @@ export default function Sidebar({ open, onClose, collapsed }) {
           label="Instalar app"
           className="sb-install-btn"
         />
-        {/* User row — perfil arriba (email + rol), Cerrar sesión abajo separado */}
+        {/* User row — perfil arriba, Cerrar sesión abajo separado.
+            Super Admin (solo Ana) va como ícono discreto ANTES del logout. */}
         <div className="sb-user">
           <div className="sb-user-info">
             <div className="sb-ava">{(userName[0] || 'A').toUpperCase()}</div>
@@ -181,6 +180,14 @@ export default function Sidebar({ open, onClose, collapsed }) {
               <div className="sb-urole">{role === 'operator' ? 'Operador' : 'Cuenta'}</div>
             </div>
           </div>
+          {isGlobalAdmin && (
+            <button className="sb-admin-btn"
+              onClick={() => goTo('/admin')}
+              title="Super Admin · Workspaces"
+              aria-label="Super Admin">
+              <i className="fa fa-shield-halved" />
+            </button>
+          )}
           <button className="sb-logout-btn" onClick={logout} title="Cerrar sesión" aria-label="Cerrar sesión">
             <i className="fa fa-right-from-bracket" />
           </button>
