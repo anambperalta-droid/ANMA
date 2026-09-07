@@ -143,8 +143,8 @@ export const STATUS_CLS = {
 }
 
 export const PAY_STATUS_MAP = {
-  pending: 'Pago pendiente',
-  partial: 'Seña abonada',
+  pending: 'Pendiente',    // antes 'Pago pendiente' — más corto para chips mobile
+  partial: 'Parcial',      // antes 'Seña abonada'
   paid: 'Pagado',
 }
 

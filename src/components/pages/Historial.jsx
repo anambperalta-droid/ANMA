@@ -1105,9 +1105,20 @@ export default function Historial() {
       return (a.id - b.id) * dir
     })
     if (quickFilter === 'atrasados') {
-      list = list.filter(b => { const dd = deliveryDays(b.deliveryDate); return dd !== null && dd <= 0 && !['confirmed', 'lost'].includes(b.status) })
+      // Vencidos: entrega quedó atrás y todavía no se entregó / no está perdido.
+      // Un CONFIRMED con delivery pasada SÍ es atrasado (antes se excluía por error).
+      list = list.filter(b => {
+        const dd = deliveryDays(b.deliveryDate)
+        return dd !== null && dd < 0 && !['delivered', 'lost'].includes(b.status)
+      })
     } else if (quickFilter === 'sin_cobrar') {
-      list = list.filter(b => b.status === 'confirmed' && (!b.payStatus || b.payStatus === 'pending'))
+      // Pedidos aceptados (confirmados o entregados) con plata pendiente. Antes solo
+      // filtraba confirmed+pending → dejaba fuera los parcialmente cobrados y los ya
+      // entregados que aún faltan cobrar, que son los MÁS urgentes.
+      list = list.filter(b =>
+        ['confirmed', 'delivered'].includes(b.status) &&
+        (!b.payStatus || b.payStatus === 'pending' || b.payStatus === 'partial')
+      )
     } else if (quickFilter === 'alta_ganancia') {
       const gs = [...periodBudgets].filter(b => (b.totalGain || 0) > 0).sort((a, b) => (b.totalGain || 0) - (a.totalGain || 0))
       const cutoff = gs[Math.floor(gs.length / 3)]?.totalGain || 0

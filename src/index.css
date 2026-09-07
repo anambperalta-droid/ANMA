@@ -1088,9 +1088,26 @@ td b{color:var(--txt);font-weight:600}
   .hist-tbl tbody td[data-cell]{display:block!important;border:none!important;padding:0!important}
   .hist-tbl td[data-cell="gan"]{display:none!important}
 
-  /* Checkbox — arriba, alineado con el nombre del cliente */
+  /* Checkbox — chico y discreto, alineado con el nombre del cliente.
+     appearance:none + estilo custom evita el cuadro gigante del navegador. */
   .hist-tbl td[data-cell="sel"]{grid-area:sel;align-self:start;padding-top:3px!important}
-  .hist-tbl td[data-cell="sel"] input{width:15px;height:15px;accent-color:var(--brand);cursor:pointer}
+  .hist-tbl td[data-cell="sel"] input{
+    appearance:none;-webkit-appearance:none;
+    width:16px;height:16px;
+    border:1.5px solid var(--border2,#cbd5e1);border-radius:5px;
+    background:var(--surface);cursor:pointer;flex-shrink:0;
+    position:relative;transition:all .12s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .hist-tbl td[data-cell="sel"] input:checked{
+    background:var(--brand);border-color:var(--brand);
+  }
+  .hist-tbl td[data-cell="sel"] input:checked::after{
+    content:'';position:absolute;left:4px;top:1px;
+    width:5px;height:9px;
+    border:solid #fff;border-width:0 2px 2px 0;
+    transform:rotate(45deg);
+  }
 
   /* Cliente — nombre bold + contacto microtexto abajo. Alineado al TOP para
      que las acciones (WA/⋮) queden a la altura del nombre, no del centro. */
@@ -1112,17 +1129,28 @@ td b{color:var(--txt);font-weight:600}
   .hist-tbl td[data-cell="total"]{grid-area:total;text-align:right!important;font-size:17px!important;font-weight:800!important;align-self:center;line-height:1.1;color:var(--txt)!important;font-family:'Space Grotesk','Inter',sans-serif!important;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
   .hist-tbl td[data-cell="total"]::before{content:'Total';display:block;font-size:8.5px;font-weight:700;color:var(--txt4);text-transform:uppercase;letter-spacing:.06em;text-align:right;margin-bottom:2px}
 
-  /* Estado y Pago — misma altura, misma estética (chip con dot + select).
-     Sin border-top separador (el row-gap 8px ya da respiro suficiente).
-     Estado a la izquierda, Pago a la derecha. */
+  /* Estado y Pago — chips COMPACTOS uniformes, sin flecha nativa gigante.
+     Ambos: pill con dot color + label bold. Estado a la izq, Pago a la der. */
   .hist-tbl td[data-cell="estado"]{grid-area:estado;align-self:center;display:flex!important;align-items:center;gap:5px;min-width:0;padding:0!important;border-top:none!important}
-  .hist-tbl td[data-cell="estado"] > div{width:100%!important;min-width:0}
-  .hist-tbl td[data-cell="estado"] > div > span{display:inline-flex!important;align-items:center;gap:6px;background:var(--surface2);padding:5px 10px;border-radius:99px;max-width:100%;min-width:0}
-  .hist-tbl td[data-cell="estado"] select{font-size:12px!important;font-weight:700!important;max-width:100%;padding:0!important;line-height:1.2!important}
+  .hist-tbl td[data-cell="estado"] > div{width:auto!important;min-width:0;max-width:100%}
+  .hist-tbl td[data-cell="estado"] > div > span{display:inline-flex!important;align-items:center;gap:5px;background:var(--surface2);padding:4px 8px 4px 9px;border-radius:99px;max-width:100%;min-width:0}
 
   .hist-tbl td[data-cell="pago"]{grid-area:pago;align-self:center;display:flex!important;align-items:flex-end;justify-content:flex-end;flex-direction:column;gap:3px;padding:0!important;border-top:none!important}
   .hist-tbl td[data-cell="pago"]>div{min-width:0!important;max-width:none!important;align-items:flex-end!important;gap:3px!important;flex-direction:column!important;width:auto!important}
-  .hist-tbl td[data-cell="pago"] select{font-weight:700!important;line-height:1.2!important}
+
+  /* Selects nativos SIN flecha del navegador (gigante en iOS/Chrome mobile),
+     con chevron sutil añadido a la derecha via background-image */
+  .hist-tbl td[data-cell="estado"] select,
+  .hist-tbl td[data-cell="pago"] select{
+    appearance:none!important;-webkit-appearance:none!important;-moz-appearance:none!important;
+    font-size:11.5px!important;font-weight:700!important;
+    padding:0 12px 0 0!important;line-height:1.2!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='currentColor' stroke-width='1.8'%3E%3Cpath d='M3 4.5l3 3 3-3'/%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;background-position:right center!important;background-size:10px!important;
+    max-width:110px;text-overflow:ellipsis;overflow:hidden;
+  }
+  /* El chip del pago (span con background del status) también compacto */
+  .hist-tbl td[data-cell="pago"] > div > span:first-child{padding:4px 8px 4px 9px!important;gap:5px!important}
   /* Estado vacío: tarjeta simple sin grid */
   .hist-tbl tbody tr.hist-empty-row{display:block!important;grid-template-areas:none;text-align:center}
   .hist-tbl tbody tr.hist-empty-row td{display:block!important}
