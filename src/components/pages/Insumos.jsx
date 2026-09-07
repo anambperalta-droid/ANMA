@@ -944,13 +944,8 @@ export default function Insumos() {
         </div>
       )}
 
-      {/* FAB "+ Nuevo insumo" — solo mobile, cuando tab activo es "list". Reemplaza
-          al botón del top header en mobile (que se oculta) para liberar espacio. */}
-      {tab === 'list' && (
-        <button className="ins-fab-add" onClick={openNew} title="Nuevo insumo" aria-label="Nuevo insumo">
-          <i className="fa fa-plus" />
-        </button>
-      )}
+      {/* FAB eliminado — el "+" del Bottom Nav central es el único CTA de creación.
+          Evita competencia con el FAB del BottomNav que ya cumple la función. */}
     </div>
   )
 }

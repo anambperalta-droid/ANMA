@@ -2023,13 +2023,7 @@ td b{color:var(--txt);font-weight:600}
 .ins-mob-card-price-block{display:flex;align-items:baseline;gap:3px}
 .ins-mob-card-price{font-size:14px;font-weight:700;color:var(--money);white-space:nowrap;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
 .ins-mob-card-unit{font-size:10px;color:var(--txt4)}
-/* Botones: visualmente 32px (w-8), área táctil ~44px via ::before */
-.ins-mob-card-acts{display:flex;align-items:center;gap:2px}
-.ins-mob-card-btn{position:relative;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--txt2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:opacity .12s,transform .12s;font-family:inherit;-webkit-tap-highlight-color:transparent}
-.ins-mob-card-btn::before{content:'';position:absolute;top:-6px;right:-6px;bottom:-6px;left:-6px}
-.ins-mob-card-btn:active{opacity:.7;transform:scale(.91)}
-.ins-mob-card-btn.green{background:#DCFCE7;border-color:#86EFAC;color:#16A34A}
-.ins-mob-card-btn.red{background:#FFF1F2;border-color:#FECACA;color:#DC2626}
+/* .ins-mob-card-btn (viejo trío -/+/trash) reemplazado por .ins-mob-stepper */
 /* ── Filtro unificado: buscador + select misma altura y radio ── */
 .ins-filter-bar{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
 .ins-filter-bar .search-row{max-width:100%!important;flex:auto}
@@ -2134,10 +2128,16 @@ td b{color:var(--txt);font-weight:600}
 /* ── Status bar delgada (una línea, tap-to-filter) ── */
 /* ─── INSUMOS MOBILE — Header compacto (Paso 1 del rediseño) ─── */
 @media(max-width:640px){
-  /* Ocultar los botones "+ Nuevo" y "Exportar" del top header (los reemplazan
-     el FAB flotante y el menú de filtros respectivamente) */
-  .ins-actions .ins-act-new,
+  /* Exportar del top header: oculto en mobile (vive en el panel de filtros).
+     Nuevo insumo: se queda VISIBLE en el top header — el FAB central del BottomNav
+     apunta a "Pedido", no a insumo, así que necesita estar accesible acá. */
   .ins-actions .ins-act-export{display:none!important}
+  .ins-actions .ins-act-new{
+    height:36px!important;padding:0 14px!important;font-size:12.5px!important;
+    border-radius:10px!important;box-shadow:0 3px 10px var(--brand-dim)!important;
+  }
+  .ins-actions .ins-act-new .ins-act-txt{display:none}   /* solo "Nuevo" corto */
+  .ins-actions .ins-act-new .ins-act-txt-short{display:inline}
 
   /* Tabs Inventario/Movimientos — segmented pill compacto 34px */
   .ins-tabs{
@@ -2224,18 +2224,8 @@ td b{color:var(--txt);font-weight:600}
   .ins-mob-filter-toggle.active i{color:#DC2626}
   .ins-mob-filter-cnt{margin-left:auto;background:#DC2626;color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;min-width:22px;text-align:center}
 
-  /* FAB "+ Nuevo insumo" flotante bottom-right (sobre el bottom nav) */
-  .ins-fab-add{
-    position:fixed;right:16px;bottom:96px;z-index:80;
-    width:56px;height:56px;border-radius:50%;
-    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);
-    color:#fff;border:none;cursor:pointer;font-size:20px;
-    display:inline-flex;align-items:center;justify-content:center;
-    box-shadow:0 10px 24px rgba(124,58,237,.4),0 4px 8px rgba(0,0,0,.15);
-    transition:transform .15s,box-shadow .15s;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .ins-fab-add:active{transform:scale(.92)}
+  /* FAB "+ Nuevo insumo" eliminado — la creación vive en el BottomNav central,
+     evita competencia visual con el FAB circular del nav. */
 }
 @media(min-width:641px){
   /* Botón filtro mobile: oculto en desktop (los selects se ven directo) */
@@ -2274,9 +2264,10 @@ td b{color:var(--txt);font-weight:600}
     · Basurita eliminada de la card (vive en el modal de edición).
     · Indicador de stock óptimo: dot verde sutil (no borde completo). */
 @media(max-width:640px){
-  .ins-mob-list{gap:8px}
+  /* pb-28 (112px) — la última card sube sobre el Bottom Nav sin taparse */
+  .ins-mob-list{gap:8px;padding-bottom:112px!important}
   .ins-mob-card.v2{
-    padding:12px 14px;border-radius:14px;
+    padding:14px;border-radius:14px;
     background:var(--surface);border:1px solid var(--border);
     display:flex;flex-direction:column;gap:9px;
     cursor:pointer;transition:transform .12s,box-shadow .12s,border-color .12s;
@@ -2320,29 +2311,30 @@ td b{color:var(--txt);font-weight:600}
   .ins-mob-card-price{font-size:12px;font-weight:700;color:var(--money);font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
   .ins-mob-card-unit{font-size:10px;color:var(--txt4);font-weight:500;margin-left:1px}
 
-  /* ── STEPPER inline compacto — unificado, sin marcos pesados ── */
+  /* ── STEPPER inline COMPACTO — integrado al tema (dark-mode friendly) ──
+     Fondo semi-transparente white/5 + border white/10 → se ve balanceado tanto
+     en light como en dark. Antes surface2 se veía blanco brillante en dark. */
   .ins-mob-stepper{
     display:inline-flex;align-items:stretch;
-    background:var(--surface2);border-radius:9px;
-    border:1px solid var(--border);overflow:hidden;
+    background:rgba(148,163,184,.08);border-radius:9px;
+    border:1px solid rgba(148,163,184,.18);overflow:hidden;
     flex-shrink:0;
   }
   .ins-mob-step-btn{
-    width:34px;height:32px;border:none;background:transparent;
-    color:var(--txt2);cursor:pointer;font-size:11px;
+    width:32px;height:32px;border:none;background:transparent;
+    color:var(--txt2);cursor:pointer;font-size:10.5px;
     display:inline-flex;align-items:center;justify-content:center;
     padding:0;transition:background .12s,color .12s,transform .1s;
     font-family:inherit;-webkit-tap-highlight-color:transparent;
-    /* Área de toque extendida (sin agrandar el visual) */
     position:relative;
   }
-  .ins-mob-step-btn::before{content:'';position:absolute;inset:-4px}
-  .ins-mob-step-btn:hover:not(:disabled){background:var(--surface3)}
-  .ins-mob-step-btn:active:not(:disabled){transform:scale(.9);background:var(--surface3)}
+  .ins-mob-step-btn::before{content:'';position:absolute;inset:-6px}
+  .ins-mob-step-btn:hover:not(:disabled){background:rgba(148,163,184,.15)}
+  .ins-mob-step-btn:active:not(:disabled){transform:scale(.9);background:rgba(148,163,184,.2)}
   .ins-mob-step-btn:disabled{opacity:.3;cursor:not-allowed}
   .ins-mob-step-btn.plus{color:#16A34A}
-  .ins-mob-step-btn.plus:hover:not(:disabled){background:#DCFCE7}
-  .ins-mob-step-sep{width:1px;background:var(--border);flex-shrink:0}
+  .ins-mob-step-btn.plus:hover:not(:disabled){background:rgba(22,163,74,.15)}
+  .ins-mob-step-sep{width:1px;background:rgba(148,163,184,.18);flex-shrink:0}
 }
 
 /* Desktop overrides — hide mobile-only bits */
