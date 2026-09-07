@@ -1,13 +1,13 @@
 import { useLocation } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
-import NotificationBell from './NotificationBell'
-import { useTaskFab } from '../../context/TaskFabContext'
-import { usePrivacy } from '../../context/PrivacyContext'
 
 const PAGE_NAMES = { '/': 'Dashboard', '/presupuesto': 'Presupuesto', '/clientes': 'Clientes', '/catalogo': 'Productos', '/proveedores': 'Proveedores', '/logistica': 'Logística', '/mensajes': 'Mensajes WhatsApp', '/insumos': 'Insumos', '/config': 'Configuración' }
 
 const THEME_KEY = 'anma_theme'
 
+// Aplica el theme guardado al cargar la app. La lógica de UI (toggle claro/oscuro)
+// vive en el Sidebar → Ajustes rápidos, pero conservamos el effect acá para
+// asegurar que el atributo data-theme quede seteado en cada render del shell.
 function initialTheme() {
   if (typeof window === 'undefined') return 'light'
   const saved = localStorage.getItem(THEME_KEY)
@@ -15,7 +15,7 @@ function initialTheme() {
   return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
-// Cloud sync status: 'ok' | null
+// Cloud sync status: 'ok' | null — se muestra como banda sutil transitoria bajo el título
 function useSyncStatus() {
   const [status, setStatus] = useState(null)
   const timer = useRef(null)
@@ -39,17 +39,13 @@ function useSyncStatus() {
 export default function Topbar({ onMenuClick, onCollapseClick, collapsed }) {
   const loc = useLocation()
   const title = PAGE_NAMES[loc.pathname] || 'ANMA'
-  const [theme, setTheme] = useState(initialTheme)
-  const { panelOpen, setPanelOpen, activeTasks, focusMode, setFocusMode } = useTaskFab()
-  const { hidden, toggle } = usePrivacy()
+  const [theme] = useState(initialTheme)
   const syncStatus = useSyncStatus()
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem(THEME_KEY, theme)
   }, [theme])
-
-  const toggleTheme = () => setTheme(t => (t === 'dark' ? 'light' : 'dark'))
 
   return (
     <header className="topbar">
@@ -68,47 +64,9 @@ export default function Topbar({ onMenuClick, onCollapseClick, collapsed }) {
       <span className="tb-page-title">{title}</span>
       <div style={{ flex: 1 }} />
 
-      {/* Ocultar datos financieros — DESKTOP-only: en mobile vive en el sidebar */}
-      <button
-        className={`tb-btn tb-hide-mobile${hidden ? ' is-alert' : ''}`}
-        onClick={toggle}
-        title={hidden ? 'Mostrar datos financieros' : 'Ocultar datos financieros'}
-      >
-        <i className={`fa ${hidden ? 'fa-eye-slash' : 'fa-eye'}`} />
-      </button>
-
-      {/* Campana — ÚNICO indicador de notificaciones visible en mobile. Su badge
-          suma alertas del sistema + tareas activas para dar un indicador global. */}
-      <NotificationBell extraCount={activeTasks.length} />
-
-      {/* Tareas / Modo Enfoque — DESKTOP-only: en mobile vive en el sidebar */}
-      <button
-        className={`tb-btn tb-hide-mobile${focusMode || panelOpen ? ' is-on' : ''}`}
-        onClick={() => {
-          if (focusMode) { setFocusMode(false); return }
-          setPanelOpen(o => !o)
-        }}
-        aria-label="Tareas y Modo Enfoque"
-        title={focusMode ? 'Salir del Modo Enfoque' : panelOpen ? 'Cerrar tareas' : 'Ver tareas'}
-      >
-        <i className={`fa ${focusMode ? 'fa-xmark' : 'fa-brain'}`} />
-        {!focusMode && activeTasks.length > 0 && (
-          <span style={{
-            position: 'absolute', top: -4, right: -4,
-            background: activeTasks.some(t => t.priority === 'today') ? '#DC2626' : '#D97706',
-            color: '#fff', fontSize: 8.5, fontWeight: 800,
-            minWidth: 14, height: 14, padding: '0 3px', borderRadius: 999,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            border: '1.5px solid var(--surface)', pointerEvents: 'none',
-          }}>
-            {activeTasks.length > 9 ? '9+' : activeTasks.length}
-          </span>
-        )}
-      </button>
-
-      {/* Cloud sync indicator — DESKTOP-only */}
+      {/* Cloud sync indicator — único elemento que aparece a la derecha (transitorio) */}
       {syncStatus && (
-        <div className="tb-hide-mobile" title="Datos guardados en la nube" style={{
+        <div title="Datos guardados en la nube" style={{
           display: 'flex', alignItems: 'center', gap: 4,
           fontSize: 11, fontWeight: 600, padding: '0 8px', height: 28,
           borderRadius: 8, transition: 'all .3s',
@@ -120,16 +78,9 @@ export default function Topbar({ onMenuClick, onCollapseClick, collapsed }) {
           <span className="hide-xs">Guardado</span>
         </div>
       )}
-
-      {/* Tema — DESKTOP-only: en mobile vive en el sidebar */}
-      <button
-        className="tb-btn tb-hide-mobile"
-        onClick={toggleTheme}
-        aria-label={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
-        title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
-      >
-        <i className={`fa ${theme === 'dark' ? 'fa-sun' : 'fa-moon'}`} />
-      </button>
+      {/* Ojo/Campana/Cerebro/Sol se eliminaron del header — evita duplicidad con
+          los Ajustes rápidos del Sidebar (única fuente de verdad para estos
+          controles). El header ahora respira solo con menú + título. */}
     </header>
   )
 }
