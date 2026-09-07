@@ -28,11 +28,20 @@ export default function BottomNav({ onMore }) {
         if (t.fab) return (
           <button
             key={i}
-            onClick={() => nav(t.path)}
+            onClick={() => {
+              // FAB contextual: en /insumos abre modal de nuevo insumo (evento custom
+              // que Insumos.jsx escucha) en vez de navegar a /presupuesto. Evita
+              // tener 2 FABs compitiendo (uno flotante del componente y este central).
+              if (loc.pathname.startsWith('/insumos')) {
+                window.dispatchEvent(new Event('anma:new-insumo'))
+                return
+              }
+              nav(t.path)
+            }}
             onTouchStart={() => prefetchRoute(t.path)}
             onMouseEnter={() => prefetchRoute(t.path)}
             className="bn-fab"
-            aria-label={t.label}
+            aria-label={loc.pathname.startsWith('/insumos') ? 'Nuevo insumo' : t.label}
           >
             <i className={`fa ${t.icon}`} />
           </button>

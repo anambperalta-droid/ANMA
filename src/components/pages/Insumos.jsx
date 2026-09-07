@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
@@ -32,6 +32,20 @@ const CAT_CLS = {
 }
 
 // LED logic: isLow = critical, isWarn = within 10% above min
+// Normalizador de unidades — evita mezclar "unidad" / "unidades" / "un" en la lista.
+// Convención única: 'un' para unidades, resto pasa como está pero abreviado a 3-4 chars.
+const shortUnit = (u) => {
+  if (!u) return 'un'
+  const s = String(u).trim().toLowerCase()
+  if (s === 'unidad' || s === 'unidades' || s === 'u' || s === 'un') return 'un'
+  if (s === 'kilogramo' || s === 'kilogramos' || s === 'kg') return 'kg'
+  if (s === 'gramo' || s === 'gramos' || s === 'g') return 'g'
+  if (s === 'metro' || s === 'metros' || s === 'm') return 'm'
+  if (s === 'litro' || s === 'litros' || s === 'l' || s === 'lt') return 'l'
+  if (s === 'centimetro' || s === 'centímetro' || s === 'cm') return 'cm'
+  return s.length > 4 ? s.slice(0, 3) : s
+}
+
 const stockLevel = (stock, minStock) => {
   const s = stock || 0
   const m = minStock || 0
@@ -147,6 +161,14 @@ export default function Insumos() {
 
   const openNew = () => { setShowAdvancedModal(false); setForm({ ...EMPTY, cat: cats[0]?.id || '' }); setModal(true) }
   const openEdit = (item) => { setShowAdvancedModal(false); setForm({ ...item }); setModal(true) }
+
+  // FAB central del BottomNav (contextual): en /insumos dispara 'anma:new-insumo'
+  // en vez de navegar a /presupuesto. Acá lo escuchamos y abrimos el modal.
+  useEffect(() => {
+    const handler = () => openNew()
+    window.addEventListener('anma:new-insumo', handler)
+    return () => window.removeEventListener('anma:new-insumo', handler)
+  }, []) // eslint-disable-line
 
   const save = () => {
     if (!form.name) { toast('Ingresá un nombre', 'er'); return }
@@ -445,14 +467,13 @@ export default function Insumos() {
                       </div>
                       <div className="ins-mob-card-stock" style={{ color: barColor }}>
                         <div className="stk-num">{stock}</div>
-                        <div className="stk-unit">{item.unit || 'un'}</div>
+                        <div className="stk-unit">{shortUnit(item.unit)}</div>
                       </div>
                     </div>
 
-                    <div className="ins-mob-card-bar">
-                      <div className="ins-mob-card-bar-fill" style={{ width: `${pct}%`, background: barColor }} />
-                      {minS > 0 && <div className="ins-mob-card-bar-min" style={{ left: `${Math.min(95, Math.round((minS / target) * 100))}%` }} title={`mín ${minS}`} />}
-                    </div>
+                    {/* Barra de progreso removida — el borde-izquierdo por nivel
+                        y el color del número de stock ya comunican el estado.
+                        Ocupaba espacio y estorbaba la limpieza de la card. */}
 
                     <div className="ins-mob-card-foot">
                       <div className="ins-mob-card-foot-info">
@@ -462,7 +483,7 @@ export default function Insumos() {
                             mín {minS}
                           </span>
                         )}
-                        <span className="ins-mob-card-price">{fmtDec(item.cost)}<span className="ins-mob-card-unit">/{item.unit || 'un'}</span></span>
+                        <span className="ins-mob-card-price">{fmtDec(item.cost)}<span className="ins-mob-card-unit">/{shortUnit(item.unit)}</span></span>
                       </div>
                       {/* Stepper compacto inline (sin marco pesado). La basurita
                           se eliminó de la card — Eliminar vive en el modal de detalle
@@ -682,8 +703,8 @@ export default function Insumos() {
 
       {/* ── Modal: crear / editar insumo — FRICCION CERO ── */}
       {modal && (
-        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
-          <div className="modal-form-card" style={{ maxWidth: 560 }}>
+        <div className="modal-bg open ins-detail-bg" onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
+          <div className="modal-form-card ins-detail-sheet" style={{ maxWidth: 560 }}>
 
             {/* Header fijo */}
             <div style={{ padding: '16px 22px 12px', borderBottom: '1px solid var(--border)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

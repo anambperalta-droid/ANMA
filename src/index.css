@@ -2128,16 +2128,15 @@ td b{color:var(--txt);font-weight:600}
 /* ── Status bar delgada (una línea, tap-to-filter) ── */
 /* ─── INSUMOS MOBILE — Header compacto (Paso 1 del rediseño) ─── */
 @media(max-width:640px){
-  /* Exportar del top header: oculto en mobile (vive en el panel de filtros).
-     Nuevo insumo: se queda VISIBLE en el top header — el FAB central del BottomNav
-     apunta a "Pedido", no a insumo, así que necesita estar accesible acá. */
-  .ins-actions .ins-act-export{display:none!important}
-  .ins-actions .ins-act-new{
-    height:36px!important;padding:0 14px!important;font-size:12.5px!important;
-    border-radius:10px!important;box-shadow:0 3px 10px var(--brand-dim)!important;
-  }
-  .ins-actions .ins-act-new .ins-act-txt{display:none}   /* solo "Nuevo" corto */
-  .ins-actions .ins-act-new .ins-act-txt-short{display:inline}
+  /* Top header en mobile: OCULTAR botones (Exportar + Nuevo).
+     · Exportar → panel de filtros (fa-sliders).
+     · Nuevo → FAB CONTEXTUAL del BottomNav central (dispara evento en /insumos).
+     Recupera todo el ancho para que el status bar respire de punta a punta. */
+  .ins-actions{display:none!important}
+  .ins-actions .ins-act-export,
+  .ins-actions .ins-act-new{display:none!important}
+  /* La cabecera .ph queda sin contenido visible → colapsamos su altura */
+  .page > .ph:has(.ins-actions){display:none!important}
 
   /* Tabs Inventario/Movimientos — segmented pill compacto 34px */
   .ins-tabs{
@@ -2226,6 +2225,27 @@ td b{color:var(--txt);font-weight:600}
 
   /* FAB "+ Nuevo insumo" eliminado — la creación vive en el BottomNav central,
      evita competencia visual con el FAB circular del nav. */
+
+  /* ── Modal insumo como BOTTOM SHEET en mobile ──
+     Se desliza desde abajo, ocupa full-width, top redondeado, drag-handle sutil. */
+  .ins-detail-bg{align-items:flex-end!important;padding:0!important}
+  .ins-detail-sheet{
+    max-width:100%!important;width:100%!important;
+    max-height:88vh!important;margin:0!important;
+    border-radius:20px 20px 0 0!important;
+    animation:sheetUp .28s cubic-bezier(.32,.72,0,1) both;
+    box-shadow:0 -8px 32px rgba(0,0,0,.18)!important;
+    position:relative;
+  }
+  .ins-detail-sheet::before{
+    content:'';position:absolute;top:8px;left:50%;transform:translateX(-50%);
+    width:38px;height:4px;border-radius:99px;background:var(--border2,#cbd5e1);
+    z-index:1;pointer-events:none;
+  }
+  @keyframes sheetUp{
+    from{transform:translateY(100%)}
+    to{transform:translateY(0)}
+  }
 }
 @media(min-width:641px){
   /* Botón filtro mobile: oculto en desktop (los selects se ven directo) */
@@ -2234,14 +2254,15 @@ td b{color:var(--txt);font-weight:600}
 
 .ins-statusbar{display:none}
 @media(max-width:640px){
-  /* Status bar mobile — micro-chip inline (era una card gorda con padding
-     9×14 + border 1.5px). Ahora fila delgada 24px con dot color + meta gris. */
+  /* Status bar mobile — fila slim full-width (dot + label + meta a la derecha).
+     Es la ÚNICA info del header ahora (top de la página está oculto), así que
+     ocupa todo el ancho como banner discreto. */
   .ins-statusbar{
     display:flex;align-items:center;gap:8px;
-    padding:2px 4px;margin:0 0 10px;
+    padding:6px 2px;margin:0 0 10px;
     background:transparent!important;border:none!important;
     -webkit-tap-highlight-color:transparent;
-    min-height:24px;
+    min-height:28px;width:100%;
   }
   .ins-statusbar.alert{cursor:pointer}
   .ins-statusbar-ic{font-size:10px;flex-shrink:0;width:8px;height:8px;display:inline-block;border-radius:50%;position:relative}
@@ -2296,10 +2317,13 @@ td b{color:var(--txt);font-weight:600}
     text-transform:capitalize;
   }
   .ins-mob-card-cat{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap}
-  .ins-mob-card-sub{font-size:10.5px;color:var(--txt3);font-weight:500;text-transform:lowercase}
+  /* Subcategoría también en capitalize → homogeneidad total ("bolsas" → "Bolsas") */
+  .ins-mob-card-sub{font-size:10.5px;color:var(--txt3);font-weight:500;text-transform:capitalize}
   .ins-mob-card-stock{flex-shrink:0;text-align:right;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums;position:relative}
+  /* El color del número de stock se aplica inline (barColor por nivel) → aviso
+     visual sin depender solo del borde-izquierdo de la card. */
   .ins-mob-card-stock .stk-num{font-size:22px;font-weight:800;line-height:1;letter-spacing:-.03em}
-  .ins-mob-card-stock .stk-unit{font-size:10px;color:var(--txt4);font-weight:600;margin-top:2px;text-transform:lowercase}
+  .ins-mob-card-stock .stk-unit{font-size:10px;color:currentColor;opacity:.6;font-weight:600;margin-top:2px;text-transform:lowercase}
   /* Barra de progreso stock */
   .ins-mob-card-bar{position:relative;height:4px;background:var(--surface3,#E2E8F0);border-radius:99px;overflow:visible}
   .ins-mob-card-bar-fill{height:100%;border-radius:99px;transition:width .3s ease}
