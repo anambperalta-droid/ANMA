@@ -858,6 +858,7 @@ export default function Historial() {
   const nav = useNavigate()
   const [tab, setTab] = useState('resumen')
   const [filter, setFilter] = useState('all')
+  const [showStatusMenu, setShowStatusMenu] = useState(false)   // menú overflow (⋯) de filtros de estado
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
   const [filterLoading, setFilterLoading] = useState(false)
@@ -2001,23 +2002,68 @@ export default function Historial() {
               <i className="fa fa-magnifying-glass" />
               <input type="text" placeholder="Buscar cliente, empresa..." value={search} onChange={e => setSearch(e.target.value)} />
             </div>
-            <div className="hist-status-seg" style={{ display: 'flex', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, padding: 2, gap: 1, overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', maxWidth: '100%' }}>
-              {['all', 'draft', 'sent', 'negotiating', 'confirmed', 'lost'].map(f => (
-                <button key={f} onClick={() => setFilter(f)}
-                  style={{ padding: '5px 11px', border: 'none', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, fontWeight: filter === f ? 600 : 400, background: filter === f ? 'var(--surface)' : 'transparent', color: filter === f ? 'var(--txt)' : 'var(--txt3)', boxShadow: filter === f ? '0 1px 3px rgba(0,0,0,.1)' : 'none', transition: 'all .15s ease', whiteSpace: 'nowrap', flexShrink: 0 }}>
-                  {f === 'all' ? 'Todos' : STATUS_MAP[f]}
-                </button>
-              ))}
-            </div>
+            {/* Filtros de estado: Primary siempre visibles + overflow (⋯) para los menos frecuentes.
+                Patrón Gmail/Notion: los 3 estados más usados quedan al alcance de un tap;
+                los otros (Borrador/Negociando/Perdido) viven en un menú kebab. Si el filtro
+                activo está en overflow, se muestra inline igual para no perderlo de vista. */}
+            {(() => {
+              const PRIMARY = ['all', 'sent', 'confirmed']
+              const OVERFLOW = ['draft', 'negotiating', 'lost']
+              const activeInOverflow = OVERFLOW.includes(filter)
+              const visible = activeInOverflow ? [...PRIMARY, filter] : PRIMARY
+              return (
+                <div className="hist-status-seg">
+                  {visible.map(f => (
+                    <button key={f} onClick={() => setFilter(f)}
+                      className={`hist-status-chip${filter === f ? ' active' : ''}`}>
+                      {f === 'all' ? 'Todos' : STATUS_MAP[f]}
+                    </button>
+                  ))}
+                  <div className="hist-status-more-wrap">
+                    <button onClick={() => setShowStatusMenu(m => !m)}
+                      className={`hist-status-more${showStatusMenu ? ' open' : ''}`}
+                      title="Más filtros" aria-label="Más filtros">
+                      <i className="fa fa-ellipsis" />
+                    </button>
+                    {showStatusMenu && (
+                      <>
+                        <div className="hist-status-menu-overlay" onClick={() => setShowStatusMenu(false)} />
+                        <div className="hist-status-menu" onClick={e => e.stopPropagation()}>
+                          {OVERFLOW.map(f => (
+                            <button key={f} onClick={() => { setFilter(f); setShowStatusMenu(false) }}
+                              className={`hist-status-menu-item${filter === f ? ' active' : ''}`}>
+                              <span className="hist-status-menu-dot" style={{ background: DOT_STATUS[f] || '#94A3B8' }} />
+                              {STATUS_MAP[f]}
+                              {filter === f && <i className="fa fa-check" style={{ marginLeft: 'auto', fontSize: 10 }} />}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )
+            })()}
           </div>
           <style>{`
-            .hist-status-seg::-webkit-scrollbar{display:none}
-            /* Mobile: nada de scroll horizontal. Los chips se envuelven en 2 filas
-               naturales para que veas TODOS los filtros de un vistazo. */
+            /* Filtros de estado — chips individuales con kebab overflow */
+            .hist-status-seg{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;max-width:100%}
+            .hist-status-chip{padding:6px 12px;border:1px solid var(--border);border-radius:20px;background:var(--surface);color:var(--txt3);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .12s;-webkit-tap-highlight-color:transparent;flex-shrink:0}
+            .hist-status-chip:hover{border-color:var(--brand);color:var(--brand)}
+            .hist-status-chip.active{background:var(--txt);color:var(--surface);border-color:var(--txt);font-weight:700}
+            .hist-status-more-wrap{position:relative;flex-shrink:0;margin-left:auto}
+            .hist-status-more{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);color:var(--txt3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all .12s;-webkit-tap-highlight-color:transparent}
+            .hist-status-more:hover,.hist-status-more.open{border-color:var(--brand);color:var(--brand);background:var(--brand-xlt)}
+            .hist-status-menu-overlay{position:fixed;inset:0;z-index:199;background:transparent}
+            .hist-status-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.15);min-width:170px;overflow:hidden;padding:4px}
+            .hist-status-menu-item{display:flex;align-items:center;gap:9px;width:100%;padding:9px 12px;border:none;background:transparent;color:var(--txt2);font-family:inherit;font-size:12.5px;font-weight:500;cursor:pointer;text-align:left;border-radius:8px;transition:background .1s;-webkit-tap-highlight-color:transparent}
+            .hist-status-menu-item:hover{background:var(--surface2)}
+            .hist-status-menu-item.active{background:var(--brand-xlt);color:var(--brand);font-weight:700}
+            .hist-status-menu-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+            /* Mobile: buscador full width en su propia fila */
             @media(max-width:640px){
               .hist-search-mobile{flex:1 1 100%!important;max-width:100%!important}
-              .hist-status-seg{flex:1 1 100%!important;flex-wrap:wrap!important;overflow:visible!important;justify-content:flex-start;gap:2px!important}
-              .hist-status-seg > button{flex:1 1 auto;padding:6px 8px!important;font-size:11.5px!important;min-width:0}
+              .hist-status-seg{flex:1 1 100%!important}
             }
           `}</style>
           <div className="hist-quick-row" style={{ display: 'flex', gap: 6, marginBottom: 10, alignItems: 'center' }}>
