@@ -532,38 +532,46 @@ td b{color:var(--txt);font-weight:600}
 .detail-tab.active{color:var(--acento);border-bottom-color:var(--acento)}
 
 /* ─── SEGUIMIENTO ─── */
-.seg-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:8px;box-shadow:var(--sh);transition:all var(--tr);display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
-.seg-card:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
-.seg-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+/* ─── SEGUIMIENTO CARD — diseño denso con chip dominante de días ─── */
+.seg-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:11px 14px;margin-bottom:8px;box-shadow:var(--sh);transition:box-shadow .15s ease;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
+.seg-card:hover{box-shadow:var(--sh-md)}
+.seg-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
 .seg-card.urg-green::before{background:var(--green)}
 .seg-card.urg-amber::before{background:var(--amber)}
 .seg-card.urg-orange::before{background:#EA580C}
 .seg-card.urg-red::before{background:var(--red)}
-.seg-card.urg-red{border-color:#FCA5A5;animation:urgPulse 2s ease-in-out infinite}
-@keyframes urgPulse{0%,100%{box-shadow:var(--sh)}50%{box-shadow:0 0 0 2px rgba(220,38,38,.1),var(--sh-md)}}
-.seg-light{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.seg-light.green{background:var(--green-lt);color:var(--green)}
-.seg-light.amber{background:var(--amber-lt);color:var(--amber)}
-.seg-light.orange{background:#FFF7ED;color:#EA580C}
-.seg-light.red{background:var(--red-lt);color:var(--red)}
-.seg-info{flex:1;min-width:0}
-.seg-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px}
-.seg-num{font-size:12px;font-weight:700;color:var(--txt)}
-.seg-cli{font-size:12px;color:var(--txt2);margin-bottom:1px}
-.seg-co{font-size:11px;color:var(--txt3)}
-.seg-meta{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.seg-days .num{font-size:20px;font-weight:700;line-height:1;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
-.seg-days .lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.seg-total{font-size:14px;font-weight:700;color:var(--brand);white-space:nowrap;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
-.seg-num{font-family:'Space Grotesk','Inter',sans-serif}
-.seg-actions{display:flex;flex-direction:column;gap:3px}
+.seg-card.urg-red{border-color:#FCA5A5}
+/* Chip dominante de días — dato de decisión */
+.seg-days-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;min-width:52px;padding:5px 10px;border-radius:10px;border:1px solid;line-height:1;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
+.seg-days-num{font-size:20px;font-weight:800;letter-spacing:-.5px}
+.seg-days-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;opacity:.85}
+/* Info */
+.seg-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.seg-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.seg-cli-name{font-size:14px;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.seg-cli-co{font-size:12px;color:var(--txt3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.seg-num{font-size:11px;font-weight:700;color:var(--txt4);font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.2px}
+.seg-co{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--txt3);flex-wrap:wrap}
+.seg-co i{font-size:10px;margin-right:3px;opacity:.75}
+.seg-cli{font-size:12px;color:var(--txt2)}
+/* Monto */
+.seg-total{font-size:15px;font-weight:800;color:var(--money);flex-shrink:0;font-variant-numeric:tabular-nums;font-family:'Space Grotesk','Inter',sans-serif;white-space:nowrap;text-align:right;min-width:90px}
+/* Acciones circulares compactas — sin fondo dominante que compita */
+.seg-actions{display:flex;flex-direction:row;gap:5px;flex-shrink:0;align-items:center}
+.seg-act{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--txt3);cursor:pointer;font-size:12px;display:inline-flex;align-items:center;justify-content:center;padding:0;flex-shrink:0;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:inherit}
+.seg-act:hover{transform:scale(1.06)}
+.seg-act:active{transform:scale(.94)}
+.seg-act-wa{background:#25D366;color:#fff;border-color:transparent}
+.seg-act-wa:hover{background:#1DA851}
+.seg-act-resend:hover{background:var(--acento-xlt);border-color:var(--acento);color:var(--acento)}
+.seg-act-edit:hover{background:var(--surface2);color:var(--txt2)}
 .seg-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-.seg-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:var(--txt2)}
+.seg-legend-item{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:var(--txt2)}
 .seg-legend-dot{width:8px;height:8px;border-radius:50%}
 
-/* ─── TIER GROUPS ─── */
-.seg-tier-group{margin-bottom:18px}
-.seg-tier-header{display:flex;align-items:center;gap:6px;font-size:12px;padding:6px 12px;margin-bottom:8px;border-left:3px solid;border-radius:0 6px 6px 0;background:var(--surface2)}
+/* ─── TIER GROUPS (compacto) ─── */
+.seg-tier-group{margin-bottom:14px}
+.seg-tier-header{display:flex;align-items:center;gap:6px;font-size:11.5px;padding:4px 10px;margin-bottom:6px;border-left:3px solid;border-radius:0 6px 6px 0;background:var(--surface2);text-transform:uppercase;letter-spacing:.3px}
 .seg-tier-count{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:auto}
 
 /* ─── MINI SEGUIMIENTO (Dashboard) ─── */
@@ -1015,10 +1023,9 @@ td b{color:var(--txt);font-weight:600}
   .bento-chart-inner{flex-direction:column!important}
   .bento-chart-inner > *{flex:0 0 auto!important;min-width:0!important;width:100%!important}
   .bento-chart-inner > .bento-chart-noflex{flex:none!important;height:auto!important;min-height:0!important}
-  .seg-card{display:grid!important;grid-template-columns:auto 1fr;grid-template-areas:'light info' 'meta meta';align-items:start;column-gap:12px;row-gap:10px;padding:14px 16px!important}
-  .seg-card .seg-light{grid-area:light}
-  .seg-card .seg-info{grid-area:info}
-  .seg-card .seg-meta{grid-area:meta;flex-direction:row;justify-content:space-between;align-items:center;width:100%;padding-top:10px;border-top:1px solid var(--border)}
+  /* Seguimiento card (nueva estructura): chip días · info · monto · acciones.
+     En tablet mantenemos fila horizontal, en mobile chico (<640) se reorganiza abajo. */
+  .seg-card{padding:12px 14px!important}
   .period-pills{flex-wrap:wrap}
   .pill-row{flex-wrap:wrap;gap:6px}
   .modal{max-width:calc(100vw - 20px)!important}
@@ -1476,20 +1483,18 @@ td b{color:var(--txt);font-weight:600}
   .tab-bar::-webkit-scrollbar{display:none}
   .tab-btn{white-space:nowrap;flex-shrink:0;font-size:12px!important;padding:6px 12px!important}
 
-  /* Seguimiento cards compact */
-  .seg-card{padding:10px 12px!important;border-radius:12px!important;gap:6px!important;flex-wrap:wrap}
-  .seg-light{width:28px!important;height:28px!important;font-size:11px!important}
+  /* Seguimiento cards compact (mobile) */
+  .seg-card{padding:10px 12px!important;border-radius:12px!important;gap:10px!important}
+  .seg-days-chip{min-width:46px;padding:4px 8px}
+  .seg-days-num{font-size:17px}
   .seg-info{min-width:0;flex:1}
-  .seg-top{flex-wrap:wrap;gap:4px!important}
-  .seg-top span{font-size:10px!important}
-  .seg-cli{font-size:12px!important}
-  .seg-co{font-size:10px!important}
-  .seg-meta{flex-direction:row!important;align-items:center;width:100%;gap:10px!important;border-top:1px solid var(--border);padding-top:8px;margin-top:4px}
-  .seg-days{flex-direction:row!important;gap:4px!important;align-items:baseline}
-  .seg-days .num{font-size:15px!important}
-  .seg-days .lbl{font-size:10px!important}
-  .seg-total{font-size:12px!important;flex:1}
-  .seg-actions{flex-direction:row!important;gap:4px!important}
+  .seg-top{flex-wrap:wrap;gap:5px!important}
+  .seg-cli-name{max-width:150px;font-size:13px!important}
+  .seg-cli-co{display:none}
+  .seg-co{font-size:11px!important;gap:6px!important}
+  .seg-total{font-size:13.5px!important;min-width:auto}
+  .seg-actions{gap:4px!important}
+  .seg-act{width:30px;height:30px;font-size:11px}
 
   /* Insight cards */
   .insight-card{border-radius:12px!important;padding:12px!important}

@@ -592,48 +592,58 @@ const PERIODS = [
   { key: 'custom', label: 'Personalizado' },
 ]
 
-/* ── Seguimiento card with Re-enviar button ── */
+/* ── Seguimiento card — rediseño denso y jerárquico ──
+   Prioridad visual: (1) CHIP dominante de DÍAS a la izquierda — el dato de
+   decisión (a quién recontactar primero); (2) cliente + presupuesto; (3) monto;
+   (4) acciones circulares compactas. Se saca el ícono grande redundante — el
+   borde-izquierdo (::before) ya lleva el semáforo. */
 function SeguimientoCard({ b, onEdit, onWA, onResend }) {
   const { money } = usePrivacy()
   const now = new Date()
   const days = b.date ? Math.floor((now - new Date(b.date)) / 86400000) : 0
   const urg = urgency(days)
+  const dd = b.deliveryDate ? Math.ceil((new Date(b.deliveryDate + 'T00:00') - now) / 86400000) : null
 
   return (
     <div className={`seg-card urg-${urg.cls}`}>
-      <div className={`seg-light ${urg.cls}`}><i className={`fa ${urg.icon}`} /></div>
+      {/* Chip dominante: DÍAS sin respuesta — dato de decisión (color = semáforo) */}
+      <div className="seg-days-chip" style={{ background: urg.color + '18', color: urg.color, borderColor: urg.color + '55' }}>
+        <span className="seg-days-num">{days}</span>
+        <span className="seg-days-lbl">días</span>
+      </div>
+
+      {/* Info: cliente + presupuesto + contexto */}
       <div className="seg-info">
         <div className="seg-top">
+          <span className="seg-cli-name">{b.contact || b.company || 'Sin cliente'}</span>
+          {b.contact && b.company && <span className="seg-cli-co">· {b.company}</span>}
           <span className="seg-num">{b.num}</span>
           <DotBadge status={b.status} />
-          <span style={{ fontSize: 11, fontWeight: 600, color: urg.color, background: urg.color + '15', padding: '2px 8px', borderRadius: 12 }}>{urg.label}</span>
         </div>
-        <div className="seg-cli"><b>{b.contact || 'Sin contacto'}</b> — {b.company || 'Sin empresa'}</div>
         <div className="seg-co">
-          <i className="fa fa-calendar" style={{ marginRight: 4 }} />Creado: {fmtDate(b.date)}
-          {b.deliveryDate && ` · Entrega: ${fmtDate(b.deliveryDate)}`}
+          <span><i className="fa fa-paper-plane" /> Enviado {fmtDate(b.date)}</span>
+          {b.deliveryDate && (
+            <span style={{ color: dd != null && dd <= 3 && dd >= 0 ? 'var(--red)' : dd != null && dd <= 7 && dd >= 0 ? '#B45309' : 'var(--txt3)', fontWeight: dd != null && dd <= 7 && dd >= 0 ? 700 : 400 }}>
+              <i className="fa fa-truck-fast" /> Entrega {fmtDate(b.deliveryDate)}
+            </span>
+          )}
         </div>
       </div>
-      <div className="seg-meta">
-        <div className="seg-days">
-          <div className="num" style={{ color: urg.color }}>{days}</div>
-          <div className="lbl" style={{ color: urg.color }}>días</div>
-        </div>
-        <div className="seg-total">{money(b.total)}</div>
-        <div className="seg-actions">
-          <button onClick={() => onEdit(b.id)} title="Editar"
-            style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
-            <i className="fa fa-pen" />
-          </button>
-          <button onClick={() => onWA(b)} title="WhatsApp"
-            style={{ width:28,height:28,borderRadius:'50%',border:'none',background:'#DCFCE7',color:'#16A34A',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
-            <i className="fa-brands fa-whatsapp" />
-          </button>
-          <button onClick={() => onResend(b)} title="Re-enviar presupuesto"
-            style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--acento-dim)',background:'var(--acento-xlt)',color:'var(--acento)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,transition:'all .15s' }}>
-            <i className="fa fa-paper-plane" />
-          </button>
-        </div>
+
+      {/* Monto */}
+      <div className="seg-total">{money(b.total)}</div>
+
+      {/* Acciones — circulares compactas, sin fondo dominante */}
+      <div className="seg-actions">
+        <button onClick={() => onWA(b)} title="Recontactar por WhatsApp" className="seg-act seg-act-wa">
+          <i className="fa-brands fa-whatsapp" />
+        </button>
+        <button onClick={() => onResend(b)} title="Re-enviar presupuesto" className="seg-act seg-act-resend">
+          <i className="fa fa-paper-plane" />
+        </button>
+        <button onClick={() => onEdit(b.id)} title="Editar" className="seg-act seg-act-edit">
+          <i className="fa fa-pen" />
+        </button>
       </div>
     </div>
   )
@@ -2363,10 +2373,10 @@ export default function Historial() {
       {tab === 'seguimiento' && (
         <>
           <div className="seg-legend">
-            <div className="seg-legend-item"><div className="seg-legend-dot" style={{ background: 'var(--red)' }} />15+ días — Crítico</div>
-            <div className="seg-legend-item"><div className="seg-legend-dot" style={{ background: '#EA580C' }} />8–14 días — Urgente</div>
-            <div className="seg-legend-item"><div className="seg-legend-dot" style={{ background: 'var(--amber)' }} />4–7 días — Atención</div>
-            <div className="seg-legend-item"><div className="seg-legend-dot" style={{ background: 'var(--green)' }} />0–3 días — Reciente</div>
+            <span className="seg-legend-item"><span className="seg-legend-dot" style={{ background: 'var(--red)' }} />15+ Crítico</span>
+            <span className="seg-legend-item"><span className="seg-legend-dot" style={{ background: '#EA580C' }} />8–14 Urgente</span>
+            <span className="seg-legend-item"><span className="seg-legend-dot" style={{ background: 'var(--amber)' }} />4–7 Atención</span>
+            <span className="seg-legend-item"><span className="seg-legend-dot" style={{ background: 'var(--green)' }} />0–3 Reciente</span>
           </div>
 
           {seguimiento.length ? (
