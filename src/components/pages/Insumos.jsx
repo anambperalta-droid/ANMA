@@ -464,15 +464,20 @@ export default function Insumos() {
                         )}
                         <span className="ins-mob-card-price">{fmtDec(item.cost)}<span className="ins-mob-card-unit">/{item.unit || 'un'}</span></span>
                       </div>
-                      <div className="ins-mob-card-acts" onClick={e => e.stopPropagation()}>
-                        <button className="ins-mob-card-btn" title="-1" onClick={() => quickAdjust(item, -1)} disabled={stock <= 0}>
+                      {/* Stepper compacto inline (sin marco pesado). La basurita
+                          se eliminó de la card — Eliminar vive en el modal de detalle
+                          para evitar borrados accidentales (tap en la card abre modal). */}
+                      <div className="ins-mob-stepper" onClick={e => e.stopPropagation()}>
+                        <button className="ins-mob-step-btn" title="Restar 1"
+                          onClick={() => quickAdjust(item, -1)} disabled={stock <= 0}
+                          aria-label="Restar 1 unidad">
                           <i className="fa fa-minus" />
                         </button>
-                        <button className="ins-mob-card-btn green" title="+1" onClick={() => quickPlus(item)}>
+                        <div className="ins-mob-step-sep" />
+                        <button className="ins-mob-step-btn plus" title="Sumar 1"
+                          onClick={() => quickPlus(item)}
+                          aria-label="Sumar 1 unidad">
                           <i className="fa fa-plus" />
-                        </button>
-                        <button className="ins-mob-card-btn red" title="Eliminar" onClick={() => remove(item.id)}>
-                          <i className="fa fa-trash" />
                         </button>
                       </div>
                     </div>
