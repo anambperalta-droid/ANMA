@@ -1587,11 +1587,9 @@ export default function Historial() {
             )}
           </div>
           <div style={{ flex: 1 }} />
+          {/* "+ Nuevo" ya vive en el FAB circular del bottom nav — evitamos duplicar */}
           <button className="dash-act-icon" onClick={exportCSV} title="Exportar CSV" aria-label="Exportar">
             <i className="fa fa-download" />
-          </button>
-          <button className="dash-act-new" onClick={() => nav('/presupuesto')} title="Nuevo pedido">
-            <i className="fa fa-plus" /><span>Nuevo</span>
           </button>
         </div>
         <div className="dash-ctrl-tabs">
@@ -2014,9 +2012,12 @@ export default function Historial() {
           </div>
           <style>{`
             .hist-status-seg::-webkit-scrollbar{display:none}
+            /* Mobile: nada de scroll horizontal. Los chips se envuelven en 2 filas
+               naturales para que veas TODOS los filtros de un vistazo. */
             @media(max-width:640px){
               .hist-search-mobile{flex:1 1 100%!important;max-width:100%!important}
-              .hist-status-seg{flex:1 1 100%!important}
+              .hist-status-seg{flex:1 1 100%!important;flex-wrap:wrap!important;overflow:visible!important;justify-content:flex-start;gap:2px!important}
+              .hist-status-seg > button{flex:1 1 auto;padding:6px 8px!important;font-size:11.5px!important;min-width:0}
             }
           `}</style>
           <div className="hist-quick-row" style={{ display: 'flex', gap: 6, marginBottom: 10, alignItems: 'center' }}>
@@ -2053,6 +2054,10 @@ export default function Historial() {
           </div>
           <style>{`
             .hist-quick-chips::-webkit-scrollbar{display:none}
+            /* Mobile: quick chips también wrap — sin scroll horizontal escondido */
+            @media(max-width:640px){
+              .hist-quick-chips{flex-wrap:wrap!important;overflow:visible!important;gap:5px!important}
+            }
             /* En mobile angosto: el botón "Ver motivo pérdida" se reduce a icono solo */
             @media(max-width:540px){
               .hist-loss-btn .hist-loss-label{display:none}
