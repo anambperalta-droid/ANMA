@@ -169,14 +169,24 @@ export default function Sidebar({ open, onClose, collapsed }) {
         </button>
       </div>
       <div className="sb-foot">
+        {/* Instalar app — outline discreto (no compite con Cerrar sesión).
+            Solo se muestra si el navegador expone el prompt. */}
         <InstallButton
           label="Instalar app"
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, width: '100%', background: 'rgba(124,58,237,.18)', border: '1px solid rgba(124,58,237,.35)', color: '#fff', borderRadius: 9, padding: '9px 10px', fontSize: 12.5, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', marginBottom: 8 }}
+          className="sb-install-btn"
         />
-        <div className="sb-user" onClick={logout}>
-          <div className="sb-ava">{(userName[0] || 'A').toUpperCase()}</div>
-          <div><div className="sb-uname">{userName}</div><div className="sb-urole">{role === 'operator' ? 'Operador · Cerrar sesión' : 'Cerrar sesión'}</div></div>
-          <i className="fa fa-right-from-bracket" style={{ marginLeft: 'auto', color: 'rgba(255,255,255,.25)', fontSize: 13 }} />
+        {/* User row — perfil arriba (email + rol), Cerrar sesión abajo separado */}
+        <div className="sb-user">
+          <div className="sb-user-info">
+            <div className="sb-ava">{(userName[0] || 'A').toUpperCase()}</div>
+            <div className="sb-user-meta">
+              <div className="sb-uname">{userName}</div>
+              <div className="sb-urole">{role === 'operator' ? 'Operador' : 'Cuenta'}</div>
+            </div>
+          </div>
+          <button className="sb-logout-btn" onClick={logout} title="Cerrar sesión" aria-label="Cerrar sesión">
+            <i className="fa fa-right-from-bracket" />
+          </button>
         </div>
         {/* Versión del build — útil para diagnosticar caché viejo del usuario */}
         <div className="sb-version" title="Versión del build — si reportás un bug, mencionalo">
