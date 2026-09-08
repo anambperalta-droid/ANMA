@@ -882,6 +882,15 @@ td b{color:var(--txt);font-weight:600}
 }
 
 .wiz-pane{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:22px 24px 18px;box-shadow:var(--sh);animation:pgIn .25s ease both}
+/* Row de insumo operativo — desktop base (mobile overrides en su @media) */
+.disp-fg{margin-bottom:10px}
+.disp-fg .disp-fg-lbl{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10.5px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.disp-fg .disp-fg-cost{color:var(--money);font-size:12.5px;font-weight:700;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums;text-transform:none;letter-spacing:.02em}
+.disp-row{display:grid;grid-template-columns:1fr 72px 36px;gap:8px;align-items:stretch}
+.disp-row .disp-qty{width:100%;height:40px;text-align:center;font-weight:700;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
+.disp-row .disp-remove{width:36px;height:40px;border:1px solid var(--border);background:var(--surface2);color:var(--red,#EF4444);border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:background .12s}
+.disp-row .disp-remove:hover{background:#FEE2E2;border-color:#FCA5A5}
+.disp-add{width:100%;min-height:40px;justify-content:center;border-radius:10px;font-size:13px;font-weight:600;margin-top:8px;border:1.5px dashed var(--border);padding:0}
 .wiz-pane-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .wiz-pane-ico{width:44px;height:44px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;flex-shrink:0;box-shadow:0 4px 12px rgba(124,58,237,.25)}
 .wiz-pane-title{font-size:16px;font-weight:800;color:var(--txt);line-height:1.2}
@@ -1874,10 +1883,14 @@ td b{color:var(--txt);font-weight:600}
   .wizard-steps{display:none!important}
   .wiz-mobile-hd{display:block!important;margin-bottom:8px}
   .pres-draft-banner{padding:8px 12px!important;font-size:11px!important;border-radius:8px!important;margin-bottom:8px!important}
-  /* ph-pres: solo X circular, ocultar texto "Descartar" */
-  .ph-pres{position:relative!important;padding-right:44px!important}
-  .ph-pres .ph-right{position:absolute!important;top:0!important;right:0!important;background:transparent!important;padding:0!important}
-  .ph-pres .ph-right .btn{width:36px!important;height:36px!important;min-height:36px!important;padding:0!important;border-radius:50%!important;border:1px solid var(--border)!important;flex-direction:row!important;font-size:14px!important}
+  /* ph-pres mobile: header del wizard en 1 fila — número + Borrador · X descartar
+     al final. Antes .ph-right iba absolute y en algunos widths se solapaba
+     visualmente con el número (bug reportado: X encima de P-0025). */
+  .ph-pres{position:relative!important;padding:0!important;margin-bottom:14px!important;align-items:center!important;gap:10px!important;flex-wrap:nowrap!important}
+  .ph-pres .ph-left{flex:1;min-width:0;overflow:hidden}
+  .ph-pres .ph-right{position:static!important;background:transparent!important;padding:0!important;flex-shrink:0!important;margin-left:auto!important}
+  .ph-pres .ph-right .btn{width:34px!important;height:34px!important;min-height:34px!important;padding:0!important;border-radius:50%!important;border:1px solid var(--border)!important;flex-direction:row!important;font-size:13px!important;background:var(--surface2)!important;color:var(--txt3)!important}
+  .ph-pres .ph-right .btn:active{background:#FEE2E2!important;color:#DC2626!important}
   .desc-txt{display:none!important}
   /* PaneHeader compacto */
   .wiz-pane-head{padding:6px 0 8px!important;margin-bottom:4px!important}
@@ -1934,6 +1947,19 @@ td b{color:var(--txt);font-weight:600}
      en vez de 2 botones full-width apilados con aire desperdiciado. */
   .disp-quick{display:flex!important;gap:8px!important;width:100%!important;flex-wrap:nowrap!important;margin-top:10px!important}
   .disp-quick .btn-ghost.btn-xs{flex:1!important;width:auto!important;min-width:0!important;margin-top:0!important;min-height:42px!important;font-size:12px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  /* Row de insumo operativo — mobile: select full-width arriba,
+     [qty · trash] abajo. Alineado con el resto del wizard (usa .fg). */
+  .wiz-pane .disp-fg{margin-bottom:12px!important}
+  .wiz-pane .disp-fg .disp-fg-lbl{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;font-size:10px!important;font-weight:700!important;color:var(--txt3)!important;text-transform:uppercase!important;letter-spacing:.06em!important;margin-bottom:5px!important}
+  .wiz-pane .disp-fg .disp-fg-cost{color:var(--money)!important;font-size:12px!important;letter-spacing:.02em!important;font-family:'Space Grotesk','Inter',sans-serif!important;font-variant-numeric:tabular-nums!important;text-transform:none!important}
+  .wiz-pane .disp-row{display:grid!important;grid-template-columns:1fr 68px 40px!important;gap:8px!important;align-items:stretch!important}
+  .wiz-pane .disp-row .disp-sel{width:100%!important;min-width:0!important;height:44px!important;font-size:13.5px!important;margin:0!important}
+  .wiz-pane .disp-row .disp-qty{width:100%!important;height:44px!important;text-align:center!important;font-size:14px!important;font-weight:700!important;font-family:'Space Grotesk','Inter',sans-serif!important;font-variant-numeric:tabular-nums!important;padding:0!important;margin:0!important}
+  .wiz-pane .disp-row .disp-remove{width:40px!important;height:44px!important;border:1px solid var(--border)!important;background:var(--surface2)!important;color:var(--red,#EF4444)!important;border-radius:10px!important;cursor:pointer!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:0!important;font-family:inherit!important;-webkit-tap-highlight-color:transparent!important;transition:background .12s!important}
+  .wiz-pane .disp-row .disp-remove:active{background:#FEE2E2!important}
+  .wiz-pane .disp-row .disp-remove i{font-size:13px!important;pointer-events:none!important}
+  /* Botón "+ Agregar insumo" — mismo estilo dashed que el resto del wizard */
+  .wiz-pane .disp-add{width:100%!important;min-height:44px!important;justify-content:center!important;border-radius:12px!important;font-size:13px!important;font-weight:700!important;margin-top:8px!important;border:1.5px dashed var(--border)!important;padding:0!important}
   /* Sticky wiz-nav: flotante encima de bottom nav */
   /* Mini total bar: flotante encima del wiz-nav */
   .pres-mob-total{display:flex!important;align-items:center!important;gap:8px!important;position:fixed!important;bottom:calc(168px + env(safe-area-inset-bottom,0px))!important;left:10px!important;right:10px!important;background:rgba(14,11,38,.88)!important;color:#fff!important;border-radius:14px!important;padding:10px 16px!important;z-index:199!important;box-shadow:0 4px 24px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.06) inset!important;backdrop-filter:blur(20px) saturate(180%)!important;-webkit-backdrop-filter:blur(20px) saturate(180%)!important;border:1px solid rgba(255,255,255,.08)!important}

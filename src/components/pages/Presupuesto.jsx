@@ -1860,44 +1860,53 @@ export default function Presupuesto() {
                             Sin insumos cargados para este envío.
                           </div>
                         )}
+                        {/* Row de insumo — usa .fg (mismo patrón visual que el resto
+                            del wizard: Modalidad, Estado, etc). En mobile grid 2 filas:
+                            select full-width arriba + [qty · costo · trash] abajo. */}
                         {(form.dispatchInsumos || []).map((d, idx) => {
                           const ins = insumosList.find(x => x.id === Number(d.insumoId))
                           const lineCost = ins ? Number(ins.cost || 0) * Number(d.qty || 0) : 0
                           return (
-                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
-                              <select
-                                value={d.insumoId || ''}
-                                onChange={e => updateDispatchInsumo(idx, 'insumoId', e.target.value)}
-                                style={{ flex: 1, minWidth: 0, fontSize: 13 }}
-                              >
-                                <option value="">— insumo —</option>
-                                <option value="" disabled>── Packaging ──</option>
-                                {insumosList.filter(i => {
-                                  const n = i.name.toLowerCase()
-                                  return n.includes('bolsa') || n.includes('caja') || n.includes('mailer') || n.includes('sobre') || n.includes('burbuja') || n.includes('protec') || n.includes('foam') || n.includes('nylon') || n.includes('pack')
-                                }).map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
-                                <option value="" disabled>── Otros ──</option>
-                                {insumosList.filter(i => {
-                                  const n = i.name.toLowerCase()
-                                  return !n.includes('bolsa') && !n.includes('caja') && !n.includes('mailer') && !n.includes('sobre') && !n.includes('burbuja') && !n.includes('protec') && !n.includes('foam') && !n.includes('nylon') && !n.includes('pack')
-                                }).map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
-                              </select>
-                              <input
-                                type="number" min="1" value={d.qty}
-                                onChange={e => updateDispatchInsumo(idx, 'qty', e.target.value)}
-                                style={{ width: 54, textAlign: 'center', flexShrink: 0, fontSize: 13 }}
-                                placeholder="Cant."
-                              />
-                              <span style={{ flexShrink: 0, minWidth: 60, textAlign: 'right', fontSize: 12, fontWeight: 700, color: ins ? 'var(--text-primary)' : 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>
-                                {ins ? fmt(lineCost) : '—'}
-                              </span>
-                              <button type="button" onClick={() => removeDispatchInsumo(idx)} title="Quitar" style={{ flexShrink: 0, width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', color: 'var(--red, #EF4444)', cursor: 'pointer', borderRadius: 7 }}>
-                                <i className="fa fa-trash" style={{ fontSize: 13 }} />
-                              </button>
+                            <div key={idx} className="fg disp-fg">
+                              <label className="disp-fg-lbl">
+                                <span>Insumo #{idx + 1}</span>
+                                {ins && (
+                                  <span className="disp-fg-cost">{fmt(lineCost)}</span>
+                                )}
+                              </label>
+                              <div className="disp-row">
+                                <select
+                                  className="disp-sel"
+                                  value={d.insumoId || ''}
+                                  onChange={e => updateDispatchInsumo(idx, 'insumoId', e.target.value)}
+                                >
+                                  <option value="">— elegir insumo —</option>
+                                  <option value="" disabled>── Packaging ──</option>
+                                  {insumosList.filter(i => {
+                                    const n = i.name.toLowerCase()
+                                    return n.includes('bolsa') || n.includes('caja') || n.includes('mailer') || n.includes('sobre') || n.includes('burbuja') || n.includes('protec') || n.includes('foam') || n.includes('nylon') || n.includes('pack')
+                                  }).map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                                  <option value="" disabled>── Otros ──</option>
+                                  {insumosList.filter(i => {
+                                    const n = i.name.toLowerCase()
+                                    return !n.includes('bolsa') && !n.includes('caja') && !n.includes('mailer') && !n.includes('sobre') && !n.includes('burbuja') && !n.includes('protec') && !n.includes('foam') && !n.includes('nylon') && !n.includes('pack')
+                                  }).map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                                </select>
+                                <input
+                                  className="disp-qty"
+                                  type="number" min="1" value={d.qty}
+                                  onChange={e => updateDispatchInsumo(idx, 'qty', e.target.value)}
+                                  placeholder="Cant."
+                                  aria-label="Cantidad"
+                                />
+                                <button type="button" onClick={() => removeDispatchInsumo(idx)} title="Quitar" className="disp-remove" aria-label="Quitar insumo">
+                                  <i className="fa fa-trash" />
+                                </button>
+                              </div>
                             </div>
                           )
                         })}
-                        <button type="button" className="btn btn-ghost btn-xs" style={{ marginTop: 4 }} onClick={addDispatchInsumo}>
+                        <button type="button" className="btn btn-ghost btn-sm disp-add" onClick={addDispatchInsumo}>
                           <i className="fa fa-plus" /> Agregar insumo
                         </button>
                         {(form.dispatchInsumos || []).length > 0 && calc.dispatchCost > 0 && (
