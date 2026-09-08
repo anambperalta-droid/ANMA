@@ -395,8 +395,8 @@ p{text-wrap:pretty}
    En mobile todo apilado. Cada shot vive dentro de un
    "browser frame" minimalista (3 dots + url pill).
    ═════════════════════════════════════════════ */
-.adentro-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;grid-template-areas:"hero hero hero" "b c d";max-width:1120px;margin:0 auto}
-.adentro-shot{margin:0}
+.adentro-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px 22px;grid-template-areas:"hero hero hero" "b c d";max-width:1120px;margin:0 auto;align-items:start}
+.adentro-shot{margin:0;display:flex;flex-direction:column}
 .adentro-shot-hero{grid-area:hero}
 .adentro-frame{background:#0a0416;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 64px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.06) inset}
 .adentro-bar{display:flex;align-items:center;gap:6px;padding:11px 14px;background:#12082a;border-bottom:1px solid rgba(255,255,255,.06)}
@@ -409,9 +409,12 @@ p{text-wrap:pretty}
 .adentro-frame picture::before{content:"Vista previa";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(196,181,253,.42);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;z-index:0}
 .adentro-frame picture::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(124,58,237,.18),transparent 60%);z-index:0;pointer-events:none}
 .adentro-frame img{display:block;width:100%;height:auto;position:relative;z-index:1}
-.adentro-cap{color:rgba(255,255,255,.78);font-size:13.5px;line-height:1.55;padding:16px 6px 0;text-align:center}
-.adentro-cap b{color:#fff;font-weight:800}
+/* Captions con jerarquía consistente con el resto de la landing */
+.adentro-cap{color:rgba(255,255,255,.85);font-size:15px;line-height:1.6;padding:22px 8px 0;text-align:center;max-width:360px;margin:0 auto;font-family:'Inter',sans-serif}
+.adentro-cap b{color:#fff;font-weight:800;letter-spacing:-.01em}
 .adentro-cap i{font-style:normal;color:#c4b5fd;font-weight:700}
+/* La hero tiene más espacio: caption más grande, mismo peso visual que el h2 chico */
+.adentro-shot-hero .adentro-cap{font-size:17px;max-width:640px;padding-top:26px;line-height:1.55}
 /* Frame como boton clickeable — hover invita a ampliar */
 button.adentro-frame{width:100%;padding:0;border:1px solid rgba(255,255,255,.08);background:#0a0416;color:inherit;font-family:inherit;cursor:zoom-in;text-align:left;display:block;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
 button.adentro-frame:hover{transform:translateY(-3px);border-color:rgba(124,58,237,.42);box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(196,181,253,.28)}
@@ -439,6 +442,41 @@ button.adentro-frame:focus-visible{outline:2px solid #c4b5fd;outline-offset:3px}
   .adentro-lb-title{font-size:11px}
   .adentro-lb-close{width:32px;height:32px}
   .adentro-lb-hint{display:none}
+}
+
+/* ═════════════════════════════════════════════
+   BOLSILLO · seccion mobile-first / PWA
+   Refuerza que la app es responsive de verdad y
+   se instala como PWA en el celu. 3 phones side-
+   by-side con las mismas capturas pero en mobile.
+   ═════════════════════════════════════════════ */
+.bolsillo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;max-width:920px;margin:0 auto;align-items:start}
+.bolsillo-shot{margin:0;display:flex;flex-direction:column;align-items:center}
+/* Phone frame: bezel oscuro sutil, notch top, aspect ratio 9:19.5 */
+button.bolsillo-phone{width:100%;max-width:240px;aspect-ratio:9/19.5;background:linear-gradient(180deg,#12082a,#0a0416);border-radius:36px;padding:10px;border:1px solid rgba(255,255,255,.14);box-shadow:0 32px 80px rgba(0,0,0,.55),0 2px 0 rgba(255,255,255,.06) inset;cursor:zoom-in;position:relative;transition:transform .2s,box-shadow .2s,border-color .2s;font-family:inherit}
+button.bolsillo-phone:hover{transform:translateY(-4px);border-color:rgba(124,58,237,.5);box-shadow:0 40px 100px rgba(0,0,0,.65),0 0 0 1px rgba(196,181,253,.28)}
+button.bolsillo-phone:focus-visible{outline:2px solid #c4b5fd;outline-offset:4px}
+/* Notch: pill center-top */
+button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);width:66px;height:16px;background:#0a0416;border-radius:12px;z-index:3;border:1px solid rgba(255,255,255,.06)}
+/* Pantalla interior con la captura */
+.bolsillo-screen{width:100%;height:100%;border-radius:26px;overflow:hidden;background:linear-gradient(135deg,#1a0f38 0%,#2a1858 50%,#1a0f38 100%);position:relative}
+.bolsillo-screen::before{content:"Vista previa mobile";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(196,181,253,.42);font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;z-index:0;text-align:center;padding:0 20px}
+.bolsillo-screen img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;position:relative;z-index:1}
+.bolsillo-cap{color:rgba(255,255,255,.85);font-size:13.5px;line-height:1.55;padding:20px 8px 0;text-align:center;max-width:220px;font-family:'Inter',sans-serif;font-weight:600}
+.bolsillo-cap b{color:#fff;font-weight:800}
+/* Chips de trust bajo el titulo */
+.bolsillo-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 12px;margin:22px auto 0;max-width:640px}
+.bolsillo-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(196,181,253,.06);border:1px solid rgba(196,181,253,.14);color:rgba(255,255,255,.82);padding:8px 14px;border-radius:99px;font-size:12px;font-weight:600;letter-spacing:.02em}
+.bolsillo-chip svg{color:#c4b5fd;flex-shrink:0}
+/* Micro-callout de instalacion */
+.bolsillo-install{margin:40px auto 0;max-width:520px;text-align:center;background:rgba(196,181,253,.06);border:1px dashed rgba(196,181,253,.28);border-radius:14px;padding:18px 22px}
+.bolsillo-install-t{font-size:13px;font-weight:800;color:#c4b5fd;text-transform:uppercase;letter-spacing:1.1px;margin-bottom:6px}
+.bolsillo-install-b{font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.55}
+.bolsillo-install-b b{color:#fff;font-weight:700}
+@media(max-width:768px){
+  .bolsillo-grid{grid-template-columns:1fr;gap:36px;max-width:340px}
+  button.bolsillo-phone{max-width:220px}
+  .bolsillo-cap{font-size:14px;max-width:280px}
 }
 @media(max-width:900px){
   .adentro-grid{grid-template-columns:1fr;grid-template-areas:"hero" "b" "c" "d";gap:18px}
@@ -993,6 +1031,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     </a>
     <nav class="nav-links">
       <a href="#adentro">Por dentro</a>
+      <a href="#bolsillo">En el celu</a>
       <a href="#para-quien">Para quién</a>
       <a href="#pricing">Planes</a>
       <a href="/recursos/">Recursos</a>
@@ -1006,6 +1045,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   <!-- Menú mobile desplegable -->
   <div class="nav-menu-mobile" id="nav-menu-mobile">
     <a href="#adentro"><i class="fa-solid fa-eye"></i> Por dentro</a>
+    <a href="#bolsillo"><i class="fa-solid fa-mobile-screen"></i> En el celu</a>
     <a href="#para-quien"><i class="fa-solid fa-users"></i> Para quién</a>
     <a href="#pricing"><i class="fa-solid fa-tag"></i> Planes</a>
     <a href="/recursos/"><i class="fa-solid fa-book-open"></i> Recursos</a>
@@ -1264,6 +1304,89 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
       </a>
       <div style="font-size:11.5px;color:rgba(255,255,255,.5);margin-top:14px;text-transform:uppercase;letter-spacing:1px;font-weight:600">
         Sin tarjeta · Listo en 60 segundos
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BOLSILLO · mobile / PWA -->
+<section id="bolsillo" style="padding:64px 0 72px;background:linear-gradient(180deg,#1a0f38 0%,#0f0a24 100%);border-bottom:1px solid rgba(124,58,237,.18)">
+  <div class="wrap">
+
+    <!-- Encabezado -->
+    <div style="text-align:center;max-width:640px;margin:0 auto 20px">
+      <span class="eyebrow" style="color:#c4b5fd;background:rgba(196,181,253,.08);border:1px solid rgba(196,181,253,.18);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">También en tu bolsillo</span>
+      <h2 class="h2" style="color:#fff;font-size:clamp(26px,4vw,42px);margin:14px 0 12px;font-weight:900;letter-spacing:-.8px">
+        La misma app, <em style="font-style:italic;color:#c4b5fd">desde el celu</em>
+      </h2>
+      <p style="color:rgba(255,255,255,.72);font-size:15.5px;line-height:1.65;margin:0 auto;max-width:540px">
+        Se instala como aplicación en el teléfono. Todo lo que ves en la compu funciona igual en el celular — cargás pedidos en la calle, respondés WhatsApp y ves el pulso del negocio sin abrir la laptop.
+      </p>
+
+      <!-- Chips de trust -->
+      <div class="bolsillo-chips">
+        <span class="bolsillo-chip">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Se instala en 5 segundos
+        </span>
+        <span class="bolsillo-chip">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12v8h14v-8"/><path d="M9 3v9"/><path d="M15 3v9"/><path d="M3 12h18"/></svg>
+          Funciona sin datos (después de cargar)
+        </span>
+        <span class="bolsillo-chip">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Mismo login que en la compu
+        </span>
+      </div>
+    </div>
+
+    <!-- 3 phones side-by-side -->
+    <div class="bolsillo-grid" style="margin-top:48px">
+
+      <!-- Dashboard mobile -->
+      <figure class="bolsillo-shot">
+        <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-dashboard.png" data-adentro-title="Dashboard · mobile" aria-label="Ver Dashboard mobile en grande">
+          <div class="bolsillo-screen">
+            <picture><img src="/screens/mobile-dashboard.png" alt="Dashboard en versión mobile" loading="lazy" onerror="this.style.display='none'"></picture>
+          </div>
+        </button>
+        <figcaption class="bolsillo-cap">
+          <b>KPIs del día</b><br>en el semáforo
+        </figcaption>
+      </figure>
+
+      <!-- Nuevo pedido mobile -->
+      <figure class="bolsillo-shot">
+        <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-presupuesto.png" data-adentro-title="Nuevo pedido · mobile" aria-label="Ver Nuevo pedido mobile en grande">
+          <div class="bolsillo-screen">
+            <picture><img src="/screens/mobile-presupuesto.png" alt="Wizard de nuevo pedido en versión mobile" loading="lazy" onerror="this.style.display='none'"></picture>
+          </div>
+        </button>
+        <figcaption class="bolsillo-cap">
+          <b>Cargás un pedido</b><br>en la calle
+        </figcaption>
+      </figure>
+
+      <!-- Mensajes WA mobile -->
+      <figure class="bolsillo-shot">
+        <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-mensajes-wa.png" data-adentro-title="Mensajes WhatsApp · mobile" aria-label="Ver Mensajes WA mobile en grande">
+          <div class="bolsillo-screen">
+            <picture><img src="/screens/mobile-mensajes-wa.png" alt="Mensajes WhatsApp por embudo en versión mobile" loading="lazy" onerror="this.style.display='none'"></picture>
+          </div>
+        </button>
+        <figcaption class="bolsillo-cap">
+          <b>Respondés WhatsApp</b><br>sin salir de la app
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <!-- Instalación PWA -->
+    <div class="bolsillo-install">
+      <div class="bolsillo-install-t">Cómo la instalás en el celu</div>
+      <div class="bolsillo-install-b">
+        Entrás a <b>anmahub.com</b> desde el celular · abrís el menú del navegador · elegís <b>"Agregar a pantalla de inicio"</b>. Queda un ícono como cualquier otra app.
       </div>
     </div>
 
@@ -1794,9 +1917,9 @@ document.querySelectorAll('.demo-tab').forEach(function(tab){
 
 // Formulario de contacto removido — conversión directa via WhatsApp
 
-// ── Lightbox de #adentro — abre cualquier captura en grande al click ──
+// ── Lightbox de #adentro / #bolsillo — abre cualquier captura en grande al click ──
 (function(){
-  var frames = document.querySelectorAll('button.adentro-frame[data-adentro-zoom]');
+  var frames = document.querySelectorAll('[data-adentro-zoom]');
   if (!frames.length) return;
   // Overlay (creado 1 sola vez, reutilizado por todas las capturas)
   var lb = document.createElement('div');

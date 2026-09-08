@@ -20,6 +20,24 @@ Capturas de la app para la seccion "Asi se ve por dentro" de la landing.
                        Logistica 10 / Post-Venta 10) y los cards de
                        plantillas con variables {{nombre}}, {{negocio}}.
 
+Ademas — 3 capturas MOBILE para la seccion "En el celu" (#bolsillo).
+Tomarlas desde el celular abriendo anmahub.com/app, o desde DevTools
+en modo mobile (Ctrl+Shift+M, ancho ~375px):
+
+  mobile-dashboard.png     -> Dashboard mobile. KPIs stacked, statusbar
+                               de estado, grafico y donut adaptados a
+                               ancho vertical.
+
+  mobile-presupuesto.png   -> Nuevo pedido mobile. Wizard Paso 1 o Paso 2
+                               con la barra flotante inferior de acciones.
+
+  mobile-mensajes-wa.png   -> Mensajes WhatsApp mobile. Tabs del embudo
+                               scroll horizontal + cards de plantillas
+                               apiladas.
+
+Aspect ratio ideal: 9:19.5 (aprox iPhone estandar). Ancho >= 750px si
+querés que se vean bien al zoomear. Peso <= 250 KB cada una.
+
 Consejos de crop (NO alterar datos ni diseño real):
 
   - Recortar el marco/borde negro de la ventana del navegador o del OS.
