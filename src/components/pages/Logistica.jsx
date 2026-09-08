@@ -873,7 +873,34 @@ export default function Logistica() {
               .logi-resumen-kpis .card{padding:12px 14px!important;border-radius:16px!important}
               .logi-resumen-kpis .card > div:first-child{font-size:9.5px!important;letter-spacing:.5px!important}
               .logi-resumen-kpis .card > div:nth-child(2){font-size:20px!important}
-              .logi-resumen-variance{grid-column:1 / -1}
+              .logi-resumen-variance{grid-column:1 / -1!important}
+            }
+            /* ── Cotizar mobile: cards mas compactas + menos aire entre bloques ── */
+            @media(max-width:640px){
+              .cotiz-layout{gap:10px!important}
+              .cotiz-area-cliente,.cotiz-area-tools,.cotiz-area-despacho{padding:14px 14px!important;border-radius:16px!important;gap:12px!important}
+              .cotiz-area-cliente > div:first-child,
+              .cotiz-area-tools > div:first-child,
+              .cotiz-area-despacho > div:first-child{margin-bottom:10px!important;font-size:9.5px!important}
+              .cotiz-preview{padding:12px 14px!important;font-size:12.5px!important;line-height:1.55!important;border-radius:10px!important}
+              .cotiz-wa-btn{padding:12px 20px!important;font-size:13.5px!important;border-radius:12px!important}
+              /* Selector transportistas: mismo alto para tap targets parejos */
+              .cotiz-area-tools button[type="button"]{min-height:44px}
+            }
+            /* ── Modal "Registrar envío" mobile: padding + labels compactos ── */
+            @media(max-width:640px){
+              .modal-form-card .mh{padding:14px 16px 10px!important}
+              .modal-form-card .mh h3{font-size:15px!important}
+              .modal-form-card > div[style*="overflowY"]{padding:12px 16px!important}
+              .ship-modal-body{padding:12px 12px!important;border-radius:12px!important}
+              .ship-modal-body > div:first-child{font-size:9.5px!important;letter-spacing:.5px!important;margin-bottom:8px!important}
+              .ship-modal-body .fg label{font-size:10.5px!important;font-weight:700!important;letter-spacing:.03em!important;color:var(--txt3)!important;text-transform:uppercase!important;margin-bottom:4px!important}
+              /* Inputs en 16px para evitar zoom auto en iOS al focus */
+              .ship-modal-body .fg input:not([type=checkbox]),
+              .ship-modal-body .fg select,
+              .ship-modal-body .fg textarea{font-size:16px!important;padding:0 12px!important;min-height:44px!important;border-radius:10px!important}
+              .ship-modal-body .fg textarea{padding:10px 12px!important;min-height:72px!important;line-height:1.4!important}
+              .ship-modal-body .fg{margin-bottom:10px!important}
             }
           `}</style>
 
@@ -1416,7 +1443,7 @@ export default function Logistica() {
             </div>
             <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '14px 22px' }}>
 
-            <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
+            <div className="ship-modal-body" style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>
                 <i className="fa fa-file-lines" style={{ marginRight: 6, color: 'var(--brand)' }} />Datos del envío
               </div>
@@ -1469,7 +1496,7 @@ export default function Logistica() {
               </div>
             </div>
 
-            <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
+            <div className="ship-modal-body" style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <i className="fa fa-location-dot" style={{ color: 'var(--brand)' }} />Destinatario
                 {form.budgetId && <span style={{ fontSize: 9, fontWeight: 600, color: 'var(--green)', background: '#F0FDF4', padding: '1px 8px', borderRadius: 10 }}>Auto-completado del presupuesto</span>}
@@ -1496,7 +1523,7 @@ export default function Logistica() {
               )}
             </div>
 
-            <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
+            <div className="ship-modal-body" style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>
                 <i className="fa fa-box" style={{ marginRight: 6, color: 'var(--brand)' }} />Paquete
               </div>
@@ -1512,7 +1539,7 @@ export default function Logistica() {
               </div>
             </div>
 
-            <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
+            <div className="ship-modal-body" style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>
                 <i className="fa fa-dollar-sign" style={{ marginRight: 6, color: 'var(--brand)' }} />Finanzas
               </div>
