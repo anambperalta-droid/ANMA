@@ -1,5 +1,7 @@
 import { useLocation } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
+import NotificationBell from './NotificationBell'
+import { useTaskFab } from '../../context/TaskFabContext'
 
 const PAGE_NAMES = { '/': 'Dashboard', '/presupuesto': 'Presupuesto', '/clientes': 'Clientes', '/catalogo': 'Productos', '/proveedores': 'Proveedores', '/logistica': 'Logística', '/mensajes': 'Mensajes WhatsApp', '/insumos': 'Insumos', '/config': 'Configuración' }
 
@@ -41,6 +43,7 @@ export default function Topbar({ onMenuClick, onCollapseClick, collapsed }) {
   const title = PAGE_NAMES[loc.pathname] || 'ANMA'
   const [theme] = useState(initialTheme)
   const syncStatus = useSyncStatus()
+  const { activeTasks } = useTaskFab()
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -64,7 +67,7 @@ export default function Topbar({ onMenuClick, onCollapseClick, collapsed }) {
       <span className="tb-page-title">{title}</span>
       <div style={{ flex: 1 }} />
 
-      {/* Cloud sync indicator — único elemento que aparece a la derecha (transitorio) */}
+      {/* Cloud sync indicator — transitorio, aparece solo al guardar */}
       {syncStatus && (
         <div title="Datos guardados en la nube" style={{
           display: 'flex', alignItems: 'center', gap: 4,
@@ -78,9 +81,9 @@ export default function Topbar({ onMenuClick, onCollapseClick, collapsed }) {
           <span className="hide-xs">Guardado</span>
         </div>
       )}
-      {/* Ojo/Campana/Cerebro/Sol se eliminaron del header — evita duplicidad con
-          los Ajustes rápidos del Sidebar (única fuente de verdad para estos
-          controles). El header ahora respira solo con menú + título. */}
+      {/* Campana — permanece en el Topbar como acceso rápido a notificaciones.
+          Ojo/Cerebro/Sol viven ahora en el Sidebar > Ajustes rápidos. */}
+      <NotificationBell extraCount={activeTasks.length} />
     </header>
   )
 }
