@@ -21,19 +21,24 @@ Capturas de la app para la seccion "Asi se ve por dentro" de la landing.
                        plantillas con variables {{nombre}}, {{negocio}}.
 
 Ademas — 3 capturas MOBILE para la seccion "En el celu" (#bolsillo).
+Elegidas por criterio de venta: NO repetir lo que ya se muestra en
+#adentro, mostrar features que refuercen el uso mobile especifico.
 Tomarlas desde el celular abriendo anmahub.com/app, o desde DevTools
 en modo mobile (Ctrl+Shift+M, ancho ~375px):
 
-  mobile-dashboard.png     -> Dashboard mobile. KPIs stacked, statusbar
-                               de estado, grafico y donut adaptados a
-                               ancho vertical.
+  mobile-analisis.png    -> Dashboard PESTAÑA ANALISIS (no Resumen).
+                             Muestra profundidad — "hay MAS de lo que
+                             viste arriba". Ideal: producto/cliente
+                             que mas ganancia da.
 
-  mobile-presupuesto.png   -> Nuevo pedido mobile. Wizard Paso 1 o Paso 2
-                               con la barra flotante inferior de acciones.
+  mobile-pedido.png      -> Nuevo pedido mobile. Wizard Paso 2
+                             (productos) o Paso 3 (entrega+precio) —
+                             mostrar el flujo trabajando, no la
+                             pantalla en blanco del Paso 1.
 
-  mobile-mensajes-wa.png   -> Mensajes WhatsApp mobile. Tabs del embudo
-                               scroll horizontal + cards de plantillas
-                               apiladas.
+  mobile-logistica.png   -> Logistica mobile. Vista de paradas del
+                             dia / entregas / ruta. Refuerza que ANMA
+                             cubre el ciclo COMPLETO (no solo vender).
 
 Aspect ratio ideal: 9:19.5 (aprox iPhone estandar). Ancho >= 750px si
 querés que se vean bien al zoomear. Peso <= 250 KB cada una.
