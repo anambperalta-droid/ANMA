@@ -114,21 +114,18 @@ export default function Sidebar({ open, onClose, collapsed }) {
           if (item.section) return <div key={i} className="sb-sec">{item.section}</div>
           const active = loc.pathname === item.path || (item.path === '/presupuesto' && loc.pathname.startsWith('/presupuesto'))
           return (
-            <div
+            <button
               key={item.path}
+              type="button"
               className={`sb-item ${active ? 'active' : ''}`}
               data-tip={item.label}
               onClick={() => goTo(item.path)}
               onMouseEnter={() => prefetchRoute(item.path)}
-              onTouchStart={() => prefetchRoute(item.path)}
               onFocus={() => prefetchRoute(item.path)}
-              role="link"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(item.path) } }}
             >
               <i className={`fa ${item.icon}`} />
               <span className="sb-lbl">{item.label}</span>
-            </div>
+            </button>
           )
         })}
         {/* Mi cuenta + Backup consolidados bajo la sección "Sistema" (ya
@@ -137,12 +134,12 @@ export default function Sidebar({ open, onClose, collapsed }) {
             duplicaba jerarquía. */}
         {role === 'owner' && (
           <>
-            <div className={`sb-item ${loc.pathname === '/mi-cuenta' ? 'active' : ''}`} data-tip="Mi cuenta · Suscripción + datos" onClick={() => goTo('/mi-cuenta')}>
+            <button type="button" className={`sb-item ${loc.pathname === '/mi-cuenta' ? 'active' : ''}`} data-tip="Mi cuenta · Suscripción + datos" onClick={() => goTo('/mi-cuenta')}>
               <i className="fa fa-user-gear" /><span className="sb-lbl">Mi cuenta</span>
-            </div>
-            <div className="sb-item" data-tip="Backup" onClick={doBackup}>
+            </button>
+            <button type="button" className="sb-item" data-tip="Backup" onClick={doBackup}>
               <i className="fa fa-cloud-arrow-down" /><span className="sb-lbl">Backup de datos</span>
-            </div>
+            </button>
           </>
         )}
         {/* Super Admin removido del nav — ahora vive como ícono discreto en el footer. */}
