@@ -389,6 +389,35 @@ p{text-wrap:pretty}
 .dnum-warn{color:#f59e0b;font-weight:700}
 .dmarg{font-size:11px;font-weight:800;padding:2px 5px;border-radius:5px;background:#dcfce7;color:#15803d}
 
+/* ═════════════════════════════════════════════
+   ADENTRO · capturas reales de la app (sección #adentro)
+   Grid asimétrico: 1 shot featured arriba + 2 abajo.
+   En mobile todo apilado. Cada shot vive dentro de un
+   "browser frame" minimalista (3 dots + url pill).
+   ═════════════════════════════════════════════ */
+.adentro-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;grid-template-areas:"hero hero" "b c";max-width:1040px;margin:0 auto}
+.adentro-shot{margin:0}
+.adentro-shot-hero{grid-area:hero}
+.adentro-frame{background:#0a0416;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 64px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.06) inset}
+.adentro-bar{display:flex;align-items:center;gap:6px;padding:11px 14px;background:#12082a;border-bottom:1px solid rgba(255,255,255,.06)}
+.adentro-bar > span{width:9px;height:9px;border-radius:99px;background:rgba(255,255,255,.16);flex-shrink:0}
+.adentro-url{margin-left:14px;font-size:10.5px;font-weight:600;color:rgba(255,255,255,.42);letter-spacing:.02em;font-family:'Inter',sans-serif}
+/* img: si carga bien, tapa el background del <picture>. Si aún no está
+   subida (Ana pendiente), el background se ve como un shot violeta elegante
+   con "captura próxima" — no queda "imagen rota". */
+.adentro-frame picture{display:block;position:relative;min-height:240px;background:linear-gradient(135deg,#1a0f38 0%,#2a1858 50%,#1a0f38 100%);overflow:hidden}
+.adentro-frame picture::before{content:"Vista previa";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(196,181,253,.42);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;z-index:0}
+.adentro-frame picture::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(124,58,237,.18),transparent 60%);z-index:0;pointer-events:none}
+.adentro-frame img{display:block;width:100%;height:auto;position:relative;z-index:1}
+.adentro-cap{color:rgba(255,255,255,.78);font-size:13.5px;line-height:1.55;padding:16px 6px 0;text-align:center}
+.adentro-cap b{color:#fff;font-weight:800}
+.adentro-cap i{font-style:normal;color:#c4b5fd;font-weight:700}
+@media(max-width:900px){
+  .adentro-grid{grid-template-columns:1fr;grid-template-areas:"hero" "b" "c";gap:18px}
+  .adentro-cap{font-size:13px;padding-top:12px}
+  .adentro-url{font-size:10px}
+}
+
 /* FLOAT WA */
 .fab-wa{position:fixed;bottom:24px;right:24px;width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 24px rgba(124,58,237,.5);z-index:60;transition:transform .25s}
 .fab-wa:hover{transform:scale(1.08)}
@@ -935,6 +964,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
       ANMA Hub
     </a>
     <nav class="nav-links">
+      <a href="#adentro">Por dentro</a>
       <a href="#para-quien">Para quién</a>
       <a href="#pricing">Planes</a>
       <a href="/recursos/">Recursos</a>
@@ -947,7 +977,9 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
   </div>
   <!-- Menú mobile desplegable -->
   <div class="nav-menu-mobile" id="nav-menu-mobile">
-    <a href="#para-quien"><i class="fa-solid fa-users"></i> Para quién</a>    <a href="#pricing"><i class="fa-solid fa-tag"></i> Planes</a>
+    <a href="#adentro"><i class="fa-solid fa-eye"></i> Por dentro</a>
+    <a href="#para-quien"><i class="fa-solid fa-users"></i> Para quién</a>
+    <a href="#pricing"><i class="fa-solid fa-tag"></i> Planes</a>
     <a href="/recursos/"><i class="fa-solid fa-book-open"></i> Recursos</a>
     <a href="#faq"><i class="fa-solid fa-circle-question"></i> Preguntas</a>
   </div>
@@ -1113,6 +1145,82 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ADENTRO · capturas reales de la app -->
+<section id="adentro" style="padding:64px 0 72px;background:linear-gradient(180deg,#0f0a24 0%,#1a0f38 100%);border-top:1px solid rgba(124,58,237,.18);border-bottom:1px solid rgba(124,58,237,.18)">
+  <div class="wrap">
+
+    <!-- Encabezado -->
+    <div style="text-align:center;max-width:660px;margin:0 auto 40px">
+      <span class="eyebrow" style="color:#c4b5fd;background:rgba(196,181,253,.08);border:1px solid rgba(196,181,253,.18);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">Así se ve por dentro</span>
+      <h2 class="h2" style="color:#fff;font-size:clamp(26px,4vw,42px);margin:14px 0 12px;font-weight:900;letter-spacing:-.8px">
+        Todo lo que necesitás <em style="font-style:italic;color:#c4b5fd">en una sola pantalla</em>
+      </h2>
+      <p style="color:rgba(255,255,255,.7);font-size:15px;line-height:1.65;margin:0 auto;max-width:520px">
+        Un vistazo real a lo que ves apenas entrás. Nada maqueteado, nada de "así podría verse".
+      </p>
+    </div>
+
+    <!-- Grid: featured Productos arriba, Dashboard y Presupuesto abajo -->
+    <div class="adentro-grid">
+
+      <!-- Featured: Productos (el que vende el core del producto) -->
+      <figure class="adentro-shot adentro-shot-hero">
+        <div class="adentro-frame">
+          <div class="adentro-bar">
+            <span></span><span></span><span></span>
+            <div class="adentro-url">anmahub.com/app · Productos</div>
+          </div>
+          <picture><img src="/screens/productos.png" alt="Catálogo de productos con costos, precios y márgenes en tiempo real" loading="lazy" onerror="this.style.display='none'"></picture>
+        </div>
+        <figcaption class="adentro-cap">
+          <b>Tu catálogo con margen en tiempo real.</b> Costos, precios público y mayorista, variantes y combos — <i>sin planilla al lado</i>.
+        </figcaption>
+      </figure>
+
+      <!-- Dashboard: el pulso -->
+      <figure class="adentro-shot">
+        <div class="adentro-frame">
+          <div class="adentro-bar">
+            <span></span><span></span><span></span>
+            <div class="adentro-url">anmahub.com/app · Dashboard</div>
+          </div>
+          <picture><img src="/screens/dashboard.png" alt="Dashboard con KPIs, ingresos y estado de pedidos del mes" loading="lazy" onerror="this.style.display='none'"></picture>
+        </div>
+        <figcaption class="adentro-cap">
+          <b>El pulso del mes.</b> Ventas, ingresos cobrados, ticket promedio y estado de pedidos, <i>de un vistazo</i>.
+        </figcaption>
+      </figure>
+
+      <!-- Presupuesto: velocidad + flujo integrado -->
+      <figure class="adentro-shot">
+        <div class="adentro-frame">
+          <div class="adentro-bar">
+            <span></span><span></span><span></span>
+            <div class="adentro-url">anmahub.com/app · Nuevo pedido</div>
+          </div>
+          <picture><img src="/screens/presupuesto.png" alt="Wizard de nuevo pedido en 4 pasos con panel de resumen en vivo" loading="lazy" onerror="this.style.display='none'"></picture>
+        </div>
+        <figcaption class="adentro-cap">
+          <b>Cargás un pedido en 4 pasos.</b> Con envío, PDF y WhatsApp <i>integrados desde el paso 1</i>.
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <!-- CTA final: curiosidad → registro -->
+    <div style="text-align:center;margin-top:44px">
+      <a href="/app/registro" class="cta-primary-btn" style="display:inline-flex;align-items:center;gap:10px;background:#059669;color:#fff;padding:16px 32px;border-radius:99px;font-weight:800;font-size:15px;text-decoration:none;box-shadow:0 10px 32px rgba(5,150,105,.42)">
+        Probalo con tu catálogo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <div style="font-size:11.5px;color:rgba(255,255,255,.5);margin-top:14px;text-transform:uppercase;letter-spacing:1px;font-weight:600">
+        Sin tarjeta · Listo en 60 segundos
+      </div>
+    </div>
+
   </div>
 </section>
 
