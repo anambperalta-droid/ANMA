@@ -712,19 +712,19 @@ export default function Logistica() {
       {tab === 'envios' && (
         <>
           {lateShipments.length > 0 && !lateAlertDismissed && (
-            <div style={{ background: 'rgba(220,38,38,.08)', border: '1.5px solid rgba(220,38,38,.3)', borderRadius: 10, padding: '10px 14px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              <i className="fa fa-triangle-exclamation" style={{ color: '#DC2626', fontSize: 14 }} />
-              <div style={{ flex: 1, fontSize: 12 }}>
-                <b style={{ color: '#DC2626' }}>{lateShipments.length} envío{lateShipments.length !== 1 ? 's' : ''} atrasado{lateShipments.length !== 1 ? 's' : ''}</b>
-                <span style={{ color: 'var(--txt3)', marginLeft: 6 }}>· Despachado/En tránsito hace más de lo esperado</span>
+            <div className="logi-late-banner">
+              <i className="fa fa-triangle-exclamation logi-late-ic" />
+              <div className="logi-late-txt">
+                <b>{lateShipments.length} envío{lateShipments.length !== 1 ? 's' : ''} atrasado{lateShipments.length !== 1 ? 's' : ''}</b>
+                <span>Despachados hace más de lo esperado</span>
               </div>
-              <button className="btn btn-secondary btn-xs" onClick={() => setSFilter('Despachado')}>Ver atrasados</button>
-              <button onClick={dismissLateAlert} title="Cerrar alerta" style={{ background: 'none', border: 'none', color: '#DC2626', cursor: 'pointer', padding: '2px 6px', borderRadius: 4, fontSize: 14, opacity: 0.7 }}><i className="fa fa-xmark" /></button>
+              <button className="logi-late-cta" onClick={() => setSFilter('Despachado')}>Ver</button>
+              <button onClick={dismissLateAlert} title="Cerrar alerta" className="logi-late-x"><i className="fa fa-xmark" /></button>
             </div>
           )}
 
           {/* Search */}
-          <div style={{ marginBottom: 6 }}>
+          <div style={{ marginBottom: 8 }}>
             <div className="search-row logi-search-row" style={{ maxWidth: 400 }}>
               <i className="fa fa-magnifying-glass" style={{ color: 'var(--txt3)', fontSize: 13 }} />
               <input
@@ -735,12 +735,14 @@ export default function Logistica() {
               {search && <i className="fa fa-xmark" style={{ cursor: 'pointer', color: 'var(--txt3)' }} onClick={() => setSearch('')} />}
             </div>
           </div>
-          {/* Status pills — fila única con scroll */}
-          <div className="logi-pills-row" style={{ marginBottom: 10 }}>
-            <div className={`pill ${sFilter === 'all' ? 'active' : ''}`} onClick={() => setSFilter('all')}>Todos</div>
-            {statusList.map(s => (
-              <div key={s} className={`pill ${sFilter === s ? 'active' : ''}`} onClick={() => setSFilter(s)}>{s}</div>
-            ))}
+          {/* Status pills — fila única con scroll + fade derecho como pista de scroll */}
+          <div className="logi-pills-wrap">
+            <div className="logi-pills-row">
+              <div className={`pill ${sFilter === 'all' ? 'active' : ''}`} onClick={() => setSFilter('all')}>Todos</div>
+              {statusList.map(s => (
+                <div key={s} className={`pill ${sFilter === s ? 'active' : ''}`} onClick={() => setSFilter(s)}>{s}</div>
+              ))}
+            </div>
           </div>
 
           {/* ── KPI strip ── */}
@@ -762,15 +764,32 @@ export default function Logistica() {
           <style>{`
             /* KPI strip mobile: stack icon arriba + label completo abajo en pantallas chicas */
             @media(max-width:480px){
-              .logi-kpi-card{padding:9px 10px!important;gap:7px!important;flex-direction:column!important;align-items:flex-start!important}
-              .logi-kpi-card i{font-size:14px!important}
-              .logi-kpi-label{font-size:9.5px!important;letter-spacing:.4px!important}
-              .logi-kpi-card > div > div:last-child{font-size:18px!important}
+              .logi-kpi-card{padding:9px 8px!important;gap:5px!important;flex-direction:column!important;align-items:flex-start!important}
+              .logi-kpi-card i{font-size:13px!important}
+              .logi-kpi-label{font-size:9px!important;letter-spacing:.4px!important}
+              .logi-kpi-card > div > div:last-child{font-size:17px!important}
             }
-            /* Pills de status: scroll horizontal sin wrap, sin truncar */
-            .logi-pills-row{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+            /* Pills de status: scroll horizontal + fade derecho para invitar a deslizar */
+            .logi-pills-wrap{position:relative;margin-bottom:10px}
+            .logi-pills-wrap::after{content:"";position:absolute;top:0;bottom:0;right:0;width:28px;background:linear-gradient(90deg,transparent,var(--bg,#f8fafc) 85%);pointer-events:none;border-radius:0 8px 8px 0}
+            .logi-pills-row{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 24px 2px 0}
             .logi-pills-row::-webkit-scrollbar{display:none}
             .logi-pills-row .pill{flex-shrink:0;white-space:nowrap}
+            /* ── Banner "envíos atrasados" — compacto, 1 fila en mobile ── */
+            .logi-late-banner{background:linear-gradient(180deg,rgba(220,38,38,.08),rgba(220,38,38,.05));border:1px solid rgba(220,38,38,.28);border-radius:11px;padding:9px 10px 9px 12px;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
+            .logi-late-ic{color:#DC2626;font-size:14px;flex-shrink:0}
+            .logi-late-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;line-height:1.25}
+            .logi-late-txt b{color:#DC2626;font-size:12.5px;font-weight:800;letter-spacing:-.1px}
+            .logi-late-txt span{color:var(--txt3);font-size:10.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+            .logi-late-cta{background:#fff;border:1px solid rgba(220,38,38,.35);color:#DC2626;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:8px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:background .12s}
+            .logi-late-cta:active{background:rgba(220,38,38,.08)}
+            .logi-late-x{background:none;border:none;color:#DC2626;cursor:pointer;padding:2px 4px;border-radius:6px;font-size:13px;opacity:.65;flex-shrink:0;font-family:inherit}
+            .logi-late-x:active{opacity:1}
+            /* ── Tab "+ Envío" — separada visualmente del resto de tabs (accion, no pestaña) ── */
+            @media(max-width:900px){
+              .logi-tab-add{margin-left:6px!important;box-shadow:0 4px 12px rgba(124,58,237,.28)!important}
+              .logi-mob-tabs{padding-right:2px!important}
+            }
           `}</style>
 
           {/* ── MOBILE CARD LIST (≤767px) ── */}

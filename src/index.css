@@ -371,7 +371,11 @@ input,select,textarea{font-family:inherit}
 @media(max-width:900px){.bento-kpis-4{grid-template-columns:repeat(2,1fr)!important;gap:10px!important}}
 @media(max-width:380px){.bento-kpis-4{grid-template-columns:1fr!important}}
 /* Logística: KPI strip 3->1 col en pantallas chicas */
-@media(max-width:560px){.logi-kpi-strip{grid-template-columns:1fr!important;gap:8px!important}}
+/* Antes colapsaba a 1 col bajo 560px — cada KPI ocupaba una fila entera
+   con mucho aire vertical desperdiciado. Ahora se mantiene en 3 cols
+   compactas (el bloque de Logistica.jsx los pone en column layout con
+   icono arriba + valor abajo, quedan chiquitos y prolijos). */
+@media(max-width:560px){.logi-kpi-strip{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}}
 /* Catálogo: modo bulk update 3->1 col en mobile (3 opciones con texto largo) */
 @media(max-width:520px){.bulk-mode-grid{grid-template-columns:1fr!important}}
 .bento-kpi{
