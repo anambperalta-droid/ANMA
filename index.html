@@ -395,7 +395,7 @@ p{text-wrap:pretty}
    En mobile todo apilado. Cada shot vive dentro de un
    "browser frame" minimalista (3 dots + url pill).
    ═════════════════════════════════════════════ */
-.adentro-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;grid-template-areas:"hero hero" "b c";max-width:1040px;margin:0 auto}
+.adentro-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;grid-template-areas:"hero hero hero" "b c d";max-width:1120px;margin:0 auto}
 .adentro-shot{margin:0}
 .adentro-shot-hero{grid-area:hero}
 .adentro-frame{background:#0a0416;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 64px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.06) inset}
@@ -413,7 +413,7 @@ p{text-wrap:pretty}
 .adentro-cap b{color:#fff;font-weight:800}
 .adentro-cap i{font-style:normal;color:#c4b5fd;font-weight:700}
 @media(max-width:900px){
-  .adentro-grid{grid-template-columns:1fr;grid-template-areas:"hero" "b" "c";gap:18px}
+  .adentro-grid{grid-template-columns:1fr;grid-template-areas:"hero" "b" "c" "d";gap:18px}
   .adentro-cap{font-size:13px;padding-top:12px}
   .adentro-url{font-size:10px}
 }
@@ -1205,6 +1205,20 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
         </div>
         <figcaption class="adentro-cap">
           <b>Cargás un pedido en 4 pasos.</b> Con envío, PDF y WhatsApp <i>integrados desde el paso 1</i>.
+        </figcaption>
+      </figure>
+
+      <!-- WhatsApp: mensajes listos por embudo (diferencial fuerte) -->
+      <figure class="adentro-shot">
+        <div class="adentro-frame">
+          <div class="adentro-bar">
+            <span></span><span></span><span></span>
+            <div class="adentro-url">anmahub.com/app · Mensajes WhatsApp</div>
+          </div>
+          <picture><img src="/screens/mensajes-wa.png" alt="Mensajes de WhatsApp organizados por embudo de ventas" loading="lazy" onerror="this.style.display='none'"></picture>
+        </div>
+        <figcaption class="adentro-cap">
+          <b>WhatsApp con embudo listo.</b> Captación, presupuestos, pagos, logística y post-venta — <i>con variables que se completan solas</i>.
         </figcaption>
       </figure>
 

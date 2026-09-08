@@ -1,10 +1,10 @@
 Capturas de la app para la seccion "Asi se ve por dentro" de la landing.
 
-3 archivos requeridos (PNG, ancho >= 1200px):
+4 archivos requeridos (PNG, ancho >= 1200px):
 
   productos.png    -> Catalogo. La captura del listado de Productos con
                        imagenes, categorias coloreadas, costo, precio y
-                       margen. Es la featured del grid (mas grande).
+                       margen. Es la featured del grid (mas grande, arriba).
 
   dashboard.png    -> Dashboard. La captura del panel principal con KPIs
                        (Ventas brutas / Ingresos caja / Ticket / Presupuestos),
@@ -14,6 +14,11 @@ Capturas de la app para la seccion "Asi se ve por dentro" de la landing.
   presupuesto.png  -> Nuevo pedido. La captura del wizard Paso 1 con el
                        panel Resumen lateral (P-0027 Borrador). Enfocar
                        en los pasos numerados y el resumen a la derecha.
+
+  mensajes-wa.png  -> Mensajes WhatsApp. La captura con los tabs del
+                       embudo (Captacion 15 / Presupuestos 13 / Pagos 10 /
+                       Logistica 10 / Post-Venta 10) y los cards de
+                       plantillas con variables {{nombre}}, {{negocio}}.
 
 Consejos de crop (NO alterar datos ni diseño real):
 
