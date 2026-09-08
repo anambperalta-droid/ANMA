@@ -1,12 +1,13 @@
-/* ANMA Hub — Service Worker v5
+/* ANMA Hub — Service Worker v8
    Network-first para JS/CSS/HTML (anti cache-stale).
    Stale-while-revalidate para imágenes/fonts.
    Bypass total para Supabase y APIs.
    v5: fuerza limpieza de caché tras agregar el viewport meta a la landing.
    v6: limpia los íconos viejos cacheados tras actualizar el logo (favicon/PWA).
    v7: registro con updateViaCache:none + skipWaiting activo → updates se ven solos.
+   v8: bump para forzar limpieza tras cambios masivos de UI mobile en Logistica.
 */
-const CACHE_VER = 'anma-pro-v7'
+const CACHE_VER = 'anma-pro-v8'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 

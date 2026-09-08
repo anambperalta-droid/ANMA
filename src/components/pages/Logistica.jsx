@@ -889,18 +889,44 @@ export default function Logistica() {
             }
             /* ── Modal "Registrar envío" mobile: padding + labels compactos ── */
             @media(max-width:640px){
-              .modal-form-card .mh{padding:14px 16px 10px!important}
-              .modal-form-card .mh h3{font-size:15px!important}
-              .modal-form-card > div[style*="overflowY"]{padding:12px 16px!important}
-              .ship-modal-body{padding:12px 12px!important;border-radius:12px!important}
-              .ship-modal-body > div:first-child{font-size:9.5px!important;letter-spacing:.5px!important;margin-bottom:8px!important}
-              .ship-modal-body .fg label{font-size:10.5px!important;font-weight:700!important;letter-spacing:.03em!important;color:var(--txt3)!important;text-transform:uppercase!important;margin-bottom:4px!important}
-              /* Inputs en 16px para evitar zoom auto en iOS al focus */
+              .modal-form-card .mh{padding:12px 14px 8px!important}
+              .modal-form-card .mh h3{font-size:14px!important;font-weight:800!important}
+              .modal-form-card > div[style*="overflowY"]{padding:10px 14px!important}
+              .ship-modal-body{padding:10px 12px!important;border-radius:12px!important;margin-bottom:8px!important}
+              .ship-modal-body > div:first-child{font-size:9.5px!important;letter-spacing:.5px!important;margin-bottom:6px!important}
+              .ship-modal-body .fg label{font-size:10px!important;font-weight:700!important;letter-spacing:.05em!important;color:var(--txt3)!important;text-transform:uppercase!important;margin-bottom:3px!important;display:block!important}
+              /* Inputs 16px OBLIGATORIO para no gatillar zoom iOS.
+                 Altura 40px (vs 44 antes) para ganar densidad sin perder tap. */
               .ship-modal-body .fg input:not([type=checkbox]),
               .ship-modal-body .fg select,
-              .ship-modal-body .fg textarea{font-size:16px!important;padding:0 12px!important;min-height:44px!important;border-radius:10px!important}
-              .ship-modal-body .fg textarea{padding:10px 12px!important;min-height:72px!important;line-height:1.4!important}
-              .ship-modal-body .fg{margin-bottom:10px!important}
+              .ship-modal-body .fg textarea{font-size:16px!important;padding:0 12px!important;min-height:40px!important;height:40px!important;border-radius:9px!important;border:1px solid var(--border)!important;background:var(--surface)!important;box-sizing:border-box!important;width:100%!important}
+              .ship-modal-body .fg textarea{padding:8px 12px!important;min-height:64px!important;height:auto!important;line-height:1.4!important}
+              .ship-modal-body .fg{margin-bottom:8px!important}
+              /* grid2 en mobile: 1 col apilada (default), con gap chico */
+              .ship-modal-body .grid2{display:flex!important;flex-direction:column!important;gap:0!important}
+              /* Footer del modal */
+              .modal-form-card .mfooter{padding:10px 14px!important;gap:8px!important;flex-wrap:wrap!important}
+              .modal-form-card .mfooter .btn{min-height:40px!important;font-size:13px!important;padding:0 14px!important;border-radius:9px!important;flex:1!important;justify-content:center!important}
+            }
+            /* ── Envíos: cards en la lista mas densas ── */
+            @media(max-width:640px){
+              .logi-card{padding:10px 12px!important;gap:5px!important;border-radius:14px!important;margin-bottom:7px!important}
+              .logi-card-remito{font-size:13px!important}
+              .logi-card-client{font-size:11.5px!important;margin-top:1px!important}
+              .logi-card-act{width:26px!important;height:26px!important;font-size:10px!important}
+              .logi-card-acts{gap:3px!important}
+              .logi-card-meta{font-size:10px!important}
+              .logi-card-specs{font-size:10.5px!important}
+              .logi-card-status-wrap .badge{font-size:10px!important;padding:2px 8px!important}
+              .logi-card-late{font-size:10px!important;padding:2px 7px!important}
+            }
+            /* ── Buscadores globales de Logistica: alto parejo 40px + font 14 ── */
+            @media(max-width:640px){
+              .logi-search-row{height:40px!important;padding:0 12px!important;border-radius:10px!important}
+              .logi-search-row input{font-size:14px!important}
+              .logi-search-row i{font-size:12.5px!important}
+              /* Pills de status compactas */
+              .logi-pills-row .pill{padding:6px 12px!important;font-size:11.5px!important;height:32px!important;display:inline-flex!important;align-items:center!important}
             }
           `}</style>
 
