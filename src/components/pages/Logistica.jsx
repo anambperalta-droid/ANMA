@@ -865,15 +865,33 @@ export default function Logistica() {
               .logi-tab-add{margin-left:6px!important;box-shadow:0 4px 12px rgba(124,58,237,.28)!important}
               .logi-mob-tabs{padding-right:2px!important}
             }
-            /* ── Resumen KPIs mobile: 2 cols + "Desvíos de flete" span 2
-               para no dejar hueco a la derecha. Con 5 KPIs auto-fit lo
-               ponía solo en la última fila. ── */
+            /* ── Resumen KPIs mobile: 2 cols + "Desvíos de flete" span 2.
+               Ana pidio compactarlos: label y valor mas chicos, padding
+               menor, sub-textos que no explotan el alto. ── */
             @media(max-width:640px){
-              .logi-resumen-kpis{grid-template-columns:1fr 1fr!important;gap:10px!important}
-              .logi-resumen-kpis .card{padding:12px 14px!important;border-radius:16px!important}
-              .logi-resumen-kpis .card > div:first-child{font-size:9.5px!important;letter-spacing:.5px!important}
-              .logi-resumen-kpis .card > div:nth-child(2){font-size:20px!important}
+              .logi-resumen-kpis{grid-template-columns:1fr 1fr!important;gap:8px!important;margin-bottom:12px!important}
+              .logi-resumen-kpis .card{padding:9px 11px!important;border-radius:12px!important;box-shadow:0 1px 2px rgba(15,23,42,.04)!important}
+              .logi-resumen-kpis .card > div:first-child{font-size:8.5px!important;letter-spacing:.6px!important;margin-bottom:3px!important;font-weight:800!important}
+              .logi-resumen-kpis .card > div:nth-child(2){font-size:17px!important;line-height:1.05!important;letter-spacing:-.02em!important}
+              /* Sub-textos ("Sin datos previos", "Despachado > SLA", "Real ≠ cobrado") */
+              .logi-resumen-kpis .card > div:nth-child(3),
+              .logi-resumen-kpis .card > div:nth-child(4){font-size:9px!important;line-height:1.3!important;margin-top:2px!important}
               .logi-resumen-variance{grid-column:1 / -1!important}
+              /* Descargar reporte: mas discreto */
+              .logi-resumen-kpis + div,
+              [tab='resumen'] .btn-sm{font-size:11px!important}
+              /* Desglose por estado / Costo por mes: cards mas compactas */
+              .logi-summary-grid{gap:10px!important}
+              .logi-summary-grid > div{padding:12px 14px!important;border-radius:14px!important}
+              .logi-summary-grid > div > div:first-child{font-size:10px!important;margin-bottom:10px!important;letter-spacing:.5px!important}
+            }
+            /* ── Envios KPIs (Hoy / Pendientes / Atrasados): tambien mas
+               chicos para mismo look que Resumen. ── */
+            @media(max-width:640px){
+              .logi-kpi-card{padding:8px 8px!important;gap:4px!important}
+              .logi-kpi-card > div > div:first-child{font-size:8.5px!important;letter-spacing:.4px!important;font-weight:800!important}
+              .logi-kpi-card > div > div:last-child{font-size:16px!important;line-height:1.05!important;letter-spacing:-.02em!important}
+              .logi-kpi-card i{font-size:12px!important}
             }
             /* ── Cotizar mobile: cards mas compactas + menos aire entre bloques ── */
             @media(max-width:640px){
