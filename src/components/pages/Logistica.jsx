@@ -177,39 +177,107 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
   const editingTotal = (edit?.paradas || []).reduce((s, p) => s + (Number(p.costo) || 0), 0)
 
   return (
-    <div style={{ marginTop: 8 }}>
+    <div className="viajes-tab" style={{ marginTop: 8 }}>
+      <style>{`
+        /* ── HEADER: título+sub + botón. Desktop: flex row. Mobile: stack con botón full-width. ── */
+        .viajes-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+        .viajes-header-txt{flex:1;min-width:0}
+        .viajes-header-title{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px;line-height:1.2;color:var(--txt)}
+        .viajes-header-sub{font-size:11.5px;color:var(--txt3);margin-top:3px;line-height:1.45}
+        .viajes-new-btn{font-size:13px;padding:9px 16px;flex-shrink:0}
+        @media(max-width:640px){
+          .viajes-header{margin-bottom:12px;gap:10px}
+          .viajes-header-title{font-size:15px}
+          .viajes-header-sub{font-size:11px;margin-top:2px}
+          .viajes-new-btn{width:100%;justify-content:center;padding:10px 16px!important;font-size:13px!important;font-weight:700!important;border-radius:10px!important}
+        }
+        /* ── KPIs: 3 cols SIEMPRE (antes auto-fit dejaba hueco en mobile con 2+1). ── */
+        .viajes-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}
+        .viajes-kpi-card{padding:12px 14px;min-width:0}
+        .viajes-kpi-lbl{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;font-weight:700;line-height:1.2}
+        .viajes-kpi-val{font-size:22px;font-weight:800;margin-top:3px;line-height:1.15;letter-spacing:-.02em}
+        .viajes-kpi-chips{display:flex;gap:8px;font-size:10px;color:var(--txt3);margin-top:3px;flex-wrap:wrap}
+        .viajes-kpi-chips i{font-size:9px}
+        @media(max-width:640px){
+          .viajes-kpi-grid{gap:6px;margin-bottom:12px}
+          .viajes-kpi-card{padding:10px 8px}
+          .viajes-kpi-lbl{font-size:9px;letter-spacing:.03em}
+          .viajes-kpi-val{font-size:16px;letter-spacing:-.03em}
+          .viajes-kpi-chips{gap:5px;font-size:9.5px;margin-top:4px}
+          .viajes-kpi-chips span{white-space:nowrap}
+        }
+        /* ── Card de viaje: layout compacto y responsivo ── */
+        .viaje-card{padding:0;overflow:hidden}
+        .viaje-card-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;column-gap:10px;row-gap:0;align-items:center;padding:12px 14px;cursor:pointer}
+        .viaje-card-ic{width:36px;height:36px;border-radius:10px;background:var(--brand-xlt,#F5F3FF);display:flex;align-items:center;justify-content:center;color:var(--brand);font-size:15px;flex-shrink:0}
+        .viaje-card-info{min-width:0;display:flex;flex-direction:column;gap:2px}
+        .viaje-card-line1{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
+        .viaje-card-fecha{font-weight:700;font-size:13px;color:var(--txt);white-space:nowrap}
+        .viaje-card-sep{font-size:11px;color:var(--txt3)}
+        .viaje-card-com{font-size:12px;color:var(--txt2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+        .viaje-card-meta{font-size:11px;color:var(--txt3);display:flex;gap:9px;flex-wrap:wrap;line-height:1.35}
+        .viaje-card-meta b{color:var(--txt2);font-weight:700}
+        .viaje-card-meta i{font-size:10px}
+        .viaje-card-total{text-align:right;flex-shrink:0;line-height:1.1}
+        .viaje-card-total-val{font-weight:800;font-size:14.5px;color:var(--money);font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+        .viaje-card-total-lbl{font-size:9.5px;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;margin-top:1px;font-weight:600}
+        .viaje-card-acts{display:flex;align-items:center;gap:4px;flex-shrink:0}
+        .viaje-act{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--txt3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:background .12s,color .12s}
+        .viaje-act:hover{background:var(--surface2);color:var(--txt)}
+        .viaje-act:active{transform:scale(.94)}
+        .viaje-act-del{color:var(--red)}
+        .viaje-act-del:hover{background:#FEF2F2;border-color:#FCA5A5}
+        .viaje-card-caret{font-size:10px;color:var(--txt3);margin-left:4px;transition:transform .15s}
+        @media(max-width:640px){
+          /* En mobile: grid 3 filas — [ic | info | (caret)] / (total en fila 2 debajo del info, acciones a la der).
+             Simplificación: header a 2 filas con acciones abajo, para ganar aire. */
+          .viaje-card-head{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"ic info total" "ic acts acts";column-gap:10px;row-gap:8px;padding:11px 12px}
+          .viaje-card-ic{grid-area:ic;align-self:start;width:34px;height:34px;border-radius:9px;font-size:14px}
+          .viaje-card-info{grid-area:info;align-self:center}
+          .viaje-card-total{grid-area:total;align-self:center}
+          .viaje-card-total-val{font-size:14px}
+          .viaje-card-acts{grid-area:acts;justify-self:end;gap:6px}
+          .viaje-act{width:32px;height:32px;font-size:11.5px}
+          .viaje-card-caret{margin-left:2px;font-size:11px}
+          .viaje-card-fecha{font-size:12.5px}
+          .viaje-card-com{font-size:11.5px}
+          .viaje-card-meta{font-size:10.5px;gap:7px;margin-top:2px}
+        }
+      `}</style>
       {/* HEADER con KPIs */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 12 }}>
-        <div>
-          <div style={{ fontSize: 16, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className="viajes-header">
+        <div className="viajes-header-txt">
+          <div className="viajes-header-title">
             <i className="fa fa-route" style={{ color: 'var(--brand)' }} /> Control de Viajes
           </div>
-          <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 2 }}>
-            Un viaje puede tener múltiples paradas. Las paradas con presupuesto asociado impactan el costo del pedido.
+          <div className="viajes-header-sub">
+            Un viaje puede tener múltiples paradas. Las asociadas a un presupuesto impactan el costo del pedido.
           </div>
         </div>
-        <button className="btn btn-primary" onClick={openNew} style={{ fontSize: 13, padding: '9px 16px' }}>
+        <button className="btn btn-primary viajes-new-btn" onClick={openNew}>
           <i className="fa fa-plus" /> Nuevo viaje
         </button>
       </div>
 
-      {/* KPI Strip */}
+      {/* KPI Strip — SIEMPRE 3 columnas para no dejar hueco en mobile */}
       {viajes.length > 0 && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10, marginBottom: 16 }}>
-          <div className="card" style={{ padding: '12px 14px' }}>
-            <div style={{ fontSize: 10, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em', fontWeight: 700 }}>Viajes</div>
-            <div style={{ fontSize: 22, fontWeight: 800, marginTop: 3 }}>{stats.totalViajes}</div>
+        <div className="viajes-kpi-grid">
+          <div className="card viajes-kpi-card">
+            <div className="viajes-kpi-lbl">Viajes</div>
+            <div className="viajes-kpi-val">{stats.totalViajes}</div>
           </div>
-          <div className="card" style={{ padding: '12px 14px' }}>
-            <div style={{ fontSize: 10, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em', fontWeight: 700 }}>Paradas totales</div>
-            <div style={{ fontSize: 22, fontWeight: 700, marginTop: 3, fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{stats.totalParadas}</div>
-            <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 2 }}>
-              <i className="fa fa-box" style={{ color: '#7C3AED' }} /> {stats.tipoCount.insumos} · <i className="fa fa-cart-shopping" style={{ color: '#2563EB' }} /> {stats.tipoCount.mercaderia} · <i className="fa fa-truck-fast" style={{ color: '#059669' }} /> {stats.tipoCount.entrega}
+          <div className="card viajes-kpi-card">
+            <div className="viajes-kpi-lbl">Paradas</div>
+            <div className="viajes-kpi-val" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{stats.totalParadas}</div>
+            <div className="viajes-kpi-chips">
+              {stats.tipoCount.insumos > 0 && <span><i className="fa fa-box" style={{ color: '#7C3AED' }} /> {stats.tipoCount.insumos}</span>}
+              {stats.tipoCount.mercaderia > 0 && <span><i className="fa fa-cart-shopping" style={{ color: '#2563EB' }} /> {stats.tipoCount.mercaderia}</span>}
+              {stats.tipoCount.entrega > 0 && <span><i className="fa fa-truck-fast" style={{ color: '#059669' }} /> {stats.tipoCount.entrega}</span>}
             </div>
           </div>
-          <div className="card" style={{ padding: '12px 14px' }}>
-            <div style={{ fontSize: 10, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em', fontWeight: 700 }}>Gasto logístico</div>
-            <div style={{ fontSize: 22, fontWeight: 800, marginTop: 3, color: 'var(--money)' }}>{fmt(stats.totalGasto)}</div>
+          <div className="card viajes-kpi-card">
+            <div className="viajes-kpi-lbl">Gasto</div>
+            <div className="viajes-kpi-val" style={{ color: 'var(--money)' }}>{fmt(stats.totalGasto)}</div>
           </div>
         </div>
       )}
@@ -228,35 +296,35 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
             const conteo = (v.paradas || []).reduce((acc, p) => { acc[p.tipo] = (acc[p.tipo] || 0) + 1; return acc }, {})
             const budgetNums = Array.from(new Set((v.paradas || []).map(p => p.budgetNum).filter(Boolean)))
             return (
-              <div key={v.id} className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <div key={v.id} className={`card viaje-card${isOpen ? ' open' : ''}`}>
                 {/* Header de la card */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', cursor: 'pointer' }}
+                <div className="viaje-card-head"
                   onClick={() => setExpanded(s => ({ ...s, [v.id]: !s[v.id] }))}>
-                  <div style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--brand-xlt, #F5F3FF)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)', fontSize: 16, flexShrink: 0 }}>
+                  <div className="viaje-card-ic">
                     <i className="fa fa-truck" />
                   </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                      <span style={{ fontWeight: 700, fontSize: 13 }}>{v.fecha ? fmtDate(v.fecha) : 'Sin fecha'}</span>
-                      <span style={{ fontSize: 11, color: 'var(--txt3)' }}>·</span>
-                      <span style={{ fontSize: 12, color: 'var(--txt2)' }}>{v.comisionista || <span style={{ color: 'var(--txt4)', fontStyle: 'italic' }}>Sin comisionista</span>}</span>
+                  <div className="viaje-card-info">
+                    <div className="viaje-card-line1">
+                      <span className="viaje-card-fecha">{v.fecha ? fmtDate(v.fecha) : 'Sin fecha'}</span>
+                      <span className="viaje-card-sep">·</span>
+                      <span className="viaje-card-com">{v.comisionista || <span style={{ color: 'var(--txt4)', fontStyle: 'italic' }}>Sin comisionista</span>}</span>
                     </div>
-                    <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 2, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                      <span><b style={{ color: 'var(--txt2)' }}>{(v.paradas || []).length}</b> parada{(v.paradas || []).length !== 1 ? 's' : ''}</span>
-                      {conteo.insumos ? <span><i className="fa fa-box" style={{ color: '#7C3AED', fontSize: 10 }} /> {conteo.insumos}</span> : null}
-                      {conteo.mercaderia ? <span><i className="fa fa-cart-shopping" style={{ color: '#2563EB', fontSize: 10 }} /> {conteo.mercaderia}</span> : null}
-                      {conteo.entrega ? <span><i className="fa fa-truck-fast" style={{ color: '#059669', fontSize: 10 }} /> {conteo.entrega}</span> : null}
-                      {budgetNums.length > 0 && <span style={{ color: 'var(--brand)' }}><i className="fa fa-link" style={{ fontSize: 9 }} /> {budgetNums.join(', ')}</span>}
+                    <div className="viaje-card-meta">
+                      <span><b>{(v.paradas || []).length}</b> parada{(v.paradas || []).length !== 1 ? 's' : ''}</span>
+                      {conteo.insumos ? <span><i className="fa fa-box" style={{ color: '#7C3AED' }} /> {conteo.insumos}</span> : null}
+                      {conteo.mercaderia ? <span><i className="fa fa-cart-shopping" style={{ color: '#2563EB' }} /> {conteo.mercaderia}</span> : null}
+                      {conteo.entrega ? <span><i className="fa fa-truck-fast" style={{ color: '#059669' }} /> {conteo.entrega}</span> : null}
+                      {budgetNums.length > 0 && <span style={{ color: 'var(--brand)' }}><i className="fa fa-link" /> {budgetNums.join(', ')}</span>}
                     </div>
                   </div>
-                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                    <div style={{ fontWeight: 800, fontSize: 14, color: 'var(--money)' }}>{fmt(v.total || 0)}</div>
-                    <div style={{ fontSize: 10, color: 'var(--txt3)' }}>total</div>
+                  <div className="viaje-card-total">
+                    <div className="viaje-card-total-val">{fmt(v.total || 0)}</div>
+                    <div className="viaje-card-total-lbl">total</div>
                   </div>
-                  <div style={{ display: 'flex', gap: 4, marginLeft: 8 }}>
-                    <button className="btn btn-ghost btn-xs" onClick={(e) => { e.stopPropagation(); openEdit(v) }} title="Editar"><i className="fa fa-pen" /></button>
-                    <button className="btn btn-ghost btn-xs" onClick={(e) => { e.stopPropagation(); del(v) }} title="Eliminar" style={{ color: 'var(--red)' }}><i className="fa fa-trash" /></button>
-                    <i className={`fa fa-chevron-${isOpen ? 'up' : 'down'}`} style={{ fontSize: 11, color: 'var(--txt3)', marginLeft: 4, alignSelf: 'center' }} />
+                  <div className="viaje-card-acts">
+                    <button className="viaje-act" onClick={(e) => { e.stopPropagation(); openEdit(v) }} title="Editar" aria-label="Editar viaje"><i className="fa fa-pen" /></button>
+                    <button className="viaje-act viaje-act-del" onClick={(e) => { e.stopPropagation(); del(v) }} title="Eliminar" aria-label="Eliminar viaje"><i className="fa fa-trash" /></button>
+                    <i className={`fa fa-chevron-${isOpen ? 'up' : 'down'} viaje-card-caret`} />
                   </div>
                 </div>
                 {/* Detalle expansible — paradas */}
