@@ -820,18 +820,21 @@ export default function Logistica() {
             </div>
           </div>
 
-          {/* ── KPI strip ── */}
+          {/* ── KPI strip ── Cada KPI etiquetado con su MARCO TEMPORAL
+             para que no se confundan entre si (Hoy=fecha, Pendientes=estado
+             historico, Atrasados=envios activos fuera de SLA). */}
           <div className="logi-kpi-strip" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 10 }}>
             {[
-              { label: 'Hoy',         val: todayCount,          icon: 'fa-truck-fast',          color: 'var(--brand)' },
-              { label: 'Pendientes',  val: pendingCount,         icon: 'fa-box',                 color: '#D97706' },
-              { label: 'Atrasados',   val: lateShipments.length, icon: 'fa-triangle-exclamation', color: '#DC2626' },
+              { label: 'Hoy',         sub: 'Programados',    val: todayCount,          icon: 'fa-truck-fast',          color: 'var(--brand)' },
+              { label: 'Pendientes',  sub: 'En preparación', val: pendingCount,         icon: 'fa-box',                 color: '#D97706' },
+              { label: 'Atrasados',   sub: 'Fuera de SLA',   val: lateShipments.length, icon: 'fa-triangle-exclamation', color: '#DC2626' },
             ].map(k => (
               <div key={k.label} className="card logi-kpi-card" style={{ padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
                 <i className={`fa ${k.icon}`} style={{ color: k.val > 0 ? k.color : 'var(--txt4)', fontSize: 16, flexShrink: 0 }} />
                 <div style={{ minWidth: 0, flex: 1 }}>
                   <div className="logi-kpi-label" style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.2 }}>{k.label}</div>
                   <div style={{ fontSize: 20, fontWeight: 800, color: k.val > 0 ? k.color : 'var(--txt)', lineHeight: 1.2, fontVariantNumeric: 'tabular-nums' }}>{k.val}</div>
+                  <div className="logi-kpi-sub" style={{ fontSize: 9, color: 'var(--txt4)', fontWeight: 600, letterSpacing: '.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.2, marginTop: 1 }}>{k.sub}</div>
                 </div>
               </div>
             ))}
@@ -885,12 +888,13 @@ export default function Logistica() {
               .logi-summary-grid > div{padding:12px 14px!important;border-radius:14px!important}
               .logi-summary-grid > div > div:first-child{font-size:10px!important;margin-bottom:10px!important;letter-spacing:.5px!important}
             }
-            /* ── Envios KPIs (Hoy / Pendientes / Atrasados): tambien mas
-               chicos para mismo look que Resumen. ── */
+            /* ── Envios KPIs (Hoy / Pendientes / Atrasados): mismo estandar
+               que Resumen. Ahora c/ 3 lineas: label, valor, sub (marco). ── */
             @media(max-width:640px){
               .logi-kpi-card{padding:8px 8px!important;gap:4px!important}
-              .logi-kpi-card > div > div:first-child{font-size:8.5px!important;letter-spacing:.4px!important;font-weight:800!important}
-              .logi-kpi-card > div > div:last-child{font-size:16px!important;line-height:1.05!important;letter-spacing:-.02em!important}
+              .logi-kpi-card > div > .logi-kpi-label{font-size:8.5px!important;letter-spacing:.4px!important;font-weight:800!important}
+              .logi-kpi-card > div > div:nth-child(2){font-size:16px!important;line-height:1.05!important;letter-spacing:-.02em!important}
+              .logi-kpi-card > div > .logi-kpi-sub{font-size:8px!important;margin-top:1px!important;color:var(--txt4)!important;font-weight:600!important}
               .logi-kpi-card i{font-size:12px!important}
             }
             /* ── Cotizar mobile: cards mas compactas + menos aire entre bloques ── */
@@ -1376,11 +1380,17 @@ export default function Logistica() {
 
           {/* KPI cards — grid 2 cols en mobile con Desviosde flete span 2
              para no dejar hueco. Antes con auto-fit el 5to KPI quedaba solo
-             abajo con la columna derecha vacía (feo). */}
+             abajo con la columna derecha vacía (feo).
+
+             UX: cada KPI ahora dice EXPLICITO su marco temporal (Histórico
+             / Este mes / En preparación / Ahora / Total). Antes se leían
+             como si todos fueran del mismo periodo y generaba confusion:
+             "Envios este mes 0" + "Pendientes 2" leia como bug cuando en
+             realidad son marcos temporales distintos. */}
           <div className="kpis logi-resumen-kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 16 }}>
             {/* Costo total — with trend */}
             <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Costo total envíos</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Costo total <span style={{ opacity: .55, fontWeight: 500, textTransform: 'none', letterSpacing: 0 }}>· histórico</span></div>
               <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--money)' }}>{fmt(totalShipCost)}</div>
               {trendPct !== null && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 5, fontSize: 11, fontWeight: 700, color: trendPct > 0 ? '#DC2626' : '#10B981' }}>
@@ -1388,24 +1398,25 @@ export default function Logistica() {
                   {Math.abs(trendPct)}% vs mes pasado
                 </div>
               )}
-              {trendPct === null && <div style={{ fontSize: 10, color: 'var(--txt4)', marginTop: 5 }}>Sin datos previos</div>}
+              {trendPct === null && <div style={{ fontSize: 10, color: 'var(--txt4)', marginTop: 5 }}>{shipments.length} env. registrados</div>}
             </div>
 
             {/* Envíos este mes */}
             <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Envíos este mes</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Envíos <span style={{ opacity: .55, fontWeight: 500, textTransform: 'none', letterSpacing: 0 }}>· {new Date().toLocaleString('es-AR', { month: 'long' })}</span></div>
               <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--txt)' }}>{thisMonth}</div>
+              <div style={{ fontSize: 10, color: 'var(--txt4)', marginTop: 5 }}>Total histórico: {shipments.length}</div>
             </div>
 
             {/* Promedio por envío */}
             <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Promedio por envío</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Promedio por envío <span style={{ opacity: .55, fontWeight: 500, textTransform: 'none', letterSpacing: 0 }}>· histórico</span></div>
               <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--money)' }}>{fmt(avgCost)}</div>
             </div>
 
             {/* Atrasados */}
             <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Atrasados</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Atrasados <span style={{ opacity: .55, fontWeight: 500, textTransform: 'none', letterSpacing: 0 }}>· ahora</span></div>
               <div style={{ fontSize: 24, fontWeight: 800, color: lateShipments.length > 0 ? '#DC2626' : 'var(--txt)' }}>{lateShipments.length}</div>
               <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 3 }}>{lateShipments.length > 0 ? 'Despachado/En tránsito > SLA' : 'Todo al día'}</div>
             </div>
@@ -1414,7 +1425,7 @@ export default function Logistica() {
                 que no quede solo con hueco (feo). En desktop queda 1 col
                 normal en el grid auto-fit. */}
             <div className="card logi-resumen-variance" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)', background: varianceCount > 0 ? '#FEF2F2' : undefined, border: varianceCount > 0 ? '1.5px solid #FCA5A5' : undefined }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: varianceCount > 0 ? '#991B1B' : 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Desvíos de flete</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: varianceCount > 0 ? '#991B1B' : 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Desvíos de flete <span style={{ opacity: .55, fontWeight: 500, textTransform: 'none', letterSpacing: 0 }}>· histórico</span></div>
               <div style={{ fontSize: 24, fontWeight: 800, color: varianceCount > 0 ? '#DC2626' : 'var(--txt)' }}>{varianceCount}</div>
               <div style={{ fontSize: 10, color: varianceCount > 0 ? '#B91C1C' : 'var(--txt3)', marginTop: 3 }}>{varianceCount > 0 ? 'Real ≠ cobrado al cliente' : 'Coincide con lo cobrado'}</div>
             </div>
