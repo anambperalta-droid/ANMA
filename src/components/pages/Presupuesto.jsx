@@ -503,6 +503,8 @@ export default function Presupuesto() {
           // Precio del catálogo según el tipo de venta (B2C para minorista/ambos, B2B para mayorista)
           updated.priceUnit = catalogPriceFor(match, canalEffective(form.canalVenta)) || (num(match.cost) > 0 ? priceFromMargin(num(match.cost), form.margin, form.discount) : 0)
           updated.stockAvailable = match.stock || 0
+          // Producto nuevo = precio fresco del catálogo, no manual heredado
+          updated._precioManual = false
         }
       }
       // Cambiar costUnit dispara reprice automático para que priceUnit no quede stale
@@ -510,7 +512,33 @@ export default function Presupuesto() {
         const cu = num(val)
         if (cu > 0) updated.priceUnit = priceFromMargin(cu, form.margin, form.discount)
       }
+      // Marca precio como manual cuando el usuario lo edita a mano — así el
+      // toggle de canal no le pisa un precio negociado.
+      if (key === 'priceUnit') {
+        updated._precioManual = true
+      }
       return updated
+    }))
+  }
+
+  /* ── Toggle CANAL con reprice automático ────────────────────────────
+     Ana tiene listas de precios distintas por canal (Público / Mayorista).
+     Al cambiar el toggle, TODOS los ítems del pedido con producto del
+     catálogo se recalculan con el precio del canal correspondiente.
+     Respeta ediciones manuales (flag _precioManual): si el usuario tocó
+     el precio a mano, no se pisa aunque cambie el canal. */
+  const setCanalAndReprice = (canalVal) => {
+    setForm(f => ({ ...f, canalVenta: canalVal }))
+    const canalEff = _tipoVenta === 'ambos' ? canalVal : _tipoVenta
+    setItems(prev => prev.map(it => {
+      if (it._precioManual) return it
+      const match = it.productId
+        ? products.find(p => p.id === it.productId)
+        : (it.name ? products.find(p => p.name === it.name) : null)
+      if (!match) return it
+      const newPrice = catalogPriceFor(match, canalEff)
+        || (num(match.cost) > 0 ? priceFromMargin(num(match.cost), form.margin, form.discount) : num(it.priceUnit))
+      return { ...it, priceUnit: newPrice }
     }))
   }
   const addItem = () => setItems(prev => [...prev, emptyItem()])
@@ -1466,7 +1494,7 @@ export default function Presupuesto() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', marginBottom: 10, background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, flexWrap: 'wrap' }}>
                     <div style={{ fontSize: 11, fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: 0.3, display: 'flex', alignItems: 'center', gap: 5 }}>
                       Canal
-                      <i className="fa fa-circle-info" style={{ fontSize: 10, color: '#9CA3AF', cursor: 'help' }} title="Define qué precio del catálogo se usa al agregar productos (Público o Mayorista)" />
+                      <i className="fa fa-circle-info" style={{ fontSize: 10, color: '#9CA3AF', cursor: 'help' }} title="Actualiza los precios del pedido según la lista del canal (Público o Mayorista). Los precios editados a mano se respetan." />
                     </div>
                     <div style={{ display: 'inline-flex', background: '#fff', border: '1px solid #E5E7EB', borderRadius: 8, padding: 2, gap: 2, flex: '1 1 auto', minWidth: 0 }}>
                       {[
@@ -1478,7 +1506,7 @@ export default function Presupuesto() {
                           <button
                             key={opt.val}
                             type="button"
-                            onClick={() => setF('canalVenta', opt.val)}
+                            onClick={() => setCanalAndReprice(opt.val)}
                             style={{
                               flex: 1, padding: '7px 12px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: 'none', cursor: 'pointer',
                               background: active ? 'var(--brand)' : 'transparent',
@@ -1532,6 +1560,7 @@ export default function Presupuesto() {
                                     variantId: null, variant: '',
                                     priceUnit: catalogPriceFor(p, canalEffective(form.canalVenta)) || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
                                     stockAvailable: p.stock || 0,
+                                    _precioManual: false,
                                   }))
                                 }}
                                 placeholder="Nombre del producto"
@@ -1610,6 +1639,7 @@ export default function Presupuesto() {
                                   variantId: null, variant: '',
                                   priceUnit: catalogPriceFor(p, canalEffective(form.canalVenta)) || (num(p.cost) > 0 ? priceFromMargin(num(p.cost), form.margin, form.discount) : 0),
                                   stockAvailable: p.stock || 0,
+                                  _precioManual: false,
                                 }))
                               }}
                               placeholder="Nombre del producto"
