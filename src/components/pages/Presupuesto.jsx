@@ -625,25 +625,6 @@ export default function Presupuesto() {
   const removeDispatchInsumo = (idx) =>
     setF('dispatchInsumos', (form.dispatchInsumos || []).filter((_, i) => i !== idx))
 
-  const loadBolsaEcommerce = () => {
-    const bolsa = insumosList.find(i => { const n = i.name.toLowerCase(); return n.includes('bolsa') || n.includes('mailer') || n.includes('sobre') || n.includes('ecommerce') })
-    if (bolsa) {
-      setF('dispatchInsumos', [...(form.dispatchInsumos || []).filter(d => d.insumoId !== bolsa.id), { insumoId: bolsa.id, qty: 1 }])
-      toast('Bolsa eCommerce cargada', 'ok')
-    } else {
-      toast('No encontré un insumo tipo bolsa. Cargá uno en /insumos.', 'er')
-    }
-  }
-  const loadCajaFragil = () => {
-    const caja = insumosList.find(i => i.name.toLowerCase().includes('caja'))
-    const protec = insumosList.find(i => { const n = i.name.toLowerCase(); return n.includes('burbuja') || n.includes('protec') || n.includes('foam') || n.includes('nylon') })
-    const preload = []
-    if (caja) preload.push({ insumoId: caja.id, qty: 1 })
-    if (protec) preload.push({ insumoId: protec.id, qty: 1 })
-    if (preload.length) { setF('dispatchInsumos', preload); toast('Caja Frágil cargada', 'ok') }
-    else toast('No encontré insumos de caja o protección. Cargá en /insumos.', 'er')
-  }
-
   /* ── Auto-suggest dispatch packaging when entering Step 3 ── */
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -1331,17 +1312,19 @@ export default function Presupuesto() {
         box-shadow:0 0 0 3px rgba(124,58,237,.08);
       }
       @media(max-width:640px){
-        /* 2 filas alineadas: [tipo | costo | borrar] arriba · descripción full abajo */
+        /* Card mobile: [tipo 1fr | costo 92 | trash 40] arriba · descripción full abajo.
+           Alineado 1:1 con .disp-row (insumos) para lenguaje visual único en el wizard. */
         .logi-parada-row{
-          display:grid!important;grid-template-columns:1fr 96px 30px!important;
-          gap:7px 8px!important;padding:10px!important;
-          background:var(--surface2)!important;border-radius:10px!important;
-          margin-bottom:7px!important;border-bottom:none!important;align-items:center!important;
+          display:grid!important;grid-template-columns:1fr 92px 40px!important;
+          gap:8px!important;padding:10px!important;
+          background:var(--surface2)!important;border:1px solid var(--border)!important;
+          border-radius:12px!important;margin-bottom:8px!important;align-items:center!important;
         }
-        .logi-parada-row > :nth-child(1){grid-column:1;grid-row:1;font-size:12.5px!important;padding:8px 9px!important;background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:7px!important}
-        .logi-parada-row > :nth-child(3){grid-column:2;grid-row:1;font-size:13px!important;font-weight:700!important;padding:8px 9px!important;background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:7px!important;text-align:right!important}
-        .logi-parada-row > :nth-child(4){grid-column:3;grid-row:1;justify-self:center;align-self:center!important;margin:0!important}
-        .logi-parada-row > :nth-child(2){grid-column:1 / -1;grid-row:2;font-size:12.5px!important;padding:8px 10px!important;background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:7px!important}
+        .logi-parada-row > :nth-child(1){grid-column:1;grid-row:1;height:44px!important;font-size:13.5px!important;padding:0 10px!important;background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:9px!important;font-weight:600!important}
+        .logi-parada-row > :nth-child(3){grid-column:2;grid-row:1;height:44px!important;font-size:14px!important;font-weight:700!important;padding:0 10px!important;background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:9px!important;text-align:right!important;font-variant-numeric:tabular-nums!important;font-family:'Space Grotesk','Inter',sans-serif!important;color:var(--money)!important}
+        .logi-parada-row > :nth-child(4){grid-column:3;grid-row:1;width:40px!important;height:44px!important;border-radius:10px!important;border:1px solid var(--border)!important;background:var(--surface)!important;color:var(--red,#EF4444)!important;justify-self:stretch!important;align-self:stretch!important;margin:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:0!important}
+        .logi-parada-row > :nth-child(2){grid-column:1 / -1;grid-row:2;height:44px!important;font-size:13px!important;padding:0 10px!important;background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:9px!important;color:var(--txt)!important}
+        .logi-parada-row select:focus,.logi-parada-row input:focus{border-color:var(--brand)!important;box-shadow:0 0 0 3px var(--brand-xlt)!important;outline:none!important}
       }
       /* ── Logística section card (al final de Paso 3) ── */
       .logi-section-card{
@@ -1829,22 +1812,12 @@ export default function Presupuesto() {
                 {/* ─── 📦 Insumos Operativos de Despacho ─── */}
                 {!['retira', 'local', 'showroom'].some(kw => (form.delivery || '').toLowerCase().includes(kw)) && (
                   <div style={{ marginTop: 20, padding: '18px 20px', background: 'var(--bg-card, #fff)', border: '1px solid var(--border, #E5E7EB)', borderRadius: 12 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap', gap: 8 }}>
-                      <div>
-                        <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                          <i className="fa fa-box-open" style={{ color: 'var(--brand)', fontSize: 13 }} /> Insumos Operativos de Despacho
-                        </div>
-                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
-                          Packaging y materiales del envío — invisibles para el cliente, impactan en tu costo real
-                        </div>
+                    <div style={{ marginBottom: 10 }}>
+                      <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <i className="fa fa-box-open" style={{ color: 'var(--brand)', fontSize: 13 }} /> Insumos Operativos de Despacho
                       </div>
-                      <div className="disp-quick" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                        <button type="button" className="btn btn-ghost btn-xs" onClick={loadBolsaEcommerce} title="Cargar Bolsa eCommerce / mailer">
-                          <i className="fa fa-envelope" style={{ marginRight: 5 }} />Bolsa eCommerce
-                        </button>
-                        <button type="button" className="btn btn-ghost btn-xs" onClick={loadCajaFragil} title="Cargar Caja + protección para frágiles">
-                          <i className="fa fa-box" style={{ marginRight: 5 }} />Caja Frágil
-                        </button>
+                      <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
+                        Packaging y materiales del envío — invisibles para el cliente, impactan en tu costo real
                       </div>
                     </div>
 
