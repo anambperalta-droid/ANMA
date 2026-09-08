@@ -676,36 +676,61 @@ export default function Catalogo() {
         .cli-pill-new:hover{filter:brightness(1.08);transform:translateY(-1px)}
         .cli-pill-new:active{transform:scale(.95)}
         .cli-pill-new i{font-size:11px}
-        @media(max-width:640px){
-          /* ── Barra de acciones (mobile) — layout limpio con jerarquía clara.
-             Zona izquierda: 3 utilitarios (Precios / Exportar / Importar) como
-             píldoras 36×36 icon-only, agrupadas.
-             Separador vertical fino.
-             Zona derecha: Rápido (chip amarillo secundario) + Nuevo (CTA
-             principal con texto). Sin wrap — todo en 1 fila con space-between. */
-          .cat-ph{display:block!important;margin-bottom:10px!important}
-          /* space-between con 3 hijos distribuye equidistante — no queremos eso.
-             Usamos flex-start + margin-left:auto en el 2° hijo (Rápido) para
-             empujar Rápido y Nuevo juntos a la derecha. */
-          .cat-ph .ph-right{display:flex!important;flex-wrap:nowrap!important;justify-content:flex-start!important;align-items:center!important;gap:8px!important;width:100%}
-          /* Combinador `>` matchea solo hijos directos de .ph-right (Rápido y
-             Nuevo). Los 3 utilitarios viven dentro de .cli-pill-group. */
-          .cat-ph .ph-right > .cli-pill{margin-left:auto}
-          .cat-ph .cli-pill-group{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;justify-content:flex-start;flex:0 0 auto;padding-right:10px;border-right:1px solid var(--border)}
+        /* ═══════════════════════════════════════════════════════════════
+           Header Productos mobile (<=900px) — cubre el rango del drawer.
+           Layout en 1 fila:
+             [Grupo utilitarios: %  CSV  ↑]  |  ⚡ Rápido    + Nuevo
+           - Utilitarios: 3 pastillas 36×36 icon-only, surface2/border.
+           - Separador visual (border-right en el grupo).
+           - Rápido: chip amarillo con texto, empujado a la derecha con
+             margin-left:auto (queda pegado a Nuevo por gap:8px).
+           - Nuevo: CTA principal brand, texto visible.
+           Scope claro por selectores: utilitarios .cli-pill-group .cli-pill;
+           Rápido .ph-right > .cli-pill (hijo directo, NO dentro del group).
+           ═══════════════════════════════════════════════════════════════ */
+        @media(max-width:900px){
+          .cat-ph{margin-bottom:10px}
+          .cat-ph .ph-right{
+            display:flex!important;flex-wrap:nowrap!important;
+            align-items:center!important;justify-content:flex-start!important;
+            gap:6px!important;width:100%;background:transparent!important;padding:0!important;
+          }
+          .cat-ph .cli-pill-group{
+            display:flex;align-items:center;gap:4px;flex:0 0 auto;
+            padding-right:10px;border-right:1px solid var(--border);
+          }
+          .cat-ph .cli-pill-group .cli-pill{
+            width:36px!important;height:36px!important;padding:0!important;
+            justify-content:center!important;border-radius:10px!important;
+            background:var(--surface2)!important;border:1px solid var(--border)!important;
+            color:var(--txt3)!important;
+          }
+          .cat-ph .cli-pill-group .cli-pill i{font-size:13px!important}
+          .cat-ph .cli-pill-group .cli-pill span{display:none!important}
+          .cat-ph .cli-pill-group .cli-pill:active{
+            background:var(--brand-xlt)!important;color:var(--brand)!important;
+            border-color:var(--brand-dim,rgba(124,58,237,.25))!important;transform:scale(.94);
+          }
+          /* Toggle grid/list: inline style display:inline-flex; ganamos con !important. */
           .cat-view-toggle{display:none!important}
-          .cat-ph .cli-pill{width:36px!important;height:36px!important;padding:0!important;justify-content:center;border-radius:10px!important;background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--txt3)!important}
-          .cat-ph .cli-pill:active{background:var(--brand-xlt)!important;color:var(--brand)!important;border-color:var(--brand-dim,rgba(124,58,237,.25))!important;transform:scale(.94)}
-          .cat-ph .cli-pill span{display:none}
-          .cat-ph .cli-pill i{font-size:13px}
-          /* Rápido (chip amarillo): pill compacto de 36px, no icon-only */
-          .cat-ph > .ph-right > .cli-pill{width:auto!important;padding:0 12px!important;background:linear-gradient(135deg,rgba(251,191,36,.14),rgba(245,158,11,.10))!important;border:1px solid #FBBF24!important;color:#B45309!important}
+          /* Rápido — chip amarillo hijo directo de .ph-right (>).
+             margin-left:auto empuja Rápido a la derecha; Nuevo va detrás con gap. */
+          .cat-ph > .ph-right > .cli-pill{
+            margin-left:auto!important;
+            height:38px!important;padding:0 14px!important;width:auto!important;
+            background:linear-gradient(135deg,rgba(251,191,36,.14),rgba(245,158,11,.10))!important;
+            border:1px solid #FBBF24!important;color:#B45309!important;
+            border-radius:9999px!important;font-size:11.5px!important;font-weight:700!important;
+            display:inline-flex!important;align-items:center!important;gap:5px!important;
+          }
           .cat-ph > .ph-right > .cli-pill span{display:inline!important;font-size:11.5px!important}
-          /* Nuevo: CTA principal con texto visible, ligeramente más alto y con
-             sombra de marca para que se lea como acción PRIMARIA. */
-          .cat-ph .cli-pill-new{height:38px!important;padding:0 16px!important;font-size:12.5px!important;flex:0 0 auto}
-          /* Contenedor derecho: Rápido + Nuevo agrupados */
-          .cat-ph .ph-right > .cli-pill,
-          .cat-ph .ph-right > .cli-pill-new{margin-left:0}
+          .cat-ph > .ph-right > .cli-pill i{font-size:11px!important;color:#F59E0B!important}
+          /* Nuevo CTA */
+          .cat-ph .cli-pill-new{
+            height:38px!important;padding:0 14px!important;
+            font-size:12.5px!important;flex:0 0 auto;
+          }
+          .cat-ph .cli-pill-new i{font-size:10px!important}
         }
         @media(max-width:480px){.cat-price-calc{grid-template-columns:1fr!important}.cat-price-arrow{display:none!important}}
       `}</style>
