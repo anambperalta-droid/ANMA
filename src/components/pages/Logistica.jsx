@@ -820,21 +820,18 @@ export default function Logistica() {
             </div>
           </div>
 
-          {/* ── KPI strip ── Cada KPI etiquetado con su MARCO TEMPORAL
-             para que no se confundan entre si (Hoy=fecha, Pendientes=estado
-             historico, Atrasados=envios activos fuera de SLA). */}
+          {/* ── KPI strip ── */}
           <div className="logi-kpi-strip" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 10 }}>
             {[
-              { label: 'Hoy',         sub: 'Programados',    val: todayCount,          icon: 'fa-truck-fast',          color: 'var(--brand)' },
-              { label: 'Pendientes',  sub: 'En preparación', val: pendingCount,         icon: 'fa-box',                 color: '#D97706' },
-              { label: 'Atrasados',   sub: 'Fuera de SLA',   val: lateShipments.length, icon: 'fa-triangle-exclamation', color: '#DC2626' },
+              { label: 'Hoy',         val: todayCount,          icon: 'fa-truck-fast',          color: 'var(--brand)' },
+              { label: 'Pendientes',  val: pendingCount,         icon: 'fa-box',                 color: '#D97706' },
+              { label: 'Atrasados',   val: lateShipments.length, icon: 'fa-triangle-exclamation', color: '#DC2626' },
             ].map(k => (
               <div key={k.label} className="card logi-kpi-card" style={{ padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
                 <i className={`fa ${k.icon}`} style={{ color: k.val > 0 ? k.color : 'var(--txt4)', fontSize: 16, flexShrink: 0 }} />
                 <div style={{ minWidth: 0, flex: 1 }}>
                   <div className="logi-kpi-label" style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.2 }}>{k.label}</div>
                   <div style={{ fontSize: 20, fontWeight: 800, color: k.val > 0 ? k.color : 'var(--txt)', lineHeight: 1.2, fontVariantNumeric: 'tabular-nums' }}>{k.val}</div>
-                  <div className="logi-kpi-sub" style={{ fontSize: 9, color: 'var(--txt4)', fontWeight: 600, letterSpacing: '.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.2, marginTop: 1 }}>{k.sub}</div>
                 </div>
               </div>
             ))}
@@ -888,13 +885,11 @@ export default function Logistica() {
               .logi-summary-grid > div{padding:12px 14px!important;border-radius:14px!important}
               .logi-summary-grid > div > div:first-child{font-size:10px!important;margin-bottom:10px!important;letter-spacing:.5px!important}
             }
-            /* ── Envios KPIs (Hoy / Pendientes / Atrasados): mismo estandar
-               que Resumen. Ahora c/ 3 lineas: label, valor, sub (marco). ── */
+            /* ── Envios KPIs (Hoy / Pendientes / Atrasados) mobile compacto ── */
             @media(max-width:640px){
               .logi-kpi-card{padding:8px 8px!important;gap:4px!important}
               .logi-kpi-card > div > .logi-kpi-label{font-size:8.5px!important;letter-spacing:.4px!important;font-weight:800!important}
               .logi-kpi-card > div > div:nth-child(2){font-size:16px!important;line-height:1.05!important;letter-spacing:-.02em!important}
-              .logi-kpi-card > div > .logi-kpi-sub{font-size:8px!important;margin-top:1px!important;color:var(--txt4)!important;font-weight:600!important}
               .logi-kpi-card i{font-size:12px!important}
             }
             /* ── Cotizar mobile: cards mas compactas + menos aire entre bloques ── */
