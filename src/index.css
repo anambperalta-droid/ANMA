@@ -915,6 +915,15 @@ td b{color:var(--txt);font-weight:600}
 .wiz-rev-meta{font-size:10px;color:var(--txt3);margin-top:3px}
 .wiz-rev-item{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed var(--border)}
 .wiz-rev-item:last-child{border:none}
+/* Paso 4 · Resumen — variantes tipográficas (misma jerarquía que PDF/WA) */
+.wiz-rev-disc{color:var(--red);font-size:12px}
+.wiz-rev-sub{font-weight:600;color:var(--txt2)}
+.wiz-rev-iva{font-weight:700;color:#B45309}
+.wiz-rev-total{font-weight:800;font-size:16px;margin-top:6px;padding-top:6px;border-top:2px solid var(--border)}
+.wiz-rev-total.has-iva{border-top:1px dashed var(--border)}
+.wiz-rev-total > span:last-child{color:var(--brand)}
+.wiz-rev-sena{font-weight:600;color:var(--txt2);margin-top:4px}
+.wiz-rev-saldo{font-weight:700;color:#16A34A}
 
 .wiz-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
 .wiz-nav-mid{font-size:11px;font-weight:600;color:var(--txt3)}
@@ -1988,6 +1997,53 @@ td b{color:var(--txt);font-weight:600}
   .pmt-act-pay i{color:#34d399!important}
   .pmt-act-pdf{background:rgba(147,197,253,.18)!important;border-color:rgba(147,197,253,.35)!important}
   .pmt-act-pdf i{color:#93c5fd!important}
+  /* ── Paso 4 · Confirmar — cards mobile alineadas con Paso 2/3 ── */
+  .wiz-review{gap:12px!important}
+  .wiz-rev-card{
+    background:var(--surface)!important;
+    border:1px solid var(--border)!important;
+    border-radius:14px!important;
+    padding:14px 14px 12px!important;
+    box-shadow:0 1px 2px rgba(15,23,42,.03)!important;
+  }
+  .wiz-rev-card-h{
+    font-size:10px!important;letter-spacing:.06em!important;
+    gap:8px!important;margin-bottom:10px!important;
+    padding-bottom:8px!important;border-bottom:1px dashed var(--border)!important;
+  }
+  .wiz-rev-card-h i{font-size:11px!important;color:var(--brand)!important}
+  .wiz-rev-edit{
+    min-height:32px!important;padding:6px 12px!important;
+    font-size:11px!important;border-radius:8px!important;
+    background:var(--brand-xlt)!important;
+    border:1px solid var(--brand-dim,rgba(124,58,237,.18))!important;
+    color:var(--brand)!important;
+    -webkit-tap-highlight-color:transparent!important;
+    transition:background .12s,color .12s!important;
+  }
+  .wiz-rev-edit:active{background:var(--brand)!important;color:#fff!important}
+  .wiz-rev-body{font-size:13px!important;line-height:1.5!important;color:var(--txt)!important}
+  .wiz-rev-body b{font-size:14px!important;font-weight:800!important}
+  .wiz-rev-meta{font-size:11px!important;margin-top:5px!important;color:var(--txt3)!important}
+  .wiz-rev-item{
+    padding:7px 0!important;font-size:13px!important;
+    font-variant-numeric:tabular-nums!important;
+  }
+  .wiz-rev-item > span:last-child{
+    font-family:'Space Grotesk','Inter',sans-serif!important;
+    font-weight:700!important;
+  }
+  /* Total: protagonista del resumen (mismo peso visual que subtotal en Paso 2) */
+  .wiz-rev-total{
+    font-size:15px!important;margin-top:8px!important;
+    padding:10px 0 4px!important;
+  }
+  .wiz-rev-total > span:last-child{
+    font-size:20px!important;font-weight:800!important;
+    letter-spacing:-.01em!important;line-height:1!important;
+    color:var(--brand)!important;
+  }
+  .wiz-rev-saldo{font-size:13px!important}
   .wiz-nav{position:fixed!important;bottom:calc(82px + env(safe-area-inset-bottom,0px))!important;left:10px!important;right:10px!important;background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:16px!important;box-shadow:0 -4px 20px rgba(0,0,0,.12)!important;padding:10px 14px!important;z-index:200!important;margin:0!important;border-top:none!important;gap:8px!important}
   .wiz-nav-mid{display:none!important}
   .wiz-nav .btn{min-height:46px!important;font-size:13px!important;flex:1!important;min-width:0!important}

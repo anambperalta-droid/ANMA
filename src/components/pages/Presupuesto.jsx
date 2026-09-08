@@ -2042,32 +2042,32 @@ export default function Presupuesto() {
                     <div className="wiz-rev-card-h"><i className="fa fa-calculator" /> Resumen</div>
                     <div className="wiz-rev-body">
                       {calc.discountAmt > 0 && (
-                        <div className="wiz-rev-item" style={{ color: 'var(--red)', fontSize: 12 }}>
+                        <div className="wiz-rev-item wiz-rev-disc">
                           <span>Descuento ({calc.discountPct}%)</span>
                           <span>−{fmt(calc.discountAmt)}</span>
                         </div>
                       )}
                       {calc.ivaAmt > 0 && (
                         <>
-                          <div className="wiz-rev-item" style={{ fontWeight: 600, color: 'var(--txt2)' }}>
+                          <div className="wiz-rev-item wiz-rev-sub">
                             <span>Subtotal</span>
                             <span>{fmt(calc.total)}</span>
                           </div>
-                          <div className="wiz-rev-item" style={{ fontWeight: 700, color: '#B45309' }}>
+                          <div className="wiz-rev-item wiz-rev-iva">
                             <span>IVA ({(calc.ivaRate * 100).toFixed(0)}%)</span>
                             <span>+{fmt(calc.ivaAmt)}</span>
                           </div>
                         </>
                       )}
-                      <div className="wiz-rev-item" style={{ fontWeight: 800, fontSize: 16, marginTop: 6, paddingTop: 6, borderTop: calc.ivaAmt > 0 ? '1px dashed var(--border)' : '2px solid var(--border)' }}>
+                      <div className={`wiz-rev-item wiz-rev-total${calc.ivaAmt > 0 ? ' has-iva' : ''}`}>
                         <span>Total{calc.ivaAmt > 0 ? ' (IVA incl.)' : ''}</span>
-                        <span style={{ color: 'var(--brand)' }}>{fmt(calc.totalFinal)}</span>
+                        <span>{fmt(calc.totalFinal)}</span>
                       </div>
-                      <div className="wiz-rev-item" style={{ fontWeight: 600, color: 'var(--txt2)', marginTop: 4 }}>
+                      <div className="wiz-rev-item wiz-rev-sena">
                         <span>Seña ({form.deposit}%)</span>
                         <span>{fmt(calc.depositFinal)}</span>
                       </div>
-                      <div className="wiz-rev-item" style={{ fontWeight: 700, color: '#16A34A' }}>
+                      <div className="wiz-rev-item wiz-rev-saldo">
                         <span>Saldo contra entrega</span>
                         <span>{fmt(calc.totalFinal - calc.depositFinal)}</span>
                       </div>
