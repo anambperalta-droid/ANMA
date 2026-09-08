@@ -2090,22 +2090,24 @@ export default function Presupuesto() {
                   {feats.margenTabla && <div className="pmt-margin" style={calc.costPending ? { color: '#F59E0B', fontStyle: 'italic' } : undefined} title={calc.costPending ? 'Falta cargar el Costo unitario' : undefined}>{calc.costPending ? '—' : `${calc.marginReal}%`}</div>}
                 </div>
               </div>
-              <div className="pmt-acts">
-                <button className="pmt-act-btn" onClick={sendWhatsApp} title="Enviar presupuesto">
-                  <i className="fa-brands fa-whatsapp" style={{ fontSize: 20, color: '#4ade80' }} />
-                  <span>Enviar</span>
-                </button>
-                {bankCfg.enabled && (
-                  <button className="pmt-act-btn" onClick={sendBankDataByWA} title="Enviar datos de pago">
-                    <i className="fa-brands fa-whatsapp" style={{ fontSize: 20, color: '#86efac' }} />
-                    <span>Pago</span>
+              {currentStep === WIZARD_STEPS.length && (
+                <div className="pmt-acts">
+                  <button className="pmt-act-btn pmt-act-send" onClick={sendWhatsApp} title="Enviar presupuesto por WhatsApp">
+                    <i className="fa-brands fa-whatsapp" />
+                    <span>Enviar</span>
                   </button>
-                )}
-                <button className="pmt-act-btn" onClick={printPDF} title="Descargar PDF">
-                  <i className="fa fa-file-pdf" style={{ fontSize: 20, color: '#93C5FD' }} />
-                  <span>PDF</span>
-                </button>
-              </div>
+                  {bankCfg.enabled && (
+                    <button className="pmt-act-btn pmt-act-pay" onClick={sendBankDataByWA} title="Enviar datos bancarios al cliente">
+                      <i className="fa fa-money-bill-transfer" />
+                      <span>Cobrar</span>
+                    </button>
+                  )}
+                  <button className="pmt-act-btn pmt-act-pdf" onClick={printPDF} title="Descargar PDF del presupuesto">
+                    <i className="fa fa-file-pdf" />
+                    <span>PDF</span>
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* NAV WIZARD */}
