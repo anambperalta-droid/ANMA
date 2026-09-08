@@ -680,15 +680,17 @@ export default function Logistica() {
         .logi-pills-row::-webkit-scrollbar{display:none}
         /* Mobile cards */
         .logi-mob-list{display:none;flex-direction:column;padding:4px 0 16px}
-        .logi-card{display:flex;flex-direction:column;gap:4px;border-radius:24px;padding:13px 16px;border:1px solid var(--border);background:var(--surface);margin-bottom:8px;position:relative;-webkit-tap-highlight-color:transparent;transition:background .1s;cursor:pointer}
+        .logi-card{display:flex;flex-direction:column;gap:6px;border-radius:18px;padding:12px 14px;border:1px solid var(--border);background:var(--surface);margin-bottom:8px;-webkit-tap-highlight-color:transparent;transition:background .1s,border-color .1s;cursor:pointer;box-shadow:0 1px 2px rgba(15,23,42,.04)}
         .logi-card.late{border-color:#FECACA;border-left:4px solid #DC2626}
         .logi-card:active{background:rgba(0,0,0,.025)}
-        /* Fila 1: identidad (remito + cliente) | acciones */
-        .logi-card-row1{display:flex;align-items:flex-start;gap:6px}
+        /* Fila 1: identidad (remito + cliente) | acciones — badge SALIÓ de
+           esta fila y ahora vive en la fila 3 con specs. Sin marginRight
+           artificial. */
+        .logi-card-row1{display:flex;align-items:flex-start;gap:8px}
         .logi-card-id{flex:1;min-width:0}
-        .logi-card-remito{font-weight:800;font-size:13px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25}
-        .logi-card-client{font-weight:600;font-size:12px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;margin-top:1px}
-        .logi-card-acts{flex-shrink:0;display:flex;gap:3px;align-items:center}
+        .logi-card-remito{font-weight:800;font-size:13.5px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25;letter-spacing:-.2px}
+        .logi-card-client{font-weight:600;font-size:12px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;margin-top:2px}
+        .logi-card-acts{flex-shrink:0;display:flex;gap:4px;align-items:center}
         .logi-card-act{width:28px;height:28px;border-radius:50%;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:transform .1s}
         .logi-card-act:active{transform:scale(.88)}
         .logi-card-act-wa{background:#DCFCE7;color:#16A34A}
@@ -697,14 +699,19 @@ export default function Logistica() {
         .logi-card-act-del{background:#FEF2F2;color:#DC2626}
         /* Fila 2: metadatos tiny (presupuesto · ciudad · transporte) */
         .logi-card-meta{font-size:10px;color:#9CA3AF;font-weight:500;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        /* Fila 3: specs técnicos | estado + alerta */
-        .logi-card-row3{display:flex;align-items:center;gap:4px;min-width:0}
-        .logi-card-specs{flex:1;min-width:0;display:flex;align-items:center;gap:0;font-size:11px;color:#6B7280;overflow:hidden}
+        /* Fila 3: specs técnicos | badge estado + alerta atrasado.
+           Ahora el badge vive aca (antes flotaba en position:absolute y se
+           superponia con las acciones cuando el label era largo como
+           "Preparando"). */
+        .logi-card-row3{display:flex;align-items:center;gap:6px;min-width:0;margin-top:2px}
+        .logi-card-specs{flex:1;min-width:0;display:flex;align-items:center;gap:0;font-size:11px;color:#6B7280;overflow:hidden;flex-wrap:wrap;row-gap:2px}
         .logi-card-spec{flex-shrink:0;white-space:nowrap}
-        .logi-card-spec+.logi-card-spec::before{content:'·';margin:0 4px;color:#D1D5DB;font-weight:400}
+        .logi-card-spec+.logi-card-spec::before{content:'·';margin:0 5px;color:#D1D5DB;font-weight:400}
         .logi-card-spec-price{font-weight:700;color:var(--txt)!important}
-        .logi-card-status-wrap{flex-shrink:0;display:flex;align-items:center;gap:5px;margin-left:auto}
-        .logi-card-late{font-size:10px;color:#DC2626;font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:2px}
+        .logi-card-status-wrap{flex-shrink:0;display:flex;align-items:center;gap:6px;margin-left:auto}
+        .logi-card-status-wrap .badge{font-size:10.5px!important;padding:3px 9px!important;border-radius:99px!important;font-weight:700!important;line-height:1.3!important}
+        .logi-card-late{font-size:10.5px;color:#DC2626;font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:3px;background:#FEF2F2;border:1px solid #FCA5A5;padding:3px 8px;border-radius:99px}
+        .logi-card-late i{font-size:9px}
         @media(max-width:767px){
           .logi-ph{display:none!important}
           .logi-mob-tabs{display:flex!important}
@@ -858,6 +865,16 @@ export default function Logistica() {
               .logi-tab-add{margin-left:6px!important;box-shadow:0 4px 12px rgba(124,58,237,.28)!important}
               .logi-mob-tabs{padding-right:2px!important}
             }
+            /* ── Resumen KPIs mobile: 2 cols + "Desvíos de flete" span 2
+               para no dejar hueco a la derecha. Con 5 KPIs auto-fit lo
+               ponía solo en la última fila. ── */
+            @media(max-width:640px){
+              .logi-resumen-kpis{grid-template-columns:1fr 1fr!important;gap:10px!important}
+              .logi-resumen-kpis .card{padding:12px 14px!important;border-radius:16px!important}
+              .logi-resumen-kpis .card > div:first-child{font-size:9.5px!important;letter-spacing:.5px!important}
+              .logi-resumen-kpis .card > div:nth-child(2){font-size:20px!important}
+              .logi-resumen-variance{grid-column:1 / -1}
+            }
           `}</style>
 
           {/* ── MOBILE CARD LIST (≤767px) ── */}
@@ -874,12 +891,10 @@ export default function Logistica() {
                   className={`logi-card${late ? ' late' : ''}`}
                   onClick={() => openShip(s)}
                 >
-                  {/* Badge estado — esquina superior derecha */}
-                  <div style={{ position: 'absolute', top: 12, right: 12 }} onClick={e => e.stopPropagation()}>
-                    {statusBadge(s.status)}
-                  </div>
-
-                  {/* Fila 1: Remito + Cliente | Acciones */}
+                  {/* Fila 1: Remito + Cliente | Acciones (badge se movio a fila 3
+                      para evitar que se superponga con los botones — el bug de
+                      position:absolute + marginRight:72 no alcanzaba para el
+                      badge "Preparando" de ~110px). */}
                   <div className="logi-card-row1">
                     <div className="logi-card-id">
                       <div className="logi-card-remito">
@@ -887,7 +902,7 @@ export default function Logistica() {
                       </div>
                       {s.client && <div className="logi-card-client">{s.client}</div>}
                     </div>
-                    <div className="logi-card-acts" onClick={e => e.stopPropagation()} style={{ marginRight: 72 }}>
+                    <div className="logi-card-acts" onClick={e => e.stopPropagation()}>
                       {notifyLink && (
                         <button className="logi-card-act logi-card-act-wa" title="Avisar al cliente" onClick={() => window.open(notifyLink, '_blank')}>
                           <i className="fa-brands fa-whatsapp" />
@@ -914,7 +929,7 @@ export default function Logistica() {
                     </div>
                   )}
 
-                  {/* Fila 3: Specs técnicos | Alerta atrasado */}
+                  {/* Fila 3: Specs técnicos | Badge de estado + alerta atrasado */}
                   <div className="logi-card-row3">
                     <div className="logi-card-specs">
                       {s.bulks > 0 && <span className="logi-card-spec">{s.bulks} bulto{s.bulks !== 1 ? 's' : ''}</span>}
@@ -922,12 +937,15 @@ export default function Logistica() {
                       {feats.costoInterno && <span className="logi-card-spec logi-card-spec-price">{fmt(s.freight)}</span>}
                       {payerChip && <span className="logi-card-spec">{payerChip}</span>}
                     </div>
-                    {late && (
-                      <span className="logi-card-late">
-                        <span className="ins-led-pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#DC2626', display: 'inline-block', flexShrink: 0 }} />
-                        <i className="fa fa-triangle-exclamation" /> {days}d
-                      </span>
-                    )}
+                    <div className="logi-card-status-wrap" onClick={e => e.stopPropagation()}>
+                      {late && (
+                        <span className="logi-card-late">
+                          <span className="ins-led-pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#DC2626', display: 'inline-block', flexShrink: 0 }} />
+                          <i className="fa fa-triangle-exclamation" /> {days}d
+                        </span>
+                      )}
+                      {statusBadge(s.status)}
+                    </div>
                   </div>
                 </div>
               )
@@ -1285,8 +1303,10 @@ export default function Logistica() {
             </button>
           </div>
 
-          {/* KPI cards */}
-          <div className="kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 16 }}>
+          {/* KPI cards — grid 2 cols en mobile con Desviosde flete span 2
+             para no dejar hueco. Antes con auto-fit el 5to KPI quedaba solo
+             abajo con la columna derecha vacía (feo). */}
+          <div className="kpis logi-resumen-kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 16 }}>
             {/* Costo total — with trend */}
             <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)' }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Costo total envíos</div>
@@ -1319,8 +1339,10 @@ export default function Logistica() {
               <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 3 }}>{lateShipments.length > 0 ? 'Despachado/En tránsito > SLA' : 'Todo al día'}</div>
             </div>
 
-            {/* Desvíos de flete — red bg when > 0 */}
-            <div className="card" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)', background: varianceCount > 0 ? '#FEF2F2' : undefined, border: varianceCount > 0 ? '1.5px solid #FCA5A5' : undefined }}>
+            {/* Desvíos de flete — red bg when > 0. En mobile span 2 col para
+                que no quede solo con hueco (feo). En desktop queda 1 col
+                normal en el grid auto-fit. */}
+            <div className="card logi-resumen-variance" style={{ padding: 16, borderRadius: 24, boxShadow: '0 1px 4px rgba(0,0,0,.07)', background: varianceCount > 0 ? '#FEF2F2' : undefined, border: varianceCount > 0 ? '1.5px solid #FCA5A5' : undefined }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: varianceCount > 0 ? '#991B1B' : 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Desvíos de flete</div>
               <div style={{ fontSize: 24, fontWeight: 800, color: varianceCount > 0 ? '#DC2626' : 'var(--txt)' }}>{varianceCount}</div>
               <div style={{ fontSize: 10, color: varianceCount > 0 ? '#B91C1C' : 'var(--txt3)', marginTop: 3 }}>{varianceCount > 0 ? 'Real ≠ cobrado al cliente' : 'Coincide con lo cobrado'}</div>
