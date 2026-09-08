@@ -396,7 +396,9 @@ p{text-wrap:pretty}
    pie de imagen (caption) debajo.
    ═════════════════════════════════════════════ */
 .adentro-carousel{position:relative;max-width:920px;margin:0 auto}
-.adentro-track{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:8px 4px 12px;scroll-padding:8px}
+/* align-items:flex-start evita que el track se estire a la altura del slide
+   MAS ALTO (Productos) y deje huecos negros abajo de los slides mas cortos. */
+.adentro-track{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:8px 4px 12px;scroll-padding:8px;align-items:flex-start}
 .adentro-track::-webkit-scrollbar{display:none}
 .adentro-slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;display:flex;flex-direction:column;align-items:stretch;margin:0}
 .adentro-shot{margin:0;display:flex;flex-direction:column}
@@ -485,11 +487,32 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 .bolsillo-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 12px;margin:22px auto 0;max-width:640px}
 .bolsillo-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(196,181,253,.06);border:1px solid rgba(196,181,253,.14);color:rgba(255,255,255,.82);padding:8px 14px;border-radius:99px;font-size:12px;font-weight:600;letter-spacing:.02em}
 .bolsillo-chip svg{color:#c4b5fd;flex-shrink:0}
-/* Micro-callout de instalacion */
-.bolsillo-install{margin:40px auto 0;max-width:520px;text-align:center;background:rgba(196,181,253,.06);border:1px dashed rgba(196,181,253,.28);border-radius:14px;padding:18px 22px}
-.bolsillo-install-t{font-size:13px;font-weight:800;color:#c4b5fd;text-transform:uppercase;letter-spacing:1.1px;margin-bottom:6px}
-.bolsillo-install-b{font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.55}
-.bolsillo-install-b b{color:#fff;font-weight:700}
+/* Instalacion PWA — 3 steps numerados (rediseño). Antes era un cartel
+   dashed con poco contraste; ahora es un mini-tutorial visual con
+   numeros circulares, iconos y separadores → mejor jerarquia y mas
+   cercano a "mini-guia" que a "aviso legal chico". */
+.install-steps-wrap{margin:44px auto 0;max-width:820px}
+.install-steps-head{text-align:center;margin-bottom:22px}
+.install-steps-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;color:#c4b5fd;text-transform:uppercase;letter-spacing:1.2px;background:rgba(196,181,253,.1);border:1px solid rgba(196,181,253,.24);padding:6px 14px;border-radius:99px}
+.install-steps-eyebrow svg{color:#c4b5fd}
+.install-steps-sub{color:rgba(255,255,255,.62);font-size:13.5px;margin-top:10px;line-height:1.55}
+.install-steps-sub b{color:#fff;font-weight:700}
+.install-steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;position:relative}
+.install-step{background:linear-gradient(180deg,rgba(196,181,253,.08),rgba(196,181,253,.03));border:1px solid rgba(196,181,253,.2);border-radius:14px;padding:20px 18px 18px;position:relative;transition:border-color .2s,transform .2s}
+.install-step:hover{border-color:rgba(196,181,253,.42);transform:translateY(-2px)}
+.install-step-num{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-family:'Space Grotesk','Inter',sans-serif;font-weight:800;font-size:14px;display:inline-flex;align-items:center;justify-content:center;letter-spacing:-.02em;box-shadow:0 6px 16px rgba(124,58,237,.35);margin-bottom:12px;font-variant-numeric:tabular-nums}
+.install-step-title{color:#fff;font-size:14px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px;font-family:'Inter',sans-serif;line-height:1.3}
+.install-step-desc{color:rgba(255,255,255,.68);font-size:12.5px;line-height:1.5}
+.install-step-desc b{color:#c4b5fd;font-weight:700}
+.install-step-desc code{background:rgba(196,181,253,.14);color:#e9d5ff;padding:2px 7px;border-radius:5px;font-family:ui-monospace,SFMono-Regular,monospace;font-size:11.5px;font-weight:600}
+@media(max-width:768px){
+  .install-steps{grid-template-columns:1fr;gap:10px}
+  .install-steps-wrap{margin-top:34px}
+  .install-step{padding:16px 16px 14px}
+  .install-step-num{width:28px;height:28px;font-size:13px;margin-bottom:10px}
+  .install-step-title{font-size:13.5px}
+  .install-step-desc{font-size:12px}
+}
 @media(max-width:768px){
   .bolsillo-grid{grid-template-columns:1fr;gap:36px;max-width:340px}
   button.bolsillo-phone{max-width:220px}
@@ -1340,7 +1363,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     </div>
 
     <!-- CTA final: curiosidad → registro -->
-    <div style="text-align:center;margin-top:44px">
+    <div style="text-align:center;margin-top:28px">
       <a href="/app/registro" class="cta-primary-btn" style="display:inline-flex;align-items:center;gap:10px;background:#059669;color:#fff;padding:16px 32px;border-radius:99px;font-weight:800;font-size:15px;text-decoration:none;box-shadow:0 10px 32px rgba(5,150,105,.42)">
         Probalo con tu catálogo
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -1426,10 +1449,39 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     </div>
 
     <!-- Instalación PWA -->
-    <div class="bolsillo-install">
-      <div class="bolsillo-install-t">Cómo la instalás en el celu</div>
-      <div class="bolsillo-install-b">
-        Entrás a <b>anmahub.com</b> desde el celular · abrís el menú del navegador · elegís <b>"Agregar a pantalla de inicio"</b>. Queda un ícono como cualquier otra app.
+    <!-- Instalación en el celu — 3 steps -->
+    <div class="install-steps-wrap">
+      <div class="install-steps-head">
+        <span class="install-steps-eyebrow">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+          Instalá en tu celular
+        </span>
+        <p class="install-steps-sub">
+          Es una <b>PWA</b> — se agrega como app real, con ícono en pantalla de inicio. <b>3 toques y listo</b>.
+        </p>
+      </div>
+      <div class="install-steps">
+        <div class="install-step">
+          <div class="install-step-num">1</div>
+          <div class="install-step-title">Abrí anmahub.com</div>
+          <div class="install-step-desc">
+            Entrá desde el navegador de tu celu a <code>anmahub.com</code> (Chrome, Safari o el que uses).
+          </div>
+        </div>
+        <div class="install-step">
+          <div class="install-step-num">2</div>
+          <div class="install-step-title">Menú del navegador</div>
+          <div class="install-step-desc">
+            En Chrome apretás los <b>3 puntitos</b> arriba a la derecha. En Safari, el <b>ícono compartir</b>.
+          </div>
+        </div>
+        <div class="install-step">
+          <div class="install-step-num">3</div>
+          <div class="install-step-title">Agregar a pantalla</div>
+          <div class="install-step-desc">
+            Elegís <b>"Agregar a pantalla de inicio"</b> (o "Instalar app"). Queda un ícono como cualquier otra.
+          </div>
+        </div>
       </div>
     </div>
 
