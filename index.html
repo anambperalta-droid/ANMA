@@ -398,7 +398,7 @@ p{text-wrap:pretty}
 .adentro-carousel{position:relative;max-width:920px;margin:0 auto}
 /* align-items:flex-start evita que el track se estire a la altura del slide
    MAS ALTO (Productos) y deje huecos negros abajo de los slides mas cortos. */
-.adentro-track{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:8px 4px 12px;scroll-padding:8px;align-items:flex-start}
+.adentro-track{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 4px 8px;scroll-padding:8px;align-items:flex-start}
 .adentro-track::-webkit-scrollbar{display:none}
 .adentro-slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;display:flex;flex-direction:column;align-items:stretch;margin:0}
 .adentro-shot{margin:0;display:flex;flex-direction:column}
@@ -1245,13 +1245,13 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- ADENTRO · capturas reales de la app -->
-<section id="adentro" style="padding:56px 0 40px;background:linear-gradient(180deg,#0f0a24 0%,#1a0f38 100%);border-top:1px solid rgba(124,58,237,.18);border-bottom:1px solid rgba(124,58,237,.18)">
+<section id="adentro" style="padding:48px 0 28px;background:linear-gradient(180deg,#0f0a24 0%,#1a0f38 100%);border-top:1px solid rgba(124,58,237,.18);border-bottom:1px solid rgba(124,58,237,.18)">
   <div class="wrap">
 
     <!-- Encabezado -->
-    <div style="text-align:center;max-width:660px;margin:0 auto 40px">
+    <div style="text-align:center;max-width:660px;margin:0 auto 26px">
       <span class="eyebrow" style="color:#c4b5fd;background:rgba(196,181,253,.08);border:1px solid rgba(196,181,253,.18);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">Así se ve por dentro</span>
-      <h2 class="h2" style="color:#fff;font-size:clamp(26px,4vw,42px);margin:14px 0 12px;font-weight:900;letter-spacing:-.8px">
+      <h2 class="h2" style="color:#fff;font-size:clamp(24px,3.8vw,38px);margin:12px 0 10px;font-weight:900;letter-spacing:-.8px">
         Todo lo que necesitás <em style="font-style:italic;color:#c4b5fd">en una sola pantalla</em>
       </h2>
       <p style="color:rgba(255,255,255,.7);font-size:15px;line-height:1.65;margin:0 auto;max-width:520px">
@@ -1348,12 +1348,12 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     </div>
 
     <!-- CTA final: curiosidad → registro -->
-    <div style="text-align:center;margin-top:28px">
-      <a href="/app/registro" class="cta-primary-btn" style="display:inline-flex;align-items:center;gap:10px;background:#059669;color:#fff;padding:16px 32px;border-radius:99px;font-weight:800;font-size:15px;text-decoration:none;box-shadow:0 10px 32px rgba(5,150,105,.42)">
+    <div style="text-align:center;margin-top:20px">
+      <a href="/app/registro" class="cta-primary-btn" style="display:inline-flex;align-items:center;gap:10px;background:#059669;color:#fff;padding:14px 28px;border-radius:99px;font-weight:800;font-size:14.5px;text-decoration:none;box-shadow:0 10px 32px rgba(5,150,105,.42)">
         Probalo con tu catálogo
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
-      <div style="font-size:11.5px;color:rgba(255,255,255,.5);margin-top:14px;text-transform:uppercase;letter-spacing:1px;font-weight:600">
+      <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:10px;text-transform:uppercase;letter-spacing:1px;font-weight:600">
         Sin tarjeta · Listo en 60 segundos
       </div>
     </div>
@@ -1362,7 +1362,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 </section>
 
 <!-- BOLSILLO · mobile / PWA -->
-<section id="bolsillo" style="padding:52px 0 56px;background:linear-gradient(180deg,#1a0f38 0%,#0f0a24 100%);border-bottom:1px solid rgba(124,58,237,.18)">
+<section id="bolsillo" style="padding:40px 0 40px;background:linear-gradient(180deg,#1a0f38 0%,#0f0a24 100%);border-bottom:1px solid rgba(124,58,237,.18)">
   <div class="wrap">
 
     <!-- Encabezado -->
@@ -1393,7 +1393,7 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
     </div>
 
     <!-- 3 phones side-by-side -->
-    <div class="bolsillo-grid" style="margin-top:48px">
+    <div class="bolsillo-grid" style="margin-top:32px">
 
       <!-- Análisis mobile — Insights del período + métricas globales -->
       <figure class="bolsillo-shot">
@@ -1447,8 +1447,8 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
 <!-- TESTIMONIOS -->
 <section style="padding:40px 0 48px;background:radial-gradient(125% 85% at 50% 0%,#f0e9fb,#f9f7fd 60%)">
   <div class="wrap">
-    <div style="text-align:center;max-width:680px;margin:0 auto 34px">
-      <span class="eyebrow-dark">Antes vs. ahora</span>
+    <div style="text-align:center;max-width:680px;margin:0 auto 28px">
+      <span class="eyebrow-dark">Tu día con ANMA</span>
       <h2 class="h2">De trabajar a los saltos, <em>a decidir con datos</em></h2>
     </div>
     <div class="esc-grid">
@@ -1460,7 +1460,6 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
           Presupuestos
         </span>
         <p class="esc-body">Listo en <b>5 minutos</b> y enviado por WhatsApp</p>
-        <p class="esc-antes"><b>Antes</b> <s>40 minutos con la calculadora a mano</s></p>
       </article>
 
       <!-- Escena 2: Tu semana -->
@@ -1470,7 +1469,6 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
           Tu semana
         </span>
         <p class="esc-body">Qué cobraste, qué falta entregar y a quién llamar, en <b>una pantalla</b></p>
-        <p class="esc-antes"><b>Antes</b> <s>cuadernos y chats perdidos</s></p>
       </article>
 
       <!-- Escena 3: Tus números (inteligencia comercial) -->
@@ -1480,7 +1478,6 @@ footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
           Tus números
         </span>
         <p class="esc-body">Sabés qué cliente y qué producto te dejan <b>ganancia real</b></p>
-        <p class="esc-antes"><b>Antes</b> <s>vendías a ciegas</s></p>
       </article>
 
     </div>
@@ -2028,6 +2025,38 @@ document.querySelectorAll('.demo-tab').forEach(function(tab){
     if (e.key === 'ArrowLeft'){ e.preventDefault(); scrollTo(currentIndex() - 1); }
     else if (e.key === 'ArrowRight'){ e.preventDefault(); scrollTo(currentIndex() + 1); }
   });
+
+  // ── Autoplay: avanza cada 5s. Pausa al interactuar (hover, focus,
+  //    touch, click en dot/flecha). Re-arranca cuando el usuario deja
+  //    de tocar (mouseleave/blur/touchend) tras 4s de inactividad. ──
+  var autoplayMs = 5000;
+  var pauseAfterInteract = 4000;
+  var autoplayId = null, pauseId = null;
+  function tick(){ scrollTo((currentIndex() + 1) % total); }
+  function startAutoplay(){ stopAutoplay(); autoplayId = setInterval(tick, autoplayMs); }
+  function stopAutoplay(){ if (autoplayId){ clearInterval(autoplayId); autoplayId = null; } }
+  function pauseAndResume(){
+    stopAutoplay();
+    if (pauseId) clearTimeout(pauseId);
+    pauseId = setTimeout(startAutoplay, pauseAfterInteract);
+  }
+  // Interacciones que pausan
+  ['mouseenter','touchstart','focusin'].forEach(function(ev){ track.addEventListener(ev, stopAutoplay, { passive: true }); });
+  ['mouseleave','touchend','focusout'].forEach(function(ev){ track.addEventListener(ev, pauseAndResume, { passive: true }); });
+  if (prev) prev.addEventListener('click', pauseAndResume);
+  if (next) next.addEventListener('click', pauseAndResume);
+  dots.forEach(function(d){ d.addEventListener('click', pauseAndResume); });
+  // Respeta prefers-reduced-motion: si el usuario pide menos animacion, no autoplay
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Solo autoplay cuando el carrusel es visible en viewport (IntersectionObserver)
+  if (!reduceMotion && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ e.isIntersecting ? startAutoplay() : stopAutoplay(); });
+    }, { threshold: 0.35 });
+    io.observe(track);
+  } else if (!reduceMotion){
+    startAutoplay();
+  }
 
   // Estado inicial
   updateUI();
