@@ -13,8 +13,10 @@
    v11: bump — Clientes: kebab menu (3 puntos) en mobile card + botones tabla
         desktop reducidos 32→28.
    v12: bump — Proveedores: mismo patrón kebab menu (3 puntos) en mobile card.
+   v13: bump — Config consolidado 8 tabs → 4 tabs (Mi negocio, Ventas y cobros,
+        Herramientas, Cuenta) + Módulos y Listas colapsables.
 */
-const CACHE_VER = 'anma-pro-v12'
+const CACHE_VER = 'anma-pro-v13'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
