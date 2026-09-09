@@ -6,7 +6,7 @@ import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, STATUS_MAP, STATUS_CLS } from '../../lib/storage'
 import { getClientVocab, getClientRubroPlaceholder } from '../../lib/voice'
 import EmptyHero from '../layout/EmptyHero'
-import { triggerMilestone } from '../layout/MilestoneToast'
+import { triggerMilestone, triggerEncouragement } from '../layout/MilestoneToast'
 
 /* ── Modal de vista previa de presupuesto (solo lectura, mobile-first) ── */
 function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
@@ -332,6 +332,8 @@ export default function Clientes() {
         icon: 'fa-user-plus',
         gradient: 'linear-gradient(135deg, #059669, #10B981)',
       })
+    } else if (!form.id) {
+      triggerEncouragement('client')
     }
   }
   const del = (id) => confirm('¿Eliminar cliente?', () => {

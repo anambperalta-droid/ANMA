@@ -5,6 +5,7 @@ import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, cfg, db, dbW } from '../../lib/storage'
 import { isLowStock, lowVariants } from '../../lib/stock'
 import { supabase } from '../../lib/supabase'
+import { triggerEncouragement } from '../layout/MilestoneToast'
 
 export default function Proveedores() {
   const { get, set, saveEntity, deleteEntity } = useData()
@@ -142,8 +143,10 @@ export default function Proveedores() {
   const openEdit = (s) => { setDetailSupplier(null); setForm(s ? { ...s } : { ...EMPTY_FORM }); setModal(true) }
   const save = () => {
     if (!form.name) { toast('Ingresá el nombre del proveedor.', 'er'); return }
+    const isNew = !form.id
     saveEntity('suppliers', form); setModal(false); toast('Proveedor guardado', 'ok')
     if (detailSupplier && form.id === detailSupplier.id) setDetailSupplier({ ...detailSupplier, ...form })
+    if (isNew) triggerEncouragement('supplier')
   }
   const del = (id) => confirm('¿Eliminar proveedor?', () => {
     deleteEntity('suppliers', id); toast('Proveedor eliminado', 'in')

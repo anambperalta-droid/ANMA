@@ -47,6 +47,47 @@ export function triggerMilestone(id, opts = {}) {
   }))
 }
 
+const ENCOURAGEMENTS = {
+  client: [
+    { title: 'Muy bien hecho', body: 'Cliente guardado. Tu cartera crece.', icon: 'fa-user-check' },
+    { title: 'Dato actualizado', body: 'Cada detalle cuenta para vender mejor.', icon: 'fa-address-book' },
+    { title: 'Sumaste otro contacto', body: 'Más clientes, más oportunidades.', icon: 'fa-users' },
+  ],
+  product: [
+    { title: 'Producto listo', body: 'Tu catálogo se fortalece.', icon: 'fa-cube' },
+    { title: 'Bien ahí', body: 'Cada producto que cargás te ahorra tiempo después.', icon: 'fa-boxes-stacked' },
+    { title: 'Catálogo actualizado', body: 'Más opciones para tus presupuestos.', icon: 'fa-tags' },
+  ],
+  budget: [
+    { title: 'Presupuesto guardado', body: 'Seguí así. La constancia marca la diferencia.', icon: 'fa-file-invoice' },
+    { title: 'Otro más listo', body: 'Cada presupuesto es una oportunidad de venta.', icon: 'fa-chart-line' },
+    { title: 'Bien ejecutado', body: 'Tu negocio se mueve.', icon: 'fa-rocket' },
+  ],
+  sale: [
+    { title: 'Venta registrada', body: 'Bien ahí. Cada venta suma.', icon: 'fa-cart-shopping' },
+    { title: 'Muy bien', body: 'Seguí construyendo. Los números acompañan.', icon: 'fa-circle-check' },
+  ],
+  supplier: [
+    { title: 'Proveedor guardado', body: 'Buena red de proveedores, mejor negocio.', icon: 'fa-truck' },
+    { title: 'Dato registrado', body: 'Tener tus proveedores ordenados te da ventaja.', icon: 'fa-handshake' },
+  ],
+}
+
+let _sessionEncCount = 0
+const SESSION_ENC_MAX = 4
+
+export function triggerEncouragement(actionType) {
+  if (typeof window === 'undefined') return
+  if (_sessionEncCount >= SESSION_ENC_MAX) return
+  const pool = ENCOURAGEMENTS[actionType]
+  if (!pool) return
+  _sessionEncCount++
+  const msg = pool[Math.floor(Math.random() * pool.length)]
+  window.dispatchEvent(new CustomEvent('anma:encouragement', {
+    detail: { ...msg, gradient: 'linear-gradient(135deg, #7C3AED, #059669)' },
+  }))
+}
+
 const DEFAULT_GRADIENT = 'linear-gradient(135deg, #7C3AED, #059669)'
 
 export default function MilestoneToast() {
@@ -56,17 +97,25 @@ export default function MilestoneToast() {
   const [exiting, setExiting] = useState(false)
   const dismissTimer = useRef(null)
 
-  // Suscripción global al evento
   useEffect(() => {
-    const onFire = (ev) => {
+    const onMilestone = (ev) => {
       const detail = ev?.detail
       if (!detail?.id) return
       if (!isMilestoneUnseen(user?.id, detail.id)) return
       markMilestoneSeen(user?.id, detail.id)
-      setQueue(q => [...q, detail])
+      setQueue(q => [...q, { ...detail, _type: 'milestone' }])
     }
-    window.addEventListener('anma:milestone', onFire)
-    return () => window.removeEventListener('anma:milestone', onFire)
+    const onEncouragement = (ev) => {
+      const detail = ev?.detail
+      if (!detail?.title) return
+      setQueue(q => [...q, { ...detail, _type: 'encouragement' }])
+    }
+    window.addEventListener('anma:milestone', onMilestone)
+    window.addEventListener('anma:encouragement', onEncouragement)
+    return () => {
+      window.removeEventListener('anma:milestone', onMilestone)
+      window.removeEventListener('anma:encouragement', onEncouragement)
+    }
   }, [user])
 
   // Procesar cola: mostrar 1 a la vez
@@ -75,8 +124,8 @@ export default function MilestoneToast() {
     const [next, ...rest] = queue
     setQueue(rest)
     setCurrent(next)
-    // Auto-dismiss en 5.5s
-    dismissTimer.current = setTimeout(close, 5500)
+    const dur = next._type === 'encouragement' ? 3500 : 5500
+    dismissTimer.current = setTimeout(close, dur)
     return () => { if (dismissTimer.current) clearTimeout(dismissTimer.current) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queue, current])
@@ -90,9 +139,9 @@ export default function MilestoneToast() {
 
   const gradient = current.gradient || DEFAULT_GRADIENT
   const icon = current.icon || 'fa-trophy'
+  const isMilestoneType = current._type === 'milestone'
 
-  // 8 partículas de confetti minimalista (no invasivo — solo un toque)
-  const PARTICLES = Array.from({ length: 8 }, (_, i) => ({
+  const PARTICLES = !isMilestoneType ? [] : Array.from({ length: 8 }, (_, i) => ({
     left: 10 + (i * 11) % 80,
     delay: (i * 0.08) % 0.6,
     duration: 1.8 + ((i * 0.15) % 1.2),
@@ -163,7 +212,7 @@ export default function MilestoneToast() {
             fontFamily: 'inherit',
           }}
         >
-          {/* Mini-confetti sobre el icono (top-left area) */}
+          {PARTICLES.length > 0 && (
           <div aria-hidden="true" style={{
             position: 'absolute',
             top: 8, left: 8, width: 60, height: 60,
@@ -181,6 +230,7 @@ export default function MilestoneToast() {
               }} />
             ))}
           </div>
+          )}
 
           {/* Icono con gradient del milestone */}
           <div style={{
@@ -196,7 +246,7 @@ export default function MilestoneToast() {
             <i className={`fa ${icon}`} />
           </div>
 
-          {/* Contenido */}
+          {isMilestoneType && (
           <div style={{
             fontSize: 10.5, fontWeight: 700,
             letterSpacing: '.14em', textTransform: 'uppercase',
@@ -204,6 +254,7 @@ export default function MilestoneToast() {
           }}>
             Logro desbloqueado
           </div>
+          )}
           <div style={{
             fontSize: 14, fontWeight: 700,
             color: 'var(--txt, #111827)', marginBottom: 4,
@@ -232,7 +283,7 @@ export default function MilestoneToast() {
               width: '100%', height: '100%',
               background: gradient,
               transform: 'translateX(-100%)',
-              animation: 'anma-mt-progress 5.5s linear forwards',
+              animation: `anma-mt-progress ${current._type === 'encouragement' ? '3.5' : '5.5'}s linear forwards`,
             }} />
           </div>
         </div>

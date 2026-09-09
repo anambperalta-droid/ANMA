@@ -43,7 +43,7 @@
         (primer cliente, primer producto, N presupuestos). Toast en esquina
         con confetti minimalista, no invasivo.
 */
-const CACHE_VER = 'anma-pro-v24'
+const CACHE_VER = 'anma-pro-v25'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 

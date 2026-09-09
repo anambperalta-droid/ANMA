@@ -10,7 +10,7 @@ import { isLowStock } from '../../lib/stock'
 import { getCategoriesForRubro, getRubroMeta, catsAreOutdated, RUBROS } from '../../lib/rubros'
 import { getProductPlaceholder, getEmptyProducts } from '../../lib/voice'
 import EmptyHero from '../layout/EmptyHero'
-import { triggerMilestone } from '../layout/MilestoneToast'
+import { triggerMilestone, triggerEncouragement } from '../layout/MilestoneToast'
 
 const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '', variants: [], tipo: 'producto', componentes: [] }
 
@@ -355,6 +355,8 @@ export default function Catalogo() {
         icon: 'fa-cube',
         gradient: 'linear-gradient(135deg, #7C3AED, #A78BFA)',
       })
+    } else if (!data.id) {
+      triggerEncouragement('product')
     }
     if (keepOpen) {
       // Modo carga en cadena — mantenemos categoría y proveedor (contexto que

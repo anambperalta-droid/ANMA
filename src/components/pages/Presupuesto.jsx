@@ -8,7 +8,7 @@ import MoneyInput from '../common/MoneyInput'
 import { getMPConfig, createPaymentLink, getBankConfig, buildBankInfoText } from '../../lib/mercadopago'
 import { pushBudget, getSheetsConfig } from '../../lib/sheets'
 import { buildBudgetWA } from '../../lib/voice'
-import { triggerMilestone } from '../layout/MilestoneToast'
+import { triggerMilestone, triggerEncouragement } from '../layout/MilestoneToast'
 
 const emptyItem = () => ({ name: '', variant: '', qty: 1, costUnit: '', priceUnit: '' })
 
@@ -934,6 +934,8 @@ export default function Presupuesto() {
           icon: 'fa-crown',
           gradient: 'linear-gradient(135deg, #D97706, #F59E0B)',
         })
+      } else {
+        triggerEncouragement('budget')
       }
     }
     // ─── Auto-sync a Google Sheets (fire-and-forget) ───
