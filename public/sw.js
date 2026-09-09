@@ -28,8 +28,10 @@
         dashboard (icon+long+short), mobile píldoras verticales.
    v19: bump — Config polish: banner Módulos wrap text (evita chunks flex) +
         EmailJS fields en 2 filas 2x2 (Service+Template / PubKey+Email prueba).
+   v20: bump — Config: coach messages por sección (voz ANMA rioplatense pro,
+        directa, sin jerga) + Datos de contacto en 2 col mobile.
 */
-const CACHE_VER = 'anma-pro-v19'
+const CACHE_VER = 'anma-pro-v20'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
