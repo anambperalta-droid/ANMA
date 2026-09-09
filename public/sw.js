@@ -12,8 +12,9 @@
         header Presupuesto compacto + footer landing más chico.
    v11: bump — Clientes: kebab menu (3 puntos) en mobile card + botones tabla
         desktop reducidos 32→28.
+   v12: bump — Proveedores: mismo patrón kebab menu (3 puntos) en mobile card.
 */
-const CACHE_VER = 'anma-pro-v11'
+const CACHE_VER = 'anma-pro-v12'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
