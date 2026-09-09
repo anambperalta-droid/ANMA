@@ -645,33 +645,34 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
   .insight-headline{font-size:18px}
 }
 
-/* FOOTER */
-footer{background:#0F172A;color:rgba(255,255,255,.7);padding:36px 0 20px}
-.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:20px}
+/* FOOTER — compacto: menos altura, menos aire vertical */
+footer{background:#0F172A;color:rgba(255,255,255,.7);padding:24px 0 14px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px;margin-bottom:14px}
 .foot-brand .logo{color:#fff}
-.foot-brand p{font-size:13px;margin:14px 0 18px;line-height:1.65;max-width:340px}
-.foot-soc{display:flex;gap:10px}
-.foot-soc a{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;transition:background .2s}
+.foot-brand p{font-size:12.5px;margin:10px 0 12px;line-height:1.55;max-width:320px}
+.foot-soc{display:flex;gap:8px}
+.foot-soc a{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;transition:background .2s}
 .foot-soc a:hover{background:#7c3aed}
-.foot-col h6{font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin:0 0 14px}
-.foot-col a{display:block;font-size:13.5px;padding:5px 0;color:rgba(255,255,255,.6);transition:color .2s}
+.foot-col h6{font-size:10.5px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin:0 0 10px}
+.foot-col a{display:block;font-size:13px;padding:3px 0;color:rgba(255,255,255,.6);transition:color .2s;line-height:1.5}
 .foot-col a:hover{color:#fff}
-.foot-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-size:12px;color:rgba(255,255,255,.5)}
-.foot-bot .badges{display:flex;gap:14px;align-items:center}
+.foot-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11.5px;color:rgba(255,255,255,.5)}
+.foot-bot .badges{display:flex;gap:12px;align-items:center}
 .foot-bot .badges span{display:inline-flex;align-items:center;gap:5px}
 .foot-bot .badges i{color:#34d399}
-/* Footer compacto en mobile: 2 columnas, padding reducido, links chicos */
+/* Footer compacto en mobile: 2 columnas, padding aún menor */
 @media(max-width:780px){
-  .foot-grid{grid-template-columns:1fr 1fr;gap:24px 18px}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:18px 16px;margin-bottom:12px}
   .foot-brand{grid-column:1/-1}
-  .foot-brand p{font-size:12.5px;margin:10px 0 14px;max-width:none}
-  .foot-col h6{font-size:10.5px;margin:0 0 10px}
-  .foot-col a{font-size:13px;padding:4px 0}
-  footer{padding:28px 0 16px}
+  .foot-brand p{font-size:12px;margin:8px 0 10px;max-width:none}
+  .foot-col h6{font-size:10px;margin:0 0 8px}
+  .foot-col a{font-size:12.5px;padding:2px 0}
+  footer{padding:20px 0 12px}
+  .foot-bot{padding-top:12px;font-size:11px}
 }
 @media(max-width:480px){
-  .foot-grid{grid-template-columns:1fr 1fr;gap:20px 14px}
-  .foot-col a{font-size:12.5px;padding:3px 0;line-height:1.5}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:16px 12px}
+  .foot-col a{font-size:12px;padding:2px 0;line-height:1.45}
 }
 
 /* PRICING mobile */

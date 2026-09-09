@@ -702,9 +702,9 @@ export default function Clientes() {
             <colgroup>
               <col style={{ width: 36 }} />
               <col />
-              <col style={{ width: 56 }} />
-              <col style={{ width: 56 }} />
-              <col style={{ width: 128 }} />
+              <col style={{ width: 48 }} />
+              <col style={{ width: 48 }} />
+              <col style={{ width: 112 }} />
             </colgroup>
             <thead><tr>
               <th onClick={e => e.stopPropagation()} style={{ cursor:'default' }}><input type="checkbox" className="zt-chk" checked={isAllSelected} onChange={toggleSelectAll} /></th>
