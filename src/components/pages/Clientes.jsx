@@ -6,6 +6,7 @@ import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, STATUS_MAP, STATUS_CLS } from '../../lib/storage'
 import { getClientVocab, getClientRubroPlaceholder } from '../../lib/voice'
 import EmptyHero from '../layout/EmptyHero'
+import { triggerMilestone } from '../layout/MilestoneToast'
 
 /* ── Modal de vista previa de presupuesto (solo lectura, mobile-first) ── */
 function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
@@ -320,8 +321,18 @@ export default function Clientes() {
       const c = validateCUIT(form.cuit)
       if (!c.ok) { toast(c.msg, 'er'); return }
     }
+    const wasEmpty = get('clients').length === 0
     saveEntity('clients', form); setModal(false); toast('Cliente guardado', 'ok')
     if (detailClient && form.id === detailClient.id) setDetailClient({ ...detailClient, ...form })
+    // Milestone: primer cliente cargado
+    if (wasEmpty && !form.id) {
+      triggerMilestone('client-first', {
+        title: '¡Primer cliente cargado!',
+        body: 'Ya tenés a quién venderle. Ahora armale su primer presupuesto.',
+        icon: 'fa-user-plus',
+        gradient: 'linear-gradient(135deg, #059669, #10B981)',
+      })
+    }
   }
   const del = (id) => confirm('¿Eliminar cliente?', () => {
     deleteEntity('clients', id); toast('Cliente eliminado', 'in')

@@ -8,6 +8,7 @@ import MoneyInput from '../common/MoneyInput'
 import { getMPConfig, createPaymentLink, getBankConfig, buildBankInfoText } from '../../lib/mercadopago'
 import { pushBudget, getSheetsConfig } from '../../lib/sheets'
 import { buildBudgetWA } from '../../lib/voice'
+import { triggerMilestone } from '../layout/MilestoneToast'
 
 const emptyItem = () => ({ name: '', variant: '', qty: 1, costUnit: '', priceUnit: '' })
 
@@ -908,6 +909,33 @@ export default function Presupuesto() {
     // First-budget celebration: dispara el evento global — el componente
     // FirstBudgetCelebration chequea si es el primero y muestra el modal.
     try { window.dispatchEvent(new CustomEvent('anma:first-budget-saved')) } catch { /* ignorar */ }
+    // Milestones N presupuestos: 5, 25, 100 — refuerzo en momentos clave.
+    // Solo cuenta si es un save nuevo (no edición).
+    if (!editId) {
+      const totalBudgets = get('budgets').length
+      if (totalBudgets === 5) {
+        triggerMilestone('budgets-5', {
+          title: '5 presupuestos ya. Vas afilado.',
+          body: 'Estás construyendo hábito. Tu Dashboard empieza a tener data para leer.',
+          icon: 'fa-fire',
+          gradient: 'linear-gradient(135deg, #F59E0B, #EF4444)',
+        })
+      } else if (totalBudgets === 25) {
+        triggerMilestone('budgets-25', {
+          title: '25 presupuestos. Sos usuaria power.',
+          body: 'Mirá el margen promedio en Historial → Análisis. Ahí ves cuánto rinde tu trabajo.',
+          icon: 'fa-trophy',
+          gradient: 'linear-gradient(135deg, #7C3AED, #EC4899)',
+        })
+      } else if (totalBudgets === 100) {
+        triggerMilestone('budgets-100', {
+          title: '100 presupuestos. Nivel leyenda.',
+          body: 'Sos parte del top de ANMA. Contá con nosotros para lo que necesites.',
+          icon: 'fa-crown',
+          gradient: 'linear-gradient(135deg, #D97706, #F59E0B)',
+        })
+      }
+    }
     // ─── Auto-sync a Google Sheets (fire-and-forget) ───
     const gs = getSheetsConfig()
     if (gs.enabled && gs.autoSync && gs.url && savedBudget) {

@@ -10,6 +10,7 @@ import { isLowStock } from '../../lib/stock'
 import { getCategoriesForRubro, getRubroMeta, catsAreOutdated, RUBROS } from '../../lib/rubros'
 import { getProductPlaceholder, getEmptyProducts } from '../../lib/voice'
 import EmptyHero from '../layout/EmptyHero'
+import { triggerMilestone } from '../layout/MilestoneToast'
 
 const EMPTY = { name: '', cat: '', cost: '', stock: 0, minStock: 0, unit: 'unidad', supplierId: '', priceB2C: '', priceB2B: '', sku: '', notes: '', image: '', variants: [], tipo: 'producto', componentes: [] }
 
@@ -344,7 +345,17 @@ export default function Catalogo() {
     }
     try { dbDel('prod_draft') } catch {}
     setHasDraft(null)
+    const wasEmpty = get('products').length === 0
     saveEntity('products', data)
+    // Milestone: primer producto cargado
+    if (wasEmpty && !data.id) {
+      triggerMilestone('product-first', {
+        title: '¡Primer producto en tu catálogo!',
+        body: 'Ya podés armar presupuestos más rápido. Tu tiempo empieza a rendir.',
+        icon: 'fa-cube',
+        gradient: 'linear-gradient(135deg, #7C3AED, #A78BFA)',
+      })
+    }
     if (keepOpen) {
       // Modo carga en cadena — mantenemos categoría y proveedor (contexto que
       // suele repetirse entre productos del mismo lote) y reseteamos el resto.

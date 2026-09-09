@@ -16,6 +16,7 @@ import TrialBanner from './TrialBanner'
 import PaymentDueBanner from './PaymentDueBanner'
 import WelcomeTour from './WelcomeTour'
 import FirstBudgetCelebration from './FirstBudgetCelebration'
+import MilestoneToast from './MilestoneToast'
 import TrialReminderModal from './TrialReminderModal'
 import RouteFallback from './RouteFallback'
 import { flushSync as flushCloudSync } from '../../lib/sync'
@@ -437,6 +438,7 @@ function AppShellInner() {
       </BottomSheet>
       <WelcomeTour />
       <FirstBudgetCelebration />
+      <MilestoneToast />
       <TrialReminderModal />
     </div>
   )

@@ -39,8 +39,11 @@
         Badge in-app persistente en TODA la app (no solo /admin). Realtime
         de nuevos signups + pagos + errores. Ana ve las 3 alertas juntas
         con las locales, sin duplicar UI.
+   v24: bump — MilestoneToast: refuerzos positivos en momentos clave
+        (primer cliente, primer producto, N presupuestos). Toast en esquina
+        con confetti minimalista, no invasivo.
 */
-const CACHE_VER = 'anma-pro-v23'
+const CACHE_VER = 'anma-pro-v24'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
