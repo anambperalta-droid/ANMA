@@ -676,38 +676,42 @@ td b{color:var(--txt);font-weight:600}
 
 /* ─── SEGUIMIENTO ─── */
 /* ─── SEGUIMIENTO CARD — diseño denso con chip dominante de días ─── */
-.seg-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:11px 14px;margin-bottom:8px;box-shadow:var(--sh);transition:box-shadow .15s ease;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
+/* Seguimiento cards — alineadas con la estética de Clientes/Proveedores:
+   chip sutil, tipografía calmada, botones 28x28 con borde neutral, sin
+   colores dominantes que compitan visualmente. */
+.seg-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--sh);transition:box-shadow .15s ease;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
 .seg-card:hover{box-shadow:var(--sh-md)}
-.seg-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+.seg-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
 .seg-card.urg-green::before{background:var(--green)}
 .seg-card.urg-amber::before{background:var(--amber)}
 .seg-card.urg-orange::before{background:#EA580C}
 .seg-card.urg-red::before{background:var(--red)}
 .seg-card.urg-red{border-color:#FCA5A5}
-/* Chip dominante de días — dato de decisión */
-.seg-days-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;min-width:52px;padding:5px 10px;border-radius:10px;border:1px solid;line-height:1;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
-.seg-days-num{font-size:20px;font-weight:800;letter-spacing:-.5px}
-.seg-days-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;opacity:.85}
+/* Chip DÍAS: pill compacta, tipografía calmada — deja de dominar la card */
+.seg-days-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;min-width:44px;padding:5px 9px;border-radius:8px;border:1px solid;line-height:1;font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums}
+.seg-days-num{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.seg-days-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-top:2px;opacity:.75}
 /* Info */
 .seg-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .seg-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.seg-cli-name{font-size:14px;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
-.seg-cli-co{font-size:12px;color:var(--txt3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
-.seg-num{font-size:11px;font-weight:700;color:var(--txt4);font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.2px}
-.seg-co{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--txt3);flex-wrap:wrap}
-.seg-co i{font-size:10px;margin-right:3px;opacity:.75}
+.seg-cli-name{font-size:13px;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.2px}
+.seg-cli-co{font-size:11.5px;color:var(--txt3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.seg-num{font-size:10.5px;font-weight:700;color:var(--txt4);font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.2px}
+.seg-co{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--txt3);flex-wrap:wrap}
+.seg-co i{font-size:10px;margin-right:3px;opacity:.7}
 .seg-cli{font-size:12px;color:var(--txt2)}
 /* Monto */
-.seg-total{font-size:15px;font-weight:800;color:var(--money);flex-shrink:0;font-variant-numeric:tabular-nums;font-family:'Space Grotesk','Inter',sans-serif;white-space:nowrap;text-align:right;min-width:90px}
-/* Acciones circulares compactas — sin fondo dominante que compita */
+.seg-total{font-size:14px;font-weight:800;color:var(--money);flex-shrink:0;font-variant-numeric:tabular-nums;font-family:'Space Grotesk','Inter',sans-serif;white-space:nowrap;text-align:right;min-width:80px;letter-spacing:-.2px}
+/* Acciones 28x28 con borde neutral — mismo patrón que Clientes/Proveedores tabla.
+   WhatsApp con tint verde suave (no fill dominante que compita con el chip). */
 .seg-actions{display:flex;flex-direction:row;gap:5px;flex-shrink:0;align-items:center}
-.seg-act{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--txt3);cursor:pointer;font-size:12px;display:inline-flex;align-items:center;justify-content:center;padding:0;flex-shrink:0;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:inherit}
-.seg-act:hover{transform:scale(1.06)}
-.seg-act:active{transform:scale(.94)}
-.seg-act-wa{background:#25D366;color:#fff;border-color:transparent}
-.seg-act-wa:hover{background:#1DA851}
+.seg-act{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--txt3);cursor:pointer;font-size:11px;display:inline-flex;align-items:center;justify-content:center;padding:0;flex-shrink:0;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:inherit}
+.seg-act:hover{background:var(--surface);color:var(--txt2);border-color:var(--brand-dim)}
+.seg-act:active{transform:scale(.92)}
+.seg-act-wa{background:#DCFCE7;color:#16A34A;border-color:transparent}
+.seg-act-wa:hover{background:#BBF7D0;color:#15803D;border-color:transparent}
 .seg-act-resend:hover{background:var(--acento-xlt);border-color:var(--acento);color:var(--acento)}
-.seg-act-edit:hover{background:var(--surface2);color:var(--txt2)}
+.seg-act-edit:hover{background:var(--brand-xlt);color:var(--brand);border-color:var(--brand-dim)}
 /* Desktop: labels ocultos (botones circulares) */
 .seg-act-lbl{display:none}
 .seg-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}

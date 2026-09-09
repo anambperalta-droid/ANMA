@@ -32,8 +32,11 @@
         directa, sin jerga) + Datos de contacto en 2 col mobile.
    v21: bump — Seguimiento cards rediseño mobile: layout grid + acciones full-width
         con labels (44px touch target). Menos saturación, más claridad.
+   v22: bump — Seguimiento desktop alineado con estética Clientes/Proveedores:
+        chip DÍAS más chico, tipografía calmada, botones 28x28 borde neutral,
+        WhatsApp con tint verde suave (no fill dominante).
 */
-const CACHE_VER = 'anma-pro-v21'
+const CACHE_VER = 'anma-pro-v22'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
