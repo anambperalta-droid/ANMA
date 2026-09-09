@@ -15,8 +15,10 @@
    v12: bump — Proveedores: mismo patrón kebab menu (3 puntos) en mobile card.
    v13: bump — Config consolidado 8 tabs → 4 tabs (Mi negocio, Ventas y cobros,
         Herramientas, Cuenta) + Módulos y Listas colapsables.
+   v14: bump — Ventas layout compacto: campos cortos en 2 col fijas (mobile
+        incluido), dropdowns largos full width. Menos scroll vertical.
 */
-const CACHE_VER = 'anma-pro-v13'
+const CACHE_VER = 'anma-pro-v14'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
