@@ -17,8 +17,10 @@
         Herramientas, Cuenta) + Módulos y Listas colapsables.
    v14: bump — Ventas layout compacto: campos cortos en 2 col fijas (mobile
         incluido), dropdowns largos full width. Menos scroll vertical.
+   v15: bump — Textos generales auto-grow (field-sizing) + WhatsApp card
+        Herramientas compactada (4 feature-boxes → 1 sola línea + details).
 */
-const CACHE_VER = 'anma-pro-v14'
+const CACHE_VER = 'anma-pro-v15'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
