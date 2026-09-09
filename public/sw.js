@@ -10,8 +10,10 @@
        de todos los usuarios con PWA instalada.
    v10: bump — Config mobile responsive + Importador en Sidebar desktop +
         header Presupuesto compacto + footer landing más chico.
+   v11: bump — Clientes: kebab menu (3 puntos) en mobile card + botones tabla
+        desktop reducidos 32→28.
 */
-const CACHE_VER = 'anma-pro-v10'
+const CACHE_VER = 'anma-pro-v11'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
