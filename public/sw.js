@@ -26,8 +26,10 @@
         active con label), header compacto (CTA icon-only, sub oculto).
    v18: bump — Config tabs fix: bug de labels pegoteados. Aplica patrón
         dashboard (icon+long+short), mobile píldoras verticales.
+   v19: bump — Config polish: banner Módulos wrap text (evita chunks flex) +
+        EmailJS fields en 2 filas 2x2 (Service+Template / PubKey+Email prueba).
 */
-const CACHE_VER = 'anma-pro-v18'
+const CACHE_VER = 'anma-pro-v19'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
