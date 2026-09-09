@@ -422,18 +422,22 @@ p{text-wrap:pretty}
 .adentro-cap-sub{color:rgba(255,255,255,.62);font-size:13px;font-weight:500;line-height:1.5;display:block}
 .adentro-cap-sub i{font-style:normal;color:#c4b5fd;font-weight:700}
 /* ── Controles del carrusel (flechas + dots) ── */
-.adentro-controls{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
-.adentro-dots{display:flex;gap:8px;align-items:center}
-.adentro-dot{width:8px;height:8px;border-radius:99px;background:rgba(255,255,255,.22);border:none;cursor:pointer;padding:0;transition:background .18s,transform .18s,width .18s;font-family:inherit}
+/* Controles sutiles — no compiten con las capturas.
+   Flechas: solo icono con opacity baja, sin border/background hasta hover.
+   Dots: chicos, activo violeta pastel ancho. */
+.adentro-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px}
+.adentro-dots{display:flex;gap:6px;align-items:center}
+.adentro-dot{width:6px;height:6px;border-radius:99px;background:rgba(255,255,255,.2);border:none;cursor:pointer;padding:0;transition:background .18s,width .25s ease;font-family:inherit}
 .adentro-dot:hover{background:rgba(255,255,255,.4)}
-.adentro-dot.is-active{background:#c4b5fd;width:22px}
+.adentro-dot.is-active{background:#c4b5fd;width:18px}
 .adentro-dot:focus-visible{outline:2px solid #c4b5fd;outline-offset:3px}
-.adentro-arrow{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:rgba(255,255,255,.85);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .18s,border-color .18s,color .18s;font-family:inherit;flex-shrink:0}
-.adentro-arrow:hover{background:rgba(196,181,253,.16);border-color:rgba(196,181,253,.4);color:#fff}
-.adentro-arrow:disabled{opacity:.3;cursor:default}
+.adentro-arrow{width:30px;height:30px;border-radius:50%;border:none;background:transparent;color:rgba(255,255,255,.32);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .18s,color .18s;font-family:inherit;flex-shrink:0;padding:0}
+.adentro-arrow:hover{background:rgba(196,181,253,.1);color:rgba(255,255,255,.75)}
+.adentro-arrow:disabled{opacity:.25;cursor:default}
+.adentro-arrow:disabled:hover{background:transparent;color:rgba(255,255,255,.32)}
 .adentro-arrow:focus-visible{outline:2px solid #c4b5fd;outline-offset:3px}
-/* Contador "N de M" — hint textual sutil */
-.adentro-counter{color:rgba(255,255,255,.5);font-size:11.5px;font-weight:600;letter-spacing:.04em;font-family:'Inter',sans-serif;min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
+/* Contador "N de M" — texto minimo, muy sutil */
+.adentro-counter{color:rgba(255,255,255,.35);font-size:10.5px;font-weight:600;letter-spacing:.06em;font-family:'Inter',sans-serif;min-width:38px;text-align:center;font-variant-numeric:tabular-nums}
 /* Frame como boton clickeable — hover invita a ampliar */
 button.adentro-frame{width:100%;padding:0;border:1px solid rgba(255,255,255,.08);background:#0a0416;color:inherit;font-family:inherit;cursor:zoom-in;text-align:left;display:block;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
 button.adentro-frame:hover{transform:translateY(-3px);border-color:rgba(124,58,237,.42);box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(196,181,253,.28)}
@@ -508,8 +512,8 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
   .adentro-cap-title{font-size:14px}
   .adentro-cap-sub{font-size:12.5px;line-height:1.5}
   .adentro-url{font-size:10px}
-  .adentro-controls{gap:10px;margin-top:12px}
-  .adentro-arrow{width:34px;height:34px}
+  .adentro-controls{gap:8px;margin-top:10px}
+  .adentro-arrow{width:28px;height:28px}
 }
 
 /* FLOAT WA */
@@ -2026,37 +2030,40 @@ document.querySelectorAll('.demo-tab').forEach(function(tab){
     else if (e.key === 'ArrowRight'){ e.preventDefault(); scrollTo(currentIndex() + 1); }
   });
 
-  // ── Autoplay: avanza cada 5s. Pausa al interactuar (hover, focus,
-  //    touch, click en dot/flecha). Re-arranca cuando el usuario deja
-  //    de tocar (mouseleave/blur/touchend) tras 4s de inactividad. ──
-  var autoplayMs = 5000;
-  var pauseAfterInteract = 4000;
-  var autoplayId = null, pauseId = null;
-  function tick(){ scrollTo((currentIndex() + 1) % total); }
-  function startAutoplay(){ stopAutoplay(); autoplayId = setInterval(tick, autoplayMs); }
-  function stopAutoplay(){ if (autoplayId){ clearInterval(autoplayId); autoplayId = null; } }
-  function pauseAndResume(){
-    stopAutoplay();
-    if (pauseId) clearTimeout(pauseId);
-    pauseId = setTimeout(startAutoplay, pauseAfterInteract);
-  }
-  // Interacciones que pausan
-  ['mouseenter','touchstart','focusin'].forEach(function(ev){ track.addEventListener(ev, stopAutoplay, { passive: true }); });
-  ['mouseleave','touchend','focusout'].forEach(function(ev){ track.addEventListener(ev, pauseAndResume, { passive: true }); });
-  if (prev) prev.addEventListener('click', pauseAndResume);
-  if (next) next.addEventListener('click', pauseAndResume);
-  dots.forEach(function(d){ d.addEventListener('click', pauseAndResume); });
-  // Respeta prefers-reduced-motion: si el usuario pide menos animacion, no autoplay
+  // ── Autoplay ── Simple: avanza cada 5s con loop. Pausa cuando el
+  //    puntero esta encima o el usuario interactua (click en dot/flecha
+  //    o scroll manual). Retoma solo despues de 6s sin interaccion. ──
+  var AUTOPLAY_MS = 5000;
+  var RESUME_MS = 6000;
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Solo autoplay cuando el carrusel es visible en viewport (IntersectionObserver)
-  if (!reduceMotion && 'IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ e.isIntersecting ? startAutoplay() : stopAutoplay(); });
-    }, { threshold: 0.35 });
-    io.observe(track);
-  } else if (!reduceMotion){
-    startAutoplay();
+  var timer = null;
+  var resumeTimer = null;
+  var isHover = false;
+  function tick(){ scrollTo((currentIndex() + 1) % total); }
+  function startLoop(){
+    if (reduceMotion || isHover || timer) return;
+    timer = setInterval(tick, AUTOPLAY_MS);
   }
+  function stopLoop(){
+    if (timer){ clearInterval(timer); timer = null; }
+  }
+  function scheduleResume(){
+    if (resumeTimer) clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(function(){ if (!isHover) startLoop(); }, RESUME_MS);
+  }
+  // Hover pausa (desktop) — el touch NO pausa (así no interfiere con scroll manual)
+  track.addEventListener('mouseenter', function(){ isHover = true; stopLoop(); });
+  track.addEventListener('mouseleave', function(){ isHover = false; startLoop(); });
+  // Click manual pausa temporalmente
+  if (prev) prev.addEventListener('click', function(){ stopLoop(); scheduleResume(); });
+  if (next) next.addEventListener('click', function(){ stopLoop(); scheduleResume(); });
+  dots.forEach(function(d){ d.addEventListener('click', function(){ stopLoop(); scheduleResume(); }); });
+  // Auto-arrancar inmediatamente (no depende de IntersectionObserver)
+  startLoop();
+  // Detener cuando la pestaña no esta visible (ahorra CPU)
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) stopLoop(); else startLoop();
+  });
 
   // Estado inicial
   updateUI();
