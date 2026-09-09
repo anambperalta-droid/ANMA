@@ -24,8 +24,10 @@
         + Mensajes: header con título + iOS zoom fix search.
    v17: bump — Mensajes mobile: tabs sin scroll horizontal (icon-only inactivos,
         active con label), header compacto (CTA icon-only, sub oculto).
+   v18: bump — Config tabs fix: bug de labels pegoteados. Aplica patrón
+        dashboard (icon+long+short), mobile píldoras verticales.
 */
-const CACHE_VER = 'anma-pro-v17'
+const CACHE_VER = 'anma-pro-v18'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
