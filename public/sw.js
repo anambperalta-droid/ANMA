@@ -19,8 +19,11 @@
         incluido), dropdowns largos full width. Menos scroll vertical.
    v15: bump — Textos generales auto-grow (field-sizing) + WhatsApp card
         Herramientas compactada (4 feature-boxes → 1 sola línea + details).
+   v16: bump — Revert Config a 8 tabs separados (feedback: 4 tabs mezclaban).
+        Tab strip rediseñado: mobile icon-only, activo con label. Más liviano.
+        + Mensajes: header con título + iOS zoom fix search.
 */
-const CACHE_VER = 'anma-pro-v15'
+const CACHE_VER = 'anma-pro-v16'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
