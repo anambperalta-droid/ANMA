@@ -1,9 +1,12 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../context/ToastContext'
 import { supabase } from '../../lib/supabase'
 import { fmt, db, dbW } from '../../lib/storage'
+import { useAdminAlerts } from '../../lib/useAdminAlerts'
+import { sendBrowserNotification } from '../../lib/useRealtimeSignups'
 
 /* ═══════════════════════════════════════════════════════════════
    ACTION ENGINE — Mapeo dinámico de categoría → acción primaria.
@@ -117,6 +120,22 @@ const ACTION_MAP = {
       if (!num) { nav(alert.route || '/clientes'); return }
       const msg = `¡Feliz cumpleaños ${alert.clientName || ''}! 🎉 Desde todo el equipo te deseamos un excelente día. ¡Que la pases genial!`
       window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank')
+    },
+  },
+
+  /* ──────────────────────────────────────────────────────────────
+     🛡️ ADMIN — Alertas del sistema (signup, pago, error).
+     Navega al panel Admin. workspaceId opcional para highlight futuro.
+  ────────────────────────────────────────────────────────────── */
+  admin: {
+    label: 'Ir al Admin',
+    icon: 'fa-shield-halved',
+    color: '#7C3AED',
+    bg: '#F3E8FF',
+    handler: (alert, { nav, setOpen }) => {
+      setOpen(false)
+      const ws = alert.workspaceId ? `?w=${alert.workspaceId}` : ''
+      nav(`/admin${ws}`)
     },
   },
 
@@ -391,21 +410,22 @@ const CATEGORY_STYLE = {
   insumo:       { color: '#B45309', bg: '#FEF3C7', label: 'Insumo' },
   cumpleaños:   { color: '#DB2777', bg: '#FCE7F3', label: 'Cumpleaños' },
   recordatorio: { color: '#0891B2', bg: '#ECFEFF', label: 'Recordatorio' },
+  admin:        { color: '#7C3AED', bg: '#F3E8FF', label: 'Sistema' },
 }
 const catStyle = (cat) => CATEGORY_STYLE[cat] || { color: 'var(--brand)', bg: 'var(--brand-xlt)', label: 'Alerta' }
 
 /* ── Item ── card compacta, clickeable, tinte solo cuando NO leída */
-function NotifItem({ alert, isRead, executeAction, dismissAlert }) {
+function NotifItem({ alert, isRead: isReadFlag, executeAction, dismissAlert }) {
   const col    = LEVEL_COLORS[alert.level]
   const cat    = catStyle(alert.category)
   const action = resolveAction(alert.category)
   return (
     <div
-      className={`notif-item${isRead ? ' read' : ''}`}
+      className={`notif-item${isReadFlag ? ' read' : ''}`}
       role="button" tabIndex={0}
       onClick={() => executeAction(alert)}
       onKeyDown={(e) => { if (e.key === 'Enter') executeAction(alert) }}
-      style={{ borderLeft: `3px solid ${col.bg}`, background: isRead ? 'var(--surface)' : col.light + '80' }}
+      style={{ borderLeft: `3px solid ${col.bg}`, background: isReadFlag ? 'var(--surface)' : col.light + '80' }}
       title={`${cat.label} · ${action.label}`}
     >
       {/* Ícono con color por CATEGORÍA (no por nivel) — segundo eje visual */}
@@ -413,15 +433,15 @@ function NotifItem({ alert, isRead, executeAction, dismissAlert }) {
         <i className={`fa ${alert.icon}`} />
       </div>
       <div className="notif-item-body">
-        <div className="notif-item-title" style={{ color: isRead ? 'var(--txt2)' : col.text }}>
+        <div className="notif-item-title" style={{ color: isReadFlag ? 'var(--txt2)' : col.text }}>
           {alert.title}
         </div>
         <div className="notif-item-sub">{alert.body}</div>
       </div>
-      {!isRead && <div className="notif-unread-dot" style={{ background: col.bg }} />}
+      {!isReadFlag && <div className="notif-unread-dot" style={{ background: col.bg }} />}
       <button
         className="notif-dismiss-btn"
-        onClick={(e) => { e.stopPropagation(); dismissAlert(alert.id) }}
+        onClick={(e) => { e.stopPropagation(); dismissAlert(alert) }}
         title="Descartar"
       >
         <i className="fa fa-xmark" />
@@ -444,13 +464,13 @@ function groupAlerts(alerts) {
   }
   return out
 }
-function renderGroupedAlerts(alerts, { readIds, executeAction, dismissAlert, expandedGroups, setExpandedGroups }) {
+function renderGroupedAlerts(alerts, { isRead, executeAction, dismissAlert, expandedGroups, setExpandedGroups }) {
   const groups = groupAlerts(alerts)
   const nodes = []
   for (const g of groups) {
     if (g.items.length < GROUP_THRESHOLD) {
       for (const a of g.items) {
-        nodes.push(<NotifItem key={a.id} alert={a} isRead={readIds.has(a.id)} executeAction={executeAction} dismissAlert={dismissAlert} />)
+        nodes.push(<NotifItem key={a.id} alert={a} isRead={isRead(a)} executeAction={executeAction} dismissAlert={dismissAlert} />)
       }
       continue
     }
@@ -459,7 +479,7 @@ function renderGroupedAlerts(alerts, { readIds, executeAction, dismissAlert, exp
     const cat = catStyle(g.category)
     const first = g.items[0]
     const isExpanded = expandedGroups.has(g.key)
-    const unreadInGroup = g.items.filter(a => !readIds.has(a.id)).length
+    const unreadInGroup = g.items.filter(a => !isRead(a)).length
     const groupTitle = ({
       logistica:    'Entregas vencidas o próximas',
       pago:         'Cobros pendientes',
@@ -468,6 +488,7 @@ function renderGroupedAlerts(alerts, { readIds, executeAction, dismissAlert, exp
       insumo:       'Insumos por reponer',
       cumpleaños:   'Cumpleaños',
       recordatorio: 'Recordatorios',
+      admin:        'Alertas del sistema',
     })[g.category] || `${g.items.length} alertas`
     nodes.push(
       <div key={g.key} className="notif-group">
@@ -493,7 +514,7 @@ function renderGroupedAlerts(alerts, { readIds, executeAction, dismissAlert, exp
         {isExpanded && (
           <div className="notif-group-list">
             {g.items.map(a => (
-              <NotifItem key={a.id} alert={a} isRead={readIds.has(a.id)} executeAction={executeAction} dismissAlert={dismissAlert} />
+              <NotifItem key={a.id} alert={a} isRead={isRead(a)} executeAction={executeAction} dismissAlert={dismissAlert} />
             ))}
           </div>
         )}
@@ -509,7 +530,8 @@ export default function NotificationBell({ extraCount = 0, className = '', varia
   // variant='sidebar' → estilos adaptados al quick-bar del sidebar (fondo neutro,
   // ícono con color de marca cuando hay pendientes). 'topbar' = comportamiento original.
   const { get } = useData()
-  const { user } = useAuth()
+  const { user, isGlobalAdmin } = useAuth()
+  const toast = useToast()
   const nav = useNavigate()
   const [open, setOpen] = useState(false)
   const [readIds, setReadIds] = useState(() => new Set(db('notifRead', [])))
@@ -521,36 +543,98 @@ export default function NotificationBell({ extraCount = 0, className = '', varia
   const budgets  = get('budgets')
   const products = get('products')
   const insumos  = get('insumos')
-  const allAlerts  = useMemo(() => buildAlerts(budgets, products, insumos), [budgets, products, insumos])
-  const alerts     = useMemo(() => allAlerts.filter(a => !dismissedIds.has(a.id)), [allAlerts, dismissedIds])
+  const localAlerts = useMemo(() => buildAlerts(budgets, products, insumos), [budgets, products, insumos])
+
+  /* ── Admin alerts (Supabase, solo si isGlobalAdmin) ─────────────
+     Reemplaza el useRealtimeSignups previo que solo funcionaba en /admin.
+     Ahora vive en Topbar → funciona en toda la app. */
+  const adminHook = useAdminAlerts(isGlobalAdmin)
+  const adminAlerts = useMemo(() => (adminHook.alerts || []).map(a => ({
+    id:        `admin-${a.id}`,
+    _adminId:  a.id,                 // id real en la tabla
+    _isAdmin:  true,
+    _readAt:   a.read_at,
+    level:     a.type === 'error' ? 'critical' : 'warning',
+    category:  'admin',
+    icon:      a.type === 'signup'  ? 'fa-user-plus'
+             : a.type === 'payment' ? 'fa-money-bill-trend-up'
+             : a.type === 'error'   ? 'fa-triangle-exclamation'
+             : 'fa-shield-halved',
+    title:     a.title,
+    body:      a.body || '',
+    workspaceId: a.workspace_id,
+    ts:        new Date(a.created_at).getTime(),
+  })), [adminHook.alerts])
+
+  // Toast + browser notification cuando llega un admin alert nuevo por realtime
+  const lastAdminNotifIdRef = useRef(null)
+  useEffect(() => {
+    adminHook.onNew((newAlert) => {
+      if (!newAlert?.id) return
+      if (lastAdminNotifIdRef.current === newAlert.id) return
+      lastAdminNotifIdRef.current = newAlert.id
+      toast(`🎉 ${newAlert.title}`, 'ok')
+      const n = sendBrowserNotification(newAlert.title, {
+        body: newAlert.body || 'Nueva alerta en ANMA Admin',
+        tag: `admin-alert-${newAlert.id}`,
+      })
+      if (n) { n.onclick = () => { window.focus(); n.close() } }
+    })
+  }, [adminHook, toast])
+
+  const allAlerts = useMemo(() => {
+    // Admin alerts primero (más críticas — pueden ser signup nuevo, error, etc.)
+    // Luego alertas locales por su propio ordenamiento.
+    return [...adminAlerts, ...localAlerts]
+  }, [adminAlerts, localAlerts])
+
+  const alerts = useMemo(() => allAlerts.filter(a => !dismissedIds.has(a.id)), [allAlerts, dismissedIds])
   const dismissedCount = allAlerts.filter(a => dismissedIds.has(a.id)).length
 
-  const unread      = alerts.filter(a => !readIds.has(a.id))
+  // Read state: para admin alerts viene de la tabla (a._readAt), para locales de readIds set
+  const isRead = useCallback((a) => a._isAdmin ? !!a._readAt : readIds.has(a.id), [readIds])
+  const unread      = alerts.filter(a => !isRead(a))
   const hasCritical = unread.some(a => a.level === 'critical')
   const unreadCount = unread.length
 
-  /* ── Mark single as read — localStorage + Supabase ── */
-  const markRead = useCallback((id) => {
-    const newIds = new Set([...readIds, id])
+  /* ── Mark single as read — enruta según origen (admin=Supabase, local=localStorage) ── */
+  const markRead = useCallback((alertOrId) => {
+    // Puede recibir el objeto alert completo o solo el id (compat legacy)
+    const alert = typeof alertOrId === 'object' ? alertOrId : alerts.find(a => a.id === alertOrId)
+    if (!alert) return
+    if (alert._isAdmin) {
+      adminHook.markRead(alert._adminId)
+      return
+    }
+    const newIds = new Set([...readIds, alert.id])
     setReadIds(newIds)
     dbW('notifRead', [...newIds])
-    persistReadToSupabase(user?.id, id)
-  }, [readIds, user])
+    persistReadToSupabase(user?.id, alert.id)
+  }, [readIds, user, alerts, adminHook])
 
-  /* ── Mark all as read — storage + Supabase batch ── */
+  /* ── Mark all as read — locales + admin ── */
   const markAllRead = useCallback(() => {
-    const unreadAlerts = alerts.filter(a => !readIds.has(a.id))
-    const newIds = new Set([...readIds, ...alerts.map(a => a.id)])
+    // Locales via localStorage + Supabase batch
+    const unreadLocal = alerts.filter(a => !a._isAdmin && !readIds.has(a.id))
+    const newIds = new Set([...readIds, ...alerts.filter(a => !a._isAdmin).map(a => a.id)])
     setReadIds(newIds)
     dbW('notifRead', [...newIds])
-    persistBatchReadToSupabase(user?.id, unreadAlerts.map(a => a.id))
-  }, [readIds, alerts, user])
+    persistBatchReadToSupabase(user?.id, unreadLocal.map(a => a.id))
+    // Admin via hook (update en tabla)
+    if (isGlobalAdmin) adminHook.markAllRead()
+  }, [readIds, alerts, user, isGlobalAdmin, adminHook])
 
-  const dismissAlert = useCallback((id) => {
-    const newIds = new Set([...dismissedIds, id])
+  const dismissAlert = useCallback((alertOrId) => {
+    const alert = typeof alertOrId === 'object' ? alertOrId : alerts.find(a => a.id === alertOrId)
+    if (!alert) return
+    if (alert._isAdmin) {
+      adminHook.dismiss(alert._adminId)
+      return
+    }
+    const newIds = new Set([...dismissedIds, alert.id])
     setDismissedIds(newIds)
     dbW('notifDismissed', [...newIds])
-  }, [dismissedIds])
+  }, [dismissedIds, alerts, adminHook])
 
   const restoreDismissed = useCallback(() => {
     setDismissedIds(new Set())
@@ -559,7 +643,7 @@ export default function NotificationBell({ extraCount = 0, className = '', varia
 
   /* ── Execute action: mark read → close drawer → run handler ── */
   const executeAction = useCallback((alert) => {
-    markRead(alert.id)
+    markRead(alert)
     const action = resolveAction(alert.category)
     action.handler(alert, { nav, setOpen })
   }, [markRead, nav])
@@ -627,7 +711,7 @@ export default function NotificationBell({ extraCount = 0, className = '', varia
               <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 4 }}>No hay alertas pendientes</div>
             </div>
           ) : (
-            renderGroupedAlerts(alerts, { readIds, executeAction, dismissAlert, expandedGroups, setExpandedGroups })
+            renderGroupedAlerts(alerts, { isRead, executeAction, dismissAlert, expandedGroups, setExpandedGroups })
           )}
           {dismissedCount > 0 && (
             <div className="notif-restore">
