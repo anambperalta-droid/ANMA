@@ -22,8 +22,10 @@
    v16: bump — Revert Config a 8 tabs separados (feedback: 4 tabs mezclaban).
         Tab strip rediseñado: mobile icon-only, activo con label. Más liviano.
         + Mensajes: header con título + iOS zoom fix search.
+   v17: bump — Mensajes mobile: tabs sin scroll horizontal (icon-only inactivos,
+        active con label), header compacto (CTA icon-only, sub oculto).
 */
-const CACHE_VER = 'anma-pro-v16'
+const CACHE_VER = 'anma-pro-v17'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
