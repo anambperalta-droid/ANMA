@@ -30,8 +30,10 @@
         EmailJS fields en 2 filas 2x2 (Service+Template / PubKey+Email prueba).
    v20: bump — Config: coach messages por sección (voz ANMA rioplatense pro,
         directa, sin jerga) + Datos de contacto en 2 col mobile.
+   v21: bump — Seguimiento cards rediseño mobile: layout grid + acciones full-width
+        con labels (44px touch target). Menos saturación, más claridad.
 */
-const CACHE_VER = 'anma-pro-v20'
+const CACHE_VER = 'anma-pro-v21'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 

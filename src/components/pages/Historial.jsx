@@ -633,16 +633,19 @@ function SeguimientoCard({ b, onEdit, onWA, onResend }) {
       {/* Monto */}
       <div className="seg-total">{money(b.total)}</div>
 
-      {/* Acciones — circulares compactas, sin fondo dominante */}
+      {/* Acciones — desktop: circulares compactas; mobile: full-width con label */}
       <div className="seg-actions">
         <button onClick={() => onWA(b)} title="Recontactar por WhatsApp" className="seg-act seg-act-wa">
           <i className="fa-brands fa-whatsapp" />
+          <span className="seg-act-lbl">Recontactar</span>
         </button>
         <button onClick={() => onResend(b)} title="Re-enviar presupuesto" className="seg-act seg-act-resend">
           <i className="fa fa-paper-plane" />
+          <span className="seg-act-lbl">Re-enviar</span>
         </button>
         <button onClick={() => onEdit(b.id)} title="Editar" className="seg-act seg-act-edit">
           <i className="fa fa-pen" />
+          <span className="seg-act-lbl">Editar</span>
         </button>
       </div>
     </div>

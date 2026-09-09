@@ -708,6 +708,8 @@ td b{color:var(--txt);font-weight:600}
 .seg-act-wa:hover{background:#1DA851}
 .seg-act-resend:hover{background:var(--acento-xlt);border-color:var(--acento);color:var(--acento)}
 .seg-act-edit:hover{background:var(--surface2);color:var(--txt2)}
+/* Desktop: labels ocultos (botones circulares) */
+.seg-act-lbl{display:none}
 .seg-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
 .seg-legend-item{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:var(--txt2)}
 .seg-legend-dot{width:8px;height:8px;border-radius:50%}
@@ -1755,18 +1757,51 @@ td b{color:var(--txt);font-weight:600}
   .tab-bar::-webkit-scrollbar{display:none}
   .tab-btn{white-space:nowrap;flex-shrink:0;font-size:12px!important;padding:6px 12px!important}
 
-  /* Seguimiento cards compact (mobile) */
-  .seg-card{padding:10px 12px!important;border-radius:12px!important;gap:10px!important}
-  .seg-days-chip{min-width:46px;padding:4px 8px}
-  .seg-days-num{font-size:17px}
-  .seg-info{min-width:0;flex:1}
-  .seg-top{flex-wrap:wrap;gap:5px!important}
-  .seg-cli-name{max-width:150px;font-size:13px!important}
+  /* Seguimiento cards rediseñadas (mobile) — layout grid con acciones full-width */
+  .seg-card{
+    display:grid!important;
+    grid-template-columns:auto 1fr auto;
+    grid-template-rows:auto auto auto;
+    gap:6px 12px!important;
+    padding:12px 14px!important;
+    border-radius:14px!important;
+    align-items:center;
+  }
+  .seg-days-chip{
+    grid-column:1;grid-row:1 / 3;
+    min-width:54px;padding:8px 10px;
+    align-self:stretch;justify-content:center;
+  }
+  .seg-days-num{font-size:19px}
+  .seg-days-lbl{font-size:9px}
+  .seg-info{grid-column:2;grid-row:1;min-width:0}
+  .seg-top{gap:6px!important;flex-wrap:wrap}
+  .seg-cli-name{max-width:none;font-size:13.5px!important;font-weight:700}
   .seg-cli-co{display:none}
-  .seg-co{font-size:11px!important;gap:6px!important}
-  .seg-total{font-size:13.5px!important;min-width:auto}
-  .seg-actions{gap:4px!important}
-  .seg-act{width:30px;height:30px;font-size:11px}
+  .seg-num{font-size:11px}
+  .seg-co{grid-column:2;grid-row:2;font-size:11px!important;gap:10px!important;color:var(--txt3)}
+  .seg-total{
+    grid-column:3;grid-row:1 / 3;
+    font-size:15.5px!important;
+    align-self:center;min-width:auto;
+  }
+  /* Acciones: fila completa abajo con separación visual, botones cómodos */
+  .seg-actions{
+    grid-column:1 / -1;grid-row:3;
+    display:flex!important;justify-content:space-between;
+    gap:8px!important;
+    padding-top:10px;margin-top:4px;
+    border-top:1px solid var(--border);
+  }
+  .seg-act{
+    width:auto!important;height:40px!important;
+    flex:1;padding:0 12px!important;
+    border-radius:10px!important;
+    font-size:12.5px!important;font-weight:600;
+    gap:6px;
+  }
+  .seg-act-lbl{display:inline!important;letter-spacing:.01em}
+  .seg-act i{font-size:13px!important}
 
   /* Insight cards */
   .insight-card{border-radius:12px!important;padding:12px!important}
