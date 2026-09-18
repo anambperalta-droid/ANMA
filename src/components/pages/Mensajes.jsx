@@ -22,18 +22,18 @@ const STAGE_ICONS = {
 
 /* ── Paleta soft ── */
 const P = {
-  card: '#ffffff',
-  cardBorder: '#e2e8f0',
+  card: 'var(--surface)',
+  cardBorder: 'var(--border)',
   bubble: '#f0fdf4',
   bubbleBorder: '#dcfce7',
-  text: '#334155',
-  textSoft: '#64748b',
-  textMuted: '#94a3b8',
+  text: 'var(--txt)',
+  textSoft: 'var(--txt3)',
+  textMuted: 'var(--txt4)',
   accent: '#25D366',
   accentSoft: 'rgba(37,211,102,.08)',
   accentBorder: 'rgba(37,211,102,.2)',
-  shadow: '0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05)',
-  shadowHover: '0 10px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04)',
+  shadow: 'var(--sh)',
+  shadowHover: 'var(--sh-md)',
   varTag: '#0d9488',
   varBg: 'rgba(13,148,136,.08)',
 }
@@ -76,7 +76,7 @@ function ClientSelector({ clients, selected, onSelect, onClear }) {
   if (selected) {
     return (
       <div style={{
-        display: 'flex', alignItems: 'center', gap: 10, background: '#fff',
+        display: 'flex', alignItems: 'center', gap: 10, background: 'var(--surface)',
         border: `1px solid ${P.accentBorder}`, borderRadius: 12, padding: '8px 14px',
         boxShadow: '0 1px 3px rgba(37,211,102,.06)',
       }}>
@@ -93,11 +93,11 @@ function ClientSelector({ clients, selected, onSelect, onClear }) {
           {selected.wa && <div style={{ fontSize: 11, color: P.textSoft, marginTop: 1 }}><i className="fa-brands fa-whatsapp" style={{ marginRight: 4, color: P.accent }} />{selected.wa}</div>}
         </div>
         <button onClick={onClear} style={{
-          background: 'none', border: '1px solid #e2e8f0', borderRadius: 8, color: P.textMuted,
+          background: 'none', border: '1px solid var(--border)', borderRadius: 8, color: P.textMuted,
           cursor: 'pointer', fontSize: 11, padding: '4px 8px', transition: 'all .15s',
         }}
           onMouseEnter={e => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.borderColor = '#fca5a5' }}
-          onMouseLeave={e => { e.currentTarget.style.color = P.textMuted; e.currentTarget.style.borderColor = '#e2e8f0' }}>
+          onMouseLeave={e => { e.currentTarget.style.color = P.textMuted; e.currentTarget.style.borderColor = 'var(--border)' }}>
           <i className="fa fa-xmark" />
         </button>
       </div>
@@ -107,11 +107,11 @@ function ClientSelector({ clients, selected, onSelect, onClear }) {
   return (
     <div ref={ref} style={{ position: 'relative' }}>
       <div style={{
-        display: 'flex', alignItems: 'center', gap: 10, background: '#fff',
-        border: '1px solid #e2e8f0', borderRadius: 12, padding: '9px 14px',
+        display: 'flex', alignItems: 'center', gap: 10, background: 'var(--surface)',
+        border: '1px solid var(--border)', borderRadius: 12, padding: '9px 14px',
         transition: 'border-color .15s, box-shadow .15s',
         boxShadow: open ? '0 0 0 3px rgba(37,211,102,.08)' : 'none',
-        borderColor: open ? P.accentBorder : '#e2e8f0',
+        borderColor: open ? P.accentBorder : 'var(--border)',
       }}>
         <i className="fa fa-magnifying-glass" style={{ color: P.textMuted, fontSize: 13 }} />
         <input type="text" value={q}
@@ -125,15 +125,15 @@ function ClientSelector({ clients, selected, onSelect, onClear }) {
       {open && filtered.length > 0 && (
         <div style={{
           position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 200,
-          background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12,
-          boxShadow: '0 12px 28px rgba(0,0,0,.08)', maxHeight: 240, overflowY: 'auto', marginTop: 4,
+          background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12,
+          boxShadow: 'var(--sh-md)', maxHeight: 240, overflowY: 'auto', marginTop: 4,
         }}>
           {filtered.map(c => (
             <div key={c.id} onClick={() => pick(c)} style={{
               padding: '10px 14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10,
-              borderBottom: '1px solid #f1f5f9', transition: 'background .12s',
+              borderBottom: '1px solid var(--border)', transition: 'background .12s',
             }}
-              onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--surface2)'}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
               <div style={{
                 width: 28, height: 28, borderRadius: 8,
@@ -169,8 +169,8 @@ function VariablesPanel({ client, config, budget }) {
 
   return (
     <div className="msg-vars-panel" style={{
-      position: 'sticky', top: 72, background: '#fff', borderRadius: 16,
-      border: '1px solid #e2e8f0', padding: '18px 20px',
+      position: 'sticky', top: 72, background: 'var(--surface)', borderRadius: 16,
+      border: '1px solid var(--border)', padding: '18px 20px',
       boxShadow: P.shadow, width: 240, flexShrink: 0,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 14 }}>
@@ -306,13 +306,13 @@ export default function Mensajes() {
   const IconBtn = ({ icon, title, onClick, hoverBg, hoverColor, hoverBorder }) => (
     <button onClick={onClick} title={title}
       style={{
-        width: 32, height: 32, borderRadius: 10, border: '1px solid #e2e8f0',
-        background: '#fff', color: P.textMuted, fontSize: 12,
+        width: 32, height: 32, borderRadius: 10, border: '1px solid var(--border)',
+        background: 'var(--surface)', color: P.textMuted, fontSize: 12,
         cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
         transition: 'all .15s ease', flexShrink: 0,
       }}
       onMouseEnter={e => { e.currentTarget.style.background = hoverBg; e.currentTarget.style.color = hoverColor; e.currentTarget.style.borderColor = hoverBorder }}
-      onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = P.textMuted; e.currentTarget.style.borderColor = '#e2e8f0' }}>
+      onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.color = P.textMuted; e.currentTarget.style.borderColor = 'var(--border)' }}>
       <i className={`fa ${icon}`} />
     </button>
   )
@@ -320,7 +320,7 @@ export default function Mensajes() {
   /* ── Modal de formulario reutilizable ── */
   const FormModal = ({ title, icon, iconColor, onClose }) => (
     <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-      <div className="modal modal-lg" style={{ borderRadius: 20, border: '1px solid #e2e8f0', boxShadow: '0 20px 60px rgba(0,0,0,.1)' }}>
+      <div className="modal modal-lg" style={{ borderRadius: 20, border: '1px solid var(--border)', boxShadow: '0 20px 60px rgba(0,0,0,.1)' }}>
         <div className="mh">
           <h3><i className={`fa ${icon}`} style={{ color: iconColor, marginRight: 8 }} />{title}</h3>
           <button className="mclose" onClick={onClose}><i className="fa fa-xmark" /></button>
@@ -339,7 +339,7 @@ export default function Mensajes() {
             placeholder="Hola {{nombre}}, soy de {{negocio}}..."
             style={{ lineHeight: 1.7 }} />
         </div>
-        <div style={{ background: '#f8fafc', borderRadius: 10, padding: '10px 14px', marginTop: 4, fontSize: 11, color: P.textSoft, border: '1px solid #f1f5f9' }}>
+        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 14px', marginTop: 4, fontSize: 11, color: P.textSoft, border: '1px solid var(--border)' }}>
           <b style={{ color: P.text }}>Variables:</b>{' '}
           {['nombre', 'empresa', 'negocio', 'producto', 'precio', 'fecha'].map((v, i) => (
             <span key={v}>{i > 0 && ' · '}<code style={{ color: P.varTag, fontFamily: "'SF Mono','Fira Code',monospace", fontSize: 10, background: P.varBg, padding: '1px 4px', borderRadius: 3 }}>{`{{${v}}}`}</code></span>
@@ -431,7 +431,7 @@ export default function Mensajes() {
 
       {/* ── Tabs de etapas — mobile: icon-only inactivos, activo con label ── */}
       <div className="msg-stage-tabs" style={{
-        display: 'flex', gap: 2, background: '#f8fafc', border: '1px solid #e2e8f0',
+        display: 'flex', gap: 2, background: 'var(--surface2)', border: '1px solid var(--border)',
         borderRadius: 14, padding: 4, marginBottom: 20,
       }}>
         {STAGES.map(s => {
@@ -445,7 +445,7 @@ export default function Mensajes() {
                 padding: '8px 14px', borderRadius: 10, border: 'none', fontSize: 12, fontWeight: 600,
                 cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6,
                 transition: 'all .15s ease',
-                background: isActive ? '#fff' : 'transparent',
+                background: isActive ? 'var(--surface)' : 'transparent',
                 color: isActive ? P.accent : P.textSoft,
                 boxShadow: isActive ? P.shadow : 'none',
               }}>
@@ -454,7 +454,7 @@ export default function Mensajes() {
               <span className="msg-stage-count" style={{
                 fontSize: 9, fontWeight: 700, minWidth: 16, textAlign: 'center',
                 padding: '1px 5px', borderRadius: 10,
-                background: isActive ? P.accentSoft : '#f1f5f9',
+                background: isActive ? P.accentSoft : 'var(--surface3)',
                 color: isActive ? P.accent : P.textMuted,
               }}>{count}</span>
             </button>
@@ -481,7 +481,7 @@ export default function Mensajes() {
                     onMouseLeave={e => { e.currentTarget.style.boxShadow = P.shadow; e.currentTarget.style.transform = '' }}>
 
                     {/* Card header */}
-                    <div style={{ padding: '16px 18px 12px', borderBottom: '1px solid #f1f5f9' }}>
+                    <div style={{ padding: '16px 18px 12px', borderBottom: '1px solid var(--border)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
                         <div style={{ fontSize: 14, fontWeight: 700, color: P.text, flex: 1, minWidth: 0, letterSpacing: '-.02em' }}>
                           {t.title}
@@ -498,7 +498,7 @@ export default function Mensajes() {
                             </span>
                           )}
                           {t.isDefault && (
-                            <span style={{ fontSize: 9, fontWeight: 600, color: P.textMuted, background: '#f8fafc', padding: '2px 8px', borderRadius: 10, whiteSpace: 'nowrap' }}>
+                            <span style={{ fontSize: 9, fontWeight: 600, color: P.textMuted, background: 'var(--surface2)', padding: '2px 8px', borderRadius: 10, whiteSpace: 'nowrap' }}>
                               Original
                             </span>
                           )}
@@ -521,16 +521,16 @@ export default function Mensajes() {
                     </div>
 
                     {/* Footer */}
-                    <div style={{ padding: '12px 18px 16px', display: 'flex', gap: 6, borderTop: '1px solid #f1f5f9', alignItems: 'center' }}>
+                    <div style={{ padding: '12px 18px 16px', display: 'flex', gap: 6, borderTop: '1px solid var(--border)', alignItems: 'center' }}>
                       <button onClick={() => copyText(t.text)}
                         style={{
-                          flex: 1, padding: '8px 0', borderRadius: 10, border: '1px solid #e2e8f0',
-                          background: '#fff', color: P.textSoft, fontSize: 11, fontWeight: 600,
+                          flex: 1, padding: '8px 0', borderRadius: 10, border: '1px solid var(--border)',
+                          background: 'var(--surface)', color: P.textSoft, fontSize: 11, fontWeight: 600,
                           cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center',
                           justifyContent: 'center', gap: 5, transition: 'all .15s ease',
                         }}
-                        onMouseEnter={e => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.borderColor = '#cbd5e1' }}
-                        onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#e2e8f0' }}>
+                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.borderColor = 'var(--border2)' }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.borderColor = 'var(--border)' }}>
                         <i className="fa fa-copy" /> Copiar
                       </button>
                       <button onClick={() => sendWA(t.text)}

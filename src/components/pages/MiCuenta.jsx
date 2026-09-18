@@ -391,7 +391,7 @@ export default function MiCuenta() {
           <div
             onClick={e => e.stopPropagation()}
             style={{
-              background: '#fff', borderRadius: 16,
+              background: 'var(--surface)', borderRadius: 16,
               maxWidth: 420, width: '100%', padding: '24px 26px',
               boxShadow: '0 25px 70px rgba(15,12,60,.3)',
             }}

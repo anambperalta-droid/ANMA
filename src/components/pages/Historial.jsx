@@ -202,7 +202,7 @@ function PaymentsModal({ budget, onSave, onClose }) {
           {/* Fila 2: Método + Notas */}
           <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: 8, marginBottom: 8 }}>
             <select value={draft.method} onChange={e => setDraft({ ...draft, method: e.target.value })}
-              style={{ padding: '8px 10px', border: '1.5px solid var(--border)', borderRadius: 8, fontSize: 12.5, fontFamily: 'inherit', background: '#fff' }}>
+              style={{ padding: '8px 10px', border: '1.5px solid var(--border)', borderRadius: 8, fontSize: 12.5, fontFamily: 'inherit', background: 'var(--surface)', color: 'var(--txt)' }}>
               {PAY_METHODS.map(m => <option key={m.val} value={m.val}>{m.lbl}</option>)}
             </select>
             <input type="text" value={draft.notes} onChange={e => setDraft({ ...draft, notes: e.target.value })}
@@ -305,7 +305,7 @@ function ReturnModal({ budget, onSave, onClose }) {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {rows.map(r => (
-              <div key={r.productId || r.name} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto', gap: 8, alignItems: 'center', padding: '6px 8px', background: '#fff', border: '1px solid var(--border)', borderRadius: 8 }}>
+              <div key={r.productId || r.name} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto', gap: 8, alignItems: 'center', padding: '6px 8px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8 }}>
                 <div>
                   <div style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--txt1)' }}>{r.name}</div>
                   <div style={{ fontSize: 10.5, color: 'var(--txt4)', marginTop: 2 }}>

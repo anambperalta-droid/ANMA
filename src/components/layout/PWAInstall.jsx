@@ -69,7 +69,7 @@ export default function PWAInstall() {
   const banner = {
     position: 'fixed',
     bottom: 0, left: 0, right: 0,
-    zIndex: 9800,
+    zIndex: 10100,
     background: 'linear-gradient(135deg, #1C1045 0%, #2D1A6E 100%)',
     borderTop: '1px solid rgba(124,58,237,.4)',
     boxShadow: '0 -8px 32px rgba(0,0,0,.4)',
