@@ -36,7 +36,6 @@ const NAV_TOOLS = [
 ]
 
 const NAV_SYSTEM = [
-  { path: '/guia', icon: 'fa-book-open', label: 'Guía' },
   { path: '/config', icon: 'fa-gear', label: 'Configuración', ownerOnly: true },
   { path: '/importador', icon: 'fa-file-import', label: 'Importador', ownerOnly: true, perm: 'config.access' },
 ]

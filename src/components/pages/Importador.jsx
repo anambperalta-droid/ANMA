@@ -99,11 +99,13 @@ function FilaPreview({ fila, nameKey }) {
 
 // ── Sección de importación para una entidad ───────────────────────────
 
-function SeccionEntidad({ ent, existingList, onChange }) {
+function SeccionEntidad({ ent, existingList, onChange, resetKey }) {
   const [texto, setTexto]     = useState('')
   const [open, setOpen]       = useState(false)
   const [showAll, setShowAll] = useState(false)
   const fileRef = useRef()
+
+  useEffect(() => { if (resetKey) { setTexto(''); setShowAll(false) } }, [resetKey])
 
   // Parsear siempre que texto o existingList cambien
   const filas = texto.trim()
@@ -280,6 +282,7 @@ export default function Importador() {
 
   const [loading, setLoading]   = useState(false)
   const [resultado, setResultado] = useState(null)
+  const [resetKey, setResetKey] = useState(0)
 
   // Listas actuales de localStorage para dedup preview
   const existing = {
@@ -335,6 +338,8 @@ export default function Importador() {
       }
 
       setResultado(resumen)
+      setParsed({ clients: [], suppliers: [], products: [], insumos: [] })
+      setResetKey(k => k + 1)
     } finally {
       setLoading(false)
     }
@@ -381,6 +386,7 @@ export default function Importador() {
             ent={ent}
             existingList={existing[ent.key]}
             onChange={(filas) => handleSectionChange(ent.key, filas)}
+            resetKey={resetKey}
           />
         ))}
       </div>
