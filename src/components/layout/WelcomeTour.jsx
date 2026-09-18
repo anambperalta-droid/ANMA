@@ -20,28 +20,28 @@ import { useAuth } from '../../context/AuthContext'
 // Clave incluye userId para aislar el estado del tour entre usuarios en el mismo dispositivo
 const STEPS = [
   {
-    icon: 'fa-chart-line', color: '#7C3AED',
-    title: '¡Bienvenido a ANMA!',
-    body: 'Acá vas a ver la salud completa de tu negocio: ventas, cobros, alertas y estado de pedidos en un solo lugar.',
-    cta: 'Próximo',
+    icon: 'fa-seedling', color: '#7C3AED',
+    title: 'Tu negocio, en orden',
+    body: 'ANMA es el lugar donde tu operativa descansa. Ventas, cobros, stock y clientes — todo junto, sin ruido. Tomalo con calma, cada cosa tiene su lugar.',
+    cta: 'Vamos',
   },
   {
     icon: 'fa-file-invoice-dollar', color: '#059669',
-    title: 'Cargá tu primer pedido',
-    body: 'Desde "Nuevo pedido" armás un presupuesto en minutos. El sistema calcula margen, seña y total — vos solo cargás items.',
-    cta: 'Siguiente',
-  },
-  {
-    icon: 'fa-users', color: '#D97706',
-    title: 'Tu base de clientes',
-    body: 'Cada cliente con su historial, contactos y último pedido. Importá los que ya tenés en CSV o desde el teléfono.',
+    title: 'Empezá por un pedido',
+    body: 'Un presupuesto claro con margen calculado, listo para compartir por WhatsApp. Es lo primero que vas a notar: cotizar deja de ser una cuenta a mano.',
     cta: 'Siguiente',
   },
   {
     icon: 'fa-cube', color: '#2563EB',
-    title: 'Catálogo + stock automático',
-    body: 'Cargá tus productos una vez con costo y precio. El stock se descuenta solo cuando confirmás un pedido.',
-    cta: '¡Empezar!',
+    title: 'Tu catálogo, siempre al día',
+    body: 'Cargá tus productos con costo y precio. Cuando confirmás un pedido, el stock se actualiza solo. Sin planillas paralelas.',
+    cta: 'Siguiente',
+  },
+  {
+    icon: 'fa-users', color: '#D97706',
+    title: 'Clientes con historia',
+    body: 'Cada cliente guarda su recorrido: qué compró, cuándo, cuánto debe. La próxima vez que te escriba, ya sabés todo.',
+    cta: 'Empezar',
   },
 ]
 
@@ -56,16 +56,15 @@ export default function WelcomeTour() {
   // - Es trial activo (usuario nuevo)
   // - No completó el tour antes
   useEffect(() => {
-    if (loading || !user || !trial?.isTrial) return
+    if (loading || !user) return
     try {
       const done = localStorage.getItem(`anma_welcome_tour_done_${user.id}`)
       if (!done) {
-        // Pequeño delay para que la app cargue su estado antes del tour
         const t = setTimeout(() => setShow(true), 1200)
         return () => clearTimeout(t)
       }
     } catch { /* ignorar */ }
-  }, [user, trial?.isTrial, loading])
+  }, [user, loading])
 
   const finish = () => {
     try { localStorage.setItem(`anma_welcome_tour_done_${user?.id}`, new Date().toISOString()) } catch { /* ignorar */ }

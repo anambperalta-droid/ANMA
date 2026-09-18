@@ -232,8 +232,10 @@ input,select,textarea{font-family:inherit}
 .sb-nav::-webkit-scrollbar{width:5px}
 .sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:99px}
 .sb-nav::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2)}
-.sb-sec{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:1.4px;text-transform:uppercase;padding:16px 12px 6px}
+.sb-sec{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:1.4px;text-transform:uppercase;padding:16px 12px 6px;background:none;border:none;font-family:inherit;cursor:default;width:100%;text-align:left}
 .sb-sec:first-child{padding-top:6px}
+.sb-sec-toggle{cursor:pointer;display:flex;align-items:center;gap:4px;border-top:1px solid rgba(255,255,255,.06);margin-top:6px;padding-top:14px}
+.sb-sec-toggle:hover{color:rgba(255,255,255,.7)}
 /* Nav items: pill claros, altura consistente 40px, indicador activo con
    barra de marca a la izquierda que se anima al entrar. */
 /* .sb-item ahora es <button> — reset de estilos default + reglas propias */
