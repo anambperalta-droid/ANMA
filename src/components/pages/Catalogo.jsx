@@ -1516,7 +1516,6 @@ export default function Catalogo() {
                     {units.map(u => <option key={u} value={u}>{u}</option>)}
                   </select>
                 </div>
-                <div className="fg"><label>Notas internas</label><textarea value={form.notes || ''} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Observaciones internas..." /></div>
                 <div className="fg" style={{ marginBottom: 0 }}>
                   <label>Imagen del producto <span style={{ fontWeight: 400, color: 'var(--txt3)' }}>(opcional)</span></label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

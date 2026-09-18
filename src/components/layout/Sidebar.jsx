@@ -52,7 +52,10 @@ export default function Sidebar({ open, onClose, collapsed }) {
   const { hidden, toggle: togglePrivacy } = usePrivacy()
   const [theme, setTheme] = useState(readTheme)
   const [toolsOpen, setToolsOpen] = useState(() => {
-    try { return localStorage.getItem(TOOLS_KEY) === '1' } catch { return false }
+    try {
+      const v = localStorage.getItem(TOOLS_KEY)
+      return v === null ? true : v === '1'
+    } catch { return true }
   })
   const toggleTools = () => {
     setToolsOpen(v => {
