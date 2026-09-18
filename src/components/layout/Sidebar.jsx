@@ -33,6 +33,7 @@ const NAV_TOOLS = [
   { path: '/proveedores', icon: 'fa-industry', label: 'Proveedores', chipKey: 'suppliers', perm: 'proveedor.view' },
   { path: '/logistica', icon: 'fa-truck-fast', label: 'Logística', perm: 'logistica.view' },
   { path: '/mensajes', icon: 'fa-brands fa-whatsapp', label: 'Mensajes WA', perm: 'mensajes.view' },
+  { path: '/guia', icon: 'fa-book-open', label: 'Guía' },
 ]
 
 const NAV_SYSTEM = [
