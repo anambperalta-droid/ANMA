@@ -264,139 +264,29 @@ export default function MiCuenta() {
           backdropFilter: 'blur(6px)',
           display: 'inline-flex', alignItems: 'center', gap: 8,
         }}>
-          <i className="fa fa-circle" style={{ fontSize: 8, color: billing.urgency === 'paused' ? '#fca5a5' : billing.urgency === 'overdue' ? '#fbbf24' : '#86efac' }} />
-          <span>
-            {billing.status === STATUS.TRIAL ? 'Período de prueba' :
-             billing.status === STATUS.PENDING_SETUP ? 'Esperando setup' :
-             billing.status === STATUS.ACTIVE ? 'Al día' :
-             billing.status === STATUS.PENDING_PAYMENT ? 'Cuota pendiente' :
-             billing.status === STATUS.PAUSED ? 'Pausado' : billing.status}
-          </span>
-          {billing.status === STATUS.TRIAL && trial?.daysLeft > 0 && (
-            <span style={{
-              background: 'rgba(255,255,255,.2)',
-              padding: '2px 9px', borderRadius: 99,
-              fontSize: 11, fontWeight: 800,
-            }}>
-              {trial.daysLeft}d
-            </span>
-          )}
+          <i className="fa fa-circle" style={{ fontSize: 8, color: '#86efac' }} />
+          <span>Cuenta activa</span>
         </div>
       </div>
 
-      {/* ═══ ESTADO DE SUSCRIPCIÓN ═══ */}
+      {/* ═══ CUENTA ACTIVA — info simple para testers ═══ */}
       <div className="mc-card">
         <div className="mc-card-h">
           <div className="mc-card-title">
-            <i className="fa fa-credit-card" />
-            Estado de suscripción
+            <i className="fa fa-circle-check" style={{ color: '#059669' }} />
+            Tu cuenta
           </div>
-          {workspace?.subscription_status === STATUS.ACTIVE && billing.daysUntilDue !== null && billing.daysUntilDue <= 10 && (
-            <button onClick={handlePay} disabled={paying} className="mc-card-action" style={{ color: '#059669' }}>
-              {paying ? <><i className="fa fa-spinner fa-spin" /> Generando…</> : <><i className="fa fa-bolt" /> Adelantar cuota</>}
-            </button>
-          )}
         </div>
-
-        {loadingWs ? (
-          <div style={{ padding: 20, textAlign: 'center', color: 'var(--txt3)' }}>
-            <i className="fa fa-spinner fa-spin" /> Cargando…
-          </div>
-        ) : (
-          <>
-            <div className="mc-row">
-              <span className="mc-row-lbl">Plan</span>
-              <span className="mc-row-val">ANMA Hub · Gestión Integral</span>
-            </div>
-            <div className="mc-row">
-              <span className="mc-row-lbl">Activación</span>
-              <span className="mc-row-val">{workspace?.activated_at ? fmtShortDate(workspace.activated_at) : '— (en trial)'}</span>
-            </div>
-            <div className="mc-row">
-              <span className="mc-row-lbl">Próximo cobro</span>
-              <span className="mc-row-val">
-                {workspace?.next_payment_due_at ? (
-                  <>
-                    {fmtShortDate(workspace.next_payment_due_at)}
-                    {billing.daysUntilDue !== null && (
-                      <span style={{
-                        marginLeft: 8, padding: '2px 8px', borderRadius: 99,
-                        fontSize: 10.5, fontWeight: 700,
-                        background: billing.tone.bg, color: billing.tone.fg,
-                      }}>
-                        {billing.label}
-                      </span>
-                    )}
-                  </>
-                ) : '—'}
-              </span>
-            </div>
-            <div className="mc-row">
-              <span className="mc-row-lbl">Cuota mensual</span>
-              <span className="mc-row-val">{fmtMoney(MONTHLY_AMOUNT)}</span>
-            </div>
-            <div className="mc-row">
-              <span className="mc-row-lbl">Total pagado a la fecha</span>
-              <span className="mc-row-val" style={{ color: Number(workspace?.lifetime_revenue) > 0 ? '#16A34A' : 'var(--txt3)', fontWeight: 800 }}>
-                {Number(workspace?.lifetime_revenue) > 0 ? fmtMoney(Number(workspace.lifetime_revenue)) : 'Sin pagos aún'}
-              </span>
-            </div>
-          </>
-        )}
-
-        {workspace?.subscription_status === STATUS.TRIAL && (
-          <div style={{
-            marginTop: 14, padding: '14px 16px',
-            background: 'linear-gradient(135deg, rgba(5,150,105,.10), rgba(16,185,129,.04))',
-            border: '1px solid rgba(5,150,105,.22)', borderRadius: 12,
-          }}>
-            {/* Progress bar visual del trial */}
-            {trial?.daysLeft >= 0 && (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <i className="fa fa-rocket" style={{ color: '#059669', fontSize: 13 }} />
-                    <span style={{ fontSize: 12, fontWeight: 700, color: '#065F46', textTransform: 'uppercase', letterSpacing: '.05em' }}>
-                      Período de prueba
-                    </span>
-                  </div>
-                  <span style={{ fontSize: 12, fontWeight: 800, color: '#059669' }}>
-                    {trial.daysLeft === 1 ? 'Último día' : `${trial.daysLeft} días restantes`}
-                  </span>
-                </div>
-                <div style={{
-                  height: 6, background: 'rgba(5,150,105,.15)',
-                  borderRadius: 99, overflow: 'hidden', marginBottom: 12,
-                }}>
-                  <div style={{
-                    width: `${Math.max(0, Math.min(100, (trial.daysLeft / 7) * 100))}%`,
-                    height: '100%',
-                    background: 'linear-gradient(90deg, #059669, #10B981)',
-                    transition: 'width .3s',
-                  }} />
-                </div>
-              </>
-            )}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              <div style={{ flex: 1, fontSize: 12.5, color: 'var(--txt2)', lineHeight: 1.55, minWidth: 200 }}>
-                Activá tu plan ahora para mantener tus datos seguros después de los 7 días.
-              </div>
-              <button
-                onClick={() => nav('/activar')}
-                style={{
-                  padding: '10px 18px', borderRadius: 10, border: 'none',
-                  background: 'linear-gradient(135deg, #059669, #10b981)',
-                  color: '#fff', fontSize: 13, fontWeight: 800, cursor: 'pointer',
-                  fontFamily: 'inherit', flexShrink: 0,
-                  boxShadow: '0 4px 12px rgba(5,150,105,.3)',
-                  display: 'inline-flex', alignItems: 'center', gap: 7,
-                }}
-              >
-                <i className="fa fa-bolt" /> Activar plan
-              </button>
-            </div>
-          </div>
-        )}
+        <div className="mc-row">
+          <span className="mc-row-lbl">Plan</span>
+          <span className="mc-row-val">ANMA Hub · Acceso completo</span>
+        </div>
+        <div className="mc-row">
+          <span className="mc-row-lbl">Estado</span>
+          <span className="mc-row-val" style={{ color: '#059669', fontWeight: 700 }}>
+            <i className="fa fa-circle" style={{ fontSize: 7, marginRight: 6 }} />Activa
+          </span>
+        </div>
       </div>
 
       {/* ═══ DATOS DEL NEGOCIO — LINK A CONFIG (no duplicamos) ═══ */}
@@ -431,77 +321,6 @@ export default function MiCuenta() {
           </div>
         </div>
         <i className="fa fa-arrow-right" style={{ color: '#7C3AED', fontSize: 12, flexShrink: 0 }} />
-      </div>
-
-      {/* ═══ HISTORIAL DE PAGOS ═══ */}
-      <div className="mc-card">
-        <div className="mc-card-h">
-          <div className="mc-card-title">
-            <i className="fa fa-clock-rotate-left" />
-            Historial de pagos a ANMA
-          </div>
-          <span style={{ fontSize: 11, color: 'var(--txt3)' }}>
-            {payments.length} {payments.length === 1 ? 'pago' : 'pagos'} registrado{payments.length !== 1 ? 's' : ''}
-          </span>
-        </div>
-
-        {loadingPay ? (
-          <div style={{ padding: 20, textAlign: 'center', color: 'var(--txt3)' }}>
-            <i className="fa fa-spinner fa-spin" /> Cargando…
-          </div>
-        ) : payments.length === 0 ? (
-          <div style={{ padding: '36px 20px', textAlign: 'center' }}>
-            <div style={{
-              width: 60, height: 60, borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(124,58,237,.10), rgba(99,102,241,.06))',
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              marginBottom: 12, color: '#7C3AED', fontSize: 22,
-            }}>
-              <i className="fa fa-receipt" />
-            </div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--txt2)', marginBottom: 4 }}>
-              Aún no hay pagos registrados
-            </div>
-            <div style={{ fontSize: 12.5, color: 'var(--txt3)', maxWidth: 340, margin: '0 auto', lineHeight: 1.55 }}>
-              Cuando hagas tu primer pago (de ingreso o cuota mensual), aparecerá acá con su comprobante.
-            </div>
-          </div>
-        ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, minWidth: 480 }}>
-              <thead>
-                <tr style={{ background: 'var(--surface2)', textAlign: 'left' }}>
-                  <th style={{ padding: '8px 10px', fontSize: 10.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.05em' }}>Fecha</th>
-                  <th style={{ padding: '8px 10px', fontSize: 10.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.05em' }}>Concepto</th>
-                  <th style={{ padding: '8px 10px', fontSize: 10.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.05em', textAlign: 'right' }}>Monto</th>
-                  <th style={{ padding: '8px 10px', fontSize: 10.5, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.05em', textAlign: 'center' }}>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {payments.map(p => {
-                  const kindLabel = p.kind === 'onboarding' ? 'Pago de ingreso' : p.kind === 'monthly' ? 'Cuota mensual' : 'Pago manual'
-                  const statusOk = p.mp_status === 'approved' || p.mp_status === 'manual_confirmed'
-                  return (
-                    <tr key={p.id} style={{ borderTop: '1px solid var(--border)' }}>
-                      <td style={{ padding: '10px', fontSize: 12, color: 'var(--txt2)' }}>{fmtShortDate(p.paid_at)}</td>
-                      <td style={{ padding: '10px', fontWeight: 600 }}>{kindLabel}</td>
-                      <td style={{ padding: '10px', textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: '#059669' }}>{fmtMoney(Number(p.amount) || 0)}</td>
-                      <td style={{ padding: '10px', textAlign: 'center' }}>
-                        <span style={{
-                          fontSize: 10.5, fontWeight: 700, padding: '3px 8px', borderRadius: 99,
-                          background: statusOk ? 'rgba(22,163,74,.12)' : 'rgba(217,119,6,.12)',
-                          color: statusOk ? '#16A34A' : '#D97706',
-                        }}>
-                          {statusOk ? 'Pagado' : (p.mp_status || 'pendiente')}
-                        </span>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
 
       {/* ═══ ACCESO ═══ */}
