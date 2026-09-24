@@ -1645,7 +1645,7 @@ export default function Historial() {
             { key: 'lista',       lbl: 'Pedidos' },
             { key: 'ventas',      lbl: 'Ventas' },
             { key: 'analisis',    lbl: 'Análisis' },
-            { key: 'seguimiento', lbl: 'Seguimiento', badge: seguimiento.length },
+            { key: 'seguimiento', lbl: 'Seguim.', badge: seguimiento.length },
           ].map(t => (
             <button key={t.key} className={`dash-ctrl-tab${tab === t.key ? ' active' : ''}`} onClick={() => setTab(t.key)}>
               {t.lbl}

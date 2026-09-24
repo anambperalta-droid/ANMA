@@ -9,7 +9,7 @@ import { fmt } from '../../lib/storage'
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 const PAY_OPTS = [
   { value: 'pending', label: 'Pendiente', icon: 'fa-clock',        color: '#64748b', bg: '#f1f5f9' },
-  { value: 'partial', label: 'Senado',    icon: 'fa-hand-holding', color: '#b45309', bg: '#fef3c7' },
+  { value: 'partial', label: 'Parcial',   icon: 'fa-hand-holding', color: '#b45309', bg: '#fef3c7' },
   { value: 'paid',    label: 'Cobrado',   icon: 'fa-circle-check', color: '#15803d', bg: '#dcfce7' },
 ]
 
@@ -80,6 +80,34 @@ export default function Ventas() {
     })
     return { facturado, iva, cobrado, pendiente, count: monthBudgets.length }
   }, [monthBudgets])
+
+  const prevMonthData = useMemo(() => {
+    const pm = month === 0 ? 11 : month - 1
+    const py = month === 0 ? year - 1 : year
+    const pmk = monthKey(py, pm)
+    const pmBudgets = allBudgets.filter(b => budgetMonth(b) === pmk)
+    const facturado = pmBudgets.reduce((s, b) => s + (Number(b.total) || 0), 0)
+    return { count: pmBudgets.length, facturado }
+  }, [allBudgets, month, year])
+
+  const cobroPercent = totals.facturado > 0 ? Math.round((totals.cobrado / totals.facturado) * 100) : 0
+
+  const streak = useMemo(() => {
+    const today = new Date()
+    let count = 0
+    for (let i = 0; i < 12; i++) {
+      const m = today.getMonth() - i
+      const y = today.getFullYear() + Math.floor(m < 0 ? -1 : 0)
+      const adjM = ((m % 12) + 12) % 12
+      const mk2 = monthKey(y, adjM)
+      if (allBudgets.some(b => budgetMonth(b) === mk2)) count++
+      else break
+    }
+    return count
+  }, [allBudgets])
+
+  const deltaCount = prevMonthData.count > 0 ? Math.round(((totals.count - prevMonthData.count) / prevMonthData.count) * 100) : null
+  const deltaFact = prevMonthData.facturado > 0 ? Math.round(((totals.facturado - prevMonthData.facturado) / prevMonthData.facturado) * 100) : null
 
   const prevMonth = () => { if (month === 0) { setMonth(11); setYear(y => y - 1) } else setMonth(m => m - 1) }
   const nextMonth = () => { if (month === 11) { setMonth(0); setYear(y => y + 1) } else setMonth(m => m + 1) }
@@ -182,6 +210,41 @@ export default function Ventas() {
 
   const payInfo = (b) => PAY_OPTS.find(o => o.value === b.payStatus) || PAY_OPTS[0]
 
+  const CobroRing = ({ percent, size = 52, stroke = 5 }) => {
+    const r = (size - stroke) / 2
+    const circ = 2 * Math.PI * r
+    const offset = circ - (Math.min(percent, 100) / 100) * circ
+    const ringColor = percent >= 100 ? '#15803d' : percent >= 50 ? '#7C3AED' : '#b45309'
+    return (
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display: 'block', flexShrink: 0 }}>
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="var(--border)" strokeWidth={stroke} />
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={ringColor} strokeWidth={stroke}
+          strokeDasharray={circ} strokeDashoffset={offset}
+          strokeLinecap="round" transform={`rotate(-90 ${size/2} ${size/2})`}
+          style={{ transition: 'stroke-dashoffset .6s ease' }} />
+        <text x={size/2} y={size/2} textAnchor="middle" dominantBaseline="central"
+          style={{ fontSize: size * 0.24, fontWeight: 800, fill: 'var(--txt)', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>
+          {percent}%
+        </text>
+      </svg>
+    )
+  }
+
+  const Delta = ({ value }) => {
+    if (value === null || value === undefined) return null
+    return (
+      <span style={{
+        display: 'inline-flex', alignItems: 'center', gap: 2,
+        fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 6,
+        color: value >= 0 ? '#15803d' : '#DC2626',
+        background: value >= 0 ? 'rgba(34,197,94,.1)' : 'rgba(220,38,38,.1)',
+      }}>
+        <i className={`fa fa-arrow-${value >= 0 ? 'up' : 'down'}`} style={{ fontSize: 7 }} />
+        {Math.abs(value)}%
+      </span>
+    )
+  }
+
   return (
     <div className="ventas-page" style={{ padding: '20px 20px 80px', maxWidth: 1000, margin: '0 auto' }}>
       <style>{`
@@ -193,100 +256,141 @@ export default function Ventas() {
         .vt-cell-r{text-align:right;font-variant-numeric:tabular-nums}
         .vt-pay-chip{font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;cursor:pointer;border:none;font-family:inherit;transition:filter .15s;display:inline-flex;align-items:center;gap:4px}
         .vt-pay-chip:hover{filter:brightness(.92)}
-        .vt-nav-btn{background:none;border:1px solid var(--border);cursor:pointer;color:var(--txt2);font-size:14px;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:background .15s;font-family:inherit;-webkit-tap-highlight-color:transparent;padding:0;flex-shrink:0}
+        .vt-nav-btn{background:none;border:1px solid var(--border);cursor:pointer;color:var(--txt2);font-size:13px;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;transition:background .15s;font-family:inherit;-webkit-tap-highlight-color:transparent;padding:0;flex-shrink:0}
         .vt-nav-btn:active{background:var(--surface2);transform:scale(.94)}
         .vt-card-m{display:none}
-        .vt-card-item{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .12s;-webkit-tap-highlight-color:transparent;border-left:3px solid var(--border);min-height:58px}
+        .vt-card-item{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .12s;-webkit-tap-highlight-color:transparent;border-left:3px solid var(--border);min-height:54px}
         .vt-card-item:active{background:var(--surface2)}
         .vt-card-info{flex:1;min-width:0}
-        .vt-card-name{font-size:14px;font-weight:700;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
-        .vt-card-sub{font-size:11.5px;color:var(--txt3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.4}
-        .vt-card-right{text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
-        .vt-card-amt{font-size:16px;font-weight:800;color:var(--txt);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
+        .vt-card-name{font-size:13.5px;font-weight:700;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
+        .vt-card-sub{font-size:11px;color:var(--txt3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.4}
+        .vt-card-right{text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+        .vt-card-amt{font-size:15px;font-weight:800;color:var(--txt);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
         .vt-card-pay{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:3px;-webkit-tap-highlight-color:transparent;border:none;cursor:pointer;font-family:inherit;transition:filter .15s;line-height:1.4}
         .vt-card-pay:active{filter:brightness(.88)}
-        .vt-card-date{font-size:10px;color:var(--txt4);font-variant-numeric:tabular-nums}
         .vt-mob-total{display:none}
         .vt-header h1,.vt-subtitle{display:none}
+        .vt-hero{display:flex;align-items:stretch;gap:10px;margin-bottom:14px}
+        .vt-hero-main{flex:1;min-width:0;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px}
+        .vt-hero-side{display:flex;flex-direction:column;gap:10px;width:180px;flex-shrink:0}
+        .vt-hero-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;flex:1;display:flex;flex-direction:column;justify-content:center}
+        .vt-streak{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:8px;font-size:10px;font-weight:700;background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(245,158,11,.06));color:#b45309;border:1px solid rgba(245,158,11,.2)}
         @media(max-width:900px){
           .vt-row,.vt-hdr{grid-template-columns:1fr .6fr .5fr .3fr;font-size:12px}
           .vt-hide-m{display:none}
+          .vt-hero{flex-direction:column}
+          .vt-hero-side{flex-direction:row;width:100%}
         }
         @media(max-width:600px){
-          .ventas-page{padding:12px 0 90px!important}
+          .ventas-page{padding:8px 0 90px!important}
           .vt-header{padding:0 14px!important}
           .vt-new-btn{padding:10px 16px!important;font-size:13px!important;width:100%!important;justify-content:center;min-height:44px!important;border-radius:12px!important}
+          .vt-hero{padding:0 14px!important;flex-direction:column;gap:8px}
+          .vt-hero-main{padding:12px 14px;gap:12px}
+          .vt-hero-side{flex-direction:row;width:100%}
+          .vt-hero-card{padding:10px 12px;border-radius:10px}
           .vt-kpi-grid{padding:0 14px!important;grid-template-columns:1fr 1fr!important;gap:6px!important}
           .vt-kpi-card{padding:10px 12px!important;border-radius:10px!important;border-width:1px!important}
-          .vt-kpi-val{font-size:16px!important}
-          .vt-month-nav{margin-left:14px!important;margin-right:14px!important;padding:8px 10px!important;margin-bottom:10px!important;border-radius:12px!important}
-          .vt-month-label{font-size:14px!important}
+          .vt-kpi-val{font-size:15px!important}
+          .vt-month-nav{margin-left:14px!important;margin-right:14px!important;padding:6px 10px!important;margin-bottom:10px!important;border-radius:10px!important}
+          .vt-month-label{font-size:13px!important}
           .vt-table-wrap{border-radius:0!important;border-left:none!important;border-right:none!important}
           .vt-row:not(.vt-total){display:none!important}
           .vt-hdr{display:none!important}
           .vt-card-m{display:block!important}
           .vt-total{display:none!important}
-          .vt-mob-total{display:flex!important;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface2);border-radius:0 0 12px 12px}
+          .vt-mob-total{display:flex!important;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface2);border-radius:0 0 12px 12px}
           .vt-pay-chip{min-height:28px;padding:4px 10px;font-size:10px}
           .vt-insight{margin-left:14px!important;margin-right:14px!important;border-radius:12px!important}
           .vt-pend-wrap{margin-left:14px!important;margin-right:14px!important;border-radius:12px!important}
+          .vt-streak{font-size:9px;padding:3px 8px}
         }
         @media(max-width:380px){
           .vt-kpi-grid{gap:4px!important}
           .vt-kpi-card{padding:8px 10px!important}
-          .vt-kpi-val{font-size:14px!important}
-          .vt-card-name{font-size:13px!important}
-          .vt-card-amt{font-size:14px!important}
+          .vt-kpi-val{font-size:13px!important}
+          .vt-card-name{font-size:12.5px!important}
+          .vt-card-amt{font-size:13px!important}
+          .vt-hero-side{flex-direction:column}
         }
       `}</style>
 
-      {/* HEADER */}
+      {/* HEADER — hidden as tab but kept for standalone */}
       <div className="vt-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 900, color: 'var(--txt)', margin: 0, letterSpacing: '-.4px' }}>Registro de ventas</h1>
           <p className="vt-subtitle" style={{ fontSize: 12, color: 'var(--txt3)', margin: '2px 0 0' }}>Carga y seguimiento mensual</p>
         </div>
-        <button className="vt-new-btn" onClick={openDrawer} style={{
-          padding: '10px 18px', borderRadius: 10, border: 'none',
-          background: 'var(--grad)', color: '#fff', fontSize: 13, fontWeight: 700,
-          cursor: 'pointer', fontFamily: 'inherit',
-          display: 'inline-flex', alignItems: 'center', gap: 7,
-          boxShadow: '0 4px 12px rgba(124,58,237,.25)',
-        }}>
-          <i className="fa fa-plus" /> Nueva venta
-        </button>
       </div>
 
-      {/* NAV MESES */}
-      <div className="vt-month-nav" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, padding: '10px 16px', marginBottom: 16 }}>
+      {/* NAV MESES — compact */}
+      <div className="vt-month-nav" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 12, padding: '8px 14px', marginBottom: 14 }}>
         <button className="vt-nav-btn" onClick={prevMonth}><i className="fa fa-chevron-left" /></button>
         <div style={{ textAlign: 'center', flex: 1 }}>
-          <div className="vt-month-label" style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.3px' }}>{MESES[month]} {year}</div>
-          <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>{totals.count} {totals.count === 1 ? 'venta' : 'ventas'}</div>
+          <div className="vt-month-label" style={{ fontSize: 15, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.3px' }}>{MESES[month]} {year}</div>
+          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+            {totals.count} {totals.count === 1 ? 'venta' : 'ventas'}
+            {deltaCount !== null && <Delta value={deltaCount} />}
+          </div>
         </div>
         <button className="vt-nav-btn" onClick={nextMonth}><i className="fa fa-chevron-right" /></button>
       </div>
 
-      {/* RESUMEN */}
-      <div className="vt-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10, marginBottom: 12 }}>
-        {[
-          { label: 'Facturado', value: totals.facturado, icon: 'fa-file-invoice-dollar', color: '#7C3AED' },
-          { label: 'IVA', value: totals.iva, icon: 'fa-percent', color: '#6366f1' },
-          { label: 'Cobrado', value: totals.cobrado, icon: 'fa-circle-check', color: '#15803d' },
-          { label: 'Pendiente', value: totals.pendiente, icon: 'fa-clock', color: '#b45309' },
-        ].map(c => (
-          <div key={c.label} className="vt-kpi-card" style={{ background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 12, padding: '14px 16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 6 }}>
-              <i className={`fa ${c.icon}`} style={{ color: c.color, fontSize: 12 }} />
-              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.05em' }}>{c.label}</span>
+      {/* HERO SECTION — cobro ring + KPIs + streak */}
+      <div className="vt-hero">
+        <div className="vt-hero-main">
+          <CobroRing percent={cobroPercent} />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 4 }}>
+              Cobrado del mes
             </div>
-            <div className="vt-kpi-val" style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums' }}>{hidden ? '***' : fmt(c.value)}</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.03em', lineHeight: 1.1 }}>
+              {hidden ? '***' : fmt(totals.cobrado)}
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 3 }}>
+              {hidden ? '***' : <>de {fmt(totals.facturado)} facturado</>}
+              {totals.pendiente > 0 && !hidden && <> · <span style={{ color: '#b45309', fontWeight: 600 }}>{fmt(totals.pendiente)} pendiente</span></>}
+            </div>
           </div>
-        ))}
+          <button className="vt-new-btn" onClick={openDrawer} style={{
+            padding: '9px 16px', borderRadius: 10, border: 'none',
+            background: 'var(--grad)', color: '#fff', fontSize: 12.5, fontWeight: 700,
+            cursor: 'pointer', fontFamily: 'inherit',
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            boxShadow: '0 4px 12px rgba(124,58,237,.25)', flexShrink: 0,
+          }}>
+            <i className="fa fa-plus" style={{ fontSize: 10 }} /> Nueva venta
+          </button>
+        </div>
+
+        <div className="vt-hero-side">
+          <div className="vt-hero-card">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+              <i className="fa fa-percent" style={{ color: '#6366f1', fontSize: 10 }} />
+              <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.06em' }}>IVA</span>
+            </div>
+            <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums' }}>
+              {hidden ? '***' : fmt(totals.iva)}
+            </div>
+          </div>
+          <div className="vt-hero-card">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+              <i className="fa fa-fire" style={{ color: '#f59e0b', fontSize: 10 }} />
+              <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Racha</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)' }}>{streak}</span>
+              <span className="vt-streak">
+                <i className="fa fa-fire" style={{ fontSize: 9 }} />
+                {streak === 1 ? 'mes' : 'meses'} seguidos
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* TABLA */}
-      <div className="vt-table-wrap" style={{ background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
+      <div className="vt-table-wrap" style={{ background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, overflow: 'hidden', marginTop: 14 }}>
         <div className="vt-row vt-hdr">
           <span>Cliente</span><span>Producto</span>
           <span className="vt-cell-r">Cant</span><span className="vt-cell-r">Facturado</span>
@@ -294,10 +398,25 @@ export default function Ventas() {
         </div>
 
         {monthBudgets.length === 0 && (
-          <div style={{ padding: '40px 20px', textAlign: 'center' }}>
-            <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(124,58,237,.08)', color: '#7C3AED', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, marginBottom: 10 }}><i className="fa fa-receipt" /></div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--txt2)', marginBottom: 4 }}>Sin ventas en {MESES[month].toLowerCase()}</div>
-            <div style={{ fontSize: 12, color: 'var(--txt3)' }}>Hacé click en <strong>Nueva venta</strong> para agregar la primera</div>
+          <div style={{ padding: '48px 24px', textAlign: 'center' }}>
+            <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg,rgba(124,58,237,.1),rgba(124,58,237,.04))', color: '#7C3AED', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, marginBottom: 12 }}>
+              <i className="fa fa-receipt" />
+            </div>
+            <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--txt)', marginBottom: 4, letterSpacing: '-.2px' }}>
+              {MESES[month]} arranca limpio
+            </div>
+            <div style={{ fontSize: 12, color: 'var(--txt3)', lineHeight: 1.5, maxWidth: 280, margin: '0 auto 16px' }}>
+              Registra tu primera venta del mes y empeza a trackear tu facturacion.
+            </div>
+            <button onClick={openDrawer} style={{
+              padding: '10px 20px', borderRadius: 10, border: 'none',
+              background: 'var(--grad)', color: '#fff', fontSize: 13, fontWeight: 700,
+              cursor: 'pointer', fontFamily: 'inherit',
+              display: 'inline-flex', alignItems: 'center', gap: 7,
+              boxShadow: '0 4px 12px rgba(124,58,237,.25)',
+            }}>
+              <i className="fa fa-plus" /> Cargar primera venta
+            </button>
           </div>
         )}
 
@@ -350,11 +469,14 @@ export default function Ventas() {
             <span />
           </div>
         )}
-        {/* Total — mobile card view */}
+        {/* Total — mobile */}
         {monthBudgets.length > 0 && (
           <div className="vt-mob-total">
-            <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.04em' }}>Total del mes</span>
-            <span style={{ fontSize: 17, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em' }}>{hidden ? '***' : fmt(totals.facturado)}</span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.04em' }}>Total</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em' }}>{hidden ? '***' : fmt(totals.facturado)}</span>
+              {deltaFact !== null && <Delta value={deltaFact} />}
+            </span>
           </div>
         )}
       </div>
@@ -724,7 +846,7 @@ function PendientesCobro({ budgets, hidden, nav }) {
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.company || b.contact || '---'}</div>
               <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>
-                {b.payStatus === 'partial' ? 'Senado' : 'Pendiente'}
+                {b.payStatus === 'partial' ? 'Parcial' : 'Pendiente'}
                 {days > 0 && <> · hace {days}d</>}
                 {days > 30 && <span style={{ color: '#DC2626', fontWeight: 700 }}> — revisar</span>}
               </div>
