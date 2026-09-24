@@ -604,6 +604,33 @@ export default function Proveedores() {
         .prov-mob-act-del{background:#FEF2F2!important;border-color:#FECACA!important;color:#DC2626!important}
         @media(max-width:640px){.prov-desk-only{display:none!important}.prov-mob-list{display:flex}.prov-ph-title{display:none!important}.cli-pill{width:40px;height:40px;padding:0;justify-content:center}.cli-pill span{display:none}.cli-pill i{font-size:15px}.cli-pill-new{height:40px;padding:0 16px}.cli-pill-group{gap:8px}}
         @media(min-width:641px){.prov-mob-list{display:none!important}}
+
+        /* ── PROVEEDORES DETAIL: bottom sheet en mobile ── */
+        @keyframes provSheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+        @keyframes provDrawerIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+        .prov-detail-backdrop{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.32);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);animation:fadeIn .2s ease both}
+        @media(min-width:641px){
+          .prov-detail-panel{position:fixed;right:0;top:0;bottom:0;width:min(560px,96vw);background:var(--surface);z-index:401;display:flex;flex-direction:column;box-shadow:-6px 0 32px rgba(0,0,0,.14);animation:provDrawerIn .24s cubic-bezier(.22,1,.36,1) both;overflow:hidden;border-left:1px solid var(--border)}
+        }
+        @media(max-width:640px){
+          .prov-detail-panel{position:fixed;left:0;right:0;bottom:0;max-height:88vh;background:var(--surface);z-index:401;display:flex;flex-direction:column;border-radius:20px 20px 0 0;box-shadow:0 -4px 32px rgba(0,0,0,.14);animation:provSheetUp .28s cubic-bezier(.32,1.28,.58,1) both;overflow:hidden}
+          .prov-detail-panel::before{content:'';display:block;width:36px;height:4px;background:var(--border2,#D1D5DB);border-radius:2px;margin:10px auto 0;flex-shrink:0}
+          .prov-detail-hd{padding:12px 16px 10px!important}
+          .prov-detail-avatar{width:36px!important;height:36px!important;font-size:15px!important}
+          .prov-detail-name{font-size:15px!important}
+          .prov-detail-sub{font-size:11px!important}
+          .prov-detail-hd-acts .btn{padding:0!important;width:34px;height:34px;min-width:34px;border-radius:50%;justify-content:center}
+          .prov-detail-hd-acts .btn span{display:none}
+          .prov-detail-hd-acts .btn i{margin:0;font-size:13px}
+          .prov-detail-body{padding:14px 16px!important}
+          .prov-detail-tabs{padding:0 16px!important;overflow-x:auto;-webkit-overflow-scrolling:touch}
+          /* Modal crear/editar: padding más compacto */
+          .prov-edit-modal .modal-form-card{max-width:100vw!important;border-radius:20px 20px 0 0!important}
+          .prov-edit-hd{padding:14px 16px 10px!important}
+          .prov-edit-body{padding:14px 16px 4px!important}
+          .prov-edit-footer{padding:12px 16px 20px!important}
+          .prov-edit-body input[style*="max-width"]{max-width:none!important}
+        }
       `}</style>
       {/* LISTA MÓVIL */}
       <div className="prov-mob-list">
@@ -798,12 +825,12 @@ export default function Proveedores() {
 
       {/* MODAL EDITAR */}
       {modal && (
-        <div className="modal-bg open" style={{ zIndex: 700 }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
+        <div className="modal-bg open prov-edit-modal" style={{ zIndex: 700 }} onClick={e => { if (e.target === e.currentTarget) setModal(false) }}>
           <div className="modal-form-card" style={{ maxWidth: 620 }}
             onKeyDown={e => { if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && form.name && form.name.trim()) save() }}>
 
             {/* Header fijo */}
-            <div style={{ padding: '18px 28px 14px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+            <div className="prov-edit-hd" style={{ padding: '18px 28px 14px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
               <div className="mh" style={{ margin: 0, paddingBottom: 0, borderBottom: 'none' }}>
                 <h3>{form.id ? 'Editar' : 'Agregar'} proveedor</h3>
                 <button className="mclose" onClick={() => setModal(false)}><i className="fa fa-xmark" /></button>
@@ -811,7 +838,7 @@ export default function Proveedores() {
             </div>
 
             {/* Body scrollable */}
-            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '18px 28px 4px', WebkitOverflowScrolling: 'touch' }}>
+            <div className="prov-edit-body" style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '18px 28px 4px', WebkitOverflowScrolling: 'touch' }}>
               <div className="grid2">
                 <div className="fg"><label>Nombre *</label><input type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder="Proveedor S.A." autoFocus /></div>
                 <div className="fg"><label>Contacto</label><input type="text" value={form.contact} onChange={e => setF('contact', e.target.value)} /></div>
@@ -857,7 +884,7 @@ export default function Proveedores() {
             </div>
 
             {/* Footer fijo */}
-            <div style={{ flexShrink: 0, position: 'sticky', bottom: 0, borderTop: '1px solid var(--border)', padding: '14px 28px 20px', background: 'var(--surface)', display: 'flex', gap: 10, justifyContent: 'flex-end', zIndex: 5 }}>
+            <div className="prov-edit-footer" style={{ flexShrink: 0, position: 'sticky', bottom: 0, borderTop: '1px solid var(--border)', padding: '14px 28px 20px', background: 'var(--surface)', display: 'flex', gap: 10, justifyContent: 'flex-end', zIndex: 5 }}>
               <button className="btn btn-secondary" onClick={() => setModal(false)}>Cancelar</button>
               <button className="btn btn-primary" onClick={save}><i className="fa fa-floppy-disk" /> Guardar</button>
             </div>
@@ -867,43 +894,43 @@ export default function Proveedores() {
 
       {/* FICHA DETALLE CON PESTAÑAS */}
       {detailSupplier && (
-        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setDetailSupplier(null) }}>
-          <div className="modal-form-card cli-detail-card" style={{ width: '100%', maxWidth: 860, maxHeight: '95vh', display: 'flex', flexDirection: 'column' }} onClick={e => e.stopPropagation()}>
+        <div className="prov-detail-backdrop" onClick={() => setDetailSupplier(null)}>
+          <div className="prov-detail-panel" onClick={e => e.stopPropagation()}>
             {/* Header */}
-            <div style={{ padding: '20px 24px 16px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <div style={{ width: 50, height: 50, borderRadius: '50%', background: 'linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 800, color: '#fff', flexShrink: 0 }}>
+            <div className="prov-detail-hd" style={{ padding: '20px 24px 16px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0, flex: 1 }}>
+                  <div className="prov-detail-avatar" style={{ width: 46, height: 46, borderRadius: '50%', background: 'linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 800, color: '#fff', flexShrink: 0 }}>
                     {(detailSupplier.name || '?')[0].toUpperCase()}
                   </div>
-                  <div>
-                    <h3 style={{ fontSize: 18, fontWeight: 900, color: 'var(--txt)', letterSpacing: '-.4px', margin: 0, lineHeight: 1.2 }}>{detailSupplier.name}</h3>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <h3 className="prov-detail-name" style={{ fontSize: 17, fontWeight: 900, color: 'var(--txt)', letterSpacing: '-.4px', margin: 0, lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{detailSupplier.name}</h3>
                     {detailSupplier.contact && (
-                      <div style={{ fontSize: 13, color: 'var(--txt3)', marginTop: 3 }}>
+                      <div className="prov-detail-sub" style={{ fontSize: 12, color: 'var(--txt3)', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {detailSupplier.contact}{detailSupplier.rubro ? <span style={{ color: 'var(--txt4)' }}> · {detailSupplier.rubro}</span> : ''}
                       </div>
                     )}
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-                  <button className="btn btn-ghost btn-sm" onClick={() => sharePortalLink(detailSupplier)} title="Genera un link público con resumen para el proveedor">
-                    <i className="fa fa-share-nodes" /> Compartir portal
+                <div className="prov-detail-hd-acts" style={{ display: 'flex', gap: 6, alignItems: 'center', flexShrink: 0 }}>
+                  <button className="btn btn-ghost btn-sm" onClick={() => sharePortalLink(detailSupplier)} title="Compartir portal">
+                    <i className="fa fa-share-nodes" /> <span>Compartir</span>
                   </button>
-                  <button className="btn btn-ghost btn-sm" onClick={() => { const s = detailSupplier; setDetailSupplier(null); openEdit(s) }}><i className="fa fa-pen" /> Editar</button>
+                  <button className="btn btn-ghost btn-sm" onClick={() => { const s = detailSupplier; setDetailSupplier(null); openEdit(s) }} title="Editar"><i className="fa fa-pen" /> <span>Editar</span></button>
                   <button className="mclose" onClick={() => setDetailSupplier(null)}><i className="fa fa-xmark" /></button>
                 </div>
               </div>
             </div>
 
             {/* Pestañas */}
-            <div className="detail-tabs">
+            <div className="detail-tabs prov-detail-tabs">
               {[['info', 'Información'], ['productos', 'Productos'], ['precios', 'Precios'], ['notas', 'Notas']].map(([k, l]) => (
                 <div key={k} className={`detail-tab ${detailTab === k ? 'active' : ''}`} onClick={() => setDetailTab(k)}>{l}</div>
               ))}
             </div>
 
             {/* Body */}
-            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '20px 24px', WebkitOverflowScrolling: 'touch' }}>
+            <div className="prov-detail-body" style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '20px 24px', WebkitOverflowScrolling: 'touch' }}>
 
               {/* TAB: Información */}
               {detailTab === 'info' && (
