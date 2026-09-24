@@ -465,7 +465,21 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
         .sd-breakdown i{color:var(--brand);font-size:10px}
         .sd-saved-flash{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border-radius:10px;background:rgba(5,150,105,.1);border:1.5px solid rgba(5,150,105,.25);color:#059669;font-size:12px;font-weight:700;animation:sd-pop .3s cubic-bezier(.17,.67,.25,1.3)}
         @keyframes sd-pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
-        @media(max-width:500px){.sd-panel{width:100vw;border-left:none}.sd-row{flex-direction:column}}
+        @media(max-width:640px){
+          .sd-panel{width:100vw;border-left:none;border-radius:0}
+          .sd-header{padding:14px 16px 12px}
+          .sd-body{padding:16px 16px}
+          .sd-footer{padding:12px 16px max(14px,env(safe-area-inset-bottom))}
+          .sd-row{flex-direction:column;gap:0}
+          .sd-section{margin-bottom:16px;padding:14px;background:var(--surface2);border-radius:12px;border:1px solid var(--border)}
+          .sd-section-title{margin:-14px -14px 12px;padding:10px 14px;background:var(--bg);border-radius:12px 12px 0 0;border-bottom:1px solid var(--border);margin-bottom:12px;font-size:11px;font-weight:800;color:var(--txt2)}
+          .sd-section-title i{color:var(--brand);opacity:1}
+          .sd-inp{min-height:46px;font-size:15px;border-radius:12px}
+          .sd-chip{padding:9px 14px;font-size:12px;min-height:40px}
+          .sd-canal{padding:8px 12px;font-size:11px;min-height:36px}
+          .sd-btn{min-height:48px;font-size:14px;border-radius:12px}
+          .sd-toggle{padding:12px 14px;border-radius:12px}
+        }
       `}</style>
 
       <div className="sd-overlay" onClick={onClose} />
