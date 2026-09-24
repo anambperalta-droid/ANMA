@@ -270,10 +270,10 @@ export default function Ventas() {
         .vt-card-pay:active{filter:brightness(.88)}
         .vt-mob-total{display:none}
         .vt-header h1,.vt-subtitle{display:none}
-        .vt-hero{display:flex;align-items:stretch;gap:10px;margin-bottom:14px}
-        .vt-hero-main{flex:1;min-width:0;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px}
-        .vt-hero-side{display:flex;flex-direction:column;gap:10px;width:180px;flex-shrink:0}
-        .vt-hero-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;flex:1;display:flex;flex-direction:column;justify-content:center}
+        .vt-hero{display:flex;align-items:stretch;gap:12px;margin-bottom:16px}
+        .vt-hero-main{flex:1;min-width:0;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+        .vt-hero-side{display:flex;flex-direction:column;gap:12px;width:180px;flex-shrink:0}
+        .vt-hero-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;flex:1;display:flex;flex-direction:column;justify-content:center}
         .vt-streak{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:8px;font-size:10px;font-weight:700;background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(245,158,11,.06));color:#b45309;border:1px solid rgba(245,158,11,.2)}
         @media(max-width:900px){
           .vt-row,.vt-hdr{grid-template-columns:1fr .6fr .5fr .3fr;font-size:12px}
@@ -285,9 +285,10 @@ export default function Ventas() {
           .ventas-page{padding:8px 0 90px!important}
           .vt-header{padding:0 14px!important}
           .vt-new-btn{padding:10px 16px!important;font-size:13px!important;width:100%!important;justify-content:center;min-height:44px!important;border-radius:12px!important}
-          .vt-hero{padding:0 14px!important;flex-direction:column;gap:8px}
-          .vt-hero-main{padding:12px 14px;gap:12px}
-          .vt-hero-side{flex-direction:row;width:100%}
+          .vt-hero{padding:0 14px!important;flex-direction:column;gap:10px}
+          .vt-hero-main{padding:14px;gap:12px}
+          .vt-hero-main .vt-new-btn{width:100%!important;flex:1 0 100%;order:10;justify-content:center}
+          .vt-hero-side{flex-direction:row;width:100%;gap:8px}
           .vt-hero-card{padding:10px 12px;border-radius:10px}
           .vt-kpi-grid{padding:0 14px!important;grid-template-columns:1fr 1fr!important;gap:6px!important}
           .vt-kpi-card{padding:10px 12px!important;border-radius:10px!important;border-width:1px!important}
