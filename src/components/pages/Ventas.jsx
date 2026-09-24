@@ -207,6 +207,7 @@ export default function Ventas() {
         .vt-card-pay:active{filter:brightness(.88)}
         .vt-card-date{font-size:10px;color:var(--txt4);font-variant-numeric:tabular-nums}
         .vt-mob-total{display:none}
+        .vt-header h1,.vt-subtitle{display:none}
         @media(max-width:900px){
           .vt-row,.vt-hdr{grid-template-columns:1fr .6fr .5fr .3fr;font-size:12px}
           .vt-hide-m{display:none}
@@ -214,8 +215,6 @@ export default function Ventas() {
         @media(max-width:600px){
           .ventas-page{padding:12px 0 90px!important}
           .vt-header{padding:0 14px!important}
-          .vt-header h1{display:none!important}
-          .vt-subtitle{display:none}
           .vt-new-btn{padding:10px 16px!important;font-size:13px!important;width:100%!important;justify-content:center;min-height:44px!important;border-radius:12px!important}
           .vt-kpi-grid{padding:0 14px!important;grid-template-columns:1fr 1fr!important;gap:6px!important}
           .vt-kpi-card{padding:10px 12px!important;border-radius:10px!important;border-width:1px!important}

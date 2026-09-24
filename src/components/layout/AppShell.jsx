@@ -1,6 +1,6 @@
 import { useState, useEffect, Suspense } from 'react'
 import { createPortal } from 'react-dom'
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
 import { applyThemeColors } from '../../lib/theme'
@@ -24,7 +24,7 @@ import { flushSync as flushCloudSync } from '../../lib/sync'
 // Code splitting + prefetch caching centralizados en lib/routes.js
 import {
   Historial, Presupuesto, Clientes, Catalogo, Proveedores, Logistica,
-  Mensajes, Insumos, Config, Admin, Importador, MiCuenta, NotFound, Guia, Ventas,
+  Mensajes, Insumos, Config, Admin, Importador, MiCuenta, NotFound, Guia,
 } from '../../lib/routes'
 
 const PRIORITIES = [
@@ -396,7 +396,7 @@ function AppShellInner() {
               <Route path="/pedido/:id" element={<Guard perm="pedido.edit"><Presupuesto /></Guard>} />
               <Route path="/presupuesto" element={<Guard perm="pedido.create"><Presupuesto /></Guard>} />
               <Route path="/presupuesto/:id" element={<Guard perm="pedido.edit"><Presupuesto /></Guard>} />
-              <Route path="/ventas" element={<Guard perm="pedido.create"><Ventas /></Guard>} />
+              <Route path="/ventas" element={<Navigate to="/" replace />} />
               <Route path="/clientes" element={<Guard perm="cliente.view"><Clientes /></Guard>} />
               <Route path="/catalogo" element={<Guard perm="catalogo.view"><Catalogo /></Guard>} />
               <Route path="/insumos" element={<Guard perm="insumo.view"><Insumos /></Guard>} />

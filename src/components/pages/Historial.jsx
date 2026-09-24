@@ -7,6 +7,7 @@ import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, fmtDate, MONTHS, STATUS_MAP, STATUS_CLS, PAY_STATUS_MAP, PAY_STATUS_CLS, db, dbW } from '../../lib/storage'
 import { usePrivacy } from '../../context/PrivacyContext'
 import GuideBanner from '../layout/GuideBanner'
+import Ventas from './Ventas'
 
 function Badge({ status }) {
   return <span className={`badge ${STATUS_CLS[status] || 'b-draft'}`}>{STATUS_MAP[status] || 'Borrador'}</span>
@@ -1642,6 +1643,7 @@ export default function Historial() {
           {[
             { key: 'resumen',     lbl: 'Resumen' },
             { key: 'lista',       lbl: 'Pedidos' },
+            { key: 'ventas',      lbl: 'Ventas' },
             { key: 'analisis',    lbl: 'Análisis' },
             { key: 'seguimiento', lbl: 'Seguimiento', badge: seguimiento.length },
           ].map(t => (
@@ -1702,6 +1704,7 @@ export default function Historial() {
         {[
           { key: 'resumen',     icon: 'fa-house',     lbl: 'Resumen',                           short: 'Inicio'   },
           { key: 'lista',       icon: 'fa-receipt',   lbl: 'Pedidos',                           short: 'Pedidos'  },
+          { key: 'ventas',      icon: 'fa-cash-register', lbl: 'Ventas',                        short: 'Ventas'   },
           { key: 'analisis',    icon: 'fa-chart-bar', lbl: 'Análisis',                          short: 'Stats'    },
           { key: 'seguimiento', icon: 'fa-bell',      lbl: `Seguimiento (${seguimiento.length})`, short: seguimiento.length > 0 ? `${seguimiento.length}` : 'Seguimiento' },
         ].map(t => (
@@ -2581,6 +2584,9 @@ export default function Historial() {
         </div>
         </>
       )}
+
+      {/* ═══ VENTAS — Monthly register (embedded from Ventas.jsx) ═══ */}
+      {tab === 'ventas' && <Ventas />}
 
       {/* ═══ SEGUIMIENTO ACTIVO — Grouped by urgency tier ═══ */}
       {tab === 'seguimiento' && (

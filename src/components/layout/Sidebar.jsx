@@ -26,7 +26,6 @@ const NAV_GROUPS = [
     items: [
       { path: '/', icon: 'fa-chart-line', label: 'Dashboard', chipKey: 'budgets', perm: 'dashboard.view' },
       { path: '/pedido', icon: 'fa-file-invoice-dollar', label: 'Nuevo pedido', perm: 'pedido.create' },
-      { path: '/ventas', icon: 'fa-receipt', label: 'Registro ventas', perm: 'pedido.create' },
       { path: '/clientes', icon: 'fa-users', label: 'Clientes', chipKey: 'clients', perm: 'cliente.view' },
     ],
   },
