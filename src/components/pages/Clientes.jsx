@@ -73,7 +73,7 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
         </div>
 
         {/* ── Content ── */}
-        <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '20px 18px', background: '#fff' }}>
+        <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, padding: '20px 18px', background: 'var(--surface)' }}>
 
           {/* Cabecera del comprobante */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 14, borderBottom: `3px solid ${brandColor}`, marginBottom: 16, gap: 12 }}>
@@ -1229,7 +1229,7 @@ export default function Clientes() {
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-                  <button className="btn btn-ghost btn-sm" onClick={() => openEdit(detailClient)}><i className="fa fa-pen" /> Editar</button>
+                  <button className="btn btn-ghost btn-sm" onClick={() => { const c = detailClient; setDetailClient(null); openEdit(c) }}><i className="fa fa-pen" /> Editar</button>
                   <button className="mclose" onClick={() => setDetailClient(null)}><i className="fa fa-xmark" /></button>
                 </div>
               </div>
@@ -1295,8 +1295,14 @@ export default function Clientes() {
                       {detailClient.notes}
                     </div>
                   ) : (
-                    <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '12px 14px', fontSize: 12, color: 'var(--txt4)', fontStyle: 'italic', borderLeft: '3px solid var(--border)' }}>
-                      <i className="fa fa-pencil" style={{ marginRight: 6 }} />Agrega notas sobre preferencias, condiciones especiales o recordatorios de seguimiento...
+                    <div
+                      onClick={() => { const c = detailClient; setDetailClient(null); openEdit(c) }}
+                      style={{ background: 'linear-gradient(135deg, rgba(124,58,237,.06), rgba(124,58,237,.02))', borderRadius: 10, padding: '14px 16px', fontSize: 12.5, color: 'var(--txt3)', borderLeft: '3px solid var(--brand)', cursor: 'pointer', transition: 'background .15s' }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(124,58,237,.12), rgba(124,58,237,.05))'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(124,58,237,.06), rgba(124,58,237,.02))'}
+                    >
+                      <i className="fa fa-lightbulb" style={{ marginRight: 6, color: 'var(--brand)' }} />
+                      <b style={{ color: 'var(--txt2)' }}>Dato clave:</b> anotá horarios de contacto, condiciones de pago o preferencias. La próxima vez que te escriba, ya sabés cómo atenderlo.
                     </div>
                   )}
                 </div>
@@ -1515,7 +1521,7 @@ export default function Clientes() {
           budget={previewBudget}
           config={config()}
           onClose={() => setPreviewBudget(null)}
-          onEdit={() => { setPreviewBudget(null); setDetailClient(null); nav(`/presupuesto/${previewBudget.id}`) }}
+          onEdit={() => { setPreviewBudget(null); setDetailClient(null); nav(`/pedido/${previewBudget.id}`) }}
         />
       )}
 

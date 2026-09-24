@@ -294,7 +294,7 @@ function buildAlerts(budgets, products, insumos) {
         icon: 'fa-fire',
         title: `Entrega vencida — ${b.num}`,
         body: `${cliente} · ${Math.abs(delivDays)}d de retraso · ${fmt(b.total)}`,
-        route: `/presupuesto/${b.id}`,
+        route: `/pedido/${b.id}`,
         ts: b.id,
         ...meta,
       })
@@ -309,7 +309,7 @@ function buildAlerts(budgets, products, insumos) {
         icon: 'fa-circle-dollar-to-slot',
         title: `Cobro pendiente — ${b.num}`,
         body: `${cliente} · ${sinceDays}d sin cobrar · ${fmt(b.total)}`,
-        route: `/presupuesto/${b.id}`,
+        route: `/pedido/${b.id}`,
         ts: b.id,
         ...meta,
       })
@@ -327,7 +327,7 @@ function buildAlerts(budgets, products, insumos) {
           ? `Debés entregar ${whenLabel} a ${cliente}`
           : `Entregá el pedido de ${cliente} ${whenLabel}`,
         body: `${b.num} · ${fmt(b.total)}`,
-        route: `/presupuesto/${b.id}`,
+        route: `/pedido/${b.id}`,
         ts: b.id,
         ...meta,
       })
@@ -342,7 +342,7 @@ function buildAlerts(budgets, products, insumos) {
         icon: 'fa-clock-rotate-left',
         title: `${b.num} lleva ${sinceDays}d sin la seña`,
         body: `${cliente} — pedido confirmado pero sin cobrar depósito · ${fmt(b.total)}`,
-        route: `/presupuesto/${b.id}`,
+        route: `/pedido/${b.id}`,
         ts: b.id,
         ...meta,
       })

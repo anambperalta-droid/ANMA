@@ -20,24 +20,26 @@ function readTheme() {
 
 // `perm` define quién ve cada entrada (owner ve todo, operator solo los que coincidan).
 // `ownerOnly: true` = oculto para operator siempre.
-const NAV = [
-  { section: 'Ventas' },
+const NAV_CORE = [
+  { section: 'Tu negocio' },
   { path: '/', icon: 'fa-chart-line', label: 'Dashboard', chipKey: 'budgets', perm: 'dashboard.view' },
-  { path: '/presupuesto', icon: 'fa-file-invoice-dollar', label: 'Nuevo pedido', perm: 'pedido.create' },
+  { path: '/pedido', icon: 'fa-file-invoice-dollar', label: 'Nuevo pedido', perm: 'pedido.create' },
+  { path: '/ventas', icon: 'fa-receipt', label: 'Registro ventas', perm: 'pedido.create' },
   { path: '/clientes', icon: 'fa-users', label: 'Clientes', chipKey: 'clients', perm: 'cliente.view' },
-  { section: 'Inventario' },
   { path: '/catalogo', icon: 'fa-cube', label: 'Productos', chipKey: 'products', perm: 'catalogo.view' },
   { path: '/insumos', icon: 'fa-boxes-stacked', label: 'Insumos', chipKey: 'insumos', perm: 'insumo.view' },
   { path: '/proveedores', icon: 'fa-industry', label: 'Proveedores', chipKey: 'suppliers', perm: 'proveedor.view' },
-  { section: 'Operaciones' },
   { path: '/logistica', icon: 'fa-truck-fast', label: 'Logística', perm: 'logistica.view' },
   { path: '/mensajes', icon: 'fa-brands fa-whatsapp', label: 'Mensajes WA', perm: 'mensajes.view' },
-  { section: 'Ayuda' },
-  { path: '/guia', icon: 'fa-book-open', label: 'Guía completa' },
-  { section: 'Sistema', ownerOnly: true },
+  { path: '/guia', icon: 'fa-book-open', label: 'Guía' },
+]
+
+const NAV_TOOLS = [
   { path: '/config', icon: 'fa-gear', label: 'Configuración', ownerOnly: true },
   { path: '/importador', icon: 'fa-file-import', label: 'Importador', ownerOnly: true, perm: 'config.access' },
 ]
+
+const TOOLS_KEY = 'anma_sidebar_tools_open'
 
 export default function Sidebar({ open, onClose, collapsed }) {
   const loc = useLocation()
@@ -47,6 +49,18 @@ export default function Sidebar({ open, onClose, collapsed }) {
   const { panelOpen, setPanelOpen, activeTasks, focusMode, setFocusMode } = useTaskFab()
   const { hidden, toggle: togglePrivacy } = usePrivacy()
   const [theme, setTheme] = useState(readTheme)
+  const [toolsOpen, setToolsOpen] = useState(() => {
+    try {
+      const v = localStorage.getItem(TOOLS_KEY)
+      return v === null ? false : v === '1'
+    } catch { return true }
+  })
+  const toggleTools = () => {
+    setToolsOpen(v => {
+      try { localStorage.setItem(TOOLS_KEY, v ? '0' : '1') } catch {}
+      return !v
+    })
+  }
   useEffect(() => {
     // Sincroniza si Topbar cambió el theme desde otro tab
     const h = () => setTheme(readTheme())
@@ -106,41 +120,47 @@ export default function Sidebar({ open, onClose, collapsed }) {
         </div>
       </div>
       <nav className="sb-nav">
-        {NAV.map((item, i) => {
-          // Operator: ocultar entradas ownerOnly o sin permiso
-          if (role === 'operator') {
-            if (item.ownerOnly) return null
-            if (item.perm && !can(item.perm)) return null
-          }
+        {NAV_CORE.map((item, i) => {
+          if (role === 'operator' && item.perm && !can(item.perm)) return null
           if (item.section) return <div key={i} className="sb-sec">{item.section}</div>
-          const active = loc.pathname === item.path || (item.path === '/presupuesto' && loc.pathname.startsWith('/presupuesto'))
+          const active = loc.pathname === item.path || (item.path === '/pedido' && loc.pathname.startsWith('/pedido'))
           return (
-            <button
-              key={item.path}
-              type="button"
-              className={`sb-item ${active ? 'active' : ''}`}
-              data-tip={item.label}
-              onClick={() => goTo(item.path)}
-              onMouseEnter={() => prefetchRoute(item.path)}
-              onFocus={() => prefetchRoute(item.path)}
-            >
-              <i className={`fa ${item.icon}`} />
-              <span className="sb-lbl">{item.label}</span>
+            <button key={item.path} type="button" className={`sb-item ${active ? 'active' : ''}`}
+              data-tip={item.label} onClick={() => goTo(item.path)}
+              onMouseEnter={() => prefetchRoute(item.path)} onFocus={() => prefetchRoute(item.path)}>
+              <i className={`fa ${item.icon}`} /><span className="sb-lbl">{item.label}</span>
             </button>
           )
         })}
-        {/* Mi cuenta + Backup consolidados bajo la sección "Sistema" (ya
-            renderizada por el NAV base). Antes vivían en una sección propia
-            "Tu cuenta" — Backup no es una acción de cuenta sino de datos, y
-            duplicaba jerarquía. */}
+
         {role === 'owner' && (
           <>
-            <button type="button" className={`sb-item ${loc.pathname === '/mi-cuenta' ? 'active' : ''}`} data-tip="Mi cuenta · Suscripción + datos" onClick={() => goTo('/mi-cuenta')}>
-              <i className="fa fa-user-gear" /><span className="sb-lbl">Mi cuenta</span>
+            <button type="button" className={`sb-sec sb-sec-toggle${toolsOpen ? ' is-open' : ''}`} onClick={toggleTools}>
+              Herramientas
+              <i className={`fa fa-chevron-${toolsOpen ? 'up' : 'down'}`} style={{ fontSize: 9, marginLeft: 'auto', opacity: .5 }} />
             </button>
-            <button type="button" className="sb-item" data-tip="Backup" onClick={doBackup}>
-              <i className="fa fa-cloud-arrow-down" /><span className="sb-lbl">Backup de datos</span>
-            </button>
+            {toolsOpen && (
+              <>
+                {NAV_TOOLS.map(item => {
+                  if (role === 'operator' && item.ownerOnly) return null
+                  if (role === 'operator' && item.perm && !can(item.perm)) return null
+                  const active = loc.pathname === item.path
+                  return (
+                    <button key={item.path} type="button" className={`sb-item ${active ? 'active' : ''}`}
+                      data-tip={item.label} onClick={() => goTo(item.path)}
+                      onMouseEnter={() => prefetchRoute(item.path)} onFocus={() => prefetchRoute(item.path)}>
+                      <i className={`fa ${item.icon}`} /><span className="sb-lbl">{item.label}</span>
+                    </button>
+                  )
+                })}
+                <button type="button" className={`sb-item ${loc.pathname === '/mi-cuenta' ? 'active' : ''}`} data-tip="Mi cuenta · Suscripción + datos" onClick={() => goTo('/mi-cuenta')}>
+                  <i className="fa fa-user-gear" /><span className="sb-lbl">Mi cuenta</span>
+                </button>
+                <button type="button" className="sb-item" data-tip="Backup" onClick={doBackup}>
+                  <i className="fa fa-cloud-arrow-down" /><span className="sb-lbl">Backup de datos</span>
+                </button>
+              </>
+            )}
           </>
         )}
         {/* Super Admin removido del nav — ahora vive como ícono discreto en el footer. */}

@@ -1522,11 +1522,11 @@ export default function Presupuesto() {
                 <PaneHeader icon="fa-box-open" title="Paso 2 · Productos" subtitle="Agregá los ítems que incluye el pedido" />
                 {_tipoVenta === 'ambos' && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', marginBottom: 10, background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, flexWrap: 'wrap' }}>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: 0.3, display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: 0.3, display: 'flex', alignItems: 'center', gap: 5 }}>
                       Canal
-                      <i className="fa fa-circle-info" style={{ fontSize: 10, color: '#9CA3AF', cursor: 'help' }} title="Actualiza los precios del pedido según la lista del canal (Público o Mayorista). Los precios editados a mano se respetan." />
+                      <i className="fa fa-circle-info" style={{ fontSize: 10, color: 'var(--txt4)', cursor: 'help' }} title="Actualiza los precios del pedido según la lista del canal (Público o Mayorista). Los precios editados a mano se respetan." />
                     </div>
-                    <div style={{ display: 'inline-flex', background: '#fff', border: '1px solid #E5E7EB', borderRadius: 8, padding: 2, gap: 2, flex: '1 1 auto', minWidth: 0 }}>
+                    <div style={{ display: 'inline-flex', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, padding: 2, gap: 2, flex: '1 1 auto', minWidth: 0 }}>
                       {[
                         { val: 'minorista', label: 'Público', icon: 'fa-bag-shopping' },
                         { val: 'mayorista', label: 'Mayorista', icon: 'fa-boxes-stacked' },
@@ -1540,7 +1540,7 @@ export default function Presupuesto() {
                             style={{
                               flex: 1, padding: '7px 12px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: 'none', cursor: 'pointer',
                               background: active ? 'var(--brand)' : 'transparent',
-                              color: active ? '#fff' : '#6B7280',
+                              color: active ? '#fff' : 'var(--txt3)',
                               transition: 'all .15s', whiteSpace: 'nowrap',
                             }}
                           ><i className={`fa ${opt.icon}`} style={{ marginRight: 5 }} />{opt.label}</button>

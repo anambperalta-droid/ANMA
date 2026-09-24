@@ -1,74 +1,90 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 
-/**
- * WelcomeTour — coachmark tour de 4 pasos para usuarios nuevos.
- *
- * Trigger: primer login después de completar /onboarding.
- * Persistencia: localStorage key 'anma_tour_done' (por usuario).
- * No invasivo: solo aparece una vez, dismiss-able en cualquier paso.
- *
- * 4 pasos del flujo de valor:
- *   1. Dashboard — "Acá ves la salud de tu negocio"
- *   2. Nuevo pedido — "Cargá tu primer presupuesto"
- *   3. Clientes — "Tu base ordenada"
- *   4. Productos — "Catálogo + stock automático"
- *
- * Diseño: bottom-sheet modal con stepper, sin overlay oscuro (no agresivo).
- * Mobile-first: card que sube desde abajo. Desktop: card centrada.
- */
-// Clave incluye userId para aislar el estado del tour entre usuarios en el mismo dispositivo
 const STEPS = [
   {
-    icon: 'fa-chart-line', color: '#7C3AED',
-    title: '¡Bienvenido a ANMA!',
-    body: 'Acá vas a ver la salud completa de tu negocio: ventas, cobros, alertas y estado de pedidos en un solo lugar.',
-    cta: 'Próximo',
+    icon: 'fa-seedling', color: '#7C3AED',
+    title: 'Tu negocio, en orden',
+    body: 'ANMA es el lugar donde tu operativa descansa. Ventas, cobros, stock y clientes — todo junto, sin ruido. Tomalo con calma, cada cosa tiene su lugar.',
+    cta: 'Vamos',
+    highlight: null,
   },
   {
     icon: 'fa-file-invoice-dollar', color: '#059669',
-    title: 'Cargá tu primer pedido',
-    body: 'Desde "Nuevo pedido" armás un presupuesto en minutos. El sistema calcula margen, seña y total — vos solo cargás items.',
+    title: 'Empezá por un pedido',
+    body: 'Un presupuesto claro con margen calculado, listo para compartir por WhatsApp. Es lo primero que vas a notar: cotizar deja de ser una cuenta a mano.',
     cta: 'Siguiente',
-  },
-  {
-    icon: 'fa-users', color: '#D97706',
-    title: 'Tu base de clientes',
-    body: 'Cada cliente con su historial, contactos y último pedido. Importá los que ya tenés en CSV o desde el teléfono.',
-    cta: 'Siguiente',
+    highlight: '/pedido',
   },
   {
     icon: 'fa-cube', color: '#2563EB',
-    title: 'Catálogo + stock automático',
-    body: 'Cargá tus productos una vez con costo y precio. El stock se descuenta solo cuando confirmás un pedido.',
-    cta: '¡Empezar!',
+    title: 'Tu catálogo, siempre al día',
+    body: 'Cargá tus productos con costo y precio. Cuando confirmás un pedido, el stock se actualiza solo. Sin planillas paralelas.',
+    cta: 'Siguiente',
+    highlight: '/catalogo',
+  },
+  {
+    icon: 'fa-users', color: '#D97706',
+    title: 'Clientes con historia',
+    body: 'Cada cliente guarda su recorrido: qué compró, cuándo, cuánto debe. La próxima vez que te escriba, ya sabés todo.',
+    cta: 'Empezar',
+    highlight: '/clientes',
   },
 ]
 
 export default function WelcomeTour() {
-  const { user, trial, loading } = useAuth()
+  const { user, loading } = useAuth()
   const [step, setStep]   = useState(0)
   const [show, setShow]   = useState(false)
   const [exiting, setExiting] = useState(false)
 
-  // Mostrar SOLO si:
-  // - User autenticado y NO loading
-  // - Es trial activo (usuario nuevo)
-  // - No completó el tour antes
   useEffect(() => {
-    if (loading || !user || !trial?.isTrial) return
+    if (loading || !user) return
     try {
       const done = localStorage.getItem(`anma_welcome_tour_done_${user.id}`)
       if (!done) {
-        // Pequeño delay para que la app cargue su estado antes del tour
         const t = setTimeout(() => setShow(true), 1200)
         return () => clearTimeout(t)
       }
-    } catch { /* ignorar */ }
-  }, [user, trial?.isTrial, loading])
+    } catch {}
+  }, [user, loading])
+
+  // Highlight the matching sidebar item for the current step
+  useEffect(() => {
+    if (!show) return
+    const path = STEPS[step].highlight
+    // Remove previous highlights
+    document.querySelectorAll('.sb-item.tour-highlight').forEach(el => {
+      el.classList.remove('tour-highlight')
+      el.style.removeProperty('--tour-color')
+    })
+    if (!path) return
+    // Find the sidebar button whose onClick navigates to this path
+    const items = document.querySelectorAll('.sb-item')
+    for (const el of items) {
+      const label = el.querySelector('.sb-lbl')?.textContent
+      const match =
+        (path === '/pedido' && label === 'Nuevo pedido') ||
+        (path === '/catalogo' && label === 'Productos') ||
+        (path === '/clientes' && label === 'Clientes') ||
+        (path === '/' && label === 'Dashboard')
+      if (match) {
+        el.classList.add('tour-highlight')
+        el.style.setProperty('--tour-color', STEPS[step].color)
+        el.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' })
+        break
+      }
+    }
+    return () => {
+      document.querySelectorAll('.sb-item.tour-highlight').forEach(el => {
+        el.classList.remove('tour-highlight')
+        el.style.removeProperty('--tour-color')
+      })
+    }
+  }, [show, step])
 
   const finish = () => {
-    try { localStorage.setItem(`anma_welcome_tour_done_${user?.id}`, new Date().toISOString()) } catch { /* ignorar */ }
+    try { localStorage.setItem(`anma_welcome_tour_done_${user?.id}`, new Date().toISOString()) } catch {}
     setExiting(true)
     setTimeout(() => { setShow(false); setExiting(false) }, 280)
   }
@@ -85,7 +101,6 @@ export default function WelcomeTour() {
 
   return (
     <>
-      {/* Overlay sutil para focus */}
       <div
         onClick={finish}
         style={{
@@ -98,7 +113,6 @@ export default function WelcomeTour() {
         }}
       />
 
-      {/* Card */}
       <div style={{
         position: 'fixed', zIndex: 9999,
         left: '50%', bottom: 'calc(env(safe-area-inset-bottom, 0px) + 20px)',
@@ -111,7 +125,6 @@ export default function WelcomeTour() {
         overflow: 'hidden',
         transition: 'opacity .25s, transform .28s cubic-bezier(.4,0,.2,1)',
       }}>
-        {/* Header con icono color */}
         <div style={{
           padding: '24px 24px 20px',
           background: `linear-gradient(135deg, ${s.color}10, ${s.color}05)`,
@@ -144,14 +157,12 @@ export default function WelcomeTour() {
           </button>
         </div>
 
-        {/* Body */}
         <div style={{ padding: '18px 24px 6px' }}>
           <p style={{ fontSize: 13.5, color: 'var(--txt2, #374151)', margin: 0, lineHeight: 1.6 }}>
             {s.body}
           </p>
         </div>
 
-        {/* Dots indicator */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: 6, padding: '14px 24px 6px' }}>
           {STEPS.map((_, i) => (
             <span key={i} style={{
@@ -162,7 +173,6 @@ export default function WelcomeTour() {
           ))}
         </div>
 
-        {/* Actions */}
         <div style={{ padding: '10px 18px 18px', display: 'flex', gap: 8, alignItems: 'center' }}>
           {step > 0 ? (
             <button onClick={prev} style={{

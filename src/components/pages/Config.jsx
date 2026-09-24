@@ -1202,14 +1202,23 @@ export default function Config() {
               <div className="pay-card-body">
 
                 {gsShowInstructions ? (<>
+                  <div style={{ display:'flex', gap:12, marginBottom:14, alignItems:'flex-start' }}>
+                    <div style={{ width:24, height:24, borderRadius:'50%', background:'#0F9D58', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, fontWeight:800, flexShrink:0, marginTop:1 }}>1</div>
+                    <div style={{ fontSize:12, color:'var(--txt2)', lineHeight:1.6, flex:1 }}>
+                      <b style={{ color:'var(--txt)', display:'block', marginBottom:4 }}>Copiá este código</b>
+                      ANMA genera un script para que tu Google Sheet reciba los presupuestos. Copialo con el botón:
+                      <div style={{ marginTop:8 }}>
+                        <button className="btn btn-primary btn-sm" onClick={copyAppsScript} style={{ fontSize:12 }}><i className="fa fa-copy" /> Copiar código al portapapeles</button>
+                      </div>
+                    </div>
+                  </div>
                   {[
-                    { n:1, title:'Copiá el código', desc: <>Hacé clic en <b>"Copiar código"</b> (abajo). Dejalo en el portapapeles.</> },
-                    { n:2, title:'Abrí tu Google Sheet', desc: <>En el menú de la hoja: <b>Extensiones → Apps Script</b>. Se abre el editor.</> },
-                    { n:3, title:'Pegá y guardá', desc: <>Borrá todo lo que hay, pegá el código (Ctrl+V) y guardá con <b>Ctrl+S</b>. Poné cualquier nombre al proyecto.</> },
-                    { n:4, title:'Implementar', desc: <><b>Implementar → Nueva implementación</b>. En "Tipo" elegí <b>Aplicación web</b>. En "Quién tiene acceso" elegí <b>Cualquier usuario</b>. Clic en <b>Implementar</b>.</> },
+                    { n:2, title:'Abrí tu Google Sheet', desc: <>Abrí la hoja de cálculo donde querés recibir los datos. En el menú de arriba: <b>Extensiones → Apps Script</b>.</> },
+                    { n:3, title:'Pegá y guardá', desc: <>En el editor que se abrió, borrá todo el texto que aparece y pegá el código que copiaste (<b>Ctrl+V</b>). Guardá con <b>Ctrl+S</b>.</> },
+                    { n:4, title:'Publicá el script', desc: <>Arriba a la derecha: <b>Implementar → Nueva implementación</b>. En "Tipo" elegí <b>Aplicación web</b>. En "Quién tiene acceso" poné <b>Cualquier usuario</b>. Clic en <b>Implementar</b>.</> },
                     { n:5, title:'Autorizá (paso normal)', desc: <><b>Google va a mostrar una advertencia.</b> Es normal — el script es tuyo. Hacé clic en <b>"Configuración avanzada"</b> (abajo a la izquierda) → <b>"Ir al proyecto (no es seguro)"</b> → <b>Permitir</b>.</>, warn: true },
-                    { n:6, title:'Copiá la URL', desc: <>Copiá la URL larga que termina en <code style={{fontSize:10}}>/exec</code> y pegala en el campo de abajo.</> },
-                    { n:7, title:'Probá la conexión', desc: <>Tocá <b>"Probar conexión"</b>. Si aparece una fila nueva en tu Sheet, ¡listo!</> },
+                    { n:6, title:'Copiá la URL', desc: <>Después de implementar, Google te muestra una URL larga que termina en <code style={{fontSize:10}}>/exec</code>. Copiala y pegala en el campo de abajo.</> },
+                    { n:7, title:'Probá la conexión', desc: <>Tocá <b>"Probar conexión"</b>. Si aparece una fila nueva en tu Sheet, la integración está lista.</> },
                   ].map(s => (
                     <div key={s.n} style={{ display:'flex', gap:12, marginBottom:10, alignItems:'flex-start' }}>
                       <div style={{ width:24, height:24, borderRadius:'50%', background: s.warn ? '#D97706' : '#0F9D58', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, fontWeight:800, flexShrink:0, marginTop:1 }}>{s.n}</div>
@@ -1286,6 +1295,11 @@ export default function Config() {
                       {APPS_SCRIPT_TEMPLATE}
                     </pre>
                   )}
+                </div>
+
+                <div style={{ marginTop:14, padding:'10px 14px', borderRadius:10, background:'rgba(15,157,88,.06)', border:'1px solid rgba(15,157,88,.15)', fontSize:11.5, color:'var(--txt2)', lineHeight:1.6 }}>
+                  <i className="fa fa-circle-info" style={{ color:'#0F9D58', marginRight:6 }} />
+                  <b>Google Sheets vs Importador:</b> son complementarios. Google Sheets <b>envía</b> tus presupuestos hacia afuera (a tu hoja de cálculo). El Importador <b>trae</b> datos hacia adentro (clientes, productos, proveedores desde un CSV o Excel).
                 </div>
               </div>
             )}

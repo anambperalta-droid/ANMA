@@ -3,23 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Guía completa de ANMA Hub — Sección por sección | ANMA Hub</title>
-<!-- Cuando la guía se renderiza dentro de un iframe (post-login), forzamos que
-     todos los links naveguen la ventana top en vez del propio iframe, para
-     evitar dashboards duplicados. Al abrir la guía suelta, _top === self,
-     así que no cambia el comportamiento. -->
+<title>Gu&#237;a completa de ANMA Hub &#8212; Secci&#243;n por secci&#243;n | ANMA Hub</title>
 <base target="_top">
 <script>
-  // Los links con hash (#seccion) deben seguir navegando DENTRO del iframe,
-  // no reventar el top window. Sobreescribimos target al montar el DOM.
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href^="#"]').forEach(a => a.removeAttribute('target'))
   })
 </script>
-<meta name="description" content="Manual visual de ANMA Hub: cómo configurar tu marca, cargar productos, clientes, proveedores, pedidos, logística y mensajes. Una pestaña por sección.">
+<meta name="description" content="Manual visual de ANMA Hub: c&#243;mo configurar tu marca, cargar productos, clientes, proveedores, pedidos, log&#237;stica y mensajes.">
 <link rel="canonical" href="https://anmahub.com/recursos/guia">
-<meta property="og:title" content="Guía completa de ANMA Hub">
-<meta property="og:description" content="Manual visual de cada sección de la app, paso a paso.">
+<meta property="og:title" content="Gu&#237;a completa de ANMA Hub">
+<meta property="og:description" content="Manual visual de cada secci&#243;n de la app, paso a paso.">
 <meta property="og:url" content="https://anmahub.com/recursos/guia">
 <meta property="og:image" content="https://anmahub.com/og-image.png">
 <meta property="og:type" content="article">
@@ -29,293 +23,235 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
 
 :root{
-  --brand:#7C3AED; --brand2:#C026D3; --brand-dk:#5B21B6; --brand-lt:#F5EFFE;
-  --emerald:#10B981; --emerald-dk:#047857; --emerald-lt:#ECFDF5;
-  --amber:#F59E0B; --amber-lt:#FFFBEB; --amber-dk:#92400E;
-  --rose:#E11D74; --rose-lt:#FDF2F8;
-  --ink:#1b1530; --txt:#3c3753; --txt2:#6a6680; --txt3:#94909f;
-  --line:#ece8f2; --bg:#fdfcfa; --surf:#f7f4fb;
+  --brand:#7C3AED;--brand2:#C026D3;--brand-dk:#5B21B6;--brand-lt:#F5EFFE;
+  --emerald:#10B981;--emerald-dk:#047857;--emerald-lt:#ECFDF5;
+  --amber:#F59E0B;--amber-lt:#FFFBEB;--amber-dk:#92400E;
+  --ink:#1b1530;--txt:#3c3753;--txt2:#6a6680;--txt3:#94909f;
+  --line:#ece8f2;--bg:#fdfcfa;--surf:#f7f4fb;
+  --radius:14px;--max:720px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--txt);font-family:'Inter',-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-svg{display:block}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',-apple-system,'Segoe UI',sans-serif;font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
+::selection{background:rgba(124,58,237,.15)}
 
 /* ── Nav ── */
-.nav{display:flex;align-items:center;justify-content:space-between;padding:15px 26px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(253,252,250,.88);backdrop-filter:blur(12px);z-index:50}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-weight:600;color:var(--ink);font-size:18.5px}
-.logo img{width:30px;height:30px;border-radius:8px}
-.nav-r{display:flex;align-items:center;gap:18px}
-.nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--txt);font-weight:600;font-size:14px}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(253,252,250,.92);backdrop-filter:blur(14px);z-index:50}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-weight:600;color:var(--ink);font-size:17px}
+.logo img{width:28px;height:28px;border-radius:8px}
+.nav-r{display:flex;align-items:center;gap:16px}
+.nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-weight:600;font-size:13px;transition:.15s}
 .nav-back:hover{color:var(--brand)}
-.nav-back::before{content:'←';font-size:15px}
-.nav .cta{background:var(--brand);color:#fff;font-weight:600;font-size:13.5px;padding:10px 20px;border-radius:10px;transition:.15s}
+.nav-back i{font-size:12px}
+.nav .cta{background:var(--brand);color:#fff;font-weight:600;font-size:13px;padding:9px 18px;border-radius:10px;transition:.15s}
 .nav .cta:hover{background:var(--brand-dk);transform:translateY(-1px)}
-@media(max-width:520px){.nav-back span{display:none}.nav-r{gap:12px}}
 
 /* ── Hero ── */
-.hero{max-width:780px;margin:0 auto;padding:64px 26px 32px;text-align:center}
-.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--brand-lt),#fbf5fe);border:1px solid #e9ddfb;color:var(--brand-dk);font-size:12px;font-weight:700;padding:8px 16px;border-radius:99px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
-.hero .eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 0 3px rgba(16,185,129,.2)}
-.hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(36px,5.5vw,52px);line-height:1.06;letter-spacing:-1.3px;color:var(--ink);margin-bottom:14px;text-wrap:balance}
+.hero{max-width:var(--max);margin:0 auto;padding:56px 24px 24px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--brand-dk);background:var(--brand-lt);border:1px solid #e9ddfb;padding:6px 14px;border-radius:99px;letter-spacing:.4px;text-transform:uppercase;margin-bottom:18px}
+.hero-badge i{font-size:9px;color:var(--emerald)}
+.hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(32px,5vw,46px);line-height:1.08;letter-spacing:-1.2px;color:var(--ink);margin-bottom:12px}
 .hero h1 em{font-style:italic;background:linear-gradient(120deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{font-size:18px;color:var(--txt);max-width:560px;margin:0 auto;line-height:1.55}
+.hero p{font-size:16px;color:var(--txt2);max-width:480px;margin:0 auto;line-height:1.6}
 
-/* ── Progress bar visual ── */
-.progress{max-width:780px;margin:32px auto 0;padding:0 26px}
-.progress-inner{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 24px;box-shadow:0 8px 24px -16px rgba(124,58,237,.18)}
-.progress-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
-.progress-head h3{font-family:'Fraunces',serif;font-size:17px;color:var(--ink);font-weight:600}
-.progress-head span{font-size:13px;color:var(--txt2);font-weight:600}
-.progress-bar{height:8px;background:var(--surf);border-radius:99px;overflow:hidden;margin-bottom:14px}
+/* ── Progress ── */
+.progress{max-width:var(--max);margin:28px auto 0;padding:0 24px}
+.progress-inner{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:0 2px 8px -4px rgba(0,0,0,.06)}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px}
+.progress-top h3{font-size:13px;font-weight:700;color:var(--ink)}
+.progress-top span{font-size:12px;color:var(--txt3);font-weight:600}
+.progress-bar{height:6px;background:var(--surf);border-radius:99px;overflow:hidden;margin-bottom:12px}
 .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:99px;transition:width .4s ease}
-.progress-list{display:flex;flex-wrap:wrap;gap:8px}
-.progress-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surf);color:var(--txt2);font-size:12px;font-weight:600;padding:6px 12px;border-radius:99px;border:1px solid var(--line);cursor:pointer;transition:.15s;font-family:inherit}
+.progress-chips{display:flex;flex-wrap:wrap;gap:6px}
+.progress-chip{display:inline-flex;align-items:center;gap:5px;background:var(--surf);color:var(--txt2);font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:99px;border:1px solid var(--line);cursor:pointer;transition:.15s;font-family:inherit}
 .progress-chip:hover{background:var(--brand-lt);color:var(--brand-dk);border-color:#e9ddfb}
 .progress-chip.done{background:var(--emerald-lt);color:var(--emerald-dk);border-color:#a7f3d0}
-.progress-chip.done::before{content:'✓';font-weight:800;margin-right:2px}
+.progress-chip.done::before{content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;font-size:8px;margin-right:1px}
 
-/* ── Layout: TOC + content ── */
-.layout{max-width:1180px;margin:48px auto 0;padding:0 26px;display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start}
-@media(max-width:920px){.layout{grid-template-columns:1fr;gap:24px}}
+/* ── Layout ── */
+.layout{max-width:1080px;margin:40px auto 0;padding:0 24px;display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start}
+@media(max-width:860px){.layout{grid-template-columns:1fr;gap:20px}}
 
-/* TOC sticky */
-.toc{position:sticky;top:90px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 4px 12px -8px rgba(16,24,40,.08)}
-.toc-lbl{font-size:10.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:14px}
-.toc ol{list-style:none;padding:0;counter-reset:toc}
-.toc li{counter-increment:toc;margin-bottom:2px}
-.toc a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--txt);transition:.15s}
-.toc a:hover{background:var(--surf);color:var(--brand-dk)}
-.toc a.active{background:var(--brand-lt);color:var(--brand-dk)}
-.toc a::before{content:counter(toc,decimal-leading-zero);font-size:10.5px;font-weight:800;color:var(--txt3);min-width:18px;font-variant-numeric:tabular-nums}
-.toc a.active::before{color:var(--brand)}
-
-@media(max-width:920px){
-  .toc{position:static;padding:14px 16px}
-  .toc ol{display:flex;flex-wrap:wrap;gap:6px}
+/* ── TOC ── */
+.toc{position:sticky;top:72px}
+.toc-label{font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.6px;margin-bottom:12px;padding-left:10px}
+.toc ol{list-style:none;counter-reset:toc}
+.toc li{counter-increment:toc;margin-bottom:1px}
+.toc a{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;font-size:13px;font-weight:500;color:var(--txt2);transition:.12s}
+.toc a:hover{color:var(--ink);background:var(--surf)}
+.toc a.active{color:var(--brand-dk);background:var(--brand-lt);font-weight:600}
+.toc a i{width:14px;text-align:center;font-size:11px;opacity:.7}
+.toc a.active i{opacity:1;color:var(--brand)}
+@media(max-width:860px){
+  .toc{position:static}
+  .toc-label{display:none}
+  .toc ol{display:flex;flex-wrap:wrap;gap:4px}
   .toc li{margin:0}
-  .toc a{padding:6px 12px;font-size:12.5px;border:1px solid var(--line);border-radius:99px}
-  .toc a::before{display:none}
+  .toc a{padding:6px 12px;font-size:12px;border:1px solid var(--line);border-radius:99px}
 }
 
-/* ── Sección de pestaña ── */
-.sec{padding:28px 0 56px;border-bottom:1px solid var(--line);scroll-margin-top:80px}
-.sec:last-child{border-bottom:none;padding-bottom:32px}
-.sec-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:6px}
-.sec-num{flex-shrink:0;width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--brand-lt),#fbf5fe);color:var(--brand);display:flex;align-items:center;justify-content:center;border:1px solid #ece1fb;box-shadow:0 6px 18px -10px rgba(124,58,237,.4)}
-.sec-num svg{width:26px;height:26px}
-.sec-titles{flex:1;min-width:0;padding-top:4px}
-.sec-tag{display:inline-block;font-size:10.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
-.sec h2{font-family:'Fraunces',serif;font-size:30px;font-weight:600;line-height:1.15;color:var(--ink);letter-spacing:-.5px;margin-bottom:6px;text-wrap:balance}
-.sec .why{font-size:15.5px;color:var(--txt);line-height:1.55;margin:14px 0 24px}
-.sec .why b{color:var(--ink);font-weight:600}
-.sec .why em{font-style:italic;color:var(--brand-dk)}
+/* ── Section ── */
+.sec{padding:32px 0 48px;border-bottom:1px solid var(--line);scroll-margin-top:72px}
+.sec:last-child{border-bottom:none;padding-bottom:24px}
+.sec-header{display:flex;gap:14px;align-items:center;margin-bottom:8px}
+.sec-icon{flex-shrink:0;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.sec-icon.purple{background:var(--brand-lt);color:var(--brand);border:1px solid #ece1fb}
+.sec-icon.green{background:var(--emerald-lt);color:var(--emerald-dk);border:1px solid #a7f3d0}
+.sec-icon.orange{background:#fff7ed;color:#ea580c;border:1px solid #fed7aa}
+.sec-icon.wa{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+.sec-icon.blue{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
+.sec-meta{flex:1;min-width:0}
+.sec-tag{font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px}
+.sec h2{font-family:'Fraunces',serif;font-size:26px;font-weight:600;line-height:1.15;color:var(--ink);letter-spacing:-.4px}
+.sec-intro{font-size:15px;color:var(--txt);line-height:1.65;margin:12px 0 20px}
+.sec-intro b{color:var(--ink);font-weight:600}
 
+/* ── Flow: acci&#243;n &#8594; reacci&#243;n &#8594; beneficio ── */
+.flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
+.flow-card{background:#fff;padding:16px;display:flex;flex-direction:column;gap:6px}
+.flow-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.flow-label.action{color:var(--brand)}
+.flow-label.react{color:#ea580c}
+.flow-label.benefit{color:var(--emerald-dk)}
+.flow-title{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.35;display:flex;align-items:center;gap:7px}
+.flow-title i{font-size:13px;opacity:.6}
+.flow-sub{font-size:12px;color:var(--txt2);line-height:1.45}
 @media(max-width:600px){
-  .sec-num{width:48px;height:48px;border-radius:12px}
-  .sec-num svg{width:22px;height:22px}
-  .sec h2{font-size:25px}
-  .sec .why{font-size:15px}
+  .flow{grid-template-columns:1fr}
 }
 
-/* ── Flujo visual: cards con iconos ── */
-.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:stretch;background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 18px;margin-bottom:18px;box-shadow:0 4px 14px -10px rgba(16,24,40,.1)}
-.flow-step{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:8px}
-.flow-ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.flow-ico svg{width:24px;height:24px}
-.flow-ico-1{background:var(--brand-lt);color:var(--brand);border:1px solid #ece1fb}
-.flow-ico-2{background:#fff7ed;color:#ea580c;border:1px solid #fed7aa}
-.flow-ico-3{background:var(--emerald-lt);color:var(--emerald-dk);border:1px solid #a7f3d0}
-.flow-txt{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
-.flow-sub{font-size:12px;color:var(--txt2);line-height:1.4;font-weight:500}
-.flow-arrow{color:var(--brand);opacity:.6;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.flow-arrow svg{width:20px;height:20px}
+/* ── Steps ── */
+.steps{margin:0 0 20px;padding:0;list-style:none;counter-reset:step}
+.steps li{counter-increment:step;display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.steps li:last-child{border-bottom:none}
+.steps li::before{content:counter(step);flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-top:1px}
+.step-text{flex:1;min-width:0;font-size:14px;color:var(--txt);line-height:1.55}
+.step-text b{color:var(--ink);font-weight:600}
+.step-text small{display:block;margin-top:2px;font-size:12.5px;color:var(--txt3)}
 
-@media(max-width:600px){
-  .flow{grid-template-columns:1fr;gap:14px;padding:18px 14px}
-  .flow-step{flex-direction:row;justify-content:flex-start;text-align:left;gap:14px;padding:0}
-  .flow-ico{width:46px;height:46px}
-  .flow-arrow{transform:rotate(90deg);margin-left:14px}
+/* ── Inline button refs ── */
+.ref{display:inline-flex;align-items:center;gap:4px;background:var(--surf);border:1px solid var(--line);color:var(--ink);font-size:12px;font-weight:600;padding:2px 8px;border-radius:6px;font-family:inherit;line-height:1.4;vertical-align:middle;margin:0 1px}
+.ref i{font-size:10px;color:var(--brand);width:12px;text-align:center}
+.ref.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+.ref.primary i{color:#fff}
+.ref.wa{background:#dcfce7;color:#15803d;border-color:#86efac}
+.ref.wa i{color:#16a34a}
+.ref.danger{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
+.ref.danger i{color:#dc2626}
+
+/* ── Callout ── */
+.callout{display:flex;gap:10px;padding:12px 14px;border-radius:10px;font-size:13.5px;line-height:1.55;margin:0 0 20px;align-items:flex-start}
+.callout i{flex-shrink:0;margin-top:3px;font-size:13px}
+.callout.tip{background:var(--brand-lt);color:var(--brand-dk);border:1px solid #e9ddfb}
+.callout.warn{background:var(--amber-lt);color:var(--amber-dk);border:1px solid #fde68a}
+.callout.daily{background:linear-gradient(135deg,var(--brand-lt),#fbf5fe);border:1px solid #e9ddfb;color:var(--brand-dk)}
+.callout b{color:var(--ink);font-weight:600}
+
+/* ── Table ── */
+.info-table{width:100%;border-collapse:collapse;margin:0 0 20px;font-size:13.5px}
+.info-table th{text-align:left;font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.6px;padding:8px 12px;border-bottom:2px solid var(--line);background:var(--surf)}
+.info-table td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+.info-table td:first-child{font-weight:600;color:var(--ink);white-space:nowrap}
+.info-table td:first-child i{color:var(--brand);margin-right:6px;font-size:12px}
+.info-table tr:last-child td{border-bottom:none}
+
+/* ── Wizard track ── */
+.wizard{display:flex;align-items:flex-start;gap:2px;margin:0 0 20px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 12px;overflow:hidden}
+.wiz-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;position:relative}
+.wiz-step::after{content:'';position:absolute;top:15px;left:calc(50% + 20px);width:calc(100% - 20px);height:1.5px;background:var(--line)}
+.wiz-step:last-child::after{display:none}
+.wiz-num{width:32px;height:32px;border-radius:50%;background:var(--brand-lt);color:var(--brand);border:1.5px solid #ece1fb;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:600;font-size:14px;z-index:1}
+.wiz-label{font-size:11px;font-weight:700;color:var(--ink)}
+.wiz-desc{font-size:10px;color:var(--txt3);line-height:1.3}
+@media(max-width:520px){
+  .wizard{padding:12px 8px}
+  .wiz-num{width:28px;height:28px;font-size:12px}
+  .wiz-label{font-size:10px}
+  .wiz-desc{display:none}
+  .wiz-step::after{top:13px}
 }
 
-/* ── Bloques de tip y warning ── */
-.chips{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
-@media(max-width:600px){.chips{grid-template-columns:1fr}}
-.chip{display:flex;gap:11px;padding:13px 16px;border-radius:4px 12px 12px 4px;font-size:13.5px;line-height:1.5;align-items:flex-start}
-.chip-tip{background:var(--brand-lt);border-left:3px solid var(--brand);color:var(--brand-dk)}
-.chip-warn{background:var(--amber-lt);border-left:3px solid var(--amber);color:var(--amber-dk)}
-.chip-ico{flex-shrink:0;margin-top:2px}
-.chip-ico svg{width:16px;height:16px}
-.chip b{display:block;font-weight:700;font-family:'Fraunces',serif;font-size:13px;margin-bottom:2px;letter-spacing:.1px}
+/* ── Step detail card ── */
+.detail{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 10px;border-left:3px solid var(--brand)}
+.detail-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.detail-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
+.detail-head b{font-family:'Fraunces',serif;font-size:15px;color:var(--ink);font-weight:600}
+.detail ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
+.detail ul li{font-size:13px;color:var(--txt);line-height:1.5;padding-left:14px;position:relative}
+.detail ul li::before{content:'\2014';position:absolute;left:0;color:var(--txt3);font-size:11px}
+.detail ul li b{color:var(--ink);font-weight:600}
+.detail-note{margin-top:8px;font-size:12px;color:var(--txt2);background:var(--surf);border-radius:8px;padding:8px 10px;line-height:1.5;display:flex;gap:6px;align-items:flex-start}
+.detail-note i{flex-shrink:0;margin-top:2px;color:var(--brand)}
+.detail.green{border-left-color:var(--emerald)}
+.detail.green .detail-num{background:var(--emerald)}
+.detail.orange{border-left-color:#ea580c}
+.detail.orange .detail-num{background:#ea580c}
 
-/* ── Action button (CTA por sección) ── */
-.sec-cta{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;font-size:13.5px;font-weight:700;margin-top:6px;transition:.15s}
-.sec-cta:hover{background:var(--brand);transform:translateY(-2px);box-shadow:0 8px 20px -8px rgba(124,58,237,.5)}
-.sec-cta svg{width:14px;height:14px}
+/* ── Section CTA ── */
+.sec-cta{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;margin-top:4px;transition:.15s}
+.sec-cta:hover{background:var(--brand);transform:translateY(-1px)}
+.sec-cta i{font-size:11px}
 
 /* ── Final CTA ── */
-.final{max-width:780px;margin:48px auto 0;padding:0 26px 80px}
-.box-cta{background:linear-gradient(150deg,#120327 0%,#2d0a57 50%,#5b21b6 100%);border-radius:24px;padding:48px 36px;text-align:center;position:relative;overflow:hidden}
-.box-cta::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:520px;height:520px;background:radial-gradient(circle,rgba(192,38,211,.35),transparent 62%);pointer-events:none}
-.box-cta-ico{width:54px;height:54px;border-radius:14px;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;position:relative;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18)}
-.box-cta h2{font-family:'Fraunces',serif;color:#fff;font-size:30px;margin:0 0 10px;letter-spacing:-.5px;position:relative;text-wrap:balance}
-.box-cta p{color:rgba(255,255,255,.78);font-size:15.5px;margin:0 0 24px;line-height:1.55;position:relative;max-width:460px;margin-left:auto;margin-right:auto}
-.box-cta .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative}
-.box-cta a.primary{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--brand-dk);font-weight:700;padding:14px 28px;border-radius:12px;font-size:15px;transition:.15s;box-shadow:0 10px 28px -8px rgba(0,0,0,.4)}
-.box-cta a.primary:hover{transform:translateY(-2px)}
-.box-cta a.ghost{color:rgba(255,255,255,.92);font-weight:600;padding:14px 22px;font-size:14.5px;border:1px solid rgba(255,255,255,.25);border-radius:12px;transition:.15s}
-.box-cta a.ghost:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.45)}
+.final{max-width:var(--max);margin:48px auto 0;padding:0 24px 60px}
+.final-box{background:linear-gradient(150deg,#120327 0%,#2d0a57 50%,#5b21b6 100%);border-radius:20px;padding:40px 32px;text-align:center;position:relative;overflow:hidden}
+.final-box::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(192,38,211,.3),transparent 60%);pointer-events:none}
+.final-box h2{font-family:'Fraunces',serif;color:#fff;font-size:26px;margin:0 0 8px;letter-spacing:-.4px;position:relative}
+.final-box p{color:rgba(255,255,255,.75);font-size:15px;margin:0 0 22px;line-height:1.55;position:relative;max-width:420px;margin-left:auto;margin-right:auto}
+.final-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative}
+.final-btns a.primary{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--brand-dk);font-weight:700;padding:12px 24px;border-radius:12px;font-size:14px;transition:.15s;box-shadow:0 8px 24px -8px rgba(0,0,0,.3)}
+.final-btns a.primary:hover{transform:translateY(-2px)}
+.final-btns a.ghost{color:rgba(255,255,255,.9);font-weight:600;padding:12px 20px;font-size:13.5px;border:1px solid rgba(255,255,255,.2);border-radius:12px;transition:.15s}
+.final-btns a.ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.4)}
 
-footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font-size:13px;color:var(--txt3)}
-footer a{color:var(--brand)}
-.foot-rich{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-bottom:8px}
-.foot-credit{font-size:11.5px;margin-top:6px}
+footer{border-top:1px solid var(--line);padding:28px 20px;text-align:center;font-size:12.5px;color:var(--txt3)}
+footer a{color:var(--brand);font-weight:500}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;margin-bottom:6px}
 
 @media(max-width:520px){
-  .hero{padding:44px 22px 20px}
-  .hero p{font-size:16px}
-  .box-cta{padding:36px 24px}
-  .box-cta h2{font-size:24px}
+  .hero{padding:40px 20px 20px}
+  .hero p{font-size:15px}
+  .final-box{padding:32px 20px}
+  .final-box h2{font-size:22px}
+  .nav-back span{display:none}
 }
 
-/* ── Mapa visual de pantalla principal ── */
-.screen-map{max-width:1180px;margin:36px auto 0;padding:0 26px}
-.screen-map-inner{background:linear-gradient(180deg,#1a0420 0%,#2d0a57 100%);border-radius:20px;padding:24px;box-shadow:0 20px 50px -20px rgba(124,58,237,.45);overflow:hidden;position:relative}
-.screen-map-bar{display:flex;align-items:center;gap:8px;padding:0 4px 12px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}
-.screen-map-bar span{width:9px;height:9px;border-radius:50%;background:#475569}
-.screen-map-bar span:nth-child(1){background:#ef4444}
-.screen-map-bar span:nth-child(2){background:#f59e0b}
-.screen-map-bar span:nth-child(3){background:#10b981}
-.screen-map-url{margin-left:auto;font-size:10.5px;color:rgba(255,255,255,.4);font-family:monospace;background:rgba(255,255,255,.06);padding:3px 10px;border-radius:6px}
-.screen-grid{display:grid;grid-template-columns:200px 1fr;gap:16px;min-height:280px}
-.screen-side{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;gap:2px}
-.screen-side-lbl{font-size:9px;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;padding:8px 10px 4px}
-.screen-side-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:500;transition:.15s;cursor:default}
-.screen-side-item:hover{background:rgba(255,255,255,.06);color:#fff}
-.screen-side-item.active{background:rgba(124,58,237,.25);color:#fff;font-weight:700}
-.screen-side-item i{width:14px;text-align:center;font-size:12px;opacity:.85}
-.screen-main{background:#fafbfc;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
-.screen-main-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.screen-main-top h4{font-family:'Fraunces',serif;font-size:15px;color:var(--ink);font-weight:600}
-.screen-main-action{display:inline-flex;align-items:center;gap:5px;background:var(--brand);color:#fff;font-size:10.5px;font-weight:700;padding:5px 10px;border-radius:7px}
-.screen-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.screen-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px;display:flex;flex-direction:column;gap:3px}
-.screen-card-lbl{font-size:8.5px;font-weight:800;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px}
-.screen-card-num{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--ink)}
-.screen-card-num.warn{color:#dc2626}
-.screen-card-num.ok{color:var(--emerald-dk)}
-.screen-hint{font-size:11.5px;color:rgba(255,255,255,.55);text-align:center;margin-top:14px;font-style:italic}
-@media(max-width:780px){
-  .screen-grid{grid-template-columns:1fr}
-  .screen-side{flex-direction:row;flex-wrap:wrap;gap:4px;padding:8px}
-  .screen-side-lbl{display:none}
-  .screen-side-item{flex:0 0 auto;padding:6px 10px;font-size:11px}
-  .screen-cards{grid-template-columns:1fr 1fr}
-}
-
-/* ── Action → React block ── */
-.action-react{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:stretch;margin:0 0 18px;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.ar-step{padding:18px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.ar-lbl{font-size:9.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px}
-.ar-content{display:flex;align-items:flex-start;gap:10px;flex:1}
-.ar-ico{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:var(--brand-lt);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid #ece1fb}
-.ar-body{flex:1;min-width:0;font-size:13.5px;color:var(--ink);font-weight:600;line-height:1.35}
-.ar-body small{display:block;font-size:11.5px;color:var(--txt2);font-weight:500;margin-top:2px;line-height:1.45}
-.ar-arrow{align-self:center;color:var(--brand);opacity:.5;padding:0 4px;font-size:16px}
-.ar-step.ar-result .ar-ico{background:#fff7ed;color:#ea580c;border-color:#fed7aa}
-.ar-step.ar-benefit .ar-ico{background:var(--emerald-lt);color:var(--emerald-dk);border-color:#a7f3d0}
-.ar-step.ar-benefit .ar-lbl{color:var(--emerald-dk)}
-.ar-step.ar-result .ar-lbl{color:#ea580c}
-@media(max-width:680px){
-  .action-react{grid-template-columns:1fr;gap:0}
-  .ar-step{border-bottom:1px solid var(--line)}
-  .ar-step:last-child{border-bottom:none}
-  .ar-arrow{align-self:flex-start;padding:0 16px 8px;transform:rotate(90deg);height:auto}
-}
-
-/* ── Botones / iconos reales referenciados ── */
-.btn-ref{display:inline-flex;align-items:center;gap:5px;background:var(--surf);border:1px solid var(--line);color:var(--ink);font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:7px;font-family:inherit;line-height:1.4;vertical-align:middle;margin:0 1px}
-.btn-ref i{font-size:11px;color:var(--brand);width:13px;text-align:center}
-.btn-ref.btn-ref-primary{background:var(--brand);color:#fff;border-color:var(--brand)}
-.btn-ref.btn-ref-primary i{color:#fff}
-.btn-ref.btn-ref-wa{background:#dcfce7;color:#15803d;border-color:#86efac}
-.btn-ref.btn-ref-wa i{color:#16a34a}
-.btn-ref.btn-ref-danger{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
-.btn-ref.btn-ref-danger i{color:#dc2626}
-
-/* ── Bloque "Conexión con tu día" ── */
-.connect{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--brand-lt) 0%,#fbf5fe 100%);border:1px solid #e9ddfb;border-radius:14px;padding:14px 18px;margin:0 0 18px}
-.connect-ico{flex-shrink:0;width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-dk));color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 4px 12px -4px rgba(124,58,237,.5)}
-.connect-body{flex:1;min-width:0;font-size:13.5px;color:var(--brand-dk);line-height:1.5}
-.connect-body b{font-weight:700;color:var(--ink)}
-
-/* ── Lista de pasos numerados con icono ── */
-.numbered{margin:0 0 18px;padding:0;list-style:none;counter-reset:numstep}
-.numbered li{counter-increment:numstep;display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
-.numbered li:last-child{border-bottom:none}
-.numbered li::before{content:counter(numstep);flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;font-family:'Fraunces',serif}
-.numbered li .step-body{flex:1;min-width:0;font-size:14px;color:var(--txt);line-height:1.55;padding-top:3px}
-.numbered li .step-body b{color:var(--ink);font-weight:600}
-.numbered li .step-body small{display:block;margin-top:3px;font-size:12.5px;color:var(--txt2)}
-
-/* ── Wizard track: mapa de los 4 pasos reales del formulario ── */
-.wiz-track{display:flex;align-items:flex-start;gap:4px;margin:0 0 24px;padding:18px 14px;background:#fff;border:1px solid var(--line);border-radius:16px}
-.wiz-node{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;text-align:center}
-.wiz-node::after{content:'';position:absolute;top:19px;left:calc(50% + 24px);width:calc(100% - 24px);height:2px;background:var(--line)}
-.wiz-node:last-child::after{display:none}
-.wiz-node-num{width:38px;height:38px;border-radius:50%;background:var(--brand-lt);color:var(--brand);border:1.5px solid #ece1fb;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:600;font-size:16px;z-index:1}
-.wiz-node-lbl{font-size:12px;font-weight:700;color:var(--ink)}
-.wiz-node-sub{font-size:10.5px;color:var(--txt3);line-height:1.3}
-@media(max-width:640px){
-  .wiz-track{padding:14px 10px}
-  .wiz-node-num{width:32px;height:32px;font-size:14px}
-  .wiz-node-lbl{font-size:10.5px}
-  .wiz-node-sub{display:none}
-  .wiz-node::after{top:16px}
-}
-
-/* ── Step-detail card: desglose de un paso del wizard ── */
-.wiz-detail{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:0 0 14px;position:relative;border-left:3px solid var(--brand)}
-.wiz-detail-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.wiz-detail-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;font-family:'Fraunces',serif}
-.wiz-detail-h b{font-family:'Fraunces',serif;font-size:16px;color:var(--ink);font-weight:600}
-.wiz-detail ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
-.wiz-detail ul li{font-size:13.5px;color:var(--txt);line-height:1.5;padding-left:16px;position:relative}
-.wiz-detail ul li::before{content:'—';position:absolute;left:0;color:var(--txt3)}
-.wiz-detail ul li b{color:var(--ink);font-weight:600}
-.wiz-detail-note{margin-top:10px;font-size:12.5px;color:var(--txt2);background:var(--surf);border-radius:8px;padding:8px 12px;line-height:1.5}
+.sub-head{display:flex;align-items:center;gap:8px;margin:16px 0 10px;font-size:14px;font-weight:600;color:var(--ink)}
+.sub-head i{color:var(--brand);font-size:13px}
 </style>
 </head>
 <body>
 
 <nav class="nav">
   <a href="/" class="logo"><img src="/favicon-a.png" alt=""> ANMA Hub</a>
-  <span class="nav-r"><a href="/recursos/" class="nav-back"><span>Recursos</span></a><a href="/app/registro" class="cta">Probar gratis</a></span>
+  <span class="nav-r">
+    <a href="/recursos/" class="nav-back"><i class="fa fa-arrow-left"></i><span>Recursos</span></a>
+    <a href="/app/registro" class="cta">Probar gratis</a>
+  </span>
 </nav>
 
 <section class="hero">
-  <span class="eyebrow">Manual de usuario</span>
-  <h1>ANMA Hub <em>en Acción</em></h1>
-  <p>Manual de consulta rápida: cada sección con su flujo <b>Acción → Reacción → Conexión</b>. Iconos reales de la app, pasos numerados, y para qué te sirve cada uno en tu día.</p>
+  <span class="hero-badge"><i class="fa fa-circle"></i> Manual de usuario</span>
+  <h1>ANMA Hub <em>en Acci&#243;n</em></h1>
+  <p>Cada secci&#243;n con su flujo, pasos claros y conexi&#243;n con tu d&#237;a a d&#237;a. Consulta r&#225;pida, sin vueltas.</p>
 </section>
 
-<!-- Progress bar -->
 <div class="progress">
   <div class="progress-inner">
-    <div class="progress-head">
-      <h3>Tu avance en la guía</h3>
-      <span id="progress-count">0 de 9 leídos</span>
+    <div class="progress-top">
+      <h3>Tu avance</h3>
+      <span id="progress-count">0 de 9</span>
     </div>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    <div class="progress-list" id="progress-list">
-      <button class="progress-chip" data-anchor="config">Configuración</button>
+    <div class="progress-chips" id="progress-list">
+      <button class="progress-chip" data-anchor="config">Configuraci&#243;n</button>
       <button class="progress-chip" data-anchor="productos">Productos</button>
       <button class="progress-chip" data-anchor="clientes">Clientes</button>
       <button class="progress-chip" data-anchor="proveedores">Proveedores</button>
       <button class="progress-chip" data-anchor="insumos">Insumos</button>
       <button class="progress-chip" data-anchor="pedidos">Pedidos</button>
-      <button class="progress-chip" data-anchor="logistica">Logística</button>
+      <button class="progress-chip" data-anchor="logistica">Log&#237;stica</button>
       <button class="progress-chip" data-anchor="mensajes">Mensajes</button>
       <button class="progress-chip" data-anchor="dashboard">Dashboard</button>
     </div>
@@ -324,631 +260,558 @@ footer a{color:var(--brand)}
 
 <div class="layout">
 
-  <!-- TOC sticky -->
   <aside class="toc">
-    <div class="toc-lbl">Secciones</div>
+    <div class="toc-label">Secciones</div>
     <ol>
-      <li><a href="#config">Configuración</a></li>
-      <li><a href="#productos">Productos</a></li>
-      <li><a href="#clientes">Clientes</a></li>
-      <li><a href="#proveedores">Proveedores</a></li>
-      <li><a href="#insumos">Insumos</a></li>
-      <li><a href="#pedidos">Pedidos</a></li>
-      <li><a href="#logistica">Logística</a></li>
-      <li><a href="#mensajes">Mensajes WA</a></li>
-      <li><a href="#dashboard">Dashboard</a></li>
+      <li><a href="#config"><i class="fa fa-gear"></i> Configuraci&#243;n</a></li>
+      <li><a href="#productos"><i class="fa fa-cube"></i> Productos</a></li>
+      <li><a href="#clientes"><i class="fa fa-users"></i> Clientes</a></li>
+      <li><a href="#proveedores"><i class="fa fa-industry"></i> Proveedores</a></li>
+      <li><a href="#insumos"><i class="fa fa-boxes-stacked"></i> Insumos</a></li>
+      <li><a href="#pedidos"><i class="fa fa-file-invoice-dollar"></i> Pedidos</a></li>
+      <li><a href="#logistica"><i class="fa fa-truck-fast"></i> Log&#237;stica</a></li>
+      <li><a href="#mensajes"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</a></li>
+      <li><a href="#dashboard"><i class="fa fa-chart-line"></i> Dashboard</a></li>
     </ol>
   </aside>
 
   <main>
 
-    <!-- 1 CONFIGURACIÓN -->
+    <!-- 1 CONFIGURACI&#211;N -->
     <section class="sec" id="config">
-      <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-gear" style="font-size:22px"></i></div>
-        <div class="sec-titles">
-          <span class="sec-tag">01 · Punto de partida</span>
-          <h2>Configurá tu negocio</h2>
+      <div class="sec-header">
+        <div class="sec-icon purple"><i class="fa fa-gear"></i></div>
+        <div class="sec-meta">
+          <span class="sec-tag">01 &#183; Punto de partida</span>
+          <h2>Configur&#225; tu negocio</h2>
         </div>
       </div>
-      <p class="why">Logo, datos fiscales y formas de cobro. <b>Una sola vez</b> — y cada PDF que mandes ya sale con tu marca puesta.</p>
+      <p class="sec-intro">Logo, datos fiscales y formas de cobro. <b>Una sola vez</b> &#8212; y cada PDF que mandes ya sale con tu marca puesta.</p>
 
-      <div class="action-react">
-        <div class="ar-step">
-          <span class="ar-lbl">Tu acción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-gear"></i></div>
-            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-gear"></i>Configuración</span><small>Sidebar, sección Sistema</small></div>
-          </div>
+      <div class="flow">
+        <div class="flow-card">
+          <span class="flow-label action">Tu acci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-gear"></i> Toc&#225;s Configuraci&#243;n</div>
+          <div class="flow-sub">Sidebar, secci&#243;n Sistema</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-result">
-          <span class="ar-lbl">Reacción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-window-maximize"></i></div>
-            <div class="ar-body">Se abre el panel con 8 pestañas<small>Identidad y contacto · Comercial · Listas · Módulos · Pagos · Integraciones · Equipo · Cuenta</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label react">Reacci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-window-maximize"></i> Panel con 8 pesta&#241;as</div>
+          <div class="flow-sub">Identidad, Comercial, Listas, M&#243;dulos, Pagos, Integraciones, Equipo, Cuenta</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-benefit">
-          <span class="ar-lbl">Para qué</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-stamp"></i></div>
-            <div class="ar-body">Tu PDF sale firmado<small>Logo, CUIT y datos en cada documento</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label benefit">Para qu&#233;</span>
+          <div class="flow-title"><i class="fa fa-stamp"></i> Tu PDF sale firmado</div>
+          <div class="flow-sub">Logo, CUIT y datos en cada documento</div>
         </div>
       </div>
 
-      <p class="why" style="margin:22px 0 10px"><b>Para arrancar hoy, solo necesitás 3 de las 8 pestañas.</b> Las demás (Listas, Módulos, Integraciones, Equipo, Cuenta) las vas a usar más adelante, a medida que el negocio lo pida.</p>
+      <div class="callout tip">
+        <i class="fa fa-lightbulb"></i>
+        <span><b>Para arrancar hoy, solo necesit&#225;s 3 de las 8 pesta&#241;as.</b> Las dem&#225;s las vas a usar m&#225;s adelante, a medida que el negocio lo pida.</span>
+      </div>
 
-      <ol class="numbered">
-        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-building"></i>Identidad y contacto</span>:</b> subís logo (PNG/JPG, máx 300 KB), elegís color principal y de acento, cargás nombre del negocio, email, WhatsApp, Instagram y dirección.</div></li>
-        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-dollar-sign"></i>Comercial</span>:</b> moneda, margen y seña por defecto, tu rubro y tipo de venta (público / mayorista / ambos). Si facturás, tildás <span class="btn-ref"><i class="fa-solid fa-file-invoice-dollar"></i>Mostrar IVA</span> y ahí aparecen razón social, CUIT y condición frente al IVA.<small>Sin factura, dejá el tilde apagado — igual emitís presupuestos.</small></div></li>
-        <li><div class="step-body"><b>Pestaña <span class="btn-ref"><i class="fa-solid fa-credit-card"></i>Pagos</span>:</b> activá Mercado Pago (con tu Access Token) y/o transferencia bancaria con tu CBU o alias.</div></li>
-        <li><div class="step-body"><b>Guardás cada pestaña por separado</b> — no hay un botón único al final, cada sección tiene el suyo.</div></li>
+      <ol class="steps">
+        <li><div class="step-text"><b>Pesta&#241;a <span class="ref"><i class="fa fa-building"></i> Identidad y contacto</span>:</b> sub&#237;s logo (PNG/JPG, m&#225;x 300 KB), eleg&#237;s color principal y de acento, carg&#225;s nombre, email, WhatsApp, Instagram y direcci&#243;n.</div></li>
+        <li><div class="step-text"><b>Pesta&#241;a <span class="ref"><i class="fa fa-dollar-sign"></i> Comercial</span>:</b> moneda, margen y se&#241;a por defecto, rubro y tipo de venta (p&#250;blico / mayorista / ambos). Si factur&#225;s, tild&#225;s <span class="ref"><i class="fa fa-file-invoice-dollar"></i> Mostrar IVA</span> y ah&#237; aparecen raz&#243;n social, CUIT y condici&#243;n.<small>Sin factura, dej&#225; el tilde apagado. Igual emit&#237;s presupuestos.</small></div></li>
+        <li><div class="step-text"><b>Pesta&#241;a <span class="ref"><i class="fa fa-credit-card"></i> Pagos</span>:</b> activ&#225; Mercado Pago (con tu Access Token) y/o transferencia bancaria con tu CBU o alias.</div></li>
+        <li><div class="step-text"><b>Guard&#225;s cada pesta&#241;a por separado</b> &#8212; no hay un bot&#243;n &#250;nico al final, cada secci&#243;n tiene el suyo.</div></li>
       </ol>
 
-      <div class="connect">
-        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> mandar una cotización con tu logo, datos y formas de pago genera mejor impresión que un mensaje suelto de WhatsApp.</div>
+      <div class="callout daily">
+        <i class="fa fa-bullseye"></i>
+        <span><b>Tu d&#237;a a d&#237;a:</b> mandar una cotizaci&#243;n con tu logo, datos y formas de pago genera mejor impresi&#243;n que un mensaje suelto de WhatsApp.</span>
       </div>
 
-      <a href="/app/config" class="sec-cta">Ir a Configuración <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/app/config" class="sec-cta">Ir a Configuraci&#243;n <i class="fa fa-arrow-right"></i></a>
     </section>
 
     <!-- 2 PRODUCTOS -->
     <section class="sec" id="productos">
-      <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-cube" style="font-size:22px"></i></div>
-        <div class="sec-titles">
-          <span class="sec-tag">02 · Tu catálogo</span>
+      <div class="sec-header">
+        <div class="sec-icon blue"><i class="fa fa-cube"></i></div>
+        <div class="sec-meta">
+          <span class="sec-tag">02 &#183; Tu cat&#225;logo</span>
           <h2>Productos</h2>
         </div>
       </div>
-      <p class="why">Lo que vendés con su precio, stock y variantes. <b>Empezá por los 20 que más rotan</b> — el resto entra solo cuando lo uses.</p>
+      <p class="sec-intro">Lo que vend&#233;s con su precio, stock y variantes. <b>Empez&#225; por los 20 que m&#225;s rotan</b> &#8212; el resto entra solo cuando lo uses.</p>
 
-      <div class="action-react">
-        <div class="ar-step">
-          <span class="ar-lbl">Tu acción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-cube"></i></div>
-            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-cube"></i>Productos</span><small>Sidebar, sección Inventario</small></div>
-          </div>
+      <div class="flow">
+        <div class="flow-card">
+          <span class="flow-label action">Tu acci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-cube"></i> Toc&#225;s Productos</div>
+          <div class="flow-sub">Sidebar, secci&#243;n Tu negocio</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-result">
-          <span class="ar-lbl">Reacción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-table-list"></i></div>
-            <div class="ar-body">Ves tu catálogo en tabla<small>Buscador, filtros y stock visible</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label react">Reacci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-table-list"></i> Cat&#225;logo en tabla</div>
+          <div class="flow-sub">Buscador, filtros y stock visible</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-benefit">
-          <span class="ar-lbl">Para qué</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-bolt"></i></div>
-            <div class="ar-body">Cotizás en segundos<small>Nada de buscar precios en chats</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label benefit">Para qu&#233;</span>
+          <div class="flow-title"><i class="fa fa-bolt"></i> Cotiz&#225;s en segundos</div>
+          <div class="flow-sub">Nada de buscar precios en chats</div>
         </div>
       </div>
 
-      <ol class="numbered">
-        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo producto</span></b> arriba a la derecha.</div></li>
-        <li><div class="step-body"><b>Completás nombre y precio</b> — único campo obligatorio.<small>El resto (categoría, stock, foto) es opcional pero ayuda.</small></div></li>
-        <li><div class="step-body"><b>Activás precio mayorista</b> si trabajás con dos listas. Se aplica solo según el tipo de cliente.</div></li>
-        <li><div class="step-body"><b>¿Ya tenés Excel?</b> Tocá <span class="btn-ref"><i class="fa-solid fa-file-import"></i>Importar</span> y subí el archivo — 200 productos en 2 minutos.</div></li>
+      <ol class="steps">
+        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="fa fa-plus"></i> Nuevo producto</span></b> arriba a la derecha.</div></li>
+        <li><div class="step-text"><b>Complet&#225;s nombre y precio</b> &#8212; &#250;nico campo obligatorio.<small>El resto (categor&#237;a, stock, foto) es opcional pero ayuda.</small></div></li>
+        <li><div class="step-text"><b>Activ&#225;s precio mayorista</b> si trabaj&#225;s con dos listas. Se aplica solo seg&#250;n el tipo de cliente.</div></li>
+        <li><div class="step-text"><b>&#191;Ya ten&#233;s Excel?</b> Toc&#225; <span class="ref"><i class="fa fa-file-import"></i> Importar</span> y sub&#237; el archivo &#8212; 200 productos en 2 minutos.</div></li>
       </ol>
 
-      <div class="connect">
-        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> entra un cliente preguntando "¿tenés esto?" — lo buscás en el catálogo, lo agregás a la cotización y se la mandás antes de que termine la conversación.</div>
+      <div class="callout daily">
+        <i class="fa fa-bullseye"></i>
+        <span><b>Tu d&#237;a a d&#237;a:</b> entra un cliente preguntando &#8220;&#191;ten&#233;s esto?&#8221; &#8212; lo busc&#225;s en el cat&#225;logo, lo agreg&#225;s a la cotizaci&#243;n y se la mand&#225;s antes de que termine la conversaci&#243;n.</span>
       </div>
 
-      <a href="/app/catalogo" class="sec-cta">Ir a Productos <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/app/catalogo" class="sec-cta">Ir a Productos <i class="fa fa-arrow-right"></i></a>
     </section>
 
     <!-- 3 CLIENTES -->
     <section class="sec" id="clientes">
-      <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-users" style="font-size:22px"></i></div>
-        <div class="sec-titles">
-          <span class="sec-tag">03 · Tu base de contactos</span>
+      <div class="sec-header">
+        <div class="sec-icon orange"><i class="fa fa-users"></i></div>
+        <div class="sec-meta">
+          <span class="sec-tag">03 &#183; Tu base de contactos</span>
           <h2>Clientes</h2>
         </div>
       </div>
-      <p class="why">Cada cliente con su ficha, historial y WhatsApp directo. <b>Empezá por los que vuelven</b> — el resto se va sumando con cada venta nueva.</p>
+      <p class="sec-intro">Cada cliente con su ficha, historial y WhatsApp directo. <b>Empez&#225; por los que vuelven</b> &#8212; el resto se va sumando con cada venta nueva.</p>
 
-      <div class="action-react">
-        <div class="ar-step">
-          <span class="ar-lbl">Tu acción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-users"></i></div>
-            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-users"></i>Clientes</span><small>Sidebar, sección Ventas</small></div>
-          </div>
+      <div class="flow">
+        <div class="flow-card">
+          <span class="flow-label action">Tu acci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-users"></i> Toc&#225;s Clientes</div>
+          <div class="flow-sub">Sidebar, secci&#243;n Tu negocio</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-result">
-          <span class="ar-lbl">Reacción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-id-card"></i></div>
-            <div class="ar-body">Ves tu base con saldos<small>Quién debe, quién hace tiempo no compra</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label react">Reacci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-id-card"></i> Tu base con saldos</div>
+          <div class="flow-sub">Qui&#233;n debe, qui&#233;n hace tiempo no compra</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-benefit">
-          <span class="ar-lbl">Para qué</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-brands fa-whatsapp"></i></div>
-            <div class="ar-body">Le escribís con un clic<small>WhatsApp con su nombre y contexto</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label benefit">Para qu&#233;</span>
+          <div class="flow-title"><i class="fa-brands fa-whatsapp"></i> Le escrib&#237;s con un clic</div>
+          <div class="flow-sub">WhatsApp con su nombre y contexto</div>
         </div>
       </div>
 
-      <ol class="numbered">
-        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo cliente</span></b> arriba a la derecha.</div></li>
-        <li><div class="step-body"><b>Nombre y WhatsApp</b> — lo mínimo. El número activa el chat verde directo desde la ficha.</div></li>
-        <li><div class="step-body"><b>Marcás tipo</b> <span class="btn-ref"><i class="fa-solid fa-tag"></i>Público</span> o <span class="btn-ref"><i class="fa-solid fa-tag"></i>Mayorista</span>.<small>ANMA aplica la lista de precios correcta automáticamente.</small></div></li>
-        <li><div class="step-body"><b>Al abrir un cliente</b> vas a ver 3 pestañas: <span class="btn-ref"><i class="fa-solid fa-address-card"></i>Información</span>, <span class="btn-ref"><i class="fa-solid fa-clock-rotate-left"></i>Historial</span> y <span class="btn-ref"><i class="fa-solid fa-note-sticky"></i>Notas</span>.</div></li>
+      <ol class="steps">
+        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="fa fa-plus"></i> Nuevo cliente</span></b> arriba a la derecha.</div></li>
+        <li><div class="step-text"><b>Nombre y WhatsApp</b> &#8212; lo m&#237;nimo. El n&#250;mero activa el chat verde directo desde la ficha.</div></li>
+        <li><div class="step-text"><b>Marc&#225;s tipo</b> <span class="ref"><i class="fa fa-tag"></i> P&#250;blico</span> o <span class="ref"><i class="fa fa-tag"></i> Mayorista</span>.<small>ANMA aplica la lista de precios correcta autom&#225;ticamente.</small></div></li>
+        <li><div class="step-text"><b>Al abrir un cliente</b> vas a ver 3 pesta&#241;as: <span class="ref"><i class="fa fa-address-card"></i> Informaci&#243;n</span>, <span class="ref"><i class="fa fa-clock-rotate-left"></i> Historial</span> y <span class="ref"><i class="fa fa-note-sticky"></i> Notas</span>.</div></li>
       </ol>
 
-      <div class="sub">
-        <h3><i class="fa-solid fa-layer-group"></i> Qué encontrás en cada pestaña</h3>
-        <table class="t">
-          <thead><tr><th>Pestaña</th><th>Qué muestra</th></tr></thead>
-          <tbody>
-            <tr><td><b><i class="fa-solid fa-address-card" style="color:var(--brand);margin-right:6px"></i>Información</b></td><td>WhatsApp, email y rubro del cliente. Debajo, 3 números clave: total vendido, último pedido y cantidad de presupuestos.</td></tr>
-            <tr><td><b><i class="fa-solid fa-clock-rotate-left" style="color:var(--brand);margin-right:6px"></i>Historial</b></td><td>Lista de todos los presupuestos hechos a ese cliente, con estado y monto. Tocás uno y lo ves completo.</td></tr>
-            <tr><td><b><i class="fa-solid fa-note-sticky" style="color:var(--brand);margin-right:6px"></i>Notas</b></td><td>Notas de seguimiento con fecha: "le gusta el negro", "paga a 30 días", "prefiere que le escriban a la tarde". Quedan guardadas para siempre.</td></tr>
-          </tbody>
-        </table>
+      <div class="sub-head"><i class="fa fa-layer-group"></i> Qu&#233; encontr&#225;s en cada pesta&#241;a</div>
+      <table class="info-table">
+        <thead><tr><th>Pesta&#241;a</th><th>Qu&#233; muestra</th></tr></thead>
+        <tbody>
+          <tr><td><i class="fa fa-address-card"></i> Informaci&#243;n</td><td>WhatsApp, email y rubro. Debajo: total vendido, &#250;ltimo pedido y cantidad de presupuestos.</td></tr>
+          <tr><td><i class="fa fa-clock-rotate-left"></i> Historial</td><td>Lista de presupuestos con estado y monto. Toc&#225;s uno y lo ves completo.</td></tr>
+          <tr><td><i class="fa fa-note-sticky"></i> Notas</td><td>Notas de seguimiento con fecha: &#8220;le gusta el negro&#8221;, &#8220;paga a 30 d&#237;as&#8221;, &#8220;prefiere que le escriban a la tarde&#8221;.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout daily">
+        <i class="fa fa-bullseye"></i>
+        <span><b>Tu d&#237;a a d&#237;a:</b> vuelve Mar&#237;a tres meses despu&#233;s &#8212; abr&#237;s su ficha, mir&#225;s el Historial y ves que se llev&#243; las botas marrones. Le propon&#233;s la cartera que combina sin tener que recordarlo.</span>
       </div>
 
-      <div class="connect">
-        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> vuelve María tres meses después — abrís su ficha, mirás el Historial y ves que se llevó las botas marrones. Le proponés la cartera que combina sin tener que recordarlo.</div>
-      </div>
-
-      <a href="/app/clientes" class="sec-cta">Ir a Clientes <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/app/clientes" class="sec-cta">Ir a Clientes <i class="fa fa-arrow-right"></i></a>
     </section>
 
     <!-- 4 PROVEEDORES -->
     <section class="sec" id="proveedores">
-      <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-industry" style="font-size:22px"></i></div>
-        <div class="sec-titles">
-          <span class="sec-tag">04 · A quién le comprás</span>
+      <div class="sec-header">
+        <div class="sec-icon purple"><i class="fa fa-industry"></i></div>
+        <div class="sec-meta">
+          <span class="sec-tag">04 &#183; A qui&#233;n le compr&#225;s</span>
           <h2>Proveedores</h2>
         </div>
       </div>
-      <p class="why">Tu margen empieza en la compra. <b>Cada precio registrado</b> es un dato para negociar después.</p>
+      <p class="sec-intro">Tu margen empieza en la compra. <b>Cada precio registrado</b> es un dato para negociar despu&#233;s.</p>
 
-      <div class="action-react">
-        <div class="ar-step">
-          <span class="ar-lbl">Tu acción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-industry"></i></div>
-            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-industry"></i>Proveedores</span><small>Sidebar, sección Inventario</small></div>
-          </div>
+      <div class="flow">
+        <div class="flow-card">
+          <span class="flow-label action">Tu acci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-industry"></i> Toc&#225;s Proveedores</div>
+          <div class="flow-sub">Sidebar, secci&#243;n Herramientas</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-result">
-          <span class="ar-lbl">Reacción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-chart-line"></i></div>
-            <div class="ar-body">Ves su histórico de precios<small>Cuándo y cuánto aumentó cada uno</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label react">Reacci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-chart-line"></i> Hist&#243;rico de precios</div>
+          <div class="flow-sub">Cu&#225;ndo y cu&#225;nto aument&#243; cada uno</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-benefit">
-          <span class="ar-lbl">Para qué</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-shield-halved"></i></div>
-            <div class="ar-body">Cuidás el margen<small>Negociás con números, no con la sensación</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label benefit">Para qu&#233;</span>
+          <div class="flow-title"><i class="fa fa-shield-halved"></i> Cuid&#225;s el margen</div>
+          <div class="flow-sub">Negoci&#225;s con n&#250;meros, no con la sensaci&#243;n</div>
         </div>
       </div>
 
-      <ol class="numbered">
-        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo proveedor</span></b> arriba a la derecha.</div></li>
-        <li><div class="step-body"><b>Cargás datos</b>: WhatsApp, email, rubro, CUIT, condición frente al IVA, plazo de pago y lead time (días de entrega).</div></li>
-        <li><div class="step-body"><b>Al abrir un proveedor</b> vas a ver 4 pestañas: <span class="btn-ref"><i class="fa-solid fa-address-card"></i>Información</span>, <span class="btn-ref"><i class="fa-solid fa-box-open"></i>Productos</span>, <span class="btn-ref"><i class="fa-solid fa-tag"></i>Precios</span> y <span class="btn-ref"><i class="fa-solid fa-note-sticky"></i>Notas</span>.</div></li>
+      <ol class="steps">
+        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="fa fa-plus"></i> Nuevo proveedor</span></b> arriba a la derecha.</div></li>
+        <li><div class="step-text"><b>Carg&#225;s datos</b>: WhatsApp, email, rubro, CUIT, condici&#243;n frente al IVA, plazo de pago y lead time (d&#237;as de entrega).</div></li>
+        <li><div class="step-text"><b>Al abrir un proveedor</b> vas a ver 4 pesta&#241;as: <span class="ref"><i class="fa fa-address-card"></i> Informaci&#243;n</span>, <span class="ref"><i class="fa fa-box-open"></i> Productos</span>, <span class="ref"><i class="fa fa-tag"></i> Precios</span> y <span class="ref"><i class="fa fa-note-sticky"></i> Notas</span>.</div></li>
       </ol>
 
-      <div class="sub">
-        <h3><i class="fa-solid fa-layer-group"></i> Qué encontrás en cada pestaña</h3>
-        <table class="t">
-          <thead><tr><th>Pestaña</th><th>Qué muestra</th></tr></thead>
-          <tbody>
-            <tr><td><b><i class="fa-solid fa-address-card" style="color:var(--brand);margin-right:6px"></i>Información</b></td><td>Contacto, CUIT, condición de IVA, plazo de pago, lead time, CBU/alias. Debajo, cantidad de productos y costo total asociado.</td></tr>
-            <tr><td><b><i class="fa-solid fa-box-open" style="color:var(--brand);margin-right:6px"></i>Productos</b></td><td>Los productos que le comprás a este proveedor en particular.</td></tr>
-            <tr><td><b><i class="fa-solid fa-tag" style="color:var(--brand);margin-right:6px"></i>Precios</b></td><td>Histórico de precio por producto: cada cambio con fecha y variación en %. Tocás el lápiz para registrar un precio nuevo.</td></tr>
-            <tr><td><b><i class="fa-solid fa-note-sticky" style="color:var(--brand);margin-right:6px"></i>Notas</b></td><td>Notas libres sobre condiciones de pago, entregas o acuerdos particulares.</td></tr>
-          </tbody>
-        </table>
+      <div class="sub-head"><i class="fa fa-layer-group"></i> Qu&#233; encontr&#225;s en cada pesta&#241;a</div>
+      <table class="info-table">
+        <thead><tr><th>Pesta&#241;a</th><th>Qu&#233; muestra</th></tr></thead>
+        <tbody>
+          <tr><td><i class="fa fa-address-card"></i> Informaci&#243;n</td><td>Contacto, CUIT, condici&#243;n de IVA, plazo de pago, lead time, CBU/alias. Debajo, cantidad de productos y costo total.</td></tr>
+          <tr><td><i class="fa fa-box-open"></i> Productos</td><td>Los productos que le compr&#225;s a este proveedor en particular.</td></tr>
+          <tr><td><i class="fa fa-tag"></i> Precios</td><td>Hist&#243;rico de precio por producto: cada cambio con fecha y variaci&#243;n en %. Toc&#225;s el l&#225;piz para registrar un precio nuevo.</td></tr>
+          <tr><td><i class="fa fa-note-sticky"></i> Notas</td><td>Notas libres sobre condiciones de pago, entregas o acuerdos particulares.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout daily">
+        <i class="fa fa-bullseye"></i>
+        <span><b>Tu d&#237;a a d&#237;a:</b> tu proveedor de cajas te avisa de un aumento del 12%. Abr&#237;s su pesta&#241;a Precios, ves que la suba real fue 6 meses atr&#225;s del 8%, y le respond&#233;s con argumento.</span>
       </div>
 
-      <div class="connect">
-        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> tu proveedor de cajas te avisa de un aumento del 12%. Abrís su pestaña Precios, ves que la suba real fue 6 meses atrás del 8%, y le respondés con argumento — no con sorpresa.<small>Tip: cargá al menos 2 proveedores por insumo crítico. La negociación cambia cuando saben que tenés opción.</small></div>
+      <div class="callout tip">
+        <i class="fa fa-lightbulb"></i>
+        <span>Carg&#225; al menos 2 proveedores por insumo cr&#237;tico. La negociaci&#243;n cambia cuando saben que ten&#233;s opci&#243;n.</span>
       </div>
 
-      <a href="/app/proveedores" class="sec-cta">Ir a Proveedores <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/app/proveedores" class="sec-cta">Ir a Proveedores <i class="fa fa-arrow-right"></i></a>
     </section>
 
     <!-- 5 INSUMOS -->
     <section class="sec" id="insumos">
-      <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-boxes-stacked" style="font-size:22px"></i></div>
-        <div class="sec-titles">
-          <span class="sec-tag">05 · Tus materiales</span>
+      <div class="sec-header">
+        <div class="sec-icon green"><i class="fa fa-boxes-stacked"></i></div>
+        <div class="sec-meta">
+          <span class="sec-tag">05 &#183; Tus materiales</span>
           <h2>Insumos</h2>
         </div>
       </div>
-      <p class="why">Materiales para armar productos (cajas, etiquetas, hilos). <b>Se descuentan solos en cada venta</b> para que no te falten en plena temporada.</p>
+      <p class="sec-intro">Materiales para armar productos (cajas, etiquetas, hilos). <b>Se descuentan solos en cada venta</b> para que no te falten en plena temporada.</p>
 
-      <div class="action-react">
-        <div class="ar-step">
-          <span class="ar-lbl">Tu acción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-boxes-stacked"></i></div>
-            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-boxes-stacked"></i>Insumos</span><small>Sidebar, sección Inventario</small></div>
-          </div>
+      <div class="flow">
+        <div class="flow-card">
+          <span class="flow-label action">Tu acci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-boxes-stacked"></i> Toc&#225;s Insumos</div>
+          <div class="flow-sub">Sidebar, secci&#243;n Herramientas</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-result">
-          <span class="ar-lbl">Reacción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-link"></i></div>
-            <div class="ar-body">Ves los insumos vinculados<small>Quién depende de qué material</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label react">Reacci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-link"></i> Insumos vinculados</div>
+          <div class="flow-sub">Qui&#233;n depende de qu&#233; material</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-benefit">
-          <span class="ar-lbl">Para qué</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-bell"></i></div>
-            <div class="ar-body">Alerta antes de que falte<small>Reponés antes de quedarte sin material</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label benefit">Para qu&#233;</span>
+          <div class="flow-title"><i class="fa fa-bell"></i> Alerta antes de que falte</div>
+          <div class="flow-sub">Repon&#233;s antes de quedarte sin material</div>
         </div>
       </div>
 
-      <ol class="numbered">
-        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo insumo</span></b> y cargás nombre, costo unitario y stock actual.</div></li>
-        <li><div class="step-body"><b>Definís stock mínimo</b> — el número que dispara la alerta amarilla.</div></li>
-        <li><div class="step-body"><b>Lo asociás a un producto</b>: "cada caja regalo usa 1 caja kraft + 2 metros de cinta + 1 etiqueta".</div></li>
-        <li><div class="step-body"><b>Cada venta lo descuenta solo.</b> Cuando bajás del mínimo, aparece en <span class="btn-ref btn-ref-danger"><i class="fa-solid fa-triangle-exclamation"></i>Stock bajo</span> del Dashboard.</div></li>
+      <ol class="steps">
+        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="fa fa-plus"></i> Nuevo insumo</span></b> y carg&#225;s nombre, costo unitario y stock actual.</div></li>
+        <li><div class="step-text"><b>Defin&#237;s stock m&#237;nimo</b> &#8212; el n&#250;mero que dispara la alerta amarilla.</div></li>
+        <li><div class="step-text"><b>Lo asoci&#225;s a un producto</b>: &#8220;cada caja regalo usa 1 caja kraft + 2 metros de cinta + 1 etiqueta&#8221;.</div></li>
+        <li><div class="step-text"><b>Cada venta lo descuenta solo.</b> Cuando baj&#225;s del m&#237;nimo, aparece en <span class="ref danger"><i class="fa fa-triangle-exclamation"></i> Stock bajo</span> del Dashboard.</div></li>
       </ol>
 
-      <div class="connect">
-        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> es viernes de Día de la Madre, vendiste 40 cajas y no te diste cuenta que las etiquetas se acabaron. Con la alerta de stock bajo, esa situación no vuelve a pasar.</div>
+      <div class="callout daily">
+        <i class="fa fa-bullseye"></i>
+        <span><b>Tu d&#237;a a d&#237;a:</b> es viernes de D&#237;a de la Madre, vendiste 40 cajas y no te diste cuenta que las etiquetas se acabaron. Con la alerta de stock bajo, esa situaci&#243;n no vuelve a pasar.</span>
       </div>
 
-      <a href="/app/insumos" class="sec-cta">Ir a Insumos <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/app/insumos" class="sec-cta">Ir a Insumos <i class="fa fa-arrow-right"></i></a>
     </section>
 
     <!-- 6 PEDIDOS -->
     <section class="sec" id="pedidos">
-      <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-file-invoice-dollar" style="font-size:22px"></i></div>
-        <div class="sec-titles">
-          <span class="sec-tag">06 · El corazón de la app</span>
+      <div class="sec-header">
+        <div class="sec-icon purple"><i class="fa fa-file-invoice-dollar"></i></div>
+        <div class="sec-meta">
+          <span class="sec-tag">06 &#183; El coraz&#243;n de la app</span>
           <h2>Pedidos y Presupuestos</h2>
         </div>
       </div>
-      <p class="why">Acá se conecta todo lo anterior. Es un formulario de <b>4 pasos guiados</b> — no hay que llenar todo de una, cada paso te pide solo lo suyo.</p>
+      <p class="sec-intro">Ac&#225; se conecta todo lo anterior. Es un formulario de <b>4 pasos guiados</b> &#8212; no hay que llenar todo de una, cada paso te pide solo lo suyo.</p>
 
-      <div class="wiz-track">
-        <div class="wiz-node"><div class="wiz-node-num">1</div><div class="wiz-node-lbl">Cliente</div><div class="wiz-node-sub">Contacto y datos</div></div>
-        <div class="wiz-node"><div class="wiz-node-num">2</div><div class="wiz-node-lbl">Productos</div><div class="wiz-node-sub">Ítems del pedido</div></div>
-        <div class="wiz-node"><div class="wiz-node-num">3</div><div class="wiz-node-lbl">Entrega</div><div class="wiz-node-sub">Envío y precio</div></div>
-        <div class="wiz-node"><div class="wiz-node-num">4</div><div class="wiz-node-lbl">Confirmar</div><div class="wiz-node-sub">Revisar y enviar</div></div>
+      <div class="wizard">
+        <div class="wiz-step"><div class="wiz-num">1</div><div class="wiz-label">Cliente</div><div class="wiz-desc">Contacto y datos</div></div>
+        <div class="wiz-step"><div class="wiz-num">2</div><div class="wiz-label">Productos</div><div class="wiz-desc">&#205;tems del pedido</div></div>
+        <div class="wiz-step"><div class="wiz-num">3</div><div class="wiz-label">Entrega</div><div class="wiz-desc">Env&#237;o y precio</div></div>
+        <div class="wiz-step"><div class="wiz-num">4</div><div class="wiz-label">Confirmar</div><div class="wiz-desc">Revisar y enviar</div></div>
       </div>
 
-      <div class="action-react">
-        <div class="ar-step">
-          <span class="ar-lbl">Tu acción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-            <div class="ar-body">Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo pedido</span><small>Sidebar o FAB inferior en mobile</small></div>
-          </div>
+      <div class="flow">
+        <div class="flow-card">
+          <span class="flow-label action">Tu acci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-plus"></i> Nuevo pedido</div>
+          <div class="flow-sub">Sidebar o FAB inferior en mobile</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-result">
-          <span class="ar-lbl">Reacción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-file-pdf"></i></div>
-            <div class="ar-body">PDF generado con tu marca<small>Numeración secuencial, total y formas de pago</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label react">Reacci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-file-pdf"></i> PDF con tu marca</div>
+          <div class="flow-sub">Numeraci&#243;n secuencial, total y formas de pago</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-benefit">
-          <span class="ar-lbl">Para qué</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-brands fa-whatsapp"></i></div>
-            <div class="ar-body">Lo mandás en un clic<small>Mensaje pre-armado al WhatsApp del cliente</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label benefit">Para qu&#233;</span>
+          <div class="flow-title"><i class="fa-brands fa-whatsapp"></i> Lo mand&#225;s en un clic</div>
+          <div class="flow-sub">Mensaje pre-armado al WhatsApp del cliente</div>
         </div>
       </div>
 
-      <div class="wiz-detail">
-        <div class="wiz-detail-h"><div class="wiz-detail-num">1</div><b>Cliente</b></div>
+      <div class="detail">
+        <div class="detail-head"><div class="detail-num">1</div><b>Cliente</b></div>
         <ul>
-          <li>Elegís uno existente o cargás uno nuevo <b>sin salir del formulario</b>.</li>
+          <li>Eleg&#237;s uno existente o carg&#225;s uno nuevo <b>sin salir del formulario</b>.</li>
           <li>Contacto o nombre de empresa (uno de los dos, obligatorio) + WhatsApp.</li>
-          <li>El precio público o mayorista se aplica solo, según el tipo de cliente.</li>
+          <li>El precio p&#250;blico o mayorista se aplica solo, seg&#250;n el tipo de cliente.</li>
         </ul>
       </div>
 
-      <div class="wiz-detail">
-        <div class="wiz-detail-h"><div class="wiz-detail-num">2</div><b>Productos</b></div>
+      <div class="detail">
+        <div class="detail-head"><div class="detail-num">2</div><b>Productos</b></div>
         <ul>
-          <li>Buscás en tu catálogo y sumás ítems con cantidad y precio.</li>
-          <li>Necesitás <b>al menos un producto con nombre</b> para poder avanzar al paso siguiente.</li>
-          <li>Insumos y stock se descuentan automáticamente al guardar.</li>
+          <li>Busc&#225;s en tu cat&#225;logo y sum&#225;s &#237;tems con cantidad y precio.</li>
+          <li>Necesit&#225;s <b>al menos un producto con nombre</b> para poder avanzar.</li>
+          <li>Insumos y stock se descuentan autom&#225;ticamente al guardar.</li>
         </ul>
       </div>
 
-      <div class="wiz-detail">
-        <div class="wiz-detail-h"><div class="wiz-detail-num">3</div><b>Entrega</b></div>
+      <div class="detail">
+        <div class="detail-head"><div class="detail-num">3</div><b>Entrega</b></div>
         <ul>
-          <li><b>Modalidad</b> (retiro, envío, showroom...) y <b>fecha pactada</b>.</li>
-          <li><b>Estado del pedido</b>: borrador, enviado, confirmado, en producción, entregado o cancelado.</li>
-          <li><b>Estado de pago</b>: pendiente, seña abonada o pagado.</li>
-          <li><b>Margen, seña y descuento</b> en porcentaje — se recalculan solos en el total.</li>
-          <li>Si el envío es "a cotizar", tildás la casilla y el PDF muestra esa leyenda en vez de un precio.</li>
+          <li><b>Modalidad</b> (retiro, env&#237;o, showroom...) y <b>fecha pactada</b>.</li>
+          <li><b>Estado del pedido</b>: borrador, enviado, confirmado, en producci&#243;n, entregado o cancelado.</li>
+          <li><b>Estado de pago</b>: pendiente, se&#241;a abonada o pagado.</li>
+          <li><b>Margen, se&#241;a y descuento</b> en porcentaje &#8212; se recalculan solos en el total.</li>
+          <li>Si el env&#237;o es &#8220;a cotizar&#8221;, tild&#225;s la casilla y el PDF muestra esa leyenda.</li>
         </ul>
-        <div class="wiz-detail-note"><i class="fa-solid fa-circle-info" style="margin-right:6px;color:var(--brand)"></i>Este es el paso con más campos — pero ninguno es obligatorio para avanzar. Completá lo que tengas y volvé después si hace falta.</div>
+        <div class="detail-note"><i class="fa fa-circle-info"></i> Este es el paso con m&#225;s campos &#8212; pero ninguno es obligatorio para avanzar. Complet&#225; lo que tengas y volv&#233; despu&#233;s.</div>
       </div>
 
-      <div class="wiz-detail">
-        <div class="wiz-detail-h"><div class="wiz-detail-num">4</div><b>Confirmar</b></div>
+      <div class="detail">
+        <div class="detail-head"><div class="detail-num">4</div><b>Confirmar</b></div>
         <ul>
-          <li>Ves un resumen de Cliente, Productos y Entrega — con botón <b>Editar</b> en cada bloque para corregir sin volver atrás.</li>
-          <li>Totales desglosados: subtotal, descuento, IVA (si aplica) y seña.</li>
-          <li>Tocás <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-floppy-disk"></i>Guardar Presupuesto</span> — ese es el botón que lo crea.</li>
+          <li>Ves un resumen de Cliente, Productos y Entrega &#8212; con bot&#243;n <b>Editar</b> en cada bloque para corregir sin volver atr&#225;s.</li>
+          <li>Totales desglosados: subtotal, descuento, IVA (si aplica) y se&#241;a.</li>
+          <li>Toc&#225;s <span class="ref primary"><i class="fa fa-floppy-disk"></i> Guardar Presupuesto</span> &#8212; ese es el bot&#243;n que lo crea.</li>
         </ul>
       </div>
 
-      <div class="wiz-detail" style="border-left-color:#25D366">
-        <div class="wiz-detail-h"><div class="wiz-detail-num" style="background:#25D366">✓</div><b>Después de guardar</b></div>
+      <div class="detail green">
+        <div class="detail-head"><div class="detail-num"><i class="fa fa-check" style="font-size:9px"></i></div><b>Despu&#233;s de guardar</b></div>
         <ul>
-          <li><span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Enviar</span> manda el presupuesto por WhatsApp con mensaje pre-armado.</li>
-          <li><span class="btn-ref"><i class="fa-solid fa-eye"></i>Vista previa</span> y <span class="btn-ref"><i class="fa-solid fa-file-pdf"></i>PDF</span> para revisar o descargar el documento.</li>
-          <li>Si tenés Mercado Pago activo, un botón manda también el link de cobro.</li>
+          <li><span class="ref wa"><i class="fa-brands fa-whatsapp"></i> Enviar</span> manda el presupuesto por WhatsApp con mensaje pre-armado.</li>
+          <li><span class="ref"><i class="fa fa-eye"></i> Vista previa</span> y <span class="ref"><i class="fa fa-file-pdf"></i> PDF</span> para revisar o descargar.</li>
+          <li>Si ten&#233;s Mercado Pago activo, un bot&#243;n manda tambi&#233;n el link de cobro.</li>
         </ul>
       </div>
 
-      <div class="connect">
-        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> te escriben por WhatsApp pidiendo cotización. En vez de armarla a mano y mandarla con tres mensajes, completás los 4 pasos y sacás un PDF prolijo en pocos minutos. Cerrás más ventas porque respondés rápido y profesional.</div>
+      <div class="callout daily">
+        <i class="fa fa-bullseye"></i>
+        <span><b>Tu d&#237;a a d&#237;a:</b> te escriben por WhatsApp pidiendo cotizaci&#243;n. En vez de armarla a mano y mandarla con tres mensajes, complet&#225;s los 4 pasos y sac&#225;s un PDF prolijo en pocos minutos. Cerr&#225;s m&#225;s ventas porque respond&#233;s r&#225;pido y profesional.</span>
       </div>
 
-      <a href="/app/presupuesto" class="sec-cta">Crear pedido <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/app/presupuesto" class="sec-cta">Crear pedido <i class="fa fa-arrow-right"></i></a>
     </section>
 
-    <!-- 7 LOGÍSTICA -->
+    <!-- 7 LOG&#205;STICA -->
     <section class="sec" id="logistica">
-      <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-truck-fast" style="font-size:22px"></i></div>
-        <div class="sec-titles">
-          <span class="sec-tag">07 · Cómo llega</span>
-          <h2>Logística</h2>
+      <div class="sec-header">
+        <div class="sec-icon orange"><i class="fa fa-truck-fast"></i></div>
+        <div class="sec-meta">
+          <span class="sec-tag">07 &#183; C&#243;mo llega</span>
+          <h2>Log&#237;stica</h2>
         </div>
       </div>
-      <p class="why">Cargás cada envío con <b>Vía Cargo, Andreani u otro</b>, pegás el código de tracking y compartís el link por WhatsApp con el cliente.</p>
+      <p class="sec-intro">Carg&#225;s cada env&#237;o con <b>V&#237;a Cargo, Andreani u otro</b>, peg&#225;s el c&#243;digo de tracking y compart&#237;s el link por WhatsApp con el cliente.</p>
 
-      <div class="action-react">
-        <div class="ar-step">
-          <span class="ar-lbl">Tu acción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-truck-fast"></i></div>
-            <div class="ar-body">Desde el pedido tocás <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Nuevo envío</span><small>O entrás por Logística en sidebar</small></div>
-          </div>
+      <div class="flow">
+        <div class="flow-card">
+          <span class="flow-label action">Tu acci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-truck-fast"></i> Nuevo env&#237;o</div>
+          <div class="flow-sub">Desde el pedido o por Log&#237;stica en sidebar</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-result">
-          <span class="ar-lbl">Reacción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-barcode"></i></div>
-            <div class="ar-body">Guardás carrier + tracking<small>Vía Cargo, Andreani u otro</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label react">Reacci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-barcode"></i> Carrier + tracking</div>
+          <div class="flow-sub">V&#237;a Cargo, Andreani u otro</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-benefit">
-          <span class="ar-lbl">Para qué</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-brands fa-whatsapp"></i></div>
-            <div class="ar-body">Compartís el link<small>El cliente sigue su paquete solo</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label benefit">Para qu&#233;</span>
+          <div class="flow-title"><i class="fa-brands fa-whatsapp"></i> Compart&#237;s el link</div>
+          <div class="flow-sub">El cliente sigue su paquete solo</div>
         </div>
       </div>
 
-      <ol class="numbered">
-        <li><div class="step-body"><b>Confirmás la dirección</b> con el cliente antes de despachar.<small>Cambiar destino después cuesta redespacho.</small></div></li>
-        <li><div class="step-body"><b>Elegís el carrier</b>: <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Vía Cargo</span> · <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Andreani</span> · <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Otro</span>.<small>Cada uno abre el link directo al seguimiento oficial cuando pegás el código.</small></div></li>
-        <li><div class="step-body"><b>Cargás remito, bultos, peso y flete</b> (opcional). Podés dejar solo el mínimo — cliente, dirección, carrier y tracking.</div></li>
-        <li><div class="step-body"><b>Compartís el tracking</b> con <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Enviar link</span> — se abre WhatsApp con mensaje pre-armado y el link al seguimiento oficial.</div></li>
-        <li><div class="step-body"><b>Actualizás el estado</b> (En camino · Entregado · Con problema) desde la lista o la ficha.</div></li>
+      <ol class="steps">
+        <li><div class="step-text"><b>Confirm&#225;s la direcci&#243;n</b> con el cliente antes de despachar.<small>Cambiar destino despu&#233;s cuesta redespacho.</small></div></li>
+        <li><div class="step-text"><b>Eleg&#237;s el carrier</b>: <span class="ref"><i class="fa fa-truck-fast"></i> V&#237;a Cargo</span> &#183; <span class="ref"><i class="fa fa-truck-fast"></i> Andreani</span> &#183; <span class="ref"><i class="fa fa-truck-fast"></i> Otro</span>.<small>Cada uno abre el link directo al seguimiento oficial cuando peg&#225;s el c&#243;digo.</small></div></li>
+        <li><div class="step-text"><b>Carg&#225;s remito, bultos, peso y flete</b> (opcional). Pod&#233;s dejar solo el m&#237;nimo: cliente, direcci&#243;n, carrier y tracking.</div></li>
+        <li><div class="step-text"><b>Compart&#237;s el tracking</b> con <span class="ref wa"><i class="fa-brands fa-whatsapp"></i> Enviar link</span> &#8212; se abre WhatsApp con mensaje pre-armado y el link al seguimiento oficial.</div></li>
+        <li><div class="step-text"><b>Actualiz&#225;s el estado</b> (En camino, Entregado, Con problema) desde la lista o la ficha.</div></li>
       </ol>
 
-      <div class="connect">
-        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> en vez de responder "¿ya llegó?" 5 veces por día, el cliente mira el link y se autocontrolla. Ganás 30 minutos diarios para vender, no para coordinar.</div>
+      <div class="callout daily">
+        <i class="fa fa-bullseye"></i>
+        <span><b>Tu d&#237;a a d&#237;a:</b> en vez de responder &#8220;&#191;ya lleg&#243;?&#8221; 5 veces por d&#237;a, el cliente mira el link y se autocontrola. Gan&#225;s 30 minutos diarios para vender, no para coordinar.</span>
       </div>
 
-      <a href="/app/logistica" class="sec-cta">Ir a Logística <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/app/logistica" class="sec-cta">Ir a Log&#237;stica <i class="fa fa-arrow-right"></i></a>
     </section>
 
-    <!-- 8 MENSAJES -->
+    <!-- 8 MENSAJES WA -->
     <section class="sec" id="mensajes">
-      <div class="sec-head">
-        <div class="sec-num"><i class="fa-brands fa-whatsapp" style="font-size:22px"></i></div>
-        <div class="sec-titles">
-          <span class="sec-tag">08 · Tu voz, pre-armada</span>
+      <div class="sec-header">
+        <div class="sec-icon wa"><i class="fa-brands fa-whatsapp"></i></div>
+        <div class="sec-meta">
+          <span class="sec-tag">08 &#183; Tu voz, pre-armada</span>
           <h2>Mensajes WhatsApp</h2>
         </div>
       </div>
-      <p class="why"><b>Plantillas ya cargadas</b> organizadas en <b>5 solapas</b> del embudo comercial. Editás las que quieras, sumás nuevas y mandás por WhatsApp con datos reales del pedido.</p>
+      <p class="sec-intro"><b>Plantillas ya cargadas</b> organizadas en <b>5 solapas</b> del embudo comercial. Edit&#225;s las que quieras, sum&#225;s nuevas y mand&#225;s por WhatsApp con datos reales del pedido.</p>
 
-      <div class="action-react">
-        <div class="ar-step">
-          <span class="ar-lbl">Tu acción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-brands fa-whatsapp"></i></div>
-            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-brands fa-whatsapp"></i>Mensajes WA</span><small>Sidebar, sección Operaciones</small></div>
-          </div>
+      <div class="flow">
+        <div class="flow-card">
+          <span class="flow-label action">Tu acci&#243;n</span>
+          <div class="flow-title"><i class="fa-brands fa-whatsapp"></i> Toc&#225;s Mensajes WA</div>
+          <div class="flow-sub">Sidebar, secci&#243;n Herramientas</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-result">
-          <span class="ar-lbl">Reacción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-pen-to-square"></i></div>
-            <div class="ar-body">Ves las plantillas por etapa<small>Captación · Presupuestos · Pagos · Logística · Post-Venta</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label react">Reacci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-pen-to-square"></i> Plantillas por etapa</div>
+          <div class="flow-sub">Captaci&#243;n, Presupuestos, Pagos, Log&#237;stica, Post-Venta</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-benefit">
-          <span class="ar-lbl">Para qué</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-paper-plane"></i></div>
-            <div class="ar-body">Mandás desde cada ficha<small>WhatsApp abre con el texto personalizado</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label benefit">Para qu&#233;</span>
+          <div class="flow-title"><i class="fa fa-paper-plane"></i> Mand&#225;s desde cada ficha</div>
+          <div class="flow-sub">WhatsApp abre con el texto personalizado</div>
         </div>
       </div>
 
-      <ol class="numbered">
-        <li><div class="step-body"><b>Elegís la solapa</b>: <span class="btn-ref"><i class="fa-solid fa-bullhorn"></i>Captación</span> · <span class="btn-ref"><i class="fa-solid fa-file-invoice-dollar"></i>Presupuestos</span> · <span class="btn-ref"><i class="fa-solid fa-credit-card"></i>Pagos</span> · <span class="btn-ref"><i class="fa-solid fa-truck-fast"></i>Logística</span> · <span class="btn-ref"><i class="fa-solid fa-heart"></i>Post-Venta</span>.</div></li>
-        <li><div class="step-body"><b>Editás cada plantilla</b> con <span class="btn-ref"><i class="fa-solid fa-pen"></i>Editar</span>. Podés cambiar el texto o crear nuevas — usás tu tono real.</div></li>
-        <li><div class="step-body"><b>Usás las variables</b> — se completan solas con datos del pedido: <span class="btn-ref">&#123;&#123;nombre&#125;&#125;</span> <span class="btn-ref">&#123;&#123;negocio&#125;&#125;</span> <span class="btn-ref">&#123;&#123;producto&#125;&#125;</span> <span class="btn-ref">&#123;&#123;precio&#125;&#125;</span> <span class="btn-ref">&#123;&#123;fecha&#125;&#125;</span>.</div></li>
-        <li><div class="step-body"><b>Disparás desde:</b> ficha de cliente · detalle de pedido · lista de envíos · Dashboard.</div></li>
-        <li><div class="step-body"><b>Tocás <span class="btn-ref btn-ref-wa"><i class="fa-brands fa-whatsapp"></i>Enviar</span></b> y se abre WhatsApp con el chat del cliente y el mensaje listo — solo revisás y mandás.</div></li>
+      <ol class="steps">
+        <li><div class="step-text"><b>Eleg&#237;s la solapa</b>: <span class="ref"><i class="fa fa-bullhorn"></i> Captaci&#243;n</span> &#183; <span class="ref"><i class="fa fa-file-invoice-dollar"></i> Presupuestos</span> &#183; <span class="ref"><i class="fa fa-credit-card"></i> Pagos</span> &#183; <span class="ref"><i class="fa fa-truck-fast"></i> Log&#237;stica</span> &#183; <span class="ref"><i class="fa fa-heart"></i> Post-Venta</span>.</div></li>
+        <li><div class="step-text"><b>Edit&#225;s cada plantilla</b> con <span class="ref"><i class="fa fa-pen"></i> Editar</span>. Pod&#233;s cambiar el texto o crear nuevas &#8212; us&#225;s tu tono real.</div></li>
+        <li><div class="step-text"><b>Us&#225;s las variables</b> &#8212; se completan solas: <span class="ref">&#123;&#123;nombre&#125;&#125;</span> <span class="ref">&#123;&#123;negocio&#125;&#125;</span> <span class="ref">&#123;&#123;producto&#125;&#125;</span> <span class="ref">&#123;&#123;precio&#125;&#125;</span> <span class="ref">&#123;&#123;fecha&#125;&#125;</span>.</div></li>
+        <li><div class="step-text"><b>Dispar&#225;s desde:</b> ficha de cliente, detalle de pedido, lista de env&#237;os, Dashboard.</div></li>
+        <li><div class="step-text"><b>Toc&#225;s <span class="ref wa"><i class="fa-brands fa-whatsapp"></i> Enviar</span></b> y se abre WhatsApp con el chat del cliente y el mensaje listo &#8212; solo revis&#225;s y mand&#225;s.</div></li>
       </ol>
 
-      <div class="connect">
-        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> bloque de 20 minutos los martes para reactivar clientes que hace +60 días no compran. Con plantilla personalizada por última compra, recuperás 2-3 ventas que se habían dormido — todas las semanas.</div>
+      <div class="callout daily">
+        <i class="fa fa-bullseye"></i>
+        <span><b>Tu d&#237;a a d&#237;a:</b> bloque de 20 minutos los martes para reactivar clientes que hace +60 d&#237;as no compran. Con plantilla personalizada por &#250;ltima compra, recuper&#225;s 2-3 ventas que se hab&#237;an dormido &#8212; todas las semanas.</span>
       </div>
 
-      <a href="/app/mensajes" class="sec-cta">Ir a Mensajes <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/app/mensajes" class="sec-cta">Ir a Mensajes <i class="fa fa-arrow-right"></i></a>
     </section>
 
     <!-- 9 DASHBOARD -->
     <section class="sec" id="dashboard">
-      <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-chart-line" style="font-size:22px"></i></div>
-        <div class="sec-titles">
-          <span class="sec-tag">09 · El panel de tu día</span>
+      <div class="sec-header">
+        <div class="sec-icon purple"><i class="fa fa-chart-line"></i></div>
+        <div class="sec-meta">
+          <span class="sec-tag">09 &#183; El panel de tu d&#237;a</span>
           <h2>Dashboard</h2>
         </div>
       </div>
-      <p class="why">El panel que abrís <em>cada mañana</em>. <b>4 pestañas</b> (Resumen · Pedidos · Análisis · Seguimiento) con selector de período (7d · 30d · mes · año · custom) y export CSV.</p>
+      <p class="sec-intro">El panel que abr&#237;s <b>cada ma&#241;ana</b>. 4 pesta&#241;as (Resumen, Pedidos, An&#225;lisis, Seguimiento) con selector de per&#237;odo y export CSV.</p>
 
-      <div class="action-react">
-        <div class="ar-step">
-          <span class="ar-lbl">Tu acción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-chart-line"></i></div>
-            <div class="ar-body">Tocás <span class="btn-ref"><i class="fa-solid fa-chart-line"></i>Dashboard</span><small>Sidebar — primera pestaña</small></div>
-          </div>
+      <div class="flow">
+        <div class="flow-card">
+          <span class="flow-label action">Tu acci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-chart-line"></i> Toc&#225;s Dashboard</div>
+          <div class="flow-sub">Sidebar &#8212; primera opci&#243;n</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-result">
-          <span class="ar-lbl">Reacción</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-table-cells-large"></i></div>
-            <div class="ar-body">Ves KPIs + seguimiento<small>Resumen · Pedidos · Análisis · Seguimiento</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label react">Reacci&#243;n</span>
+          <div class="flow-title"><i class="fa fa-table-cells-large"></i> KPIs + seguimiento</div>
+          <div class="flow-sub">Resumen, Pedidos, An&#225;lisis, Seguimiento</div>
         </div>
-        <div class="ar-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        <div class="ar-step ar-benefit">
-          <span class="ar-lbl">Para qué</span>
-          <div class="ar-content">
-            <div class="ar-ico"><i class="fa-solid fa-mug-hot"></i></div>
-            <div class="ar-body">Empezás el día con foco<small>Sabés qué resolver primero</small></div>
-          </div>
+        <div class="flow-card">
+          <span class="flow-label benefit">Para qu&#233;</span>
+          <div class="flow-title"><i class="fa fa-mug-hot"></i> Empez&#225;s el d&#237;a con foco</div>
+          <div class="flow-sub">Sab&#233;s qu&#233; resolver primero</div>
         </div>
       </div>
 
-      <div class="wiz-detail">
-        <div class="wiz-detail-h"><div class="wiz-detail-num"><i class="fa fa-house" style="font-size:10px"></i></div><b>Resumen</b></div>
+      <div class="detail">
+        <div class="detail-head"><div class="detail-num"><i class="fa fa-house" style="font-size:9px"></i></div><b>Resumen</b></div>
         <ul>
-          <li><b>KPIs del período</b>: facturado, margen, pedidos generados, tasa de conversión, ticket promedio, top clientes.</li>
-          <li>Comparativa contra el período anterior (delta % en verde o rojo).</li>
-          <li>Grilla tipo bento — los cards clave arrancan más grandes.</li>
+          <li><b>KPIs del per&#237;odo</b>: facturado, margen, pedidos generados, tasa de conversi&#243;n, ticket promedio, top clientes.</li>
+          <li>Comparativa contra el per&#237;odo anterior (delta % en verde o rojo).</li>
+          <li>Grilla tipo bento &#8212; los cards clave arrancan m&#225;s grandes.</li>
         </ul>
       </div>
 
-      <div class="wiz-detail">
-        <div class="wiz-detail-h"><div class="wiz-detail-num"><i class="fa fa-receipt" style="font-size:10px"></i></div><b>Pedidos</b></div>
+      <div class="detail">
+        <div class="detail-head"><div class="detail-num"><i class="fa fa-receipt" style="font-size:9px"></i></div><b>Pedidos</b></div>
         <ul>
-          <li>Lista completa de pedidos del período, ordenable y con búsqueda.</li>
-          <li>Estado (borrador, enviado, confirmado, en producción, entregado), monto, cliente y fecha.</li>
-          <li>Botón <span class="btn-ref"><i class="fa-solid fa-download"></i>Exportar CSV</span> para Excel o contadora.</li>
+          <li>Lista completa del per&#237;odo, ordenable y con b&#250;squeda.</li>
+          <li>Estado (borrador, enviado, confirmado, en producci&#243;n, entregado), monto, cliente y fecha.</li>
+          <li>Bot&#243;n <span class="ref"><i class="fa fa-download"></i> Exportar CSV</span> para Excel o contadora.</li>
         </ul>
       </div>
 
-      <div class="wiz-detail">
-        <div class="wiz-detail-h"><div class="wiz-detail-num"><i class="fa fa-chart-bar" style="font-size:10px"></i></div><b>Análisis</b></div>
+      <div class="detail">
+        <div class="detail-head"><div class="detail-num"><i class="fa fa-chart-bar" style="font-size:9px"></i></div><b>An&#225;lisis</b></div>
         <ul>
-          <li>Distribución por estado, evolución mensual, top clientes por facturación, top productos.</li>
-          <li>Margen real vs. margen objetivo — detectás si estás cotizando bajo.</li>
+          <li>Distribuci&#243;n por estado, evoluci&#243;n mensual, top clientes por facturaci&#243;n, top productos.</li>
+          <li>Margen real vs. margen objetivo &#8212; detect&#225;s si est&#225;s cotizando bajo.</li>
         </ul>
       </div>
 
-      <div class="wiz-detail" style="border-left-color:#EA580C">
-        <div class="wiz-detail-h"><div class="wiz-detail-num" style="background:#EA580C"><i class="fa fa-bell" style="font-size:10px"></i></div><b>Seguimiento · lo urgente</b></div>
+      <div class="detail orange">
+        <div class="detail-head"><div class="detail-num"><i class="fa fa-bell" style="font-size:9px"></i></div><b>Seguimiento &#8212; lo urgente</b></div>
         <ul>
-          <li><b>Semáforo por días hasta la entrega comprometida</b>: rojo (crítico ≤7d), naranja (urgente 8-14d), amarillo, verde.</li>
-          <li>Presupuestos <b>enviados sin respuesta</b> — para reactivar con la plantilla "Recordatorio suave" de Mensajes.</li>
-          <li>El contador junto al nombre de la pestaña te avisa cuántos casos hay pendientes.</li>
+          <li><b>Sem&#225;foro por d&#237;as hasta la entrega comprometida</b>: rojo (cr&#237;tico), naranja (urgente 8-14d), amarillo, verde.</li>
+          <li>Presupuestos <b>enviados sin respuesta</b> &#8212; para reactivar con la plantilla &#8220;Recordatorio suave&#8221; de Mensajes.</li>
+          <li>El contador junto al nombre de la pesta&#241;a te avisa cu&#225;ntos casos hay pendientes.</li>
         </ul>
-        <div class="wiz-detail-note"><i class="fa-solid fa-circle-info" style="margin-right:6px;color:var(--brand)"></i>Esta es la pestaña que abrís primero cada mañana — el resto del dashboard es contexto, esta es acción.</div>
+        <div class="detail-note"><i class="fa fa-circle-info"></i> Esta es la pesta&#241;a que abr&#237;s primero cada ma&#241;ana &#8212; el resto del dashboard es contexto, esta es acci&#243;n.</div>
       </div>
 
-      <ol class="numbered">
-        <li><div class="step-body"><b>Elegís el período</b> con el dropdown <span class="btn-ref"><i class="fa-solid fa-calendar"></i>Período</span> (7d, 30d, este mes, año, custom).</div></li>
-        <li><div class="step-body"><b>Botón <span class="btn-ref btn-ref-primary"><i class="fa-solid fa-plus"></i>Nuevo pedido</span></b> arriba a la derecha — el atajo más rápido para empezar a cotizar.</div></li>
+      <ol class="steps">
+        <li><div class="step-text"><b>Eleg&#237;s el per&#237;odo</b> con el dropdown <span class="ref"><i class="fa fa-calendar"></i> Per&#237;odo</span> (7d, 30d, este mes, a&#241;o, custom).</div></li>
+        <li><div class="step-text"><b>Bot&#243;n <span class="ref primary"><i class="fa fa-plus"></i> Nuevo pedido</span></b> arriba a la derecha &#8212; el atajo m&#225;s r&#225;pido para empezar a cotizar.</div></li>
       </ol>
 
-      <div class="connect">
-        <div class="connect-ico"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="connect-body"><b>Tu día a día:</b> abrís ANMA antes que el correo. En 5 minutos identificás qué necesita atención y qué puede esperar. Cada alerta se resuelve a tiempo, sin que se acumulen para el final del día.</div>
+      <div class="callout daily">
+        <i class="fa fa-bullseye"></i>
+        <span><b>Tu d&#237;a a d&#237;a:</b> abr&#237;s ANMA antes que el correo. En 5 minutos identific&#225;s qu&#233; necesita atenci&#243;n y qu&#233; puede esperar. Cada alerta se resuelve a tiempo, sin que se acumulen.</span>
       </div>
 
-      <a href="/app/" class="sec-cta">Ir al Dashboard <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/app/" class="sec-cta">Ir al Dashboard <i class="fa fa-arrow-right"></i></a>
     </section>
 
   </main>
 </div>
 
-<!-- CTA FINAL -->
 <section class="final">
-  <div class="box-cta">
-    <div class="box-cta-ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-    <h2>Listo. Ya conocés ANMA Hub.</h2>
-    <p>Si te trabás en cualquier sección, escribime por WhatsApp y vemos juntas. Estoy del otro lado.</p>
-    <div class="btns">
-      <a class="primary" href="/app/registro">Empezar ahora <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  <div class="final-box">
+    <h2>Listo. Ya conoc&#233;s ANMA Hub.</h2>
+    <p>Si te trab&#225;s en cualquier secci&#243;n, escribime por WhatsApp y vemos juntas. Estoy del otro lado.</p>
+    <div class="final-btns">
+      <a class="primary" href="/app/registro">Empezar ahora <i class="fa fa-arrow-right"></i></a>
       <a class="ghost" href="https://wa.me/5491169456863?text=Hola%20Ana%2C%20estoy%20viendo%20la%20gu%C3%ADa%20de%20ANMA%20Hub%20y%20tengo%20una%20duda" target="_blank">Hablar por WhatsApp</a>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="foot-rich">
+  <div class="foot-links">
     <a href="/">ANMA Hub</a>
-    <a href="/recursos/">Todas las guías</a>
+    <a href="/recursos/">Todas las gu&#237;as</a>
     <a href="/recursos/primeros-pasos">Quick start (10 min)</a>
-    <a href="/demo.html">Ver demo</a>
     <a href="/app/registro">Probar gratis</a>
   </div>
-  <div class="foot-credit">© 2026 ANMA Hub · Hecho en Argentina con la cabeza fría</div>
+  <div>&#169; 2026 ANMA Hub &#183; Hecho en Argentina con la cabeza fr&#237;a</div>
 </footer>
 
 <script>
-// Marca sección como leída cuando se hace clic en el chip o se llega via scroll
 (function(){
   const chips = document.querySelectorAll('.progress-chip');
   const fill = document.getElementById('progress-fill');
@@ -958,7 +821,6 @@ footer a{color:var(--brand)}
   const total = chips.length;
   const KEY = 'anma_guide_progress';
 
-  // Cargar progreso desde localStorage
   let done = new Set();
   try { done = new Set(JSON.parse(localStorage.getItem(KEY) || '[]')); } catch(e){}
   refresh();
@@ -969,9 +831,8 @@ footer a{color:var(--brand)}
       const anchor = chip.dataset.anchor;
       if (done.has(anchor)) { done.delete(anchor); chip.classList.remove('done'); }
       else { done.add(anchor); chip.classList.add('done'); }
-      localStorage.setItem(KEY, JSON.stringify([...done]));
+      try { localStorage.setItem(KEY, JSON.stringify([...done])); } catch(e){}
       refresh();
-      // scroll to section
       const sec = document.getElementById(anchor);
       if (sec) sec.scrollIntoView({behavior:'smooth',block:'start'});
     });
@@ -980,18 +841,20 @@ footer a{color:var(--brand)}
   function refresh(){
     const pct = Math.round((done.size / total) * 100);
     fill.style.width = pct + '%';
-    count.textContent = done.size + ' de ' + total + ' leídos';
+    count.textContent = done.size + ' de ' + total;
   }
 
-  // Active TOC link mientras scrolleas
   const obs = new IntersectionObserver(entries => {
     entries.forEach(en => {
       if (en.isIntersecting) {
         const id = en.target.id;
-        tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+        tocLinks.forEach(a => {
+          const href = a.getAttribute('href');
+          a.classList.toggle('active', href === '#' + id);
+        });
       }
     });
-  }, { rootMargin: '-30% 0px -60% 0px' });
+  }, { rootMargin: '-20% 0px -70% 0px' });
   sections.forEach(s => obs.observe(s));
 })();
 </script>

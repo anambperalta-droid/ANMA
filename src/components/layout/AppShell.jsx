@@ -24,7 +24,7 @@ import { flushSync as flushCloudSync } from '../../lib/sync'
 // Code splitting + prefetch caching centralizados en lib/routes.js
 import {
   Historial, Presupuesto, Clientes, Catalogo, Proveedores, Logistica,
-  Mensajes, Insumos, Config, Admin, Importador, MiCuenta, NotFound, Guia,
+  Mensajes, Insumos, Config, Admin, Importador, MiCuenta, NotFound, Guia, Ventas,
 } from '../../lib/routes'
 
 const PRIORITIES = [
@@ -392,8 +392,11 @@ function AppShellInner() {
             <div key={loc.pathname.split('/')[1] || 'root'} className="route-enter">
             <Routes>
               <Route path="/" element={<Guard perm="dashboard.view"><Historial /></Guard>} />
+              <Route path="/pedido" element={<Guard perm="pedido.create"><Presupuesto /></Guard>} />
+              <Route path="/pedido/:id" element={<Guard perm="pedido.edit"><Presupuesto /></Guard>} />
               <Route path="/presupuesto" element={<Guard perm="pedido.create"><Presupuesto /></Guard>} />
               <Route path="/presupuesto/:id" element={<Guard perm="pedido.edit"><Presupuesto /></Guard>} />
+              <Route path="/ventas" element={<Guard perm="pedido.create"><Ventas /></Guard>} />
               <Route path="/clientes" element={<Guard perm="cliente.view"><Clientes /></Guard>} />
               <Route path="/catalogo" element={<Guard perm="catalogo.view"><Catalogo /></Guard>} />
               <Route path="/insumos" element={<Guard perm="insumo.view"><Insumos /></Guard>} />

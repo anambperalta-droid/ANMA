@@ -202,7 +202,7 @@ function PaymentsModal({ budget, onSave, onClose }) {
           {/* Fila 2: Método + Notas */}
           <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: 8, marginBottom: 8 }}>
             <select value={draft.method} onChange={e => setDraft({ ...draft, method: e.target.value })}
-              style={{ padding: '8px 10px', border: '1.5px solid var(--border)', borderRadius: 8, fontSize: 12.5, fontFamily: 'inherit', background: '#fff' }}>
+              style={{ padding: '8px 10px', border: '1.5px solid var(--border)', borderRadius: 8, fontSize: 12.5, fontFamily: 'inherit', background: 'var(--surface)', color: 'var(--txt)' }}>
               {PAY_METHODS.map(m => <option key={m.val} value={m.val}>{m.lbl}</option>)}
             </select>
             <input type="text" value={draft.notes} onChange={e => setDraft({ ...draft, notes: e.target.value })}
@@ -305,7 +305,7 @@ function ReturnModal({ budget, onSave, onClose }) {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {rows.map(r => (
-              <div key={r.productId || r.name} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto', gap: 8, alignItems: 'center', padding: '6px 8px', background: '#fff', border: '1px solid var(--border)', borderRadius: 8 }}>
+              <div key={r.productId || r.name} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto', gap: 8, alignItems: 'center', padding: '6px 8px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8 }}>
                 <div>
                   <div style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--txt1)' }}>{r.name}</div>
                   <div style={{ fontSize: 10.5, color: 'var(--txt4)', marginTop: 2 }}>
@@ -1020,6 +1020,37 @@ export default function Historial() {
     return { cobrosVencidos, cobrosVencidosMonto, entregasHoy, aConfirmar }
   }, [budgets])
 
+  const { proximasEntregas, sinCobrar7d, stockCriticoCount } = useMemo(() => {
+    const today = new Date(); today.setHours(0,0,0,0)
+    const in7 = new Date(today); in7.setDate(in7.getDate() + 7)
+    const proximasEntregas = budgets.filter(b => {
+      if (['lost', 'delivered'].includes(b.status)) return false
+      if (!b.deliveryDate) return false
+      const dd = new Date(b.deliveryDate + 'T00:00')
+      return dd > today && dd <= in7
+    }).sort((a, b) => new Date(a.deliveryDate) - new Date(b.deliveryDate))
+
+    const sinCobrar7d = budgets.filter(b => {
+      if (b.status === 'lost') return false
+      if (b.payStatus === 'paid') return false
+      if (!b.status || b.status === 'draft') return false
+      const ref = b.deliveryDate || b.date
+      if (!ref) return false
+      const days = Math.floor((today - new Date(ref + 'T00:00')) / 86400000)
+      return days >= 7
+    })
+
+    let stockCriticoCount = 0
+    ;(products || []).forEach(p => {
+      if (p.variants?.length) {
+        p.variants.forEach(v => { if ((Number(v.minStock) || 0) > 0 && (Number(v.stock) || 0) <= (Number(v.minStock) || 0)) stockCriticoCount++ })
+      } else if ((p.minStock || 0) > 0 && (p.stock || 0) <= p.minStock) stockCriticoCount++
+    })
+    ;(insumos || []).forEach(i => { if (i.minStock > 0 && (i.stock || 0) <= i.minStock) stockCriticoCount++ })
+
+    return { proximasEntregas, sinCobrar7d, stockCriticoCount }
+  }, [budgets, products, insumos])
+
   // Insight banner
   const insightIcon = deltaBrutas !== null && deltaBrutas > 20 ? 'fa-rocket' : deltaBrutas !== null && deltaBrutas > 0 ? 'fa-chart-line' : deltaBrutas !== null && deltaBrutas < -20 ? 'fa-triangle-exclamation' : deltaBrutas !== null && deltaBrutas < 0 ? 'fa-arrow-trend-down' : convRate !== '—' && parseInt(convRate) >= 60 ? 'fa-star' : periodBudgets.length === 0 ? 'fa-circle-info' : 'fa-chart-bar'
   const insightColor = deltaBrutas !== null && deltaBrutas > 0 ? 'var(--green)' : deltaBrutas !== null && deltaBrutas < 0 ? 'var(--amber)' : 'var(--brand)'
@@ -1195,12 +1226,12 @@ export default function Historial() {
   // Analysis metrics
   const totGain = pagados.reduce((s, b) => s + ganCobrada(b), 0)
 
-  const editB = (id) => nav(`/presupuesto/${id}`)
+  const editB = (id) => nav(`/pedido/${id}`)
 
   // ── Duplicar pedido — abre /presupuesto con los datos precargados ──
   const duplicateBudget = (b) => {
     dbW('presupDuplicate', { source: b, at: Date.now() })
-    nav('/presupuesto')
+    nav('/pedido')
   }
 
   const copyWA = (b) => {
@@ -1663,7 +1694,7 @@ export default function Historial() {
             </div>
           )}
           <button className="btn btn-ghost ph-export-btn" onClick={exportCSV} style={{ height: 34, padding: '0 12px', fontSize: 12 }}><i className="fa fa-download" /><span>Exportar</span></button>
-          <button className="btn btn-primary ph-fab" onClick={() => nav('/presupuesto')} style={{ height: 34, padding: '0 14px', fontSize: 12.5 }}><i className="fa fa-plus" /><span>Nuevo pedido</span></button>
+          <button className="btn btn-primary ph-fab" onClick={() => nav('/pedido')} style={{ height: 34, padding: '0 14px', fontSize: 12.5 }}><i className="fa fa-plus" /><span>Nuevo pedido</span></button>
         </div>
       </div>
 
@@ -1686,13 +1717,13 @@ export default function Historial() {
       {tab === 'resumen' && (
         <>
           {/* ── MODO HOY: 3 acciones inmediatas ── */}
-          {!loading && !filterLoading && (cobrosVencidos.length + entregasHoy.length + aConfirmar.length) > 0 && (
+          {!loading && !filterLoading && (cobrosVencidos.length + entregasHoy.length + aConfirmar.length + proximasEntregas.length + sinCobrar7d.length + stockCriticoCount) > 0 && (
             <div style={{ marginBottom: 22 }}>
               <div className="hoy-importa-header">
                 <span className="hoy-importa-bolt"><i className="fa fa-bolt" /></span>
                 <h3 className="hoy-importa-title">Hoy importa</h3>
                 <span className="hoy-importa-count">
-                  {cobrosVencidos.length + entregasHoy.length + aConfirmar.length}
+                  {cobrosVencidos.length + entregasHoy.length + aConfirmar.length + proximasEntregas.length + sinCobrar7d.length + (stockCriticoCount > 0 ? 1 : 0)}
                 </span>
                 <button onClick={toggleTodayCollapsed}
                   title={todayCollapsed ? 'Mostrar' : 'Ocultar'}
@@ -1753,7 +1784,61 @@ export default function Historial() {
                     <i className="fa fa-arrow-right" style={{ color: 'var(--brand)', fontSize: 12 }} />
                   </div>
                   <div style={{ fontSize: 11.5, color: 'var(--txt2)', lineHeight: 1.4 }}>
-                    Enviados hace 3+ días — recordales antes de que se enfríen
+                    Enviados hace 3+ dias — recordales antes de que se enfrien
+                  </div>
+                </div>
+              )}
+              {proximasEntregas.length > 0 && (
+                <div onClick={() => setTab('lista')}
+                  style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(37,99,235,.06), rgba(37,99,235,.02))', border: '1.5px solid rgba(37,99,235,.25)', borderRadius: 14, padding: '14px 16px', transition: 'transform .15s, box-shadow .2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(37,99,235,.12)' }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 10, background: '#2563EB', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-calendar-day" /></div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: '#2563EB', textTransform: 'uppercase', letterSpacing: '.06em' }}>Proximas entregas</div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{proximasEntregas.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>en 7 dias</span></div>
+                    </div>
+                    <i className="fa fa-arrow-right" style={{ color: '#2563EB', fontSize: 12 }} />
+                  </div>
+                  <div style={{ fontSize: 11.5, color: 'var(--txt2)', lineHeight: 1.4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {proximasEntregas.slice(0, 2).map(b => `${b.contact || b.company || b.num} (${new Date(b.deliveryDate + 'T00:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })})`).join(', ')}{proximasEntregas.length > 2 ? ` +${proximasEntregas.length - 2}` : ''}
+                  </div>
+                </div>
+              )}
+              {sinCobrar7d.length > 0 && (
+                <div onClick={() => { setQuickFilter('sin_cobrar'); setTab('lista') }}
+                  style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(234,88,12,.06), rgba(234,88,12,.02))', border: '1.5px solid rgba(234,88,12,.25)', borderRadius: 14, padding: '14px 16px', transition: 'transform .15s, box-shadow .2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(234,88,12,.12)' }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 10, background: '#EA580C', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-clock-rotate-left" /></div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: '#EA580C', textTransform: 'uppercase', letterSpacing: '.06em' }}>Sin cobrar +7d</div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{sinCobrar7d.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{sinCobrar7d.length === 1 ? 'pedido' : 'pedidos'}</span></div>
+                    </div>
+                    <i className="fa fa-arrow-right" style={{ color: '#EA580C', fontSize: 12 }} />
+                  </div>
+                  <div style={{ fontSize: 11.5, color: 'var(--txt2)', lineHeight: 1.4 }}>
+                    <b style={{ color: '#EA580C', fontVariantNumeric: 'tabular-nums' }}>{money(sinCobrar7d.reduce((s, b) => s + ((b.total || 0) - cobrado(b)), 0))}</b> pendiente hace mas de una semana
+                  </div>
+                </div>
+              )}
+              {stockCriticoCount > 0 && (
+                <div onClick={() => nav('/catalogo')}
+                  style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(239,68,68,.06), rgba(239,68,68,.02))', border: '1.5px solid rgba(239,68,68,.25)', borderRadius: 14, padding: '14px 16px', transition: 'transform .15s, box-shadow .2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(239,68,68,.12)' }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 10, background: '#EF4444', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-boxes-stacked" /></div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: '#EF4444', textTransform: 'uppercase', letterSpacing: '.06em' }}>Stock critico</div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{stockCriticoCount} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{stockCriticoCount === 1 ? 'item' : 'items'}</span></div>
+                    </div>
+                    <i className="fa fa-arrow-right" style={{ color: '#EF4444', fontSize: 12 }} />
+                  </div>
+                  <div style={{ fontSize: 11.5, color: 'var(--txt2)', lineHeight: 1.4 }}>
+                    Productos o insumos en minimo — repone antes de comprometer pedidos
                   </div>
                 </div>
               )}
@@ -1878,6 +1963,52 @@ export default function Historial() {
                     <div style={{ fontSize: 9.5, color: 'var(--txt4)', textAlign: 'center', marginTop: 6 }}>Click en un estado para filtrar la lista</div>
                   </div>
 
+                  {/* Embudo de conversion */}
+                  {periodBudgets.length > 0 && (() => {
+                    const total = periodBudgets.length
+                    const enviados = periodBudgets.filter(b => !['draft'].includes(b.status)).length
+                    const confirmados = periodBudgets.filter(b => ['confirmed', 'inprogress', 'delivered'].includes(b.status)).length
+                    const cobrados = periodBudgets.filter(b => b.payStatus === 'paid').length
+                    const steps = [
+                      { label: 'Enviados', count: enviados, color: '#7C3AED', pct: total > 0 ? Math.round(enviados / total * 100) : 0 },
+                      { label: 'Confirmados', count: confirmados, color: '#059669', pct: enviados > 0 ? Math.round(confirmados / enviados * 100) : 0 },
+                      { label: 'Cobrados', count: cobrados, color: '#2563EB', pct: confirmados > 0 ? Math.round(cobrados / confirmados * 100) : 0 },
+                    ]
+                    return (
+                      <div className="bento-chart" style={{ padding: 14 }}>
+                        <div className="card-header" style={{ marginBottom: 10 }}>
+                          <span className="card-title"><i className="fa fa-filter" style={{ color: 'var(--brand)', marginRight: 7 }} />Embudo de conversion</span>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                          {steps.map((s, i) => {
+                            const widthPct = total > 0 ? Math.max(s.count / total * 100, 12) : 12
+                            return (
+                              <div key={s.label}>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                                  <span style={{ fontSize: 11, fontWeight: 700, color: s.color }}>{s.label}</span>
+                                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', fontVariantNumeric: 'tabular-nums' }}>{s.count} <span style={{ fontWeight: 500, color: 'var(--txt4)' }}>({s.pct}%)</span></span>
+                                </div>
+                                <div style={{ height: 28, borderRadius: 8, background: 'var(--surface2)', overflow: 'hidden', marginBottom: i < steps.length - 1 ? 2 : 0, position: 'relative' }}>
+                                  <div style={{ height: '100%', width: `${widthPct}%`, background: `linear-gradient(90deg, ${s.color}, ${s.color}cc)`, borderRadius: 8, transition: 'width .5s ease', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    {s.count > 0 && <span style={{ fontSize: 10, fontWeight: 800, color: '#fff' }}>{s.count}</span>}
+                                  </div>
+                                </div>
+                                {i < steps.length - 1 && (
+                                  <div style={{ textAlign: 'center', padding: '2px 0' }}>
+                                    <i className="fa fa-chevron-down" style={{ fontSize: 9, color: 'var(--txt4)' }} />
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          })}
+                        </div>
+                        <div style={{ marginTop: 8, textAlign: 'center', fontSize: 10, color: 'var(--txt4)' }}>
+                          Conversion global: <b style={{ color: 'var(--txt2)' }}>{total > 0 ? Math.round(cobrados / total * 100) : 0}%</b> del total cobrado
+                        </div>
+                      </div>
+                    )
+                  })()}
+
                   {/* Carousel: Seguimiento / Alertas de stock */}
                   <div className="bento-chart bento-chart-noflex">
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -1935,7 +2066,7 @@ export default function Historial() {
                       <div style={{ textAlign: 'center', padding: '18px 0' }}>
                         <i className="fa fa-circle-check" style={{ fontSize: 24, display: 'block', color: 'var(--green)', marginBottom: 8 }} />
                         <div style={{ fontWeight: 600, fontSize: 12, color: 'var(--txt3)' }}>Sin pendientes activos</div>
-                        <button className="btn btn-primary btn-sm" style={{ marginTop: 14, fontSize: 12 }} onClick={() => nav('/presupuesto')}>
+                        <button className="btn btn-primary btn-sm" style={{ marginTop: 14, fontSize: 12 }} onClick={() => nav('/pedido')}>
                           <i className="fa fa-plus" /> Nuevo pedido
                         </button>
                       </div>
@@ -2576,7 +2707,7 @@ export default function Historial() {
                 </button>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <button className="btn btn-ghost btn-sm" onClick={() => setPreviewBudget(null)}>Cerrar</button>
-                  <button className="btn btn-primary btn-sm" onClick={() => { setPreviewBudget(null); nav(`/presupuesto/${b.id}`) }}>
+                  <button className="btn btn-primary btn-sm" onClick={() => { setPreviewBudget(null); nav(`/pedido/${b.id}`) }}>
                     <i className="fa fa-pen" /> Editar
                   </button>
                 </div>
@@ -2701,7 +2832,7 @@ export default function Historial() {
                 {cliBudgets.length ? (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {[...cliBudgets].sort((a, b) => b.id - a.id).slice(0, 8).map(b => (
-                      <div key={b.id} onClick={() => { nav(`/presupuesto/${b.id}`); closePreview() }}
+                      <div key={b.id} onClick={() => { nav(`/pedido/${b.id}`); closePreview() }}
                         style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 9, cursor: 'pointer', transition: 'background .15s' }}
                         onMouseEnter={e => e.currentTarget.style.background = 'var(--surface3,var(--border))'}
                         onMouseLeave={e => e.currentTarget.style.background = 'var(--surface2)'}

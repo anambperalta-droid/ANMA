@@ -889,7 +889,7 @@ export default function Proveedores() {
                   <button className="btn btn-ghost btn-sm" onClick={() => sharePortalLink(detailSupplier)} title="Genera un link público con resumen para el proveedor">
                     <i className="fa fa-share-nodes" /> Compartir portal
                   </button>
-                  <button className="btn btn-ghost btn-sm" onClick={() => openEdit(detailSupplier)}><i className="fa fa-pen" /> Editar</button>
+                  <button className="btn btn-ghost btn-sm" onClick={() => { const s = detailSupplier; setDetailSupplier(null); openEdit(s) }}><i className="fa fa-pen" /> Editar</button>
                   <button className="mclose" onClick={() => setDetailSupplier(null)}><i className="fa fa-xmark" /></button>
                 </div>
               </div>
@@ -998,8 +998,14 @@ export default function Proveedores() {
                       {detailSupplier.notes}
                     </div>
                   ) : (
-                    <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '12px 14px', fontSize: 12, color: 'var(--txt4)', fontStyle: 'italic', borderLeft: '3px solid var(--border)' }}>
-                      <i className="fa fa-pencil" style={{ marginRight: 6 }} />Agrega notas sobre condiciones de pago o días de entrega...
+                    <div
+                      onClick={() => { const s = detailSupplier; setDetailSupplier(null); openEdit(s) }}
+                      style={{ background: 'linear-gradient(135deg, rgba(245,158,11,.06), rgba(245,158,11,.02))', borderRadius: 10, padding: '14px 16px', fontSize: 12.5, color: 'var(--txt3)', borderLeft: '3px solid #F59E0B', cursor: 'pointer', transition: 'background .15s' }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(245,158,11,.12), rgba(245,158,11,.05))'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(245,158,11,.06), rgba(245,158,11,.02))'}
+                    >
+                      <i className="fa fa-lightbulb" style={{ marginRight: 6, color: '#F59E0B' }} />
+                      <b style={{ color: 'var(--txt2)' }}>Dato clave:</b> anotá plazos de entrega, condiciones de pago o mínimos de compra. Cuando necesites reponer, ya tenés todo.
                     </div>
                   )}
                 </div>

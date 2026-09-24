@@ -12,7 +12,20 @@ const BUILD_VERSION = new Date().toISOString().slice(0, 16).replace('T', ' ')
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'spa-fallback-app',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url.startsWith('/app') && !req.url.includes('.')) {
+            req.url = '/app/index.html'
+          }
+          next()
+        })
+      },
+    },
+  ],
   define: {
     __BUILD_VERSION__: JSON.stringify(BUILD_VERSION),
   },
