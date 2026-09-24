@@ -283,42 +283,32 @@ input,select,textarea{font-family:inherit}
 .sb-item.tour-highlight i{color:var(--tour-color,#7C3AED)!important;opacity:1!important}
 @keyframes tour-pulse{0%,100%{box-shadow:0 0 0 2px var(--tour-color,#7C3AED),0 0 16px -2px var(--tour-color,#7C3AED)}50%{box-shadow:0 0 0 3px var(--tour-color,#7C3AED),0 0 24px 0 var(--tour-color,#7C3AED)}}
 .sb-foot{padding:8px 12px calc(12px + env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.06)}
-/* ── Sidebar > Ajustes rápidos — barra horizontal COMPACTA (mobile-first).
-   3 íconos 40×40 en fila. Estado activo: fondo NEUTRO igual que los otros
-   botones, solo el ícono se pinta con acento (evita botón fluor amarillo/violeta
-   que se roba toda la atención visual). */
 .sb-quick-bar{
-  display:flex;align-items:center;gap:6px;
-  padding:8px 12px;border-top:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  padding:6px 12px;border-top:1px solid rgba(255,255,255,.06);
 }
 .sb-quick-icon{
-  position:relative;width:40px;height:40px;border-radius:10px;
+  position:relative;width:30px;height:30px;border-radius:7px;
   background:rgba(255,255,255,.08);border:none;
-  color:rgba(255,255,255,.85);font-size:14px;cursor:pointer;
+  color:rgba(255,255,255,.75);font-size:12px;cursor:pointer;
   display:inline-flex;align-items:center;justify-content:center;
   transition:background .15s,color .15s,transform .1s;
-  font-family:inherit;-webkit-tap-highlight-color:transparent;flex:1;
+  font-family:inherit;-webkit-tap-highlight-color:transparent;flex:none;
 }
 .sb-quick-icon:hover{background:rgba(255,255,255,.12);color:#fff}
 .sb-quick-icon:active{transform:scale(.94)}
-/* Estado activo: mismo fondo neutro, ícono en color de marca — jerarquía
-   consistente con los otros dos botones (cerebro/ojo). Sin fluor. */
 .sb-quick-icon.is-on{background:rgba(255,255,255,.1);color:var(--brand-light,#A78BFA);box-shadow:inset 0 0 0 1px rgba(139,92,246,.35)}
-/* Campana dentro del sidebar: neutraliza el fondo rojo/amarillo de is-alert
-   heredado del topbar. Solo el ícono se colorea según pendientes. */
 .sb-quick-bar .sb-quick-icon.notif-bell.is-alert{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7)}
 .sb-quick-bar .sb-quick-icon.notif-bell .notif-badge{border-color:var(--sidebar-bg,#0f172a)}
-/* Con 4 íconos el gap se achica un poco para que respiren bien */
-.sb-quick-bar{gap:5px}
 .sb-quick-icon-badge{
   position:absolute;top:-3px;right:-3px;
-  min-width:16px;height:16px;padding:0 4px;border-radius:99px;
-  background:#DC2626;color:#fff;font-size:9px;font-weight:800;
+  min-width:14px;height:14px;padding:0 3px;border-radius:99px;
+  background:#DC2626;color:#fff;font-size:8px;font-weight:800;
   display:inline-flex;align-items:center;justify-content:center;line-height:1;
   border:1.5px solid var(--sidebar-bg,#0f172a);
 }
-.sidebar.slim .sb-quick-bar{flex-direction:column;padding:6px 4px;gap:4px}
-.sidebar.slim .sb-quick-icon{width:36px;height:36px;flex:none}
+.sidebar.slim .sb-quick-bar{flex-direction:column;padding:6px 4px;gap:3px}
+.sidebar.slim .sb-quick-icon{width:28px;height:28px;flex:none}
 /* User row refactor — perfil (avatar + email/rol) separado de la acción logout.
    Antes ambos eran clickeables y activaban logout: propenso a errores. */
 .sb-user{display:flex;align-items:center;gap:6px;padding:8px 8px;border-radius:10px;background:rgba(255,255,255,.03)}
