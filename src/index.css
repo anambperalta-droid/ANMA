@@ -1000,6 +1000,14 @@ td b{color:var(--txt);font-weight:600}
 .wiz-pane-title{font-size:16px;font-weight:800;color:var(--txt);line-height:1.2}
 .wiz-pane-sub{font-size:11px;color:var(--txt3);margin-top:2px}
 
+/* ── Canal toggle (Público / Mayorista) ── */
+.wiz-canal-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;flex-wrap:wrap}
+.wiz-canal-lbl{font-size:11px;font-weight:700;color:var(--txt4);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:5px}
+.wiz-canal-lbl i{font-size:10px;color:var(--txt4);cursor:help}
+.wiz-canal-toggle{display:inline-flex;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:3px;gap:3px;flex:1 1 auto;min-width:0}
+.wiz-canal-opt{flex:1;padding:9px 14px;font-size:13px;font-weight:600;border-radius:8px;border:none;cursor:pointer;background:transparent;color:var(--txt3);transition:all .15s;white-space:nowrap;font-family:inherit;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:6px;min-height:40px}
+.wiz-canal-opt.active{background:var(--brand);color:#fff;box-shadow:0 1px 4px rgba(124,58,237,.25)}
+.wiz-canal-opt:not(.active):active{background:var(--surface2)}
 .wiz-tip{margin-top:10px;padding:9px 12px;background:var(--brand-xlt);border:1px solid rgba(124,58,237,.18);border-radius:10px;font-size:11px;color:var(--brand);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
 .wiz-tip i{margin-top:2px;flex-shrink:0;opacity:.75}
 .wiz-tip-x{flex-shrink:0;background:none;border:none;color:var(--brand);opacity:.5;cursor:pointer;padding:2px 4px;margin:-2px -4px -2px 0;font-size:13px;line-height:1;font-family:inherit;border-radius:6px;transition:opacity .15s,background .15s}
@@ -1033,11 +1041,21 @@ td b{color:var(--txt);font-weight:600}
 .wiz-nav-mid{font-size:11px;font-weight:600;color:var(--txt3)}
 .wiz-nav .btn{min-width:130px;justify-content:center}
 .wiz-nav .btn:disabled{opacity:.35;cursor:not-allowed}
-/* ── Presupuesto mobile: step indicator (hidden on desktop) ── */
-.wiz-mobile-hd{display:none}
-.wmh-label{font-size:13px;font-weight:600;color:var(--txt2);margin-bottom:6px}
-.wmh-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden}
-.wmh-fill{height:100%;background:var(--brand);border-radius:2px;transition:width .3s ease}
+/* ── Presupuesto mobile: mini stepper (hidden on desktop) ── */
+.wiz-mobile-hd{display:none;flex-direction:column;align-items:center;gap:6px;margin-bottom:12px}
+.wmh-steps{display:flex;align-items:center;width:100%;max-width:320px}
+.wmh-step-wrap{display:flex;align-items:center;flex:1;min-width:0}
+.wmh-step-wrap:first-child{flex:0 0 auto}
+.wmh-conn{flex:1;height:2px;background:var(--border);min-width:16px;transition:background .3s}
+.wmh-conn.done{background:#10B981}
+.wmh-conn.active{background:linear-gradient(90deg,#10B981,var(--brand))}
+.wmh-dot{width:38px;height:38px;border-radius:50%;border:2px solid var(--border);background:var(--surface2);color:var(--txt4);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;flex-shrink:0;transition:all .2s;font-family:inherit;-webkit-tap-highlight-color:transparent;padding:0}
+.wmh-dot.active{border-color:var(--brand);background:var(--brand);color:#fff;box-shadow:0 0 0 4px var(--brand-xlt)}
+.wmh-dot.done{border-color:#10B981;background:#10B981;color:#fff}
+.wmh-dot.done i{font-size:12px}
+.wmh-dot.pending{opacity:.45}
+.wmh-dot:active{transform:scale(.9)}
+.wmh-label{font-size:13px;font-weight:700;color:var(--txt);text-align:center;margin-top:2px}
 @media (max-width:700px){
   .wiz-nav{flex-wrap:wrap}
   .wiz-nav-mid{order:-1;flex-basis:100%;text-align:center}
@@ -2093,7 +2111,7 @@ td b{color:var(--txt);font-weight:600}
   /* ── Presupuesto: checkout flow mobile ── */
   .ph-subtitle{display:none!important}
   .wizard-steps{display:none!important}
-  .wiz-mobile-hd{display:block!important;margin-bottom:8px}
+  .wiz-mobile-hd{display:flex!important;margin-bottom:10px}
   .pres-draft-banner{padding:8px 12px!important;font-size:11px!important;border-radius:8px!important;margin-bottom:8px!important}
   /* ph-pres mobile: header del wizard en 1 SOLA fila — número + Borrador · X.
      display:flex explícito para evitar wrap; ph-left flex:1 con truncate. */

@@ -193,40 +193,55 @@ export default function Ventas() {
         .vt-cell-r{text-align:right;font-variant-numeric:tabular-nums}
         .vt-pay-chip{font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;cursor:pointer;border:none;font-family:inherit;transition:filter .15s;display:inline-flex;align-items:center;gap:4px}
         .vt-pay-chip:hover{filter:brightness(.92)}
-        @media(max-width:700px){
+        .vt-nav-btn{background:none;border:1px solid var(--border);cursor:pointer;color:var(--txt2);font-size:14px;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:background .15s;font-family:inherit;-webkit-tap-highlight-color:transparent;padding:0;flex-shrink:0}
+        .vt-nav-btn:active{background:var(--surface2);transform:scale(.94)}
+        .vt-card-m{display:none}
+        .vt-card-item{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .1s;-webkit-tap-highlight-color:transparent}
+        .vt-card-item:active{background:var(--surface2)}
+        .vt-card-info{flex:1;min-width:0}
+        .vt-card-name{font-size:14px;font-weight:700;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .vt-card-sub{font-size:11px;color:var(--txt3);margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+        .vt-card-right{text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+        .vt-card-amt{font-size:15px;font-weight:800;color:var(--txt);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+        .vt-card-date{font-size:10px;color:var(--txt4);font-variant-numeric:tabular-nums}
+        .vt-mob-total{display:none}
+        @media(max-width:900px){
           .vt-row,.vt-hdr{grid-template-columns:1fr .6fr .5fr .3fr;font-size:12px}
           .vt-hide-m{display:none}
         }
-        @media(max-width:480px){
-          .vt-row,.vt-hdr{grid-template-columns:1fr .7fr .35fr;font-size:11px;padding:10px 12px}
-          .vt-hide-s{display:none}
-          .vt-pay-chip{font-size:9px;padding:3px 7px}
-        }
-        .vt-card-m{display:none}
-        @media(max-width:480px){
-          .ventas-page{padding:14px 14px 80px!important}
+        @media(max-width:600px){
+          .ventas-page{padding:14px 12px 90px!important}
           .vt-header h1{font-size:18px!important}
           .vt-subtitle{display:none}
-          .vt-new-btn{padding:8px 14px!important;font-size:12px!important;width:100%!important;justify-content:center}
+          .vt-new-btn{padding:10px 16px!important;font-size:13px!important;width:100%!important;justify-content:center;min-height:44px!important;border-radius:12px!important}
           .vt-kpi-grid{grid-template-columns:1fr 1fr!important;gap:8px!important}
-          .vt-kpi-card{padding:10px 12px!important}
-          .vt-kpi-val{font-size:15px!important}
-          .vt-month-nav{padding:8px 12px!important;margin-bottom:12px!important}
-          .vt-month-label{font-size:14px!important}
+          .vt-kpi-card{padding:10px 12px!important;border-radius:10px!important}
+          .vt-kpi-val{font-size:16px!important}
+          .vt-month-nav{padding:10px 14px!important;margin-bottom:12px!important;border-radius:12px!important}
+          .vt-month-label{font-size:15px!important}
+          .vt-row:not(.vt-total){display:none!important}
+          .vt-hdr{display:none!important}
+          .vt-card-m{display:block!important}
+          .vt-total{display:none!important}
+          .vt-mob-total{display:flex!important;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface2);border-radius:0 0 12px 12px}
+          .vt-pay-chip{min-height:28px;padding:4px 10px;font-size:10px}
+          .sd-panel{width:100vw!important;border-left:none!important}
+          .sd-row{flex-direction:column!important}
+          .sd-header{padding:16px 16px 14px!important}
+          .sd-body{padding:16px!important}
+          .sd-footer{padding:14px 16px!important}
+          .sd-inp{min-height:44px!important}
+          .sd-chip{min-height:40px!important;padding:8px 14px!important;font-size:12px!important}
+          .sd-canal{min-height:36px!important;padding:7px 11px!important;font-size:11px!important}
+          .sd-toggle{min-height:48px!important}
+          .sd-btn{min-height:48px!important;font-size:14px!important;border-radius:12px!important}
         }
-        @media(max-width:420px){
-          .vt-row:not(.vt-hdr):not(.vt-total){display:none}
-          .vt-hdr{display:none}
-          .vt-card-m{display:block}
-          .vt-card-item{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .1s}
-          .vt-card-item:active{background:var(--surface2)}
-          .vt-card-info{flex:1;min-width:0}
-          .vt-card-name{font-size:13px;font-weight:700;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-          .vt-card-sub{font-size:11px;color:var(--txt3);margin-top:2px;display:flex;align-items:center;gap:6px}
-          .vt-card-right{text-align:right;flex-shrink:0}
-          .vt-card-amt{font-size:14px;font-weight:800;color:var(--txt);font-variant-numeric:tabular-nums}
-          .vt-total{display:flex!important;justify-content:space-between;padding:10px 14px}
-          .vt-total .vt-hide-s,.vt-total .vt-hide-m{display:none}
+        @media(max-width:380px){
+          .vt-kpi-grid{grid-template-columns:1fr 1fr!important;gap:6px!important}
+          .vt-kpi-card{padding:8px 10px!important}
+          .vt-kpi-val{font-size:14px!important}
+          .vt-card-name{font-size:13px!important}
+          .vt-card-amt{font-size:14px!important}
         }
       `}</style>
 
@@ -249,12 +264,12 @@ export default function Ventas() {
 
       {/* NAV MESES */}
       <div className="vt-month-nav" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, padding: '10px 16px', marginBottom: 16 }}>
-        <button onClick={prevMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--txt2)', fontSize: 14, padding: '4px 8px' }}><i className="fa fa-chevron-left" /></button>
-        <div style={{ textAlign: 'center' }}>
+        <button className="vt-nav-btn" onClick={prevMonth}><i className="fa fa-chevron-left" /></button>
+        <div style={{ textAlign: 'center', flex: 1 }}>
           <div className="vt-month-label" style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.3px' }}>{MESES[month]} {year}</div>
           <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>{totals.count} {totals.count === 1 ? 'venta' : 'ventas'}</div>
         </div>
-        <button onClick={nextMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--txt2)', fontSize: 14, padding: '4px 8px' }}><i className="fa fa-chevron-right" /></button>
+        <button className="vt-nav-btn" onClick={nextMonth}><i className="fa fa-chevron-right" /></button>
       </div>
 
       {/* RESUMEN */}
@@ -307,16 +322,18 @@ export default function Ventas() {
           )
         })}
 
-        {/* Cards mobile (solo <420px) */}
+        {/* Cards mobile */}
         <div className="vt-card-m">
           {monthBudgets.map(b => {
             const pi = payInfo(b)
+            const dateStr = b.date ? `${b.date.slice(8, 10)}/${b.date.slice(5, 7)}` : ''
             return (
               <div key={b.id} className="vt-card-item" onClick={() => nav(`/pedido/${b.id}`)}>
                 <div className="vt-card-info">
                   <div className="vt-card-name">{b.company || b.contact || '---'}</div>
                   <div className="vt-card-sub">
                     <span>{b.items?.[0]?.name || '---'}</span>
+                    {b.items?.[0]?.qty > 1 && <span>x{b.items[0].qty}</span>}
                     <span onClick={e => { e.stopPropagation(); const nx = b.payStatus === 'pending' ? 'partial' : b.payStatus === 'partial' ? 'paid' : 'pending'; updatePayStatus(b.id, nx) }}>
                       <span className="vt-pay-chip" style={{ background: pi.bg, color: pi.color }}><i className={`fa ${pi.icon}`} style={{ fontSize: 8 }} /> {pi.label}</span>
                     </span>
@@ -324,12 +341,14 @@ export default function Ventas() {
                 </div>
                 <div className="vt-card-right">
                   <div className="vt-card-amt">{hidden ? '***' : fmt(b.total || 0)}</div>
+                  {dateStr && <div className="vt-card-date">{dateStr}</div>}
                 </div>
               </div>
             )
           })}
         </div>
 
+        {/* Total — desktop grid row */}
         {monthBudgets.length > 0 && (
           <div className="vt-row vt-total" style={{ background: 'var(--surface2)', fontWeight: 800, borderBottom: 'none', borderRadius: '0 0 12px 12px' }}>
             <span style={{ color: 'var(--txt3)', fontSize: 11, textTransform: 'uppercase' }}>Total</span>
@@ -337,6 +356,13 @@ export default function Ventas() {
             <span className="vt-cell-r" style={{ color: 'var(--txt)', fontSize: 15 }}>{hidden ? '***' : fmt(totals.facturado)}</span>
             <span className="vt-cell-r vt-hide-m" style={{ color: 'var(--txt3)', fontSize: 12 }}>{hidden ? '***' : fmt(totals.iva)}</span>
             <span />
+          </div>
+        )}
+        {/* Total — mobile card view */}
+        {monthBudgets.length > 0 && (
+          <div className="vt-mob-total">
+            <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.04em' }}>Total del mes</span>
+            <span style={{ fontSize: 17, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em' }}>{hidden ? '***' : fmt(totals.facturado)}</span>
           </div>
         )}
       </div>
@@ -662,25 +688,23 @@ function PendientesCobro({ budgets, hidden, nav }) {
   const totalPend = pendientes.reduce((s, b) => { const t = Number(b.total) || 0; const d = Number(b.depositAmt) || 0; return s + (b.payStatus === 'partial' ? t - d : t) }, 0)
 
   return (
-    <div style={{ marginTop: 20, background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
-      <div style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <i className="fa fa-clock" style={{ color: '#b45309', fontSize: 13 }} />
-          <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.2px' }}>Pendientes de cobro</span>
-          <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: '#fef3c7', color: '#92400e' }}>{pendientes.length}</span>
+    <div style={{ marginTop: 16, background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
+      <div style={{ padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', gap: 8, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+          <i className="fa fa-clock" style={{ color: '#b45309', fontSize: 13, flexShrink: 0 }} />
+          <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.2px', whiteSpace: 'nowrap' }}>Pendientes de cobro</span>
+          <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: '#fef3c7', color: '#92400e', flexShrink: 0 }}>{pendientes.length}</span>
         </div>
-        <span style={{ fontSize: 14, fontWeight: 800, color: '#b45309', fontVariantNumeric: 'tabular-nums' }}>{hidden ? '***' : fmt(totalPend)}</span>
+        <span style={{ fontSize: 14, fontWeight: 800, color: '#b45309', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>{hidden ? '***' : fmt(totalPend)}</span>
       </div>
       {pendientes.slice(0, 8).map(b => {
         const days = Math.floor((Date.now() - (b.updatedAt || Date.now())) / 86400000)
         const owed = b.payStatus === 'partial' ? (Number(b.total) || 0) - (Number(b.depositAmt) || 0) : Number(b.total) || 0
         return (
-          <div key={b.id} onClick={() => nav(`/pedido/${b.id}`)} style={{ padding: '10px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', cursor: 'pointer', transition: 'background .1s', gap: 8 }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}>
+          <div key={b.id} onClick={() => nav(`/pedido/${b.id}`)} style={{ padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', cursor: 'pointer', transition: 'background .1s', gap: 10, minHeight: 48, WebkitTapHighlightColor: 'transparent' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.company || b.contact || '---'}</div>
-              <div style={{ fontSize: 11, color: 'var(--txt3)' }}>
+              <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>
                 {b.payStatus === 'partial' ? 'Senado' : 'Pendiente'}
                 {days > 0 && <> · hace {days}d</>}
                 {days > 30 && <span style={{ color: '#DC2626', fontWeight: 700 }}> — revisar</span>}
@@ -690,7 +714,7 @@ function PendientesCobro({ budgets, hidden, nav }) {
           </div>
         )
       })}
-      {pendientes.length > 8 && <div style={{ padding: '10px 18px', textAlign: 'center', fontSize: 12, color: 'var(--txt3)' }}>y {pendientes.length - 8} mas...</div>}
+      {pendientes.length > 8 && <div style={{ padding: '10px 14px', textAlign: 'center', fontSize: 12, color: 'var(--txt3)' }}>y {pendientes.length - 8} mas...</div>}
     </div>
   )
 }

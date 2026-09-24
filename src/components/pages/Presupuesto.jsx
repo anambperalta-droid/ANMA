@@ -1453,10 +1453,19 @@ export default function Presupuesto() {
       </div>
 
 
-      {/* MOBILE STEP INDICATOR */}
+      {/* MOBILE STEP INDICATOR — mini stepper con iconos tappables */}
       <div className="wiz-mobile-hd">
-        <div className="wmh-label">Paso {currentStep} de {WIZARD_STEPS.length} &nbsp;·&nbsp; <b>{WIZARD_STEPS[currentStep - 1]?.label}</b></div>
-        <div className="wmh-bar"><div className="wmh-fill" style={{ width: `${Math.round((currentStep / WIZARD_STEPS.length) * 100)}%` }} /></div>
+        <div className="wmh-steps">
+          {WIZARD_STEPS.map((s, idx) => (
+            <div key={s.id} className="wmh-step-wrap">
+              {idx > 0 && <div className={`wmh-conn${currentStep > s.id ? ' done' : currentStep === s.id ? ' active' : ''}`} />}
+              <button type="button" className={`wmh-dot${currentStep === s.id ? ' active' : currentStep > s.id ? ' done' : ' pending'}`} onClick={() => goStep(s.id)} title={s.label}>
+                {currentStep > s.id ? <i className="fa fa-check" /> : <i className={`fa ${s.icon}`} />}
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="wmh-label">{WIZARD_STEPS[currentStep - 1]?.label}</div>
       </div>
 
       {/* STEPPER */}
@@ -1521,12 +1530,12 @@ export default function Presupuesto() {
               <>
                 <PaneHeader icon="fa-box-open" title="Paso 2 · Productos" subtitle="Agregá los ítems que incluye el pedido" />
                 {_tipoVenta === 'ambos' && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', marginBottom: 10, background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, flexWrap: 'wrap' }}>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: 0.3, display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <div className="wiz-canal-bar">
+                    <div className="wiz-canal-lbl">
                       Canal
-                      <i className="fa fa-circle-info" style={{ fontSize: 10, color: 'var(--txt4)', cursor: 'help' }} title="Actualiza los precios del pedido según la lista del canal (Público o Mayorista). Los precios editados a mano se respetan." />
+                      <i className="fa fa-circle-info" title="Actualiza los precios del pedido según la lista del canal (Público o Mayorista). Los precios editados a mano se respetan." />
                     </div>
-                    <div style={{ display: 'inline-flex', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, padding: 2, gap: 2, flex: '1 1 auto', minWidth: 0 }}>
+                    <div className="wiz-canal-toggle">
                       {[
                         { val: 'minorista', label: 'Público', icon: 'fa-bag-shopping' },
                         { val: 'mayorista', label: 'Mayorista', icon: 'fa-boxes-stacked' },
@@ -1536,14 +1545,9 @@ export default function Presupuesto() {
                           <button
                             key={opt.val}
                             type="button"
+                            className={`wiz-canal-opt${active ? ' active' : ''}`}
                             onClick={() => setCanalAndReprice(opt.val)}
-                            style={{
-                              flex: 1, padding: '7px 12px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: 'none', cursor: 'pointer',
-                              background: active ? 'var(--brand)' : 'transparent',
-                              color: active ? '#fff' : 'var(--txt3)',
-                              transition: 'all .15s', whiteSpace: 'nowrap',
-                            }}
-                          ><i className={`fa ${opt.icon}`} style={{ marginRight: 5 }} />{opt.label}</button>
+                          ><i className={`fa ${opt.icon}`} />{opt.label}</button>
                         )
                       })}
                     </div>
@@ -2178,7 +2182,7 @@ export default function Presupuesto() {
               <div className="wiz-nav-mid">Paso {currentStep} de {WIZARD_STEPS.length}</div>
               {currentStep < WIZARD_STEPS.length ? (
                 <button className="btn btn-primary" onClick={goNext}>
-                  Siguiente <i className="fa fa-arrow-right" />
+                  {WIZARD_STEPS[currentStep]?.label || 'Siguiente'} <i className="fa fa-arrow-right" />
                 </button>
               ) : (
                 <button className="btn btn-primary" onClick={handleSave}>
