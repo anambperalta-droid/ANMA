@@ -42,7 +42,6 @@ const NAV_GROUPS = [
     items: [
       { path: '/logistica', icon: 'fa-truck-fast', label: 'Logística', perm: 'logistica.view' },
       { path: '/mensajes', icon: 'fa-brands fa-whatsapp', label: 'Mensajes WA', perm: 'mensajes.view' },
-      { path: '/guia', icon: 'fa-book-open', label: 'Guía' },
     ],
   },
   {
@@ -210,6 +209,11 @@ export default function Sidebar({ open, onClose, collapsed }) {
           aria-label={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
           aria-pressed={theme === 'dark'}>
           <i className={`fa ${theme === 'dark' ? 'fa-sun' : 'fa-moon'}`} />
+        </button>
+        <button className="sb-quick-icon" onClick={() => window.open('/recursos/guia.html', '_blank')}
+          title="Guía de uso"
+          aria-label="Guía de uso">
+          <i className="fa fa-circle-question" />
         </button>
       </div>
       <div className="sb-foot">
