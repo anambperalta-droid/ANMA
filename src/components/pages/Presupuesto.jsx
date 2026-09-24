@@ -1465,7 +1465,7 @@ export default function Presupuesto() {
             </div>
           ))}
         </div>
-        <div className="wmh-label">{WIZARD_STEPS[currentStep - 1]?.label}</div>
+        <div className="wmh-label">{WIZARD_STEPS[currentStep - 1]?.label} <span className="wmh-desc">· {WIZARD_STEPS[currentStep - 1]?.desc}</span></div>
       </div>
 
       {/* STEPPER */}

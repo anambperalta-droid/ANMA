@@ -1056,6 +1056,7 @@ td b{color:var(--txt);font-weight:600}
 .wmh-dot.pending{opacity:.45}
 .wmh-dot:active{transform:scale(.9)}
 .wmh-label{font-size:13px;font-weight:700;color:var(--txt);text-align:center;margin-top:2px}
+.wmh-desc{font-weight:500;color:var(--txt3);font-size:11px}
 @media (max-width:700px){
   .wiz-nav{flex-wrap:wrap}
   .wiz-nav-mid{order:-1;flex-basis:100%;text-align:center}
@@ -2122,11 +2123,8 @@ td b{color:var(--txt);font-weight:600}
   .ph-pres .ph-right .btn{width:34px!important;height:34px!important;min-height:34px!important;padding:0!important;border-radius:50%!important;border:1px solid var(--border)!important;flex-direction:row!important;font-size:13px!important;background:var(--surface2)!important;color:var(--txt3)!important}
   .ph-pres .ph-right .btn:active{background:#FEE2E2!important;color:#DC2626!important}
   .desc-txt{display:none!important}
-  /* PaneHeader compacto */
-  .wiz-pane-head{padding:6px 0 8px!important;margin-bottom:4px!important}
-  .wiz-pane-ico{width:28px!important;height:28px!important;font-size:13px!important}
-  .wiz-pane-title{font-size:13px!important;line-height:1.2!important}
-  .wiz-pane-sub{font-size:11px!important}
+  /* PaneHeader: oculto en mobile — el mini stepper ya muestra paso + nombre */
+  .wiz-pane-head{display:none!important}
   .calc-panel{display:none!important}
   /* Inputs/selects: full-width (excl. checkbox)
      padding-bottom 260px: reserva para las 3 barras flotantes apiladas
