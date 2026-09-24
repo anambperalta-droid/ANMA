@@ -214,7 +214,7 @@ export default function Ventas() {
         @media(max-width:600px){
           .ventas-page{padding:12px 0 90px!important}
           .vt-header{padding:0 14px!important}
-          .vt-header h1{font-size:18px!important}
+          .vt-header h1{display:none!important}
           .vt-subtitle{display:none}
           .vt-new-btn{padding:10px 16px!important;font-size:13px!important;width:100%!important;justify-content:center;min-height:44px!important;border-radius:12px!important}
           .vt-kpi-grid{padding:0 14px!important;grid-template-columns:1fr 1fr!important;gap:6px!important}
@@ -229,16 +229,6 @@ export default function Ventas() {
           .vt-total{display:none!important}
           .vt-mob-total{display:flex!important;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface2);border-radius:0 0 12px 12px}
           .vt-pay-chip{min-height:28px;padding:4px 10px;font-size:10px}
-          .sd-panel{width:100vw!important;border-left:none!important}
-          .sd-row{flex-direction:column!important}
-          .sd-header{padding:16px 16px 14px!important}
-          .sd-body{padding:16px!important}
-          .sd-footer{padding:14px 16px!important}
-          .sd-inp{min-height:44px!important}
-          .sd-chip{min-height:40px!important;padding:8px 14px!important;font-size:12px!important}
-          .sd-canal{min-height:36px!important;padding:7px 11px!important;font-size:11px!important}
-          .sd-toggle{min-height:48px!important}
-          .sd-btn{min-height:48px!important;font-size:14px!important;border-radius:12px!important}
           .vt-insight{margin-left:14px!important;margin-right:14px!important;border-radius:12px!important}
           .vt-pend-wrap{margin-left:14px!important;margin-right:14px!important;border-radius:12px!important}
         }
@@ -465,20 +455,33 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
         .sd-breakdown i{color:var(--brand);font-size:10px}
         .sd-saved-flash{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border-radius:10px;background:rgba(5,150,105,.1);border:1.5px solid rgba(5,150,105,.25);color:#059669;font-size:12px;font-weight:700;animation:sd-pop .3s cubic-bezier(.17,.67,.25,1.3)}
         @keyframes sd-pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+        @keyframes sd-sheet-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
         @media(max-width:640px){
-          .sd-panel{width:100vw;border-left:none;border-radius:0}
-          .sd-header{padding:14px 16px 12px}
-          .sd-body{padding:16px 16px}
-          .sd-footer{padding:12px 16px max(14px,env(safe-area-inset-bottom))}
-          .sd-row{flex-direction:column;gap:0}
-          .sd-section{margin-bottom:16px;padding:14px;background:var(--surface2);border-radius:12px;border:1px solid var(--border)}
-          .sd-section-title{margin:-14px -14px 12px;padding:10px 14px;background:var(--bg);border-radius:12px 12px 0 0;border-bottom:1px solid var(--border);margin-bottom:12px;font-size:11px;font-weight:800;color:var(--txt2)}
-          .sd-section-title i{color:var(--brand);opacity:1}
-          .sd-inp{min-height:46px;font-size:15px;border-radius:12px}
-          .sd-chip{padding:9px 14px;font-size:12px;min-height:40px}
-          .sd-canal{padding:8px 12px;font-size:11px;min-height:36px}
-          .sd-btn{min-height:48px;font-size:14px;border-radius:12px}
-          .sd-toggle{padding:12px 14px;border-radius:12px}
+          .sd-panel{top:auto;left:0;right:0;bottom:0;width:100vw;max-height:92vh;border-left:none;border-radius:20px 20px 0 0;animation:sd-sheet-up .28s cubic-bezier(.4,0,.2,1);box-shadow:0 -8px 40px rgba(0,0,0,.18)}
+          .sd-panel::before{content:'';display:block;width:36px;height:4px;border-radius:4px;background:var(--border);margin:10px auto 0;flex-shrink:0}
+          .sd-header{padding:6px 16px 8px}
+          .sd-body{padding:4px 16px 16px}
+          .sd-footer{padding:10px 16px max(12px,env(safe-area-inset-bottom))}
+          .sd-section{margin-bottom:6px;padding:0;background:none;border:none;border-radius:0}
+          .sd-section-title{display:none}
+          .sd-fg{margin-bottom:6px}
+          .sd-lbl{font-size:10px;margin-bottom:2px;color:var(--txt4)}
+          .sd-row{gap:8px}
+          .sd-inp{min-height:42px;font-size:14px;border-radius:10px;padding:9px 12px}
+          .sd-inp-icon .sd-inp{padding-left:34px}
+          .sd-inp-icon i{left:12px;font-size:12px}
+          .sd-chip{padding:7px 11px;font-size:11px;min-height:34px;border-radius:8px}
+          .sd-canal{padding:5px 9px;font-size:10px;min-height:28px;border-radius:6px}
+          .sd-btn{min-height:44px;font-size:13px;border-radius:10px}
+          .sd-toggle{padding:8px 12px;border-radius:10px;min-height:38px}
+          .sd-switch{width:34px;height:20px}
+          .sd-switch::after{width:16px;height:16px}
+          .sd-switch-on::after{transform:translateX(14px)}
+          .sd-breakdown{margin-top:3px;padding:4px 8px;font-size:10px}
+          .sd-nota-link{font-size:11px}
+          .sd-sug{max-height:150px}
+          .sd-sug-item{padding:8px 12px;font-size:12px}
+          .sd-badge{padding:3px 8px;font-size:10px}
         }
       `}</style>
 
