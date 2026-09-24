@@ -183,7 +183,7 @@ export default function Ventas() {
   const payInfo = (b) => PAY_OPTS.find(o => o.value === b.payStatus) || PAY_OPTS[0]
 
   return (
-    <div style={{ padding: '20px 20px 80px', maxWidth: 1000, margin: '0 auto' }}>
+    <div className="ventas-page" style={{ padding: '20px 20px 80px', maxWidth: 1000, margin: '0 auto' }}>
       <style>{`
         .vt-row{display:grid;grid-template-columns:1fr .7fr .4fr .7fr .5fr .35fr;gap:0;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;transition:background .1s}
         .vt-row:hover{background:var(--surface2)}
@@ -197,15 +197,46 @@ export default function Ventas() {
           .vt-row,.vt-hdr{grid-template-columns:1fr .6fr .5fr .3fr;font-size:12px}
           .vt-hide-m{display:none}
         }
+        @media(max-width:480px){
+          .vt-row,.vt-hdr{grid-template-columns:1fr .7fr .35fr;font-size:11px;padding:10px 12px}
+          .vt-hide-s{display:none}
+          .vt-pay-chip{font-size:9px;padding:3px 7px}
+        }
+        .vt-card-m{display:none}
+        @media(max-width:480px){
+          .ventas-page{padding:14px 14px 80px!important}
+          .vt-header h1{font-size:18px!important}
+          .vt-subtitle{display:none}
+          .vt-new-btn{padding:8px 14px!important;font-size:12px!important;width:100%!important;justify-content:center}
+          .vt-kpi-grid{grid-template-columns:1fr 1fr!important;gap:8px!important}
+          .vt-kpi-card{padding:10px 12px!important}
+          .vt-kpi-val{font-size:15px!important}
+          .vt-month-nav{padding:8px 12px!important;margin-bottom:12px!important}
+          .vt-month-label{font-size:14px!important}
+        }
+        @media(max-width:420px){
+          .vt-row:not(.vt-hdr):not(.vt-total){display:none}
+          .vt-hdr{display:none}
+          .vt-card-m{display:block}
+          .vt-card-item{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .1s}
+          .vt-card-item:active{background:var(--surface2)}
+          .vt-card-info{flex:1;min-width:0}
+          .vt-card-name{font-size:13px;font-weight:700;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+          .vt-card-sub{font-size:11px;color:var(--txt3);margin-top:2px;display:flex;align-items:center;gap:6px}
+          .vt-card-right{text-align:right;flex-shrink:0}
+          .vt-card-amt{font-size:14px;font-weight:800;color:var(--txt);font-variant-numeric:tabular-nums}
+          .vt-total{display:flex!important;justify-content:space-between;padding:10px 14px}
+          .vt-total .vt-hide-s,.vt-total .vt-hide-m{display:none}
+        }
       `}</style>
 
       {/* HEADER */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18, flexWrap: 'wrap', gap: 10 }}>
+      <div className="vt-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18, flexWrap: 'wrap', gap: 10 }}>
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 900, color: 'var(--txt)', margin: 0, letterSpacing: '-.4px' }}>Registro de ventas</h1>
-          <p style={{ fontSize: 12, color: 'var(--txt3)', margin: '2px 0 0' }}>Carga y seguimiento mensual</p>
+          <p className="vt-subtitle" style={{ fontSize: 12, color: 'var(--txt3)', margin: '2px 0 0' }}>Carga y seguimiento mensual</p>
         </div>
-        <button onClick={openDrawer} style={{
+        <button className="vt-new-btn" onClick={openDrawer} style={{
           padding: '10px 18px', borderRadius: 10, border: 'none',
           background: 'var(--grad)', color: '#fff', fontSize: 13, fontWeight: 700,
           cursor: 'pointer', fontFamily: 'inherit',
@@ -217,29 +248,29 @@ export default function Ventas() {
       </div>
 
       {/* NAV MESES */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, padding: '10px 16px', marginBottom: 16 }}>
+      <div className="vt-month-nav" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, padding: '10px 16px', marginBottom: 16 }}>
         <button onClick={prevMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--txt2)', fontSize: 14, padding: '4px 8px' }}><i className="fa fa-chevron-left" /></button>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.3px' }}>{MESES[month]} {year}</div>
+          <div className="vt-month-label" style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.3px' }}>{MESES[month]} {year}</div>
           <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1 }}>{totals.count} {totals.count === 1 ? 'venta' : 'ventas'}</div>
         </div>
         <button onClick={nextMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--txt2)', fontSize: 14, padding: '4px 8px' }}><i className="fa fa-chevron-right" /></button>
       </div>
 
       {/* RESUMEN */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10, marginBottom: 18 }}>
+      <div className="vt-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10, marginBottom: 18 }}>
         {[
           { label: 'Facturado', value: totals.facturado, icon: 'fa-file-invoice-dollar', color: '#7C3AED' },
           { label: 'IVA', value: totals.iva, icon: 'fa-percent', color: '#6366f1' },
           { label: 'Cobrado', value: totals.cobrado, icon: 'fa-circle-check', color: '#15803d' },
           { label: 'Pendiente', value: totals.pendiente, icon: 'fa-clock', color: '#b45309' },
         ].map(c => (
-          <div key={c.label} style={{ background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 12, padding: '14px 16px' }}>
+          <div key={c.label} className="vt-kpi-card" style={{ background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 12, padding: '14px 16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 6 }}>
               <i className={`fa ${c.icon}`} style={{ color: c.color, fontSize: 12 }} />
               <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.05em' }}>{c.label}</span>
             </div>
-            <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums' }}>{hidden ? '***' : fmt(c.value)}</div>
+            <div className="vt-kpi-val" style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums' }}>{hidden ? '***' : fmt(c.value)}</div>
           </div>
         ))}
       </div>
@@ -265,8 +296,8 @@ export default function Ventas() {
           return (
             <div key={b.id} className="vt-row" style={{ cursor: 'pointer' }} onClick={() => nav(`/pedido/${b.id}`)}>
               <span className="vt-cell" style={{ fontWeight: 600, color: 'var(--txt)' }}>{b.company || b.contact || '---'}</span>
-              <span className="vt-cell" style={{ color: 'var(--txt2)' }}>{b.items?.[0]?.name || '---'}</span>
-              <span className="vt-cell vt-cell-r" style={{ color: 'var(--txt3)' }}>{b.items?.[0]?.qty || 1}</span>
+              <span className="vt-cell vt-hide-s" style={{ color: 'var(--txt2)' }}>{b.items?.[0]?.name || '---'}</span>
+              <span className="vt-cell vt-cell-r vt-hide-s" style={{ color: 'var(--txt3)' }}>{b.items?.[0]?.qty || 1}</span>
               <span className="vt-cell vt-cell-r" style={{ fontWeight: 700, color: 'var(--txt)' }}>{hidden ? '***' : fmt(b.total || 0)}</span>
               <span className="vt-cell vt-cell-r vt-hide-m" style={{ color: 'var(--txt3)', fontSize: 12 }}>{hidden ? '***' : (b._quickIva ? fmt(b._quickIva) : '---')}</span>
               <span style={{ textAlign: 'center' }} onClick={e => { e.stopPropagation(); const nx = b.payStatus === 'pending' ? 'partial' : b.payStatus === 'partial' ? 'paid' : 'pending'; updatePayStatus(b.id, nx) }}>
@@ -276,10 +307,33 @@ export default function Ventas() {
           )
         })}
 
+        {/* Cards mobile (solo <420px) */}
+        <div className="vt-card-m">
+          {monthBudgets.map(b => {
+            const pi = payInfo(b)
+            return (
+              <div key={b.id} className="vt-card-item" onClick={() => nav(`/pedido/${b.id}`)}>
+                <div className="vt-card-info">
+                  <div className="vt-card-name">{b.company || b.contact || '---'}</div>
+                  <div className="vt-card-sub">
+                    <span>{b.items?.[0]?.name || '---'}</span>
+                    <span onClick={e => { e.stopPropagation(); const nx = b.payStatus === 'pending' ? 'partial' : b.payStatus === 'partial' ? 'paid' : 'pending'; updatePayStatus(b.id, nx) }}>
+                      <span className="vt-pay-chip" style={{ background: pi.bg, color: pi.color }}><i className={`fa ${pi.icon}`} style={{ fontSize: 8 }} /> {pi.label}</span>
+                    </span>
+                  </div>
+                </div>
+                <div className="vt-card-right">
+                  <div className="vt-card-amt">{hidden ? '***' : fmt(b.total || 0)}</div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
         {monthBudgets.length > 0 && (
-          <div className="vt-row" style={{ background: 'var(--surface2)', fontWeight: 800, borderBottom: 'none', borderRadius: '0 0 12px 12px' }}>
+          <div className="vt-row vt-total" style={{ background: 'var(--surface2)', fontWeight: 800, borderBottom: 'none', borderRadius: '0 0 12px 12px' }}>
             <span style={{ color: 'var(--txt3)', fontSize: 11, textTransform: 'uppercase' }}>Total</span>
-            <span /><span />
+            <span className="vt-hide-s" /><span className="vt-hide-s" />
             <span className="vt-cell-r" style={{ color: 'var(--txt)', fontSize: 15 }}>{hidden ? '***' : fmt(totals.facturado)}</span>
             <span className="vt-cell-r vt-hide-m" style={{ color: 'var(--txt3)', fontSize: 12 }}>{hidden ? '***' : fmt(totals.iva)}</span>
             <span />
@@ -584,13 +638,13 @@ function InsightCard({ budgets, month, hidden }) {
   const avgTicket = totalFact / budgets.length
 
   return (
-    <div style={{ marginTop: 16, padding: '16px 20px', background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, display: 'flex', alignItems: 'center', gap: 14 }}>
-      <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(124,58,237,.1)', color: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>
+    <div style={{ marginTop: 16, padding: '14px 16px', background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+      <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(124,58,237,.1)', color: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, flexShrink: 0 }}>
         <i className="fa fa-lightbulb" />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 3 }}>Inteligencia de {month}</div>
-        <div style={{ fontSize: 13, color: 'var(--txt2)', lineHeight: 1.5 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 3 }}>Inteligencia de {month}</div>
+        <div style={{ fontSize: 12, color: 'var(--txt2)', lineHeight: 1.5 }}>
           {topClient && <><strong>{topClient[0]}</strong> es tu cliente mas activo ({topClient[1]} {topClient[1] === 1 ? 'venta' : 'ventas'}).</>}
           {' '}Ticket promedio: <strong>{hidden ? '***' : fmt(avgTicket)}</strong>.
         </div>

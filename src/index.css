@@ -1257,9 +1257,11 @@ td b{color:var(--txt);font-weight:600}
   .tbl-card.logistica-tbl table{min-width:900px}
   /* Resumen preview table: override inline maxWidth */
   .resumen-tbl{max-width:100%!important;width:100%!important;overflow-x:auto!important}
-  /* Chart bento: stack vertically */
+  /* Chart bento: stack vertically, derecha (donut+embudo) primero */
   .bento-chart-inner{flex-direction:column!important}
   .bento-chart-inner > *{flex:0 0 auto!important;min-width:0!important;width:100%!important}
+  .dash-col-right{order:-1!important}
+  .dash-col-left{order:1!important}
   .bento-chart-inner > .bento-chart-noflex{flex:none!important;height:auto!important;min-height:0!important}
   /* Seguimiento card (nueva estructura): chip días · info · monto · acciones.
      En tablet mantenemos fila horizontal, en mobile chico (<640) se reorganiza abajo. */
@@ -1754,10 +1756,12 @@ td b{color:var(--txt);font-weight:600}
   /* Card titles legibles en mobile */
   .card-title{font-size:13.5px!important}
 
-  /* Inner two-column → single stack */
+  /* Inner two-column → single stack, derecha primero (donut+embudo visible) */
   .bento-wide{grid-column:1/-1!important}
   .bento-chart-inner{flex-direction:column!important;gap:10px!important}
   .bento-chart-inner > div{flex:1 1 100%!important;min-width:0!important}
+  .dash-col-right{order:-1!important}
+  .dash-col-left{order:1!important}
   .bento-chart{padding:12px!important;border-radius:12px!important}
   .bento-chart .card-header{margin-bottom:6px}
   .bento-chart .card-title{font-size:12px!important}

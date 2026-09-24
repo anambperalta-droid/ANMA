@@ -20,26 +20,42 @@ function readTheme() {
 
 // `perm` define quién ve cada entrada (owner ve todo, operator solo los que coincidan).
 // `ownerOnly: true` = oculto para operator siempre.
-const NAV_CORE = [
-  { section: 'Tu negocio' },
-  { path: '/', icon: 'fa-chart-line', label: 'Dashboard', chipKey: 'budgets', perm: 'dashboard.view' },
-  { path: '/pedido', icon: 'fa-file-invoice-dollar', label: 'Nuevo pedido', perm: 'pedido.create' },
-  { path: '/ventas', icon: 'fa-receipt', label: 'Registro ventas', perm: 'pedido.create' },
-  { path: '/clientes', icon: 'fa-users', label: 'Clientes', chipKey: 'clients', perm: 'cliente.view' },
-  { path: '/catalogo', icon: 'fa-cube', label: 'Productos', chipKey: 'products', perm: 'catalogo.view' },
-  { path: '/insumos', icon: 'fa-boxes-stacked', label: 'Insumos', chipKey: 'insumos', perm: 'insumo.view' },
-  { path: '/proveedores', icon: 'fa-industry', label: 'Proveedores', chipKey: 'suppliers', perm: 'proveedor.view' },
-  { path: '/logistica', icon: 'fa-truck-fast', label: 'Logística', perm: 'logistica.view' },
-  { path: '/mensajes', icon: 'fa-brands fa-whatsapp', label: 'Mensajes WA', perm: 'mensajes.view' },
-  { path: '/guia', icon: 'fa-book-open', label: 'Guía' },
+const NAV_GROUPS = [
+  {
+    id: 'ventas', label: 'Ventas', collapsible: false,
+    items: [
+      { path: '/', icon: 'fa-chart-line', label: 'Dashboard', chipKey: 'budgets', perm: 'dashboard.view' },
+      { path: '/pedido', icon: 'fa-file-invoice-dollar', label: 'Nuevo pedido', perm: 'pedido.create' },
+      { path: '/ventas', icon: 'fa-receipt', label: 'Registro ventas', perm: 'pedido.create' },
+      { path: '/clientes', icon: 'fa-users', label: 'Clientes', chipKey: 'clients', perm: 'cliente.view' },
+    ],
+  },
+  {
+    id: 'inventario', label: 'Inventario', collapsible: true, defaultOpen: true,
+    items: [
+      { path: '/catalogo', icon: 'fa-cube', label: 'Productos', chipKey: 'products', perm: 'catalogo.view' },
+      { path: '/insumos', icon: 'fa-boxes-stacked', label: 'Insumos', chipKey: 'insumos', perm: 'insumo.view' },
+      { path: '/proveedores', icon: 'fa-industry', label: 'Proveedores', chipKey: 'suppliers', perm: 'proveedor.view' },
+    ],
+  },
+  {
+    id: 'operaciones', label: 'Operaciones', collapsible: true, defaultOpen: false,
+    items: [
+      { path: '/logistica', icon: 'fa-truck-fast', label: 'Logística', perm: 'logistica.view' },
+      { path: '/mensajes', icon: 'fa-brands fa-whatsapp', label: 'Mensajes WA', perm: 'mensajes.view' },
+      { path: '/guia', icon: 'fa-book-open', label: 'Guía' },
+    ],
+  },
+  {
+    id: 'herramientas', label: 'Herramientas', collapsible: true, defaultOpen: false, ownerOnly: true,
+    items: [
+      { path: '/config', icon: 'fa-gear', label: 'Configuración', ownerOnly: true },
+      { path: '/importador', icon: 'fa-file-import', label: 'Importador', ownerOnly: true, perm: 'config.access' },
+    ],
+  },
 ]
 
-const NAV_TOOLS = [
-  { path: '/config', icon: 'fa-gear', label: 'Configuración', ownerOnly: true },
-  { path: '/importador', icon: 'fa-file-import', label: 'Importador', ownerOnly: true, perm: 'config.access' },
-]
-
-const TOOLS_KEY = 'anma_sidebar_tools_open'
+const SECTIONS_KEY = 'anma_sidebar_sections'
 
 export default function Sidebar({ open, onClose, collapsed }) {
   const loc = useLocation()
@@ -49,16 +65,21 @@ export default function Sidebar({ open, onClose, collapsed }) {
   const { panelOpen, setPanelOpen, activeTasks, focusMode, setFocusMode } = useTaskFab()
   const { hidden, toggle: togglePrivacy } = usePrivacy()
   const [theme, setTheme] = useState(readTheme)
-  const [toolsOpen, setToolsOpen] = useState(() => {
+  const [sections, setSections] = useState(() => {
     try {
-      const v = localStorage.getItem(TOOLS_KEY)
-      return v === null ? false : v === '1'
-    } catch { return true }
+      const saved = JSON.parse(localStorage.getItem(SECTIONS_KEY) || '{}')
+      const init = {}
+      NAV_GROUPS.forEach(g => {
+        if (g.collapsible) init[g.id] = saved[g.id] !== undefined ? saved[g.id] : (g.defaultOpen ?? true)
+      })
+      return init
+    } catch { return {} }
   })
-  const toggleTools = () => {
-    setToolsOpen(v => {
-      try { localStorage.setItem(TOOLS_KEY, v ? '0' : '1') } catch {}
-      return !v
+  const toggleSection = (id) => {
+    setSections(prev => {
+      const next = { ...prev, [id]: !prev[id] }
+      try { localStorage.setItem(SECTIONS_KEY, JSON.stringify(next)) } catch {}
+      return next
     })
   }
   useEffect(() => {
@@ -120,50 +141,49 @@ export default function Sidebar({ open, onClose, collapsed }) {
         </div>
       </div>
       <nav className="sb-nav">
-        {NAV_CORE.map((item, i) => {
-          if (role === 'operator' && item.perm && !can(item.perm)) return null
-          if (item.section) return <div key={i} className="sb-sec">{item.section}</div>
-          const active = loc.pathname === item.path || (item.path === '/pedido' && loc.pathname.startsWith('/pedido'))
+        {NAV_GROUPS.map(group => {
+          if (group.ownerOnly && role === 'operator') return null
+          const isOpen = !group.collapsible || sections[group.id]
+          const visibleItems = group.items.filter(item => {
+            if (role === 'operator' && item.ownerOnly) return null
+            if (role === 'operator' && item.perm && !can(item.perm)) return null
+            return true
+          })
+          if (visibleItems.length === 0) return null
+
           return (
-            <button key={item.path} type="button" className={`sb-item ${active ? 'active' : ''}`}
-              data-tip={item.label} onClick={() => goTo(item.path)}
-              onMouseEnter={() => prefetchRoute(item.path)} onFocus={() => prefetchRoute(item.path)}>
-              <i className={`fa ${item.icon}`} /><span className="sb-lbl">{item.label}</span>
-            </button>
+            <div key={group.id}>
+              {group.collapsible ? (
+                <button type="button" className={`sb-sec sb-sec-toggle${isOpen ? ' is-open' : ''}`} onClick={() => toggleSection(group.id)}>
+                  {group.label}
+                  <i className={`fa fa-chevron-${isOpen ? 'up' : 'down'}`} style={{ fontSize: 9, marginLeft: 'auto', opacity: .5 }} />
+                </button>
+              ) : (
+                <div className="sb-sec">{group.label}</div>
+              )}
+              {isOpen && visibleItems.map(item => {
+                const active = loc.pathname === item.path || (item.path === '/pedido' && loc.pathname.startsWith('/pedido'))
+                return (
+                  <button key={item.path} type="button" className={`sb-item ${active ? 'active' : ''}`}
+                    data-tip={item.label} onClick={() => goTo(item.path)}
+                    onMouseEnter={() => prefetchRoute(item.path)} onFocus={() => prefetchRoute(item.path)}>
+                    <i className={`fa ${item.icon}`} /><span className="sb-lbl">{item.label}</span>
+                  </button>
+                )
+              })}
+              {isOpen && group.id === 'herramientas' && role === 'owner' && (
+                <>
+                  <button type="button" className={`sb-item ${loc.pathname === '/mi-cuenta' ? 'active' : ''}`} data-tip="Mi cuenta" onClick={() => goTo('/mi-cuenta')}>
+                    <i className="fa fa-user-gear" /><span className="sb-lbl">Mi cuenta</span>
+                  </button>
+                  <button type="button" className="sb-item" data-tip="Backup" onClick={doBackup}>
+                    <i className="fa fa-cloud-arrow-down" /><span className="sb-lbl">Backup de datos</span>
+                  </button>
+                </>
+              )}
+            </div>
           )
         })}
-
-        {role === 'owner' && (
-          <>
-            <button type="button" className={`sb-sec sb-sec-toggle${toolsOpen ? ' is-open' : ''}`} onClick={toggleTools}>
-              Herramientas
-              <i className={`fa fa-chevron-${toolsOpen ? 'up' : 'down'}`} style={{ fontSize: 9, marginLeft: 'auto', opacity: .5 }} />
-            </button>
-            {toolsOpen && (
-              <>
-                {NAV_TOOLS.map(item => {
-                  if (role === 'operator' && item.ownerOnly) return null
-                  if (role === 'operator' && item.perm && !can(item.perm)) return null
-                  const active = loc.pathname === item.path
-                  return (
-                    <button key={item.path} type="button" className={`sb-item ${active ? 'active' : ''}`}
-                      data-tip={item.label} onClick={() => goTo(item.path)}
-                      onMouseEnter={() => prefetchRoute(item.path)} onFocus={() => prefetchRoute(item.path)}>
-                      <i className={`fa ${item.icon}`} /><span className="sb-lbl">{item.label}</span>
-                    </button>
-                  )
-                })}
-                <button type="button" className={`sb-item ${loc.pathname === '/mi-cuenta' ? 'active' : ''}`} data-tip="Mi cuenta · Suscripción + datos" onClick={() => goTo('/mi-cuenta')}>
-                  <i className="fa fa-user-gear" /><span className="sb-lbl">Mi cuenta</span>
-                </button>
-                <button type="button" className="sb-item" data-tip="Backup" onClick={doBackup}>
-                  <i className="fa fa-cloud-arrow-down" /><span className="sb-lbl">Backup de datos</span>
-                </button>
-              </>
-            )}
-          </>
-        )}
-        {/* Super Admin removido del nav — ahora vive como ícono discreto en el footer. */}
       </nav>
       {/* Ajustes rápidos — 3 íconos horizontales: Tareas · Ojo · Tema.
           La campana vive en el Topbar (acceso rápido siempre visible). */}
