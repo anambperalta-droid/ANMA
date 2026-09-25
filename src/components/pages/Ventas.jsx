@@ -94,22 +94,24 @@ export default function Ventas() {
 
   const cobroPercent = totals.facturado > 0 ? Math.round((totals.cobrado / totals.facturado) * 100) : 0
 
-  const streak = useMemo(() => {
-    const today = new Date()
-    let count = 0
-    for (let i = 0; i < 12; i++) {
-      const m = today.getMonth() - i
-      const y = today.getFullYear() + Math.floor(m < 0 ? -1 : 0)
-      const adjM = ((m % 12) + 12) % 12
-      const mk2 = monthKey(y, adjM)
-      if (allBudgets.some(b => budgetMonth(b) === mk2)) count++
-      else break
-    }
-    return count
-  }, [allBudgets])
+  const avgTicket = totals.count > 0 ? Math.round(totals.facturado / totals.count) : 0
+
+  const topClient = useMemo(() => {
+    const rev = {}
+    monthBudgets.forEach(b => {
+      const n = b.company || b.contact || ''
+      if (n) rev[n] = (rev[n] || 0) + (Number(b.total) || 0)
+    })
+    const e = Object.entries(rev)
+    if (!e.length) return null
+    e.sort((a, b) => b[1] - a[1])
+    return { name: e[0][0], total: e[0][1] }
+  }, [monthBudgets])
 
   const deltaCount = prevMonthData.count > 0 ? Math.round(((totals.count - prevMonthData.count) / prevMonthData.count) * 100) : null
   const deltaFact = prevMonthData.facturado > 0 ? Math.round(((totals.facturado - prevMonthData.facturado) / prevMonthData.facturado) * 100) : null
+  const prevAvgTicket = prevMonthData.count > 0 ? Math.round(prevMonthData.facturado / prevMonthData.count) : 0
+  const deltaTicket = prevAvgTicket > 0 ? Math.round(((avgTicket - prevAvgTicket) / prevAvgTicket) * 100) : null
 
   const toggleSort = (col) => {
     if (sortCol === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
@@ -300,7 +302,6 @@ export default function Ventas() {
         .vt-hero-stat-val{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--txt);letter-spacing:-.02em}
         .vt-hero-stat-lbl{font-size:9px;font-weight:700;color:var(--txt4);text-transform:uppercase;letter-spacing:.06em}
         .vt-hero-divider{width:1px;background:var(--border);margin:0 4px;align-self:stretch}
-        .vt-streak{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:8px;font-size:10px;font-weight:700;background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(245,158,11,.06));color:#b45309;border:1px solid rgba(245,158,11,.2)}
         @media(max-width:900px){
           .vt-row,.vt-hdr{grid-template-columns:1fr .6fr .5fr .3fr;font-size:12px}
           .vt-hide-m{display:none}
@@ -329,7 +330,7 @@ export default function Ventas() {
           .vt-pay-chip{min-height:28px;padding:4px 10px;font-size:10px}
           .vt-insight{margin-left:14px!important;margin-right:14px!important;border-radius:12px!important}
           .vt-pend-wrap{margin-left:14px!important;margin-right:14px!important;border-radius:12px!important}
-          .vt-streak{font-size:9px;padding:3px 8px}
+
         }
         @media(max-width:380px){
           .vt-kpi-grid{gap:4px!important}
@@ -390,27 +391,31 @@ export default function Ventas() {
           <div className="vt-hero-stats">
             <div className="vt-hero-stat">
               <div className="vt-hero-stat-icon" style={{ background: 'rgba(99,102,241,.1)', color: '#6366f1' }}>
-                <i className="fa fa-percent" />
+                <i className="fa fa-receipt" />
               </div>
               <div>
-                <div className="vt-hero-stat-lbl">IVA</div>
-                <div className="vt-hero-stat-val">{hidden ? '***' : fmt(totals.iva)}</div>
+                <div className="vt-hero-stat-lbl">Ticket promedio</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span className="vt-hero-stat-val">{hidden ? '***' : fmt(avgTicket)}</span>
+                  {deltaTicket !== null && <Delta value={deltaTicket} />}
+                </div>
               </div>
             </div>
             <div className="vt-hero-divider" />
             <div className="vt-hero-stat">
-              <div className="vt-hero-stat-icon" style={{ background: 'rgba(245,158,11,.1)', color: '#f59e0b' }}>
-                <i className="fa fa-fire" />
+              <div className="vt-hero-stat-icon" style={{ background: 'rgba(124,58,237,.1)', color: '#7C3AED' }}>
+                <i className="fa fa-crown" />
               </div>
-              <div>
-                <div className="vt-hero-stat-lbl">Racha</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span className="vt-hero-stat-val">{streak}</span>
-                  <span className="vt-streak">
-                    <i className="fa fa-fire" style={{ fontSize: 9 }} />
-                    {streak === 1 ? 'mes' : 'meses'} seguidos
-                  </span>
-                </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="vt-hero-stat-lbl">Mejor cliente</div>
+                {topClient ? (
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, minWidth: 0 }}>
+                    <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{topClient.name}</span>
+                    <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 600, flexShrink: 0 }}>{hidden ? '' : fmt(topClient.total)}</span>
+                  </div>
+                ) : (
+                  <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--txt4)' }}>—</span>
+                )}
               </div>
             </div>
           </div>
