@@ -320,7 +320,6 @@ export default function Ventas() {
       <div className="vt-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 900, color: 'var(--txt)', margin: 0, letterSpacing: '-.4px' }}>Registro de ventas</h1>
-          <p className="vt-subtitle" style={{ fontSize: 12, color: 'var(--txt3)', margin: '2px 0 0' }}>Carga y seguimiento mensual</p>
         </div>
       </div>
 
