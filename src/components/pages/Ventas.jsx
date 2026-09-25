@@ -56,6 +56,8 @@ export default function Ventas() {
   const [draft, setDraft] = useState({ ...EMPTY })
   const [showNota, setShowNota] = useState(false)
   const [savedCount, setSavedCount] = useState(0)
+  const [sortCol, setSortCol] = useState(null)
+  const [sortDir, setSortDir] = useState('desc')
   const inputRef = useRef(null)
 
   const clients = get('clients') || []
@@ -108,6 +110,26 @@ export default function Ventas() {
 
   const deltaCount = prevMonthData.count > 0 ? Math.round(((totals.count - prevMonthData.count) / prevMonthData.count) * 100) : null
   const deltaFact = prevMonthData.facturado > 0 ? Math.round(((totals.facturado - prevMonthData.facturado) / prevMonthData.facturado) * 100) : null
+
+  const toggleSort = (col) => {
+    if (sortCol === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
+    else { setSortCol(col); setSortDir('desc') }
+  }
+  const sortedBudgets = useMemo(() => {
+    if (!sortCol) return monthBudgets
+    const arr = [...monthBudgets]
+    const dir = sortDir === 'asc' ? 1 : -1
+    arr.sort((a, b) => {
+      if (sortCol === 'cliente') return dir * (a.company || a.contact || '').localeCompare(b.company || b.contact || '')
+      if (sortCol === 'facturado') return dir * ((Number(a.total) || 0) - (Number(b.total) || 0))
+      if (sortCol === 'cobro') {
+        const order = { paid: 2, partial: 1, pending: 0 }
+        return dir * ((order[a.payStatus] ?? 0) - (order[b.payStatus] ?? 0))
+      }
+      return 0
+    })
+    return arr
+  }, [monthBudgets, sortCol, sortDir])
 
   const prevMonth = () => { if (month === 0) { setMonth(11); setYear(y => y - 1) } else setMonth(m => m - 1) }
   const nextMonth = () => { if (month === 11) { setMonth(0); setYear(y => y + 1) } else setMonth(m => m + 1) }
@@ -389,12 +411,17 @@ export default function Ventas() {
         </div>
       </div>
 
+      <PendientesCobro budgets={allBudgets} hidden={hidden} nav={nav} />
+
       {/* TABLA */}
       <div className="vt-table-wrap" style={{ background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 14, overflow: 'hidden', marginTop: 14 }}>
         <div className="vt-row vt-hdr">
-          <span>Cliente</span><span>Producto</span>
-          <span className="vt-cell-r">Cant</span><span className="vt-cell-r">Facturado</span>
-          <span className="vt-cell-r vt-hide-m">IVA</span><span style={{ textAlign: 'center' }}>Cobro</span>
+          <span style={{ cursor: 'pointer' }} onClick={() => toggleSort('cliente')}>Cliente {sortCol === 'cliente' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
+          <span>Producto</span>
+          <span className="vt-cell-r">Cant</span>
+          <span className="vt-cell-r" style={{ cursor: 'pointer' }} onClick={() => toggleSort('facturado')}>Facturado {sortCol === 'facturado' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
+          <span className="vt-cell-r vt-hide-m">IVA</span>
+          <span style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => toggleSort('cobro')}>Cobro {sortCol === 'cobro' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
         </div>
 
         {monthBudgets.length === 0 && (
@@ -420,17 +447,18 @@ export default function Ventas() {
           </div>
         )}
 
-        {monthBudgets.map(b => {
+        {sortedBudgets.map(b => {
           const pi = payInfo(b)
+          const urgBorder = b.payStatus === 'pending' ? '#DC2626' : b.payStatus === 'partial' ? '#D97706' : 'transparent'
           return (
-            <div key={b.id} className="vt-row" style={{ cursor: 'pointer' }} onClick={() => nav(`/pedido/${b.id}`)}>
+            <div key={b.id} className="vt-row" style={{ cursor: 'pointer', borderLeft: `3px solid ${urgBorder}` }} onClick={() => nav(`/pedido/${b.id}`)}>
               <span className="vt-cell" style={{ fontWeight: 600, color: 'var(--txt)' }}>{b.company || b.contact || '---'}</span>
               <span className="vt-cell vt-hide-s" style={{ color: 'var(--txt2)' }}>{b.items?.[0]?.name || '---'}</span>
               <span className="vt-cell vt-cell-r vt-hide-s" style={{ color: 'var(--txt3)' }}>{b.items?.[0]?.qty || 1}</span>
               <span className="vt-cell vt-cell-r" style={{ fontWeight: 700, color: 'var(--txt)' }}>{hidden ? '***' : fmt(b.total || 0)}</span>
               <span className="vt-cell vt-cell-r vt-hide-m" style={{ color: 'var(--txt3)', fontSize: 12 }}>{hidden ? '***' : (b._quickIva ? fmt(b._quickIva) : '---')}</span>
               <span style={{ textAlign: 'center' }} onClick={e => { e.stopPropagation(); const nx = b.payStatus === 'pending' ? 'partial' : b.payStatus === 'partial' ? 'paid' : 'pending'; updatePayStatus(b.id, nx) }}>
-                <span className="vt-pay-chip" style={{ background: pi.bg, color: pi.color }}>{pi.label}</span>
+                <span className="vt-pay-chip" style={{ background: pi.bg, color: pi.color, border: b.payStatus === 'pending' ? '1.5px solid #DC2626' : b.payStatus === 'partial' ? '1.5px solid #D97706' : 'none' }}>{pi.label}</span>
               </span>
             </div>
           )
@@ -438,7 +466,7 @@ export default function Ventas() {
 
         {/* Cards mobile */}
         <div className="vt-card-m">
-          {monthBudgets.map(b => {
+          {sortedBudgets.map(b => {
             const pi = payInfo(b)
             const dateStr = b.date ? `${b.date.slice(8, 10)}/${b.date.slice(5, 7)}` : ''
             const productText = [b.items?.[0]?.name, b.items?.[0]?.qty > 1 ? `x${b.items[0].qty}` : '', dateStr].filter(Boolean).join(' · ')
@@ -482,7 +510,6 @@ export default function Ventas() {
       </div>
 
       {monthBudgets.length >= 2 && <InsightCard budgets={monthBudgets} month={MESES[month]} hidden={hidden} />}
-      <PendientesCobro budgets={allBudgets} hidden={hidden} nav={nav} />
 
       {/* DRAWER */}
       <SaleDrawer
