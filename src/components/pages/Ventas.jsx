@@ -268,7 +268,7 @@ export default function Ventas() {
   }
 
   return (
-    <div className="ventas-page" style={{ padding: '20px 20px 80px', maxWidth: 1000, margin: '0 auto' }}>
+    <div className="ventas-page" style={{ padding: '10px 20px 80px', maxWidth: 1000, margin: '0 auto' }}>
       <style>{`
         .vt-row{display:grid;grid-template-columns:1fr .7fr .4fr .7fr .5fr .35fr;gap:0;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;transition:background .1s}
         .vt-row:hover{background:var(--surface2)}
@@ -292,26 +292,29 @@ export default function Ventas() {
         .vt-card-pay:active{filter:brightness(.88)}
         .vt-mob-total{display:none}
         .vt-header h1,.vt-subtitle{display:none}
-        .vt-hero{display:flex;align-items:stretch;gap:12px;margin-bottom:16px}
-        .vt-hero-main{flex:1;min-width:0;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-        .vt-hero-side{display:flex;flex-direction:column;gap:12px;width:180px;flex-shrink:0}
-        .vt-hero-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;flex:1;display:flex;flex-direction:column;justify-content:center}
+        .vt-hero{margin-bottom:12px}
+        .vt-hero-main{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+        .vt-hero-stats{flex:1 0 100%;border-top:1px solid var(--border);margin-top:4px;padding-top:12px;display:flex;gap:0}
+        .vt-hero-stat{flex:1;display:flex;align-items:center;gap:10px}
+        .vt-hero-stat-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+        .vt-hero-stat-val{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--txt);letter-spacing:-.02em}
+        .vt-hero-stat-lbl{font-size:9px;font-weight:700;color:var(--txt4);text-transform:uppercase;letter-spacing:.06em}
+        .vt-hero-divider{width:1px;background:var(--border);margin:0 4px;align-self:stretch}
         .vt-streak{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:8px;font-size:10px;font-weight:700;background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(245,158,11,.06));color:#b45309;border:1px solid rgba(245,158,11,.2)}
         @media(max-width:900px){
           .vt-row,.vt-hdr{grid-template-columns:1fr .6fr .5fr .3fr;font-size:12px}
           .vt-hide-m{display:none}
-          .vt-hero{flex-direction:column}
-          .vt-hero-side{flex-direction:row;width:100%}
         }
         @media(max-width:600px){
           .ventas-page{padding:8px 0 90px!important}
           .vt-header{padding:0 14px!important}
           .vt-new-btn{padding:10px 16px!important;font-size:13px!important;width:100%!important;justify-content:center;min-height:44px!important;border-radius:12px!important}
-          .vt-hero{padding:0 14px!important;flex-direction:column;gap:10px}
+          .vt-hero{padding:0 14px!important}
           .vt-hero-main{padding:14px;gap:12px}
           .vt-hero-main .vt-new-btn{width:100%!important;flex:1 0 100%;order:10;justify-content:center}
-          .vt-hero-side{flex-direction:row;width:100%;gap:8px}
-          .vt-hero-card{padding:10px 12px;border-radius:10px}
+          .vt-hero-stats{padding-top:10px;margin-top:2px}
+          .vt-hero-stat-icon{width:26px;height:26px;font-size:11px}
+          .vt-hero-stat-val{font-size:14px}
           .vt-kpi-grid{padding:0 14px!important;grid-template-columns:1fr 1fr!important;gap:6px!important}
           .vt-kpi-card{padding:10px 12px!important;border-radius:10px!important;border-width:1px!important}
           .vt-kpi-val{font-size:15px!important}
@@ -334,19 +337,20 @@ export default function Ventas() {
           .vt-kpi-val{font-size:13px!important}
           .vt-card-name{font-size:12.5px!important}
           .vt-card-amt{font-size:13px!important}
-          .vt-hero-side{flex-direction:column}
+          .vt-hero-stat{gap:6px}
+          .vt-hero-stat-val{font-size:13px!important}
         }
       `}</style>
 
       {/* HEADER — hidden as tab but kept for standalone */}
-      <div className="vt-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
+      <div className="vt-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, flexWrap: 'wrap', gap: 8 }}>
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 900, color: 'var(--txt)', margin: 0, letterSpacing: '-.4px' }}>Registro de ventas</h1>
         </div>
       </div>
 
       {/* NAV MESES — compact */}
-      <div className="vt-month-nav" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 12, padding: '8px 14px', marginBottom: 14 }}>
+      <div className="vt-month-nav" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 12, padding: '8px 14px', marginBottom: 10 }}>
         <button className="vt-nav-btn" onClick={prevMonth}><i className="fa fa-chevron-left" /></button>
         <div style={{ textAlign: 'center', flex: 1 }}>
           <div className="vt-month-label" style={{ fontSize: 15, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.3px' }}>{MESES[month]} {year}</div>
@@ -358,7 +362,7 @@ export default function Ventas() {
         <button className="vt-nav-btn" onClick={nextMonth}><i className="fa fa-chevron-right" /></button>
       </div>
 
-      {/* HERO SECTION — cobro ring + KPIs + streak */}
+      {/* HERO — cobro + stats integrado */}
       <div className="vt-hero">
         <div className="vt-hero-main">
           <CobroRing percent={cobroPercent} />
@@ -383,29 +387,31 @@ export default function Ventas() {
           }}>
             <i className="fa fa-plus" style={{ fontSize: 10 }} /> Nueva venta
           </button>
-        </div>
-
-        <div className="vt-hero-side">
-          <div className="vt-hero-card">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
-              <i className="fa fa-percent" style={{ color: '#6366f1', fontSize: 10 }} />
-              <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.06em' }}>IVA</span>
+          <div className="vt-hero-stats">
+            <div className="vt-hero-stat">
+              <div className="vt-hero-stat-icon" style={{ background: 'rgba(99,102,241,.1)', color: '#6366f1' }}>
+                <i className="fa fa-percent" />
+              </div>
+              <div>
+                <div className="vt-hero-stat-lbl">IVA</div>
+                <div className="vt-hero-stat-val">{hidden ? '***' : fmt(totals.iva)}</div>
+              </div>
             </div>
-            <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums' }}>
-              {hidden ? '***' : fmt(totals.iva)}
-            </div>
-          </div>
-          <div className="vt-hero-card">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
-              <i className="fa fa-fire" style={{ color: '#f59e0b', fontSize: 10 }} />
-              <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Racha</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)' }}>{streak}</span>
-              <span className="vt-streak">
-                <i className="fa fa-fire" style={{ fontSize: 9 }} />
-                {streak === 1 ? 'mes' : 'meses'} seguidos
-              </span>
+            <div className="vt-hero-divider" />
+            <div className="vt-hero-stat">
+              <div className="vt-hero-stat-icon" style={{ background: 'rgba(245,158,11,.1)', color: '#f59e0b' }}>
+                <i className="fa fa-fire" />
+              </div>
+              <div>
+                <div className="vt-hero-stat-lbl">Racha</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span className="vt-hero-stat-val">{streak}</span>
+                  <span className="vt-streak">
+                    <i className="fa fa-fire" style={{ fontSize: 9 }} />
+                    {streak === 1 ? 'mes' : 'meses'} seguidos
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
