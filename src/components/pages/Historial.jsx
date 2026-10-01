@@ -29,7 +29,8 @@ function Sparkline({ data, color = 'var(--brand)', height = 22 }) {
 }
 
 function KpiCard({ label, value, delta, isKey, sparkData, sparkColor, icon }) {
-  const hasDelta = delta !== null && delta !== undefined
+  // Ocultar deltas al cap +-999% (comparacion poco confiable: base previa muy chica).
+  const hasDelta = delta !== null && delta !== undefined && Math.abs(delta) < 999
   const accentColor = sparkColor || 'var(--brand)'
   return (
     <div className={`bento-kpi ${isKey ? 'bento-kpi-key' : ''}`} style={{ position: 'relative' }}>
@@ -979,8 +980,12 @@ export default function Historial() {
     // Excluye perdidos, igual que totBudgeted, para que el % de variación sea justo.
     const prevTotBudgeted  = prevPeriodBudgets.filter(b => b.status !== 'lost').reduce((s, b) => s + (b.total || 0), 0)
     const prevTotCobrado   = prevPagados.reduce((s, b) => s + cobrado(b), 0)
-    const deltaBrutas      = prevTotBudgeted > 0 ? Math.round((totBudgeted - prevTotBudgeted) / prevTotBudgeted * 100) : null
-    const deltaCaja        = prevTotCobrado  > 0 ? Math.round((totCobrado  - prevTotCobrado)  / prevTotCobrado  * 100) : null
+    // Guardrail: con base previa chica (<3 presupuestos) los deltas se disparan a
+    // valores absurdos (+10961%). Las clampeamos a +-999 y los lectores las ocultan.
+    const capDelta = (v) => v === null ? null : Math.max(-999, Math.min(999, v))
+    const enoughBase = prevPeriodBudgets.length >= 3
+    const deltaBrutas      = enoughBase && prevTotBudgeted > 0 ? capDelta(Math.round((totBudgeted - prevTotBudgeted) / prevTotBudgeted * 100)) : null
+    const deltaCaja        = enoughBase && prevTotCobrado  > 0 ? capDelta(Math.round((totCobrado  - prevTotCobrado)  / prevTotCobrado  * 100)) : null
     return { totBudgeted, confirmed, pagados, totCobrado, avgTicket, convRate, deltaBrutas, deltaCaja, prevPeriodBudgets, prevTotBudgeted }
   }, [periodBudgets, budgets, period]) // eslint-disable-line
 
@@ -1052,19 +1057,20 @@ export default function Historial() {
     return { proximasEntregas, sinCobrar7d, stockCriticoCount }
   }, [budgets, products, insumos])
 
-  // Insight banner
-  const insightIcon = deltaBrutas !== null && deltaBrutas > 20 ? 'fa-rocket' : deltaBrutas !== null && deltaBrutas > 0 ? 'fa-chart-line' : deltaBrutas !== null && deltaBrutas < -20 ? 'fa-triangle-exclamation' : deltaBrutas !== null && deltaBrutas < 0 ? 'fa-arrow-trend-down' : convRate !== '—' && parseInt(convRate) >= 60 ? 'fa-star' : periodBudgets.length === 0 ? 'fa-circle-info' : 'fa-chart-bar'
-  const insightColor = deltaBrutas !== null && deltaBrutas > 0 ? 'var(--green)' : deltaBrutas !== null && deltaBrutas < 0 ? 'var(--amber)' : 'var(--brand)'
+  // Insight banner — ignoramos deltas al cap +-999% (comparación poco confiable).
+  const deltaConfiable = deltaBrutas !== null && Math.abs(deltaBrutas) < 999 ? deltaBrutas : null
+  const insightIcon = deltaConfiable !== null && deltaConfiable > 20 ? 'fa-rocket' : deltaConfiable !== null && deltaConfiable > 0 ? 'fa-chart-line' : deltaConfiable !== null && deltaConfiable < -20 ? 'fa-triangle-exclamation' : deltaConfiable !== null && deltaConfiable < 0 ? 'fa-arrow-trend-down' : convRate !== '—' && parseInt(convRate) >= 60 ? 'fa-star' : periodBudgets.length === 0 ? 'fa-circle-info' : 'fa-chart-bar'
+  const insightColor = deltaConfiable !== null && deltaConfiable > 0 ? 'var(--green)' : deltaConfiable !== null && deltaConfiable < 0 ? 'var(--amber)' : 'var(--brand)'
   const insightText = periodBudgets.length === 0
     ? 'Todavía no hay datos para este período. Registrá presupuestos para ver tus métricas.'
-    : deltaBrutas !== null && deltaBrutas > 20
-      ? `Las ventas crecieron un ${deltaBrutas}% respecto al período anterior. ¡Excelente momento!`
-      : deltaBrutas !== null && deltaBrutas > 0
-        ? `Crecimiento del ${deltaBrutas}% en ventas vs. el período anterior. Buen ritmo.`
-        : deltaBrutas !== null && deltaBrutas < -20
-          ? `Las ventas bajaron un ${Math.abs(deltaBrutas)}% vs. el período anterior. Momento de reforzar el seguimiento.`
-          : deltaBrutas !== null && deltaBrutas < 0
-            ? `Leve caída del ${Math.abs(deltaBrutas)}% en ventas respecto al período anterior.`
+    : deltaConfiable !== null && deltaConfiable > 20
+      ? `Las ventas crecieron un ${deltaConfiable}% respecto al período anterior. ¡Excelente momento!`
+      : deltaConfiable !== null && deltaConfiable > 0
+        ? `Crecimiento del ${deltaConfiable}% en ventas vs. el período anterior. Buen ritmo.`
+        : deltaConfiable !== null && deltaConfiable < -20
+          ? `Las ventas bajaron un ${Math.abs(deltaConfiable)}% vs. el período anterior. Momento de reforzar el seguimiento.`
+          : deltaConfiable !== null && deltaConfiable < 0
+            ? `Leve caída del ${Math.abs(deltaConfiable)}% en ventas respecto al período anterior.`
             : convRate !== '—' && parseInt(convRate) >= 60
               ? `Conversión del ${convRate} — cerrás más de la mitad de los presupuestos que enviás.`
               : `${periodBudgets.length} presupuesto${periodBudgets.length !== 1 ? 's' : ''} en el período · Ticket promedio ${money(avgTicket)} · Conversión ${convRate}`
@@ -1488,7 +1494,8 @@ export default function Historial() {
 
     // 2) Tendencia de ventas (delta brutas). Requiere volumen mínimo en AMBOS
     // períodos: un -54% calculado sobre 1 venta previa no es una tendencia.
-    if (deltaBrutas !== null && periodBudgets.length >= 3 && prevPeriodBudgets.length >= 3) {
+    // También descartamos si pegó el cap +-999% (base previa muy chica).
+    if (deltaBrutas !== null && Math.abs(deltaBrutas) < 999 && periodBudgets.length >= 3 && prevPeriodBudgets.length >= 3) {
       if (deltaBrutas >= 25) {
         out.push({
           tone: 'success',
@@ -2492,22 +2499,40 @@ export default function Historial() {
         <div className="analysis-grid">
           <div className="card">
             <div className="card-header"><span className="card-title"><i className="fa fa-chart-pie" style={{ color: 'var(--brand)', marginRight: 6 }} />Métricas globales</span></div>
-            {[
-              ['Total presupuestado', money(totBudgeted), null],
-              ['Total cobrado', money(totCobrado), 'Suma de pagos recibidos (totales + señas)'],
-              ['Ganancia cobrada', money(totGain), 'Margen cobrado — no descuenta costos de insumos ni logística'],
-              ['Ticket promedio', money(avgTicket), null],
-              ['Tasa de conversión', convRate, null],
-              ['N° de presupuestos', periodBudgets.length, null],
-            ].map(([l, v, tip], i) => (
-              <div key={i} className="metric-row">
-                <span className="mr-label">
-                  {l}
-                  {tip && <i className="fa fa-circle-info" title={tip} style={{ marginLeft: 5, color: 'var(--txt4)', fontSize: 10, cursor: 'help' }} />}
-                </span>
-                <span className="mr-val">{v}</span>
-              </div>
-            ))}
+            {(() => {
+              const sections = [
+                {
+                  title: 'Facturación',
+                  rows: [
+                    { l: 'Total presupuestado', v: money(totBudgeted), tip: 'Suma de presupuestos del período (excluye perdidos)' },
+                    { l: 'Total cobrado', v: money(totCobrado), tip: 'Pagos recibidos (totales + señas)' },
+                    { l: 'Ticket promedio', v: money(avgTicket), tip: 'Monto promedio por presupuesto' },
+                    { l: 'Tasa de conversión', v: convRate, tip: 'Presupuestos cobrados ÷ presupuestos cargados' },
+                    { l: 'N° de presupuestos', v: periodBudgets.length },
+                  ],
+                },
+                {
+                  title: 'Rentabilidad',
+                  rows: [
+                    { l: 'Ganancia cobrada', v: money(totGain), tip: 'Margen cobrado — no descuenta costos operativos', neg: totGain < 0, highlight: true },
+                  ],
+                },
+              ]
+              return sections.map((sec, si) => (
+                <div key={si} className="metric-section">
+                  <div className="metric-section-title">{sec.title}</div>
+                  {sec.rows.map((m, i) => (
+                    <div key={i} className={`metric-row${m.highlight ? ' is-highlight' : ''}`}>
+                      <span className="mr-label">
+                        {m.l}
+                        {m.tip && <i className="fa fa-circle-info" title={m.tip} style={{ marginLeft: 5, color: 'var(--txt4)', fontSize: 10, cursor: 'help' }} />}
+                      </span>
+                      <span className="mr-val" style={m.neg ? { color: '#DC2626' } : m.highlight ? { color: 'var(--brand)' } : undefined}>{m.v}</span>
+                    </div>
+                  ))}
+                </div>
+              ))
+            })()}
           </div>
           <div className="card">
             <div className="card-header"><span className="card-title"><i className="fa fa-trophy" style={{ color: 'var(--amber)', marginRight: 6 }} />Clientes top</span></div>
