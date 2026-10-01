@@ -177,6 +177,17 @@ export default function Proveedores() {
     return { total, count: arr.length, last, avgMensual, months: monthsSet.size }
   }
 
+  // Último precio pagado por producto, tomado de los items de compras (más reciente primero)
+  const lastPaidPrice = (s, productId) => {
+    const arr = supplierCompras(s)
+    for (const c of arr) {
+      if (!Array.isArray(c.items)) continue
+      const it = c.items.find(i => String(i.productId) === String(productId) && Number(i.pu) > 0)
+      if (it) return { pu: Number(it.pu), date: c.fecha, qty: Number(it.qty) }
+    }
+    return null
+  }
+
   /* ── Search filter — only re-runs when suppliers or search changes ── */
   const filtered = useMemo(() => {
     if (!search) return suppliers
@@ -1144,18 +1155,37 @@ export default function Proveedores() {
                 <div>
                   {supplierProducts(detailSupplier).length ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                      {supplierProducts(detailSupplier).map(p => (
-                        <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'var(--surface2)', borderRadius: 8 }}>
-                          <div style={{ width: 28, height: 28, borderRadius: 7, background: 'var(--brand-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)', fontSize: 12, flexShrink: 0 }}>
-                            <i className="fa fa-cube" />
+                      {supplierProducts(detailSupplier).map(p => {
+                        const paid = lastPaidPrice(detailSupplier, p.id)
+                        const diff = paid && Number(p.cost) > 0 ? Math.round(((paid.pu - Number(p.cost)) / Number(p.cost)) * 100) : null
+                        return (
+                          <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'var(--surface2)', borderRadius: 8 }}>
+                            <div style={{ width: 28, height: 28, borderRadius: 7, background: 'var(--brand-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)', fontSize: 12, flexShrink: 0 }}>
+                              <i className="fa fa-cube" />
+                            </div>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ fontWeight: 600, fontSize: 12, color: 'var(--txt)' }}>{p.name}</div>
+                              <div style={{ fontSize: 10, color: 'var(--txt3)' }}>
+                                {p.cat}
+                                {paid && (
+                                  <> · último pagado <b style={{ color: 'var(--txt2)' }}>{fmt(paid.pu)}</b></>
+                                )}
+                              </div>
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                              <div style={{ fontSize: 9, color: 'var(--txt3)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Acordado</div>
+                              <div style={{ fontWeight: 700, fontSize: 12.5, color: 'var(--money)', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</div>
+                              {diff !== null && Math.abs(diff) >= 2 && (
+                                <div style={{ fontSize: 10, fontWeight: 700, color: diff > 0 ? '#DC2626' : '#15803D', marginTop: 2, display: 'inline-flex', alignItems: 'center', gap: 3 }}
+                                  title={`Pagaste ${fmt(paid.pu)} vs. acordado ${fmt(p.cost)}`}>
+                                  <i className={`fa fa-arrow-${diff > 0 ? 'up' : 'down'}`} style={{ fontSize: 8 }} />
+                                  {diff > 0 ? '+' : ''}{diff}%
+                                </div>
+                              )}
+                            </div>
                           </div>
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ fontWeight: 600, fontSize: 12, color: 'var(--txt)' }}>{p.name}</div>
-                            <div style={{ fontSize: 10, color: 'var(--txt3)' }}>{p.cat}</div>
-                          </div>
-                          <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--money)' }}>{fmt(p.cost)}</div>
-                        </div>
-                      ))}
+                        )
+                      })}
                     </div>
                   ) : (
                     <div style={{ textAlign: 'center', padding: 24, color: 'var(--txt3)', fontSize: 12 }}>
@@ -1273,30 +1303,46 @@ export default function Proveedores() {
                       </button>
                     </div>
                     {/* Lista */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 360, overflowY: 'auto' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 420, overflowY: 'auto' }}>
                       {arr.map(c => {
                         const [y, m, d] = (c.fecha || '').split('-')
                         const fechaCorta = c.fecha ? `${Number(d)}/${Number(m)}/${y.slice(2)}` : '—'
+                        const hasItems = Array.isArray(c.items) && c.items.length > 0
+                        const title = c.concepto || (hasItems ? c.items.map(i => i.name).filter(Boolean).join(', ') : null)
                         return (
                           <div
                             key={c.id}
-                            onClick={() => { setDetailSupplier(null); nav(`/compras?mes=${(c.fecha || '').slice(0, 7)}&edit=${c.id}`) }}
-                            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'var(--surface2)', borderRadius: 8, cursor: 'pointer', transition: 'background .12s' }}
-                            onMouseEnter={e => e.currentTarget.style.background = 'var(--surface3, var(--surface))'}
-                            onMouseLeave={e => e.currentTarget.style.background = 'var(--surface2)'}
+                            style={{ background: 'var(--surface2)', borderRadius: 8, borderLeft: hasItems ? '3px solid var(--brand)' : '3px solid transparent' }}
                           >
-                            <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                {c.concepto || <span style={{ color: 'var(--txt4)', fontStyle: 'italic', fontWeight: 500 }}>Sin concepto</span>}
-                                {c.recurrente && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'var(--brand-xlt)', color: 'var(--brand)' }}><i className="fa fa-rotate" style={{ fontSize: 7, marginRight: 2 }} />recurrente</span>}
+                            <div
+                              onClick={() => { setDetailSupplier(null); nav(`/compras?mes=${(c.fecha || '').slice(0, 7)}&edit=${c.id}`) }}
+                              style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', cursor: 'pointer' }}
+                            >
+                              <div style={{ flex: 1, minWidth: 0 }}>
+                                <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                  {title || <span style={{ color: 'var(--txt4)', fontStyle: 'italic', fontWeight: 500 }}>Sin concepto</span>}
+                                  {c.recurrente && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'var(--brand-xlt)', color: 'var(--brand)' }}><i className="fa fa-rotate" style={{ fontSize: 7, marginRight: 2 }} />recurrente</span>}
+                                  {hasItems && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'rgba(99,102,241,.1)', color: '#6366F1' }}><i className="fa fa-list" style={{ fontSize: 7, marginRight: 2 }} />{c.items.length} items</span>}
+                                </div>
+                                <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 2 }}>
+                                  {fechaCorta}{c.cantidad > 0 ? ` · ${c.cantidad}u` : ''}{c.nota ? ` · ${c.nota}` : ''}
+                                </div>
                               </div>
-                              <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 2 }}>
-                                {fechaCorta}{c.cantidad > 0 ? ` · ${c.cantidad}u` : ''}{c.nota ? ` · ${c.nota}` : ''}
+                              <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em', flexShrink: 0 }}>
+                                {fmt(c.monto || 0)}
                               </div>
                             </div>
-                            <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em', flexShrink: 0 }}>
-                              {fmt(c.monto || 0)}
-                            </div>
+                            {hasItems && (
+                              <div style={{ padding: '0 12px 10px 12px', display: 'flex', flexDirection: 'column', gap: 3 }}>
+                                {c.items.map((it, idx) => (
+                                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '5px 8px', background: 'var(--surface)', borderRadius: 6, fontSize: 11 }}>
+                                    <span style={{ flex: 1, color: 'var(--txt2)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{it.name || '—'}</span>
+                                    <span style={{ color: 'var(--txt4)', fontVariantNumeric: 'tabular-nums' }}>{it.qty}u × {fmt(it.pu)}</span>
+                                    <span style={{ fontWeight: 700, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', minWidth: 80, textAlign: 'right' }}>{fmt(it.subtotal || (Number(it.qty) || 0) * (Number(it.pu) || 0))}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         )
                       })}
