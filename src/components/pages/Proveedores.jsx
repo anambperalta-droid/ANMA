@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
@@ -9,6 +10,8 @@ import { triggerEncouragement } from '../layout/MilestoneToast'
 
 export default function Proveedores() {
   const { get, set, saveEntity, deleteEntity } = useData()
+  const nav = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const toast   = useToast()
   const confirm = useConfirm()
   const [search, setSearch] = useState('')
@@ -114,9 +117,24 @@ export default function Proveedores() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // Deep-link ?open=<id> — abre drawer del proveedor correspondiente
+  useEffect(() => {
+    const openId = searchParams.get('open')
+    if (!openId) return
+    const list = get('suppliers') || []
+    const s = list.find(x => String(x.id) === String(openId))
+    if (s) {
+      setDetailSupplier(s)
+      setDetailTab('info')
+    }
+    setSearchParams({}, { replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const suppliers = get('suppliers')
   const products = get('products')
   const budgets = get('budgets')
+  const allCompras = get('compras') || []
 
   /* ── Precompute: product lookup by supplier id — O(N_products) once, O(1) per row ── */
   const productsBySupplier = useMemo(() => {
@@ -128,6 +146,36 @@ export default function Proveedores() {
     })
     return map
   }, [products])
+
+  /* ── Precompute: compras lookup por nombre de proveedor (match case-insensitive, trim) ── */
+  const comprasByProveedor = useMemo(() => {
+    const map = new Map()
+    allCompras.forEach(c => {
+      const key = String(c.proveedor || '').toLowerCase().trim()
+      if (!key) return
+      if (!map.has(key)) map.set(key, [])
+      map.get(key).push(c)
+    })
+    return map
+  }, [allCompras])
+
+  const supplierCompras = (s) => {
+    if (!s?.name) return []
+    return (comprasByProveedor.get(String(s.name).toLowerCase().trim()) || [])
+      .slice()
+      .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''))
+  }
+
+  const supplierComprasStats = (s) => {
+    const arr = supplierCompras(s)
+    if (!arr.length) return { total: 0, count: 0, last: null, avgMensual: 0 }
+    const total = arr.reduce((sum, c) => sum + (Number(c.monto) || 0), 0)
+    const last = arr[0]
+    // Promedio mensual: suma total ÷ meses distintos con actividad (mínimo 1)
+    const monthsSet = new Set(arr.map(c => (c.fecha || '').slice(0, 7)).filter(Boolean))
+    const avgMensual = monthsSet.size > 0 ? Math.round(total / monthsSet.size) : total
+    return { total, count: arr.length, last, avgMensual, months: monthsSet.size }
+  }
 
   /* ── Search filter — only re-runs when suppliers or search changes ── */
   const filtered = useMemo(() => {
@@ -916,6 +964,9 @@ export default function Proveedores() {
                   <button className="btn btn-ghost btn-sm" onClick={() => sharePortalLink(detailSupplier)} title="Compartir portal">
                     <i className="fa fa-share-nodes" /> <span>Compartir</span>
                   </button>
+                  <button className="btn btn-ghost btn-sm" onClick={() => { const n = detailSupplier.name; setDetailSupplier(null); nav(`/compras?prov=${encodeURIComponent(n)}&new=1`) }} title="Registrar gasto">
+                    <i className="fa fa-cart-shopping" /> <span>Registrar gasto</span>
+                  </button>
                   <button className="btn btn-ghost btn-sm" onClick={() => { const s = detailSupplier; setDetailSupplier(null); openEdit(s) }} title="Editar"><i className="fa fa-pen" /> <span>Editar</span></button>
                   <button className="mclose" onClick={() => setDetailSupplier(null)}><i className="fa fa-xmark" /></button>
                 </div>
@@ -924,9 +975,17 @@ export default function Proveedores() {
 
             {/* Pestañas */}
             <div className="detail-tabs prov-detail-tabs">
-              {[['info', 'Información'], ['productos', 'Productos'], ['precios', 'Precios'], ['notas', 'Notas']].map(([k, l]) => (
-                <div key={k} className={`detail-tab ${detailTab === k ? 'active' : ''}`} onClick={() => setDetailTab(k)}>{l}</div>
-              ))}
+              {[['info', 'Información'], ['productos', 'Productos'], ['precios', 'Precios'], ['compras', 'Compras'], ['notas', 'Notas']].map(([k, l]) => {
+                const count = k === 'compras' ? supplierCompras(detailSupplier).length : 0
+                return (
+                  <div key={k} className={`detail-tab ${detailTab === k ? 'active' : ''}`} onClick={() => setDetailTab(k)}>
+                    {l}
+                    {k === 'compras' && count > 0 && (
+                      <span style={{ marginLeft: 5, background: 'var(--brand-xlt)', color: 'var(--brand)', fontSize: 9, fontWeight: 800, padding: '1px 6px', borderRadius: 999, verticalAlign: 'middle' }}>{count}</span>
+                    )}
+                  </div>
+                )
+              })}
             </div>
 
             {/* Body */}
@@ -1014,6 +1073,48 @@ export default function Proveedores() {
                         <div style={{ flex: '1 1 120px', background: 'var(--surface2)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
                           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--money)' }}>{fmt(costTotal)}</div>
                           <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>Costo total</div>
+                        </div>
+                      </div>
+                    )
+                  })()}
+
+                  {/* KPIs de Compras — vida real del proveedor */}
+                  {(() => {
+                    const stats = supplierComprasStats(detailSupplier)
+                    if (stats.count === 0) {
+                      return (
+                        <div
+                          onClick={() => { const n = detailSupplier.name; setDetailSupplier(null); nav(`/compras?prov=${encodeURIComponent(n)}&new=1`) }}
+                          style={{ background: 'linear-gradient(135deg, rgba(124,58,237,.06), rgba(124,58,237,.02))', borderRadius: 10, padding: '14px 16px', marginBottom: 14, fontSize: 12.5, color: 'var(--txt3)', borderLeft: '3px solid var(--brand)', cursor: 'pointer', transition: 'background .15s' }}
+                          onMouseEnter={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(124,58,237,.12), rgba(124,58,237,.05))'}
+                          onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(124,58,237,.06), rgba(124,58,237,.02))'}
+                        >
+                          <i className="fa fa-cart-shopping" style={{ marginRight: 6, color: 'var(--brand)' }} />
+                          <b style={{ color: 'var(--txt2)' }}>Todavía sin compras.</b> Registrá el primer gasto a este proveedor para empezar a ver su historial.
+                        </div>
+                      )
+                    }
+                    const lastDate = stats.last.fecha ? (() => {
+                      const [y, m, d] = stats.last.fecha.split('-')
+                      return `${Number(d)}/${Number(m)}/${y.slice(2)}`
+                    })() : '—'
+                    return (
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 8, marginBottom: 14 }}>
+                        <div style={{ background: 'var(--brand-xlt)', borderRadius: 10, padding: '10px 12px' }}>
+                          <div style={{ fontSize: 9, color: 'var(--brand)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Total gastado</div>
+                          <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--brand)', marginTop: 2, fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em' }}>{fmt(stats.total)}</div>
+                        </div>
+                        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 12px' }}>
+                          <div style={{ fontSize: 9, color: 'var(--txt3)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Compras</div>
+                          <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--txt)', marginTop: 2, fontVariantNumeric: 'tabular-nums' }}>{stats.count}</div>
+                        </div>
+                        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 12px' }}>
+                          <div style={{ fontSize: 9, color: 'var(--txt3)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Última</div>
+                          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--txt)', marginTop: 2 }}>{lastDate}</div>
+                        </div>
+                        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 12px' }} title="Promedio por mes con actividad">
+                          <div style={{ fontSize: 9, color: 'var(--txt3)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Prom/mes</div>
+                          <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--money)', marginTop: 2, fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em' }}>{fmt(stats.avgMensual)}</div>
                         </div>
                       </div>
                     )
@@ -1132,6 +1233,77 @@ export default function Proveedores() {
                   )}
                 </div>
               )}
+
+              {/* TAB: Compras — historial de gastos a este proveedor */}
+              {detailTab === 'compras' && (() => {
+                const arr = supplierCompras(detailSupplier)
+                const stats = supplierComprasStats(detailSupplier)
+                if (!arr.length) {
+                  return (
+                    <div style={{ textAlign: 'center', padding: '32px 20px', background: 'var(--surface2)', borderRadius: 12 }}>
+                      <div style={{ width: 56, height: 56, borderRadius: 14, background: 'linear-gradient(135deg,rgba(124,58,237,.12),rgba(124,58,237,.04))', color: 'var(--brand)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, marginBottom: 10 }}>
+                        <i className="fa fa-cart-shopping" />
+                      </div>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--txt)', marginBottom: 4 }}>Sin compras registradas</div>
+                      <div style={{ fontSize: 12, color: 'var(--txt3)', lineHeight: 1.5, maxWidth: 320, margin: '0 auto 14px' }}>
+                        Cuando registres gastos a este proveedor en /compras, van a aparecer acá.
+                      </div>
+                      <button className="btn btn-primary btn-sm"
+                        onClick={() => { const n = detailSupplier.name; setDetailSupplier(null); nav(`/compras?prov=${encodeURIComponent(n)}&new=1`) }}>
+                        <i className="fa fa-plus" /> Registrar primer gasto
+                      </button>
+                    </div>
+                  )
+                }
+                return (
+                  <div>
+                    {/* Resumen top */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, gap: 10, flexWrap: 'wrap' }}>
+                      <div>
+                        <div style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 600 }}>
+                          {stats.count} {stats.count === 1 ? 'compra' : 'compras'} · {stats.months} {stats.months === 1 ? 'mes' : 'meses'} con actividad
+                        </div>
+                        <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--brand)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.03em', marginTop: 2 }}>
+                          {fmt(stats.total)}
+                        </div>
+                      </div>
+                      <button className="btn btn-primary btn-sm"
+                        onClick={() => { const n = detailSupplier.name; setDetailSupplier(null); nav(`/compras?prov=${encodeURIComponent(n)}&new=1`) }}>
+                        <i className="fa fa-plus" /> Nuevo gasto
+                      </button>
+                    </div>
+                    {/* Lista */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 360, overflowY: 'auto' }}>
+                      {arr.map(c => {
+                        const [y, m, d] = (c.fecha || '').split('-')
+                        const fechaCorta = c.fecha ? `${Number(d)}/${Number(m)}/${y.slice(2)}` : '—'
+                        return (
+                          <div
+                            key={c.id}
+                            onClick={() => { setDetailSupplier(null); nav(`/compras?mes=${(c.fecha || '').slice(0, 7)}&edit=${c.id}`) }}
+                            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'var(--surface2)', borderRadius: 8, cursor: 'pointer', transition: 'background .12s' }}
+                            onMouseEnter={e => e.currentTarget.style.background = 'var(--surface3, var(--surface))'}
+                            onMouseLeave={e => e.currentTarget.style.background = 'var(--surface2)'}
+                          >
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                {c.concepto || <span style={{ color: 'var(--txt4)', fontStyle: 'italic', fontWeight: 500 }}>Sin concepto</span>}
+                                {c.recurrente && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'var(--brand-xlt)', color: 'var(--brand)' }}><i className="fa fa-rotate" style={{ fontSize: 7, marginRight: 2 }} />recurrente</span>}
+                              </div>
+                              <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 2 }}>
+                                {fechaCorta}{c.cantidad > 0 ? ` · ${c.cantidad}u` : ''}{c.nota ? ` · ${c.nota}` : ''}
+                              </div>
+                            </div>
+                            <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em', flexShrink: 0 }}>
+                              {fmt(c.monto || 0)}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })()}
 
               {/* TAB: Notas */}
               {detailTab === 'notas' && (

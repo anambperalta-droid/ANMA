@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { usePrivacy } from '../../context/PrivacyContext'
@@ -31,6 +32,8 @@ const EMPTY = { proveedor: '', concepto: '', cantidad: '', monto: '', fecha: tod
 export default function Compras() {
   const { get, saveEntity, deleteEntity } = useData()
   const toast = useToast()
+  const nav = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const { hidden } = usePrivacy()
 
   const now = new Date()
@@ -108,6 +111,21 @@ export default function Compras() {
   const prevMonth = () => { if (month === 0) { setMonth(11); setYear(y => y - 1) } else setMonth(m => m - 1) }
   const nextMonth = () => { if (month === 11) { setMonth(0); setYear(y => y + 1) } else setMonth(m => m + 1) }
 
+  // Match proveedor por nombre contra directorio (case-insensitive, trim)
+  const supplierByName = useMemo(() => {
+    const map = new Map()
+    suppliers.forEach(s => {
+      const key = String(s.name || '').toLowerCase().trim()
+      if (key && !map.has(key)) map.set(key, s)
+    })
+    return map
+  }, [suppliers])
+  const openProveedor = (name) => {
+    const s = supplierByName.get(String(name || '').toLowerCase().trim())
+    if (!s) { toast(`"${name}" no está en el directorio todavía`, 'in'); return }
+    nav(`/proveedores?open=${s.id}`)
+  }
+
   useEffect(() => { if (drawerOpen) setTimeout(() => inputRef.current?.focus(), 250) }, [drawerOpen])
 
   const openDrawer = () => {
@@ -124,6 +142,33 @@ export default function Compras() {
     setShowNota(!!c.nota); setSavedCount(0); setEditingId(c.id); setDrawerOpen(true)
   }
   const closeDrawer = () => { setDrawerOpen(false); setEditingId(null) }
+
+  // Deep-link: ?prov=<nombre>&new=1 abre drawer con proveedor fijo
+  //            ?mes=YYYY-MM&edit=<id> salta al mes y abre edición
+  useEffect(() => {
+    const prov = searchParams.get('prov')
+    const isNew = searchParams.get('new') === '1'
+    const mes = searchParams.get('mes')
+    const editId = searchParams.get('edit')
+    if (mes && /^\d{4}-\d{2}$/.test(mes)) {
+      const [yy, mm] = mes.split('-').map(Number)
+      setYear(yy); setMonth(mm - 1)
+    }
+    if (editId) {
+      const c = allCompras.find(x => String(x.id) === String(editId))
+      if (c) {
+        editCompra(c)
+        setSearchParams({}, { replace: true })
+        return
+      }
+    }
+    if (prov && isNew) {
+      setDraft({ ...EMPTY, proveedor: prov })
+      setShowNota(false); setSavedCount(0); setEditingId(null); setDrawerOpen(true)
+      setSearchParams({}, { replace: true })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const saveEntry = (keepOpen) => {
     const proveedor = draft.proveedor.trim()
@@ -399,7 +444,13 @@ export default function Compras() {
             <div key={c.id} className="cp-row" style={{ cursor: 'pointer' }} onClick={() => editCompra(c)}>
               <span className="cp-cell" style={{ color: 'var(--txt3)', fontSize: 12 }}>{fechaCorta}</span>
               <span className="cp-cell" style={{ fontWeight: 600, color: 'var(--txt)' }}>
-                {c.proveedor || '---'}
+                {c.proveedor ? (
+                  <span
+                    onClick={e => { e.stopPropagation(); openProveedor(c.proveedor) }}
+                    style={{ cursor: 'pointer', borderBottom: '1px dotted var(--txt4)' }}
+                    title="Ver proveedor"
+                  >{c.proveedor}</span>
+                ) : '---'}
                 {c.recurrente && <span className="cp-recur"><i className="fa fa-rotate" style={{ fontSize: 8 }} />recurrente</span>}
               </span>
               <span className="cp-cell cp-hide-m" style={{ color: 'var(--txt2)' }}>
