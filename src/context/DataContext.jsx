@@ -62,7 +62,7 @@ export function DataProvider({ children }) {
 
   // Synchronous ID migration — runs before first render so selections/deletes never hit duplicate/missing IDs
   useState(() => {
-    ;['suppliers', 'products', 'clients', 'insumos', 'budgets'].forEach(key => {
+    ;['suppliers', 'products', 'clients', 'insumos', 'budgets', 'compras'].forEach(key => {
       const list = db(key, [])
       const seen = new Set()
       let changed = false
@@ -76,7 +76,7 @@ export function DataProvider({ children }) {
       })
       if (changed) dbW(key, fixed)
     })
-    ;['suppliers', 'products', 'clients', 'insumos', 'budgets'].forEach(key => {
+    ;['suppliers', 'products', 'clients', 'insumos', 'budgets', 'compras'].forEach(key => {
       db(key, []).forEach(it => { if (typeof it.id === 'number' && it.id >= __idSeed) __idSeed = it.id + 1 })
     })
     return true

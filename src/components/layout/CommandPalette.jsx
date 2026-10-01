@@ -18,6 +18,7 @@ export default function CommandPalette({ onClose }) {
     { type: 'nav', icon: 'fa-users', label: 'Clientes', sub: 'Base de contactos', path: '/clientes' },
     { type: 'nav', icon: 'fa-box-open', label: 'Catálogo', sub: 'Productos y categorías', path: '/catalogo' },
     { type: 'nav', icon: 'fa-industry', label: 'Proveedores', sub: 'Directorio', path: '/proveedores' },
+    { type: 'nav', icon: 'fa-cart-shopping', label: 'Compras', sub: 'Gastos a proveedores por mes', path: '/compras' },
     { type: 'nav', icon: 'fa-truck-fast', label: 'Logística', sub: 'Envíos ViaCargo', path: '/logistica' },
     { type: 'nav', icon: 'fa-comment-dots', label: 'Mensajes WA', sub: 'Templates', path: '/mensajes' },
     { type: 'nav', icon: 'fa-gear', label: 'Configuración', sub: 'Ajustes del sistema', path: '/config' },

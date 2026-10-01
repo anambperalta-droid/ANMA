@@ -907,6 +907,7 @@ export default function Historial() {
   const products = get('products')
   const insumos  = get('insumos')
   const clients = get('clients')
+  const allCompras = get('compras')
   const c = config()
   const { role } = useAuth()
   const opHideMetrics = role === 'operator' && c.opShowMetrics === false
@@ -935,6 +936,25 @@ export default function Historial() {
     if (period === '6m') { const s = new Date(n.getFullYear(), n.getMonth() - 6, 1); return budgets.filter(b => b.date && new Date(b.date) >= s) }
     return budgets
   }, [budgets, period, customFrom, customTo]) // eslint-disable-line
+
+  // ── Compras del período (mismo filtro de fecha que periodBudgets, usando c.fecha) ──
+  const periodCompras = useMemo(() => {
+    const n = now
+    const compraDate = (c) => c.fecha || new Date(c.updatedAt || Date.now()).toISOString().slice(0, 10)
+    const ym = `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}`
+    const prevYM = (() => { const d = new Date(n.getFullYear(), n.getMonth() - 1, 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}` })()
+    if (period === 'custom' && customFrom && customTo) {
+      const from = new Date(customFrom); const to = new Date(customTo + 'T23:59:59')
+      return allCompras.filter(c => { const d = compraDate(c); return d && new Date(d) >= from && new Date(d) <= to })
+    }
+    if (period === 'thismonth') return allCompras.filter(c => compraDate(c).startsWith(ym))
+    if (period === 'prevmonth') return allCompras.filter(c => compraDate(c).startsWith(prevYM))
+    if (period === 'year') return allCompras.filter(c => compraDate(c).startsWith(String(n.getFullYear())))
+    if (period === '3m') { const s = new Date(n.getFullYear(), n.getMonth() - 3, 1); return allCompras.filter(c => { const d = compraDate(c); return d && new Date(d) >= s }) }
+    if (period === '6m') { const s = new Date(n.getFullYear(), n.getMonth() - 6, 1); return allCompras.filter(c => { const d = compraDate(c); return d && new Date(d) >= s }) }
+    return allCompras
+  }, [allCompras, period, customFrom, customTo]) // eslint-disable-line
+  const totGastado = useMemo(() => periodCompras.reduce((s, c) => s + (Number(c.monto) || 0), 0), [periodCompras])
 
   // ── KPIs (memoized on period slice) ──
   const {
@@ -1867,6 +1887,15 @@ export default function Historial() {
             <div className="bento sk-fade-in">
               {!opHideMetrics && <KpiCard label="Ventas Brutas" value={money(totBudgeted)} delta={hidden ? undefined : deltaBrutas} sparkData={hidden ? null : sparkBrutas} sparkColor="var(--brand)" icon="fa-chart-column" />}
               {!opHideMetrics && <KpiCard label="Ingresos Caja" value={money(totCobrado)} delta={hidden ? undefined : deltaCaja} sparkData={hidden ? null : sparkCaja} sparkColor="var(--green)" isKey icon="fa-wallet" />}
+              {!opHideMetrics && totGastado > 0 && <KpiCard label="Gastos" value={money(totGastado)} icon="fa-cart-shopping" />}
+              {!opHideMetrics && totGastado > 0 && (
+                <KpiCard
+                  label="Resultado operativo"
+                  value={money(totGain - totGastado)}
+                  icon="fa-scale-balanced"
+                  sparkColor={(totGain - totGastado) >= 0 ? 'var(--green)' : '#DC2626'}
+                />
+              )}
               {!opHideMetrics && <KpiCard label="Ticket Promedio" value={avgTicket > 0 ? money(avgTicket) : '—'} sparkData={hidden ? null : sparkTicket} icon="fa-receipt" />}
               <KpiCard label="Presupuestos" value={String(periodBudgets.length)} icon="fa-file-invoice" />
 
@@ -2514,7 +2543,11 @@ export default function Historial() {
                 {
                   title: 'Rentabilidad',
                   rows: [
-                    { l: 'Ganancia cobrada', v: money(totGain), tip: 'Margen cobrado — no descuenta costos operativos', neg: totGain < 0, highlight: true },
+                    { l: 'Ganancia cobrada', v: money(totGain), tip: 'Margen cobrado — precio menos costo de productos cargados en cada pedido', neg: totGain < 0, highlight: totGastado === 0 },
+                    ...(totGastado > 0 ? [
+                      { l: 'Gastado en Compras', v: `− ${money(totGastado)}`, tip: 'Compras a proveedores registradas en el período', neg: true },
+                      { l: 'Resultado operativo', v: money(totGain - totGastado), tip: 'Ganancia cobrada menos Compras del período — tu ganancia neta real', neg: (totGain - totGastado) < 0, accent: (totGain - totGastado) > 0, highlight: true },
+                    ] : []),
                   ],
                 },
               ]
@@ -2527,7 +2560,7 @@ export default function Historial() {
                         {m.l}
                         {m.tip && <i className="fa fa-circle-info" title={m.tip} style={{ marginLeft: 5, color: 'var(--txt4)', fontSize: 10, cursor: 'help' }} />}
                       </span>
-                      <span className="mr-val" style={m.neg ? { color: '#DC2626' } : m.highlight ? { color: 'var(--brand)' } : undefined}>{m.v}</span>
+                      <span className="mr-val" style={m.neg ? { color: '#DC2626' } : m.accent ? { color: 'var(--green)' } : m.highlight ? { color: 'var(--brand)' } : undefined}>{m.v}</span>
                     </div>
                   ))}
                 </div>

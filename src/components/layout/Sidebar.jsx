@@ -35,6 +35,7 @@ const NAV_GROUPS = [
       { path: '/catalogo', icon: 'fa-cube', label: 'Productos', chipKey: 'products', perm: 'catalogo.view' },
       { path: '/insumos', icon: 'fa-boxes-stacked', label: 'Insumos', chipKey: 'insumos', perm: 'insumo.view' },
       { path: '/proveedores', icon: 'fa-industry', label: 'Proveedores', chipKey: 'suppliers', perm: 'proveedor.view' },
+      { path: '/compras', icon: 'fa-cart-shopping', label: 'Compras', chipKey: 'compras', perm: 'proveedor.view' },
     ],
   },
   {

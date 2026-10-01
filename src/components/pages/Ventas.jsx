@@ -63,6 +63,7 @@ export default function Ventas() {
   const clients = get('clients') || []
   const products = get('products') || []
   const allBudgets = get('budgets') || []
+  const allCompras = get('compras') || []
   const mk = monthKey(year, month)
 
   const monthBudgets = useMemo(() =>
@@ -112,6 +113,27 @@ export default function Ventas() {
     e.sort((a, b) => b[1] - a[1])
     return { name: e[0][0], total: e[0][1] }
   }, [monthBudgets])
+
+  // Cross-KPI Ventas <-> Compras: resultado operativo del mes = ganancia cobrada - compras
+  const gastadoDelMes = useMemo(() => {
+    return allCompras.reduce((s, c) => {
+      const d = c.fecha || new Date(c.updatedAt || Date.now()).toISOString().slice(0, 10)
+      if (d.slice(0, 7) !== mk) return s
+      return s + (Number(c.monto) || 0)
+    }, 0)
+  }, [allCompras, mk])
+  const gananciaCobradaMes = useMemo(() => {
+    return monthBudgets.reduce((s, b) => {
+      if (b.payStatus === 'paid') return s + (Number(b.totalGain) || 0)
+      if (b.payStatus === 'partial') {
+        const pct = (Number(b.depositAmt) || 0) / (Number(b.total) || 1)
+        return s + Math.round((Number(b.totalGain) || 0) * pct)
+      }
+      return s
+    }, 0)
+  }, [monthBudgets])
+  const resultadoOperativo = gananciaCobradaMes - gastadoDelMes
+  const hayCompras = gastadoDelMes > 0
 
   const capDelta = (v) => v === null ? null : Math.max(-999, Math.min(999, v))
   const deltaCount = prevMonthData.count >= 3 ? capDelta(Math.round(((totals.count - prevMonthData.count) / prevMonthData.count) * 100)) : null
@@ -436,6 +458,30 @@ export default function Ventas() {
                 )}
               </div>
             </div>
+            {hayCompras && (
+              <>
+                <div className="vt-hero-divider" />
+                <div className="vt-hero-stat" title="Ganancia cobrada del mes menos lo gastado en Compras — tu ganancia neta real">
+                  <div className="vt-hero-stat-icon" style={{
+                    background: resultadoOperativo >= 0 ? 'rgba(21,128,61,.1)' : 'rgba(220,38,38,.1)',
+                    color: resultadoOperativo >= 0 ? '#15803d' : '#DC2626',
+                  }}>
+                    <i className="fa fa-scale-balanced" />
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <div className="vt-hero-stat-lbl">Resultado operativo</div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                      <span className="vt-hero-stat-val" style={{ color: resultadoOperativo >= 0 ? '#15803d' : '#DC2626' }}>
+                        {hidden ? '***' : fmt(resultadoOperativo)}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: 9.5, color: 'var(--txt4)', fontWeight: 600, marginTop: 1, letterSpacing: '.02em' }}>
+                      {hidden ? '' : <>{fmt(gananciaCobradaMes)} ganancia − {fmt(gastadoDelMes)} compras</>}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

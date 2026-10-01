@@ -25,6 +25,7 @@ import { flushSync as flushCloudSync } from '../../lib/sync'
 import {
   Historial, Presupuesto, Clientes, Catalogo, Proveedores, Logistica,
   Mensajes, Insumos, Config, Admin, Importador, MiCuenta, Guia, NotFound,
+  Compras,
 } from '../../lib/routes'
 
 const PRIORITIES = [
@@ -401,6 +402,7 @@ function AppShellInner() {
               <Route path="/catalogo" element={<Guard perm="catalogo.view"><Catalogo /></Guard>} />
               <Route path="/insumos" element={<Guard perm="insumo.view"><Insumos /></Guard>} />
               <Route path="/proveedores" element={<Guard perm="proveedor.view"><Proveedores /></Guard>} />
+              <Route path="/compras" element={<Guard perm="proveedor.view"><Compras /></Guard>} />
               <Route path="/logistica" element={<Guard perm="logistica.view"><Logistica /></Guard>} />
               <Route path="/mensajes" element={<Guard perm="mensajes.view"><Mensajes /></Guard>} />
               <Route path="/config" element={<Guard perm="config.access"><Config /></Guard>} />
@@ -425,6 +427,9 @@ function AppShellInner() {
         )}
         {can('proveedor.view') && (
           <BottomSheetItem icon="fa-industry" label="Proveedores" sub="Gestión de proveedores" onClick={() => goSheet('/proveedores')} />
+        )}
+        {can('proveedor.view') && (
+          <BottomSheetItem icon="fa-cart-shopping" label="Compras" sub="Gastos a proveedores por mes" onClick={() => goSheet('/compras')} />
         )}
         {can('logistica.view') && (
           <BottomSheetItem icon="fa-truck-fast" label="Logística" sub="Envíos y entregas" onClick={() => goSheet('/logistica')} />
