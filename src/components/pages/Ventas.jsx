@@ -77,6 +77,27 @@ function fmtDateShort(iso) {
   return `${parts[2]}-${parts[1]}`
 }
 
+// Mediana — Fase 2 auditoria 02/10/26.
+// Robusta contra outliers: la mediana de [100, 100, 100, 100, 2.700.000]
+// es 100, no 540.020 como el promedio. Representa mejor el ticket "tipico".
+function median(nums) {
+  const arr = nums.filter(n => Number.isFinite(n) && n > 0).sort((a, b) => a - b)
+  if (!arr.length) return 0
+  const mid = Math.floor(arr.length / 2)
+  return arr.length % 2 ? arr[mid] : Math.round((arr[mid - 1] + arr[mid]) / 2)
+}
+
+// Condicion fiscal — Fase 2 auditoria 02/10/26.
+// Determina si al cliente le cobramos IVA discriminado (Factura A)
+// o si va a precio final (Consumidor Final / Monotributo).
+const FISCAL_OPTS = [
+  { value: 'consumidor',   label: 'Consumidor final', badge: 'CF', iva: false, color: '#64748b' },
+  { value: 'respInscripto',label: 'Responsable Inscripto', badge: 'A',  iva: true,  color: '#7C3AED' },
+  { value: 'monotributo',  label: 'Monotributo',      badge: 'M',  iva: false, color: '#0891B2' },
+  { value: 'exento',       label: 'Exento',           badge: 'E',  iva: false, color: '#94a3b8' },
+]
+const FISCAL_MAP = Object.fromEntries(FISCAL_OPTS.map(o => [o.value, o]))
+
 function fmtLive(v) {
   if (!v) return ''
   const clean = String(v).replace(/[^\d]/g, '')
@@ -87,10 +108,10 @@ function parseFmtValue(v) {
   return Number(String(v).replace(/\./g, '').replace(',', '.')) || 0
 }
 
-const EMPTY = { cliente: '', producto: '', cantidad: '1', facturado: '', nota: '', fecha: todayISO(), payStatus: 'pending', incluyeIva: true, canal: '', payMethod: '' }
+const EMPTY = { cliente: '', producto: '', cantidad: '1', facturado: '', nota: '', fecha: todayISO(), payStatus: 'pending', incluyeIva: true, canal: '', payMethod: '', fiscalCondition: 'consumidor' }
 
 export default function Ventas() {
-  const { get, saveBudget } = useData()
+  const { get, saveBudget, saveEntity } = useData()
   const toast = useToast()
   const nav = useNavigate()
   const { hidden } = usePrivacy()
@@ -148,6 +169,12 @@ export default function Ventas() {
   const cobroPercent = totals.facturado > 0 ? Math.round((totals.cobrado / totals.facturado) * 100) : 0
 
   const avgTicket = totals.count > 0 ? Math.round(totals.facturado / totals.count) : 0
+  // Mediana del ticket (Fase 2 auditoria 02/10/26).
+  // Si hay outliers (max > 3x avg) la mediana es un indicador mas honesto
+  // del ticket "tipico" que el promedio.
+  const medianTicket = useMemo(() => median(monthBudgets.map(b => Number(b.total) || 0)), [monthBudgets])
+  const maxTicket    = monthBudgets.reduce((m, b) => Math.max(m, Number(b.total) || 0), 0)
+  const hasOutlier   = totals.count >= 3 && avgTicket > 0 && maxTicket > avgTicket * 3
 
   const topClient = useMemo(() => {
     const rev = {}
@@ -287,6 +314,13 @@ export default function Ventas() {
       (cl.contact || '').toLowerCase() === cliente.toLowerCase()
     )
 
+    // Snapshot de condicion fiscal — Fase 2 auditoria 02/10/26.
+    // Si el cliente ya existe y cambiamos su fiscalCondition en el drawer,
+    // la persistimos tambien en el cliente (una sola fuente de verdad futura).
+    const fcSnap = draft.fiscalCondition || 'consumidor'
+    if (matchClient && saveEntity && matchClient.fiscalCondition !== fcSnap) {
+      saveEntity('clients', { ...matchClient, fiscalCondition: fcSnap })
+    }
     saveBudget({
       contact: matchClient?.contact || cliente,
       company: matchClient?.company || cliente,
@@ -296,7 +330,8 @@ export default function Ventas() {
       status: 'confirmed', estado: 'confirmado',
       payStatus: draft.payStatus,
       canal: draft.canal || '',
-      payMethod: draft.payMethod || '',   // Medio de pago — Fase 1 auditoria 02/10/26
+      payMethod: draft.payMethod || '',   // Medio de pago — Fase 1
+      fiscalCondition: fcSnap,            // Condicion fiscal — Fase 2
       total: facturado, aplicaIva: ivaAmt > 0, _quickIva: ivaAmt, _quickEntry: true,
       items: producto ? [{ name: producto, qty: cantidad }] : [],
       alternatives: [{ id: 1, label: 'Principal', approved: true, kits: [{ id: 1, name: 'Pedido', qty: 1, priceUnit: 0, costUnit: 0, packaging: [], products: producto ? [{ name: producto, qty: cantidad, costUnit: 0, priceUnit: facturado / (cantidad || 1) }] : [], personalizacion: { desc: '', costUnit: 0 } }] }],
@@ -509,6 +544,11 @@ export default function Ventas() {
                   <span className="vt-hero-stat-val">{hidden ? '***' : fmt(avgTicket)}</span>
                   {deltaTicket !== null && <Delta value={deltaTicket} />}
                 </div>
+                {hasOutlier && !hidden && (
+                  <div title="Hay un ticket mucho mayor al resto. La mediana representa mejor lo tipico." style={{ fontSize: 9.5, color: 'var(--txt4)', fontWeight: 600, marginTop: 1, letterSpacing: '.02em' }}>
+                    mediana <b style={{ color: 'var(--txt3)' }}>{fmt(medianTicket)}</b>
+                  </div>
+                )}
               </div>
             </div>
             <div className="vt-hero-divider" />
@@ -628,7 +668,14 @@ export default function Ventas() {
           return (
             <div key={b.id} className="vt-row" style={{ cursor: 'pointer', borderLeft: `3px solid ${urgBorder}` }} onClick={() => nav(`/pedido/${b.id}`)}>
               <span className="vt-cell vt-hide-m" style={{ color: 'var(--txt3)', fontSize: 11.5, fontVariantNumeric: 'tabular-nums' }}>{fmtDateShort(b.date) || '—'}</span>
-              <span className="vt-cell" style={{ fontWeight: 600, color: 'var(--txt)' }}>{b.company || b.contact || '—'}</span>
+              <span className="vt-cell" style={{ fontWeight: 600, color: 'var(--txt)', display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+                {(() => {
+                  const fc = b.fiscalCondition || (b.clientId ? (clients.find(c => c.id === b.clientId)?.fiscalCondition) : null) || 'consumidor'
+                  const op = FISCAL_MAP[fc] || FISCAL_MAP.consumidor
+                  return <span title={op.label} style={{ fontSize: 8.5, fontWeight: 800, background: op.color + '20', color: op.color, padding: '1px 4px', borderRadius: 3, flexShrink: 0, letterSpacing: '.02em' }}>{op.badge}</span>
+                })()}
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.company || b.contact || '—'}</span>
+              </span>
               <span className="vt-cell vt-hide-s" style={{ color: 'var(--txt2)' }}>{b.items?.[0]?.name || '—'}</span>
               <span className="vt-cell vt-cell-r vt-hide-m" style={{ color: 'var(--txt3)' }}>{b.items?.[0]?.qty || 1}</span>
               <span className="vt-cell vt-cell-r" style={{ fontWeight: 700, color: 'var(--txt)' }}>{hidden ? '***' : fmt(b.total || 0)}</span>
@@ -860,7 +907,14 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
                 <div className="sd-sug">
                   {clientSuggestions.map(cl => (
                     <div key={cl.id} className="sd-sug-item"
-                      onMouseDown={() => { setDraft(d => ({ ...d, cliente: cl.company || cl.contact })); setShowClientSug(false) }}>
+                      onMouseDown={() => {
+                        // Fase 2: al elegir cliente conocido, hereda su condicion fiscal
+                        // y sincroniza IVA segun corresponda (A -> discrimina, CF -> no).
+                        const fc = cl.fiscalCondition || 'consumidor'
+                        const op = FISCAL_MAP[fc] || FISCAL_MAP.consumidor
+                        setDraft(d => ({ ...d, cliente: cl.company || cl.contact, fiscalCondition: fc, incluyeIva: op.iva }))
+                        setShowClientSug(false)
+                      }}>
                       <div>
                         <div style={{ fontWeight: 600, color: 'var(--txt)' }}>{cl.company || cl.contact}</div>
                         {cl.company && cl.contact && <div style={{ fontSize: 11, color: 'var(--txt4)', marginTop: 1 }}>{cl.contact}</div>}
@@ -870,6 +924,27 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
                   ))}
                 </div>
               )}
+            </div>
+            {/* Condicion fiscal — Fase 2 auditoria 02/10/26.
+                Chips compactas. Al elegirla, sincroniza el IVA (RI -> discrimina). */}
+            <div style={{ display: 'flex', gap: 4, marginTop: 8, flexWrap: 'wrap' }}>
+              {FISCAL_OPTS.map(f => {
+                const on = draft.fiscalCondition === f.value
+                return (
+                  <button key={f.value}
+                    onClick={() => setDraft(d => ({ ...d, fiscalCondition: f.value, incluyeIva: f.iva }))}
+                    style={{
+                      padding: '4px 9px', borderRadius: 7, fontSize: 10.5, fontWeight: 700,
+                      border: `1.5px solid ${on ? f.color : 'var(--border)'}`,
+                      background: on ? f.color + '18' : 'var(--bg)',
+                      color: on ? f.color : 'var(--txt3)',
+                      cursor: 'pointer', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 4,
+                    }}>
+                    <span style={{ fontSize: 9, fontWeight: 800, background: on ? f.color : 'var(--surface2)', color: on ? '#fff' : 'var(--txt3)', padding: '1px 5px', borderRadius: 4 }}>{f.badge}</span>
+                    {f.label}
+                  </button>
+                )
+              })}
             </div>
           </div>
 
@@ -918,16 +993,42 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
                 />
               </div>
             </div>
-            {showBreakdown && (
-              <div className="sd-breakdown">
-                <i className="fa fa-calculator" />
-                <span>{fmt(matchedPrice)}/u</span>
-                <span style={{ color: 'var(--txt4)' }}>x</span>
-                <span>{qty}</span>
-                <span style={{ color: 'var(--txt4)' }}>=</span>
-                <span style={{ color: 'var(--brand)', fontWeight: 800 }}>{fmt(rawTotal)}</span>
-              </div>
-            )}
+            {showBreakdown && (() => {
+              // Lista oficial — Fase 2 auditoria 02/10/26.
+              // Alertamos cuando el pu ingresado difiere >5% del precio del
+              // catalogo. No bloqueamos: el usuario puede dar un descuento o
+              // vender a mayorista. Solo señalamos para evitar inconsistencias
+              // tipo "Saco de lino a $138k / $143k / $230k en el mismo mes".
+              const puInput = rawTotal / qty
+              const diff = (puInput - matchedPrice) / matchedPrice
+              const warn = Math.abs(diff) > 0.05
+              return (
+                <>
+                  <div className="sd-breakdown">
+                    <i className="fa fa-calculator" />
+                    <span>{fmt(matchedPrice)}/u</span>
+                    <span style={{ color: 'var(--txt4)' }}>x</span>
+                    <span>{qty}</span>
+                    <span style={{ color: 'var(--txt4)' }}>=</span>
+                    <span style={{ color: 'var(--brand)', fontWeight: 800 }}>{fmt(matchedPrice * qty)}</span>
+                  </div>
+                  {warn && (
+                    <div style={{
+                      display: 'flex', alignItems: 'center', gap: 6, marginTop: 5,
+                      padding: '5px 10px', borderRadius: 7,
+                      background: '#FEF3C7', border: '1px solid #FDE68A',
+                      fontSize: 10.5, color: '#78350F', fontWeight: 600,
+                    }}>
+                      <i className="fa fa-triangle-exclamation" style={{ fontSize: 10 }} />
+                      <span>
+                        Lista oficial <b>{fmt(matchedPrice)}/u</b> ·
+                        {' '}diferencia <b style={{ color: diff > 0 ? '#15803d' : '#dc2626' }}>{diff > 0 ? '+' : ''}{Math.round(diff * 100)}%</b>
+                      </span>
+                    </div>
+                  )}
+                </>
+              )
+            })()}
           </div>
 
           <div className="sd-sep" />
