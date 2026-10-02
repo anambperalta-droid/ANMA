@@ -5,6 +5,14 @@ import { useConfirm } from '../../context/ConfirmContext'
 import { fmt } from '../../lib/storage'
 import { getDefaultTemplates, templatesAreOutdated } from '../../lib/voice'
 
+/* ── Formato fecha ANMA: d-m-aa (ej: 2-10-26) ── */
+function formatFechaAR(iso) {
+  if (!iso) return ''
+  if (iso instanceof Date) return `${iso.getDate()}-${iso.getMonth() + 1}-${String(iso.getFullYear()).slice(2)}`
+  const m = String(iso).trim().match(/^(\d{4})-(\d{2})-(\d{2})/)
+  return m ? `${Number(m[3])}-${Number(m[2])}-${m[1].slice(2)}` : String(iso)
+}
+
 /* ═══ 5 Solapas de venta ═══ */
 const STAGES = ['Captación', 'Presupuestos', 'Pagos', 'Logística', 'Post-Venta']
 const STAGE_ICONS = {
@@ -164,7 +172,7 @@ function VariablesPanel({ client, config, budget }) {
     { key: 'negocio', icon: 'fa-store', value: c.businessName || 'ANMA' },
     { key: 'precio', icon: 'fa-coins', value: budget ? fmt(budget.total) : null },
     { key: 'producto', icon: 'fa-box-open', value: budget?.items?.length ? budget.items.map(i => i.name).filter(Boolean).join(', ') : null },
-    { key: 'fecha', icon: 'fa-calendar', value: budget?.deliveryDate || budget?.date || null },
+    { key: 'fecha', icon: 'fa-calendar', value: formatFechaAR(budget?.deliveryDate || budget?.date) || null },
   ]
 
   return (
@@ -251,7 +259,7 @@ export default function Mensajes() {
     const negocio = c.businessName || 'ANMA'
     const precio = clientBudget ? fmt(clientBudget.total) : ''
     const producto = clientBudget?.items?.length ? clientBudget.items.map(i => i.name).filter(Boolean).join(', ') : ''
-    const fecha = clientBudget?.deliveryDate || clientBudget?.date || ''
+    const fecha = formatFechaAR(clientBudget?.deliveryDate || clientBudget?.date)
     return text
       .replace(/{{nombre}}/gi, nombre)
       .replace(/{{empresa}}/gi, empresa)
@@ -281,10 +289,13 @@ export default function Mensajes() {
 
   const deleteMsg = (id) => confirm('¿Eliminar este mensaje?', () => { deleteEntity('waTemplates', id); toast('Mensaje eliminado', 'in') })
 
-  const restoreDefaults = () => confirm('¿Restaurar los mensajes originales?', () => {
-    const defaults = getDefaultTemplates(c.tipoVenta)
-    const withIds = defaults.map((t, i) => ({ ...t, id: Date.now() + i }))
-    set('waTemplates', withIds); toast('Mensajes restaurados', 'ok')
+  const restoreDefaults = () => confirm('¿Restaurar los mensajes originales de ANMA? Tus mensajes personalizados se mantienen.', () => {
+    const stored = get('waTemplates') || []
+    const userMade = stored.filter(t => !t.isDefault)
+    const base = Date.now()
+    const fresh = getDefaultTemplates(c.tipoVenta).map((t, i) => ({ ...t, id: base + i }))
+    set('waTemplates', [...fresh, ...userMade])
+    toast(`Plantillas restablecidas · ${userMade.length} mensajes propios conservados`, 'ok')
   })
 
   const copyText = (text) => {
