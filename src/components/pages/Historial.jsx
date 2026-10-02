@@ -6,6 +6,7 @@ import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, fmtDate, MONTHS, STATUS_MAP, STATUS_CLS, PAY_STATUS_MAP, PAY_STATUS_CLS, db, dbW } from '../../lib/storage'
 import { buildWAMsg, openWAFor, relTimeShort, sharePortalCliente } from '../../lib/waMsg'
+import PedidoDrawer from '../common/PedidoDrawer'
 import { usePrivacy } from '../../context/PrivacyContext'
 import GuideBanner from '../layout/GuideBanner'
 import Ventas from './Ventas'
@@ -2717,99 +2718,18 @@ export default function Historial() {
         <ResendModal budget={resendBudget} onClose={() => setResendBudget(null)} onSend={handleResendSent} />
       )}
 
-      {/* ═══ Budget Preview Modal ═══ */}
-      {previewBudget && (() => {
-        const b = previewBudget
-        const cfg = config()
-        const brandColor = cfg.brandColor || '#7C3AED'
-        const bName = cfg.businessName || 'ANMA'
-        const numV = (v) => { const n = Number(v); return isNaN(n) ? 0 : n }
-        const rows = (b.items || []).filter(i => i.name).map(i =>
-          `<tr><td style="padding:6px 9px;border-bottom:1px solid #EEF0F7">${i.name}${i.variant ? ` <span style="color:#888;font-size:10px">· ${i.variant}</span>` : ''}</td><td style="padding:6px 9px;border-bottom:1px solid #EEF0F7;text-align:center">${numV(i.qty)}</td><td style="padding:6px 9px;border-bottom:1px solid #EEF0F7;text-align:right">${fmt(numV(i.priceUnit))}</td><td style="padding:6px 9px;border-bottom:1px solid #EEF0F7;text-align:right;font-weight:700">${fmt(numV(i.qty) * numV(i.priceUnit))}</td></tr>`
-        ).join('')
-        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>*{box-sizing:border-box}body{font-family:system-ui,sans-serif;margin:28px;color:#1E1B4B;font-size:12px}table{width:100%;border-collapse:collapse}th{background:${brandColor};color:#fff;padding:7px 9px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.4px}@media print{body{margin:16px}}</style></head><body>
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:10px;border-bottom:3px solid ${brandColor};margin-bottom:16px">
-            <div>${cfg.logo ? `<img src="${cfg.logo}" style="height:36px">` : `<div style="font-size:20px;font-weight:800;color:${brandColor}">${bName}</div>`}</div>
-            <div style="text-align:right"><div style="font-size:16px;font-weight:800">${b.num || '—'}</div><div style="font-size:11px;color:#666">Fecha: ${b.date || '—'}</div>${b.deliveryDate ? `<div style="font-size:11px;color:#666">Entrega: ${b.deliveryDate}</div>` : ''}</div>
-          </div>
-          <div style="background:#F8F9FC;border-radius:8px;padding:10px 14px;margin-bottom:14px">
-            ${b.contact ? `<div style="font-weight:700">${b.contact}</div>` : ''}
-            ${b.company ? `<div style="color:#666">${b.company}</div>` : ''}
-            ${b.wa ? `<div style="color:#666">${b.wa}</div>` : ''}
-          </div>
-          <table><thead><tr><th>Producto</th><th style="width:55px;text-align:center">Cant.</th><th style="width:95px;text-align:right">P.unit</th><th style="width:100px;text-align:right">Subtotal</th></tr></thead><tbody>${rows}</tbody></table>
-          <div style="display:flex;justify-content:flex-end;margin-top:12px"><div style="min-width:220px;padding:10px 14px;background:${brandColor}10;border-radius:8px;border:1px solid ${brandColor}30">
-            <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:800;color:${brandColor}"><span>Total</span><span>${fmt(numV(b.total))}</span></div>
-            ${numV(b.depositAmt) > 0 ? `<div style="display:flex;justify-content:space-between;font-size:12px;color:${brandColor};font-weight:600;margin-top:4px"><span>Seña</span><span>${fmt(numV(b.depositAmt))}</span></div>` : ''}
-          </div></div>
-          ${b.noteCli ? `<div style="margin-top:14px;background:#F4F6FD;border-radius:8px;padding:10px 14px;font-size:11px;color:#4B5280">${b.noteCli}</div>` : ''}
-        </body></html>`
-        return (
-          <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setPreviewBudget(null) }}>
-            <div className="modal modal-lg" style={{ maxWidth: 740, maxHeight: '90vh', display: 'flex', flexDirection: 'column' }} onClick={e => e.stopPropagation()}>
-              <div className="mh">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <i className="fa fa-file-invoice-dollar" style={{ color: brandColor }} />
-                  <span style={{ fontWeight: 700 }}>{b.num || '—'}</span>
-                  <span className={`badge ${STATUS_CLS[b.status] || 'b-draft'}`}>{STATUS_MAP[b.status] || 'Borrador'}</span>
-                </div>
-                <button className="mclose" onClick={() => setPreviewBudget(null)}><i className="fa fa-xmark" /></button>
-              </div>
-              <iframe srcDoc={html} style={{ flex: 1, border: 'none', minHeight: 420, borderRadius: 8 }} title="Vista previa" />
-              {/* ── Resumen de pagos cobrados para este presupuesto ── */}
-              {(() => {
-                const totalDue   = b.totalFinal || b.total || 0
-                const totalPaid  = cobrado(b)
-                const remaining  = Math.max(0, totalDue - totalPaid)
-                const pays       = Array.isArray(b.payments) ? b.payments : []
-                const pcMethod = (val) => ({ efectivo:'Efectivo', transferencia:'Transferencia', mp:'Mercado Pago', tarjeta:'Tarjeta', cheque:'Cheque', otro:'Otro' }[val] || val)
-                if (totalDue === 0 && totalPaid === 0) return null
-                return (
-                  <div style={{ padding: '14px 16px', borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: pays.length > 0 ? 12 : 0 }}>
-                      <div>
-                        <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Total{b.ivaAmt > 0 ? ' c/IVA' : ''}</div>
-                        <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--txt)', marginTop: 2 }}>{fmt(totalDue)}</div>
-                      </div>
-                      <div>
-                        <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Cobrado</div>
-                        <div style={{ fontSize: 14, fontWeight: 800, color: '#15803D', marginTop: 2 }}>{fmt(totalPaid)}</div>
-                      </div>
-                      <div>
-                        <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Falta</div>
-                        <div style={{ fontSize: 14, fontWeight: 800, color: remaining > 0 ? '#DC2626' : 'var(--txt3)', marginTop: 2 }}>{fmt(remaining)}</div>
-                      </div>
-                    </div>
-                    {pays.length > 0 && (
-                      <div style={{ maxHeight: 110, overflowY: 'auto', border: '1px solid var(--border)', borderRadius: 8, background: 'var(--surface)' }}>
-                        {pays.map((p, idx) => (
-                          <div key={p.id || idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, padding: '7px 11px', borderBottom: idx < pays.length - 1 ? '1px solid var(--border)' : 'none', fontSize: 12 }}>
-                            <span style={{ fontSize: 11, color: 'var(--txt3)' }}>{p.date}</span>
-                            <span style={{ color: 'var(--txt2)' }}>{pcMethod(p.method)}</span>
-                            {p.notes && <span style={{ fontSize: 10.5, color: 'var(--txt4)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.notes}</span>}
-                            <span style={{ fontWeight: 700, color: 'var(--txt)' }}>{fmt(p.amount)}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )
-              })()}
-              <div style={{ display: 'flex', gap: 8, padding: '12px 16px', borderTop: '1px solid var(--border)', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                <button className="btn btn-sm" onClick={() => { setPreviewBudget(null); setPaymentsBudget(b) }} style={{ background: '#F0FDF4', color: '#15803D', border: '1px solid #86EFAC' }}>
-                  <i className="fa fa-hand-holding-dollar" /> Registrar pago
-                </button>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <button className="btn btn-ghost btn-sm" onClick={() => setPreviewBudget(null)}>Cerrar</button>
-                  <button className="btn btn-primary btn-sm" onClick={() => { setPreviewBudget(null); nav(`/pedido/${b.id}`) }}>
-                    <i className="fa fa-pen" /> Editar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )
-      })()}
+      {/* ═══ Budget Preview Drawer (reemplazó el modal con iframe PDF, 02/10/26) ═══ */}
+      {previewBudget && (
+        <PedidoDrawer
+          budget={previewBudget}
+          onClose={() => setPreviewBudget(null)}
+          onEdit={() => { const id = previewBudget.id; setPreviewBudget(null); nav(`/pedido/${id}`) }}
+          onWA={() => copyWA(previewBudget)}
+          onRegistrarPago={() => { const b = previewBudget; setPreviewBudget(null); setPaymentsBudget(b) }}
+          onCobrarWA={() => copyWA(previewBudget)}
+          onSharePC={() => sharePC(previewBudget)}
+        />
+      )}
 
       {/* ═══ Loss Reason Modal ═══ */}
       {pendingLossId && (
