@@ -1,1 +1,1 @@
-{"version":"0.0.1","configurations":[{"name":"anma-dev","runtimeExecutable":"npm","runtimeArgs":["run","dev"],"port":5174,"url":"http://localhost:5174/app"}]}
+{"version":"0.0.1","configurations":[{"name":"anma-dev","runtimeExecutable":"npm","runtimeArgs":["run","dev"],"port":5174,"url":"http://localhost:5174/app"},{"name":"landing-preview","runtimeExecutable":"npx","runtimeArgs":["serve","-l","5175","-s","."],"port":5175,"url":"http://localhost:5175"}]}
