@@ -133,11 +133,11 @@ const TEMPLATES_MINORISTA = [
   { stage: 'Presupuestos', title: 'Reserva / lo aparto', isDefault: true,
     text: 'Hola {{nombre}}!\n\nTengo el {{producto}} disponible. Si me confirmás hoy, te lo aparto y coordinamos entrega para {{fecha}}.\n\nQueda poca cantidad, así que avisame si lo querés que lo separo 🙌' },
 
-  // ─────── PAGOS — Minorista (10) · una variante por situación real ───────
-  { stage: 'Pagos', title: 'Confirmación de pedido · seña 50%', isDefault: true,
-    text: '¡Genial {{nombre}}!\n\nQueda confirmado tu pedido:\n\n📦 {{producto}}\n*Total:* {{precio}}\n*Seña 50%:* [calcular]\n*Saldo contra entrega:* [calcular]\n*Entrega:* {{fecha}}\n\nTe paso los datos para la seña y arrancamos. ¡Gracias por elegir *{{negocio}}*!' },
-  { stage: 'Pagos', title: 'Confirmación de pedido · pago contado', isDefault: true,
-    text: '¡Perfecto {{nombre}}!\n\nQueda confirmado tu pedido:\n\n📦 {{producto}}\n*Total a abonar:* {{precio}}\n*Entrega:* {{fecha}}\n\nCon el pago lo paso a despacho. Te paso los datos ahora.' },
+  // ─────── PAGOS — Minorista (10) · B2C real: compra directa, retiro/envío ───────
+  { stage: 'Pagos', title: 'Confirmación de compra · pago contado', isDefault: true,
+    text: '¡Perfecto {{nombre}}!\n\nQueda confirmada tu compra:\n\n📦 {{producto}}\n*Total a abonar:* {{precio}}\n*Entrega estimada:* {{fecha}}\n\nCon el pago ya te lo preparo. Te paso los datos ahora.' },
+  { stage: 'Pagos', title: 'Reserva con seña (producto custom)', isDefault: true,
+    text: '¡Genial {{nombre}}!\n\nTe aparté tu pedido:\n\n📦 {{producto}}\n*Total:* {{precio}}\n*Seña para reservar:* [calcular]\n*Saldo al retirar:* [calcular]\n*Entrega estimada:* {{fecha}}\n\nCon la seña queda apartado. ¡Gracias por elegir *{{negocio}}*!' },
   { stage: 'Pagos', title: 'Datos para transferencia', isDefault: true,
     text: 'Hola {{nombre}}!\n\nTe paso los datos para la transferencia:\n\n*CBU:* [cargar]\n*Alias:* [cargar]\n*Titular:* [cargar]\n*Monto:* {{precio}}\n\nCuando puedas, mandame el comprobante y te confirmo. ¡Gracias!' },
   { stage: 'Pagos', title: 'Link de pago (MercadoPago)', isDefault: true,
@@ -146,8 +146,8 @@ const TEMPLATES_MINORISTA = [
     text: 'Hola {{nombre}}! ✅\n\nRecibí tu pago de *{{precio}}*. Todo en orden.\n\nYa lo paso a despacho y te aviso cuando esté listo para el {{fecha}}. ¡Gracias por la compra! 🙌' },
   { stage: 'Pagos', title: 'Pago parcial recibido · resta saldo', isDefault: true,
     text: 'Hola {{nombre}}!\n\nConfirmo que recibí la seña de tu pedido. ¡Ya lo arranco!\n\n*Saldo pendiente:* [completar]\n*Entrega:* {{fecha}}\n\nEl saldo lo abonás contra entrega. Cualquier duda me escribís 👍' },
-  { stage: 'Pagos', title: 'Recordatorio · seña pendiente antes de producir', isDefault: true,
-    text: 'Hola {{nombre}}! ¿Cómo va?\n\nQuedó pendiente la seña del pedido ({{precio}}) para que pueda arrancar.\n\nLa idea es llegar al {{fecha}} tranquilos. Si avanzamos esta semana, no hay drama con la fecha. Más tarde ya empezamos a ajustarlo.\n\n¡Avisame cuando lo tengas!' },
+  { stage: 'Pagos', title: 'Recordatorio · seña pendiente para apartártelo', isDefault: true,
+    text: 'Hola {{nombre}}! ¿Cómo va?\n\nQuedó pendiente la seña ({{precio}}) para dejarte apartado el pedido.\n\nSi avanzamos esta semana lo tengo listo para el {{fecha}}. ¡Avisame cuando puedas!' },
   { stage: 'Pagos', title: 'Recordatorio de pago · saldo vencido (suave)', isDefault: true,
     text: 'Hola {{nombre}}!\n\nTe recuerdo que quedó pendiente el saldo del pedido entregado el {{fecha}}.\n\n*Saldo a abonar:* {{precio}}\n\nSi necesitás los datos bancarios de nuevo o preferís link de pago, decime y te paso al toque. ¡Gracias!' },
   { stage: 'Pagos', title: 'Recordatorio de pago · 2do aviso con fecha límite', isDefault: true,

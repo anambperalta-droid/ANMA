@@ -5,6 +5,7 @@ import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { usePrivacy } from '../../context/PrivacyContext'
 import { fmt } from '../../lib/storage'
+import { buildWAMsg } from '../../lib/waMsg'
 
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 const PAY_OPTS = [
@@ -937,14 +938,12 @@ function PendientesCobro({ budgets, hidden, nav, saveBudget, toast, mesLabel }) 
   }
 
   const sendWA = (b) => {
-    const name = b.company || b.contact || ''
-    const owed = b.payStatus === 'partial' ? (Number(b.total) || 0) - (Number(b.depositAmt) || 0) : Number(b.total) || 0
+    const text = buildWAMsg(b)
     const phone = (b.wa || '').replace(/\D/g, '')
-    const msg = `Hola${name ? ` ${name}` : ''}, te escribo por el saldo pendiente de $${owed.toLocaleString('es-AR')}. Quedo atenta, gracias.`
-    const url = phone
-      ? `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(msg)}`
-      : `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`
-    window.open(url, '_blank', 'noopener')
+    const encoded = encodeURIComponent(text)
+    const url = phone ? `https://wa.me/${phone}?text=${encoded}` : `https://wa.me/?text=${encoded}`
+    const w = window.open(url, '_blank', 'noopener')
+    if (!w) window.location.href = url
   }
 
   return (

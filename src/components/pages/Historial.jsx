@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, fmtDate, MONTHS, STATUS_MAP, STATUS_CLS, PAY_STATUS_MAP, PAY_STATUS_CLS, db, dbW } from '../../lib/storage'
+import { buildWAMsg, openWAFor } from '../../lib/waMsg'
 import { usePrivacy } from '../../context/PrivacyContext'
 import GuideBanner from '../layout/GuideBanner'
 import Ventas from './Ventas'
@@ -1261,9 +1262,16 @@ export default function Historial() {
     nav('/pedido')
   }
 
+  // copyWA — SIEMPRE abre WhatsApp con el mensaje contextual al estado del pedido.
+  // Nombre histórico, pero no copia: el objetivo es llegarle al cliente ya.
   const copyWA = (b) => {
-    const text = `Hola ${b.contact || ''}! Te envío el presupuesto ${b.num} por ${fmt(b.total)}. Quedamos a disposición!`
-    navigator.clipboard.writeText(text).then(() => toast('Mensaje WA copiado', 'ok'))
+    const text = buildWAMsg(b)
+    const num = (b.wa || '').replace(/\D/g, '')
+    const encoded = encodeURIComponent(text)
+    const url = num ? `https://wa.me/${num}?text=${encoded}` : `https://wa.me/?text=${encoded}`
+    const w = window.open(url, '_blank')
+    if (!w) { window.location.href = url; return }
+    if (!num) toast(`${b.contact || 'El cliente'} no tiene WhatsApp cargado — elegí contacto en WhatsApp`, 'in')
   }
   const handleDelete = (b) => {
     const label = b.num || `#${b.id}`
@@ -1622,12 +1630,8 @@ export default function Historial() {
     return out
   }, [budgets, periodBudgets, prevPeriodBudgets, deltaBrutas, topClients, confirmed, cobrosVencidos, avgTicket, period, prevTotBudgeted, totBudgeted])
 
-  const openWADirect = (b) => {
-    if (!b.wa) { copyWA(b); return }
-    const num = b.wa.replace(/\D/g, '')
-    const text = `Hola ${b.contact || ''}! Te escribo por el presupuesto ${b.num} por ${fmt(b.total)}. ¿Pudiste revisarlo? Quedamos a disposición!`
-    window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, '_blank')
-  }
+  // Alias — mismo comportamiento: abre WA con mensaje contextual.
+  const openWADirect = (b) => copyWA(b)
 
   return (
     <div className="page active" style={{ animation: 'pgIn .25s ease both' }}>

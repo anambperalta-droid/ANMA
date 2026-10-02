@@ -6,7 +6,7 @@ import { fmt } from '../../lib/storage'
 import { getDefaultTemplates, templatesAreOutdated } from '../../lib/voice'
 
 /* Version de los defaults — subir cada vez que cambie el set en voice.js */
-const DEFAULTS_VERSION = 2
+const DEFAULTS_VERSION = 3
 
 /* ── Formato fecha ANMA: d-m-aa (ej: 2-10-26) ── */
 function formatFechaAR(iso) {
