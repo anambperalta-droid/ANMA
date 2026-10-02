@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, fmtDate, MONTHS, STATUS_MAP, STATUS_CLS, PAY_STATUS_MAP, PAY_STATUS_CLS, db, dbW } from '../../lib/storage'
-import { buildWAMsg, openWAFor, relTimeShort } from '../../lib/waMsg'
+import { buildWAMsg, openWAFor, relTimeShort, sharePortalCliente } from '../../lib/waMsg'
 import { usePrivacy } from '../../context/PrivacyContext'
 import GuideBanner from '../layout/GuideBanner'
 import Ventas from './Ventas'
@@ -1290,6 +1290,13 @@ export default function Historial() {
       },
     })
   }
+
+  // Compartir portal del cliente — genera link + copia + abre WA con mensaje.
+  const sharePC = (b) => {
+    sharePortalCliente(b, c, { toast })
+    // También registramos como contacto (el usuario mandó algo al cliente)
+    saveBudget({ ...b, lastContactAt: Date.now(), lastContactChannel: 'wa' })
+  }
   const handleDelete = (b) => {
     const label = b.num || `#${b.id}`
     confirm({
@@ -1987,6 +1994,7 @@ export default function Historial() {
                                       { icon: 'fa-pen', label: 'Editar', action: () => { editB(b.id); setOpenMenuId(null) } },
                                       { icon: 'fa-copy', label: 'Duplicar', action: () => { duplicateBudget(b); setOpenMenuId(null) } },
                                       { icon: 'fa-brands fa-whatsapp', label: 'WhatsApp', action: () => { copyWA(b); setOpenMenuId(null) } },
+                                      { icon: 'fa-share-nodes', label: 'Compartir con cliente', action: () => { sharePC(b); setOpenMenuId(null) } },
                                       { icon: 'fa-paper-plane', label: 'Re-enviar', action: () => { handleResend(b); setOpenMenuId(null) } },
                                     ].map((item, idx) => (
                                       <button key={idx} onClick={item.action}
@@ -2479,6 +2487,7 @@ export default function Historial() {
                               {[
                                 { icon: 'fa-pen', label: 'Editar', action: () => { editB(b.id); setOpenMenuId(null) } },
                                 { icon: 'fa-copy', label: 'Duplicar', action: () => { duplicateBudget(b); setOpenMenuId(null) } },
+                                { icon: 'fa-share-nodes', label: 'Compartir con cliente', action: () => { sharePC(b); setOpenMenuId(null) } },
                                 ...(b.stockDeducted ? [{ icon: 'fa-rotate-left', label: (b.returns || []).length > 0 ? `Devoluciones (${(b.returns || []).length})` : 'Registrar devolución', action: () => { setReturnBudget(b); setOpenMenuId(null) } }] : []),
                                 { icon: 'fa-trash', label: 'Eliminar', danger: true, action: () => { handleDelete(b); setOpenMenuId(null) } },
                               ].map((item, idx) => (

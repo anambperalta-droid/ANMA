@@ -13,6 +13,7 @@ const Bienvenida      = lazy(() => import('./components/pages/Bienvenida'))
 const Registro        = lazy(() => import('./components/pages/Registro'))
 const TrialExpirado   = lazy(() => import('./components/pages/TrialExpirado'))
 const PortalProveedor = lazy(() => import('./components/pages/PortalProveedor'))
+const PortalCliente   = lazy(() => import('./components/pages/PortalCliente'))
 const Alta            = lazy(() => import('./components/pages/Alta'))
 const Onboarding      = lazy(() => import('./components/pages/Onboarding'))
 const Activar         = lazy(() => import('./components/pages/Activar'))
@@ -52,6 +53,7 @@ export default function App() {
       <Routes>
         {/* Rutas públicas sin auth */}
         <Route path="/portal-proveedor" element={<PortalProveedor />} />
+        <Route path="/portal-cliente" element={<PortalCliente />} />
         <Route path="/alta" element={<Alta appName="ANMA Hub" />} />
         <Route path="/bienvenida" element={<Bienvenida />} />
         <Route path="/registro" element={authed ? <NavigateToNext /> : <Registro />} />
