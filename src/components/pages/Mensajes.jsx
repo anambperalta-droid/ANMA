@@ -5,6 +5,9 @@ import { useConfirm } from '../../context/ConfirmContext'
 import { fmt } from '../../lib/storage'
 import { getDefaultTemplates, templatesAreOutdated } from '../../lib/voice'
 
+/* Version de los defaults — subir cada vez que cambie el set en voice.js */
+const DEFAULTS_VERSION = 2
+
 /* ── Formato fecha ANMA: d-m-aa (ej: 2-10-26) ── */
 function formatFechaAR(iso) {
   if (!iso) return ''
@@ -223,15 +226,35 @@ export default function Mensajes() {
   const clients = get('clients')
   const budgets = get('budgets')
 
-  const templates = useMemo(() => {
-    const stored = get('waTemplates')
-    if (!stored.length) {
+  // Auto-migración: si DEFAULTS_VERSION cambió, reinyectamos los defaults
+  // frescos y preservamos los custom del usuario. Esto limpia duplicados viejos
+  // y aplica mejoras sin que el usuario tenga que apretar "Restaurar".
+  useEffect(() => {
+    const storedVersion = Number(localStorage.getItem('waTemplatesVersion') || 0)
+    const stored = get('waTemplates') || []
+    if (stored.length === 0) {
+      const base = Date.now()
       const defaults = getDefaultTemplates(c.tipoVenta)
-      const withIds = defaults.map((t, i) => ({ ...t, id: Date.now() + i }))
-      set('waTemplates', withIds)
-      return withIds
+      set('waTemplates', defaults.map((t, i) => ({ ...t, id: base + i })))
+      localStorage.setItem('waTemplatesVersion', String(DEFAULTS_VERSION))
+      return
     }
-    return stored
+    if (storedVersion >= DEFAULTS_VERSION) return
+    const userMade = stored.filter(t => !t.isDefault)
+    const base = Date.now()
+    const fresh = getDefaultTemplates(c.tipoVenta).map((t, i) => ({ ...t, id: base + i }))
+    set('waTemplates', [...fresh, ...userMade])
+    localStorage.setItem('waTemplatesVersion', String(DEFAULTS_VERSION))
+    if (userMade.length > 0) {
+      toast(`Plantillas actualizadas · ${userMade.length} mensajes propios conservados`, 'ok')
+    } else {
+      toast('Plantillas actualizadas con nuevas variantes de cobro', 'ok')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [c.tipoVenta])
+
+  const templates = useMemo(() => {
+    return get('waTemplates') || []
   }, [get('waTemplates').length, c.tipoVenta])
 
   useEffect(() => {
