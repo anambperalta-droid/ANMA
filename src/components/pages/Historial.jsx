@@ -1403,24 +1403,55 @@ export default function Historial() {
   const handlePayStatusChange = (id, payStatus) => {
     const b = budgets.find(x => x.id === id)
     if (!b) return
+    const totalDue = b.totalFinal || b.total || 0
+    const curPayments = Array.isArray(b.payments) ? b.payments : []
+    const paidSum = curPayments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
+
+    // 'partial' sin cobros → abrir modal (requiere monto real)
+    if (payStatus === 'partial' && paidSum === 0) {
+      setPaymentsBudget(b)
+      return
+    }
+    // 'pending' con cobros → confirmar antes de limpiar (audit trail)
+    if (payStatus === 'pending' && paidSum > 0) {
+      if (!confirm(`Hay ${fmt(paidSum)} ya registrado. ¿Querés remover todos los cobros?`)) return
+    }
+
     // Pago → "paid" descuenta stock SI el estado del pedido NO es uno calificador
     // (si ya está en delivered/inprogress, la lógica de estado ya descontó).
     if (payStatus === 'paid' && !b.stockDeducted) {
       deductStockForOrder(b.items || [], b.dispatchInsumos || [], b.num || '')
       const frozenCost = b.totalCost ?? (b.baseCost || 0)
-      saveBudget({ ...b, payStatus, stockDeducted: true, totalCost: frozenCost, totalGain: (b.total || 0) - frozenCost })
+      // Pago sintético por el saldo pendiente → audit trail + correlación con KPIs
+      const diff = Math.max(0, totalDue - paidSum)
+      const payments = (diff > 0 && totalDue > 0)
+        ? [...curPayments, { id: Date.now(), amount: diff, date: new Date().toISOString().slice(0, 10), method: '', notes: 'Marcado como pagado' }]
+        : curPayments
+      saveBudget({ ...b, payStatus, payments, stockDeducted: true, totalCost: frozenCost, totalGain: (b.total || 0) - frozenCost })
       toast('Pago actualizado · stock descontado', 'ok')
+      return
+    }
+    // 'paid' pero stock ya estaba descontado → igual añade pago sintético si falta
+    if (payStatus === 'paid') {
+      const diff = Math.max(0, totalDue - paidSum)
+      const payments = (diff > 0 && totalDue > 0)
+        ? [...curPayments, { id: Date.now(), amount: diff, date: new Date().toISOString().slice(0, 10), method: '', notes: 'Marcado como pagado' }]
+        : curPayments
+      saveBudget({ ...b, payStatus, payments })
+      toast('Marcado como pagado', 'ok')
       return
     }
     // Revertir: si vuelve a pending/partial Y el estado del pedido NO es calificador
     // (porque si está delivered, el descuento sigue válido por el estado), devolvemos stock.
     if ((payStatus === 'pending' || payStatus === 'partial') && b.stockDeducted && !QUALIFYING_STATES.has(b.status)) {
       restoreStockForOrder(b.items || [], b.dispatchInsumos || [], b.num || '', 'pago revertido')
-      saveBudget({ ...b, payStatus, stockDeducted: false })
+      const newPayments = payStatus === 'pending' ? [] : curPayments
+      saveBudget({ ...b, payStatus, payments: newPayments, stockDeducted: false })
       toast('Pago actualizado · stock restaurado', 'ok')
       return
     }
-    saveBudget({ ...b, payStatus })
+    const newPayments = payStatus === 'pending' ? [] : curPayments
+    saveBudget({ ...b, payStatus, payments: newPayments })
     toast('Pago actualizado', 'ok')
   }
   const toggleSelect = (id) => setSelectedIds(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n })
@@ -1514,6 +1545,19 @@ export default function Historial() {
       window.removeEventListener('scroll', hScroll, true)
     }
   }, [openMenuId])
+
+  // Sync drawer/preview/payments con budgets live: un cambio en la tabla
+  // (chip de pago, estado, etc.) se refleja en el side-sheet abierto.
+  useEffect(() => {
+    if (previewBudget) {
+      const fresh = budgets.find(x => x.id === previewBudget.id)
+      if (fresh && fresh !== previewBudget) setPreviewBudget(fresh)
+    }
+    if (paymentsBudget) {
+      const fresh = budgets.find(x => x.id === paymentsBudget.id)
+      if (fresh && fresh !== paymentsBudget) setPaymentsBudget(fresh)
+    }
+  }, [budgets]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleResend = (b) => setResendBudget(b)
   const handleResendSent = () => { toast('Mensaje copiado / enviado', 'ok'); setResendBudget(null) }
