@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback, useLayoutEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { fmt, db, dbW, dbDel } from '../../lib/storage'
@@ -342,6 +342,18 @@ function ClientCombo({ clients, value, onSelect, onChange }) {
 export default function Presupuesto() {
   const { id } = useParams()
   const nav = useNavigate()
+  const loc = useLocation()
+  // ?from=ventas|historial|dashboard → muestra chevron ← contextual (modern breadcrumb lite)
+  const fromParam = new URLSearchParams(loc.search).get('from')
+  const backRoutes = { ventas: { label: 'Ventas', to: '/historial?tab=ventas' }, historial: { label: 'Pedidos', to: '/historial' }, dashboard: { label: 'Dashboard', to: '/historial' } }
+  const backTo = backRoutes[fromParam] || null
+  // Atajo Alt+← igual que Linear/Notion/GitHub cuando viene de otro contexto
+  useEffect(() => {
+    if (!backTo) return
+    const h = (e) => { if (e.altKey && e.key === 'ArrowLeft') { e.preventDefault(); nav(backTo.to) } }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [backTo, nav])
   const { get, config, saveBudget, deductStockForOrder, saveEntity } = useData()
   /* ── Precio "preferido" desde el catálogo según el canal de venta.
      Para usuarios "ambos", el canal se elige por presupuesto (form.canalVenta);
@@ -1321,6 +1333,27 @@ export default function Presupuesto() {
 
   return (
     <div className="page active" style={{ animation: 'pgIn .2s ease both' }}>
+    {/* Back chevron — aparece solo si viene con ?from= (modern breadcrumb lite) */}
+    {backTo && (
+      <button
+        type="button"
+        onClick={() => nav(backTo.to)}
+        title={`Volver a ${backTo.label} (Alt+←)`}
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          padding: '6px 12px 6px 8px', marginBottom: 10,
+          background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 999, cursor: 'pointer', fontFamily: 'inherit',
+          fontSize: 12.5, fontWeight: 600, color: 'var(--txt2)',
+          transition: 'all .15s',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--brand)'; e.currentTarget.style.borderColor = 'var(--brand)' }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.color = 'var(--txt2)'; e.currentTarget.style.borderColor = 'var(--border)' }}
+      >
+        <i className="fa fa-chevron-left" style={{ fontSize: 11 }} />
+        <span>{backTo.label}</span>
+      </button>
+    )}
     <style>{`
       /* ── Lavado visual unificado (Pro · estética coherente con Regalos) ── */
       .tbl-card{background:#FAFAFB;border:1px solid #ECECF1;border-radius:12px;padding:6px 12px 10px;margin-top:2px}
