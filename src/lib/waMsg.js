@@ -165,10 +165,17 @@ export function buildClientePortalLink(b, cfg = {}) {
   const depAmt = Number(b.depositAmt) || 0
   const pay = b.payStatus || 'pending'
   const seniaReal = pay === 'paid' ? total : (pay === 'partial' ? depAmt : 0)
+  // Logo: solo lo embebemos si es chico (≤8KB en base64 ≈ ~6KB real).
+  // Si pesa más, degradamos a iniciales — URLs de WA tienen límite práctico ~2-4KB,
+  // y queremos dejar aire para los datos del pedido. 'lg' queda vacío y el portal
+  // renderiza avatar con las iniciales del businessName (patrón Linear/Slack).
+  const logoRaw = cfg.logo || cfg.logoDataUrl || ''
+  const lg = (typeof logoRaw === 'string' && logoRaw.length <= 8192) ? logoRaw : ''
   const payload = {
     n: b.contact || '',
     co: b.company || '',
     neg: cfg.businessName || 'ANMA',
+    lg,
     it: items,
     t: total,
     s: seniaReal,
