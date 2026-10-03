@@ -231,6 +231,7 @@ export default function Ventas() {
         return dir * ((order[a.payStatus] ?? 0) - (order[b.payStatus] ?? 0))
       }
       if (sortCol === 'fecha') return dir * ((a.date || '').localeCompare(b.date || ''))
+      if (sortCol === 'num')   return dir * ((a.num || '').localeCompare(b.num || '', undefined, { numeric: true }))
       return 0
     })
     return arr
@@ -411,7 +412,7 @@ export default function Ventas() {
   return (
     <div className="ventas-page" style={{ padding: '10px 20px 80px', maxWidth: 1000, margin: '0 auto' }}>
       <style>{`
-        .vt-row{display:grid;grid-template-columns:.45fr 1fr .7fr .3fr .7fr .4fr .55fr .5fr;gap:0;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;transition:background .1s}
+        .vt-row{display:grid;grid-template-columns:.4fr .4fr 1fr .7fr .3fr .7fr .4fr .55fr .5fr;gap:0;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;transition:background .1s}
         .vt-row:hover{background:var(--surface2)}
         .vt-hdr{font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;padding:8px 14px;background:var(--surface2);border-radius:10px 10px 0 0;border:none}
         .vt-hdr:hover{background:var(--surface2)}
@@ -568,30 +569,10 @@ export default function Ventas() {
                 )}
               </div>
             </div>
-            {hayCompras && (
-              <>
-                <div className="vt-hero-divider" />
-                <div className="vt-hero-stat" title="Ganancia cobrada del mes menos lo gastado en Compras — tu ganancia neta real">
-                  <div className="vt-hero-stat-icon" style={{
-                    background: resultadoOperativo >= 0 ? 'rgba(21,128,61,.1)' : 'rgba(220,38,38,.1)',
-                    color: resultadoOperativo >= 0 ? '#15803d' : '#DC2626',
-                  }}>
-                    <i className="fa fa-scale-balanced" />
-                  </div>
-                  <div style={{ minWidth: 0 }}>
-                    <div className="vt-hero-stat-lbl">Resultado operativo</div>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                      <span className="vt-hero-stat-val" style={{ color: resultadoOperativo >= 0 ? '#15803d' : '#DC2626' }}>
-                        {hidden ? '***' : fmt(resultadoOperativo)}
-                      </span>
-                    </div>
-                    <div style={{ fontSize: 9.5, color: 'var(--txt4)', fontWeight: 600, marginTop: 1, letterSpacing: '.02em' }}>
-                      {hidden ? '' : <>{fmt(gananciaCobradaMes)} ganancia − {fmt(gastadoDelMes)} compras</>}
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
+            {/* Resultado Operativo removido del hero 02/10/26 (Fase 3 auditoria).
+                Mezcla datos de Ventas y Compras — pertenece al modulo P&L
+                global, no al registro de ventas. Formula preservada por si
+                se reinstala en Dashboard. */}
           </div>
         </div>
       </div>
@@ -615,6 +596,7 @@ export default function Ventas() {
           ))}
         </div>
         <div className="vt-row vt-hdr">
+          <span className="vt-hide-m" style={{ cursor: 'pointer' }} onClick={() => toggleSort('num')}>N° {sortCol === 'num' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
           <span className="vt-hide-m" style={{ cursor: 'pointer' }} onClick={() => toggleSort('fecha')}>Fecha {sortCol === 'fecha' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
           <span style={{ cursor: 'pointer' }} onClick={() => toggleSort('cliente')}>Cliente {sortCol === 'cliente' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
           <span>Producto</span>
@@ -667,6 +649,7 @@ export default function Ventas() {
           const method = payMethodOf(b)
           return (
             <div key={b.id} className="vt-row" style={{ cursor: 'pointer', borderLeft: `3px solid ${urgBorder}` }} onClick={() => nav(`/pedido/${b.id}`)}>
+              <span className="vt-cell vt-hide-m" style={{ color: 'var(--txt2)', fontSize: 11, fontWeight: 700, fontVariantNumeric: 'tabular-nums', letterSpacing: '.02em' }}>{b.num || '—'}</span>
               <span className="vt-cell vt-hide-m" style={{ color: 'var(--txt3)', fontSize: 11.5, fontVariantNumeric: 'tabular-nums' }}>{fmtDateShort(b.date) || '—'}</span>
               <span className="vt-cell" style={{ fontWeight: 600, color: 'var(--txt)', display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
                 {(() => {
@@ -702,7 +685,8 @@ export default function Ventas() {
             const dateStr = b.date ? `${b.date.slice(8, 10)}/${b.date.slice(5, 7)}` : ''
             const method = payMethodOf(b)
             const methodLbl = method ? PAY_METHOD_LABEL[method] || method : null
-            const productText = [b.items?.[0]?.name, b.items?.[0]?.qty > 1 ? `x${b.items[0].qty}` : '', dateStr, methodLbl].filter(Boolean).join(' · ')
+            // Mobile: comprobante + fecha + producto + metodo encadenados en el sub-line
+            const productText = [b.num, b.items?.[0]?.name, b.items?.[0]?.qty > 1 ? `x${b.items[0].qty}` : '', dateStr, methodLbl].filter(Boolean).join(' · ')
             // Desglose parcial — Fase 1 auditoria 02/10/26.
             const totalDue = Number(b.total) || 0
             const paidM = b.payStatus === 'paid' ? totalDue
@@ -731,9 +715,10 @@ export default function Ventas() {
           })}
         </div>
 
-        {/* Total — desktop grid row (8 cols sincronizado con vt-row) */}
+        {/* Total — desktop grid row (9 cols sincronizado con vt-row) */}
         {filteredBudgets.length > 0 && (
           <div className="vt-row vt-total" style={{ background: 'var(--surface2)', fontWeight: 800, borderBottom: 'none', borderRadius: '0 0 12px 12px' }}>
+            <span className="vt-hide-m" />
             <span className="vt-hide-m" />
             <span style={{ color: 'var(--txt3)', fontSize: 11, textTransform: 'uppercase' }}>Total</span>
             <span className="vt-hide-s" />
