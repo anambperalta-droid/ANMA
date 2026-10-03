@@ -2410,7 +2410,10 @@ export default function Historial() {
               <tbody>
                 {filteredBudgets.length ? filteredBudgets.map(b => {
                   const dDays = deliveryDays(b.deliveryDate)
-                  const overdue = dDays !== null && dDays <= 0 && !['confirmed', 'lost'].includes(b.status)
+                  // Estados terminales/completados: no mostrar "d atrás" porque ya se cumplió o se cerró.
+                  // Antes solo excluía confirmed+lost, lo que dejaba Entregado/Despachado/Cancelado disparando falsa alerta.
+                  const terminalStates = ['confirmed', 'inprogress', 'delivered', 'shipped', 'cancelled', 'lost']
+                  const overdue = dDays !== null && dDays <= 0 && !terminalStates.includes(b.status)
                   return (
                     <tr key={b.id} className={selectedIds.has(b.id) ? 'selected' : ''} style={selectedIds.has(b.id) ? { background: 'var(--brand-xlt)' } : undefined}>
                       <td data-cell="sel"><input type="checkbox" checked={selectedIds.has(b.id)} onChange={() => toggleSelect(b.id)} /></td>
@@ -2436,7 +2439,7 @@ export default function Historial() {
                       </td>
                       <td className="col-hide-mobile">
                         <div style={{ fontSize: 11 }}>{fmtDate(b.deliveryDate) || '—'}</div>
-                        {dDays !== null && !['confirmed','lost'].includes(b.status) && (
+                        {dDays !== null && !terminalStates.includes(b.status) && (
                           <div style={{ fontSize: 10, fontWeight: 700, color: overdue ? 'var(--red)' : dDays <= 2 ? 'var(--amber)' : 'var(--green)', marginTop: 1 }}>
                             {overdue ? `⚠ ${dDays === 0 ? 'HOY' : Math.abs(dDays) + 'd atrás'}` : `${dDays}d`}
                           </div>
