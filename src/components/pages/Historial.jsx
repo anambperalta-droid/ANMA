@@ -7,6 +7,7 @@ import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, fmtDate, MONTHS, STATUS_MAP, STATUS_CLS, PAY_STATUS_MAP, PAY_STATUS_CLS, db, dbW } from '../../lib/storage'
 import { buildWAMsg, openWAFor, relTimeShort, sharePortalCliente } from '../../lib/waMsg'
 import PedidoDrawer from '../common/PedidoDrawer'
+import RecordatoriosPanel from '../common/RecordatoriosPanel'
 import { usePrivacy } from '../../context/PrivacyContext'
 import GuideBanner from '../layout/GuideBanner'
 import Ventas from './Ventas'
@@ -2239,6 +2240,7 @@ export default function Historial() {
       {/* ═══ LISTA ═══ */}
       {tab === 'lista' && (
         <>
+          <RecordatoriosPanel budgets={budgets} cfg={config()} onSaveBudget={saveBudget} onOpenBudget={setPreviewBudget} toast={toast} />
           <style>{`
             .hist-tbl{overflow-x:auto;-webkit-overflow-scrolling:touch}
             .hist-tbl table{border-collapse:collapse;min-width:860px}
