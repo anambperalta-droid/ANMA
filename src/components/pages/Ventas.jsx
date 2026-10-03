@@ -24,12 +24,16 @@ function todayISO() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
+// Canal de atribucion comercial — por donde llego la venta.
+// Separado del medio de pago (como se cobro). Ajustado 02/10/26 segun
+// auditoria: Email/Telefono rara vez son canales reales en B2B digital;
+// Instagram y Web si son fuentes de atribucion identificables.
 const CANAL_OPTS = [
-  { value: 'whatsapp',   label: 'WhatsApp',   icon: 'fa-brands fa-whatsapp', color: '#25D366' },
-  { value: 'presencial', label: 'Presencial',  icon: 'fa-store',              color: '#7C3AED' },
-  { value: 'email',      label: 'Email',       icon: 'fa-envelope',           color: '#2563EB' },
-  { value: 'telefono',   label: 'Telefono',    icon: 'fa-phone',              color: '#0891B2' },
-  { value: 'otro',       label: 'Otro',        icon: 'fa-ellipsis',           color: '#64748b' },
+  { value: 'whatsapp',   label: 'WhatsApp',   icon: 'fa-brands fa-whatsapp',  color: '#25D366' },
+  { value: 'presencial', label: 'Presencial', icon: 'fa-store',               color: '#7C3AED' },
+  { value: 'instagram',  label: 'Instagram',  icon: 'fa-brands fa-instagram', color: '#E1306C' },
+  { value: 'web',        label: 'Web',        icon: 'fa-globe',               color: '#2563EB' },
+  { value: 'otro',       label: 'Otro',       icon: 'fa-ellipsis',            color: '#64748b' },
 ]
 
 // Medio de pago — Fase 1 auditoria 02/10/26.
@@ -115,7 +119,12 @@ function parseFmtValue(v) {
 // esta en true, draft.facturado NO se sobrescribe con la suma; cuando esta
 // en false (default), draft.facturado = suma automatica.
 const newLine = () => ({ id: Math.random().toString(36).slice(2, 9), name: '', productId: null, qty: '1', pu: 0, cost: 0 })
-const EMPTY = { cliente: '', producto: '', cantidad: '1', facturado: '', nota: '', fecha: todayISO(), payStatus: 'pending', incluyeIva: true, canal: '', payMethod: '', fiscalCondition: 'consumidor', lines: [newLine()], ajuste: false }
+// ivaMode (02/10/26):
+//   'incluido' — el monto YA tiene el IVA adentro (default historico).
+//   'sumado'   — se SUMA 21% al monto ingresado para obtener el total.
+//   'sin'      — no se aplica IVA.
+// cobradoHoy — monto parcial cobrado en el momento (requerido si payStatus=partial).
+const EMPTY = { cliente: '', producto: '', cantidad: '1', facturado: '', nota: '', fecha: todayISO(), payStatus: 'pending', cobradoHoy: '', ivaMode: 'incluido', canal: '', payMethod: '', fiscalCondition: 'consumidor', lines: [newLine()], ajuste: false }
 
 // Calcula el subtotal computado de una lista de lineas.
 function sumLines(lines) {
@@ -291,7 +300,17 @@ export default function Ventas() {
     setLine(lineId, { name: p.name, productId: p.id || null, pu: price, cost })
   }
 
-  const openDrawer = () => { setDraft({ ...EMPTY, lines: [newLine()] }); setShowNota(false); setSavedCount(0); setDrawerOpen(true) }
+  // Fecha default heredando contexto (02/10/26 auditoria):
+  // si estas en el mes/año actual, usamos hoy; si estas en un mes pasado,
+  // sugerimos el ultimo dia de ese mes (para registros retroactivos).
+  // Evita el bug "guardo y la venta desaparece de la vista".
+  const defaultFecha = () => {
+    const now = new Date()
+    if (year === now.getFullYear() && month === now.getMonth()) return todayISO()
+    const last = new Date(year, month + 1, 0)  // dia 0 del mes siguiente = ultimo del actual
+    return `${last.getFullYear()}-${String(last.getMonth() + 1).padStart(2, '0')}-${String(last.getDate()).padStart(2, '0')}`
+  }
+  const openDrawer = () => { setDraft({ ...EMPTY, lines: [newLine()], fecha: defaultFecha() }); setShowNota(false); setSavedCount(0); setDrawerOpen(true) }
   const closeDrawer = () => { setDrawerOpen(false) }
 
   const [justSaved, setJustSaved] = useState(false)
@@ -311,9 +330,22 @@ export default function Ventas() {
 
     if (!cliente) { toast('Completa el cliente', 'er'); return }
     if (!rawFact && !useMulti) { toast('Completa al menos producto o monto', 'er'); return }
+    // Parcial: exigimos monto cobrado hoy (02/10/26 — bug P-0027).
+    if (draft.payStatus === 'partial') {
+      const cHoy = parseFmtValue(draft.cobradoHoy)
+      if (!cHoy || cHoy <= 0) { toast('Indica cuanto cobraste hoy', 'er'); return }
+      if (cHoy >= rawFact)    { toast('Lo cobrado es mayor o igual al total: marca como Cobrado', 'er'); return }
+    }
 
+    // IVA — tres modos (02/10/26): 'sin', 'incluido' (el monto YA tiene IVA),
+    // 'sumado' (se SUMA 21% al monto -> el total guardado crece).
     let facturado = rawFact, ivaAmt = 0
-    if (draft.incluyeIva && rawFact > 0) ivaAmt = Math.round(rawFact - rawFact / 1.21)
+    const mode = draft.ivaMode || (draft.incluyeIva === false ? 'sin' : 'incluido')
+    if (mode === 'incluido' && rawFact > 0) ivaAmt = Math.round(rawFact - rawFact / 1.21)
+    else if (mode === 'sumado' && rawFact > 0) {
+      ivaAmt = Math.round(rawFact * 0.21)
+      facturado = rawFact + ivaAmt
+    }
 
     const matchClient = clients.find(cl =>
       (cl.company || '').toLowerCase() === cliente.toLowerCase() ||
@@ -351,7 +383,17 @@ export default function Ventas() {
         personalizacion: { desc: '', costUnit: 0 },
       }] }],
       approvedAltId: 1, date: draft.fecha, noteInt: draft.nota.trim(),
-      deliveryDate: '', depositAmt: 0, deposit: 0, margin: 0, margenObjetivo: 0, discount: 0,
+      deliveryDate: '',
+      // Cobro parcial (02/10/26): si payStatus=partial exigimos un monto cobrado
+      // real y lo grabamos como payment unico. Si payStatus=paid, cobradoHoy=total
+      // automatico; si pending, no hay cobro. Esto cierra el bug P-0027.
+      depositAmt: draft.payStatus === 'partial' ? (parseFmtValue(draft.cobradoHoy) || 0) : 0,
+      deposit: 0, margin: 0, margenObjetivo: 0, discount: 0,
+      payments: draft.payStatus === 'partial' && parseFmtValue(draft.cobradoHoy) > 0
+        ? [{ id: Date.now(), amount: parseFmtValue(draft.cobradoHoy), date: draft.fecha, method: draft.payMethod || 'otro', notes: 'Cobro al registrar venta' }]
+        : (draft.payStatus === 'paid' && facturado > 0
+            ? [{ id: Date.now(), amount: facturado, date: draft.fecha, method: draft.payMethod || 'otro', notes: 'Cobro al registrar venta' }]
+            : []),
     })
 
     setSavedCount(c => c + 1)
@@ -785,9 +827,18 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
   const offMonth = draftMk && visibleMk && draftMk !== visibleMk
   const offLabel = offMonth ? `${meses[Number(draftMk.slice(5, 7)) - 1]} ${draftMk.slice(0, 4)}` : ''
 
-  const ivaCalc = () => {
-    if (!draft.incluyeIva || !rawTotal) return 0
-    return Math.round(rawTotal - rawTotal / 1.21)
+  // IVA tri-estado — 02/10/26 (auditoria).
+  // Devuelve {subtotal, iva, total} segun el modo y el monto ingresado.
+  const ivaInfo = () => {
+    const mode = draft.ivaMode || (draft.incluyeIva === false ? 'sin' : 'incluido')
+    if (!rawTotal || mode === 'sin') return { mode, subtotal: rawTotal, iva: 0, total: rawTotal }
+    if (mode === 'sumado') {
+      const iva = Math.round(rawTotal * 0.21)
+      return { mode, subtotal: rawTotal, iva, total: rawTotal + iva }
+    }
+    // incluido
+    const subtotal = Math.round(rawTotal / 1.21)
+    return { mode, subtotal, iva: rawTotal - subtotal, total: rawTotal }
   }
 
   const handleFacturadoChange = (e) => {
@@ -911,7 +962,7 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
                         // y sincroniza IVA segun corresponda (A -> discrimina, CF -> no).
                         const fc = cl.fiscalCondition || 'consumidor'
                         const op = FISCAL_MAP[fc] || FISCAL_MAP.consumidor
-                        setDraft(d => ({ ...d, cliente: cl.company || cl.contact, fiscalCondition: fc, incluyeIva: op.iva }))
+                        setDraft(d => ({ ...d, cliente: cl.company || cl.contact, fiscalCondition: fc, ivaMode: op.iva ? 'incluido' : 'sin' }))
                         setShowClientSug(false)
                       }}>
                       <div>
@@ -931,7 +982,7 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
                 const on = draft.fiscalCondition === f.value
                 return (
                   <button key={f.value}
-                    onClick={() => setDraft(d => ({ ...d, fiscalCondition: f.value, incluyeIva: f.iva }))}
+                    onClick={() => setDraft(d => ({ ...d, fiscalCondition: f.value, ivaMode: f.iva ? 'incluido' : 'sin' }))}
                     style={{
                       padding: '4px 9px', borderRadius: 7, fontSize: 10.5, fontWeight: 700,
                       border: `1.5px solid ${on ? f.color : 'var(--border)'}`,
@@ -1010,7 +1061,7 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
 
           <div className="sd-sep" />
 
-          {/* Estado de cobro + fecha/IVA */}
+          {/* Estado de cobro + fecha/IVA (02/10/26) */}
           <div className="sd-group">
             <div className="sd-fg">
               <div className="sd-chips">
@@ -1023,6 +1074,28 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
                   </button>
                 ))}
               </div>
+              {/* Parcial: sub-campo obligatorio "Monto cobrado hoy" (fix bug P-0027) */}
+              {draft.payStatus === 'partial' && (
+                <div style={{ marginTop: 10, padding: '10px 12px', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 10 }}>
+                  <label className="sd-lbl" style={{ color: '#78350F' }}>
+                    Monto cobrado hoy <span style={{ color: '#DC2626' }}>*</span>
+                  </label>
+                  <input className="sd-inp"
+                    placeholder="$0"
+                    value={draft.cobradoHoy ? `$${draft.cobradoHoy}` : ''}
+                    onChange={e => {
+                      const raw = e.target.value.replace(/[^\d]/g, '')
+                      setDraft(d => ({ ...d, cobradoHoy: raw ? fmtLive(raw) : '' }))
+                    }}
+                    style={{ textAlign: 'right', fontWeight: 700, background: '#fff' }}
+                  />
+                  {parseFmtValue(draft.cobradoHoy) > 0 && rawTotal > 0 && (
+                    <div style={{ marginTop: 6, fontSize: 10.5, color: '#78350F', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+                      Saldo pendiente: <b>{fmt(Math.max(0, rawTotal - parseFmtValue(draft.cobradoHoy)))}</b>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             <div className="sd-row">
               <div className="sd-fg" style={{ marginBottom: 0 }}>
@@ -1040,15 +1113,45 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
               </div>
               <div className="sd-fg" style={{ marginBottom: 0 }}>
                 <label className="sd-lbl">IVA</label>
-                <div className="sd-toggle" onClick={() => setDraft(d => ({ ...d, incluyeIva: !d.incluyeIva }))}>
-                  <div className={`sd-switch ${draft.incluyeIva ? 'sd-switch-on' : 'sd-switch-off'}`} />
-                  <div>
-                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--txt2)' }}>{draft.incluyeIva ? '21%' : 'Sin IVA'}</div>
-                    {draft.incluyeIva && ivaCalc() > 0 && <div style={{ fontSize: 10, color: 'var(--brand)', marginTop: 1 }}>{fmt(ivaCalc())}</div>}
-                  </div>
+                <div style={{ display: 'flex', gap: 4 }}>
+                  {[
+                    { v: 'sin', label: 'Sin IVA' },
+                    { v: 'incluido', label: 'Incluido' },
+                    { v: 'sumado', label: 'Sumar' },
+                  ].map(x => {
+                    const on = (draft.ivaMode || 'incluido') === x.v
+                    return (
+                      <button key={x.v}
+                        onClick={() => setDraft(d => ({ ...d, ivaMode: x.v }))}
+                        style={{
+                          flex: 1, padding: '7px 6px', borderRadius: 8, fontSize: 11, fontWeight: 700,
+                          border: `1.5px solid ${on ? 'var(--brand)' : 'var(--border)'}`,
+                          background: on ? 'rgba(124,58,237,.08)' : 'var(--bg)',
+                          color: on ? 'var(--brand)' : 'var(--txt3)',
+                          cursor: 'pointer', fontFamily: 'inherit',
+                        }}>{x.label}</button>
+                    )
+                  })}
                 </div>
               </div>
             </div>
+            {/* Desglose IVA dinamico — resuelve ambiguedad incluido/sumado */}
+            {rawTotal > 0 && (draft.ivaMode || 'incluido') !== 'sin' && (() => {
+              const info = ivaInfo()
+              return (
+                <div style={{
+                  marginTop: 8, padding: '7px 11px', borderRadius: 8,
+                  background: 'rgba(124,58,237,.06)', border: '1px solid rgba(124,58,237,.15)',
+                  fontSize: 11, color: 'var(--txt2)', fontWeight: 600, display: 'flex',
+                  justifyContent: 'space-between', gap: 8, alignItems: 'center',
+                  fontVariantNumeric: 'tabular-nums',
+                }}>
+                  <span>Subtotal <b>{fmt(info.subtotal)}</b></span>
+                  <span>+ IVA 21% <b style={{ color: 'var(--brand)' }}>{fmt(info.iva)}</b></span>
+                  <span>= Total <b style={{ color: 'var(--txt)' }}>{fmt(info.total)}</b></span>
+                </div>
+              )
+            })()}
           </div>
 
           <div className="sd-sep" />
