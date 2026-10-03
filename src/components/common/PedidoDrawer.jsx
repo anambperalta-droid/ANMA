@@ -16,6 +16,7 @@
      · Footer sticky: Editar + WA
 ═══════════════════════════════════════════════════════════════════ */
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { fmt, fmtDate, STATUS_MAP, PAY_STATUS_MAP } from '../../lib/storage'
 
 const STATUS_COLOR = {
@@ -112,17 +113,19 @@ export default function PedidoDrawer({
 
   const nota = b.noteInt
 
-  return (
+  // Portal a <body> para que position:fixed funcione sin que lo rompa
+  // algún ancestro con transform/filter/perspective (creating block issue).
+  return createPortal((
     <>
       <div onClick={onClose} style={{
         position: 'fixed', inset: 0, background: 'rgba(15,23,42,.45)',
-        zIndex: 500, animation: 'drawerFade .2s ease both',
+        zIndex: 9998, animation: 'drawerFade .2s ease both',
       }} />
 
       <aside className="pd-aside" style={{
-        position: 'fixed', top: 0, right: 0, bottom: 0,
+        position: 'fixed', top: 0, right: 0, bottom: 0, height: '100vh',
         width: 'min(520px, 100vw)', background: 'var(--surface)',
-        zIndex: 501, display: 'flex', flexDirection: 'column',
+        zIndex: 9999, display: 'flex', flexDirection: 'column',
         boxShadow: '-12px 0 40px rgba(15,23,42,.15)',
         animation: 'drawerIn .28s cubic-bezier(.16,1,.3,1) both',
       }}>
@@ -459,7 +462,7 @@ export default function PedidoDrawer({
         }
       `}</style>
     </>
-  )
+  ), document.body)
 }
 
 /* ── Sub-componentes ─────────────────────────────────────────── */
