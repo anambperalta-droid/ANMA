@@ -1,15 +1,16 @@
 # ANMA Hub
 
-> ANMA Hub es una plataforma web de gestión integral para comercios chicos y medianos de Argentina: tiendas de indumentaria, decoración y hogar, tecnología y electrónica, y almacenes o distribuidoras. Centraliza presupuestos, clientes, control de stock con variantes (talles, colores, modelos), logística de entregas y comunicación por WhatsApp en una sola pantalla. En español rioplatense, mobile-first.
+> ANMA Hub es una plataforma web de gestión integral para comercios chicos y medianos de Argentina: tiendas de indumentaria, decoración y hogar, tecnología y electrónica, y almacenes o distribuidoras. Centraliza presupuestos, clientes, control de stock con variantes (talles, colores, modelos), logística de entregas y comunicación por WhatsApp en una sola pantalla. Además calcula ganancia real por producto, cliente y canal, y permite decidir precios con datos y no con intuición. En español rioplatense, mobile-first, PWA instalable.
 
 ## Qué resuelve
 
 - Presupuestos profesionales en minutos, enviados por WhatsApp, PDF o email, con seña y saldo calculados (IVA discriminado opcional, Ley 27.743).
 - Control de stock real con variantes y alertas de mínimos; el stock se descuenta automáticamente con cada venta.
 - Gestión de clientes minoristas (B2C) y mayoristas (B2B) con dos listas de precios en paralelo y cuentas corrientes.
-- Cobros con link de Mercado Pago (seña o total) generado desde el presupuesto.
-- Seguimiento por WhatsApp con plantillas: recontacto de clientes inactivos y presupuestos pendientes.
+- Cobros con link de Mercado Pago (seña o total) generado desde el presupuesto, y cobro por transferencia/CBU sin comisión.
+- Seguimiento por WhatsApp con plantillas por rubro: recontacto de clientes inactivos y presupuestos pendientes.
 - Logística: paradas de retiro y entrega con costos atribuidos a cada pedido.
+- Inteligencia comercial: ganancia neta por producto, cliente y categoría, con costo real del momento de cada venta.
 
 ## Para quién
 
@@ -17,18 +18,38 @@ Emprendedores y pymes de Argentina que hoy gestionan con Excel, cuadernos y chat
 
 ## Páginas clave
 
-- [Landing](https://anmahub.com/landing.html): qué es ANMA Hub, para quién, precios y preguntas frecuentes.
+- [Landing](https://anmahub.com/): qué es ANMA Hub, para quién, precios y preguntas frecuentes.
 - [Demo interactiva](https://anmahub.com/demo.html): recorrido por el sistema con datos ficticios, sin registro.
 - [Registro](https://anmahub.com/registro): prueba gratuita de 7 días, sin tarjeta de crédito.
 - [Precios](https://anmahub.com/pricing.md): planes en formato legible por máquinas.
+- [Centro de recursos](https://anmahub.com/recursos/): índice de guías prácticas.
 
 ## Recursos y guías
 
-- [Excel vs. sistema de gestión](https://anmahub.com/recursos/excel-vs-sistema-de-gestion.html): comparación honesta — cuándo conviene cada uno, tabla de criterios, señales de que la planilla cuesta plata.
-- [Control de stock para tiendas de ropa](https://anmahub.com/recursos/control-de-stock-tienda-de-ropa.html): método de 4 reglas para talles y colores, stock mínimo, señas y micro-recuentos.
-- [Gestión de local de decoración y hogar](https://anmahub.com/recursos/gestion-local-decoracion.html): pedidos a medida, seguimiento de presupuestos, stock de artículos únicos y relación con el cliente.
-- [Stock para tienda de tecnología y electrónica](https://anmahub.com/recursos/stock-tecnologia-electronica.html): precios por costo de reposición, garantías con número de serie, rentabilidad real por categoría.
-- [Gestión de almacén y distribuidora](https://anmahub.com/recursos/gestion-almacen-distribuidora.html): rotación por prioridad, FIFO con alertas de vencimiento, rutas de reparto y rentabilidad real.
+### Fundamentos de gestión
+- [Qué es el margen real en un comercio](https://anmahub.com/recursos/que-es-margen-real-comercio): diferencia entre markup y margen, por qué el costo del momento importa, cómo evitar vender a pérdida sin darte cuenta.
+- [Cómo poner precios en un comercio](https://anmahub.com/recursos/como-poner-precios-comercio): fórmula de costo real + margen objetivo, lista pública vs. mayorista, cuándo tocar precio.
+- [Cómo cobrar sin perder la relación](https://anmahub.com/recursos/como-cobrar-clientes-sin-perder-relacion): guion de seguimiento, mensajes para cada estado, cuándo levantar el teléfono.
+- [Excel vs. sistema de gestión](https://anmahub.com/recursos/excel-vs-sistema-de-gestion): comparación honesta — cuándo conviene cada uno, señales de que la planilla cuesta plata.
+- [Playbook de ventas pyme](https://anmahub.com/recursos/playbook-ventas): canales de adquisición de ANMA + plantillas de outreach reutilizables.
+
+### Por rubro
+- [Control de stock para tiendas de ropa](https://anmahub.com/recursos/control-de-stock-tienda-de-ropa): método de 4 reglas para talles y colores, stock mínimo, señas y micro-recuentos.
+- [Gestión de local de decoración y hogar](https://anmahub.com/recursos/gestion-local-decoracion): pedidos a medida, seguimiento de presupuestos, stock de artículos únicos.
+- [Stock para tienda de tecnología y electrónica](https://anmahub.com/recursos/stock-tecnologia-electronica): precios por costo de reposición, garantías con número de serie, rentabilidad por categoría.
+- [Gestión de almacén y distribuidora](https://anmahub.com/recursos/gestion-almacen-distribuidora): rotación por prioridad, FIFO con alertas de vencimiento, rutas de reparto.
+
+### Operación
+- [Implementación de un sistema de gestión](https://anmahub.com/recursos/implementacion-sistema-gestion): cómo migrar sin frenar el negocio, orden sugerido.
+- [Organización y optimización del negocio](https://anmahub.com/recursos/organizacion-optimizacion-negocio): dónde se te va el tiempo y qué automatizar primero.
+- [Control de datos del negocio](https://anmahub.com/recursos/control-de-datos-negocio): qué métricas mirar cada semana y cuáles son ruido.
+- [Gestión del tiempo en un comercio](https://anmahub.com/recursos/gestion-del-tiempo-comercio): rutinas y bloques, cuándo delegar.
+- [Registro de base de clientes](https://anmahub.com/recursos/registro-base-de-clientes): cómo armar y mantener una base útil para recontactar.
+- [Registro de proveedores y compras](https://anmahub.com/recursos/registro-proveedores-compras): fichas, condiciones comerciales, historial de precios.
+- [Relación con proveedores](https://anmahub.com/recursos/relacion-con-proveedores): negociación, mínimos y plazos.
+- [Seguimiento postventa](https://anmahub.com/recursos/seguimiento-postventa-clientes): secuencias que recuperan clientes dormidos.
+- [Primeros pasos en ANMA Hub](https://anmahub.com/recursos/primeros-pasos): checklist para arrancar con la app.
+- [Guía completa de ANMA Hub](https://anmahub.com/recursos/guia): manual del producto, pantalla por pantalla.
 
 ## Datos
 
@@ -36,3 +57,4 @@ Emprendedores y pymes de Argentina que hoy gestionan con Excel, cuadernos y chat
 - Prueba gratis: 7 días completos, sin tarjeta.
 - Modelo: pago de ingreso único con setup llave en mano + cuota mensual.
 - Soporte: acompañamiento personalizado por WhatsApp durante la configuración.
+- IVA: cálculo automático al 21% sin toggle, cumple Ley 27.743 de discriminación de IVA al consumidor final.
