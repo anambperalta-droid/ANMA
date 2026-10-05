@@ -223,6 +223,17 @@ footer a{color:var(--brand);font-weight:500}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Guía completa de ANMA Hub","description":"Manual visual de cada sección de la app, paso a paso.","datePublished":"2026-09-24","dateModified":"2026-09-24","inLanguage":"es-AR","author":{"@type":"Organization","name":"ANMA Hub","url":"https://anmahub.com"},"publisher":{"@type":"Organization","name":"ANMA Hub","logo":{"@type":"ImageObject","url":"https://anmahub.com/logo-anmahub.png"}},"mainEntityOfPage":"https://anmahub.com/recursos/guia"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ANMA Hub","item":"https://anmahub.com/"},{"@type":"ListItem","position":2,"name":"Recursos","item":"https://anmahub.com/recursos/"},{"@type":"ListItem","position":3,"name":"Guía","item":"https://anmahub.com/recursos/guia"}]}</script>
+
+<style>
+.related-strip{max-width:960px;margin:48px auto 32px;padding:0 20px;font-family:'Inter',system-ui,sans-serif}
+.related-strip h3{font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:600;color:#1E1B4B;margin:0 0 18px;letter-spacing:-.3px}
+.related-strip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.related-strip a{display:block;padding:16px 18px;border:1px solid #E5E7EB;border-radius:12px;background:#fff;text-decoration:none;color:inherit;transition:border-color .15s,transform .15s,box-shadow .15s}
+.related-strip a:hover{border-color:#7C3AED;transform:translateY(-2px);box-shadow:0 8px 22px rgba(124,58,237,.1)}
+.related-strip .tag{display:inline-block;font-size:10px;font-weight:800;color:#7C3AED;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.related-strip b{display:block;font-size:15px;font-weight:700;color:#1E1B4B;line-height:1.35;margin-bottom:4px}
+.related-strip small{font-size:12.5px;color:#64748B;line-height:1.5}
+</style>
 </head>
 <body>
 
@@ -861,6 +872,28 @@ footer a{color:var(--brand);font-weight:500}
   sections.forEach(s => obs.observe(s));
 })();
 </script>
+
+
+<section class="related-strip">
+  <h3>Seguí leyendo</h3>
+  <div class="related-strip-grid">
+    <a href="/recursos/primeros-pasos">
+      <span class="tag">Arranque</span>
+      <b>Primeros pasos con ANMA Hub</b>
+      <small>De cero al primer presupuesto en 10 minutos.</small>
+    </a>
+    <a href="/recursos/como-poner-precios-comercio">
+      <span class="tag">Precios</span>
+      <b>Cómo poner precios sin perder margen</b>
+      <small>Fórmula de costo real + margen objetivo aplicada en ANMA.</small>
+    </a>
+    <a href="/recursos/seguimiento-postventa-clientes">
+      <span class="tag">Postventa</span>
+      <b>Seguimiento postventa</b>
+      <small>Cómo volver a vender sin parecer pesado.</small>
+    </a>
+  </div>
+</section>
 
 </body>
 </html>
