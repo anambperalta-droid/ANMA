@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://anmahub.com/</loc>
+    <image:image>
+      <image:loc>https://anmahub.com/screens/dashboard.png</image:loc>
+      <image:title>Dashboard de gestión para pymes con KPIs e ingresos</image:title>
+      <image:caption>Panel de control de ANMA Hub con ingresos del mes, pedidos activos y métricas de ventas para comercios y pymes argentinas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://anmahub.com/screens/productos.png</image:loc>
+      <image:title>Catálogo de productos con costos, precios y margen real</image:title>
+      <image:caption>Gestión de catálogo con costo de reposición actualizado, dos listas de precios (público y mayorista) y cálculo automático de margen por producto.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://anmahub.com/screens/presupuesto.png</image:loc>
+      <image:title>Wizard de presupuesto en 4 pasos con panel de resumen</image:title>
+      <image:caption>Alta de pedido rápida con wizard de 4 pasos, cálculo automático de seña, saldo e IVA discriminado según Ley 27.743.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://anmahub.com/screens/mensajes-wa.png</image:loc>
+      <image:title>Seguimiento de ventas por WhatsApp organizado por etapa</image:title>
+      <image:caption>Mensajes de WhatsApp agrupados por embudo de ventas: presupuestos pendientes, clientes a recontactar y pedidos en producción.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://anmahub.com/screens/mobile-analisis.png</image:loc>
+      <image:title>Insights y métricas de ventas en versión mobile</image:title>
+      <image:caption>Panel mobile con insights del período: ticket promedio, crecimiento mensual, cobros vencidos y top productos por ganancia real.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://anmahub.com/screens/mobile-pedido.png</image:loc>
+      <image:title>Alta de pedido mobile para comercios argentinos</image:title>
+      <image:caption>Carga de pedido optimizada para celular con selector de cliente, catálogo con stock en vivo y botón de envío por WhatsApp.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://anmahub.com/screens/mobile-logistica.png</image:loc>
+      <image:title>Logística de entregas y retiros del día en mobile</image:title>
+      <image:caption>Paradas de reparto y retiro con direcciones, horarios y estado de cada pedido, pensado para comercios con reparto propio en Argentina.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://anmahub.com/og-image.png</image:loc>
+      <image:title>ANMA Hub — Sistema de gestión para comercios y pymes</image:title>
+      <image:caption>Open Graph de ANMA Hub: app de gestión con inteligencia comercial para pymes argentinas. Presupuestos, cobros, stock y WhatsApp en un solo lugar.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://anmahub.com/logo-anmahub.png</image:loc>
+      <image:title>Logo ANMA Hub</image:title>
+      <image:caption>Isotipo del sistema de gestión ANMA Hub para pymes de Argentina.</image:caption>
+    </image:image>
+  </url>
+</urlset>

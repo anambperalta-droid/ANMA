@@ -1,0 +1,133 @@
+name: Lighthouse CI
+
+# Mide Core Web Vitals + Performance/Accessibility/Best Practices/SEO
+# contra la produccion de anmahub.com. Reporte doble: desktop + mobile.
+# Las assertions son "warn" (no fail) para que un score bajo esporadico
+# no bloquee deploys, pero quedan visibles en el summary del run.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'public/**'
+      - 'lighthouserc.json'
+      - '.github/workflows/lighthouse.yml'
+  workflow_dispatch:
+  schedule:
+    # Lunes 09:00 ART (12:00 UTC) — snapshot semanal
+    - cron: '0 12 * * 1'
+
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        preset: [desktop, mobile]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Esperar que el deploy de Vercel este live
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          set -e
+          echo "Verificando que anmahub.com sirva el commit actual..."
+          local_hash=$(sha256sum public/sitemap.xml | awk '{print $1}')
+          for i in $(seq 1 60); do
+            live_hash=$(curl -s https://anmahub.com/sitemap.xml | sha256sum | awk '{print $1}')
+            if [ "$live_hash" = "$local_hash" ]; then
+              echo "✓ Deploy sincronizado tras ${i}x5s"
+              break
+            fi
+            sleep 5
+          done
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.14.x
+
+      - name: Patch config for ${{ matrix.preset }}
+        shell: bash
+        run: |
+          # Reemplazar el preset "desktop" por el valor del matrix
+          node -e "
+          const fs=require('fs');
+          const cfg=JSON.parse(fs.readFileSync('lighthouserc.json','utf8'));
+          cfg.ci.collect.settings.preset = '${{ matrix.preset }}';
+          fs.writeFileSync('lighthouserc.json', JSON.stringify(cfg,null,2));
+          console.log('preset:', cfg.ci.collect.settings.preset);
+          "
+
+      - name: Run Lighthouse CI (${{ matrix.preset }})
+        id: lhci
+        continue-on-error: true
+        run: lhci autorun --config=./lighthouserc.json
+
+      - name: Resumen a GitHub Step Summary
+        if: always()
+        shell: bash
+        run: |
+          echo "## Lighthouse CI · ${{ matrix.preset }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ ! -d .lighthouseci ]; then
+            echo "No se genero reporte." >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+          # Parsear los manifests para armar la tabla
+          node -e "
+          const fs=require('fs'),path=require('path');
+          const dir='.lighthouseci';
+          const files=fs.readdirSync(dir).filter(f=>f.startsWith('lhr-')&&f.endsWith('.json'));
+          const byUrl={};
+          for (const f of files){
+            const r=JSON.parse(fs.readFileSync(path.join(dir,f),'utf8'));
+            const url=r.finalDisplayedUrl||r.finalUrl;
+            if(!byUrl[url]) byUrl[url]=[];
+            byUrl[url].push({
+              perf:Math.round(r.categories.performance.score*100),
+              a11y:Math.round(r.categories.accessibility.score*100),
+              bp:Math.round(r.categories['best-practices'].score*100),
+              seo:Math.round(r.categories.seo.score*100),
+              lcp:r.audits['largest-contentful-paint'].numericValue,
+              cls:r.audits['cumulative-layout-shift'].numericValue,
+              tbt:r.audits['total-blocking-time'].numericValue,
+            });
+          }
+          const med=(arr,k)=>{const s=[...arr].map(x=>x[k]).sort((a,b)=>a-b);return s[Math.floor(s.length/2)]};
+          let md='| URL | Perf | A11y | BP | SEO | LCP | CLS | TBT |\\n';
+          md+='|---|---|---|---|---|---|---|---|\\n';
+          for (const [u,runs] of Object.entries(byUrl)){
+            const perf=med(runs,'perf'),a11y=med(runs,'a11y'),bp=med(runs,'bp'),seo=med(runs,'seo');
+            const lcp=(med(runs,'lcp')/1000).toFixed(2)+'s';
+            const cls=med(runs,'cls').toFixed(3);
+            const tbt=Math.round(med(runs,'tbt'))+'ms';
+            const path = u.replace(/^https:\/\/anmahub\.com/,'')||'/';
+            md+=\`| \${path} | \${perf} | \${a11y} | \${bp} | \${seo} | \${lcp} | \${cls} | \${tbt} |\\n\`;
+          }
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md+'\\n');
+          console.log(md);
+          "
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Reporte completo HTML: ver artifact 'lighthouse-${{ matrix.preset }}-reports'." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Umbrales objetivo (warn):" >> $GITHUB_STEP_SUMMARY
+          echo "- Perf >=70 · A11y >=90 · BP >=90 · SEO >=95" >> $GITHUB_STEP_SUMMARY
+          echo "- LCP <=2500ms · CLS <=0.1 · TBT <=300ms" >> $GITHUB_STEP_SUMMARY
+
+      - name: Subir reportes HTML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-${{ matrix.preset }}-reports
+          path: .lighthouseci/
+          retention-days: 30

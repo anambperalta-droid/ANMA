@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "indexnow": "node scripts/indexnow-ping.mjs"
+    "indexnow": "node scripts/indexnow-ping.mjs",
+    "sitemap:images": "node scripts/gen-image-sitemap.mjs",
+    "prebuild": "node scripts/gen-image-sitemap.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

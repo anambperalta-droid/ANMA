@@ -29,6 +29,7 @@ User-agent: Bingbot
 Allow: /
 
 Sitemap: https://anmahub.com/sitemap.xml
+Sitemap: https://anmahub.com/sitemap-images.xml
 
 # IndexNow — ping instantáneo a Bing / Yandex / DuckDuckGo cuando se actualiza contenido.
 # Key verificado en https://anmahub.com/c0a497317daf8921e2ea8f39c2a1ddb4.txt
