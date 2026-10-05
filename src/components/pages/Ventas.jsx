@@ -195,7 +195,22 @@ export default function Ventas() {
     const pm = month === 0 ? 11 : month - 1
     const py = month === 0 ? year - 1 : year
     const pmk = monthKey(py, pm)
-    const pmBudgets = allBudgets.filter(b => budgetMonth(b) === pmk)
+    let pmBudgets = allBudgets.filter(b => budgetMonth(b) === pmk)
+
+    // Si estamos viendo el mes ACTUAL (ej. 5 de octubre), comparar contra los
+    // primeros 5 días del mes anterior → evita el fantasma "↓95%" al inicio
+    // del mes cuando se compara contra un mes completo.
+    const now = new Date()
+    const isCurrentMonth = year === now.getFullYear() && month === now.getMonth()
+    if (isCurrentMonth) {
+      const todayDay = now.getDate()
+      pmBudgets = pmBudgets.filter(b => {
+        const d = b.date || (b.updatedAt ? new Date(b.updatedAt).toISOString().slice(0, 10) : '')
+        const day = parseInt(d.slice(8, 10), 10)
+        return day > 0 && day <= todayDay
+      })
+    }
+
     const facturado = pmBudgets.reduce((s, b) => s + (Number(b.total) || 0), 0)
     return { count: pmBudgets.length, facturado }
   }, [allBudgets, month, year])
@@ -692,23 +707,26 @@ export default function Ventas() {
                 )}
               </div>
             </div>
-            <div className="vt-hero-divider" />
-            <div className="vt-hero-stat">
-              <div className="vt-hero-stat-icon" style={{ background: 'rgba(124,58,237,.1)', color: '#7C3AED' }}>
-                <i className="fa fa-crown" />
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="vt-hero-stat-lbl">Mejor cliente</div>
-                {topClient ? (
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, minWidth: 0 }}>
-                    <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{topClient.name}</span>
-                    <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 600, flexShrink: 0 }}>{hidden ? '' : fmt(topClient.total)}</span>
+            {/* "Mejor cliente" solo cuando hay señal real: con <5 ventas en el
+                mes, el "mejor" es trivial (puede ser 50% o 100% por tener 1-2
+                clientes) y ocupa espacio sin dar insight accionable. */}
+            {totals.count >= 5 && topClient && (
+              <>
+                <div className="vt-hero-divider" />
+                <div className="vt-hero-stat">
+                  <div className="vt-hero-stat-icon" style={{ background: 'rgba(124,58,237,.1)', color: '#7C3AED' }}>
+                    <i className="fa fa-crown" />
                   </div>
-                ) : (
-                  <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--txt4)' }}>—</span>
-                )}
-              </div>
-            </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className="vt-hero-stat-lbl">Mejor cliente</div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, minWidth: 0 }}>
+                      <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{topClient.name}</span>
+                      <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 600, flexShrink: 0 }}>{hidden ? '' : fmt(topClient.total)}</span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
             {/* Resultado Operativo removido del hero 02/10/26 (Fase 3 auditoria).
                 Mezcla datos de Ventas y Compras — pertenece al modulo P&L
                 global, no al registro de ventas. Formula preservada por si
