@@ -523,7 +523,7 @@ export default function Clientes() {
   const openRevincul = (c, e) => {
     e.stopPropagation()
     const neg = config().businessName || 'nosotros'
-    const msg = `Hola ${c.contact || c.company}! 👋 Te escribo desde *${neg}*. ¿Seguís necesitando productos? Tenemos novedades y stock disponible que te pueden interesar. 📦`
+    const msg = `Hola ${c.contact || c.company}, ¿cómo estás? Te escribo desde *${neg}*. ¿Seguís necesitando productos? Tenemos novedades y stock disponible que te pueden interesar.`
     setRevinculMsg(msg)
     setRevinculModal(c)
   }
