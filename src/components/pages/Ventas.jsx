@@ -517,9 +517,46 @@ export default function Ventas() {
     }
   }
 
+  // Chip rápido de cobro: además de cambiar payStatus, inyecta un stub en
+  // payments[] con la fecha de HOY para que cobradoEnFecha/cobradoEnRango
+  // atribuyan el ingreso al día real del cobro (no a la fecha de creación del
+  // pedido). Shape alineado al stub de Historial.handlePayStatusChange:
+  // { id, amount, date (YYYY-MM-DD), method, notes }. notes="chip rápido"
+  // marca los que creamos acá — así se pueden quitar al volver a pending.
   const updatePayStatus = (id, s) => {
     const b = allBudgets.find(x => x.id === id)
-    if (b) saveBudget({ ...b, payStatus: s })
+    if (!b) return
+    const pays = Array.isArray(b.payments) ? [...b.payments] : []
+    const yaCobrado = pays.reduce((acc, p) => acc + (Number(p.amount) || 0), 0)
+    const totalDue  = Number(b.totalFinal || b.total) || 0
+
+    if (s === 'pending') {
+      // Volver a pendiente: solo tocamos los stubs creados por este chip.
+      // Pagos cargados por el modal se conservan (audit trail).
+      const kept = pays.filter(p => p.notes !== 'chip rápido')
+      saveBudget({ ...b, payStatus: s, payments: kept })
+      return
+    }
+
+    if (s === 'paid' || s === 'partial') {
+      const target = s === 'paid'
+        ? totalDue
+        : (Number(b.depositAmt) || Math.round(totalDue * (Number(b.deposit) || 50) / 100))
+      const delta = Math.max(0, target - yaCobrado)
+      if (delta > 0) {
+        pays.push({
+          id: Date.now(),
+          amount: delta,
+          date: new Date().toISOString().slice(0, 10),
+          method: '',
+          notes: 'chip rápido',
+        })
+      }
+      saveBudget({ ...b, payStatus: s, payments: pays })
+      return
+    }
+
+    saveBudget({ ...b, payStatus: s })
   }
 
   const payInfo = (b) => PAY_OPTS.find(o => o.value === b.payStatus) || PAY_OPTS[0]
@@ -1386,8 +1423,32 @@ function PendientesCobro({ budgets, hidden, nav, saveBudget, toast, mesLabel }) 
   if (pendientes.length === 0) return null
   const totalPend = pendientes.reduce((s, b) => { const t = Number(b.total) || 0; const d = Number(b.depositAmt) || 0; return s + (b.payStatus === 'partial' ? t - d : t) }, 0)
 
+  // Igual que updatePayStatus: inyecta stub de payment en el día real para
+  // que el gráfico de cash flow atribuya el ingreso correctamente. Se reusa
+  // también desde cyclePay más abajo.
+  const payStub = (b, s) => {
+    const pays = Array.isArray(b.payments) ? [...b.payments] : []
+    const yaCobrado = pays.reduce((acc, p) => acc + (Number(p.amount) || 0), 0)
+    const totalDue  = Number(b.totalFinal || b.total) || 0
+    const target = s === 'paid'
+      ? totalDue
+      : (Number(b.depositAmt) || Math.round(totalDue * (Number(b.deposit) || 50) / 100))
+    const delta = Math.max(0, target - yaCobrado)
+    if (delta > 0) {
+      pays.push({
+        id: Date.now(),
+        amount: delta,
+        date: new Date().toISOString().slice(0, 10),
+        method: '',
+        notes: 'chip rápido',
+      })
+    }
+    return pays
+  }
+
   const markPaid = (b) => {
-    if (saveBudget) saveBudget({ ...b, payStatus: 'paid' })
+    if (!saveBudget) return
+    saveBudget({ ...b, payStatus: 'paid', payments: payStub(b, 'paid') })
     setJustPaidId(b.id)
     setTimeout(() => setJustPaidId(null), 1400)
     if (toast) toast('Cobro registrado', 'ok')
@@ -1395,7 +1456,7 @@ function PendientesCobro({ budgets, hidden, nav, saveBudget, toast, mesLabel }) 
 
   const cyclePay = (b) => {
     const next = b.payStatus === 'pending' ? 'partial' : 'paid'
-    if (saveBudget) saveBudget({ ...b, payStatus: next })
+    if (saveBudget) saveBudget({ ...b, payStatus: next, payments: payStub(b, next) })
     if (next === 'paid') {
       setJustPaidId(b.id)
       setTimeout(() => setJustPaidId(null), 1400)
