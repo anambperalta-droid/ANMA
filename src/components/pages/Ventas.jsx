@@ -147,12 +147,6 @@ export default function Ventas() {
   const [month, setMonth] = useState(now.getMonth())
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [previewBudget, setPreviewBudget] = useState(null) // PedidoDrawer side-sheet (sin navegar al form)
-  // Re-sync del drawer con budgets live para que cambios en otro lado se reflejen aquí
-  useEffect(() => {
-    if (!previewBudget) return
-    const fresh = (get('budgets') || []).find(x => x.id === previewBudget.id)
-    if (fresh && fresh !== previewBudget) setPreviewBudget(fresh)
-  }, [get('budgets')]) // eslint-disable-line react-hooks/exhaustive-deps
   const [draft, setDraft] = useState({ ...EMPTY })
   const [showNota, setShowNota] = useState(false)
   const [savedCount, setSavedCount] = useState(0)
@@ -166,6 +160,16 @@ export default function Ventas() {
   const clients = get('clients') || []
   const products = get('products') || []
   const allBudgets = get('budgets') || []
+
+  // Re-sync del drawer con budgets live. IMPORTANTE: comparamos por updatedAt
+  // y no por ref. allBudgets es una ref nueva cada render → fresh !== previewBudget
+  // era siempre true, setPreviewBudget en loop, y podía sobreescribir el null
+  // que seteaba onClose dejando el drawer visible aunque clickearas la X.
+  useEffect(() => {
+    if (!previewBudget) return
+    const fresh = allBudgets.find(x => x.id === previewBudget.id)
+    if (fresh && fresh.updatedAt !== previewBudget.updatedAt) setPreviewBudget(fresh)
+  }, [allBudgets, previewBudget?.id]) // eslint-disable-line react-hooks/exhaustive-deps
   const allCompras = get('compras') || []
   const mk = monthKey(year, month)
 

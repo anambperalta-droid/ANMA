@@ -1568,16 +1568,20 @@ export default function Historial() {
 
   // Sync drawer/preview/payments con budgets live: un cambio en la tabla
   // (chip de pago, estado, etc.) se refleja en el side-sheet abierto.
+  // IMPORTANTE: comparamos por updatedAt y no por ref. budgets viene de
+  // get('budgets') que devuelve array nuevo cada render → fresh siempre tenía
+  // nueva ref aunque el contenido fuera idéntico → setXxx(fresh) se llamaba
+  // en loop. updatedAt sí es estable.
   useEffect(() => {
     if (previewBudget) {
       const fresh = budgets.find(x => x.id === previewBudget.id)
-      if (fresh && fresh !== previewBudget) setPreviewBudget(fresh)
+      if (fresh && fresh.updatedAt !== previewBudget.updatedAt) setPreviewBudget(fresh)
     }
     if (paymentsBudget) {
       const fresh = budgets.find(x => x.id === paymentsBudget.id)
-      if (fresh && fresh !== paymentsBudget) setPaymentsBudget(fresh)
+      if (fresh && fresh.updatedAt !== paymentsBudget.updatedAt) setPaymentsBudget(fresh)
     }
-  }, [budgets]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [budgets, previewBudget?.id, paymentsBudget?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleResend = (b) => setResendBudget(b)
   const handleResendSent = () => { toast('Mensaje copiado / enviado', 'ok'); setResendBudget(null) }
@@ -2079,7 +2083,13 @@ export default function Historial() {
                                     e.stopPropagation()
                                     if (openMenuId === b.id) { setOpenMenuId(null); setMenuAnchor(null); return }
                                     const r = e.currentTarget.getBoundingClientRect()
-                                    setMenuAnchor({ top: r.bottom + 4, right: window.innerWidth - r.right })
+                                    // Smart placement: si no entra abajo, volteo arriba.
+                                    const estH = 240
+                                    const spaceBelow = window.innerHeight - r.bottom
+                                    const top = spaceBelow < estH + 16
+                                      ? Math.max(8, r.top - estH - 4)
+                                      : r.bottom + 4
+                                    setMenuAnchor({ top, right: window.innerWidth - r.right })
                                     setOpenMenuId(b.id)
                                   }}
                                   title="Acciones"
@@ -2615,7 +2625,13 @@ export default function Historial() {
                             e.stopPropagation()
                             if (openMenuId === b.id) { setOpenMenuId(null); setMenuAnchor(null); return }
                             const r = e.currentTarget.getBoundingClientRect()
-                            setMenuAnchor({ top: r.bottom + 4, right: window.innerWidth - r.right })
+                            // Smart placement: si no entra abajo, volteo arriba.
+                            const estH = 240
+                            const spaceBelow = window.innerHeight - r.bottom
+                            const top = spaceBelow < estH + 16
+                              ? Math.max(8, r.top - estH - 4)
+                              : r.bottom + 4
+                            setMenuAnchor({ top, right: window.innerWidth - r.right })
                             setOpenMenuId(b.id)
                           }} title="Más acciones"
                             style={{ position: 'relative' }}>
