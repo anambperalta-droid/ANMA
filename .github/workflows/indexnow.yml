@@ -1,0 +1,68 @@
+name: IndexNow ping
+
+# Dispara en cada push a main que toque la landing o los recursos publicos.
+# Espera que Vercel termine el deploy comparando el hash del sitemap live
+# contra el del repo, y despues notifica a Bing / Yandex / DuckDuckGo / Seznam.
+# Google NO soporta IndexNow (se maneja via Search Console).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'public/**'
+      - 'scripts/indexnow-ping.mjs'
+      - '.github/workflows/indexnow.yml'
+
+concurrency:
+  group: indexnow-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Esperar deploy de Vercel
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Validando que la key IndexNow siga live"
+          KEY=c0a497317daf8921e2ea8f39c2a1ddb4
+          for i in $(seq 1 60); do
+            if curl -sfL "https://anmahub.com/${KEY}.txt" > /dev/null; then
+              echo "✓ Key file accesible"
+              break
+            fi
+            echo "  …esperando (${i}/60)"
+            sleep 3
+          done
+          echo "::endgroup::"
+
+          echo "::group::Esperando que el sitemap live refleje este commit"
+          # Hash local del sitemap de este commit
+          local_hash=$(sha256sum public/sitemap.xml | awk '{print $1}')
+          echo "  SHA local: $local_hash"
+
+          # Poll hasta que el live sitemap matchee (max 5 min)
+          for i in $(seq 1 60); do
+            live_hash=$(curl -s https://anmahub.com/sitemap.xml | sha256sum | awk '{print $1}')
+            if [ "$live_hash" = "$local_hash" ]; then
+              echo "✓ Deploy sincronizado tras ${i}x5s"
+              break
+            fi
+            if [ "$i" -eq 60 ]; then
+              echo "::warning::Timeout esperando sync — se pingea igual (deploy puede estar OK pero sin cambios al sitemap)"
+            fi
+            sleep 5
+          done
+          echo "::endgroup::"
+
+      - name: Ping IndexNow
+        run: node scripts/indexnow-ping.mjs
