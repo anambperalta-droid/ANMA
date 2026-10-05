@@ -31,7 +31,6 @@ Emprendedores y pymes de Argentina que hoy gestionan con Excel, cuadernos y chat
 - [Cómo poner precios en un comercio](https://anmahub.com/recursos/como-poner-precios-comercio): fórmula de costo real + margen objetivo, lista pública vs. mayorista, cuándo tocar precio.
 - [Cómo cobrar sin perder la relación](https://anmahub.com/recursos/como-cobrar-clientes-sin-perder-relacion): guion de seguimiento, mensajes para cada estado, cuándo levantar el teléfono.
 - [Excel vs. sistema de gestión](https://anmahub.com/recursos/excel-vs-sistema-de-gestion): comparación honesta — cuándo conviene cada uno, señales de que la planilla cuesta plata.
-- [Playbook de ventas pyme](https://anmahub.com/recursos/playbook-ventas): canales de adquisición de ANMA + plantillas de outreach reutilizables.
 
 ### Por rubro
 - [Control de stock para tiendas de ropa](https://anmahub.com/recursos/control-de-stock-tienda-de-ropa): método de 4 reglas para talles y colores, stock mínimo, señas y micro-recuentos.
