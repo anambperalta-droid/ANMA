@@ -99,6 +99,32 @@ export default function PortalProveedor() {
     navigator.clipboard?.writeText(txt).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2200) })
   }
 
+  /* Agendar entrega — genera un .ics con fecha estimada según leadTime. */
+  const agendarEntrega = () => {
+    const lt = Number(data?.leadTime) || 0
+    if (!lt) return
+    const d = new Date()
+    d.setDate(d.getDate() + lt)
+    const pad = (n) => String(n).padStart(2, '0')
+    const ymd = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`
+    const dayAfter = new Date(d); dayAfter.setDate(dayAfter.getDate() + 1)
+    const ymd2 = `${dayAfter.getFullYear()}${pad(dayAfter.getMonth() + 1)}${pad(dayAfter.getDate())}`
+    const uid = `anma-prov-${Date.now()}@anma`
+    const summary = `Entrega a ${data?.ownerName || 'cliente'}`
+    const desc = `Entrega estimada según lead time acordado (${lt} días). Productos: ${products.length}.`
+    const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//ANMA//Portal Proveedor//ES','BEGIN:VEVENT',
+      `UID:${uid}`, `DTSTAMP:${ymd}T000000Z`, `DTSTART;VALUE=DATE:${ymd}`, `DTEND;VALUE=DATE:${ymd2}`,
+      `SUMMARY:${summary}`, `DESCRIPTION:${desc}`, 'END:VEVENT','END:VCALENDAR'].join('\r\n')
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' })
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'entrega-anma.ics'; a.click()
+  }
+
+  /* CTA contextual: si hay reposición, el "confirmar" habla de reposición con unidades reales. */
+  const reorderUnits = useMemo(() => reorder.reduce((s, p) => s + Math.max(1, (p.minStock || 0) - (p.stock || 0)), 0), [reorder])
+  const ctaConfirmSuffix = reorder.length > 0
+    ? `te confirmo la reposición: ${reorderUnits} u. de ${reorder.length} producto${reorder.length !== 1 ? 's' : ''}${reorderTotal > 0 ? ` (${fmt(reorderTotal)})` : ''}. Llego con los plazos acordados`
+    : `te confirmo precios y plazos del pedido${totalValue > 0 ? ` (${fmt(totalValue)})` : ''}`
+
   if (error) return (
     <div style={S.errorWrap}>
       <div style={S.errorCard}>
@@ -157,19 +183,29 @@ export default function PortalProveedor() {
           )}
         </div>
 
-        {/* RESUMEN DEL PEDIDO (scope de un vistazo) */}
+        {/* RESUMEN TOP: lo que el proveedor realmente quiere saber al abrir el link */}
         {products.length > 0 && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginBottom: 12 }}>
-            {[
-              { label: 'Ítems', value: String(products.length) },
-              { label: 'Unidades', value: String(totalUnits) },
-              { label: 'Valor estimado', value: fmt(totalValue) },
-            ].map((t, i) => (
-              <div key={i} style={{ background: '#fff', border: '1px solid #EDE9FE', borderRadius: 12, padding: '13px 10px', textAlign: 'center', minWidth: 0 }}>
-                <div style={{ fontSize: 17, fontWeight: 700, color: '#1E1B4B', fontFamily: "'Space Grotesk','Inter',sans-serif", letterSpacing: '-.4px', fontVariantNumeric: 'tabular-nums', lineHeight: 1.15, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.value}</div>
-                <div style={{ fontSize: 10, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '.5px', marginTop: 5 }}>{t.label}</div>
+          <div className="pp-card" style={{ background: '#fff', border: '1.5px solid #DDD6FE', borderRadius: 14, padding: '14px 16px', marginBottom: 12, boxShadow: '0 2px 10px rgba(124,58,237,.06)' }}>
+            <div style={{ fontSize: 10, fontWeight: 800, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>Resumen del pedido</div>
+            <div style={{ display: 'grid', gridTemplateColumns: data.paymentTerm || data.leadTime ? 'repeat(2,1fr)' : 'repeat(2,1fr)', gap: 10 }}>
+              <div style={{ background: 'linear-gradient(135deg,#F5F3FF,#EDE9FE)', borderRadius: 10, padding: '12px 14px' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: '#6D28D9', textTransform: 'uppercase', letterSpacing: '.5px' }}>Monto estimado</div>
+                <div style={{ fontSize: 22, fontWeight: 800, color: '#1E1B4B', fontFamily: "'Space Grotesk','Inter',sans-serif", letterSpacing: '-.5px', lineHeight: 1.15, marginTop: 3 }}>{fmt(totalValue)}</div>
+                <div style={{ fontSize: 11, color: '#6B7280', marginTop: 2 }}>{products.length} producto{products.length !== 1 ? 's' : ''} · {totalUnits} u.</div>
               </div>
-            ))}
+              <div style={{ background: 'linear-gradient(135deg,#F0FDF4,#DCFCE7)', borderRadius: 10, padding: '12px 14px' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: '#047857', textTransform: 'uppercase', letterSpacing: '.5px' }}>Plazos acordados</div>
+                <div style={{ fontSize: 13, color: '#1E1B4B', marginTop: 5, lineHeight: 1.5 }}>
+                  {data.paymentTerm ? <div><i className="fa fa-credit-card" style={{ color: '#047857', fontSize: 11, marginRight: 5 }} /><b>Pago:</b> {data.paymentTerm} días</div> : <div style={{ color: '#9CA3AF', fontSize: 12 }}>Pago: sin plazo definido</div>}
+                  {data.leadTime ? <div style={{ marginTop: 3 }}><i className="fa fa-truck-fast" style={{ color: '#047857', fontSize: 11, marginRight: 5 }} /><b>Entrega:</b> {data.leadTime} días</div> : <div style={{ color: '#9CA3AF', fontSize: 12, marginTop: 3 }}>Entrega: sin lead time</div>}
+                </div>
+                {Number(data.leadTime) > 0 && (
+                  <button onClick={agendarEntrega} style={{ marginTop: 8, background: '#fff', color: '#047857', border: '1.5px solid #86EFAC', fontSize: 11, fontWeight: 700, padding: '6px 10px', borderRadius: 8, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5, fontFamily: 'inherit' }}>
+                    <i className="fa fa-calendar-plus" /> Agendar entrega
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
@@ -195,15 +231,10 @@ export default function PortalProveedor() {
               })}
             </div>
             {reorderTotal > 0 && (
-              <div style={S.reorderTotal}>
+              <div style={{ ...S.reorderTotal, marginBottom: 0 }}>
                 <span style={{ fontSize: 12, color: '#6B7280' }}>Total estimado de reposición</span>
                 <b style={{ fontSize: 18, color: '#1E1B4B', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{fmt(reorderTotal)}</b>
               </div>
-            )}
-            {waLink('quería confirmarte la reposición del pedido') && (
-              <a href={waLink('quería confirmarte la reposición del pedido')} target="_blank" rel="noopener noreferrer" className="pp-btn-wa" style={{ ...S.btnUrgent, background: 'linear-gradient(135deg,#16A34A,#15803D)' }}>
-                <i className="fa-brands fa-whatsapp" style={{ fontSize: 18 }} /> Confirmar reposición por WhatsApp
-              </a>
             )}
           </div>
         )}
@@ -279,30 +310,7 @@ export default function PortalProveedor() {
           </div>
         )}
 
-        {/* CONDICIONES */}
-        {(data.paymentTerm || data.leadTime) && (
-          <div className="pp-card" style={S.section}>
-            <h3 style={S.sectionTitle}><i className="fa fa-sliders" style={{ marginRight: 8, color: '#7C3AED' }} />Condiciones acordadas</h3>
-            <div style={S.condsGrid}>
-              {data.paymentTerm && (
-                <div style={S.condCard}>
-                  <div style={S.condIcon}><i className="fa fa-credit-card" /></div>
-                  <div style={S.condLabel}>Plazo de pago</div>
-                  <div style={S.condValue}>{data.paymentTerm} <span style={S.condUnit}>días</span></div>
-                </div>
-              )}
-              {data.leadTime && (
-                <div style={S.condCard}>
-                  <div style={S.condIcon}><i className="fa fa-truck-fast" /></div>
-                  <div style={S.condLabel}>Lead time entrega</div>
-                  <div style={S.condValue}>{data.leadTime} <span style={S.condUnit}>días</span></div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* CONFIRMACIÓN / CTA */}
+        {/* CONFIRMACIÓN / CTA (plazos y monto ya están en el resumen top) */}
         <div className="pp-card" style={S.ctaCard}>
           <div style={{ fontSize: 30, marginBottom: 8, color: confirmed ? '#16A34A' : '#7C3AED' }}><i className={`fa ${confirmed ? 'fa-circle-check' : 'fa-handshake'}`} /></div>
           <h3 style={S.ctaTitle}>
@@ -315,19 +323,19 @@ export default function PortalProveedor() {
           </p>
 
           <div style={S.ctaButtons}>
-            {waLink('te confirmo que llego con todo según los plazos acordados') && (
-              <a href={waLink('te confirmo que llego con todo según los plazos acordados')}
+            {waLink(ctaConfirmSuffix) && (
+              <a href={waLink(ctaConfirmSuffix)}
                 target="_blank" rel="noopener noreferrer"
                 onClick={() => setConfirmed(true)}
                 className="pp-btn-wa" style={S.btnConfirm}>
-                <i className="fa-brands fa-whatsapp" style={{ fontSize: 18 }} /> Confirmar todo
+                <i className="fa-brands fa-whatsapp" style={{ fontSize: 18 }} /> {reorder.length > 0 ? 'Confirmo reposición' : 'Confirmo precios y plazos'}
               </a>
             )}
-            {waLink('quería ver algunos detalles antes de confirmar') && (
-              <a href={waLink('quería ver algunos detalles antes de confirmar')}
+            {waLink('quería ajustar algún precio o plazo antes de confirmar') && (
+              <a href={waLink('quería ajustar algún precio o plazo antes de confirmar')}
                 target="_blank" rel="noopener noreferrer"
                 className="pp-btn-out" style={S.btnAsk}>
-                <i className="fa-brands fa-whatsapp" /> Tengo dudas / Negociar
+                <i className="fa-brands fa-whatsapp" /> Ajustar precios o plazos
               </a>
             )}
           </div>
