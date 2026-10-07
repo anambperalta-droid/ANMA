@@ -177,6 +177,37 @@ export default function Proveedores() {
     return { total, count: arr.length, last, avgMensual, months: monthsSet.size }
   }
 
+  /* Días desde la última compra — para calcular estado del proveedor. */
+  const supplierLastCompraDays = (s) => {
+    const stats = supplierComprasStats(s)
+    if (!stats.last?.fecha) return null
+    return Math.floor((Date.now() - new Date(stats.last.fecha + 'T00:00')) / 86400000)
+  }
+
+  /* Estado del proveedor:
+   *   frecuente → 5+ compras y últ. compra <45d
+   *   activo    → tiene compras pero no frecuente
+   *   dormido   → >120d sin comprar
+   *   nuevo     → 1 sola compra reciente
+   *   sin_compras → 0 compras */
+  const supplierEstado = (s) => {
+    const stats = supplierComprasStats(s)
+    const d = supplierLastCompraDays(s)
+    if (stats.count === 0) return 'sin_compras'
+    if (d !== null && d > 120) return 'dormido'
+    if (stats.count >= 5 && d !== null && d <= 45) return 'frecuente'
+    if (stats.count <= 1 && d !== null && d <= 60) return 'nuevo'
+    return 'activo'
+  }
+
+  const PROV_ESTADO_META = {
+    frecuente: { label: 'Frecuente', color: '#047857', bg: '#D1FAE5', icon: 'fa-star' },
+    activo:    { label: 'Activo',    color: '#047857', bg: '#D1FAE5', icon: 'fa-circle-check' },
+    dormido:   { label: 'Dormido',   color: '#B45309', bg: '#FEF3C7', icon: 'fa-moon' },
+    nuevo:     { label: 'Nuevo',     color: '#6D28D9', bg: '#EDE9FE', icon: 'fa-seedling' },
+    sin_compras: { label: 'Sin compras', color: '#64748B', bg: '#F1F5F9', icon: 'fa-user-plus' },
+  }
+
   // Último precio pagado por producto, tomado de los items de compras (más reciente primero)
   const lastPaidPrice = (s, productId) => {
     const arr = supplierCompras(s)
@@ -963,12 +994,23 @@ export default function Proveedores() {
                     {(detailSupplier.name || '?')[0].toUpperCase()}
                   </div>
                   <div style={{ minWidth: 0, flex: 1 }}>
-                    <h3 className="prov-detail-name" style={{ fontSize: 17, fontWeight: 900, color: 'var(--txt)', letterSpacing: '-.4px', margin: 0, lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{detailSupplier.name}</h3>
-                    {detailSupplier.contact && (
-                      <div className="prov-detail-sub" style={{ fontSize: 12, color: 'var(--txt3)', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {detailSupplier.contact}{detailSupplier.rubro ? <span style={{ color: 'var(--txt4)' }}> · {detailSupplier.rubro}</span> : ''}
-                      </div>
-                    )}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
+                      <h3 className="prov-detail-name" style={{ fontSize: 17, fontWeight: 900, color: 'var(--txt)', letterSpacing: '-.4px', margin: 0, lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{detailSupplier.name}</h3>
+                      {(() => {
+                        const e = supplierEstado(detailSupplier)
+                        const m = PROV_ESTADO_META[e]
+                        return <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: m.bg, color: m.color, fontSize: 10, fontWeight: 800, padding: '3px 9px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: '.5px' }}><i className={`fa ${m.icon}`} />{m.label}</span>
+                      })()}
+                    </div>
+                    <div className="prov-detail-sub" style={{ fontSize: 12, color: 'var(--txt3)', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {detailSupplier.contact && <>{detailSupplier.contact}</>}
+                      {detailSupplier.rubro && <span style={{ color: 'var(--txt4)' }}>{detailSupplier.contact ? ' · ' : ''}{detailSupplier.rubro}</span>}
+                      {(() => {
+                        const d = supplierLastCompraDays(detailSupplier)
+                        if (d === null) return null
+                        return <span style={{ color: 'var(--txt4)' }}> · últ. compra {d === 0 ? 'hoy' : `hace ${d}d`}</span>
+                      })()}
+                    </div>
                   </div>
                 </div>
                 <div className="prov-detail-hd-acts" style={{ display: 'flex', gap: 6, alignItems: 'center', flexShrink: 0 }}>
@@ -1005,6 +1047,26 @@ export default function Proveedores() {
               {/* TAB: Información */}
               {detailTab === 'info' && (
                 <div>
+                  {/* Banner: productos de este proveedor con stock bajo → acción directa */}
+                  {(() => {
+                    const low = supplierProducts(detailSupplier).filter(p => isLowStock(p))
+                    if (!low.length) return null
+                    return (
+                      <div style={{ background: 'linear-gradient(135deg,#FEF3C7,#FFFBEB)', border: '1.5px solid #FCD34D', borderRadius: 12, padding: '12px 14px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#D97706', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}><i className="fa fa-boxes-stacked" /></div>
+                        <div style={{ flex: 1, minWidth: 140 }}>
+                          <div style={{ fontSize: 11, fontWeight: 700, color: '#92400E', textTransform: 'uppercase', letterSpacing: '.5px' }}>Reposición pendiente</div>
+                          <div style={{ fontSize: 15, fontWeight: 800, color: '#92400E', lineHeight: 1.15, marginTop: 2 }}>{low.length} producto{low.length !== 1 ? 's' : ''} bajo stock</div>
+                          <div style={{ fontSize: 11, color: '#92400E', marginTop: 2 }}>Pedí reposición antes de quedarte sin unidades.</div>
+                        </div>
+                        {detailSupplier.wa && (
+                          <button onClick={() => sendReorderWA(detailSupplier, low)} style={{ background: '#16A34A', color: '#fff', border: 'none', fontSize: 12, fontWeight: 700, padding: '9px 14px', borderRadius: 9, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'inherit' }}>
+                            <i className="fa-brands fa-whatsapp" /> Pedir reposición
+                          </button>
+                        )}
+                      </div>
+                    )
+                  })()}
                   {/* Contacto activo — links funcionales */}
                   <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
                     {detailSupplier.wa && (
