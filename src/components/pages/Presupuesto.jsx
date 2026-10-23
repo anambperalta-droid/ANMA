@@ -398,6 +398,10 @@ export default function Presupuesto() {
   const [waTouched, setWaTouched] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
   const [draftRestored, setDraftRestored] = useState(false)
+  // Anti doble-guardado: el ref frena la reentrada inmediata (doble-tap en
+  // celular, antes de que React re-renderice), el state desactiva el botón.
+  const savingRef = useRef(false)
+  const [saving, setSaving] = useState(false)
 
   const clients = get('clients')
   const products = get('products')
@@ -759,6 +763,10 @@ export default function Presupuesto() {
   }, [editId, c.nextNum, c.budgetPrefix])
 
   const handleSave = async () => {
+    if (savingRef.current) return   // ya hay un guardado en curso (anti doble-tap)
+    savingRef.current = true
+    setSaving(true)
+    try {
     if (!form.contact && !form.company) { toast('Falta el cliente. Cargá un nombre de contacto o empresa.', 'er'); return }
     if (form.wa && !isValidWA(form.wa)) { toast('El WhatsApp no tiene un formato válido. Ej: +54 351 1234567', 'er'); setWaTouched(true); return }
     // Email del cliente (si se cargó): validar formato
@@ -958,6 +966,10 @@ export default function Presupuesto() {
       }).catch(() => {})
     }
     nav('/')
+    } finally {
+      savingRef.current = false
+      setSaving(false)
+    }
   }
 
   /* ── Validación por paso ── */
@@ -2218,8 +2230,8 @@ export default function Presupuesto() {
                   {WIZARD_STEPS[currentStep]?.label || 'Siguiente'} <i className="fa fa-arrow-right" />
                 </button>
               ) : (
-                <button className="btn btn-primary" onClick={handleSave}>
-                  <i className="fa fa-floppy-disk" /> Confirmar y guardar
+                <button className="btn btn-primary" onClick={handleSave} disabled={saving}>
+                  <i className={`fa ${saving ? 'fa-spinner fa-spin' : 'fa-floppy-disk'}`} /> {saving ? 'Guardando…' : 'Confirmar y guardar'}
                 </button>
               )}
             </div>
@@ -2339,9 +2351,9 @@ export default function Presupuesto() {
 
               {/* ── 1. GUARDAR ── acción principal */}
               <button className="cp-btn cp-btn-primary"
-                onClick={handleSave}
-                style={{ fontSize: 14, padding: '13px 16px', fontWeight: 800, letterSpacing: '.01em', boxShadow: '0 4px 16px rgba(var(--brand-rgb),.35)' }}>
-                <i className="fa fa-floppy-disk" /> Guardar Presupuesto
+                onClick={handleSave} disabled={saving}
+                style={{ fontSize: 14, padding: '13px 16px', fontWeight: 800, letterSpacing: '.01em', boxShadow: '0 4px 16px rgba(var(--brand-rgb),.35)', opacity: saving ? .6 : 1 }}>
+                <i className={`fa ${saving ? 'fa-spinner fa-spin' : 'fa-floppy-disk'}`} /> {saving ? 'Guardando…' : 'Guardar Presupuesto'}
               </button>
 
               {/* ── 2. COMUNICACIÓN — compact ghost row ── */}

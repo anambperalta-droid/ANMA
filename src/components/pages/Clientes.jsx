@@ -502,7 +502,7 @@ export default function Clientes() {
     const total = Number(b.totalFinal || b.total) || 0
     const pagos = Array.isArray(b.payments) ? b.payments : []
     const cobradoPagos = pagos.reduce((s, p) => s + (Number(p.amount) || 0), 0)
-    const cobrado = cobradoPagos > 0 ? cobradoPagos : (Number(b.depositAmt) || 0)
+    const cobrado = cobradoPagos > 0 ? cobradoPagos : (Number(b.depositFinal || b.depositAmt) || 0)
     return Math.max(0, total - cobrado)
   }
 

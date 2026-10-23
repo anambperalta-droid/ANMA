@@ -825,7 +825,7 @@ const cobrado = (b) => {
   } else {
     const totalCobrado = b.totalFinal || b.total || 0
     if (b.payStatus === 'paid')    total = totalCobrado
-    else if (b.payStatus === 'partial') total = b.depositAmt || Math.round(totalCobrado * (b.deposit || 50) / 100)
+    else if (b.payStatus === 'partial') total = b.depositFinal || b.depositAmt || Math.round(totalCobrado * (b.deposit || 50) / 100)
   }
   // Restamos reembolsos por devoluciones
   return Math.max(0, total - returnedTotal(b))

@@ -91,6 +91,10 @@ function fmtDateShort(iso) {
 const montoConIva = (b) => Number(b.totalFinal || b.total) || 0
 // IVA del pedido: el presupuesto lo guarda en `ivaAmt`, la venta rápida en `_quickIva`.
 const ivaDe = (b) => Number(b.ivaAmt || b._quickIva) || 0
+// Seña efectivamente cobrada (parcial): el presupuesto con IVA la guarda en
+// `depositFinal` (sobre el total CON IVA); la venta rápida en `depositAmt`.
+// Sin esto, las señas de pedidos con IVA se cobraban "de menos".
+const senaCobrada = (b) => Number(b.depositFinal || b.depositAmt) || 0
 
 // Mediana — Fase 2 auditoria 02/10/26.
 // Robusta contra outliers: la mediana de [100, 100, 100, 100, 2.700.000]
@@ -197,7 +201,7 @@ export default function Ventas() {
       const ivaAmt = ivaDe(b)
       facturado += t; iva += ivaAmt
       if (b.payStatus === 'paid') cobrado += t
-      else if (b.payStatus === 'partial') { cobrado += Number(b.depositAmt) || 0; pendiente += t - (Number(b.depositAmt) || 0) }
+      else if (b.payStatus === 'partial') { const sena = senaCobrada(b); cobrado += sena; pendiente += t - sena }
       else pendiente += t
     })
     return { facturado, iva, cobrado, pendiente, count: monthBudgets.length }
@@ -552,7 +556,7 @@ export default function Ventas() {
     if (s === 'paid' || s === 'partial') {
       const target = s === 'paid'
         ? totalDue
-        : (Number(b.depositAmt) || Math.round(totalDue * (Number(b.deposit) || 50) / 100))
+        : (senaCobrada(b) || Math.round(totalDue * (Number(b.deposit) || 50) / 100))
       const delta = Math.max(0, target - yaCobrado)
       if (delta > 0) {
         pays.push({
@@ -892,7 +896,7 @@ export default function Ventas() {
           // En celda de cobro mostramos "$X cobrado · $Y pendiente" para pedidos partial.
           const totalDue = montoConIva(b)
           const paid = b.payStatus === 'paid' ? totalDue
-                     : b.payStatus === 'partial' ? (Number(b.depositAmt) || 0)
+                     : b.payStatus === 'partial' ? senaCobrada(b)
                      : 0
           const owed = Math.max(0, totalDue - paid)
           const method = payMethodOf(b)
@@ -939,7 +943,7 @@ export default function Ventas() {
             // Desglose parcial — Fase 1 auditoria 02/10/26.
             const totalDue = montoConIva(b)
             const paidM = b.payStatus === 'paid' ? totalDue
-                       : b.payStatus === 'partial' ? (Number(b.depositAmt) || 0)
+                       : b.payStatus === 'partial' ? senaCobrada(b)
                        : 0
             const owedM = Math.max(0, totalDue - paidM)
             return (
