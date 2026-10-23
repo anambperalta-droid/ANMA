@@ -986,7 +986,7 @@ export default function Historial() {
     // Ventas Brutas: excluye PERDIDOS (un presupuesto rechazado no es una venta).
     // Coincide con el sparkline de brutas, que ya los excluía.
     const nonLost     = periodBudgets.filter(b => b.status !== 'lost')
-    const totBudgeted = nonLost.reduce((s, b) => s + (b.total || 0), 0)
+    const totBudgeted = nonLost.reduce((s, b) => s + (b.totalFinal || b.total || 0), 0)
     const confirmed   = periodBudgets.filter(b => b.status === 'confirmed')
     // Pagados: incluye los NO perdidos + los perdidos donde te quedaste con la seña (keptDeposit:true).
     // Si marcaste un pedido perdido y devolviste la plata, NO cuenta como ingreso.
@@ -1018,7 +1018,7 @@ export default function Historial() {
     }
     const prevPagados      = prevPeriodBudgets.filter(b => b.payStatus === 'paid' || b.payStatus === 'partial')
     // Excluye perdidos, igual que totBudgeted, para que el % de variación sea justo.
-    const prevTotBudgeted  = prevPeriodBudgets.filter(b => b.status !== 'lost').reduce((s, b) => s + (b.total || 0), 0)
+    const prevTotBudgeted  = prevPeriodBudgets.filter(b => b.status !== 'lost').reduce((s, b) => s + (b.totalFinal || b.total || 0), 0)
     const prevTotCobrado   = prevPagados.reduce((s, b) => s + cobrado(b), 0)
     // Guardrail: con base previa chica (<3 presupuestos) los deltas se disparan a
     // valores absurdos (+10961%). Las clampeamos a +-999 y los lectores las ocultan.
@@ -1037,10 +1037,10 @@ export default function Historial() {
       const ds = d.toISOString().slice(0, 10)
       // Ventas brutas del día: presupuestos creados ese día (excluye perdidos)
       const dayBs = budgets.filter(b => b.date === ds && b.status !== 'lost')
-      brutas.push(dayBs.reduce((s, b) => s + (b.total || 0), 0))
+      brutas.push(dayBs.reduce((s, b) => s + (b.totalFinal || b.total || 0), 0))
       // Caja del día: pagos efectivamente recibidos. Excluye perdidos sin seña preservada.
       caja.push(budgets.filter(b => !(b.status === 'lost' && !b.keptDeposit)).reduce((s, b) => s + cobradoEnFecha(b, ds), 0))
-      ticket.push(dayBs.length ? dayBs.reduce((s, b) => s + (b.total || 0), 0) / dayBs.length : 0)
+      ticket.push(dayBs.length ? dayBs.reduce((s, b) => s + (b.totalFinal || b.total || 0), 0) / dayBs.length : 0)
     }
     return { sparkBrutas: brutas, sparkCaja: caja, sparkTicket: ticket }
   }, [budgets])
@@ -2013,8 +2013,8 @@ export default function Historial() {
             </div>
           ) : (
             <div className="bento sk-fade-in">
-              {!opHideMetrics && <KpiCard label="Ventas Brutas" value={money(totBudgeted)} delta={hidden ? undefined : deltaBrutas} sparkData={hidden ? null : sparkBrutas} sparkColor="var(--brand)" icon="fa-chart-column" />}
-              {!opHideMetrics && <KpiCard label="Ingresos Caja" value={money(totCobrado)} delta={hidden ? undefined : deltaCaja} sparkData={hidden ? null : sparkCaja} sparkColor="var(--green)" isKey icon="fa-wallet" />}
+              {!opHideMetrics && <KpiCard label="Facturado" value={money(totBudgeted)} delta={hidden ? undefined : deltaBrutas} sparkData={hidden ? null : sparkBrutas} sparkColor="var(--brand)" icon="fa-chart-column" />}
+              {!opHideMetrics && <KpiCard label="Cobrado" value={money(totCobrado)} delta={hidden ? undefined : deltaCaja} sparkData={hidden ? null : sparkCaja} sparkColor="var(--green)" isKey icon="fa-wallet" />}
               {!opHideMetrics && totGastado > 0 && <KpiCard label="Gastos" value={money(totGastado)} icon="fa-cart-shopping" />}
               {!opHideMetrics && totGastado > 0 && (
                 <KpiCard
@@ -2024,8 +2024,8 @@ export default function Historial() {
                   sparkColor={(totGain - totGastado) >= 0 ? 'var(--green)' : '#DC2626'}
                 />
               )}
-              {!opHideMetrics && <KpiCard label="Ticket Promedio" value={avgTicket > 0 ? money(avgTicket) : '—'} sparkData={hidden ? null : sparkTicket} icon="fa-receipt" />}
-              <KpiCard label="Presupuestos" value={String(periodBudgets.length)} icon="fa-file-invoice" />
+              {!opHideMetrics && <KpiCard label="Ticket promedio" value={avgTicket > 0 ? money(avgTicket) : '—'} sparkData={hidden ? null : sparkTicket} icon="fa-receipt" />}
+              <KpiCard label="Pedidos" value={String(periodBudgets.length)} icon="fa-file-invoice" />
 
               {/* ── Izquierda (gráfico + tabla) + Derecha (donut + seguimiento) ── */}
               {!opHideMetrics && <div className="bento-wide bento-chart-inner" style={{ display: 'flex', gap: 14, gridColumn: '1 / -1', flexWrap: 'wrap', alignItems: 'flex-start' }}>

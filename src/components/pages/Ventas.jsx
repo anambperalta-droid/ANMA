@@ -85,6 +85,13 @@ function fmtDateShort(iso) {
   return `${parts[2]}-${parts[1]}`
 }
 
+// Base única de monto: SIEMPRE con IVA. La venta rápida guarda `total` ya con
+// IVA; el presupuesto guarda `total` SIN IVA y `totalFinal` con IVA. Para que
+// Facturado / Cobrado / Ticket comparen lo mismo, usamos totalFinal si existe.
+const montoConIva = (b) => Number(b.totalFinal || b.total) || 0
+// IVA del pedido: el presupuesto lo guarda en `ivaAmt`, la venta rápida en `_quickIva`.
+const ivaDe = (b) => Number(b.ivaAmt || b._quickIva) || 0
+
 // Mediana — Fase 2 auditoria 02/10/26.
 // Robusta contra outliers: la mediana de [100, 100, 100, 100, 2.700.000]
 // es 100, no 540.020 como el promedio. Representa mejor el ticket "tipico".
@@ -186,8 +193,8 @@ export default function Ventas() {
   const totals = useMemo(() => {
     let facturado = 0, iva = 0, cobrado = 0, pendiente = 0
     monthBudgets.forEach(b => {
-      const t = Number(b.total) || 0
-      const ivaAmt = Number(b._quickIva) || 0
+      const t = montoConIva(b)
+      const ivaAmt = ivaDe(b)
       facturado += t; iva += ivaAmt
       if (b.payStatus === 'paid') cobrado += t
       else if (b.payStatus === 'partial') { cobrado += Number(b.depositAmt) || 0; pendiente += t - (Number(b.depositAmt) || 0) }
@@ -216,7 +223,7 @@ export default function Ventas() {
       })
     }
 
-    const facturado = pmBudgets.reduce((s, b) => s + (Number(b.total) || 0), 0)
+    const facturado = pmBudgets.reduce((s, b) => s + montoConIva(b), 0)
     return { count: pmBudgets.length, facturado }
   }, [allBudgets, month, year])
 
@@ -234,7 +241,7 @@ export default function Ventas() {
     const rev = {}
     monthBudgets.forEach(b => {
       const n = b.company || b.contact || ''
-      if (n) rev[n] = (rev[n] || 0) + (Number(b.total) || 0)
+      if (n) rev[n] = (rev[n] || 0) + montoConIva(b)
     })
     const e = Object.entries(rev)
     if (!e.length) return null
@@ -279,7 +286,7 @@ export default function Ventas() {
     const dir = sortDir === 'asc' ? 1 : -1
     arr.sort((a, b) => {
       if (sortCol === 'cliente') return dir * (a.company || a.contact || '').localeCompare(b.company || b.contact || '')
-      if (sortCol === 'facturado') return dir * ((Number(a.total) || 0) - (Number(b.total) || 0))
+      if (sortCol === 'facturado') return dir * (montoConIva(a) - montoConIva(b))
       if (sortCol === 'cobro') {
         const order = { paid: 2, partial: 1, pending: 0 }
         return dir * ((order[a.payStatus] ?? 0) - (order[b.payStatus] ?? 0))
@@ -324,12 +331,12 @@ export default function Ventas() {
       if (/^[=+\-@\t\r]/.test(s)) s = "'" + s   // CSV injection guard
       return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s
     }
-    const headers = ['N°','Fecha','Cliente','Empresa','Condición Fiscal','Producto','Cantidad','Facturado (sin IVA)','IVA','Total','Medio Pago','Canal','Estado Pago']
+    const headers = ['N°','Fecha','Cliente','Empresa','Condición Fiscal','Producto','Cantidad','Subtotal (sin IVA)','IVA 21%','Total','Medio Pago','Canal','Estado Pago']
     const rows = filteredBudgets.map(b => {
       const fc = b.fiscalCondition || (b.clientId ? (clients.find(c => c.id === b.clientId)?.fiscalCondition) : null) || 'consumidor'
       const item1 = b.items?.[0] || {}
-      const total = Number(b.total) || 0
-      const iva   = Number(b._quickIva) || 0
+      const total = montoConIva(b)
+      const iva   = ivaDe(b)
       const neto  = total - iva
       return [
         b.num || '',
@@ -712,7 +719,7 @@ export default function Ventas() {
               {hidden ? '***' : fmt(totals.cobrado)}
             </div>
             <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 3 }}>
-              {hidden ? '***' : <>de {fmt(totals.facturado)} facturado</>}
+              {hidden ? '***' : <>de {fmt(totals.facturado)} facturado{totals.iva > 0 && <> · incluye {fmt(totals.iva)} de IVA</>}</>}
               {totals.pendiente > 0 && !hidden && <> · <span style={{ color: '#b45309', fontWeight: 600 }}>{fmt(totals.pendiente)} pendiente</span></>}
             </div>
           </div>
@@ -843,7 +850,7 @@ export default function Ventas() {
           <span style={{ cursor: 'pointer' }} onClick={() => toggleSort('cliente')}>Cliente {sortCol === 'cliente' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
           <span>Producto</span>
           <span className="vt-cell-r vt-hide-m">Cant</span>
-          <span className="vt-cell-r" style={{ cursor: 'pointer' }} onClick={() => toggleSort('facturado')} title="Monto total con IVA incluido">Total {sortCol === 'facturado' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
+          <span className="vt-cell-r" style={{ cursor: 'pointer' }} onClick={() => toggleSort('facturado')} title="Total con IVA incluido">Total {sortCol === 'facturado' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
           <span className="vt-cell-r vt-hide-m" title="Porción de IVA incluida en el Total">IVA</span>
           <span className="vt-hide-m" style={{ textAlign: 'center' }}>Medio pago</span>
           <span style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => toggleSort('cobro')}>Cobro {sortCol === 'cobro' ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
@@ -883,7 +890,7 @@ export default function Ventas() {
           const urgBorder = b.payStatus === 'pending' ? '#DC2626' : b.payStatus === 'partial' ? '#D97706' : 'transparent'
           // Desglose parcial — Fase 1 auditoria 02/10/26.
           // En celda de cobro mostramos "$X cobrado · $Y pendiente" para pedidos partial.
-          const totalDue = Number(b.total) || 0
+          const totalDue = montoConIva(b)
           const paid = b.payStatus === 'paid' ? totalDue
                      : b.payStatus === 'partial' ? (Number(b.depositAmt) || 0)
                      : 0
@@ -903,8 +910,8 @@ export default function Ventas() {
               </span>
               <span className="vt-cell vt-hide-s" style={{ color: 'var(--txt2)' }}>{b.items?.[0]?.name || '—'}</span>
               <span className="vt-cell vt-cell-r vt-hide-m" style={{ color: 'var(--txt3)' }}>{b.items?.[0]?.qty || 1}</span>
-              <span className="vt-cell vt-cell-r" style={{ fontWeight: 700, color: 'var(--txt)' }}>{hidden ? '***' : fmt(b.total || 0)}</span>
-              <span className="vt-cell vt-cell-r vt-hide-m" style={{ color: 'var(--txt3)', fontSize: 12 }}>{hidden ? '***' : (b._quickIva ? fmt(b._quickIva) : '—')}</span>
+              <span className="vt-cell vt-cell-r" style={{ fontWeight: 700, color: 'var(--txt)' }}>{hidden ? '***' : fmt(montoConIva(b))}</span>
+              <span className="vt-cell vt-cell-r vt-hide-m" style={{ color: 'var(--txt3)', fontSize: 12 }}>{hidden ? '***' : (ivaDe(b) ? fmt(ivaDe(b)) : '—')}</span>
               <span className="vt-cell vt-hide-m" style={{ textAlign: 'center', color: 'var(--txt3)', fontSize: 11 }}>
                 {method ? PAY_METHOD_LABEL[method] || method : '—'}
               </span>
@@ -930,7 +937,7 @@ export default function Ventas() {
             // Mobile: comprobante + fecha + producto + metodo encadenados en el sub-line
             const productText = [b.num, b.items?.[0]?.name, b.items?.[0]?.qty > 1 ? `x${b.items[0].qty}` : '', dateStr, methodLbl].filter(Boolean).join(' · ')
             // Desglose parcial — Fase 1 auditoria 02/10/26.
-            const totalDue = Number(b.total) || 0
+            const totalDue = montoConIva(b)
             const paidM = b.payStatus === 'paid' ? totalDue
                        : b.payStatus === 'partial' ? (Number(b.depositAmt) || 0)
                        : 0
@@ -942,7 +949,7 @@ export default function Ventas() {
                   <div className="vt-card-sub">{productText || '—'}</div>
                 </div>
                 <div className="vt-card-right">
-                  <div className="vt-card-amt">{hidden ? '***' : fmt(b.total || 0)}</div>
+                  <div className="vt-card-amt">{hidden ? '***' : fmt(montoConIva(b))}</div>
                   {b.payStatus === 'partial' && !hidden && (
                     <div style={{ fontSize: 9.5, color: 'var(--txt4)', fontVariantNumeric: 'tabular-nums', lineHeight: 1.1 }}>
                       {fmt(paidM)} / <span style={{ color: '#b45309', fontWeight: 700 }}>{fmt(owedM)}</span>
@@ -965,8 +972,8 @@ export default function Ventas() {
             <span style={{ color: 'var(--txt3)', fontSize: 11, textTransform: 'uppercase' }}>Total</span>
             <span className="vt-hide-s" />
             <span className="vt-hide-m" />
-            <span className="vt-cell-r" style={{ color: 'var(--txt)', fontSize: 15, fontVariantNumeric: 'tabular-nums' }}>{hidden ? '***' : fmt(filteredBudgets.reduce((s, b) => s + (Number(b.total) || 0), 0))}</span>
-            <span className="vt-cell-r vt-hide-m" style={{ color: 'var(--txt3)', fontSize: 12, fontVariantNumeric: 'tabular-nums' }}>{hidden ? '***' : fmt(filteredBudgets.reduce((s, b) => s + (Number(b._quickIva) || 0), 0))}</span>
+            <span className="vt-cell-r" style={{ color: 'var(--txt)', fontSize: 15, fontVariantNumeric: 'tabular-nums' }}>{hidden ? '***' : fmt(filteredBudgets.reduce((s, b) => s + montoConIva(b), 0))}</span>
+            <span className="vt-cell-r vt-hide-m" style={{ color: 'var(--txt3)', fontSize: 12, fontVariantNumeric: 'tabular-nums' }}>{hidden ? '***' : fmt(filteredBudgets.reduce((s, b) => s + ivaDe(b), 0))}</span>
             <span className="vt-hide-m" />
             <span />
           </div>
@@ -976,7 +983,7 @@ export default function Ventas() {
           <div className="vt-mob-total">
             <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.04em' }}>Total</span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em' }}>{hidden ? '***' : fmt(filteredBudgets.reduce((s, b) => s + (Number(b.total) || 0), 0))}</span>
+              <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em' }}>{hidden ? '***' : fmt(filteredBudgets.reduce((s, b) => s + montoConIva(b), 0))}</span>
               {tab === 'all' && deltaFact !== null && <Delta value={deltaFact} />}
             </span>
           </div>
