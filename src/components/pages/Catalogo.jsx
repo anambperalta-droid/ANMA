@@ -380,7 +380,17 @@ export default function Catalogo() {
   const del = (id) => confirm('¿Eliminar producto?', () => { deleteEntity('products', id); toast('Producto eliminado', 'in') })
   const supplierName = (id) => { const s = suppliers.find(x => x.id === Number(id)); return s?.name || '—' }
 
-  const openMove = (item) => { setMoveModal(item); setMoveForm({ type: 'in', qty: '', note: '' }) }
+  const openMove = (item) => {
+    // Productos con variantes: el stock es la suma de las variantes. Un ajuste
+    // al agregado se perdería al guardar el producto, así que mandamos a editar
+    // el stock por variante (fuente real de verdad).
+    if (Array.isArray(item.variants) && item.variants.length > 0) {
+      toast('Este producto tiene variantes — ajustá el stock de cada una editando el producto', 'in')
+      open(item)
+      return
+    }
+    setMoveModal(item); setMoveForm({ type: 'in', qty: '', note: '' })
+  }
   const saveMove = () => {
     if (!moveForm.qty || Number(moveForm.qty) <= 0) { toast('Ingresá cantidad válida', 'er'); return }
     recordStockMove({ type: moveForm.type, productId: moveModal.id, qty: Number(moveForm.qty), note: moveForm.note || moveModal.name, ref: moveModal.name })
@@ -495,7 +505,7 @@ export default function Catalogo() {
       const parsed = []
       for (let i = startIdx; i < lines.length; i++) {
         const parts = lines[i].match(/(".*?"|[^,]+)/g)?.map(v => v.replace(/^"|"$/g, '').trim()) || []
-        if (parts.length >= 1 && parts[0]) parsed.push({ name: parts[0], cost: Number(parts[1]) || 0, supplierId: '' })
+        if (parts.length >= 1 && parts[0]) parsed.push({ name: parts[0], cost: Number(String(parts[1] ?? '').replace(/[^\d]/g, '')) || 0, supplierId: '' })
       }
       setCsvPreview(parsed)
     }

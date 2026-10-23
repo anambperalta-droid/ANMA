@@ -292,15 +292,37 @@ export function DataProvider({ children }) {
       const idx = products.findIndex(x => x.id === move.productId)
       if (idx > -1) {
         const qty = Number(move.qty) || 0
-        if (move.type === 'in' || move.type === 'return') {
-          products[idx].stock = (products[idx].stock || 0) + qty
-        } else if (move.type === 'out' || move.type === 'sale') {
-          products[idx].stock = Math.max(0, (products[idx].stock || 0) - qty)
-        } else if (move.type === 'adjust') {
-          products[idx].stock = qty
+        const p = products[idx]
+        const hasVariants = Array.isArray(p.variants) && p.variants.length > 0
+        if (hasVariants && move.variantId) {
+          // Movimiento sobre una variante puntual → actualiza esa variante y
+          // recalcula el stock agregado (que es derivado de las variantes).
+          const variants = p.variants.map(v => {
+            if (v.id !== move.variantId) return v
+            const cur = Number(v.stock) || 0
+            if (move.type === 'in' || move.type === 'return') return { ...v, stock: cur + qty }
+            if (move.type === 'out' || move.type === 'sale')  return { ...v, stock: Math.max(0, cur - qty) }
+            if (move.type === 'adjust') return { ...v, stock: qty }
+            return v
+          })
+          products[idx] = { ...p, variants, stock: variants.reduce((s, v) => s + (Number(v.stock) || 0), 0), lastMove: move.date, updatedAt: Date.now() }
+        } else if (hasVariants) {
+          // Producto con variantes SIN variante indicada: el stock agregado es
+          // derivado y se recalcula al editar el producto, así que un movimiento
+          // al agregado se perdería. No tocamos el stock (el movimiento igual
+          // queda registrado en stockMoves para auditoría).
+          products[idx] = { ...p, lastMove: move.date, updatedAt: Date.now() }
+        } else {
+          if (move.type === 'in' || move.type === 'return') {
+            products[idx].stock = (p.stock || 0) + qty
+          } else if (move.type === 'out' || move.type === 'sale') {
+            products[idx].stock = Math.max(0, (p.stock || 0) - qty)
+          } else if (move.type === 'adjust') {
+            products[idx].stock = qty
+          }
+          products[idx].lastMove  = move.date
+          products[idx].updatedAt = Date.now()
         }
-        products[idx].lastMove  = move.date
-        products[idx].updatedAt = Date.now()
         dbW('products', products)
       }
     }
