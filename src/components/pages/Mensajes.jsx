@@ -169,8 +169,10 @@ function ClientSelector({ clients, selected, onSelect, onClear }) {
 /* ── Panel de variables sticky ── */
 function VariablesPanel({ client, config, budget }) {
   const c = config
-  const senia = budget ? (Number(budget.depositAmt) || 0) : 0
-  const total = budget ? (Number(budget.total) || 0) : 0
+  // Base con IVA: lo que el cliente realmente paga (totalFinal/depositFinal en
+  // presupuestos con IVA). Usar total/depositAmt mandaba montos sin IVA al cliente.
+  const senia = budget ? (Number(budget.depositFinal || budget.depositAmt) || 0) : 0
+  const total = budget ? (Number(budget.totalFinal || budget.total) || 0) : 0
   const saldo = Math.max(0, total - senia)
   const deliveryISO = budget?.deliveryDate
   const dd = deliveryISO ? Math.ceil((new Date(deliveryISO + 'T00:00') - new Date()) / 86400000) : null
@@ -180,7 +182,7 @@ function VariablesPanel({ client, config, budget }) {
     { key: 'nombre', icon: 'fa-user', value: client?.contact },
     { key: 'empresa', icon: 'fa-building', value: client?.company },
     { key: 'negocio', icon: 'fa-store', value: c.businessName || 'ANMA' },
-    { key: 'precio', icon: 'fa-coins', value: budget ? fmt(budget.total) : null },
+    { key: 'precio', icon: 'fa-coins', value: budget ? fmt(total) : null },
     { key: 'saldo', icon: 'fa-scale-balanced', value: budget && saldo > 0 ? fmt(saldo) : null },
     { key: 'seña', icon: 'fa-hand-holding-dollar', value: budget && senia > 0 ? fmt(senia) : null },
     { key: 'producto', icon: 'fa-box-open', value: budget?.items?.length ? budget.items.map(i => i.name).filter(Boolean).join(', ') : null },
@@ -291,11 +293,11 @@ export default function Mensajes() {
     const empresa = activeClient?.company || ''
     const wa = activeClient?.wa || ''
     const negocio = c.businessName || 'ANMA'
-    const precio = clientBudget ? fmt(clientBudget.total) : ''
+    const precio = clientBudget ? fmt(clientBudget.totalFinal || clientBudget.total) : ''
     const producto = clientBudget?.items?.length ? clientBudget.items.map(i => i.name).filter(Boolean).join(', ') : ''
     const fecha = formatFechaAR(clientBudget?.deliveryDate || clientBudget?.date)
-    const seniaN = clientBudget ? (Number(clientBudget.depositAmt) || 0) : 0
-    const totalN = clientBudget ? (Number(clientBudget.total) || 0) : 0
+    const seniaN = clientBudget ? (Number(clientBudget.depositFinal || clientBudget.depositAmt) || 0) : 0
+    const totalN = clientBudget ? (Number(clientBudget.totalFinal || clientBudget.total) || 0) : 0
     const saldo = clientBudget && (totalN - seniaN) > 0 ? fmt(totalN - seniaN) : ''
     const seña = clientBudget && seniaN > 0 ? fmt(seniaN) : ''
     const deliveryISO = clientBudget?.deliveryDate
