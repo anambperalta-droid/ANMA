@@ -495,11 +495,11 @@ export default function Clientes() {
 
   const clientTotalVendido = (c) => clientBudgets(c)
     .filter(b => ['confirmed', 'paid', 'partial'].includes(b.status))
-    .reduce((s, b) => s + (Number(b.total) || 0), 0)
+    .reduce((s, b) => s + (Number(b.totalFinal || b.total) || 0), 0)
 
   /* Saldo pendiente por presupuesto — usa payments[] con fallback a depositAmt (legacy). */
   const budgetSaldo = (b) => {
-    const total = Number(b.total) || 0
+    const total = Number(b.totalFinal || b.total) || 0
     const pagos = Array.isArray(b.payments) ? b.payments : []
     const cobradoPagos = pagos.reduce((s, p) => s + (Number(p.amount) || 0), 0)
     const cobrado = cobradoPagos > 0 ? cobradoPagos : (Number(b.depositAmt) || 0)
@@ -517,7 +517,7 @@ export default function Clientes() {
   const clientTicketPromedio = (c) => {
     const bs = clientBudgets(c).filter(b => ['confirmed', 'paid', 'partial', 'delivered'].includes(b.status))
     if (!bs.length) return 0
-    return bs.reduce((s, b) => s + (Number(b.total) || 0), 0) / bs.length
+    return bs.reduce((s, b) => s + (Number(b.totalFinal || b.total) || 0), 0) / bs.length
   }
 
   /* Estado del cliente para el chip del perfil:

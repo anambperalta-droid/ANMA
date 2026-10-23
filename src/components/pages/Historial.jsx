@@ -641,7 +641,7 @@ function SeguimientoCard({ b, onEdit, onWA, onResend }) {
       </div>
 
       {/* Monto */}
-      <div className="seg-total">{money(b.total)}</div>
+      <div className="seg-total">{money(b.totalFinal || b.total)}</div>
 
       {/* Acciones — desktop: circulares compactas; mobile: full-width con label */}
       <div className="seg-actions">
@@ -2075,7 +2075,7 @@ export default function Historial() {
                                   >{cliName}</span>
                                 ) : cliName}
                               </td>
-                              <td className="c-tot" style={{ fontWeight: 700, color: 'var(--money)' }}>{money(b.total)}</td>
+                              <td className="c-tot" style={{ fontWeight: 700, color: 'var(--money)' }}>{money(b.totalFinal || b.total)}</td>
                               <td className="c-est"><DotBadge status={b.status} /></td>
                               <td className="c-act" style={{ position: 'relative' }}>
                                 <button
@@ -2221,7 +2221,7 @@ export default function Historial() {
                                     {b.company || b.contact || '—'}
                                   </div>
                                   <div style={{ fontSize: 10, color: 'var(--txt3)' }}>
-                                    {b.num} · {b.days}d · {money(b.total)}
+                                    {b.num} · {b.days}d · {money(b.totalFinal || b.total)}
                                   </div>
                                 </div>
                                 <div style={{ display: 'flex', gap: 4 }}>
@@ -2535,7 +2535,7 @@ export default function Historial() {
                         )}
                       </td>
                       <td data-cell="total" data-label="Total" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.01em', fontSize: 13.5, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>
-                        <div>{money(b.total)}</div>
+                        <div>{money(b.totalFinal || b.total)}</div>
                         <div className="col-hide-mobile" style={{ fontSize: 10.5, fontWeight: 600, color: hidden ? 'var(--txt4)' : (b.totalGain == null ? 'var(--txt4)' : '#16A34A'), marginTop: 2, fontStyle: b.totalGain == null ? 'italic' : undefined }}>
                           {b.totalGain == null ? 'gan. pendiente' : `+${money(b.totalGain)} gan.`}
                         </div>
@@ -3014,7 +3014,7 @@ export default function Historial() {
                         <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--brand)', minWidth: 40 }}>{b.num || '#—'}</span>
                         <span style={{ flex: 1, fontSize: 11, color: 'var(--txt3)' }}>{b.date || ''}</span>
                         <DotBadge status={b.status} />
-                        <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--money)', fontVariantNumeric: 'tabular-nums' }}>{money(b.total)}</span>
+                        <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--money)', fontVariantNumeric: 'tabular-nums' }}>{money(b.totalFinal || b.total)}</span>
                       </div>
                     ))}
                   </div>
