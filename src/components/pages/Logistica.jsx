@@ -142,7 +142,11 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
     // IDs originales del viaje (antes de la edición) — incluye los que ahora se removieron
     const originalIds = Array.from(new Set((edit.budgetIds || []).concat(((edit.paradas || []).map(p => p.budgetId).filter(Boolean)))))
     const affectedIds = Array.from(new Set([...originalIds, ...budgetIds]))
-    saveEntity('viajes', { ...edit, paradas, total, budgetIds })
+    const savedViaje = saveEntity('viajes', { ...edit, paradas, total, budgetIds })
+    // El id real del viaje: en uno nuevo lo asigna saveEntity (edit.id aún no existe).
+    // Sin esto, un viaje nuevo linkeaba el pedido con viajeId undefined y después
+    // Presupuesto creaba un viaje duplicado (logística contada dos veces).
+    const viajeId = savedViaje?.id || edit.id
     // Sincronización inversa: actualiza logisticaParadas de cada budget afectado.
     // No tocamos budgets con stockDeducted: su costo histórico queda congelado.
     if (saveBudget && affectedIds.length) {
@@ -152,7 +156,7 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
         const paradasDelBudget = paradas
           .filter(p => p.budgetId === bid)
           .map(p => ({ tipo: p.tipo, descripcion: p.descripcion, costo: p.costo }))
-        saveBudget({ ...b, logisticaParadas: paradasDelBudget, viajeId: paradasDelBudget.length ? edit.id : null })
+        saveBudget({ ...b, logisticaParadas: paradasDelBudget, viajeId: paradasDelBudget.length ? viajeId : null })
       })
     }
     toast('Viaje guardado — sincronizado con presupuestos', 'ok')
