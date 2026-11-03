@@ -1036,6 +1036,7 @@ export default function Ventas() {
         justSaved={justSaved}
         visibleMk={mk}
         meses={MESES}
+        showCanal={_cfg.ventaMostrarCanal !== false}
       />
 
       {/* PedidoDrawer — vista lateral de lectura rápida al click en una fila */}
@@ -1064,7 +1065,7 @@ export default function Ventas() {
   )
 }
 
-function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestions, showClientSug, setShowClientSug, products, setLine, addLine, removeLine, selectProductInLine, showNota, setShowNota, saveEntry, savedCount, justSaved, visibleMk, meses }) {
+function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestions, showClientSug, setShowClientSug, products, setLine, addLine, removeLine, selectProductInLine, showNota, setShowNota, saveEntry, savedCount, justSaved, visibleMk, meses, showCanal }) {
   if (!open) return null
 
   const lines = draft.lines || []
@@ -1398,6 +1399,7 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
 
           {/* Canal + nota */}
           <div className="sd-group" style={{ marginBottom: 0 }}>
+            {showCanal && (
             <div className="sd-fg" style={{ marginBottom: 8 }}>
               <label className="sd-lbl">Canal</label>
               <div className="sd-canal-chips">
@@ -1411,6 +1413,7 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
                 ))}
               </div>
             </div>
+            )}
             {!showNota ? (
               <button className="sd-nota-link" onClick={() => setShowNota(true)}>
                 <i className="fa fa-plus" style={{ fontSize: 9 }} /> Nota interna

@@ -776,6 +776,15 @@ export default function Config() {
                     "Ambos" habilita un toggle Público/Mayorista en cada presupuesto.
                   </div>
                 </div>
+                {/* Canal opcional al cargar ventas */}
+                <label style={{ display: 'flex', alignItems: 'center', gap: 10, fontWeight: 600, fontSize: 12.5, marginTop: 14, cursor: 'pointer' }}>
+                  <input type="checkbox" checked={c.ventaMostrarCanal !== false} onChange={e => { updateConfig({ ventaMostrarCanal: e.target.checked }); flushSync() }} style={{ width: 16, height: 16 }} />
+                  <i className="fa fa-share-nodes" style={{ color: 'var(--brand)' }} />
+                  Mostrar "Canal" al cargar ventas
+                </label>
+                <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 4, marginLeft: 26, fontStyle: 'italic' }}>
+                  Apagalo si no querés elegir el canal (WhatsApp, Presencial…) en cada venta.
+                </div>
               </div>
 
             {/* ══ COLUMNA 2 — IVA / Transparencia Fiscal ══ */}
