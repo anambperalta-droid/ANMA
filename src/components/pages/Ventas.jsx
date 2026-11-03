@@ -1095,7 +1095,7 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
       <style>{`
         .sd-overlay{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);animation:sd-fade-in .2s ease}
         @keyframes sd-fade-in{from{opacity:0}to{opacity:1}}
-        .sd-panel{position:fixed;top:0;right:0;bottom:0;z-index:9999;width:400px;max-width:100vw;background:var(--surface);border-left:1.5px solid var(--border);display:flex;flex-direction:column;animation:sd-slide-in .25s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 40px rgba(0,0,0,.2)}
+        .sd-panel{position:fixed;top:0;right:0;bottom:0;z-index:9999;width:460px;max-width:100vw;background:var(--surface);border-left:1.5px solid var(--border);display:flex;flex-direction:column;animation:sd-slide-in .25s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 40px rgba(0,0,0,.2)}
         @keyframes sd-slide-in{from{transform:translateX(100%)}to{transform:translateX(0)}}
         .sd-header{padding:12px 20px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
         .sd-body{flex:1;overflow-y:auto;padding:14px 20px 16px}
