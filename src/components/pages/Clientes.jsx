@@ -48,8 +48,9 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
       <div style="display:flex;justify-content:flex-end;margin-top:16px">
         <div style="width:240px">
           ${num(budget.shipCost) > 0 ? `<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;color:#666;border-bottom:1px solid #E5E7F0"><span>Envío</span><span>${fmt(num(budget.shipCost))}</span></div>` : ''}
-          <div style="display:flex;justify-content:space-between;padding:10px 0 6px;font-size:18px;font-weight:800;color:${brandColor}"><span>Total</span><span>${fmt(num(budget.total))}</span></div>
-          ${num(budget.depositAmt) > 0 ? `<div style="display:flex;justify-content:space-between;font-size:13px;color:${brandColor};font-weight:600"><span>Seña (${num(budget.deposit) || 50}%)</span><span>${fmt(num(budget.depositAmt))}</span></div>` : ''}
+          ${(num(budget.ivaAmt) || num(budget._quickIva)) > 0 ? `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;color:#666"><span>Subtotal</span><span>${fmt((num(budget.totalFinal) || num(budget.total)) - (num(budget.ivaAmt) || num(budget._quickIva)))}</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;color:#666"><span>IVA (21%)</span><span>${fmt(num(budget.ivaAmt) || num(budget._quickIva))}</span></div>` : ''}
+          <div style="display:flex;justify-content:space-between;padding:10px 0 6px;font-size:18px;font-weight:800;color:${brandColor}"><span>Total</span><span>${fmt(num(budget.totalFinal) || num(budget.total))}</span></div>
+          ${num(budget.depositFinal || budget.depositAmt) > 0 ? `<div style="display:flex;justify-content:space-between;font-size:13px;color:${brandColor};font-weight:600"><span>Seña (${num(budget.deposit) || 50}%)</span><span>${fmt(num(budget.depositFinal || budget.depositAmt))}</span></div>` : ''}
         </div>
       </div>
       ${budget.noteCli ? `<div style="margin-top:20px;background:#F4F6FD;border-radius:8px;padding:12px 16px;font-size:12px;color:#4B5280">${budget.noteCli}</div>` : ''}

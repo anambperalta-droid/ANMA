@@ -159,10 +159,13 @@ export function buildClientePortalLink(b, cfg = {}) {
     return { n: String(i.name || '').slice(0, 60), q: qty, pu }
   })
   // Saldo honesto según payStatus — un pedido 'paid' NO tiene saldo pendiente.
-  const total = Number(b.total) || 0
-  const depAmt = Number(b.depositAmt) || 0
+  // Base CON IVA — es lo que el cliente realmente paga (totalFinal/depositFinal
+  // en presupuestos con IVA). `iva` se manda aparte para el desglose del portal.
+  const totalConIva = Number(b.totalFinal || b.total) || 0
+  const ivaAmt = Number(b.ivaAmt || b._quickIva) || 0
+  const depAmt = Number(b.depositFinal || b.depositAmt) || 0
   const pay = b.payStatus || 'pending'
-  const seniaReal = pay === 'paid' ? total : (pay === 'partial' ? depAmt : 0)
+  const seniaReal = pay === 'paid' ? totalConIva : (pay === 'partial' ? depAmt : 0)
   // Logo: solo lo embebemos si es chico (≤8KB en base64 ≈ ~6KB real).
   // Si pesa más, degradamos a iniciales — URLs de WA tienen límite práctico ~2-4KB,
   // y queremos dejar aire para los datos del pedido. 'lg' queda vacío y el portal
@@ -176,7 +179,8 @@ export function buildClientePortalLink(b, cfg = {}) {
     neg: cfg.businessName || 'ANMA',
     lg,
     it: items,
-    t: total,
+    t: totalConIva,
+    iva: ivaAmt,
     s: seniaReal,
     d: b.deliveryDate || null,
     st: b.status || 'draft',

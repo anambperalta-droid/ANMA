@@ -254,6 +254,18 @@ export default function PortalCliente() {
         {/* TOTALES */}
         <div style={S.section}>
           <div style={S.card}>
+            {Number(data.iva) > 0 && (
+              <>
+                <div style={S.totalRow}>
+                  <span style={{ fontSize: 13, color: '#64748b' }}>Subtotal</span>
+                  <span style={{ fontSize: 14, color: '#334155', fontVariantNumeric: 'tabular-nums' }}>{fmt(Number(data.t) - Number(data.iva))}</span>
+                </div>
+                <div style={S.totalRow}>
+                  <span style={{ fontSize: 13, color: '#64748b' }}>IVA (21%)</span>
+                  <span style={{ fontSize: 14, color: '#334155', fontVariantNumeric: 'tabular-nums' }}>{fmt(data.iva)}</span>
+                </div>
+              </>
+            )}
             <div style={S.totalRow}>
               <span style={{ fontSize: 13, color: '#64748b' }}>Total del pedido</span>
               <span style={{ fontSize: 15, fontWeight: 700, color: '#111', fontVariantNumeric: 'tabular-nums' }}>{fmt(data.t)}</span>
