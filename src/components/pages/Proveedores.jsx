@@ -666,7 +666,7 @@ export default function Proveedores() {
         .zt-tbl tbody td{padding:9px 8px;font-size:13px;vertical-align:middle}
         .zt-tbl tbody tr{cursor:pointer;transition:background .12s}
         .zt-tbl tbody tr:hover{background:#F8FAFC}
-        .zt-chk{appearance:none;-webkit-appearance:none;width:16px;height:16px;border-radius:50%;border:1.5px solid #D1D5DB;background:transparent;cursor:pointer;position:relative;display:block;margin:auto;transition:border-color .12s,background .12s}
+        .zt-chk{appearance:none;-webkit-appearance:none;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;cursor:pointer;position:relative;display:block;margin:auto;transition:border-color .12s,background .12s}
         .zt-chk:hover{border-color:var(--brand)}
         .zt-chk:checked{border-color:var(--brand);background:var(--brand)}
         .zt-chk:checked::after{content:'';position:absolute;top:2px;left:5px;width:4px;height:7px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(42deg)}
@@ -678,7 +678,7 @@ export default function Proveedores() {
         .zt-tbl tbody tr:hover .zt-ci{opacity:1}
         .zt-ci:hover{transform:scale(1.12)}
         .zt-ph{align-items:center!important}
-        .zt-search-row{background:#F9FAFB!important;border:1px solid #E5E7EB!important;box-shadow:none!important;height:34px!important;border-radius:9999px!important}
+        .zt-search-row{background:var(--surface2)!important;border:1px solid var(--border)!important;box-shadow:none!important;height:34px!important;border-radius:9999px!important}
         .pill-row .pill{height:34px!important;border-radius:9999px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
         .cli-pill-group{display:inline-flex;align-items:center;gap:6px}
         .cli-pill{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 18px;border-radius:9999px;border:1.5px solid var(--border);background:var(--surface);color:var(--txt2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .15s}
@@ -724,7 +724,7 @@ export default function Proveedores() {
         }
         @media(max-width:640px){
           .prov-detail-panel{position:fixed;left:0;right:0;bottom:0;max-height:88vh;background:var(--surface);z-index:401;display:flex;flex-direction:column;border-radius:20px 20px 0 0;box-shadow:0 -4px 32px rgba(0,0,0,.14);animation:provSheetUp .28s cubic-bezier(.32,1.28,.58,1) both;overflow:hidden}
-          .prov-detail-panel::before{content:'';display:block;width:36px;height:4px;background:var(--border2,#D1D5DB);border-radius:2px;margin:10px auto 0;flex-shrink:0}
+          .prov-detail-panel::before{content:'';display:block;width:36px;height:4px;background:var(--border2,var(--border2));border-radius:2px;margin:10px auto 0;flex-shrink:0}
           .prov-detail-hd{padding:12px 16px 10px!important}
           .prov-detail-avatar{width:36px!important;height:36px!important;font-size:15px!important}
           .prov-detail-name{font-size:15px!important}
@@ -747,7 +747,7 @@ export default function Proveedores() {
         {loading ? [1,2,3,4].map(i => (
           <div key={i} className="prov-mob-card" style={{ cursor: 'default' }}>
             <div className="prov-mob-id">
-              <span className="prov-mob-dot" style={{ background: '#E5E7EB' }} />
+              <span className="prov-mob-dot" style={{ background: 'var(--border)' }} />
               <div className="prov-mob-id-text">
                 <div className="sk sk-text" style={{ height: 13, width: '55%', marginBottom: 5 }} />
                 <div className="sk sk-text" style={{ height: 11, width: '35%' }} />
@@ -755,14 +755,14 @@ export default function Proveedores() {
             </div>
             <div className="prov-mob-mid">
               <div className="prov-mob-cicons">
-                <span className="prov-mob-ci-ph" style={{ background: '#F3F4F6', borderRadius: 8 }} />
-                <span className="prov-mob-ci-ph" style={{ background: '#F3F4F6', borderRadius: 8 }} />
+                <span className="prov-mob-ci-ph" style={{ background: 'var(--surface2)', borderRadius: 8 }} />
+                <span className="prov-mob-ci-ph" style={{ background: 'var(--surface2)', borderRadius: 8 }} />
               </div>
               <div className="sk sk-text" style={{ height: 10, width: 40 }} />
             </div>
             <div className="prov-mob-acts">
-              <div style={{ width: 34, height: 34, borderRadius: 9, background: '#F3F4F6' }} />
-              <div style={{ width: 34, height: 34, borderRadius: 9, background: '#F3F4F6' }} />
+              <div style={{ width: 34, height: 34, borderRadius: 9, background: 'var(--surface2)' }} />
+              <div style={{ width: 34, height: 34, borderRadius: 9, background: 'var(--surface2)' }} />
             </div>
           </div>
         )) : filtered.length ? filtered.map(s => {

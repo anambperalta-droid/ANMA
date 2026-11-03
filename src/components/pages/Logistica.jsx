@@ -679,7 +679,7 @@ export default function Logistica() {
         /* Tab bar — solo mobile */
         .logi-mob-tabs{display:none}
         /* Search row estilizado */
-        .logi-search-row{background:#F9FAFB!important;border:1px solid #E5E7EB!important;box-shadow:none!important;border-radius:9999px!important;height:34px!important}
+        .logi-search-row{background:var(--surface2)!important;border:1px solid var(--border)!important;box-shadow:none!important;border-radius:9999px!important;height:34px!important}
         .logi-pills-row{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;align-items:center;padding-bottom:1px}
         .logi-pills-row::-webkit-scrollbar{display:none}
         /* Mobile cards */
@@ -710,7 +710,7 @@ export default function Logistica() {
         .logi-card-row3{display:flex;align-items:center;gap:6px;min-width:0;margin-top:2px}
         .logi-card-specs{flex:1;min-width:0;display:flex;align-items:center;gap:0;font-size:11px;color:#6B7280;overflow:hidden;flex-wrap:wrap;row-gap:2px}
         .logi-card-spec{flex-shrink:0;white-space:nowrap}
-        .logi-card-spec+.logi-card-spec::before{content:'·';margin:0 5px;color:#D1D5DB;font-weight:400}
+        .logi-card-spec+.logi-card-spec::before{content:'·';margin:0 5px;color:var(--border2);font-weight:400}
         .logi-card-spec-price{font-weight:700;color:var(--txt)!important}
         .logi-card-status-wrap{flex-shrink:0;display:flex;align-items:center;gap:6px;margin-left:auto}
         .logi-card-status-wrap .badge{font-size:10.5px!important;padding:3px 9px!important;border-radius:99px!important;font-weight:700!important;line-height:1.3!important}
@@ -1095,7 +1095,7 @@ export default function Logistica() {
                             className="logi-status-sel"
                             value={s.status}
                             onChange={e => { saveEntity('shipments', { ...s, status: e.target.value }); toast('Estado actualizado', 'ok') }}
-                            style={STATUS_SELECT_STYLE[s.status] || { background: '#F9FAFB', color: '#374151', border: '1.5px solid #E5E7EB' }}
+                            style={STATUS_SELECT_STYLE[s.status] || { background: 'var(--surface2)', color: 'var(--txt)', border: '1.5px solid var(--border)' }}
                           >
                             {statusList.map(st => <option key={st} value={st}>{st}</option>)}
                           </select>

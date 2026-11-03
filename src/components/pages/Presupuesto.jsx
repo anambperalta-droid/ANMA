@@ -1373,12 +1373,12 @@ export default function Presupuesto() {
       .items-scroll table thead th{
         font-size:9.5px!important;font-weight:600!important;color:#9CA3AF!important;
         text-transform:uppercase;letter-spacing:.08em;
-        background:transparent!important;border-bottom:1px solid #F3F4F6!important;
+        background:transparent!important;border-bottom:1px solid var(--surface2)!important;
         padding:8px 6px 10px!important;
       }
       /* Filas — aire vertical, divisor sutil entre filas */
       .items-scroll table tbody tr{
-        background:transparent!important;border-bottom:1px solid #F3F4F6!important;
+        background:transparent!important;border-bottom:1px solid var(--surface2)!important;
       }
       .items-scroll table tbody tr:last-child{border-bottom:none!important}
       .items-scroll table tbody td{
@@ -1401,7 +1401,7 @@ export default function Presupuesto() {
       .logi-parada-row{
         display:grid;grid-template-columns:170px 1fr 110px 26px;
         gap:8px;align-items:center;padding:8px 4px;
-        border-bottom:1px solid #F3F4F6;background:transparent;
+        border-bottom:1px solid var(--surface2);background:transparent;
       }
       .logi-parada-row:last-child{border-bottom:none}
       .logi-parada-row select,.logi-parada-row input[type=text],.logi-parada-row input[type=number]{
@@ -1472,7 +1472,7 @@ export default function Presupuesto() {
       /* Botón Agregar minimalista */
       .tbl-add-btn{
         display:inline-flex;align-items:center;gap:6px;
-        background:transparent;border:1px dashed #D1D5DB;border-radius:8px;
+        background:transparent;border:1px dashed var(--border2);border-radius:8px;
         padding:7px 12px;margin-top:8px;
         font-family:inherit;font-size:11.5px;font-weight:600;color:#6B7280;
         cursor:pointer;transition:all .15s;
@@ -1900,7 +1900,7 @@ export default function Presupuesto() {
                           const active = Number(form.deposit) === p
                           return (
                             <button type="button" key={p} onClick={() => setF('deposit', p)} tabIndex={-1} title={`Seña ${p}%`}
-                              style={{ padding: '1px 8px', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', borderRadius: 5, lineHeight: 1.7, border: active ? '1px solid var(--brand)' : '1px solid var(--border, #E5E7EB)', background: active ? 'var(--brand)' : 'transparent', color: active ? '#fff' : 'var(--text-muted)' }}>
+                              style={{ padding: '1px 8px', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', borderRadius: 5, lineHeight: 1.7, border: active ? '1px solid var(--brand)' : '1px solid var(--border, var(--border))', background: active ? 'var(--brand)' : 'transparent', color: active ? '#fff' : 'var(--text-muted)' }}>
                               {p}
                             </button>
                           )
@@ -1920,7 +1920,7 @@ export default function Presupuesto() {
 
                 {/* ─── 📦 Insumos Operativos de Despacho ─── */}
                 {!['retira', 'local', 'showroom'].some(kw => (form.delivery || '').toLowerCase().includes(kw)) && (
-                  <div style={{ marginTop: 20, padding: '18px 20px', background: 'var(--bg-card, #fff)', border: '1px solid var(--border, #E5E7EB)', borderRadius: 12 }}>
+                  <div style={{ marginTop: 20, padding: '18px 20px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12 }}>
                     <div style={{ marginBottom: 10 }}>
                       <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
                         <i className="fa fa-box-open" style={{ color: 'var(--brand)', fontSize: 13 }} /> Insumos Operativos de Despacho
@@ -2077,7 +2077,7 @@ export default function Presupuesto() {
                   {calc.viajesCost > 0 && (
                     <>
                       {/* Toggles: cobrar al cliente + mostrar detalle */}
-                      <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px dashed #E5E7EB', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                      <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px dashed var(--border)', display: 'flex', flexDirection: 'column', gap: 10 }}>
                         <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, cursor: 'pointer', fontSize: 12.5 }}>
                           <input type="checkbox" checked={form.logisticaCharged === true}
                             onChange={e => setF('logisticaCharged', e.target.checked)}
@@ -2103,7 +2103,7 @@ export default function Presupuesto() {
                           </label>
                         )}
                       </div>
-                      <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px dashed #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px dashed var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <span style={{ fontSize: 11.5, color: '#9CA3AF' }}>
                           Total logística ({(form.logisticaParadas || []).length} parada{(form.logisticaParadas || []).length !== 1 ? 's' : ''})
                           {form.logisticaCharged === true && <span style={{ color: 'var(--brand)', fontWeight: 700, marginLeft: 6 }}>· cobrada al cliente</span>}
