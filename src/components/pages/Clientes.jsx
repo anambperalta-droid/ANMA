@@ -1279,7 +1279,7 @@ export default function Clientes() {
               )
             })()}
 
-            <div className="fg"><label>Notas internas</label><textarea value={form.notes} onChange={e => setF('notes', e.target.value)} rows={3} placeholder="Preferencias, condiciones especiales, recordatorios..." /></div>
+            <div className="fg"><label>Notas internas</label><textarea value={form.notes} onChange={e => setF('notes', e.target.value)} rows={2} placeholder="Preferencias, condiciones especiales, recordatorios..." /></div>
             </div>{/* /body — flujo natural */}
             {/* Footer — flujo natural, sin sticky */}
             <div className="mfooter" style={{ borderTop: '1px solid var(--border)', padding: '14px 28px 20px', display: 'flex', gap: 10, justifyContent: 'flex-end' }}>

@@ -141,6 +141,18 @@ const newLine = () => ({ id: Math.random().toString(36).slice(2, 9), name: '', p
 // se gestiona por condicion fiscal del cliente, no por toggle en el drawer.
 const EMPTY = { cliente: '', producto: '', cantidad: '1', facturado: '', nota: '', fecha: todayISO(), payStatus: 'pending', cobradoHoy: '', canal: '', payMethod: '', fiscalCondition: 'consumidor', lines: [newLine()], ajuste: false }
 
+// Borrador de venta: se persiste en localStorage mientras el drawer esta abierto,
+// asi no se pierde si se cierra sin querer. Se limpia al guardar la venta.
+const VENTA_DRAFT_KEY = 'anma_venta_draft'
+function ventaDraftHasContent(d) {
+  if (!d) return false
+  if ((d.cliente || '').trim()) return true
+  if ((d.lines || []).some(l => (l.name || '').trim())) return true
+  if (Number(d.cobradoHoy) > 0) return true
+  if ((d.nota || '').trim()) return true
+  return false
+}
+
 // Calcula el subtotal computado de una lista de lineas.
 function sumLines(lines) {
   return (lines || []).reduce((s, l) => s + (Number(l.qty) || 0) * (Number(l.pu) || 0), 0)
@@ -387,7 +399,7 @@ export default function Ventas() {
   })
   // Al elegir producto del catalogo autollenamos pu y cost.
   const selectProductInLine = (lineId, p) => {
-    const price = Number(p.price) || Number(p.priceUnit) || 0
+    const price = Number(p.priceB2C) || Number(p.price) || Number(p.priceUnit) || 0
     const cost  = Number(p.costUnit) || Number(p.cost) || 0
     setLine(lineId, { name: p.name, productId: p.id || null, pu: price, cost })
   }
@@ -402,8 +414,23 @@ export default function Ventas() {
     const last = new Date(year, month + 1, 0)  // dia 0 del mes siguiente = ultimo del actual
     return `${last.getFullYear()}-${String(last.getMonth() + 1).padStart(2, '0')}-${String(last.getDate()).padStart(2, '0')}`
   }
-  const openDrawer = () => { setDraft({ ...EMPTY, lines: [newLine()], fecha: defaultFecha() }); setShowNota(false); setSavedCount(0); setDrawerOpen(true) }
+  const openDrawer = () => {
+    let restored = null
+    try { const raw = localStorage.getItem(VENTA_DRAFT_KEY); if (raw) { const d = JSON.parse(raw); if (ventaDraftHasContent(d)) restored = d } } catch {}
+    setDraft(restored || { ...EMPTY, lines: [newLine()], fecha: defaultFecha() })
+    setShowNota(false); setSavedCount(0); setDrawerOpen(true)
+    if (restored) toast('Recuperamos tu borrador', 'in')
+  }
   const closeDrawer = () => { setDrawerOpen(false) }
+
+  // Persistir el borrador mientras el drawer esta abierto (no perder trabajo si se cierra).
+  useEffect(() => {
+    if (!drawerOpen) return
+    try {
+      if (ventaDraftHasContent(draft)) localStorage.setItem(VENTA_DRAFT_KEY, JSON.stringify(draft))
+      else localStorage.removeItem(VENTA_DRAFT_KEY)
+    } catch {}
+  }, [draft, drawerOpen])
 
   const [justSaved, setJustSaved] = useState(false)
 
@@ -514,6 +541,7 @@ export default function Ventas() {
     const draftM = offMonth ? Number(dm.slice(5, 7)) - 1 : null
     const offLabel = offMonth ? `${MESES[draftM]} ${draftY}` : ''
 
+    try { localStorage.removeItem(VENTA_DRAFT_KEY) } catch {}
     if (keepOpen) {
       setJustSaved(true)
       setTimeout(() => setJustSaved(false), 1200)
@@ -1069,12 +1097,12 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
         @keyframes sd-fade-in{from{opacity:0}to{opacity:1}}
         .sd-panel{position:fixed;top:0;right:0;bottom:0;z-index:9999;width:400px;max-width:100vw;background:var(--surface);border-left:1.5px solid var(--border);display:flex;flex-direction:column;animation:sd-slide-in .25s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 40px rgba(0,0,0,.2)}
         @keyframes sd-slide-in{from{transform:translateX(100%)}to{transform:translateX(0)}}
-        .sd-header{padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-        .sd-body{flex:1;overflow-y:auto;padding:20px 22px 24px}
+        .sd-header{padding:12px 20px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+        .sd-body{flex:1;overflow-y:auto;padding:14px 20px 16px}
         .sd-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;flex-shrink:0;background:var(--surface);transition:background .3s}
         .sd-footer-flash{background:rgba(5,150,105,.08)}
-        .sd-group{margin-bottom:22px}
-        .sd-fg{margin-bottom:14px}
+        .sd-group{margin-bottom:14px}
+        .sd-fg{margin-bottom:9px}
         .sd-lbl{font-size:11px;font-weight:600;color:var(--txt3);margin-bottom:5px;display:block}
         .sd-inp{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;color:var(--txt);background:var(--bg);outline:none;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
         .sd-inp:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
@@ -1089,7 +1117,7 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
         .sd-sug-item:last-child{border-radius:0 0 8px 8px}
         .sd-row{display:flex;gap:10px}
         .sd-row>*{flex:1;min-width:0}
-        .sd-sep{height:1px;background:var(--border);margin:0 0 22px}
+        .sd-sep{height:1px;background:var(--border);margin:0 0 12px}
         .sd-chips{display:flex;gap:5px;flex-wrap:wrap}
         .sd-chip{padding:6px 11px;border-radius:8px;font-size:11px;font-weight:700;border:1.5px solid var(--border);background:var(--bg);color:var(--txt3);cursor:pointer;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;gap:4px}
         .sd-chip:hover{border-color:var(--txt2);background:var(--surface2)}
@@ -1575,7 +1603,7 @@ function LineRow({ line, idx, products, onSelectProduct, onChange, onRemove, can
   const match = line.productId
     ? products.find(p => p.id === line.productId)
     : products.find(p => (p.name || '').toLowerCase() === (line.name || '').toLowerCase())
-  const matchedPrice = match ? (Number(match.price) || Number(match.priceUnit) || 0) : 0
+  const matchedPrice = match ? (Number(match.priceB2C) || Number(match.price) || Number(match.priceUnit) || 0) : 0
   const diff = matchedPrice > 0 && pu > 0 ? (pu - matchedPrice) / matchedPrice : 0
   const warn = matchedPrice > 0 && pu > 0 && Math.abs(diff) > 0.05
 
@@ -1597,7 +1625,7 @@ function LineRow({ line, idx, products, onSelectProduct, onChange, onRemove, can
           {showSug && sugs.length > 0 && (
             <div className="sd-sug">
               {sugs.map(p => {
-                const price = Number(p.price) || Number(p.priceUnit) || 0
+                const price = Number(p.priceB2C) || Number(p.price) || Number(p.priceUnit) || 0
                 return (
                   <div key={p.id} className="sd-sug-item"
                     onMouseDown={() => { onSelectProduct(p); setShowSug(false) }}>

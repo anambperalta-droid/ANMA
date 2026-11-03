@@ -954,7 +954,7 @@ export default function Proveedores() {
                 <div className="fg"><label>Contacto</label><input type="text" value={form.contact} onChange={e => setF('contact', e.target.value)} /></div>
                 <div className="fg"><label>WhatsApp</label><input type="text" value={form.wa} onChange={e => setF('wa', e.target.value)} /></div>
                 <div className="fg">
-                  <label>Email <span style={{ color: 'var(--txt4)', fontWeight: 400, fontSize: 10 }}>(contacto@empresa.com)</span></label>
+                  <label>Email</label>
                   <input type="email" value={form.email} onChange={e => setF('email', e.target.value)} placeholder="contacto@proveedor.com" />
                 </div>
               </div>

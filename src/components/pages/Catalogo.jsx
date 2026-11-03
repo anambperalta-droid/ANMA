@@ -1191,12 +1191,6 @@ export default function Catalogo() {
                  Padding reducido, header más chico, grid con 2fr/1fr para
                  que Nombre sea el ancho útil (no 50/50 con SKU corto). */}
             <div style={{ background: 'var(--surface2)', borderRadius: 12, padding: '12px 16px', marginBottom: 12, border: '1px solid var(--border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 10 }}>
-                <span style={{ width: 22, height: 22, borderRadius: 6, background: 'var(--brand-xlt)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <i className="fa fa-tag" style={{ fontSize: 10, color: 'var(--brand)' }} />
-                </span>
-                <span style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--txt2)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Datos del {productMode === 'combo' ? 'combo' : 'producto'}</span>
-              </div>
               {/* Fila 1: Nombre ancho + SKU corto */}
               <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '10px 12px', marginBottom: 10 }}>
                 <div className="fg" style={{ marginBottom: 0 }}><label>Nombre *</label><input autoFocus tabIndex={1} type="text" value={form.name} onChange={e => setF('name', e.target.value)} placeholder={productMode === 'combo' ? 'Ej: Combo Verano · Pack Regalo' : getProductPlaceholder(c.rubro)} /></div>
