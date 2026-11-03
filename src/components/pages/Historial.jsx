@@ -1518,20 +1518,27 @@ export default function Historial() {
     if (/^[=+\-@\t\r]/.test(s)) s = "'" + s
     return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s
   }
-  const CSV_HEADERS = ['N°','Fecha','Cliente','Empresa','Estado','Pago','Total','Costo','Ganancia','Margen%','Seña','Stock descontado','Fecha costo']
-  const budgetToRow = (b) => [
-    b.num, b.date,
-    csvEsc(b.contact || ''), csvEsc(b.company || ''),
-    csvEsc(STATUS_MAP[b.status] || b.status || ''),
-    csvEsc(PAY_STATUS_MAP[b.payStatus] || b.payStatus || ''),
-    b.total ?? '', b.totalCost ?? '', b.totalGain ?? '',
-    b.marginBudgeted != null ? `${b.marginBudgeted}%` : '',
-    b.depositAmt ?? '',
-    b.stockDeducted ? 'Sí' : 'No',
-    b.costSnapshot?.date || '',
-  ].join(',')
+  const CSV_HEADERS = ['N°','Fecha','Cliente','Empresa','Estado','Pago','Subtotal (sin IVA)','IVA','Total','Costo','Ganancia','Margen%','Seña','Stock descontado','Fecha costo']
+  const budgetToRow = (b) => {
+    // Base con IVA, desglosada para el contador (igual que el CSV de Ventas).
+    const totalConIva = Number(b.totalFinal || b.total) || 0
+    const iva = Number(b.ivaAmt || b._quickIva) || 0
+    return [
+      b.num, b.date,
+      csvEsc(b.contact || ''), csvEsc(b.company || ''),
+      csvEsc(STATUS_MAP[b.status] || b.status || ''),
+      csvEsc(PAY_STATUS_MAP[b.payStatus] || b.payStatus || ''),
+      totalConIva - iva, iva, totalConIva,
+      b.totalCost ?? '', b.totalGain ?? '',
+      b.marginBudgeted != null ? `${b.marginBudgeted}%` : '',
+      (Number(b.depositFinal || b.depositAmt) || 0) || '',
+      b.stockDeducted ? 'Sí' : 'No',
+      b.costSnapshot?.date || '',
+    ].join(',')
+  }
   const downloadCSV = (rows, filename) => {
-    const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' })
+    // BOM UTF-8 para que Excel muestre bien los acentos.
+    const blob = new Blob(['﻿' + rows.join('\n')], { type: 'text/csv;charset=utf-8;' })
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
     a.download = filename; a.click()
   }
