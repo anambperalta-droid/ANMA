@@ -1206,8 +1206,7 @@ export default function Clientes() {
               )}
             </div>
 
-            {/* Datos de contacto */}
-            <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Datos de contacto</div>
+            {/* Datos de contacto (titulo quitado: no aporta) */}
             <div className="grid2">
               {/* Modelo comercial: para minorista invertimos el orden (Cliente como primario)
                   y movemos Empresa a opcional. Para mayorista/ambos queda como antes. */}

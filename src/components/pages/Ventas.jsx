@@ -46,7 +46,6 @@ const PAY_METHOD_OPTS = [
   { value: 'transferencia',  label: 'Transferencia',  icon: 'fa-building-columns' },
   { value: 'mp',             label: 'Mercado Pago',   icon: 'fa-wallet' },
   { value: 'tarjeta',        label: 'Tarjeta',        icon: 'fa-credit-card' },
-  { value: 'cheque',         label: 'Cheque',         icon: 'fa-money-check' },
   { value: 'otro',           label: 'Otro',           icon: 'fa-ellipsis' },
 ]
 const PAY_METHOD_LABEL = Object.fromEntries(PAY_METHOD_OPTS.map(o => [o.value, o.label]))
