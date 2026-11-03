@@ -720,7 +720,7 @@ export default function Clientes() {
         .zt-tbl tbody td{padding:9px 8px;font-size:13px;vertical-align:middle}
         .zt-tbl tbody tr{cursor:pointer;transition:background .12s}
         .zt-tbl tbody tr:hover{background:#F8FAFC}
-        .zt-chk{appearance:none;-webkit-appearance:none;width:16px;height:16px;border-radius:50%;border:1.5px solid #D1D5DB;background:transparent;cursor:pointer;position:relative;display:block;margin:auto;transition:border-color .12s,background .12s}
+        .zt-chk{appearance:none;-webkit-appearance:none;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;cursor:pointer;position:relative;display:block;margin:auto;transition:border-color .12s,background .12s}
         .zt-chk:hover{border-color:var(--brand)}
         .zt-chk:checked{border-color:var(--brand);background:var(--brand)}
         .zt-chk:checked::after{content:'';position:absolute;top:2px;left:5px;width:4px;height:7px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(42deg)}
@@ -732,7 +732,7 @@ export default function Clientes() {
         .zt-tbl tbody tr:hover .zt-ci{opacity:1}
         .zt-ci:hover{transform:scale(1.12)}
         .zt-ph{align-items:center!important}
-        .zt-search-row{background:#F9FAFB!important;border:1px solid #E5E7EB!important;box-shadow:none!important;height:34px!important;border-radius:9999px!important}
+        .zt-search-row{background:var(--surface2)!important;border:1px solid var(--border)!important;box-shadow:none!important;height:34px!important;border-radius:9999px!important}
         .pill-row .pill{height:34px!important;border-radius:9999px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
 
         /* ── MICRO-PILLS DE ACCIONES ── */
