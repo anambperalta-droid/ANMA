@@ -361,7 +361,7 @@ input,select,textarea{font-family:inherit}
 /* ─── MAIN AREA ─── */
 .main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:calc(100vw - var(--sw));overflow:clip;transition:margin-left .3s ease,max-width .3s ease}
 .topbar{height:60px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 22px;gap:12px;position:sticky;top:0;z-index:50;flex-shrink:0}
-.tb-page-title{display:block;font-size:17px;font-weight:800;color:var(--txt);letter-spacing:-.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-page-title{display:block;font-family:'Space Grotesk','Inter',sans-serif;font-size:17px;font-weight:700;color:var(--txt);letter-spacing:-.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tb-search{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:6px 12px;width:200px;cursor:pointer;transition:border-color var(--tr)}
 .tb-search:hover{border-color:var(--acento)}
 .tb-search input{background:transparent;border:none;outline:none;font-size:12px;color:var(--txt);width:100%;font-family:inherit;cursor:pointer}
@@ -376,7 +376,7 @@ input,select,textarea{font-family:inherit}
 /* ─── COMMON COMPONENTS ─── */
 /* Page header — manda visualmente en toda la app */
 .ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;gap:14px}
-.ph-left h2{font-size:22px;font-weight:800;color:var(--txt);letter-spacing:-.6px;line-height:1.15;margin:0}
+.ph-left h2{font-family:'Space Grotesk','Inter',sans-serif;font-size:22px;font-weight:700;color:var(--txt);letter-spacing:-.4px;line-height:1.15;margin:0}
 .ph-left p{font-size:13px;color:var(--txt3);margin-top:5px;line-height:1.5;max-width:520px}
 .ph-right{display:flex;gap:8px;flex-shrink:0;align-items:center;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 18px;border-radius:9999px;font-size:12.5px;font-weight:700;cursor:pointer;border:none;transition:all var(--tr);white-space:nowrap;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px}
@@ -385,9 +385,9 @@ input,select,textarea{font-family:inherit}
 .btn-primary{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);color:#fff;box-shadow:0 6px 18px var(--brand-dim)}
 .btn-primary:hover{filter:brightness(1.05);box-shadow:0 10px 26px var(--brand-dim);transform:translateY(-1px)}
 .btn-primary:active{transform:scale(.95)}
-.btn-secondary{background:var(--surface);border:1.5px solid var(--border);color:var(--txt2)}
+.btn-secondary{background:var(--surface);border:1.5px solid var(--border-soft);color:var(--txt2)}
 .btn-secondary:hover{background:var(--brand-xlt);border-color:var(--brand);color:var(--brand)}
-.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--txt2)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border-soft);color:var(--txt2)}
 .btn-ghost:hover{background:var(--brand-xlt);border-color:var(--brand);color:var(--brand)}
 .btn-brand{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);color:#fff;box-shadow:var(--sh-brand)}
 .btn-brand:hover{filter:brightness(1.05);box-shadow:var(--sh-brand);transform:translateY(-1px)}
@@ -479,7 +479,7 @@ input,select,textarea{font-family:inherit}
 .bento-seg{background:var(--panel-grad);border-radius:18px;padding:18px;box-shadow:0 8px 32px rgba(30,27,75,.2);color:#fff;overflow-y:auto;max-height:280px}
 .bento-seg::-webkit-scrollbar{width:4px}
 .bento-seg::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:10px}
-.bento-seg-title{font-size:14px;font-weight:800;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:8px;letter-spacing:-.2px}
+.bento-seg-title{font-family:'Space Grotesk','Inter',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:8px;letter-spacing:-.2px}
 
 /* "Hoy importa" — el header MÁS importante del dashboard */
 .hoy-importa-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
@@ -691,7 +691,7 @@ td b{color:var(--txt);font-weight:600}
 .modal .modal-actions,.modal .ma{margin-top:16px}
 .sb-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;height:100dvh;background:rgba(0,0,0,.55);z-index:9998;animation:pgIn .2s ease both;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
 .mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.mh h3{margin:0;font-size:17px;font-weight:800;color:var(--txt);letter-spacing:-.3px;display:flex;align-items:center}
+.mh h3{margin:0;font-family:'Space Grotesk','Inter',sans-serif;font-size:17px;font-weight:700;color:var(--txt);letter-spacing:-.3px;display:flex;align-items:center}
 .mclose{width:30px;height:30px;border-radius:8px;background:var(--surface2);border:1.5px solid var(--border);color:var(--txt2);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
 .mclose:hover{background:var(--red-lt);color:var(--red);border-color:var(--red)}
 /* .mfooter base defined above with .modal */
