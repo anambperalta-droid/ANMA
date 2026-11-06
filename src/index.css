@@ -1405,9 +1405,9 @@ td b{color:var(--txt);font-weight:600}
       'sel cli acc'
       'sel num total'
       'sel estado pago';
-    align-items:center;column-gap:10px;row-gap:7px;
+    align-items:center;column-gap:10px;row-gap:6px;
     background:var(--surface);border:1px solid var(--border);border-radius:13px;
-    padding:11px 12px 10px;margin-bottom:8px;box-shadow:0 1px 2px rgba(15,23,42,.04),0 4px 12px -10px rgba(15,23,42,.09);
+    padding:11px 13px 10px;margin-bottom:7px;box-shadow:0 1px 2px rgba(15,23,42,.04),0 4px 12px -10px rgba(15,23,42,.09);
     max-width:100%;
   }
   .hist-tbl tbody tr:active{background:var(--surface2)}
@@ -1449,11 +1449,11 @@ td b{color:var(--txt);font-weight:600}
   .hist-tbl td[data-cell="acc"] .hist-act:active{transform:scale(.92)}
 
   /* N° pedido — metadata gris muted, alineado con el total a la derecha */
-  .hist-tbl td[data-cell="num"]{grid-area:num;font-size:11.5px!important;color:var(--txt3)!important;font-weight:600!important;letter-spacing:.2px;align-self:center;line-height:1.3;font-family:'Space Grotesk','Inter',sans-serif!important;font-variant-numeric:tabular-nums}
+  .hist-tbl td[data-cell="num"]{grid-area:num;font-size:11.5px!important;color:var(--txt3)!important;font-weight:600!important;letter-spacing:.2px;align-self:start;line-height:1.3;font-family:'Space Grotesk','Inter',sans-serif!important;font-variant-numeric:tabular-nums}
 
   /* Total — label chico + número grande con Space Grotesk, tabular-nums.
      Es el dato de mayor jerarquía en la card después del cliente. */
-  .hist-tbl td[data-cell="total"]{grid-area:total;text-align:right!important;font-size:15.5px!important;font-weight:800!important;align-self:center;line-height:1.1;color:var(--txt)!important;font-family:'Space Grotesk','Inter',sans-serif!important;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+  .hist-tbl td[data-cell="total"]{grid-area:total;text-align:right!important;font-size:15.5px!important;font-weight:800!important;align-self:start;line-height:1.1;color:var(--txt)!important;font-family:'Space Grotesk','Inter',sans-serif!important;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
   .hist-tbl td[data-cell="total"]::before{content:'Total';display:block;font-size:8.5px;font-weight:700;color:var(--txt4);text-transform:uppercase;letter-spacing:.06em;text-align:right;margin-bottom:2px}
 
   /* Estado y Pago — chips COMPACTOS uniformes, sin flecha nativa gigante.
