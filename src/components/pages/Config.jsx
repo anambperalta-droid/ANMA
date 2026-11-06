@@ -802,9 +802,10 @@ export default function Config() {
                   Régimen de Transparencia Fiscal al Consumidor — Ley 27.743 (Argentina)
                 </div>
                 {ivaEnabled && (
-                  <div className="grid2">
-                    <div className="fg"><label>Razón social</label><input type="text" value={razonSocial} onChange={e => setRazonSocial(e.target.value)} placeholder="Tu Empresa SRL" style={{ borderRadius: 12 }} /></div>
+                  <div className="cfg-mini-row">
+                    <div className="fg" style={{ gridColumn: '1 / -1' }}><label>Razón social</label><input type="text" value={razonSocial} onChange={e => setRazonSocial(e.target.value)} placeholder="Tu Empresa SRL" style={{ borderRadius: 12 }} /></div>
                     <div className="fg"><label>CUIT</label><input type="text" value={cuit} onChange={e => setCuit(e.target.value)} placeholder="20-12345678-9" style={{ borderRadius: 12 }} /></div>
+                    <div className="fg"><label>Pto. Venta</label><input type="text" value={ptoVenta} onChange={e => setPtoVenta(e.target.value)} placeholder="00001" style={{ borderRadius: 12 }} /></div>
                     <div className="fg" style={{ gridColumn: '1 / -1' }}><label>Cond. frente al IVA</label>
                       <select value={condIva} onChange={e => setCondIva(e.target.value)} style={{ borderRadius: 12 }}>
                         <option>Responsable Inscripto</option>
@@ -813,9 +814,8 @@ export default function Config() {
                         <option>Consumidor Final</option>
                       </select>
                     </div>
-                    <div className="fg"><label>Pto. Venta</label><input type="text" value={ptoVenta} onChange={e => setPtoVenta(e.target.value)} placeholder="00001" style={{ borderRadius: 12 }} /></div>
                     <div className="fg"><label>Alícuota IVA (%)</label><input type="number" value={ivaRate} onChange={e => setIvaRate(e.target.value)} style={{ borderRadius: 12 }} /></div>
-                    <div className="fg" style={{ gridColumn: '1 / -1', marginBottom: 0 }}><label>Otros Imp. Indirectos (%)</label><input type="number" value={otrosImp} onChange={e => setOtrosImp(e.target.value)} style={{ borderRadius: 12 }} /></div>
+                    <div className="fg" style={{ marginBottom: 0 }}><label>Otros Imp. (%)</label><input type="number" value={otrosImp} onChange={e => setOtrosImp(e.target.value)} style={{ borderRadius: 12 }} /></div>
                   </div>
                 )}
               </div>
