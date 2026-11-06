@@ -602,7 +602,7 @@ export default function Mensajes() {
                         onMouseLeave={e => e.currentTarget.style.background = P.accent}>
                         <i className="fa-brands fa-whatsapp" /> {activeClient?.wa ? 'Enviar directo' : 'Enviar'}
                       </button>
-                      <IconBtn icon="fa-pen" title="Editar" onClick={() => openEdit(t)} hoverBg="#eff6ff" hoverColor="#2563eb" hoverBorder="#93c5fd" />
+                      <IconBtn icon="fa-pen" title="Editar" onClick={() => openEdit(t)} hoverBg="#FBF4EC" hoverColor="#2E8BD6" hoverBorder="#2E8BD6" />
                       <IconBtn icon="fa-trash" title="Eliminar" onClick={() => deleteMsg(t.id)} hoverBg="#fef2f2" hoverColor="#dc2626" hoverBorder="#fca5a5" />
                     </div>
                   </div>
@@ -632,7 +632,7 @@ export default function Mensajes() {
 
       {/* ── Modals ── */}
       {modal && <FormModal title="Nuevo mensaje" icon="fa-brands fa-whatsapp" iconColor={P.accent} onClose={() => setModal(false)} />}
-      {editModal && <FormModal title="Editar mensaje" icon="fa-pen" iconColor="#2563eb" onClose={() => setEditModal(false)} />}
+      {editModal && <FormModal title="Editar mensaje" icon="fa-pen" iconColor="#2E8BD6" onClose={() => setEditModal(false)} />}
     </div>
   )
 }

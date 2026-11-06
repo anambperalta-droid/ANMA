@@ -518,7 +518,7 @@ export default function MiCuenta() {
         </div>
         <div className="mc-row">
           <span className="mc-row-lbl">Contraseña</span>
-          <button onClick={() => setPwModal(true)} className="mc-card-action" style={{ color: '#0EA5E9' }}>
+          <button onClick={() => setPwModal(true)} className="mc-card-action" style={{ color: '#2E8BD6' }}>
             <i className="fa fa-pen" /> Cambiar
           </button>
         </div>
@@ -578,7 +578,7 @@ export default function MiCuenta() {
             }}
           >
             <h3 style={{ margin: '0 0 4px', fontSize: 18, fontWeight: 800, color: 'var(--txt)' }}>
-              <i className="fa fa-key" style={{ marginRight: 8, color: '#0EA5E9' }} />
+              <i className="fa fa-key" style={{ marginRight: 8, color: '#2E8BD6' }} />
               Cambiar contraseña
             </h3>
             <p style={{ margin: '0 0 18px', fontSize: 12.5, color: 'var(--txt3)' }}>
@@ -608,7 +608,7 @@ export default function MiCuenta() {
               </button>
               <button onClick={handleChangePassword} disabled={pwSaving} style={{
                 flex: 1, padding: '11px 16px', borderRadius: 10, border: 'none',
-                background: 'linear-gradient(135deg, #0EA5E9, #0284C7)',
+                background: 'linear-gradient(135deg, #2E8BD6, #2176B8)',
                 color: '#fff', fontSize: 13, fontWeight: 700,
                 cursor: pwSaving ? 'wait' : 'pointer', fontFamily: 'inherit',
                 opacity: pwSaving ? .7 : 1,
