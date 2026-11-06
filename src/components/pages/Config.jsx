@@ -970,8 +970,8 @@ export default function Config() {
                   <i className="fa fa-circle-info" style={{ marginTop: 2 }} />
                   <div>Obtené tu Access Token desde <b>mercadopago.com.ar → Tu negocio → Configuración → Credenciales</b>. Usá las de <b>producción</b>.</div>
                 </div>
-                <div className="grid2">
-                  <div className="fg">
+                <div className="cfg-mini-row">
+                  <div className="fg" style={{ gridColumn: '1 / -1' }}>
                     <label>Access Token</label>
                     <div style={{ position: 'relative' }}>
                       <input type={showMpToken ? 'text' : 'password'} value={mpToken} onChange={e => setMpToken(e.target.value)} placeholder="APP_USR-xxxxxxxx..." style={{ fontFamily: 'monospace', fontSize: 12, paddingRight: 36 }} />
@@ -980,9 +980,7 @@ export default function Config() {
                       </button>
                     </div>
                   </div>
-                  <div className="fg"><label>Public Key</label><input type="text" value={mpPubkey} onChange={e => setMpPubkey(e.target.value)} placeholder="APP_USR-xxxxxxxx..." style={{ fontFamily: 'monospace', fontSize: 12 }} /></div>
-                </div>
-                <div className="grid2">
+                  <div className="fg" style={{ gridColumn: '1 / -1' }}><label>Public Key</label><input type="text" value={mpPubkey} onChange={e => setMpPubkey(e.target.value)} placeholder="APP_USR-xxxxxxxx..." style={{ fontFamily: 'monospace', fontSize: 12 }} /></div>
                   <div className="fg"><label>Nombre visible</label><input type="text" value={mpName} onChange={e => setMpName(e.target.value)} placeholder="Mi Negocio" /></div>
                   <div className="fg"><label>Moneda</label><select value={mpCurrency} onChange={e => setMpCurrency(e.target.value)}><option value="ARS">ARS</option><option value="BRL">BRL</option><option value="CLP">CLP</option><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
                 </div>
@@ -1031,11 +1029,9 @@ export default function Config() {
                   <i className="fa fa-circle-info" style={{ marginTop: 2 }} />
                   <div>Estos datos se mostrarán en el presupuesto enviado al cliente. Podés copiarlos desde el panel de "Cobrar" en cada presupuesto.</div>
                 </div>
-                <div className="grid2">
-                  <div className="fg"><label>Titular</label><input type="text" value={bankHolder} onChange={e => setBankHolder(e.target.value)} placeholder="Juan Pérez / Empresa SA" /></div>
-                  <div className="fg"><label>Banco</label><input type="text" value={bankName} onChange={e => setBankName(e.target.value)} placeholder="Galicia, Santander, BBVA..." /></div>
-                </div>
-                <div className="grid2">
+                <div className="cfg-mini-row">
+                  <div className="fg" style={{ gridColumn: '1 / -1' }}><label>Titular</label><input type="text" value={bankHolder} onChange={e => setBankHolder(e.target.value)} placeholder="Juan Pérez / Empresa SA" /></div>
+                  <div className="fg"><label>Banco</label><input type="text" value={bankName} onChange={e => setBankName(e.target.value)} placeholder="Galicia, Santander..." /></div>
                   <div className="fg"><label>Tipo de cuenta</label>
                     <select value={bankAccountType} onChange={e => setBankAccountType(e.target.value)}>
                       <option>Cuenta corriente</option>
@@ -1044,17 +1040,6 @@ export default function Config() {
                     </select>
                   </div>
                   <div className="fg"><label>CUIT / CUIL</label><input type="text" value={bankCuit} onChange={e => setBankCuit(e.target.value)} placeholder="20-12345678-9" /></div>
-                </div>
-                <div className="grid2">
-                  <div className="fg">
-                    <label><i className="fa fa-hashtag" style={{ marginRight: 4, color: 'var(--acento)' }} />CBU (22 dígitos)</label>
-                    <div style={{ position: 'relative' }}>
-                      <input type="text" value={bankCbu} onChange={e => setBankCbu(e.target.value.replace(/\s/g, ''))} placeholder="0000000000000000000000" maxLength={22} style={{ fontFamily: 'monospace', letterSpacing: '.5px', paddingRight: 36 }} />
-                      <button type="button" disabled={!bankCbu} onClick={() => bankCbu && navigator.clipboard.writeText(bankCbu).then(() => toast('CBU copiado', 'ok'))} style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: bankCbu ? 'var(--brand)' : 'var(--txt4)', cursor: bankCbu ? 'pointer' : 'default', fontSize: 13, padding: 4 }} title="Copiar CBU">
-                        <i className="fa fa-copy" />
-                      </button>
-                    </div>
-                  </div>
                   <div className="fg">
                     <label><i className="fa fa-at" style={{ marginRight: 4, color: 'var(--acento)' }} />Alias</label>
                     <div style={{ position: 'relative' }}>
@@ -1064,10 +1049,16 @@ export default function Config() {
                       </button>
                     </div>
                   </div>
-                </div>
-                <div className="grid2">
-                  <div className="fg"><label>Notas adicionales (opcional)</label><input type="text" value={bankNotes} onChange={e => setBankNotes(e.target.value)} placeholder="Ej: Enviar comprobante por WhatsApp al finalizar." /></div>
-                  <div />
+                  <div className="fg" style={{ gridColumn: '1 / -1' }}>
+                    <label><i className="fa fa-hashtag" style={{ marginRight: 4, color: 'var(--acento)' }} />CBU (22 dígitos)</label>
+                    <div style={{ position: 'relative' }}>
+                      <input type="text" value={bankCbu} onChange={e => setBankCbu(e.target.value.replace(/\s/g, ''))} placeholder="0000000000000000000000" maxLength={22} style={{ fontFamily: 'monospace', letterSpacing: '.5px', paddingRight: 36 }} />
+                      <button type="button" disabled={!bankCbu} onClick={() => bankCbu && navigator.clipboard.writeText(bankCbu).then(() => toast('CBU copiado', 'ok'))} style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: bankCbu ? 'var(--brand)' : 'var(--txt4)', cursor: bankCbu ? 'pointer' : 'default', fontSize: 13, padding: 4 }} title="Copiar CBU">
+                        <i className="fa fa-copy" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="fg" style={{ gridColumn: '1 / -1', marginBottom: 0 }}><label>Notas adicionales (opcional)</label><input type="text" value={bankNotes} onChange={e => setBankNotes(e.target.value)} placeholder="Ej: Enviar comprobante por WhatsApp." /></div>
                 </div>
                 <div style={{ marginTop: 14, display: 'flex', justifyContent: 'flex-end' }}>
                   <button className="btn btn-primary" onClick={saveBankConfig} style={{ minHeight: 44 }}>
