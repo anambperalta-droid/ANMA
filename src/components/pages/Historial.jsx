@@ -1640,7 +1640,7 @@ export default function Historial() {
         })
       } else if (deltaBrutas <= -20) {
         out.push({
-          tone: 'warning',
+          tone: deltaBrutas <= -50 ? 'critical' : 'warning',
           icon: 'fa-arrow-trend-down',
           label: 'Caída de ventas',
           value: `-${Math.abs(deltaBrutas)}%`,
@@ -1696,7 +1696,7 @@ export default function Historial() {
     // 5) Cobros pendientes alto
     if (cobrosVencidos.length >= 3) {
       out.push({
-        tone: 'warning',
+        tone: 'critical',
         icon: 'fa-hand-holding-dollar',
         label: 'Cobros vencidos',
         value: money(cobrosVencidosMonto),
@@ -2702,11 +2702,16 @@ export default function Historial() {
               </div>
               <div className="ins-grid">
                 {insights.map((ins, i) => {
+                  // Escala de severidad: critico (rojo) solo para lo urgente de verdad,
+                  // advertencia (ambar) para riesgos/declives, info (azul) para datos
+                  // neutros, exito (verde) para lo positivo. Evita el muro de rojo.
                   const palette = ins.tone === 'success'
-                    ? { bg: 'rgba(22,163,74,.06)', border: 'rgba(22,163,74,.25)', icon: '#16A34A', val: '#16A34A' }
-                    : ins.tone === 'warning'
-                      ? { bg: 'rgba(220,38,38,.05)', border: 'rgba(220,38,38,.25)', icon: '#DC2626', val: '#DC2626' }
-                      : { bg: 'var(--brand-xlt)', border: 'var(--brand)', icon: 'var(--brand)', val: 'var(--brand)' }
+                    ? { bg: 'rgba(21,166,106,.07)', border: 'rgba(21,166,106,.28)', icon: '#15A66A', val: '#15A66A' }
+                    : ins.tone === 'critical'
+                      ? { bg: 'rgba(220,38,38,.06)', border: 'rgba(220,38,38,.28)', icon: '#DC2626', val: '#DC2626' }
+                      : ins.tone === 'warning'
+                        ? { bg: 'rgba(217,119,6,.07)', border: 'rgba(217,119,6,.28)', icon: '#D97706', val: '#B45309' }
+                        : { bg: 'rgba(46,139,214,.07)', border: 'rgba(46,139,214,.28)', icon: '#2E8BD6', val: '#2E8BD6' }
                   return (
                     <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '12px 14px', background: palette.bg, border: `1px solid ${palette.border}`, borderRadius: 12, boxSizing: 'border-box' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
