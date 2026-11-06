@@ -1351,6 +1351,12 @@ td b{color:var(--txt);font-weight:600}
   .budget-layout{display:flex!important;flex-direction:column!important;align-items:stretch!important}
   .budget-layout>*{width:100%!important;min-width:0!important;max-width:100%!important}
   .calc-panel{position:static!important;margin-top:16px;width:100%!important}
+  /* Banda 641–768: usar el mini-stepper (como ≤640) y ocultar el stepper
+     grande + el pane-head duplicado, para que el wizard sea consistente
+     en teléfonos grandes / phablets, no solo en ≤640. */
+  .wizard-steps{display:none!important}
+  .wiz-mobile-hd{display:flex!important;margin-bottom:10px}
+  .wiz-pane-head{display:none!important}
   .grid2,.grid3{grid-template-columns:1fr!important}
   /* Page headers apilados en mobile */
   .ph{flex-direction:column;align-items:stretch;gap:6px;margin-bottom:10px}
