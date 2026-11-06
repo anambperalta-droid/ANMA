@@ -150,7 +150,7 @@ function ProductAutocomplete({ value, products, onChangeText, onPick, placeholde
               style={{
                 display: 'flex', alignItems: 'center', gap: 8, width: '100%',
                 padding: '8px 10px', border: 'none',
-                background: i === highlight ? 'var(--brand-xlt, #F5F3FF)' : 'transparent',
+                background: i === highlight ? 'var(--brand-xlt, rgba(242,118,46,.08))' : 'transparent',
                 borderRadius: 6, cursor: 'pointer', textAlign: 'left',
                 color: 'var(--txt, #111)', fontFamily: 'inherit', fontSize: 12.5,
               }}
@@ -945,7 +945,7 @@ export default function Presupuesto() {
           title: '25 presupuestos. Sos usuaria power.',
           body: 'Mirá el margen promedio en Historial → Análisis. Ahí ves cuánto rinde tu trabajo.',
           icon: 'fa-trophy',
-          gradient: 'linear-gradient(135deg, #F2762E, #EC4899)',
+          gradient: 'linear-gradient(135deg, #F2762E, #E0458A)',
         })
       } else if (totalBudgets === 100) {
         triggerMilestone('budgets-100', {
@@ -1456,7 +1456,7 @@ export default function Presupuesto() {
         line-height:1.3;
       }
       .logi-section-tag{
-        background:#EDE9FE;color:#5B21B6;
+        background:var(--brand-xlt);color:var(--brand);
         padding:4px 9px;border-radius:9999px;
         font-size:10.5px;font-weight:700;flex-shrink:0;
         display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
@@ -1491,7 +1491,7 @@ export default function Presupuesto() {
         <div className="ph-left" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontSize: 14, fontWeight: 800, letterSpacing: '.01em', color: 'var(--txt)' }}>{budgetNum}</span>
           {(form.status === 'draft' || !editId) && (
-            <span style={{ background: '#F5F3FF', color: '#F2762E', border: '1px solid #DDD6FE', borderRadius: 9999, padding: '1px 7px', fontSize: 10, fontWeight: 700, lineHeight: 1.5, whiteSpace: 'nowrap' }}>Borrador</span>
+            <span style={{ background: 'var(--brand-xlt)', color: 'var(--brand)', border: '1px solid rgba(242,118,46,.25)', borderRadius: 9999, padding: '1px 7px', fontSize: 10, fontWeight: 700, lineHeight: 1.5, whiteSpace: 'nowrap' }}>Borrador</span>
           )}
         </div>
         <div className="ph-right"><button className="btn btn-ghost btn-sm" onClick={() => { dbDel(DRAFT_KEY); setDraftRestored(false); nav('/') }}><i className="fa fa-xmark" /><span className="desc-txt"> Descartar</span></button></div>

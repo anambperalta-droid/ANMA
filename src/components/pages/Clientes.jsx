@@ -53,7 +53,7 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
           ${num(budget.depositFinal || budget.depositAmt) > 0 ? `<div style="display:flex;justify-content:space-between;font-size:13px;color:${brandColor};font-weight:600"><span>Seña (${num(budget.deposit) || 50}%)</span><span>${fmt(num(budget.depositFinal || budget.depositAmt))}</span></div>` : ''}
         </div>
       </div>
-      ${budget.noteCli ? `<div style="margin-top:20px;background:#F4F6FD;border-radius:8px;padding:12px 16px;font-size:12px;color:#4B5280">${budget.noteCli}</div>` : ''}
+      ${budget.noteCli ? `<div style="margin-top:20px;background:#F6F1E9;border-radius:8px;padding:12px 16px;font-size:12px;color:#6B6257">${budget.noteCli}</div>` : ''}
       ${c.paymentConditions || c.legalNote ? `<div style="margin-top:24px;padding-top:12px;border-top:1px solid #E5E7F0;font-size:10px;color:#999">${c.paymentConditions ? `<div>${c.paymentConditions}</div>` : ''}${c.legalNote ? `<div style="margin-top:3px">${c.legalNote}</div>` : ''}</div>` : ''}
       <script>window.print()</script></body></html>`
     const win = window.open('', '_blank')
@@ -148,7 +148,7 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
 
           {/* Nota al cliente */}
           {budget.noteCli && (
-            <div style={{ marginTop: 16, background: '#F4F6FD', borderRadius: 8, padding: '10px 14px', fontSize: 12, color: '#4B5280', lineHeight: 1.6 }}>
+            <div style={{ marginTop: 16, background: '#F6F1E9', borderRadius: 8, padding: '10px 14px', fontSize: 12, color: '#6B6257', lineHeight: 1.6 }}>
               <i className="fa fa-message" style={{ color: brandColor, marginRight: 6 }} />{budget.noteCli}
             </div>
           )}
@@ -548,7 +548,7 @@ export default function Clientes() {
     vip:     { label: 'VIP',      color: '#B45309', bg: '#FEF3C7', icon: 'fa-star' },
     activo:  { label: 'Activo',   color: '#047857', bg: '#D1FAE5', icon: 'fa-circle-check' },
     dormido: { label: 'Dormido',  color: '#B45309', bg: '#FEF3C7', icon: 'fa-moon' },
-    nuevo:   { label: 'Nuevo',    color: '#D4521E', bg: '#EDE9FE', icon: 'fa-seedling' },
+    nuevo:   { label: 'Nuevo',    color: '#D4521E', bg: '#FDEBD9', icon: 'fa-seedling' },
     lead:    { label: 'Sin pedidos', color: '#64748B', bg: '#F1F5F9', icon: 'fa-user-plus' },
   }
 
@@ -1685,7 +1685,7 @@ export default function Clientes() {
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 4 }}>
-                {[{ icon:'fa-brands fa-whatsapp',bg:'#DCFCE7',col:'#16A34A',label:'Story de WA' },{ icon:'fa fa-print',bg:'#EDE9FE',col:'#F2762E',label:'Impreso' },{ icon:'fa fa-envelope',bg:'#DBEAFE',col:'#2563EB',label:'Email / web' }].map(it => (
+                {[{ icon:'fa-brands fa-whatsapp',bg:'#DCFCE7',col:'#16A34A',label:'Story de WA' },{ icon:'fa fa-print',bg:'#FDEBD9',col:'#F2762E',label:'Impreso' },{ icon:'fa fa-envelope',bg:'#DBEAFE',col:'#2563EB',label:'Email / web' }].map(it => (
                   <div key={it.label} style={{ textAlign:'center',padding:'10px 8px',background:it.bg+'66',borderRadius:8,border:`1px solid ${it.bg}` }}>
                     <i className={it.icon} style={{ fontSize:18,color:it.col,display:'block',marginBottom:5 }} /><div style={{ fontSize:10,fontWeight:600,color:'var(--txt2)' }}>{it.label}</div>
                   </div>
