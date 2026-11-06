@@ -881,7 +881,7 @@ export default function Insumos() {
 
               {showAdvancedModal && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 10, borderTop: '1px solid var(--border)', marginTop: 2 }}>
-                  <div className="grid2">
+                  <div className="pair-sm">
                     <div className="fg">
                       <label>Categoría</label>
                       <select value={form.cat} onChange={e => { setF('cat', e.target.value); setF('subcat', '') }}>
@@ -906,7 +906,7 @@ export default function Insumos() {
                       )}
                     </div>
                   </div>
-                  <div className="grid2">
+                  <div className="pair-sm">
                     <div className="fg">
                       <label>Stock actual</label>
                       <input type="number" value={form.stock} onChange={e => setF('stock', e.target.value)} onFocus={numFocus} placeholder="0" />
@@ -955,7 +955,7 @@ export default function Insumos() {
                 </div>
               </div>
             </div>
-            <div className="grid2">
+            <div className="pair-sm">
               <div className="fg">
                 <label>Tipo de movimiento</label>
                 <select value={moveForm.type} onChange={e => setMoveForm(p => ({ ...p, type: e.target.value, purchaseCost: '', note: '' }))}>

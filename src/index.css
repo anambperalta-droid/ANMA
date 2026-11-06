@@ -641,6 +641,10 @@ td b{color:var(--txt);font-weight:600}
 /* Config mini-row: 2 columnas fijas para pares de campos cortos (símbolo+prefijo, seña+validez) */
 .cfg-mini-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .cfg-mini-row>.fg{margin-bottom:13px}
+/* Par de campos cortos que SE MANTIENE en 2 columnas también en mobile
+   (a diferencia de .grid2, que colapsa a 1 col ≤768). Para pares de
+   números/selects cortos donde apilar desperdicia scroll. */
+.pair-sm{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
 /* Textareas auto-grow: arrancan chicos y crecen con el contenido.
    field-sizing:content es nativo (Chrome 123+, Safari 17.4+); rows=2 es fallback. */
 .cfg-textarea-auto{field-sizing:content;min-height:44px!important;line-height:1.5}
