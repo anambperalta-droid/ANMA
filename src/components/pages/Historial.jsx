@@ -2385,7 +2385,7 @@ export default function Historial() {
             .hist-status-seg{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;max-width:100%}
             .hist-status-chip{padding:6px 12px;border:1px solid var(--border);border-radius:20px;background:var(--surface);color:var(--txt3);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .12s;-webkit-tap-highlight-color:transparent;flex-shrink:0}
             .hist-status-chip:hover{border-color:var(--brand);color:var(--brand)}
-            .hist-status-chip.active{background:var(--txt);color:var(--surface);border-color:var(--txt);font-weight:700}
+            .hist-status-chip.active{background:var(--sidebar-bg);color:#fff;border-color:var(--sidebar-bg);font-weight:700}
             .hist-status-more-wrap{position:relative;flex-shrink:0;margin-left:auto}
             .hist-status-more{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);color:var(--txt3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all .12s;-webkit-tap-highlight-color:transparent}
             .hist-status-more:hover,.hist-status-more.open{border-color:var(--brand);color:var(--brand);background:var(--brand-xlt)}

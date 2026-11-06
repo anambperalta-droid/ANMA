@@ -918,7 +918,9 @@ export default function Ventas() {
 
         {filteredBudgets.map(b => {
           const pi = payInfo(b)
-          const urgBorder = b.payStatus === 'pending' ? '#DC2626' : b.payStatus === 'partial' ? '#D97706' : 'transparent'
+          // Sin barra de color por fila: el estado de cobro ya lo dice el badge
+          // de la columna COBRO. Evita el doble codificado (ruido visual).
+          const urgBorder = 'transparent'
           // Desglose parcial — Fase 1 auditoria 02/10/26.
           // En celda de cobro mostramos "$X cobrado · $Y pendiente" para pedidos partial.
           const totalDue = montoConIva(b)
