@@ -30,32 +30,30 @@ function Sparkline({ data, color = 'var(--brand)', height = 22 }) {
   )
 }
 
-function KpiCard({ label, value, delta, isKey, sparkData, sparkColor, icon }) {
+function KpiCard({ label, value, delta, isKey, sparkData, sparkColor, icon, tone }) {
   // Ocultar deltas al cap +-999% (comparacion poco confiable: base previa muy chica).
   const hasDelta = delta !== null && delta !== undefined && Math.abs(delta) < 999
-  const accentColor = sparkColor || 'var(--brand)'
+  // Feria luminosa: cada tile es un campo de color pleno con número grande en blanco.
+  const tile = tone || 'var(--feria-naranja)'
   return (
-    <div className={`bento-kpi ${isKey ? 'bento-kpi-key' : ''}`} style={{ position: 'relative' }}>
+    <div className="bento-kpi feria-kpi" style={{ position: 'relative', background: tile, borderColor: 'transparent' }}>
       <div className="kpi-head">
         {icon && (
-          <span className="kpi-ic" aria-hidden="true" style={{ color: accentColor, background: `color-mix(in srgb, ${accentColor} 13%, transparent)` }}>
+          <span className="feria-kpi-ic" aria-hidden="true">
             <i className={`fa ${icon}`} />
           </span>
         )}
-        <div className="kpi-label-elegant">{label}</div>
+        <div className="feria-kpi-label">{label}</div>
       </div>
-      <div className="kpi-val-row" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginTop: 4 }}>
-        <div className="kpi-val-elegant" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</div>
+      <div className="kpi-val-row" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginTop: 6 }}>
+        <div className="feria-kpi-val" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</div>
         {hasDelta && (
-          <span className="kpi-delta-elegant" style={{
-            color: delta >= 0 ? '#15803D' : '#B91C1C',
-            background: delta >= 0 ? 'rgba(34,197,94,.10)' : 'rgba(239,68,68,.10)',
-          }}>
+          <span className="feria-kpi-delta">
             {delta >= 0 ? '↑' : '↓'}{Math.abs(delta)}%
           </span>
         )}
       </div>
-      {sparkData && <Sparkline data={sparkData} color={accentColor} />}
+      {sparkData && <Sparkline data={sparkData} color="rgba(255,255,255,.72)" />}
     </div>
   )
 }
@@ -2020,19 +2018,20 @@ export default function Historial() {
             </div>
           ) : (
             <div className="bento sk-fade-in">
-              {!opHideMetrics && <KpiCard label="Facturado" value={money(totBudgeted)} delta={hidden ? undefined : deltaBrutas} sparkData={hidden ? null : sparkBrutas} sparkColor="var(--brand)" icon="fa-chart-column" />}
-              {!opHideMetrics && <KpiCard label="Cobrado" value={money(totCobrado)} delta={hidden ? undefined : deltaCaja} sparkData={hidden ? null : sparkCaja} sparkColor="var(--green)" isKey icon="fa-wallet" />}
-              {!opHideMetrics && totGastado > 0 && <KpiCard label="Gastos" value={money(totGastado)} icon="fa-cart-shopping" />}
+              {!opHideMetrics && <KpiCard label="Facturado" value={money(totBudgeted)} delta={hidden ? undefined : deltaBrutas} sparkData={hidden ? null : sparkBrutas} sparkColor="var(--brand)" tone="var(--feria-naranja)" icon="fa-chart-column" />}
+              {!opHideMetrics && <KpiCard label="Cobrado" value={money(totCobrado)} delta={hidden ? undefined : deltaCaja} sparkData={hidden ? null : sparkCaja} sparkColor="var(--green)" tone="var(--feria-verde)" isKey icon="fa-wallet" />}
+              {!opHideMetrics && totGastado > 0 && <KpiCard label="Gastos" value={money(totGastado)} tone="var(--feria-amarillo)" icon="fa-cart-shopping" />}
               {!opHideMetrics && totGastado > 0 && (
                 <KpiCard
                   label="Resultado operativo"
                   value={money(totGain - totGastado)}
                   icon="fa-scale-balanced"
                   sparkColor={(totGain - totGastado) >= 0 ? 'var(--green)' : '#DC2626'}
+                  tone={(totGain - totGastado) >= 0 ? 'var(--feria-verde)' : '#DC2626'}
                 />
               )}
-              {!opHideMetrics && <KpiCard label="Ticket promedio" value={avgTicket > 0 ? money(avgTicket) : '—'} sparkData={hidden ? null : sparkTicket} icon="fa-receipt" />}
-              <KpiCard label="Pedidos" value={String(periodBudgets.length)} icon="fa-file-invoice" />
+              {!opHideMetrics && <KpiCard label="Ticket promedio" value={avgTicket > 0 ? money(avgTicket) : '—'} sparkData={hidden ? null : sparkTicket} tone="var(--feria-magenta)" icon="fa-receipt" />}
+              <KpiCard label="Pedidos" value={String(periodBudgets.length)} tone="var(--feria-azul)" icon="fa-file-invoice" />
 
               {/* ── Izquierda (gráfico + tabla) + Derecha (donut + seguimiento) ── */}
               {!opHideMetrics && <div className="bento-wide bento-chart-inner" style={{ display: 'flex', gap: 14, gridColumn: '1 / -1', flexWrap: 'wrap', alignItems: 'flex-start' }}>

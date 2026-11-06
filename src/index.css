@@ -34,13 +34,21 @@
   --sidebar-bg: #262353;
   --panel-grad: linear-gradient(160deg, #262353 0%, #362FA0 50%, #5B2AB0 100%);
 
-  /* ── Neutros (fijos) ── */
-  --bg: #F8F6FB;
+  /* ── Feria luminosa: paleta viva sobre fondo claro (tono de categoría) ── */
+  --feria-naranja: #F2762E;
+  --feria-verde:   #15A66A;
+  --feria-magenta: #E0458A;
+  --feria-amarillo:#F2A93B;
+  --feria-azul:    #2E8BD6;
+  --feria-ink:     #2A2118;
+
+  /* ── Neutros (fijos) — base cálida "feria luminosa" ── */
+  --bg: #FBF7F0;
   --surface: #FFFFFF;
-  --surface2: #F3F4F6;
-  --surface3: #EDEFF3;
-  --border: #E5E7EB;
-  --border2: #D1D5DB;
+  --surface2: #F6F1E9;
+  --surface3: #EFE8DC;
+  --border: #ECE3D6;
+  --border2: #DCD1C0;
   --txt: #111827;
   --txt2: #374151;
   --txt3: #6B7280;
@@ -460,6 +468,36 @@ input,select,textarea{font-family:inherit}
   line-height:1.2;white-space:nowrap;flex-shrink:0;
   letter-spacing:.1px;
 }
+/* ─── FERIA LUMINOSA — KPI tiles de color pleno (dashboard) ─── */
+.feria-kpi{
+  color:#fff;
+  box-shadow:0 1px 2px rgba(42,33,24,.06), 0 10px 26px -12px rgba(42,33,24,.28);
+  border:none;
+}
+.feria-kpi:hover{
+  transform:translateY(-2px);
+  box-shadow:0 2px 8px rgba(42,33,24,.10), 0 18px 38px -14px rgba(42,33,24,.38);
+  border-color:transparent;
+}
+.feria-kpi-ic{
+  width:30px;height:30px;border-radius:10px;display:grid;place-items:center;
+  font-size:13px;flex:none;color:#fff;background:rgba(255,255,255,.18);
+}
+.feria-kpi-label{
+  font-size:11px;font-weight:700;color:rgba(255,255,255,.92);
+  letter-spacing:.04em;text-transform:uppercase;line-height:1.2;
+}
+.feria-kpi-val{
+  font-size:30px;font-weight:800;color:#fff;
+  font-family:'Space Grotesk','Inter',sans-serif;
+  letter-spacing:-.03em;line-height:1.02;font-variant-numeric:tabular-nums;
+}
+.feria-kpi-delta{
+  font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;
+  line-height:1.2;white-space:nowrap;flex-shrink:0;
+  color:#fff;background:rgba(255,255,255,.2);
+}
+
 /* Legacy aliases — algunas demos viejas */
 .kpi-glow{position:absolute;top:-16px;right:-16px;width:70px;height:70px;border-radius:50%;opacity:.08}
 .kpi-icon-wrap{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px}
