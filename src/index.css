@@ -1345,7 +1345,11 @@ td b{color:var(--txt);font-weight:600}
   /* Modals mobile: altura natural; el overlay (.modal-bg) scrollea. Igual que Regalos. */
   .modal{height:auto!important;max-height:none!important;overflow:visible!important}
   .modal-body{overflow:visible}
-  .budget-layout{flex-direction:column}
+  /* budget-layout en mobile: flex columna que SÍ estira a los hijos.
+     El base trae align-items:start → sin esto la columna del form se
+     encoge al ancho de su contenido (form angosto, mitad derecha vacía). */
+  .budget-layout{display:flex!important;flex-direction:column!important;align-items:stretch!important}
+  .budget-layout>*{width:100%!important;min-width:0!important;max-width:100%!important}
   .calc-panel{position:static!important;margin-top:16px;width:100%!important}
   .grid2,.grid3{grid-template-columns:1fr!important}
   /* Page headers apilados en mobile */
