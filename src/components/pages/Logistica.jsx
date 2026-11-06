@@ -39,7 +39,7 @@ const STATUS_SELECT_STYLE = {
 const DONUT_COLORS = {
   'Preparando':   '#FCD34D',
   'Despachado':   '#60A5FA',
-  'En tránsito':  '#2E8BD6',
+  'En tránsito':  '#F2762E',
   'Entregado':    '#34D399',
   'Con problema': '#F87171',
 }
