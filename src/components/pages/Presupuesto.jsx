@@ -399,6 +399,7 @@ export default function Presupuesto() {
   const [currentStep, setCurrentStep] = useState(1)
   const [draftRestored, setDraftRestored] = useState(false)
   const [logiOpen, setLogiOpen] = useState(false)
+  const [dispOpen, setDispOpen] = useState(false)
   // Anti doble-guardado: el ref frena la reentrada inmediata (doble-tap en
   // celular, antes de que React re-renderice), el state desactiva el botón.
   const savingRef = useRef(false)
@@ -1922,16 +1923,22 @@ export default function Presupuesto() {
                 {/* ─── 📦 Insumos Operativos de Despacho ─── */}
                 {!['retira', 'local', 'showroom'].some(kw => (form.delivery || '').toLowerCase().includes(kw)) && (
                   <div style={{ marginTop: 20, padding: '18px 20px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12 }}>
-                    <div style={{ marginBottom: 10 }}>
-                      <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <i className="fa fa-box-open" style={{ color: 'var(--brand)', fontSize: 13 }} /> Insumos Operativos de Despacho
+                    <button type="button" onClick={() => setDispOpen(o => !o)}
+                      style={{ width: '100%', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', padding: 0, marginBottom: dispOpen ? 10 : 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <i className="fa fa-box-open" style={{ color: 'var(--brand)', fontSize: 13 }} /> Insumos Operativos de Despacho
+                        </div>
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
+                          {!dispOpen && (form.dispatchInsumos || []).length > 0
+                            ? `${(form.dispatchInsumos || []).length} insumo${(form.dispatchInsumos || []).length !== 1 ? 's' : ''}${calc.dispatchCost > 0 ? ` · ${fmt(calc.dispatchCost)}` : ''} — tocá para editar`
+                            : 'Packaging y materiales del envío — invisibles para el cliente, impactan en tu costo real'}
+                        </div>
                       </div>
-                      <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
-                        Packaging y materiales del envío — invisibles para el cliente, impactan en tu costo real
-                      </div>
-                    </div>
+                      <i className={`fa fa-chevron-${dispOpen ? 'up' : 'down'}`} style={{ color: 'var(--txt3)', fontSize: 13, flexShrink: 0 }} />
+                    </button>
 
-                    {insumosList.length === 0 ? (
+                    {dispOpen && (insumosList.length === 0 ? (
                       <div className="wiz-tip">
                         <i className="fa fa-circle-info" /> Todavía no tenés insumos cargados.{' '}
                         <a href="/insumos" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>Ir a Insumos</a> para agregar bolsas, cajas y materiales de packaging.
@@ -1999,7 +2006,7 @@ export default function Presupuesto() {
                           </div>
                         )}
                       </>
-                    )}
+                    ))}
                   </div>
                 )}
 
