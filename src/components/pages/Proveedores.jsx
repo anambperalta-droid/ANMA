@@ -974,7 +974,7 @@ export default function Proveedores() {
                   </div>
                   <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em' }}>Datos fiscales y operativos</span>
                 </div>
-                <div className="grid2">
+                <div className="pair-sm">
                   <div className="fg"><label>CUIT</label><input type="text" value={form.cuit} onChange={e => setF('cuit', e.target.value)} placeholder="20-12345678-9" /></div>
                   <div className="fg"><label>Condición IVA</label>
                     <select value={form.ivaCondition} onChange={e => setF('ivaCondition', e.target.value)}>

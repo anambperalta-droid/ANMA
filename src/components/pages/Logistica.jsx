@@ -1581,7 +1581,7 @@ export default function Logistica() {
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>
                 <i className="fa fa-box" style={{ marginRight: 6, color: 'var(--brand)' }} />Paquete
               </div>
-              <div className="grid2">
+              <div className="pair-sm">
                 <div className="fg" style={{ marginBottom: 0 }}>
                   <label>Bultos</label>
                   <input type="number" value={form.bulks || 1} onChange={e => setF('bulks', Number(e.target.value))} min="1" />

@@ -1252,7 +1252,7 @@ export default function Clientes() {
                     <i className={`fa fa-chevron-${isOpen ? 'up' : 'down'}`} style={{ fontSize: 10, color: 'var(--txt4)' }} />
                   </button>
                   {isOpen && (
-                    <div className="grid2" style={{ marginTop: 12 }}>
+                    <div className="pair-sm" style={{ marginTop: 12 }}>
                       <div className="fg">
                         <label>CUIT / CUIL</label>
                         <input type="text" value={form.cuit || ''} onChange={e => setF('cuit', e.target.value)} placeholder="20-12345678-9" maxLength={13} />
