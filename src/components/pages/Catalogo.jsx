@@ -40,11 +40,11 @@ const compressImage = (file, maxBytes = 180000) => new Promise((resolve) => {
 
 /* Paleta de colores para categorías */
 const CAT_PALETTE = [
-  { bg: '#F5F3FF', color: '#F2994A' },
-  { bg: '#EFF6FF', color: '#60A5FA' },
+  { bg: '#FBF4EC', color: '#F2994A' },
+  { bg: '#FBF4EC', color: '#60A5FA' },
   { bg: '#ECFDF5', color: '#34D399' },
   { bg: '#FFFBEB', color: '#F59E0B' },
-  { bg: '#FDF2F8', color: '#F472B6' },
+  { bg: '#FDEFE6', color: '#F472B6' },
   { bg: '#F0FDFA', color: '#2DD4BF' },
   { bg: '#FFF7ED', color: '#FB923C' },
   { bg: '#F1F5F9', color: '#94A3B8' },
@@ -624,8 +624,8 @@ export default function Catalogo() {
         const meta = RUBROS.find(r => r.val === c.rubro)
         return (
           <div style={{
-            background: 'linear-gradient(135deg, #F5F3FF 0%, #EFF6FF 100%)',
-            border: '1px solid #C4B5FD', borderRadius: 12,
+            background: 'linear-gradient(135deg, #FBF4EC 0%, #FBF4EC 100%)',
+            border: '1px solid #F0C49E', borderRadius: 12,
             padding: '12px 16px', marginBottom: 12,
             display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
           }}>
@@ -637,7 +637,7 @@ export default function Catalogo() {
             </div>
             <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
               <button onClick={dismissUpgrade}
-                style={{ background: 'transparent', border: '1px solid #C4B5FD', color: '#D4521E', padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                style={{ background: 'transparent', border: '1px solid #F0C49E', color: '#D4521E', padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
                 Ahora no
               </button>
               <button onClick={applyUpgrade}
@@ -1825,8 +1825,8 @@ export default function Catalogo() {
               if (missing.length === 0) return null
               return (
                 <div style={{
-                  background: 'linear-gradient(135deg,#F5F3FF,#FDF2F8)',
-                  border: '1.5px solid #DDD6FE', borderRadius: 10,
+                  background: 'linear-gradient(135deg,#FBF4EC,#FDEFE6)',
+                  border: '1.5px solid #F3D9C4', borderRadius: 10,
                   padding: '12px 14px', marginBottom: 12,
                   display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
                 }}>

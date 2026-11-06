@@ -10,7 +10,7 @@ const ENTIDADES = [
     label:   'Clientes',
     icon:    'fa-users',
     color:   '#F2762E',
-    bg:      '#EDE9FE',
+    bg:      '#FCE9DC',
     nameKey: 'company',
     headers: 'Empresa, Contacto, WhatsApp, Email, Rubro, Notas',
     ejemplo: 'Distribuidora Norte SRL, Ana García, 1122334455, ana@dnorte.com, Alimentos, Cliente desde 2022',

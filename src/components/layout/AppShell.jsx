@@ -31,7 +31,7 @@ import {
 const PRIORITIES = [
   { key: 'today',    label: 'Urgente hoy',  color: '#DC2626', bg: '#FEF2F2' },
   { key: 'tomorrow', label: 'Mañana',        color: '#D97706', bg: '#FFFBEB' },
-  { key: 'week',     label: 'Esta semana',   color: '#2563EB', bg: '#EFF6FF' },
+  { key: 'week',     label: 'Esta semana',   color: '#2563EB', bg: '#FBF4EC' },
 ]
 const getPriority = (key) => PRIORITIES.find(p => p.key === key) || PRIORITIES[2]
 
@@ -446,7 +446,7 @@ function AppShellInner() {
           <BottomSheetItem icon="fa-brands fa-whatsapp" label="Mensajes WA" sub="Plantillas y envíos" onClick={() => goSheet('/mensajes')} iconBg="#DCFCE7" iconColor="#16A34A" />
         )}
         {can('config.access') && (
-          <BottomSheetItem icon="fa-file-import" label="Importador" sub="Cargá datos desde CSV o Excel" onClick={() => goSheet('/importador')} iconBg="#EDE9FE" iconColor="#F2762E" />
+          <BottomSheetItem icon="fa-file-import" label="Importador" sub="Cargá datos desde CSV o Excel" onClick={() => goSheet('/importador')} iconBg="#FCE9DC" iconColor="#F2762E" />
         )}
         {can('config.access') && (
           <BottomSheetItem icon="fa-gear" label="Configuración" sub="Personalización y datos" onClick={() => goSheet('/config')} iconBg="var(--surface2)" iconColor="var(--txt2)" />

@@ -21,7 +21,7 @@ export default function GuideBanner() {
   return (
     <div style={{
       display: 'flex', alignItems: 'center', gap: 14,
-      background: 'linear-gradient(135deg, #F5EFFE 0%, #FDF2F8 100%)',
+      background: 'linear-gradient(135deg, #F5EFFE 0%, #FDEFE6 100%)',
       border: '1px solid #E9DDFB',
       borderRadius: 14,
       padding: '12px 16px',
@@ -30,7 +30,7 @@ export default function GuideBanner() {
     }}>
       <div style={{
         flexShrink: 0, width: 36, height: 36, borderRadius: 10,
-        background: 'linear-gradient(135deg, #F2762E, #5B21B6)',
+        background: 'linear-gradient(135deg, #F2762E, #D4521E)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         color: '#fff', fontSize: 15,
       }}>
@@ -52,7 +52,7 @@ export default function GuideBanner() {
           textDecoration: 'none', whiteSpace: 'nowrap',
           transition: 'background .15s, transform .15s',
         }}
-        onMouseOver={(e) => { e.currentTarget.style.background = '#5B21B6'; e.currentTarget.style.transform = 'translateY(-1px)' }}
+        onMouseOver={(e) => { e.currentTarget.style.background = '#D4521E'; e.currentTarget.style.transform = 'translateY(-1px)' }}
         onMouseOut={(e) => { e.currentTarget.style.background = '#F2762E'; e.currentTarget.style.transform = 'none' }}
       >
         Ver la guía →

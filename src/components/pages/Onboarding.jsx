@@ -74,7 +74,7 @@ export default function Onboarding() {
   const s = {
     page: {
       minHeight: '100vh',
-      background: 'linear-gradient(135deg,#F5F3FF 0%,#EFF6FF 50%,#FDF2F8 100%)',
+      background: 'linear-gradient(135deg,#FBF4EC 0%,#FBF4EC 50%,#FDEFE6 100%)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: '32px 20px', fontFamily: "'Inter',system-ui,sans-serif",
     },
@@ -87,7 +87,7 @@ export default function Onboarding() {
     badge: {
       display: 'inline-flex', alignItems: 'center', gap: 6,
       padding: '4px 10px', borderRadius: 9999,
-      background: 'linear-gradient(135deg,#F5F3FF,#FDF2F8)',
+      background: 'linear-gradient(135deg,#FBF4EC,#FDEFE6)',
       color: '#F2762E', fontSize: 11, fontWeight: 800,
       textTransform: 'uppercase', letterSpacing: '.06em',
       marginBottom: 10,
@@ -111,7 +111,7 @@ export default function Onboarding() {
     grid3: { display: 'grid', gridTemplateColumns: '1fr', gap: 10 },
     cta: {
       width: '100%', padding: '15px 20px', borderRadius: 13, border: 'none',
-      background: 'linear-gradient(135deg,#F2762E,#9D5CF5)', color: '#fff',
+      background: 'linear-gradient(135deg,#F2762E,#F2A93B)', color: '#fff',
       fontSize: 15.5, fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
       marginTop: 8, boxShadow: '0 6px 20px rgba(242,118,46,.32)',
       transition: 'transform .12s, filter .12s, opacity .15s',
@@ -297,7 +297,7 @@ function LineIcon({ fa, size = 20, color = '#F2762E' }) {
 function SelectCard({ fa, label, sub, selected, onClick }) {
   const base = {
     border: `1.5px solid ${selected ? '#F2762E' : '#E5E7EB'}`,
-    background: selected ? '#F5F3FF' : '#fff',
+    background: selected ? '#FBF4EC' : '#fff',
     borderRadius: 14, padding: '15px 16px',
     cursor: 'pointer', fontFamily: 'inherit',
     display: 'flex', flexDirection: 'row', gap: 13, alignItems: 'center',
@@ -307,12 +307,12 @@ function SelectCard({ fa, label, sub, selected, onClick }) {
   }
   return (
     <button type="button" onClick={onClick} style={base}
-      onMouseEnter={e => { if (!selected) { e.currentTarget.style.borderColor = '#C4B5FD'; e.currentTarget.style.transform = 'translateY(-1px)' } }}
+      onMouseEnter={e => { if (!selected) { e.currentTarget.style.borderColor = '#F0C49E'; e.currentTarget.style.transform = 'translateY(-1px)' } }}
       onMouseLeave={e => { if (!selected) { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.transform = 'none' } }}>
       <div style={{
         width: 42, height: 42, borderRadius: 12, flexShrink: 0,
-        background: selected ? 'linear-gradient(135deg,#F2762E,#9D5CF5)' : '#F5F3FF',
-        border: selected ? 'none' : '1.5px solid #EDE9FE',
+        background: selected ? 'linear-gradient(135deg,#F2762E,#F2A93B)' : '#FBF4EC',
+        border: selected ? 'none' : '1.5px solid #FCE9DC',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         transition: 'background .15s, border-color .15s',
         boxShadow: selected ? '0 3px 10px rgba(242,118,46,.3)' : 'none',

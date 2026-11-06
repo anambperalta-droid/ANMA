@@ -31,7 +31,7 @@ const CARRIER_QUOTE = {
 const STATUS_SELECT_STYLE = {
   'Preparando':   { background: '#FEF3C7', color: '#92400E', border: '1.5px solid #FCD34D' },
   'Despachado':   { background: '#DBEAFE', color: '#1E40AF', border: '1.5px solid #93C5FD' },
-  'En tránsito':  { background: '#EDE9FE', color: '#5B21B6', border: '1.5px solid #C4B5FD' },
+  'En tránsito':  { background: '#FCE9DC', color: '#D4521E', border: '1.5px solid #F0C49E' },
   'Entregado':    { background: '#DCFCE7', color: '#14532D', border: '1.5px solid #86EFAC' },
   'Con problema': { background: '#FEF2F2', color: '#991B1B', border: '1.5px solid #FCA5A5' },
 }
@@ -213,7 +213,7 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
         /* ── Card de viaje: layout compacto y responsivo ── */
         .viaje-card{padding:0;overflow:hidden}
         .viaje-card-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;column-gap:10px;row-gap:0;align-items:center;padding:12px 14px;cursor:pointer}
-        .viaje-card-ic{width:36px;height:36px;border-radius:10px;background:var(--brand-xlt,#F5F3FF);display:flex;align-items:center;justify-content:center;color:var(--brand);font-size:15px;flex-shrink:0}
+        .viaje-card-ic{width:36px;height:36px;border-radius:10px;background:var(--brand-xlt,#FBF4EC);display:flex;align-items:center;justify-content:center;color:var(--brand);font-size:15px;flex-shrink:0}
         .viaje-card-info{min-width:0;display:flex;flex-direction:column;gap:2px}
         .viaje-card-line1{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
         .viaje-card-fecha{font-weight:700;font-size:13px;color:var(--txt);white-space:nowrap}
@@ -698,7 +698,7 @@ export default function Logistica() {
         .logi-card-act{width:28px;height:28px;border-radius:50%;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:transform .1s}
         .logi-card-act:active{transform:scale(.88)}
         .logi-card-act-wa{background:#DCFCE7;color:#16A34A}
-        .logi-card-act-trk{background:#EFF6FF;color:#2563EB}
+        .logi-card-act-trk{background:#FBF4EC;color:#2563EB}
         .logi-card-act-edit{background:var(--surface2);color:var(--txt2)}
         .logi-card-act-del{background:#FEF2F2;color:#DC2626}
         /* Fila 2: metadatos tiny (presupuesto · ciudad · transporte) */
@@ -737,7 +737,7 @@ export default function Logistica() {
         .logi-act-circ:hover{box-shadow:0 2px 8px rgba(0,0,0,.14)}
         .logi-act-circ:active{transform:scale(.88)}
         .logi-act-circ.wa{background:#DCFCE7;color:#16A34A}
-        .logi-act-circ.trk{background:#EFF6FF;color:#2563EB}
+        .logi-act-circ.trk{background:#FBF4EC;color:#2563EB}
         .logi-act-circ.del{background:#FEF2F2;color:#DC2626}
         /* Status quick-select */
         .logi-status-sel{border-radius:20px;padding:3px 22px 3px 9px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-repeat:no-repeat;background-position:right 7px center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath fill='%236B7280' d='M0 0l4 5 4-5z'/%3E%3C/svg%3E")}
@@ -1598,7 +1598,7 @@ export default function Logistica() {
                 <i className="fa fa-dollar-sign" style={{ marginRight: 6, color: 'var(--brand)' }} />Finanzas
               </div>
               {fleteEstimado !== null && (
-                <div style={{ background: '#EFF6FF', border: '1.5px solid #93C5FD', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                <div style={{ background: '#FBF4EC', border: '1.5px solid #93C5FD', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                   <span style={{ fontSize: 12, color: 'var(--txt2)' }}>
                     <i className="fa fa-calculator" style={{ marginRight: 6, color: '#3B82F6' }} />
                     Flete estimado · <b>{form.service}</b>

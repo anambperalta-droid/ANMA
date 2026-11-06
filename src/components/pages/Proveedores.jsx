@@ -204,7 +204,7 @@ export default function Proveedores() {
     frecuente: { label: 'Frecuente', color: '#047857', bg: '#D1FAE5', icon: 'fa-star' },
     activo:    { label: 'Activo',    color: '#047857', bg: '#D1FAE5', icon: 'fa-circle-check' },
     dormido:   { label: 'Dormido',   color: '#B45309', bg: '#FEF3C7', icon: 'fa-moon' },
-    nuevo:     { label: 'Nuevo',     color: '#D4521E', bg: '#EDE9FE', icon: 'fa-seedling' },
+    nuevo:     { label: 'Nuevo',     color: '#D4521E', bg: '#FCE9DC', icon: 'fa-seedling' },
     sin_compras: { label: 'Sin compras', color: '#64748B', bg: '#F1F5F9', icon: 'fa-user-plus' },
   }
 
@@ -704,7 +704,7 @@ export default function Proveedores() {
         .prov-mob-ci{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:9px;font-size:15px;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
         .prov-mob-ci:active{opacity:.7}
         .prov-mob-ci-wa{background:#DCFCE7;color:#16A34A}
-        .prov-mob-ci-mail{background:#EFF6FF;color:#2563EB}
+        .prov-mob-ci-mail{background:#FBF4EC;color:#2563EB}
         .prov-mob-ci-ph{display:inline-block;width:28px;height:28px}
         .prov-mob-prods{font-size:10.5px;font-weight:600;color:var(--txt3);line-height:1;text-align:center;white-space:nowrap}
         .prov-mob-acts{flex-shrink:0;display:flex;gap:2px;align-items:center}
@@ -865,7 +865,7 @@ export default function Proveedores() {
                   <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
                     {s.email ? (
                       <a href={`mailto:${s.email}`} title={s.email}
-                        className="zt-ci" style={{ background: '#EFF6FF', color: '#2563EB' }}>
+                        className="zt-ci" style={{ background: '#FBF4EC', color: '#2563EB' }}>
                         <i className="fa fa-envelope" />
                       </a>
                     ) : <span style={{ color: 'var(--txt4)', fontSize: 11 }}>—</span>}
@@ -1108,7 +1108,7 @@ export default function Proveedores() {
                       </a>
                     )}
                     {detailSupplier.rubro && (
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#EDE9FE', color: '#F2762E', fontSize: 11, fontWeight: 600, padding: '5px 12px', borderRadius: 20 }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#FCE9DC', color: '#F2762E', fontSize: 11, fontWeight: 600, padding: '5px 12px', borderRadius: 20 }}>
                         <i className="fa fa-tag" /> Rubro: {detailSupplier.rubro}
                       </span>
                     )}

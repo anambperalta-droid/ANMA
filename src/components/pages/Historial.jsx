@@ -1407,7 +1407,7 @@ export default function Historial() {
   }
   const STATUS_COLORS = {
     draft:       { bg: '#F1F5F9', color: '#475569', border: '#CBD5E1' },
-    pending:     { bg: '#EFF6FF', color: '#1D4ED8', border: '#93C5FD' },
+    pending:     { bg: '#FBF4EC', color: '#1D4ED8', border: '#93C5FD' },
     confirmed:   { bg: '#F0FDF4', color: '#16A34A', border: '#86EFAC' },
     inprogress:  { bg: '#FFFBEB', color: '#D97706', border: '#FCD34D' },
     shipped:     { bg: '#E0F2FE', color: '#0369A1', border: '#7DD3FC' },
@@ -2613,7 +2613,7 @@ export default function Historial() {
                               ) : totalDue > 0 && (
                                 <button onClick={e => { e.stopPropagation(); setPaymentsBudget(b) }}
                                   title="Registrar cobro"
-                                  style={{ background: 'var(--brand-xlt, #F5F3FF)', border: '1px solid var(--brand)', color: 'var(--brand)', cursor: 'pointer', padding: '3px 10px', fontSize: 10.5, fontWeight: 700, borderRadius: 6, alignSelf: 'flex-start', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                  style={{ background: 'var(--brand-xlt, #FBF4EC)', border: '1px solid var(--brand)', color: 'var(--brand)', cursor: 'pointer', padding: '3px 10px', fontSize: 10.5, fontWeight: 700, borderRadius: 6, alignSelf: 'flex-start', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                                   <i className="fa fa-hand-holding-dollar" /> Cobrar
                                 </button>
                               )}

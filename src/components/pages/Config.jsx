@@ -863,7 +863,7 @@ export default function Config() {
                     }
                   }}
                   style={{
-                    background: 'transparent', border: '1px dashed #C4B5FD', borderRadius: 8,
+                    background: 'transparent', border: '1px dashed #F0C49E', borderRadius: 8,
                     padding: '8px 12px', cursor: 'pointer', fontSize: 11.5, fontWeight: 600,
                     color: '#F2762E', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                   }}>

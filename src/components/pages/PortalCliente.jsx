@@ -428,7 +428,7 @@ const S = {
     padding: '0 16px 16px',
   },
   hero: {
-    background: 'linear-gradient(135deg, #F2762E 0%, #5B21B6 100%)',
+    background: 'linear-gradient(135deg, #F2762E 0%, #D4521E 100%)',
     borderRadius: '0 0 24px 24px',
     padding: '28px 20px 32px',
     color: '#fff',

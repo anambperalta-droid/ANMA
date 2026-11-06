@@ -158,7 +158,7 @@ export default function PortalProveedor() {
         .pp-btn-wa:hover { transform:translateY(-1px); box-shadow:0 12px 28px rgba(22,163,74,.4) }
         .pp-btn-out { transition: background .2s, transform .15s }
         .pp-btn-out:hover { background: rgba(242,118,46,.06); transform:translateY(-1px) }
-        .pp-row:hover { background:#F5F3FF !important }
+        .pp-row:hover { background:#FBF4EC !important }
       `}</style>
 
       <div style={S.container}>
@@ -185,10 +185,10 @@ export default function PortalProveedor() {
 
         {/* RESUMEN TOP: lo que el proveedor realmente quiere saber al abrir el link */}
         {products.length > 0 && (
-          <div className="pp-card" style={{ background: '#fff', border: '1.5px solid #DDD6FE', borderRadius: 14, padding: '14px 16px', marginBottom: 12, boxShadow: '0 2px 10px rgba(242,118,46,.06)' }}>
+          <div className="pp-card" style={{ background: '#fff', border: '1.5px solid #F3D9C4', borderRadius: 14, padding: '14px 16px', marginBottom: 12, boxShadow: '0 2px 10px rgba(242,118,46,.06)' }}>
             <div style={{ fontSize: 10, fontWeight: 800, color: '#F2762E', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>Resumen del pedido</div>
             <div style={{ display: 'grid', gridTemplateColumns: data.paymentTerm || data.leadTime ? 'repeat(2,1fr)' : 'repeat(2,1fr)', gap: 10 }}>
-              <div style={{ background: 'linear-gradient(135deg,#F5F3FF,#EDE9FE)', borderRadius: 10, padding: '12px 14px' }}>
+              <div style={{ background: 'linear-gradient(135deg,#FBF4EC,#FCE9DC)', borderRadius: 10, padding: '12px 14px' }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: '#D4521E', textTransform: 'uppercase', letterSpacing: '.5px' }}>Monto estimado</div>
                 <div style={{ fontSize: 22, fontWeight: 800, color: '#2A1810', fontFamily: "'Space Grotesk','Inter',sans-serif", letterSpacing: '-.5px', lineHeight: 1.15, marginTop: 3 }}>{fmt(totalValue)}</div>
                 <div style={{ fontSize: 11, color: '#6B7280', marginTop: 2 }}>{products.length} producto{products.length !== 1 ? 's' : ''} · {totalUnits} u.</div>
@@ -211,7 +211,7 @@ export default function PortalProveedor() {
 
         {/* REPOSICIÓN PRIORITARIA (tono de marca, no alarma) */}
         {reorder.length > 0 && (
-          <div className="pp-card" style={{ ...S.reorderCard, background: '#F5F3FF', borderColor: '#DDD6FE' }}>
+          <div className="pp-card" style={{ ...S.reorderCard, background: '#FBF4EC', borderColor: '#F3D9C4' }}>
             <div style={{ ...S.reorderHead, alignItems: 'center' }}>
               <div style={{ ...S.urgentBadge, background: '#F2762E' }}>PRIORITARIO</div>
               <div style={{ flex: 1 }}>
@@ -296,7 +296,7 @@ export default function PortalProveedor() {
                     <span style={S.histName}>{h.productName}</span>
                     <div style={S.histPrice}>
                       <span style={{ color: '#6B7280' }}>{fmt(h.prevCost)}</span>
-                      <i className="fa fa-arrow-right" style={{ fontSize: 9, color: '#C4B5FD' }} />
+                      <i className="fa fa-arrow-right" style={{ fontSize: 9, color: '#F0C49E' }} />
                       <b style={{ color: '#2A1810' }}>{fmt(h.newCost)}</b>
                     </div>
                     <span style={{ ...S.histPct, color: up ? '#DC2626' : '#16A34A', background: up ? '#FEF2F2' : '#F0FDF4' }}>
@@ -363,7 +363,7 @@ export default function PortalProveedor() {
 const S = {
   wrap: {
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 50%, #F0FDF4 100%)',
+    background: 'linear-gradient(135deg, #FBF4EC 0%, #FCE9DC 50%, #F0FDF4 100%)',
     fontFamily: "'Inter',system-ui,sans-serif",
     padding: '20px 14px 40px',
   },
@@ -446,7 +446,7 @@ const S = {
   sectionSub: { margin: '-4px 0 12px', fontSize: 12, color: '#6B7280', lineHeight: 1.5 },
   sectionFoot: { fontSize: 11, color: '#6B7280', marginTop: 10, textAlign: 'right', fontStyle: 'italic' },
   copyBtn: {
-    background: 'transparent', border: '1.5px solid #EDE9FE', color: '#F2762E',
+    background: 'transparent', border: '1.5px solid #FCE9DC', color: '#F2762E',
     padding: '5px 10px', borderRadius: 8, fontSize: 11, fontWeight: 700,
     cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5,
     fontFamily: 'inherit', transition: 'all .15s',
@@ -454,9 +454,9 @@ const S = {
 
   // Table
   table: { width: '100%', borderCollapse: 'collapse', fontSize: 15, minWidth: 400 },
-  thead: { borderBottom: '2px solid #EDE9FE' },
+  thead: { borderBottom: '2px solid #FCE9DC' },
   th: { textAlign: 'left', padding: '11px 10px', fontSize: 11, color: '#6B7280', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.6px' },
-  tr: { borderBottom: '1px solid #F5F3FF', transition: 'background .15s' },
+  tr: { borderBottom: '1px solid #FBF4EC', transition: 'background .15s' },
   td: { padding: '15px 10px', color: '#2A1810' },
   statusReorder: {
     background: '#FEE2E2', color: '#DC2626', padding: '3px 8px',
@@ -470,7 +470,7 @@ const S = {
   // History
   histRow: {
     display: 'flex', alignItems: 'center', gap: 10,
-    padding: '9px 12px', background: '#F5F3FF', borderRadius: 10, fontSize: 12,
+    padding: '9px 12px', background: '#FBF4EC', borderRadius: 10, fontSize: 12,
     flexWrap: 'wrap',
   },
   histDate: { color: '#F2762E', fontSize: 11, fontWeight: 600, minWidth: 70 },
@@ -480,7 +480,7 @@ const S = {
 
   // Conditions
   condsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10 },
-  condCard: { background: 'linear-gradient(135deg,#F5F3FF,#F0FDF4)', borderRadius: 12, padding: '14px 16px', border: '1px solid #EDE9FE' },
+  condCard: { background: 'linear-gradient(135deg,#FBF4EC,#F0FDF4)', borderRadius: 12, padding: '14px 16px', border: '1px solid #FCE9DC' },
   condIcon: { fontSize: 22, marginBottom: 4 },
   condLabel: { fontSize: 10, color: '#6B7280', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.6px' },
   condValue: { fontSize: 22, fontWeight: 700, color: '#2A1810', marginTop: 3, letterSpacing: '-.5px', fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' },
@@ -488,10 +488,10 @@ const S = {
 
   // CTA
   ctaCard: {
-    background: 'linear-gradient(135deg,#fff 0%,#F5F3FF 100%)',
+    background: 'linear-gradient(135deg,#fff 0%,#FBF4EC 100%)',
     borderRadius: 16, padding: '26px 22px 22px', marginBottom: 14,
     boxShadow: '0 4px 18px rgba(242,118,46,.10)',
-    textAlign: 'center', border: '1.5px solid #EDE9FE',
+    textAlign: 'center', border: '1.5px solid #FCE9DC',
   },
   ctaTitle: { margin: '0 0 8px', fontSize: 18, color: '#2A1810', fontWeight: 700, fontFamily: "'Space Grotesk','Inter',sans-serif" },
   ctaSub: { margin: '0 0 18px', fontSize: 13, color: '#6B7280', lineHeight: 1.55 },
@@ -506,11 +506,11 @@ const S = {
     flex: '1 1 200px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6,
     background: '#fff', color: '#F2762E', padding: '13px 22px',
     borderRadius: 12, textDecoration: 'none', fontWeight: 700, fontSize: 13,
-    border: '1.5px solid #DDD6FE',
+    border: '1.5px solid #F3D9C4',
   },
   ctaTip: {
     marginTop: 16, fontSize: 11, color: '#6B7280', lineHeight: 1.5,
-    background: '#F5F3FF', padding: '8px 12px', borderRadius: 10, display: 'inline-block',
+    background: '#FBF4EC', padding: '8px 12px', borderRadius: 10, display: 'inline-block',
   },
 
   // Footer
@@ -518,14 +518,14 @@ const S = {
     textAlign: 'center', fontSize: 11, color: '#F2762E', padding: '18px 12px',
     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexWrap: 'wrap',
   },
-  footDot: { width: 3, height: 3, borderRadius: '50%', background: '#C4B5FD', display: 'inline-block' },
+  footDot: { width: 3, height: 3, borderRadius: '50%', background: '#F0C49E', display: 'inline-block' },
   footLink: { color: '#F2762E', textDecoration: 'none', fontWeight: 600 },
 
   // Error
   errorWrap: {
     minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
     padding: 20, fontFamily: "'Inter',sans-serif",
-    background: 'linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)',
+    background: 'linear-gradient(135deg, #FBF4EC 0%, #FCE9DC 100%)',
   },
   errorCard: {
     maxWidth: 420, textAlign: 'center', background: '#fff',
@@ -539,11 +539,11 @@ const S = {
   loadingWrap: {
     minHeight: '100vh', display: 'flex', flexDirection: 'column',
     alignItems: 'center', justifyContent: 'center',
-    fontFamily: "'Inter',sans-serif", background: 'linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)',
+    fontFamily: "'Inter',sans-serif", background: 'linear-gradient(135deg, #FBF4EC 0%, #FCE9DC 100%)',
   },
   spinner: {
     width: 32, height: 32, borderRadius: '50%',
-    border: '3px solid #EDE9FE', borderTopColor: '#F2762E',
+    border: '3px solid #FCE9DC', borderTopColor: '#F2762E',
     animation: 'pp-spin 1s linear infinite',
   },
 }

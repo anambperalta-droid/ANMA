@@ -761,7 +761,7 @@ export default function Clientes() {
         .cli-mob-ci{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;font-size:14px;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
         .cli-mob-ci:active{opacity:.7}
         .cli-mob-ci-wa{background:#DCFCE7;color:#16A34A}
-        .cli-mob-ci-mail{background:#EFF6FF;color:#2563EB}
+        .cli-mob-ci-mail{background:#FBF4EC;color:#2563EB}
         .cli-mob-ci-ph{display:inline-block;width:28px;height:28px}
         .cli-mob-date{font-size:10.5px;font-variant-numeric:tabular-nums;line-height:1;text-align:center}
         .cli-mob-acts{flex-shrink:0;display:flex;gap:2px;align-items:center}
@@ -850,7 +850,7 @@ export default function Clientes() {
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
                       {c.email ? (
                         <a href={`mailto:${c.email}`} title={c.email}
-                          className="zt-ci" style={{ background: '#EFF6FF', color: '#2563EB' }}>
+                          className="zt-ci" style={{ background: '#FBF4EC', color: '#2563EB' }}>
                           <i className="fa fa-envelope" />
                         </a>
                       ) : <span style={{ color: 'var(--txt4)', fontSize: 11 }}>—</span>}
@@ -935,13 +935,13 @@ export default function Clientes() {
                   )}
                   {c.email && (
                     <a href={`mailto:${c.email}`} title={c.email} onClick={e => e.stopPropagation()}
-                      style={{ width:30,height:30,borderRadius:'50%',border:'none',background:'#EFF6FF',color:'#2563EB',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,textDecoration:'none' }}>
+                      style={{ width:30,height:30,borderRadius:'50%',border:'none',background:'#FBF4EC',color:'#2563EB',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,textDecoration:'none' }}>
                       <i className="fa fa-envelope" />
                     </a>
                   )}
                   {c.wa && (
                     <a href={`tel:${c.wa.replace(/\D/g,'')}`} title={`Llamar · ${c.wa}`} onClick={e => e.stopPropagation()}
-                      style={{ width:30,height:30,borderRadius:'50%',border:'none',background:'#EFF6FF',color:'#2563EB',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,textDecoration:'none' }}>
+                      style={{ width:30,height:30,borderRadius:'50%',border:'none',background:'#FBF4EC',color:'#2563EB',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,textDecoration:'none' }}>
                       <i className="fa fa-phone" />
                     </a>
                   )}

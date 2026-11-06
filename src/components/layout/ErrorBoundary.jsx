@@ -39,7 +39,7 @@ export default class ErrorBoundary extends Component {
     // Chunk viejo: pantalla neutra mientras recarga (no "Algo salió mal")
     if (this.state.reloading) {
       return (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: 'linear-gradient(180deg,#FAFAFB 0%,#F5F3FF 100%)', fontFamily: 'Inter, system-ui, sans-serif', color: '#F2762E' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: 'linear-gradient(180deg,#FAFAFB 0%,#FBF4EC 100%)', fontFamily: 'Inter, system-ui, sans-serif', color: '#F2762E' }}>
           <i className="fa fa-arrows-rotate fa-spin" style={{ fontSize: 26 }} />
           <p style={{ fontSize: 14, color: '#64748B', margin: 0 }}>Actualizando a la última versión…</p>
         </div>
@@ -54,7 +54,7 @@ export default class ErrorBoundary extends Component {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(180deg, #FAFAFB 0%, #F5F3FF 100%)',
+        background: 'linear-gradient(180deg, #FAFAFB 0%, #FBF4EC 100%)',
         padding: '24px',
         fontFamily: 'var(--font-sans, Inter, system-ui, sans-serif)',
       }}>
@@ -72,7 +72,7 @@ export default class ErrorBoundary extends Component {
           <div style={{
             width: 56, height: 56,
             borderRadius: 16,
-            border: '1.5px solid #DDD6FE',
+            border: '1.5px solid #F3D9C4',
             background: 'rgba(242,118,46,.04)',
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             margin: '0 auto 18px',

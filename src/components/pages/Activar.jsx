@@ -117,7 +117,7 @@ export default function Activar() {
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
               padding: '6px 14px', borderRadius: 99,
-              background: trialDaysLeft <= 1 ? '#FEE2E2' : trialDaysLeft <= 3 ? '#FEF3C7' : '#EDE9FE',
+              background: trialDaysLeft <= 1 ? '#FEE2E2' : trialDaysLeft <= 3 ? '#FEF3C7' : '#FCE9DC',
               color: trialDaysLeft <= 1 ? '#DC2626' : trialDaysLeft <= 3 ? '#D97706' : '#F2762E',
               fontSize: 12, fontWeight: 700, marginBottom: 14,
             }}>

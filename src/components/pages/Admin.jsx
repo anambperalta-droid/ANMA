@@ -966,7 +966,7 @@ export default function Admin() {
       {tab === 'billing' && selectedBilling.size > 0 && (
         <div style={{
           marginBottom: 10, padding: '12px 16px',
-          background: 'linear-gradient(135deg, #EDE9FE, #C7D2FE)',
+          background: 'linear-gradient(135deg, #FCE9DC, #F2C9A0)',
           border: '1.5px solid #F2994A',
           borderRadius: 12,
           display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',

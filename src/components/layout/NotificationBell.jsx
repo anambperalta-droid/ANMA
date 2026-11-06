@@ -46,7 +46,7 @@ const ACTION_MAP = {
     label: 'Cambiar Estado',
     icon: 'fa-truck-ramp-box',
     color: '#2563EB',
-    bg: '#EFF6FF',
+    bg: '#FBF4EC',
     handler: (alert, { nav, setOpen }) => {
       setOpen(false)
       nav(alert.route || '/')
@@ -403,9 +403,9 @@ const LEVEL_COLORS = {
    Regla: el borde-izquierdo dice "¿qué tan urgente?"; el ícono dice "¿qué tipo?".
    Así Ana ve de un vistazo dónde mirar y qué tocar. */
 const CATEGORY_STYLE = {
-  logistica:    { color: '#2563EB', bg: '#EFF6FF', label: 'Entrega' },
+  logistica:    { color: '#2563EB', bg: '#FBF4EC', label: 'Entrega' },
   pago:         { color: '#059669', bg: '#ECFDF5', label: 'Cobro' },
-  comercial:    { color: '#F2762E', bg: '#F5F3FF', label: 'Presupuesto' },
+  comercial:    { color: '#F2762E', bg: '#FBF4EC', label: 'Presupuesto' },
   stock:        { color: '#B45309', bg: '#FEF3C7', label: 'Stock' },
   insumo:       { color: '#B45309', bg: '#FEF3C7', label: 'Insumo' },
   cumpleaños:   { color: '#DB2777', bg: '#FCE7F3', label: 'Cumpleaños' },

@@ -63,7 +63,7 @@
   --amber-lt: #FFFBEB;
   --amber-dim: rgba(217,119,6,.12);
   --blue: #2563EB;
-  --blue-lt: #EFF6FF;
+  --blue-lt: #FBF4EC;
   --blue-dim: rgba(37,99,235,.12);
   --indigo: #4F46E5;
   --rose: #E11D48;
@@ -1594,7 +1594,7 @@ td b{color:var(--txt);font-weight:600}
 .nc-ava-green{background:#DCFCE7;color:#16A34A}
 .nc-ava-amber{background:#FFFBEB;color:#D97706}
 .nc-ava-red{background:#FEF2F2;color:#DC2626}
-.nc-ava-blue{background:#EFF6FF;color:#2563EB}
+.nc-ava-blue{background:#FBF4EC;color:#2563EB}
 
 .nc-dot{position:absolute;bottom:-3px;right:-3px;width:12px;height:12px;border-radius:50%;border:2.5px solid var(--surface)}
 
@@ -1610,7 +1610,7 @@ td b{color:var(--txt);font-weight:600}
 .ibtn{position:relative;width:36px;height:36px;border-radius:11px;border:none;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:all var(--tr);-webkit-tap-highlight-color:transparent;flex-shrink:0;font-family:inherit}
 .ibtn-wa{background:#DCFCE7;color:#16A34A}
 .ibtn-wa:hover,.ibtn-wa:active{background:#16A34A;color:#fff}
-.ibtn-call{background:#EFF6FF;color:#2563EB}
+.ibtn-call{background:#FBF4EC;color:#2563EB}
 .ibtn-call:hover,.ibtn-call:active{background:#2563EB;color:#fff}
 .ibtn-edit{background:var(--surface2);color:var(--txt3);border:1.5px solid var(--border)}
 .ibtn-edit:hover,.ibtn-edit:active{background:var(--blue-lt);color:var(--blue);border-color:var(--blue)}
@@ -1679,7 +1679,7 @@ td b{color:var(--txt);font-weight:600}
 .nc-grid .nc-title,.nc-grid .nc-sub{text-align:center}
 .nc-grid .nc-meta{justify-content:center}
 .nc-qact{display:flex;gap:6px;justify-content:center;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);width:100%}
-.ibtn-email{background:#EFF6FF;color:#2563EB}
+.ibtn-email{background:#FBF4EC;color:#2563EB}
 .ibtn-email:hover,.ibtn-email:active{background:#2563EB;color:#fff}
 .sk-ava{width:48px;height:48px;border-radius:14px;background:var(--surface3);flex-shrink:0;animation:skPulse 1.4s ease infinite}
 .sk-line{height:12px;border-radius:6px;background:var(--surface3);animation:skPulse 1.4s ease infinite}
