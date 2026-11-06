@@ -204,7 +204,7 @@ export default function Proveedores() {
     frecuente: { label: 'Frecuente', color: '#047857', bg: '#D1FAE5', icon: 'fa-star' },
     activo:    { label: 'Activo',    color: '#047857', bg: '#D1FAE5', icon: 'fa-circle-check' },
     dormido:   { label: 'Dormido',   color: '#B45309', bg: '#FEF3C7', icon: 'fa-moon' },
-    nuevo:     { label: 'Nuevo',     color: '#6D28D9', bg: '#EDE9FE', icon: 'fa-seedling' },
+    nuevo:     { label: 'Nuevo',     color: '#D4521E', bg: '#EDE9FE', icon: 'fa-seedling' },
     sin_compras: { label: 'Sin compras', color: '#64748B', bg: '#F1F5F9', icon: 'fa-user-plus' },
   }
 
@@ -685,7 +685,7 @@ export default function Proveedores() {
         .cli-pill:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-xlt)}
         .cli-pill:active{transform:scale(.95)}
         .cli-pill i{font-size:12px}
-        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
+        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#F2994A) 100%);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
         .cli-pill-new:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 10px 26px var(--brand-dim)}
         .cli-pill-new:active{transform:scale(.95)}
         .cli-pill-new i{font-size:11px}
@@ -846,7 +846,7 @@ export default function Proveedores() {
               {loading ? [1,2,3,4,5].map(i => (
                 <tr key={i}><td colSpan={6}><div className="sk sk-text" style={{ height: 16, width: `${55 + Math.random() * 35}%` }} /></td></tr>
               )) : filtered.length ? filtered.map(s => (
-                <tr key={s.id} onClick={() => openDetail(s)} style={{ background: selectedIds.has(s.id) ? 'rgba(124,58,237,.06)' : undefined }}>
+                <tr key={s.id} onClick={() => openDetail(s)} style={{ background: selectedIds.has(s.id) ? 'rgba(242,118,46,.06)' : undefined }}>
                   <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
                     <input type="checkbox" className="zt-chk" checked={selectedIds.has(s.id)} onChange={() => toggleSelect(s.id)} />
                   </td>
@@ -1108,7 +1108,7 @@ export default function Proveedores() {
                       </a>
                     )}
                     {detailSupplier.rubro && (
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#EDE9FE', color: '#7C3AED', fontSize: 11, fontWeight: 600, padding: '5px 12px', borderRadius: 20 }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#EDE9FE', color: '#F2762E', fontSize: 11, fontWeight: 600, padding: '5px 12px', borderRadius: 20 }}>
                         <i className="fa fa-tag" /> Rubro: {detailSupplier.rubro}
                       </span>
                     )}
@@ -1178,9 +1178,9 @@ export default function Proveedores() {
                       return (
                         <div
                           onClick={() => { const n = detailSupplier.name; setDetailSupplier(null); nav(`/compras?prov=${encodeURIComponent(n)}&new=1`) }}
-                          style={{ background: 'linear-gradient(135deg, rgba(124,58,237,.06), rgba(124,58,237,.02))', borderRadius: 10, padding: '14px 16px', marginBottom: 14, fontSize: 12.5, color: 'var(--txt3)', borderLeft: '3px solid var(--brand)', cursor: 'pointer', transition: 'background .15s' }}
-                          onMouseEnter={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(124,58,237,.12), rgba(124,58,237,.05))'}
-                          onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(124,58,237,.06), rgba(124,58,237,.02))'}
+                          style={{ background: 'linear-gradient(135deg, rgba(242,118,46,.06), rgba(242,118,46,.02))', borderRadius: 10, padding: '14px 16px', marginBottom: 14, fontSize: 12.5, color: 'var(--txt3)', borderLeft: '3px solid var(--brand)', cursor: 'pointer', transition: 'background .15s' }}
+                          onMouseEnter={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(242,118,46,.12), rgba(242,118,46,.05))'}
+                          onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(242,118,46,.06), rgba(242,118,46,.02))'}
                         >
                           <i className="fa fa-cart-shopping" style={{ marginRight: 6, color: 'var(--brand)' }} />
                           <b style={{ color: 'var(--txt2)' }}>Todavía sin compras.</b> Registrá el primer gasto a este proveedor para empezar a ver su historial.
@@ -1353,7 +1353,7 @@ export default function Proveedores() {
                 if (!arr.length) {
                   return (
                     <div style={{ textAlign: 'center', padding: '32px 20px', background: 'var(--surface2)', borderRadius: 12 }}>
-                      <div style={{ width: 56, height: 56, borderRadius: 14, background: 'linear-gradient(135deg,rgba(124,58,237,.12),rgba(124,58,237,.04))', color: 'var(--brand)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, marginBottom: 10 }}>
+                      <div style={{ width: 56, height: 56, borderRadius: 14, background: 'linear-gradient(135deg,rgba(242,118,46,.12),rgba(242,118,46,.04))', color: 'var(--brand)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, marginBottom: 10 }}>
                         <i className="fa fa-cart-shopping" />
                       </div>
                       <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--txt)', marginBottom: 4 }}>Sin compras registradas</div>
@@ -1404,7 +1404,7 @@ export default function Proveedores() {
                                 <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {title || <span style={{ color: 'var(--txt4)', fontStyle: 'italic', fontWeight: 500 }}>Sin concepto</span>}
                                   {c.recurrente && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'var(--brand-xlt)', color: 'var(--brand)' }}><i className="fa fa-rotate" style={{ fontSize: 7, marginRight: 2 }} />recurrente</span>}
-                                  {hasItems && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'rgba(99,102,241,.1)', color: '#6366F1' }}><i className="fa fa-list" style={{ fontSize: 7, marginRight: 2 }} />{c.items.length} items</span>}
+                                  {hasItems && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'rgba(99,102,241,.1)', color: '#F2994A' }}><i className="fa fa-list" style={{ fontSize: 7, marginRight: 2 }} />{c.items.length} items</span>}
                                 </div>
                                 <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 2 }}>
                                   {fechaCorta}{c.cantidad > 0 ? ` · ${c.cantidad}u` : ''}{c.nota ? ` · ${c.nota}` : ''}

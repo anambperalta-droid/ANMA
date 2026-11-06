@@ -60,7 +60,7 @@ const ACTION_MAP = {
   comercial: {
     label: 'Seguimiento',
     icon: 'fa-comment-dots',
-    color: '#7C3AED',
+    color: '#F2762E',
     bg: '#F3E8FF',
     handler: (alert, { nav, setOpen }) => {
       setOpen(false)
@@ -130,7 +130,7 @@ const ACTION_MAP = {
   admin: {
     label: 'Ir al Admin',
     icon: 'fa-shield-halved',
-    color: '#7C3AED',
+    color: '#F2762E',
     bg: '#F3E8FF',
     handler: (alert, { nav, setOpen }) => {
       setOpen(false)
@@ -405,12 +405,12 @@ const LEVEL_COLORS = {
 const CATEGORY_STYLE = {
   logistica:    { color: '#2563EB', bg: '#EFF6FF', label: 'Entrega' },
   pago:         { color: '#059669', bg: '#ECFDF5', label: 'Cobro' },
-  comercial:    { color: '#7C3AED', bg: '#F5F3FF', label: 'Presupuesto' },
+  comercial:    { color: '#F2762E', bg: '#F5F3FF', label: 'Presupuesto' },
   stock:        { color: '#B45309', bg: '#FEF3C7', label: 'Stock' },
   insumo:       { color: '#B45309', bg: '#FEF3C7', label: 'Insumo' },
   cumpleaños:   { color: '#DB2777', bg: '#FCE7F3', label: 'Cumpleaños' },
   recordatorio: { color: '#0891B2', bg: '#ECFEFF', label: 'Recordatorio' },
-  admin:        { color: '#7C3AED', bg: '#F3E8FF', label: 'Sistema' },
+  admin:        { color: '#F2762E', bg: '#F3E8FF', label: 'Sistema' },
 }
 const catStyle = (cat) => CATEGORY_STYLE[cat] || { color: 'var(--brand)', bg: 'var(--brand-xlt)', label: 'Alerta' }
 

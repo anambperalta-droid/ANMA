@@ -71,7 +71,7 @@ export default function PWAInstall() {
     bottom: 0, left: 0, right: 0,
     zIndex: 10100,
     background: 'linear-gradient(135deg, #1C1045 0%, #2D1A6E 100%)',
-    borderTop: '1px solid rgba(124,58,237,.4)',
+    borderTop: '1px solid rgba(242,118,46,.4)',
     boxShadow: '0 -8px 32px rgba(0,0,0,.4)',
     padding: '14px 16px',
     display: 'flex',
@@ -82,20 +82,20 @@ export default function PWAInstall() {
 
   const icon = {
     width: 44, height: 44, borderRadius: 12,
-    background: 'linear-gradient(135deg,#7C3AED,#4F46E5)',
+    background: 'linear-gradient(135deg,#F2762E,#4F46E5)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     flexShrink: 0, fontSize: 22,
-    boxShadow: '0 4px 12px rgba(124,58,237,.45)',
+    boxShadow: '0 4px 12px rgba(242,118,46,.45)',
   }
 
   const btnInstall = {
     display: 'flex', alignItems: 'center', gap: 6,
     marginTop: 10, padding: '8px 16px',
-    background: 'linear-gradient(135deg,#7C3AED,#4F46E5)',
+    background: 'linear-gradient(135deg,#F2762E,#4F46E5)',
     border: 'none', borderRadius: 8,
     color: '#fff', fontSize: 12, fontWeight: 700,
     cursor: 'pointer', fontFamily: 'inherit',
-    boxShadow: '0 4px 14px rgba(124,58,237,.4)',
+    boxShadow: '0 4px 14px rgba(242,118,46,.4)',
     transition: 'opacity .15s',
   }
 

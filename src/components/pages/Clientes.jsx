@@ -13,7 +13,7 @@ import { triggerMilestone, triggerEncouragement } from '../layout/MilestoneToast
 function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
   if (!budget) return null
   const c = config
-  const brandColor = c.brandColor || '#7C3AED'
+  const brandColor = c.brandColor || '#F2762E'
   const bName = c.businessName || 'ANMA'
   const items = budget.items || []
   const num = (v) => { const n = Number(v); return isNaN(n) ? 0 : n }
@@ -548,7 +548,7 @@ export default function Clientes() {
     vip:     { label: 'VIP',      color: '#B45309', bg: '#FEF3C7', icon: 'fa-star' },
     activo:  { label: 'Activo',   color: '#047857', bg: '#D1FAE5', icon: 'fa-circle-check' },
     dormido: { label: 'Dormido',  color: '#B45309', bg: '#FEF3C7', icon: 'fa-moon' },
-    nuevo:   { label: 'Nuevo',    color: '#6D28D9', bg: '#EDE9FE', icon: 'fa-seedling' },
+    nuevo:   { label: 'Nuevo',    color: '#D4521E', bg: '#EDE9FE', icon: 'fa-seedling' },
     lead:    { label: 'Sin pedidos', color: '#64748B', bg: '#F1F5F9', icon: 'fa-user-plus' },
   }
 
@@ -741,7 +741,7 @@ export default function Clientes() {
         .cli-pill:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-xlt)}
         .cli-pill:active{transform:scale(.95)}
         .cli-pill i{font-size:12px}
-        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
+        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#F2994A) 100%);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
         .cli-pill-new:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 10px 26px var(--brand-dim)}
         .cli-pill-new:active{transform:scale(.95)}
         .cli-pill-new i{font-size:11px}
@@ -826,7 +826,7 @@ export default function Clientes() {
                 const dotTip = days === null ? 'Sin pedidos' : days <= 15 ? `Activo — hace ${days}d` : days <= 45 ? `Tibio — hace ${days}d` : `Frío — hace ${days}d`
                 const isCold = days === null || days > 30
                 return (
-                  <tr key={c.id} onClick={() => openDetail(c)} style={{ background: selectedIds.has(c.id) ? 'rgba(124,58,237,.06)' : undefined }}>
+                  <tr key={c.id} onClick={() => openDetail(c)} style={{ background: selectedIds.has(c.id) ? 'rgba(242,118,46,.06)' : undefined }}>
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
                       <input type="checkbox" className="zt-chk" checked={selectedIds.has(c.id)} onChange={() => toggleSelect(c.id)} />
                     </td>
@@ -997,7 +997,7 @@ export default function Clientes() {
           const lastDate = clientLastDate(c)
           return (
             <div key={c.id} className="cli-mob-card" onClick={() => openDetail(c)}
-              style={{ background: selectedIds.has(c.id) ? 'rgba(124,58,237,.06)' : undefined }}>
+              style={{ background: selectedIds.has(c.id) ? 'rgba(242,118,46,.06)' : undefined }}>
 
               {/* Checkbox de selección (para acciones masivas en móvil) */}
               <button onClick={e => { e.stopPropagation(); toggleSelect(c.id) }} aria-label="Seleccionar cliente"
@@ -1415,9 +1415,9 @@ export default function Clientes() {
                   ) : (
                     <div
                       onClick={() => { const c = detailClient; setDetailClient(null); openEdit(c) }}
-                      style={{ background: 'linear-gradient(135deg, rgba(124,58,237,.06), rgba(124,58,237,.02))', borderRadius: 10, padding: '14px 16px', fontSize: 12.5, color: 'var(--txt3)', borderLeft: '3px solid var(--brand)', cursor: 'pointer', transition: 'background .15s' }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(124,58,237,.12), rgba(124,58,237,.05))'}
-                      onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(124,58,237,.06), rgba(124,58,237,.02))'}
+                      style={{ background: 'linear-gradient(135deg, rgba(242,118,46,.06), rgba(242,118,46,.02))', borderRadius: 10, padding: '14px 16px', fontSize: 12.5, color: 'var(--txt3)', borderLeft: '3px solid var(--brand)', cursor: 'pointer', transition: 'background .15s' }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(242,118,46,.12), rgba(242,118,46,.05))'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(242,118,46,.06), rgba(242,118,46,.02))'}
                     >
                       <i className="fa fa-lightbulb" style={{ marginRight: 6, color: 'var(--brand)' }} />
                       <b style={{ color: 'var(--txt2)' }}>Dato clave:</b> anotá horarios de contacto, condiciones de pago o preferencias. La próxima vez que te escriba, ya sabés cómo atenderlo.
@@ -1667,7 +1667,7 @@ export default function Clientes() {
                 </div>
                 <button className="mclose" onClick={() => setRegFormModal(false)}><i className="fa fa-xmark" /></button>
               </div>
-              <div style={{ background: 'linear-gradient(120deg,rgba(124,58,237,.07),rgba(37,211,102,.05))', border: '1px solid rgba(124,58,237,.18)', borderRadius: 10, padding: '10px 13px', marginBottom: 16, fontSize: 11, color: 'var(--txt2)', lineHeight: 1.6 }}>
+              <div style={{ background: 'linear-gradient(120deg,rgba(242,118,46,.07),rgba(37,211,102,.05))', border: '1px solid rgba(242,118,46,.18)', borderRadius: 10, padding: '10px 13px', marginBottom: 16, fontSize: 11, color: 'var(--txt2)', lineHeight: 1.6 }}>
                 <b style={{ color: 'var(--txt)' }}>¿Cómo funciona?</b> El cliente escanea el QR → completa sus datos → te lo manda por WhatsApp → abrís el link y ANMA pre-carga el formulario. <b>Un clic para guardar.</b>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, padding: '16px', background: 'var(--surface2)', borderRadius: 12, border: '1px solid var(--border)', marginBottom: 14 }}>
@@ -1685,7 +1685,7 @@ export default function Clientes() {
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 4 }}>
-                {[{ icon:'fa-brands fa-whatsapp',bg:'#DCFCE7',col:'#16A34A',label:'Story de WA' },{ icon:'fa fa-print',bg:'#EDE9FE',col:'#7C3AED',label:'Impreso' },{ icon:'fa fa-envelope',bg:'#DBEAFE',col:'#2563EB',label:'Email / web' }].map(it => (
+                {[{ icon:'fa-brands fa-whatsapp',bg:'#DCFCE7',col:'#16A34A',label:'Story de WA' },{ icon:'fa fa-print',bg:'#EDE9FE',col:'#F2762E',label:'Impreso' },{ icon:'fa fa-envelope',bg:'#DBEAFE',col:'#2563EB',label:'Email / web' }].map(it => (
                   <div key={it.label} style={{ textAlign:'center',padding:'10px 8px',background:it.bg+'66',borderRadius:8,border:`1px solid ${it.bg}` }}>
                     <i className={it.icon} style={{ fontSize:18,color:it.col,display:'block',marginBottom:5 }} /><div style={{ fontSize:10,fontWeight:600,color:'var(--txt2)' }}>{it.label}</div>
                   </div>

@@ -259,7 +259,7 @@ export default function Login() {
           overflow:hidden;
         }
         .lp-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px)}
-        .lp-orb1{width:520px;height:520px;top:-160px;right:-140px;background:radial-gradient(circle,rgba(124,58,237,.45) 0%,transparent 70%);animation:lp-orb-a 16s ease-in-out infinite}
+        .lp-orb1{width:520px;height:520px;top:-160px;right:-140px;background:radial-gradient(circle,rgba(242,118,46,.45) 0%,transparent 70%);animation:lp-orb-a 16s ease-in-out infinite}
         .lp-orb2{width:380px;height:380px;bottom:-120px;left:-90px;background:radial-gradient(circle,rgba(5,150,105,.35) 0%,transparent 70%);animation:lp-orb-b 20s ease-in-out infinite}
         .lp-orb3{width:240px;height:240px;top:48%;left:18%;background:radial-gradient(circle,rgba(236,72,153,.20) 0%,transparent 70%);animation:lp-orb-c 22s ease-in-out infinite}
         @media (prefers-reduced-motion:reduce){.lp-orb1,.lp-orb2,.lp-orb3{animation:none}}
@@ -283,7 +283,7 @@ export default function Login() {
           width:46px;height:46px;border-radius:13px;flex-shrink:0;
           background:#fff;
           display:flex;align-items:center;justify-content:center;
-          box-shadow:0 8px 24px rgba(124,58,237,.4);
+          box-shadow:0 8px 24px rgba(242,118,46,.4);
           animation:lp-ring 2.6s ease-out 1.2s 1;
         }
         .lp-logo img{width:80%;height:80%;object-fit:contain;display:block}
@@ -416,7 +416,7 @@ export default function Login() {
         .lp-modal-row{display:flex;gap:8px;margin-top:16px}
         .lp-modal-cancel{flex:1;padding:11px;border:1.5px solid rgba(255,255,255,.14);border-radius:10px;background:transparent;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
         .lp-modal-cancel:hover{background:rgba(255,255,255,.04)}
-        .lp-modal-send{flex:2;padding:11px;border:none;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
+        .lp-modal-send{flex:2;padding:11px;border:none;border-radius:10px;background:linear-gradient(135deg,#F2762E,#a855f7);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
         .lp-modal-send:disabled{opacity:.6;cursor:not-allowed}
 
         @media(max-width:480px){

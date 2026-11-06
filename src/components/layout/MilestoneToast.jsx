@@ -84,11 +84,11 @@ export function triggerEncouragement(actionType) {
   _sessionEncCount++
   const msg = pool[Math.floor(Math.random() * pool.length)]
   window.dispatchEvent(new CustomEvent('anma:encouragement', {
-    detail: { ...msg, gradient: 'linear-gradient(135deg, #7C3AED, #059669)' },
+    detail: { ...msg, gradient: 'linear-gradient(135deg, #F2762E, #059669)' },
   }))
 }
 
-const DEFAULT_GRADIENT = 'linear-gradient(135deg, #7C3AED, #059669)'
+const DEFAULT_GRADIENT = 'linear-gradient(135deg, #F2762E, #059669)'
 
 export default function MilestoneToast() {
   const { user } = useAuth()
@@ -145,7 +145,7 @@ export default function MilestoneToast() {
     left: 10 + (i * 11) % 80,
     delay: (i * 0.08) % 0.6,
     duration: 1.8 + ((i * 0.15) % 1.2),
-    color: ['#7C3AED', '#059669', '#F59E0B', '#EC4899', '#2563EB'][i % 5],
+    color: ['#F2762E', '#059669', '#F59E0B', '#EC4899', '#2563EB'][i % 5],
     size: 5 + (i % 3) * 2,
   }))
 
@@ -240,7 +240,7 @@ export default function MilestoneToast() {
             background: gradient,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: '#fff', fontSize: 18,
-            boxShadow: '0 8px 20px rgba(124,58,237,.28)',
+            boxShadow: '0 8px 20px rgba(242,118,46,.28)',
             animation: 'anma-mt-icon-pop .5s .1s cubic-bezier(.34,1.56,.64,1) both',
           }}>
             <i className={`fa ${icon}`} />

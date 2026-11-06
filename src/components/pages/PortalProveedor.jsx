@@ -139,7 +139,7 @@ export default function PortalProveedor() {
   if (!data) return (
     <div style={S.loadingWrap}>
       <div style={S.spinner} />
-      <span style={{ marginTop: 12, color: '#6366F1', fontSize: 13 }}>Cargando portal...</span>
+      <span style={{ marginTop: 12, color: '#F2994A', fontSize: 13 }}>Cargando portal...</span>
     </div>
   )
 
@@ -157,7 +157,7 @@ export default function PortalProveedor() {
         .pp-btn-wa { transition: transform .15s, box-shadow .25s }
         .pp-btn-wa:hover { transform:translateY(-1px); box-shadow:0 12px 28px rgba(22,163,74,.4) }
         .pp-btn-out { transition: background .2s, transform .15s }
-        .pp-btn-out:hover { background: rgba(124,58,237,.06); transform:translateY(-1px) }
+        .pp-btn-out:hover { background: rgba(242,118,46,.06); transform:translateY(-1px) }
         .pp-row:hover { background:#F5F3FF !important }
       `}</style>
 
@@ -185,11 +185,11 @@ export default function PortalProveedor() {
 
         {/* RESUMEN TOP: lo que el proveedor realmente quiere saber al abrir el link */}
         {products.length > 0 && (
-          <div className="pp-card" style={{ background: '#fff', border: '1.5px solid #DDD6FE', borderRadius: 14, padding: '14px 16px', marginBottom: 12, boxShadow: '0 2px 10px rgba(124,58,237,.06)' }}>
-            <div style={{ fontSize: 10, fontWeight: 800, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>Resumen del pedido</div>
+          <div className="pp-card" style={{ background: '#fff', border: '1.5px solid #DDD6FE', borderRadius: 14, padding: '14px 16px', marginBottom: 12, boxShadow: '0 2px 10px rgba(242,118,46,.06)' }}>
+            <div style={{ fontSize: 10, fontWeight: 800, color: '#F2762E', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>Resumen del pedido</div>
             <div style={{ display: 'grid', gridTemplateColumns: data.paymentTerm || data.leadTime ? 'repeat(2,1fr)' : 'repeat(2,1fr)', gap: 10 }}>
               <div style={{ background: 'linear-gradient(135deg,#F5F3FF,#EDE9FE)', borderRadius: 10, padding: '12px 14px' }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: '#6D28D9', textTransform: 'uppercase', letterSpacing: '.5px' }}>Monto estimado</div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: '#D4521E', textTransform: 'uppercase', letterSpacing: '.5px' }}>Monto estimado</div>
                 <div style={{ fontSize: 22, fontWeight: 800, color: '#1E1B4B', fontFamily: "'Space Grotesk','Inter',sans-serif", letterSpacing: '-.5px', lineHeight: 1.15, marginTop: 3 }}>{fmt(totalValue)}</div>
                 <div style={{ fontSize: 11, color: '#6B7280', marginTop: 2 }}>{products.length} producto{products.length !== 1 ? 's' : ''} · {totalUnits} u.</div>
               </div>
@@ -213,7 +213,7 @@ export default function PortalProveedor() {
         {reorder.length > 0 && (
           <div className="pp-card" style={{ ...S.reorderCard, background: '#F5F3FF', borderColor: '#DDD6FE' }}>
             <div style={{ ...S.reorderHead, alignItems: 'center' }}>
-              <div style={{ ...S.urgentBadge, background: '#7C3AED' }}>PRIORITARIO</div>
+              <div style={{ ...S.urgentBadge, background: '#F2762E' }}>PRIORITARIO</div>
               <div style={{ flex: 1 }}>
                 <h3 style={{ ...S.reorderTitle, color: '#1E1B4B' }}>{reorder.length} producto{reorder.length !== 1 ? 's' : ''} para reponer</h3>
               </div>
@@ -224,8 +224,8 @@ export default function PortalProveedor() {
                 return (
                   <div key={i} style={S.reorderItem}>
                     <div style={{ ...S.reorderItemName, flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</div>
-                    <div style={{ fontWeight: 700, fontSize: 13, color: '#7C3AED', whiteSpace: 'nowrap', fontFamily: "'Space Grotesk','Inter',sans-serif", marginRight: 10 }}>{need} u.</div>
-                    <div style={S.reorderItemCost}>{fmt(p.cost)} <span style={{ fontSize: 9, color: '#6366F1', fontWeight: 500 }}>/u</span></div>
+                    <div style={{ fontWeight: 700, fontSize: 13, color: '#F2762E', whiteSpace: 'nowrap', fontFamily: "'Space Grotesk','Inter',sans-serif", marginRight: 10 }}>{need} u.</div>
+                    <div style={S.reorderItemCost}>{fmt(p.cost)} <span style={{ fontSize: 9, color: '#F2994A', fontWeight: 500 }}>/u</span></div>
                   </div>
                 )
               })}
@@ -243,7 +243,7 @@ export default function PortalProveedor() {
         {products.length > 0 && (
           <div className="pp-card" style={S.section}>
             <div style={S.sectionHead}>
-              <h3 style={S.sectionTitle}><i className="fa fa-box-open" style={{ marginRight: 8, color: '#7C3AED' }} />Detalle de productos</h3>
+              <h3 style={S.sectionTitle}><i className="fa fa-box-open" style={{ marginRight: 8, color: '#F2762E' }} />Detalle de productos</h3>
               <button onClick={copyAllProducts} style={S.copyBtn}>
                 <i className={`fa fa-${copied ? 'check' : 'copy'}`} /> {copied ? 'Copiado' : 'Copiar lista'}
               </button>
@@ -268,7 +268,7 @@ export default function PortalProveedor() {
                       </td>
                       <td style={{ ...S.td, textAlign: 'center', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{qty}</td>
                       <td style={{ ...S.td, textAlign: 'right', color: '#374151', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</td>
-                      <td style={{ ...S.td, textAlign: 'right', fontWeight: 700, color: '#7C3AED', fontVariantNumeric: 'tabular-nums', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{fmt(p.cost * qty)}</td>
+                      <td style={{ ...S.td, textAlign: 'right', fontWeight: 700, color: '#F2762E', fontVariantNumeric: 'tabular-nums', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{fmt(p.cost * qty)}</td>
                     </tr>
                     )
                   })}
@@ -284,7 +284,7 @@ export default function PortalProveedor() {
         {/* HISTORIAL DE PRECIOS */}
         {(data.priceHistory || []).length > 0 && (
           <div className="pp-card" style={S.section}>
-            <h3 style={S.sectionTitle}><i className="fa fa-chart-line" style={{ marginRight: 8, color: '#7C3AED' }} />Cambios de precio recientes</h3>
+            <h3 style={S.sectionTitle}><i className="fa fa-chart-line" style={{ marginRight: 8, color: '#F2762E' }} />Cambios de precio recientes</h3>
             <p style={S.sectionSub}>Para mantener todo claro y transparente entre ambas partes.</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {data.priceHistory.slice(0, 8).map((h, i) => {
@@ -312,7 +312,7 @@ export default function PortalProveedor() {
 
         {/* CONFIRMACIÓN / CTA (plazos y monto ya están en el resumen top) */}
         <div className="pp-card" style={S.ctaCard}>
-          <div style={{ fontSize: 30, marginBottom: 8, color: confirmed ? '#16A34A' : '#7C3AED' }}><i className={`fa ${confirmed ? 'fa-circle-check' : 'fa-handshake'}`} /></div>
+          <div style={{ fontSize: 30, marginBottom: 8, color: confirmed ? '#16A34A' : '#F2762E' }}><i className={`fa ${confirmed ? 'fa-circle-check' : 'fa-handshake'}`} /></div>
           <h3 style={S.ctaTitle}>
             {confirmed ? '¡Gracias por confirmar!' : '¿Podés cumplir con esto?'}
           </h3>
@@ -341,7 +341,7 @@ export default function PortalProveedor() {
           </div>
 
           <div style={S.ctaTip}>
-            <i className="fa fa-circle-info" style={{ marginRight: 6, color: '#7C3AED' }} />
+            <i className="fa fa-circle-info" style={{ marginRight: 6, color: '#F2762E' }} />
             Tu mensaje llega directo a {data.ownerName || 'tu cliente'} por WhatsApp. No usamos tu número para nada más.
           </div>
         </div>
@@ -349,7 +349,7 @@ export default function PortalProveedor() {
         {/* FOOTER */}
         <div style={S.foot}>
           <span>Generado con</span>
-          <b style={{ color: '#7C3AED', letterSpacing: '-.2px' }}>ANMA</b>
+          <b style={{ color: '#F2762E', letterSpacing: '-.2px' }}>ANMA</b>
           <span style={S.footDot} />
           <span>Información de solo lectura</span>
           <span style={S.footDot} />
@@ -371,12 +371,12 @@ const S = {
 
   // Hero
   hero: {
-    background: 'linear-gradient(135deg, #1e1b4b 0%, #4C1D95 55%, #7C3AED 100%)',
+    background: 'linear-gradient(135deg, #1e1b4b 0%, #4C1D95 55%, #F2762E 100%)',
     borderRadius: 18,
     padding: '26px 26px 30px',
     color: '#fff',
     marginBottom: 14,
-    boxShadow: '0 12px 40px rgba(76,29,149,.32)',
+    boxShadow: '0 12px 40px rgba(42,33,24,.32)',
     position: 'relative',
     overflow: 'hidden',
   },
@@ -446,7 +446,7 @@ const S = {
   sectionSub: { margin: '-4px 0 12px', fontSize: 12, color: '#6B7280', lineHeight: 1.5 },
   sectionFoot: { fontSize: 11, color: '#6B7280', marginTop: 10, textAlign: 'right', fontStyle: 'italic' },
   copyBtn: {
-    background: 'transparent', border: '1.5px solid #EDE9FE', color: '#7C3AED',
+    background: 'transparent', border: '1.5px solid #EDE9FE', color: '#F2762E',
     padding: '5px 10px', borderRadius: 8, fontSize: 11, fontWeight: 700,
     cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5,
     fontFamily: 'inherit', transition: 'all .15s',
@@ -473,7 +473,7 @@ const S = {
     padding: '9px 12px', background: '#F5F3FF', borderRadius: 10, fontSize: 12,
     flexWrap: 'wrap',
   },
-  histDate: { color: '#7C3AED', fontSize: 11, fontWeight: 600, minWidth: 70 },
+  histDate: { color: '#F2762E', fontSize: 11, fontWeight: 600, minWidth: 70 },
   histName: { flex: 1, color: '#1E1B4B', fontWeight: 600, minWidth: 100 },
   histPrice: { display: 'inline-flex', alignItems: 'center', gap: 6, fontVariantNumeric: 'tabular-nums' },
   histPct: { padding: '3px 8px', borderRadius: 8, fontSize: 11, fontWeight: 800 },
@@ -490,7 +490,7 @@ const S = {
   ctaCard: {
     background: 'linear-gradient(135deg,#fff 0%,#F5F3FF 100%)',
     borderRadius: 16, padding: '26px 22px 22px', marginBottom: 14,
-    boxShadow: '0 4px 18px rgba(124,58,237,.10)',
+    boxShadow: '0 4px 18px rgba(242,118,46,.10)',
     textAlign: 'center', border: '1.5px solid #EDE9FE',
   },
   ctaTitle: { margin: '0 0 8px', fontSize: 18, color: '#1E1B4B', fontWeight: 700, fontFamily: "'Space Grotesk','Inter',sans-serif" },
@@ -504,7 +504,7 @@ const S = {
   },
   btnAsk: {
     flex: '1 1 200px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-    background: '#fff', color: '#7C3AED', padding: '13px 22px',
+    background: '#fff', color: '#F2762E', padding: '13px 22px',
     borderRadius: 12, textDecoration: 'none', fontWeight: 700, fontSize: 13,
     border: '1.5px solid #DDD6FE',
   },
@@ -515,11 +515,11 @@ const S = {
 
   // Footer
   foot: {
-    textAlign: 'center', fontSize: 11, color: '#7C3AED', padding: '18px 12px',
+    textAlign: 'center', fontSize: 11, color: '#F2762E', padding: '18px 12px',
     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexWrap: 'wrap',
   },
   footDot: { width: 3, height: 3, borderRadius: '50%', background: '#C4B5FD', display: 'inline-block' },
-  footLink: { color: '#7C3AED', textDecoration: 'none', fontWeight: 600 },
+  footLink: { color: '#F2762E', textDecoration: 'none', fontWeight: 600 },
 
   // Error
   errorWrap: {
@@ -533,7 +533,7 @@ const S = {
   },
   errorTitle: { margin: '0 0 8px', color: '#1E1B4B', fontSize: 19, fontWeight: 800 },
   errorMsg: { color: '#6B7280', fontSize: 14, margin: '0 0 12px', lineHeight: 1.5 },
-  errorHint: { color: '#7C3AED', fontSize: 12, margin: 0 },
+  errorHint: { color: '#F2762E', fontSize: 12, margin: 0 },
 
   // Loading
   loadingWrap: {
@@ -543,7 +543,7 @@ const S = {
   },
   spinner: {
     width: 32, height: 32, borderRadius: '50%',
-    border: '3px solid #EDE9FE', borderTopColor: '#7C3AED',
+    border: '3px solid #EDE9FE', borderTopColor: '#F2762E',
     animation: 'pp-spin 1s linear infinite',
   },
 }

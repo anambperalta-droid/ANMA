@@ -69,15 +69,15 @@ export function applyThemeColors(principal, acento) {
     root.setProperty('--brand-100', `rgba(${r},${g},${b},.10)`)
     root.setProperty('--brand-200', `rgba(${r},${g},${b},.20)`)
 
-    root.setProperty('--grad', `linear-gradient(135deg, ${principal} 0%, ${mixHex(principal, '#6366F1', 0.55)} 100%)`)
+    root.setProperty('--grad', `linear-gradient(135deg, ${principal} 0%, ${mixHex(principal, '#F2A93B', 0.5)} 100%)`)
     root.setProperty('--grad-soft', `linear-gradient(135deg, rgba(${r},${g},${b},.08) 0%, rgba(${r},${g},${b},.04) 100%)`)
     root.setProperty('--sh-brand', `0 6px 20px rgba(${r},${g},${b},.28)`)
 
-    /* Sidebar y paneles oscuros: tinte del color principal (base menos oscura
-     y más peso del principal → sidebar "encendido", no apagado) */
-    root.setProperty('--sidebar-bg', mixHex(principal, '#1a1650', 0.22))
+    /* Feria luminosa: sidebar y paneles en ink cálido con un tinte del principal
+       (base cálida en vez de índigo → shell terroso, no violáceo) */
+    root.setProperty('--sidebar-bg', mixHex(principal, '#241a12', 0.14))
     root.setProperty('--panel-grad',
-      `linear-gradient(160deg, ${mixHex(principal, '#1a1650', 0.18)} 0%, ${mixHex(principal, '#2d1a6b', 0.26)} 50%, ${mixHex(principal, '#3f2299', 0.34)} 100%)`
+      `linear-gradient(160deg, ${mixHex(principal, '#241a12', 0.14)} 0%, ${mixHex(principal, '#3a2a1c', 0.2)} 50%, ${mixHex(principal, '#4a3420', 0.26)} 100%)`
     )
   }
 

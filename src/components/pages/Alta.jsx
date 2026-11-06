@@ -65,13 +65,13 @@ export default function Alta({ appName = 'ANMA Hub' }) {
   const s = {
     page: { minHeight: '100vh', background: 'linear-gradient(140deg,#F5F3FF 0%,#EFF6FF 60%,#F0FDF4 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px 16px', fontFamily: "'Inter',system-ui,sans-serif" },
     card: { width: '100%', maxWidth: 440, background: '#fff', borderRadius: 24, padding: '28px 26px 24px', boxShadow: '0 6px 40px rgba(0,0,0,.1),0 1px 4px rgba(0,0,0,.06)', border: '1px solid rgba(0,0,0,.05)' },
-    logo: { width: 56, height: 56, borderRadius: 16, background: 'linear-gradient(135deg,#7C3AED,#9D5CF5)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px', fontSize: 24, fontWeight: 800, color: '#fff', letterSpacing: '-.5px', boxShadow: '0 8px 24px rgba(124,58,237,.28)' },
+    logo: { width: 56, height: 56, borderRadius: 16, background: 'linear-gradient(135deg,#F2762E,#9D5CF5)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px', fontSize: 24, fontWeight: 800, color: '#fff', letterSpacing: '-.5px', boxShadow: '0 8px 24px rgba(242,118,46,.28)' },
     title: { fontSize: 21, fontWeight: 800, color: '#1E1B4B', margin: '0 0 3px', letterSpacing: '-.5px', textAlign: 'center' },
     sub: { fontSize: 13, color: '#6B7280', margin: '0 0 22px', textAlign: 'center' },
     label: { display: 'block', fontSize: 11, fontWeight: 700, color: '#374151', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 5 },
     input: { width: '100%', padding: '11px 14px', border: '1.5px solid #E5E7EB', borderRadius: 10, fontFamily: 'inherit', fontSize: 14, color: '#111827', outline: 'none', boxSizing: 'border-box', transition: 'border-color .15s' },
     fg: { marginBottom: 14 },
-    btn: { width: '100%', padding: '14px', borderRadius: 12, border: 'none', background: 'linear-gradient(135deg,#7C3AED,#9D5CF5)', color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', marginTop: 4, boxShadow: '0 4px 16px rgba(124,58,237,.32)', transition: 'transform .12s,filter .12s' },
+    btn: { width: '100%', padding: '14px', borderRadius: 12, border: 'none', background: 'linear-gradient(135deg,#F2762E,#9D5CF5)', color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', marginTop: 4, boxShadow: '0 4px 16px rgba(242,118,46,.32)', transition: 'transform .12s,filter .12s' },
     wa: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9, width: '100%', padding: '14px', borderRadius: 12, border: 'none', background: '#16A34A', color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', boxShadow: '0 4px 16px rgba(22,163,74,.32)', transition: 'filter .12s' },
     copy: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, width: '100%', padding: '11px', borderRadius: 10, border: '1.5px solid #E5E7EB', background: '#F9FAFB', color: '#374151', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', marginTop: 8 },
     success: { textAlign: 'center' },
@@ -102,7 +102,7 @@ export default function Alta({ appName = 'ANMA Hub' }) {
                   onChange={e => setF('company', e.target.value)}
                   placeholder="Tu empresa o nombre"
                   required
-                  onFocus={e => { e.target.style.borderColor = '#7C3AED' }}
+                  onFocus={e => { e.target.style.borderColor = '#F2762E' }}
                   onBlur={e => { e.target.style.borderColor = '#E5E7EB' }}
                 />
               </div>
@@ -115,7 +115,7 @@ export default function Alta({ appName = 'ANMA Hub' }) {
                   value={form.contact}
                   onChange={e => setF('contact', e.target.value)}
                   placeholder="Nombre y apellido"
-                  onFocus={e => { e.target.style.borderColor = '#7C3AED' }}
+                  onFocus={e => { e.target.style.borderColor = '#F2762E' }}
                   onBlur={e => { e.target.style.borderColor = '#E5E7EB' }}
                 />
               </div>
@@ -129,7 +129,7 @@ export default function Alta({ appName = 'ANMA Hub' }) {
                     value={form.wa}
                     onChange={e => setF('wa', e.target.value)}
                     placeholder="+54 11..."
-                    onFocus={e => { e.target.style.borderColor = '#7C3AED' }}
+                    onFocus={e => { e.target.style.borderColor = '#F2762E' }}
                     onBlur={e => { e.target.style.borderColor = '#E5E7EB' }}
                   />
                 </div>
@@ -141,7 +141,7 @@ export default function Alta({ appName = 'ANMA Hub' }) {
                     value={form.email}
                     onChange={e => setF('email', e.target.value)}
                     placeholder="tu@mail.com"
-                    onFocus={e => { e.target.style.borderColor = '#7C3AED' }}
+                    onFocus={e => { e.target.style.borderColor = '#F2762E' }}
                     onBlur={e => { e.target.style.borderColor = '#E5E7EB' }}
                   />
                 </div>

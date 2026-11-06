@@ -139,7 +139,7 @@ export default function PortalCliente() {
   if (!data) return (
     <div style={S.loadingWrap}>
       <div style={S.spinner} />
-      <span style={{ marginTop: 12, color: '#7C3AED', fontSize: 13 }}>Cargando...</span>
+      <span style={{ marginTop: 12, color: '#F2762E', fontSize: 13 }}>Cargando...</span>
     </div>
   )
 
@@ -191,9 +191,9 @@ export default function PortalCliente() {
                   <div key={st} style={S.timelineItem} className="pc-timeline-step">
                     <div style={{
                       ...S.timelineDot,
-                      background: done ? '#15803D' : active ? '#7C3AED' : '#E5E7EB',
+                      background: done ? '#15803D' : active ? '#F2762E' : '#E5E7EB',
                       color: done || active ? '#fff' : '#9CA3AF',
-                      boxShadow: active ? '0 0 0 4px rgba(124,58,237,.15)' : 'none',
+                      boxShadow: active ? '0 0 0 4px rgba(242,118,46,.15)' : 'none',
                     }}>
                       {done ? <i className="fa fa-check" style={{ fontSize: 11 }} /> : <span style={{ fontSize: 11, fontWeight: 800 }}>{i + 1}</span>}
                     </div>
@@ -377,7 +377,7 @@ export default function PortalCliente() {
               }}
               title="Descargar evento para tu calendario"
             >
-              <i className="fa fa-calendar-plus" style={{ color: '#7C3AED' }} /> Agendar entrega en mi calendario
+              <i className="fa fa-calendar-plus" style={{ color: '#F2762E' }} /> Agendar entrega en mi calendario
             </button>
           </div>
         )}
@@ -388,7 +388,7 @@ export default function PortalCliente() {
             Link válido hasta {new Date(data.e).toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' })}
           </div>
           <div style={{ fontSize: 10, color: '#9CA3AF', marginTop: 2 }}>
-            Hecho con <b style={{ color: '#7C3AED' }}>ANMA</b>
+            Hecho con <b style={{ color: '#F2762E' }}>ANMA</b>
           </div>
         </div>
       </div>
@@ -428,7 +428,7 @@ const S = {
     padding: '0 16px 16px',
   },
   hero: {
-    background: 'linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%)',
+    background: 'linear-gradient(135deg, #F2762E 0%, #5B21B6 100%)',
     borderRadius: '0 0 24px 24px',
     padding: '28px 20px 32px',
     color: '#fff',
@@ -436,7 +436,7 @@ const S = {
     marginRight: -16,
     marginBottom: 20,
     textAlign: 'left',
-    boxShadow: '0 8px 24px rgba(124,58,237,.2)',
+    boxShadow: '0 8px 24px rgba(242,118,46,.2)',
   },
   heroEye: {
     width: 44, height: 44, borderRadius: 12,
@@ -475,7 +475,7 @@ const S = {
   },
   icoBox: {
     width: 36, height: 36, borderRadius: 10,
-    background: 'rgba(124,58,237,.1)', color: '#7C3AED',
+    background: 'rgba(242,118,46,.1)', color: '#F2762E',
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
     fontSize: 14, flexShrink: 0,
   },
@@ -525,7 +525,7 @@ const S = {
   },
   spinner: {
     width: 32, height: 32, borderRadius: '50%',
-    border: '3px solid rgba(124,58,237,.15)', borderTopColor: '#7C3AED',
+    border: '3px solid rgba(242,118,46,.15)', borderTopColor: '#F2762E',
     animation: 'pcSpin 1s linear infinite',
   },
 }

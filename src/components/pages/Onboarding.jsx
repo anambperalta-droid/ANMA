@@ -82,13 +82,13 @@ export default function Onboarding() {
       width: '100%', maxWidth: 620, background: '#fff', borderRadius: 22,
       padding: '36px 32px 28px',
       boxShadow: '0 12px 48px rgba(30,27,75,.12), 0 2px 6px rgba(0,0,0,.04)',
-      border: '1px solid rgba(124,58,237,.08)',
+      border: '1px solid rgba(242,118,46,.08)',
     },
     badge: {
       display: 'inline-flex', alignItems: 'center', gap: 6,
       padding: '4px 10px', borderRadius: 9999,
       background: 'linear-gradient(135deg,#F5F3FF,#FDF2F8)',
-      color: '#7C3AED', fontSize: 11, fontWeight: 800,
+      color: '#F2762E', fontSize: 11, fontWeight: 800,
       textTransform: 'uppercase', letterSpacing: '.06em',
       marginBottom: 10,
     },
@@ -106,14 +106,14 @@ export default function Onboarding() {
       outline: 'none', boxSizing: 'border-box', transition: 'border-color .15s, box-shadow .15s',
       background: '#FAFAFB',
     },
-    inputFocus: { borderColor: '#7C3AED', boxShadow: '0 0 0 4px rgba(124,58,237,.08)', background: '#fff' },
+    inputFocus: { borderColor: '#F2762E', boxShadow: '0 0 0 4px rgba(242,118,46,.08)', background: '#fff' },
     grid4: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 11 },
     grid3: { display: 'grid', gridTemplateColumns: '1fr', gap: 10 },
     cta: {
       width: '100%', padding: '15px 20px', borderRadius: 13, border: 'none',
-      background: 'linear-gradient(135deg,#7C3AED,#9D5CF5)', color: '#fff',
+      background: 'linear-gradient(135deg,#F2762E,#9D5CF5)', color: '#fff',
       fontSize: 15.5, fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit',
-      marginTop: 8, boxShadow: '0 6px 20px rgba(124,58,237,.32)',
+      marginTop: 8, boxShadow: '0 6px 20px rgba(242,118,46,.32)',
       transition: 'transform .12s, filter .12s, opacity .15s',
       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
     },
@@ -128,7 +128,7 @@ export default function Onboarding() {
     <div style={s.page}>
       <div style={s.card}>
         <div style={s.badge}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#7C3AED', display: 'inline-block' }} />
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#F2762E', display: 'inline-block' }} />
           Perfil comercial · Paso 1 de 3
         </div>
         <h1 style={s.h1}>Contanos sobre tu negocio</h1>
@@ -279,7 +279,7 @@ const LINE_ICONS = {
     </svg>
   ),
 }
-function LineIcon({ fa, size = 20, color = '#7C3AED' }) {
+function LineIcon({ fa, size = 20, color = '#F2762E' }) {
   const svg = LINE_ICONS[fa]
   if (!svg) return <i className={`fa-solid ${fa}`} style={{ fontSize: size * 0.7, color }} />
   return (
@@ -296,13 +296,13 @@ function LineIcon({ fa, size = 20, color = '#7C3AED' }) {
    Ícono line-only sofisticado (sin relleno) en chip sobrio. */
 function SelectCard({ fa, label, sub, selected, onClick }) {
   const base = {
-    border: `1.5px solid ${selected ? '#7C3AED' : '#E5E7EB'}`,
+    border: `1.5px solid ${selected ? '#F2762E' : '#E5E7EB'}`,
     background: selected ? '#F5F3FF' : '#fff',
     borderRadius: 14, padding: '15px 16px',
     cursor: 'pointer', fontFamily: 'inherit',
     display: 'flex', flexDirection: 'row', gap: 13, alignItems: 'center',
     transition: 'all .15s', textAlign: 'left',
-    boxShadow: selected ? '0 6px 18px rgba(124,58,237,.16), 0 0 0 3px rgba(124,58,237,.08)' : '0 1px 3px rgba(0,0,0,.04)',
+    boxShadow: selected ? '0 6px 18px rgba(242,118,46,.16), 0 0 0 3px rgba(242,118,46,.08)' : '0 1px 3px rgba(0,0,0,.04)',
     position: 'relative', width: '100%',
   }
   return (
@@ -311,23 +311,23 @@ function SelectCard({ fa, label, sub, selected, onClick }) {
       onMouseLeave={e => { if (!selected) { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.transform = 'none' } }}>
       <div style={{
         width: 42, height: 42, borderRadius: 12, flexShrink: 0,
-        background: selected ? 'linear-gradient(135deg,#7C3AED,#9D5CF5)' : '#F5F3FF',
+        background: selected ? 'linear-gradient(135deg,#F2762E,#9D5CF5)' : '#F5F3FF',
         border: selected ? 'none' : '1.5px solid #EDE9FE',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         transition: 'background .15s, border-color .15s',
-        boxShadow: selected ? '0 3px 10px rgba(124,58,237,.3)' : 'none',
+        boxShadow: selected ? '0 3px 10px rgba(242,118,46,.3)' : 'none',
       }}>
-        <LineIcon fa={fa} size={21} color={selected ? '#fff' : '#7C3AED'} />
+        <LineIcon fa={fa} size={21} color={selected ? '#fff' : '#F2762E'} />
       </div>
       <div style={{ flex: 1, minWidth: 0, paddingRight: selected ? 18 : 0 }}>
-        <div style={{ fontSize: 14, fontWeight: 800, color: selected ? '#6D28D9' : '#1E1B4B', letterSpacing: '-.1px', lineHeight: 1.2 }}>{label}</div>
+        <div style={{ fontSize: 14, fontWeight: 800, color: selected ? '#D4521E' : '#1E1B4B', letterSpacing: '-.1px', lineHeight: 1.2 }}>{label}</div>
         <div style={{ fontSize: 11, color: '#6B7280', lineHeight: 1.4, marginTop: 2 }}>{sub}</div>
       </div>
       {selected && (
         <div style={{
           position: 'absolute', top: 9, right: 9,
           width: 18, height: 18, borderRadius: '50%',
-          background: '#7C3AED', color: '#fff',
+          background: '#F2762E', color: '#fff',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <i className="fa-solid fa-check" style={{ fontSize: 9 }} />

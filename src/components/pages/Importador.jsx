@@ -9,7 +9,7 @@ const ENTIDADES = [
     tipo:    'clientes',
     label:   'Clientes',
     icon:    'fa-users',
-    color:   '#7C3AED',
+    color:   '#F2762E',
     bg:      '#EDE9FE',
     nameKey: 'company',
     headers: 'Empresa, Contacto, WhatsApp, Email, Rubro, Notas',

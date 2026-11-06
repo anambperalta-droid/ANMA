@@ -93,7 +93,7 @@ const getTrackingUrl = (carrier, code) => {
    + modal-form-card con body scrolleable y footer sticky). Sincronización
    bidireccional con Presupuestos vía paradas.budgetId. */
 const PARADA_TIPOS = [
-  { val: 'insumos',    lbl: 'Retiro Insumos',   icon: 'fa-box', color: '#7C3AED' },
+  { val: 'insumos',    lbl: 'Retiro Insumos',   icon: 'fa-box', color: '#F2762E' },
   { val: 'mercaderia', lbl: 'Retiro Mercadería',icon: 'fa-cart-shopping', color: '#2563EB' },
   { val: 'entrega',    lbl: 'Entrega Pedido',   icon: 'fa-truck-fast', color: '#059669' },
 ]
@@ -274,7 +274,7 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
             <div className="viajes-kpi-lbl">Paradas</div>
             <div className="viajes-kpi-val" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{stats.totalParadas}</div>
             <div className="viajes-kpi-chips">
-              {stats.tipoCount.insumos > 0 && <span><i className="fa fa-box" style={{ color: '#7C3AED' }} /> {stats.tipoCount.insumos}</span>}
+              {stats.tipoCount.insumos > 0 && <span><i className="fa fa-box" style={{ color: '#F2762E' }} /> {stats.tipoCount.insumos}</span>}
               {stats.tipoCount.mercaderia > 0 && <span><i className="fa fa-cart-shopping" style={{ color: '#2563EB' }} /> {stats.tipoCount.mercaderia}</span>}
               {stats.tipoCount.entrega > 0 && <span><i className="fa fa-truck-fast" style={{ color: '#059669' }} /> {stats.tipoCount.entrega}</span>}
             </div>
@@ -315,7 +315,7 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
                     </div>
                     <div className="viaje-card-meta">
                       <span><b>{(v.paradas || []).length}</b> parada{(v.paradas || []).length !== 1 ? 's' : ''}</span>
-                      {conteo.insumos ? <span><i className="fa fa-box" style={{ color: '#7C3AED' }} /> {conteo.insumos}</span> : null}
+                      {conteo.insumos ? <span><i className="fa fa-box" style={{ color: '#F2762E' }} /> {conteo.insumos}</span> : null}
                       {conteo.mercaderia ? <span><i className="fa fa-cart-shopping" style={{ color: '#2563EB' }} /> {conteo.mercaderia}</span> : null}
                       {conteo.entrega ? <span><i className="fa fa-truck-fast" style={{ color: '#059669' }} /> {conteo.entrega}</span> : null}
                       {budgetNums.length > 0 && <span style={{ color: 'var(--brand)' }}><i className="fa fa-link" /> {budgetNums.join(', ')}</span>}
@@ -866,7 +866,7 @@ export default function Logistica() {
             .logi-late-x:active{opacity:1}
             /* ── Tab "+ Envío" — separada visualmente del resto de tabs (accion, no pestaña) ── */
             @media(max-width:900px){
-              .logi-tab-add{margin-left:6px!important;box-shadow:0 4px 12px rgba(124,58,237,.28)!important}
+              .logi-tab-add{margin-left:6px!important;box-shadow:0 4px 12px rgba(242,118,46,.28)!important}
               .logi-mob-tabs{padding-right:2px!important}
             }
             /* ── Resumen KPIs mobile: 2 cols + "Desvíos de flete" span 2.

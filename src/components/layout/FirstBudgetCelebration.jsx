@@ -55,7 +55,7 @@ export default function FirstBudgetCelebration() {
     left: (i * 4.17) % 100,
     delay: (i * 0.12) % 1.4,
     duration: 2.5 + ((i * 0.13) % 1.5),
-    color: ['#7C3AED', '#059669', '#D946EF', '#F59E0B', '#2563EB', '#EC4899'][i % 6],
+    color: ['#F2762E', '#059669', '#D946EF', '#F59E0B', '#2563EB', '#EC4899'][i % 6],
     size: 6 + (i % 4) * 2,
     rotateStart: (i * 47) % 360,
   }))
@@ -127,7 +127,7 @@ export default function FirstBudgetCelebration() {
             padding: '36px 32px 28px',
             maxWidth: 380, width: '100%',
             textAlign: 'center',
-            boxShadow: '0 25px 70px rgba(15,12,60,.3), 0 8px 20px rgba(124,58,237,.18)',
+            boxShadow: '0 25px 70px rgba(15,12,60,.3), 0 8px 20px rgba(242,118,46,.18)',
             animation: exiting ? 'none' : 'anma-pop-in .4s cubic-bezier(.34,1.56,.64,1) both',
             cursor: 'auto',
           }}
@@ -154,7 +154,7 @@ export default function FirstBudgetCelebration() {
           <h2 style={{
             fontSize: 22, fontWeight: 800, color: 'var(--txt, #111)',
             margin: '0 0 8px', letterSpacing: '-.4px',
-            background: 'linear-gradient(90deg, #7C3AED, #059669, #7C3AED)',
+            background: 'linear-gradient(90deg, #F2762E, #059669, #F2762E)',
             backgroundSize: '200% 100%',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
@@ -176,10 +176,10 @@ export default function FirstBudgetCelebration() {
             onClick={close}
             style={{
               padding: '12px 28px', borderRadius: 12, border: 'none',
-              background: 'linear-gradient(135deg, #7C3AED, #059669)',
+              background: 'linear-gradient(135deg, #F2762E, #059669)',
               color: '#fff', fontSize: 14, fontWeight: 700,
               cursor: 'pointer', fontFamily: 'inherit',
-              boxShadow: '0 8px 22px rgba(124,58,237,.35)',
+              boxShadow: '0 8px 22px rgba(242,118,46,.35)',
               display: 'inline-flex', alignItems: 'center', gap: 8,
             }}
           >

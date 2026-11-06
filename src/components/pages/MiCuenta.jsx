@@ -101,7 +101,7 @@ export default function MiCuenta() {
       <div style={{ padding: '40px 20px', maxWidth: 480, margin: '0 auto', textAlign: 'center' }}>
         <div style={{
           width: 72, height: 72, borderRadius: '50%',
-          background: 'rgba(124,58,237,.12)', color: '#7C3AED',
+          background: 'rgba(242,118,46,.12)', color: '#F2762E',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           margin: '0 auto 16px', fontSize: 28,
         }}>
@@ -218,8 +218,8 @@ export default function MiCuenta() {
         .mc-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:20px 22px;margin-bottom:16px}
         .mc-card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
         .mc-card-title{font-size:14px;font-weight:800;color:var(--txt);letter-spacing:-.2px;display:flex;align-items:center;gap:8px}
-        .mc-card-title i{color:#7C3AED;font-size:13px}
-        .mc-card-action{font-size:12px;font-weight:600;color:#7C3AED;background:transparent;border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px}
+        .mc-card-title i{color:#F2762E;font-size:13px}
+        .mc-card-action{font-size:12px;font-weight:600;color:#F2762E;background:transparent;border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px}
         .mc-card-action:hover{text-decoration:underline}
         .mc-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);gap:10px}
         .mc-row:last-child{border-bottom:none}
@@ -228,20 +228,20 @@ export default function MiCuenta() {
         .mc-field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
         .mc-field label{font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em}
         .mc-field input{padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface2);font-size:14px;font-family:inherit;color:var(--txt);outline:none;transition:border-color .15s,background .15s}
-        .mc-field input:focus{border-color:#7C3AED;background:#fff;box-shadow:0 0 0 3px rgba(124,58,237,.08)}
+        .mc-field input:focus{border-color:#F2762E;background:#fff;box-shadow:0 0 0 3px rgba(242,118,46,.08)}
       `}</style>
 
       {/* ═══ HEADER con avatar + estado ═══ */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 16, padding: '18px 22px',
-        background: 'linear-gradient(135deg, #4C1D95, #7C3AED 50%, #A78BFA)',
+        background: 'linear-gradient(135deg, #4C1D95, #F2762E 50%, #A78BFA)',
         borderRadius: 18, marginBottom: 20,
-        boxShadow: '0 10px 30px rgba(124,58,237,.25)',
+        boxShadow: '0 10px 30px rgba(242,118,46,.25)',
         flexWrap: 'wrap',
       }}>
         <div style={{
           width: 64, height: 64, borderRadius: 16,
-          background: '#fff', color: '#7C3AED',
+          background: '#fff', color: '#F2762E',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 22, fontWeight: 900, flexShrink: 0,
           boxShadow: '0 6px 16px rgba(0,0,0,.1)',
@@ -411,12 +411,12 @@ export default function MiCuenta() {
           display: 'flex', alignItems: 'center', gap: 12,
           cursor: 'pointer', transition: 'all .15s',
         }}
-        onMouseEnter={e => { e.currentTarget.style.borderColor = '#7C3AED'; e.currentTarget.style.background = 'rgba(124,58,237,.04)' }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = '#F2762E'; e.currentTarget.style.background = 'rgba(242,118,46,.04)' }}
         onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--surface)' }}
       >
         <div style={{
           width: 38, height: 38, borderRadius: 10,
-          background: 'rgba(124,58,237,.12)', color: '#7C3AED',
+          background: 'rgba(242,118,46,.12)', color: '#F2762E',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 15, flexShrink: 0,
         }}>
@@ -430,7 +430,7 @@ export default function MiCuenta() {
             Nombre, logo, colores, datos fiscales, equipo, módulos → <strong>Configuración</strong>
           </div>
         </div>
-        <i className="fa fa-arrow-right" style={{ color: '#7C3AED', fontSize: 12, flexShrink: 0 }} />
+        <i className="fa fa-arrow-right" style={{ color: '#F2762E', fontSize: 12, flexShrink: 0 }} />
       </div>
 
       {/* ═══ HISTORIAL DE PAGOS ═══ */}
@@ -453,9 +453,9 @@ export default function MiCuenta() {
           <div style={{ padding: '36px 20px', textAlign: 'center' }}>
             <div style={{
               width: 60, height: 60, borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(124,58,237,.10), rgba(99,102,241,.06))',
+              background: 'linear-gradient(135deg, rgba(242,118,46,.10), rgba(99,102,241,.06))',
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              marginBottom: 12, color: '#7C3AED', fontSize: 22,
+              marginBottom: 12, color: '#F2762E', fontSize: 22,
             }}>
               <i className="fa fa-receipt" />
             </div>
@@ -534,7 +534,7 @@ export default function MiCuenta() {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
-          <button onClick={downloadMyData} className="account-action" style={accountActionStyle('#7C3AED')}>
+          <button onClick={downloadMyData} className="account-action" style={accountActionStyle('#F2762E')}>
             <i className="fa fa-download" style={{ fontSize: 16 }} />
             <div style={{ flex: 1, textAlign: 'left' }}>
               <div style={{ fontWeight: 700, fontSize: 13 }}>Descargar todos mis datos</div>

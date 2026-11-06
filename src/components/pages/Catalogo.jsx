@@ -40,7 +40,7 @@ const compressImage = (file, maxBytes = 180000) => new Promise((resolve) => {
 
 /* Paleta de colores para categorías */
 const CAT_PALETTE = [
-  { bg: '#F5F3FF', color: '#8B5CF6' },
+  { bg: '#F5F3FF', color: '#F2994A' },
   { bg: '#EFF6FF', color: '#60A5FA' },
   { bg: '#ECFDF5', color: '#34D399' },
   { bg: '#FFFBEB', color: '#F59E0B' },
@@ -353,7 +353,7 @@ export default function Catalogo() {
         title: '¡Primer producto en tu catálogo!',
         body: 'Ya podés armar presupuestos más rápido. Tu tiempo empieza a rendir.',
         icon: 'fa-cube',
-        gradient: 'linear-gradient(135deg, #7C3AED, #A78BFA)',
+        gradient: 'linear-gradient(135deg, #F2762E, #A78BFA)',
       })
     } else if (!data.id) {
       triggerEncouragement('product')
@@ -629,7 +629,7 @@ export default function Catalogo() {
             padding: '12px 16px', marginBottom: 12,
             display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
           }}>
-            <i className="fa fa-wand-magic-sparkles" style={{ color: '#7C3AED', fontSize: 18, flexShrink: 0 }} />
+            <i className="fa fa-wand-magic-sparkles" style={{ color: '#F2762E', fontSize: 18, flexShrink: 0 }} />
             <div style={{ flex: 1, minWidth: 220, fontSize: 12.5, color: '#1E1B4B', lineHeight: 1.5 }}>
               <b>Tenemos nuevas categorías sugeridas para {meta?.label || c.rubro}.</b>
               <br/>
@@ -637,11 +637,11 @@ export default function Catalogo() {
             </div>
             <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
               <button onClick={dismissUpgrade}
-                style={{ background: 'transparent', border: '1px solid #C4B5FD', color: '#6D28D9', padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                style={{ background: 'transparent', border: '1px solid #C4B5FD', color: '#D4521E', padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
                 Ahora no
               </button>
               <button onClick={applyUpgrade}
-                style={{ background: '#7C3AED', border: 'none', color: '#fff', padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+                style={{ background: '#F2762E', border: 'none', color: '#fff', padding: '7px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
                 <i className="fa fa-wand-magic-sparkles" /> Aplicar sugeridas
               </button>
             </div>
@@ -695,7 +695,7 @@ export default function Catalogo() {
         .cli-pill.icon-compact{width:44px;padding:0;justify-content:center}
         .cli-pill.icon-compact span{display:none}
         .cli-pill.icon-compact i{font-size:14px}
-        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#8B5CF6) 100%);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
+        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#F2994A) 100%);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
         .cli-pill-new:hover{filter:brightness(1.08);transform:translateY(-1px)}
         .cli-pill-new:active{transform:scale(.95)}
         .cli-pill-new i{font-size:11px}
@@ -732,7 +732,7 @@ export default function Catalogo() {
           .cat-ph .cli-pill-group .cli-pill span{display:none!important}
           .cat-ph .cli-pill-group .cli-pill:active{
             background:var(--brand-xlt)!important;color:var(--brand)!important;
-            border-color:var(--brand-dim,rgba(124,58,237,.25))!important;transform:scale(.94);
+            border-color:var(--brand-dim,rgba(242,118,46,.25))!important;transform:scale(.94);
           }
           /* Toggle grid/list: inline style display:inline-flex; ganamos con !important. */
           .cat-view-toggle{display:none!important}
@@ -800,7 +800,7 @@ export default function Catalogo() {
       </div>
       <style>{`
         .cat-actions-right{display:inline-flex;align-items:center;gap:6px;flex-shrink:0}
-        .cat-nuevo-mob{display:none;align-items:center;gap:6px;height:38px;padding:0 14px;border-radius:9999px;border:none;background:var(--color-principal,#7C3AED);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;box-shadow:0 4px 14px var(--brand-dim,rgba(124,58,237,.2));transition:all .15s}
+        .cat-nuevo-mob{display:none;align-items:center;gap:6px;height:38px;padding:0 14px;border-radius:9999px;border:none;background:var(--color-principal,#F2762E);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;box-shadow:0 4px 14px var(--brand-dim,rgba(242,118,46,.2));transition:all .15s}
         .cat-nuevo-mob:active{transform:scale(.95)}
         .cat-nuevo-mob i{font-size:11px}
         /* En mobile "Nuevo" ahora vive en la barra de acciones (.cat-ph) → ocultamos
@@ -1832,7 +1832,7 @@ export default function Catalogo() {
                 }}>
                   <div style={{ fontSize: 22 }}>{meta?.icon || '✨'}</div>
                   <div style={{ flex: 1, minWidth: 180 }}>
-                    <div style={{ fontSize: 12, fontWeight: 800, color: '#7C3AED', marginBottom: 2 }}>
+                    <div style={{ fontSize: 12, fontWeight: 800, color: '#F2762E', marginBottom: 2 }}>
                       Sugeridas para {meta?.label || 'tu rubro'}
                     </div>
                     <div style={{ fontSize: 11, color: '#6B7280' }}>

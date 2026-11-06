@@ -20,7 +20,7 @@ const fmtPct = (v) => v == null ? '—' : `${(v * 100).toFixed(1)}%`
 const fmtInt = (n) => (n ?? 0).toLocaleString('es-AR')
 
 /** Sparkline SVG simple — sin dependencias */
-function Sparkline({ series, color = '#7C3AED', height = 64 }) {
+function Sparkline({ series, color = '#F2762E', height = 64 }) {
   if (!series?.length) return null
   const max = Math.max(...series.map(p => p.mrr), 1)
   const min = Math.min(...series.map(p => p.mrr), 0)
@@ -55,7 +55,7 @@ function Sparkline({ series, color = '#7C3AED', height = 64 }) {
 }
 
 /** KPI card con valor + cambio + sparkline opcional */
-function KPI({ label, value, sub, trend, color = '#7C3AED', tooltip }) {
+function KPI({ label, value, sub, trend, color = '#F2762E', tooltip }) {
   return (
     <div className="admin-mcard" style={{ position: 'relative' }} title={tooltip}>
       <div style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 600, letterSpacing: '.4px', textTransform: 'uppercase', marginBottom: 6 }}>
@@ -139,7 +139,7 @@ export default function MetricsTab({ workspaces = [] }) {
             </div>
           </div>
           <div style={{ flex: '1 1 280px', minWidth: 240, maxWidth: 420 }}>
-            <Sparkline series={m.series} color="#7C3AED" height={70} />
+            <Sparkline series={m.series} color="#F2762E" height={70} />
           </div>
         </div>
       </div>
@@ -168,7 +168,7 @@ export default function MetricsTab({ workspaces = [] }) {
           label="LTV estimado"
           value={m.ltv != null ? fmtMoney(m.ltv) : '—'}
           sub={m.churn.rate ? '= $30k / churn + onboarding' : 'Necesita churn calculable'}
-          color="#7C3AED"
+          color="#F2762E"
           tooltip="Valor de vida estimado por cliente"
         />
         <KPI
@@ -183,14 +183,14 @@ export default function MetricsTab({ workspaces = [] }) {
       {/* ── Funnel actual ─────────────────────────────────────────────── */}
       <div className="admin-mcard" style={{ padding: '16px 22px' }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--txt)', marginBottom: 12 }}>
-          <i className="fa fa-filter" style={{ marginRight: 8, color: '#7C3AED' }} />
+          <i className="fa fa-filter" style={{ marginRight: 8, color: '#F2762E' }} />
           Funnel de activación
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {m.funnel.steps.map((s, i) => {
             const color = s.label === 'Perdidos' ? '#DC2626' :
               s.label === 'Pagando hoy' ? '#16A34A' :
-              s.label === 'Activaron' ? '#059669' : '#7C3AED'
+              s.label === 'Activaron' ? '#059669' : '#F2762E'
             return (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div className="mt-funnel-label" style={{ width: 120, fontSize: 12.5, color: 'var(--txt2)', fontWeight: 600, flexShrink: 0 }}>

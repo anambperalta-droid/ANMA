@@ -303,7 +303,7 @@ export default function Compras() {
         .cp-nav-btn:active{background:var(--surface2);transform:scale(.94)}
         .cp-icon-btn{width:26px;height:26px;border-radius:6px;border:none;background:transparent;color:var(--txt4);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:11px;transition:all .12s;-webkit-tap-highlight-color:transparent;font-family:inherit;padding:0}
         .cp-icon-btn:hover{background:var(--surface2);color:var(--txt2)}
-        .cp-recur{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:1px 6px;border-radius:5px;background:rgba(124,58,237,.1);color:var(--brand);vertical-align:middle;margin-left:6px}
+        .cp-recur{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:1px 6px;border-radius:5px;background:rgba(242,118,46,.1);color:var(--brand);vertical-align:middle;margin-left:6px}
         .cp-card-m{display:none}
         .cp-card-item{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;-webkit-tap-highlight-color:transparent;border-left:3px solid transparent;min-height:54px}
         .cp-card-info{flex:1;min-width:0}
@@ -381,7 +381,7 @@ export default function Compras() {
             background: 'var(--grad)', color: '#fff', fontSize: 12.5, fontWeight: 700,
             cursor: 'pointer', fontFamily: 'inherit',
             display: 'inline-flex', alignItems: 'center', gap: 6,
-            boxShadow: '0 4px 12px rgba(124,58,237,.25)', flexShrink: 0,
+            boxShadow: '0 4px 12px rgba(242,118,46,.25)', flexShrink: 0,
           }}>
             <i className="fa fa-plus" style={{ fontSize: 10 }} /> Nuevo gasto
           </button>
@@ -446,7 +446,7 @@ export default function Compras() {
               background: 'var(--grad)', color: '#fff', fontSize: 13, fontWeight: 700,
               cursor: 'pointer', fontFamily: 'inherit',
               display: 'inline-flex', alignItems: 'center', gap: 7,
-              boxShadow: '0 4px 12px rgba(124,58,237,.25)',
+              boxShadow: '0 4px 12px rgba(242,118,46,.25)',
             }}>
               <i className="fa fa-plus" /> Cargar primer gasto
             </button>
@@ -621,7 +621,7 @@ function CompraDrawer(props) {
         .cd-fg{margin-bottom:14px}
         .cd-lbl{font-size:11px;font-weight:600;color:var(--txt3);margin-bottom:5px;display:block}
         .cd-inp{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;color:var(--txt);background:var(--bg);outline:none;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
-        .cd-inp:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+        .cd-inp:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(242,118,46,.1)}
         .cd-inp::placeholder{color:var(--txt4)}
         .cd-inp-icon{position:relative}
         .cd-inp-icon i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--txt4);font-size:12px;pointer-events:none}
@@ -642,11 +642,11 @@ function CompraDrawer(props) {
         .cd-switch-off{background:var(--border)}
         .cd-btn{padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:filter .15s,transform .1s}
         .cd-btn:active{transform:scale(.97)}
-        .cd-btn-pri{border:none;background:var(--grad);color:#fff;box-shadow:0 4px 12px rgba(124,58,237,.25);width:100%}
+        .cd-btn-pri{border:none;background:var(--grad);color:#fff;box-shadow:0 4px 12px rgba(242,118,46,.25);width:100%}
         .cd-btn-pri:hover{filter:brightness(1.05)}
         .cd-btn-sec{border:1.5px solid var(--border);background:var(--surface);color:var(--txt2);width:100%}
         .cd-btn-sec:hover{border-color:var(--txt3)}
-        .cd-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;background:rgba(124,58,237,.1);color:var(--brand)}
+        .cd-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;background:rgba(242,118,46,.1);color:var(--brand)}
         .cd-nota-link{font-size:11px;color:var(--txt4);cursor:pointer;border:none;background:none;font-family:inherit;padding:0;transition:color .15s;display:inline-flex;align-items:center;gap:4px}
         .cd-nota-link:hover{color:var(--txt2)}
         .cd-saved-flash{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;border-radius:8px;background:rgba(5,150,105,.08);border:1px solid rgba(5,150,105,.2);color:#059669;font-size:12px;font-weight:700;animation:cd-pop .3s cubic-bezier(.17,.67,.25,1.3)}
@@ -925,7 +925,7 @@ function CompraDrawer(props) {
               </div>
             )}
             {items.length > 0 && (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '10px 12px', background: 'var(--brand-xlt)', borderRadius: 10, border: '1px solid rgba(124,58,237,.18)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '10px 12px', background: 'var(--brand-xlt)', borderRadius: 10, border: '1px solid rgba(242,118,46,.18)' }}>
                 <div>
                   <div style={{ fontSize: 10, color: 'var(--brand)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.06em' }}>
                     Total · {items.reduce((s, i) => s + (Number(i.qty) || 0), 0)} unidades
@@ -964,7 +964,7 @@ function CompraDrawer(props) {
                 return (
                   <div style={{
                     marginTop: 6, padding: '5px 10px', borderRadius: 7,
-                    background: 'rgba(124,58,237,.06)', border: '1px solid rgba(124,58,237,.12)',
+                    background: 'rgba(242,118,46,.06)', border: '1px solid rgba(242,118,46,.12)',
                     fontSize: 11, color: 'var(--txt2)', fontWeight: 600,
                     display: 'inline-flex', alignItems: 'center', gap: 5,
                   }}>
@@ -986,10 +986,10 @@ function CompraDrawer(props) {
                 <label className="cd-lbl">Fecha</label>
                 <input className="cd-inp" type="date" value={draft.fecha}
                   onChange={e => setDraft(d => ({ ...d, fecha: e.target.value }))}
-                  style={offMonth ? { borderColor: '#7C3AED' } : {}}
+                  style={offMonth ? { borderColor: '#F2762E' } : {}}
                 />
                 {offMonth && (
-                  <div style={{ marginTop: 5, fontSize: 10.5, fontWeight: 600, color: '#7C3AED', display: 'flex', alignItems: 'center', gap: 5, lineHeight: 1.3 }}>
+                  <div style={{ marginTop: 5, fontSize: 10.5, fontWeight: 600, color: '#F2762E', display: 'flex', alignItems: 'center', gap: 5, lineHeight: 1.3 }}>
                     <i className="fa fa-arrow-turn-up" style={{ transform: 'rotate(90deg)', fontSize: 9 }} />
                     Se guarda en {offLabel}
                   </div>

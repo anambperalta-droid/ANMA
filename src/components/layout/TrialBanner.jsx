@@ -42,7 +42,7 @@ export default function TrialBanner() {
   const { daysLeft } = trial
   const tone = daysLeft <= 1 ? 'critical' : daysLeft <= 3 ? 'warn' : 'info'
   const palette = {
-    info:     { bg: 'linear-gradient(90deg,#7C3AED,#6366F1)', icon: 'fa-rocket' },
+    info:     { bg: 'linear-gradient(90deg,#F2762E,#F2994A)', icon: 'fa-rocket' },
     warn:     { bg: 'linear-gradient(90deg,#D97706,#F59E0B)', icon: 'fa-hourglass-half' },
     critical: { bg: 'linear-gradient(90deg,#DC2626,#EF4444)', icon: 'fa-fire' },
   }[tone]

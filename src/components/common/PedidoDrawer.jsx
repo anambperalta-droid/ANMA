@@ -207,10 +207,10 @@ export default function PedidoDrawer({
           {/* KPIs */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 16 }}>
             {[
-              { label: 'Facturado', value: fmt(t.total),    icon: 'fa-file-invoice-dollar', color: '#7C3AED' },
+              { label: 'Facturado', value: fmt(t.total),    icon: 'fa-file-invoice-dollar', color: '#F2762E' },
               { label: 'Costo',     value: fmt(t.costo),    icon: 'fa-lock',                color: '#b45309' },
               { label: 'Ganancia',  value: fmt(t.ganancia), icon: 'fa-arrow-trend-up',      color: t.ganancia >= 0 ? '#15803d' : '#DC2626' },
-              { label: 'Margen',    value: `${t.margen}%`,  icon: 'fa-bullseye',            color: '#6366f1' },
+              { label: 'Margen',    value: `${t.margen}%`,  icon: 'fa-bullseye',            color: '#F2994A' },
             ].map(c => (
               <div key={c.label} style={{
                 background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10,
@@ -370,7 +370,7 @@ export default function PedidoDrawer({
                 style={{
                   marginTop: 8, width: '100%', padding: '9px 12px',
                   background: 'var(--brand-xlt)', color: 'var(--brand)',
-                  border: '1px solid rgba(124,58,237,.25)', borderRadius: 9,
+                  border: '1px solid rgba(242,118,46,.25)', borderRadius: 9,
                   cursor: 'pointer', fontSize: 12, fontWeight: 700,
                   fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
                 }}>

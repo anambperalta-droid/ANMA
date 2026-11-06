@@ -39,7 +39,7 @@ export default class ErrorBoundary extends Component {
     // Chunk viejo: pantalla neutra mientras recarga (no "Algo salió mal")
     if (this.state.reloading) {
       return (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: 'linear-gradient(180deg,#FAFAFB 0%,#F5F3FF 100%)', fontFamily: 'Inter, system-ui, sans-serif', color: '#7C3AED' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: 'linear-gradient(180deg,#FAFAFB 0%,#F5F3FF 100%)', fontFamily: 'Inter, system-ui, sans-serif', color: '#F2762E' }}>
           <i className="fa fa-arrows-rotate fa-spin" style={{ fontSize: 26 }} />
           <p style={{ fontSize: 14, color: '#64748B', margin: 0 }}>Actualizando a la última versión…</p>
         </div>
@@ -64,7 +64,7 @@ export default class ErrorBoundary extends Component {
           background: '#fff',
           borderRadius: 20,
           border: '1px solid rgba(15,23,42,.06)',
-          boxShadow: '0 1px 2px rgba(15,23,42,.04), 0 12px 36px -10px rgba(124,58,237,.12)',
+          boxShadow: '0 1px 2px rgba(15,23,42,.04), 0 12px 36px -10px rgba(242,118,46,.12)',
           padding: '40px 36px 32px',
           textAlign: 'center',
         }}>
@@ -73,10 +73,10 @@ export default class ErrorBoundary extends Component {
             width: 56, height: 56,
             borderRadius: 16,
             border: '1.5px solid #DDD6FE',
-            background: 'rgba(124,58,237,.04)',
+            background: 'rgba(242,118,46,.04)',
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             margin: '0 auto 18px',
-            color: '#7C3AED',
+            color: '#F2762E',
           }}>
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
               <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
@@ -117,18 +117,18 @@ export default class ErrorBoundary extends Component {
                 padding: '12px 22px',
                 borderRadius: 11,
                 border: 'none',
-                background: '#7C3AED',
+                background: '#F2762E',
                 color: '#fff',
                 fontWeight: 700,
                 fontSize: 13.5,
                 letterSpacing: '-.1px',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                boxShadow: '0 4px 14px rgba(124,58,237,.28)',
+                boxShadow: '0 4px 14px rgba(242,118,46,.28)',
                 transition: 'transform .15s, box-shadow .2s',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(124,58,237,.4)' }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 4px 14px rgba(124,58,237,.28)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(242,118,46,.4)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 4px 14px rgba(242,118,46,.28)' }}
             >
               Recargar página
             </button>
@@ -146,7 +146,7 @@ export default class ErrorBoundary extends Component {
                 fontFamily: 'inherit',
                 transition: 'border-color .15s, background .15s',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#7C3AED'; e.currentTarget.style.background = '#FAFAFB' }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#F2762E'; e.currentTarget.style.background = '#FAFAFB' }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.background = '#fff' }}
             >
               Intentar de nuevo
@@ -207,7 +207,7 @@ export default class ErrorBoundary extends Component {
                     }}
                     style={{
                       marginTop: '.6rem',
-                      background: this.state.copied ? '#16A34A' : '#7C3AED',
+                      background: this.state.copied ? '#16A34A' : '#F2762E',
                       color: '#fff',
                       border: 'none',
                       padding: '8px 14px',

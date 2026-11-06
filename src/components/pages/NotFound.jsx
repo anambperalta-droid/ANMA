@@ -18,7 +18,7 @@ export default function NotFound() {
     }}>
       <div style={{
         width: 96, height: 96, borderRadius: '50%',
-        background: 'linear-gradient(135deg, var(--brand-xlt), rgba(124,58,237,.18))',
+        background: 'linear-gradient(135deg, var(--brand-xlt), rgba(242,118,46,.18))',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         marginBottom: 20, fontSize: 38,
       }}>

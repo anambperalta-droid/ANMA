@@ -169,7 +169,7 @@ export default function Config() {
 
   const [bname, setBname] = useState(c.businessName || '')
   const [bsub, setBsub] = useState(c.subtitle || '')
-  const [bcolor, setBcolor] = useState(c.brandColor || '#7C3AED')
+  const [bcolor, setBcolor] = useState(c.brandColor || '#F2762E')
   const [acolor, setAcolor] = useState(c.accentColor || '#059669')
   const [cEmail, setCEmail] = useState(c.contactEmail || '')
   const [cWA, setCWA] = useState(c.contactWA || '')
@@ -306,7 +306,7 @@ export default function Config() {
     applyThemeColors(bcolor, hex)
   }
   const resetColors = () => {
-    const defP = '#7C3AED', defA = '#059669'
+    const defP = '#F2762E', defA = '#059669'
     setBcolor(defP); setAcolor(defA)
     applyThemeColors(defP, defA)
   }
@@ -507,7 +507,7 @@ export default function Config() {
   const canManageTeam = isGlobalAdmin || role === 'owner'
 
   const FEATURE_FLAGS = [
-    { key: 'costoInterno',      icon: 'fa-eye-slash',    color: '#7C3AED', label: 'Costo interno visible',           desc: 'Muestra la columna de costo en la tabla de productos' },
+    { key: 'costoInterno',      icon: 'fa-eye-slash',    color: '#F2762E', label: 'Costo interno visible',           desc: 'Muestra la columna de costo en la tabla de productos' },
     { key: 'margenTabla',       icon: 'fa-percent',      color: '#059669', label: 'Margen % en presupuestos',        desc: 'Muestra el margen de ganancia en cada ítem del presupuesto' },
     { key: 'descuentoCliente',  icon: 'fa-tag',          color: '#D97706', label: 'Descuento fijo por cliente',      desc: 'Permite asignar un % de descuento personalizado a cada cliente' },
     { key: 'notasInternas',     icon: 'fa-note-sticky',  color: '#2563EB', label: 'Notas internas en pedidos',       desc: 'Campo privado de notas en cada presupuesto (no aparece en el PDF)' },
@@ -841,7 +841,7 @@ export default function Config() {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <ListEditor label="Categorías de productos" icon="fa-tag" accentColor="#7C3AED"
+            <ListEditor label="Categorías de productos" icon="fa-tag" accentColor="#F2762E"
               items={c.productCats || []} onAdd={v => handleListAdd('productCats', v)} onRemove={i => handleListRemove('productCats', i)} />
             {/* Botón para aplicar las categorías sugeridas del rubro actual.
                 Útil cuando el usuario tiene cats desactualizadas o quedaron del rubro anterior. */}
@@ -861,7 +861,7 @@ export default function Config() {
                   style={{
                     background: 'transparent', border: '1px dashed #C4B5FD', borderRadius: 8,
                     padding: '8px 12px', cursor: 'pointer', fontSize: 11.5, fontWeight: 600,
-                    color: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                    color: '#F2762E', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                   }}>
                   <i className="fa fa-wand-magic-sparkles" /> Aplicar categorías sugeridas para {meta?.label || rubro}
                 </button>
@@ -875,7 +875,7 @@ export default function Config() {
           <ListEditor label="Modalidades de entrega" icon="fa-truck" accentColor="#D97706"
             items={c.deliveryModes || []} onAdd={v => handleListAdd('deliveryModes', v)} onRemove={i => handleListRemove('deliveryModes', i)} />
           {(c.customLists || []).map((cl, idx) => {
-            const COLORS = ['#EC4899','#8B5CF6','#06B6D4','#F59E0B','#10B981','#EF4444']
+            const COLORS = ['#EC4899','#F2994A','#06B6D4','#F59E0B','#10B981','#EF4444']
             return (
               <ListEditor key={cl.key} label={cl.label} icon="fa-layer-group"
                 accentColor={COLORS[idx % COLORS.length]}
@@ -1360,7 +1360,7 @@ export default function Config() {
               </div>
               <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {[
-                  { icon: 'fa-user-shield', color: '#7C3AED', label: 'Administrador', desc: 'Ve todo: costos, configuración y equipo' },
+                  { icon: 'fa-user-shield', color: '#F2762E', label: 'Administrador', desc: 'Ve todo: costos, configuración y equipo' },
                   { icon: 'fa-user-gear',   color: '#0891B2', label: 'Operador',       desc: 'Pedidos, clientes y logística. Sin configuración ni costos' },
                   { icon: 'fa-eye',         color: '#6B7280', label: 'Solo lectura',   desc: 'Consulta y reportes, sin poder editar nada' },
                 ].map(r => (
@@ -1469,21 +1469,21 @@ export default function Config() {
             tabIndex={0}
             onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && nav('/mi-cuenta')}
             style={{
-              background: 'linear-gradient(135deg, rgba(124,58,237,.08), rgba(99,102,241,.04))',
-              border: '1.5px solid rgba(124,58,237,.22)',
+              background: 'linear-gradient(135deg, rgba(242,118,46,.08), rgba(99,102,241,.04))',
+              border: '1.5px solid rgba(242,118,46,.22)',
               borderRadius: 14, padding: '14px 18px', marginBottom: 20,
               display: 'flex', alignItems: 'center', gap: 14,
               cursor: 'pointer', transition: 'all .15s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#7C3AED' }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(124,58,237,.22)' }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#F2762E' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(242,118,46,.22)' }}
           >
             <div style={{
               width: 44, height: 44, borderRadius: 12,
-              background: 'linear-gradient(135deg, #7C3AED, #6366F1)',
+              background: 'linear-gradient(135deg, #F2762E, #F2994A)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: '#fff', fontSize: 18, flexShrink: 0,
-              boxShadow: '0 6px 16px rgba(124,58,237,.25)',
+              boxShadow: '0 6px 16px rgba(242,118,46,.25)',
             }}>
               <i className="fa fa-user-gear" />
             </div>
@@ -1492,10 +1492,10 @@ export default function Config() {
                 Mi suscripción · Contraseña · Datos personales
               </div>
               <div style={{ fontSize: 12, color: 'var(--txt3)', marginTop: 2 }}>
-                Tu plan ANMA, historial de pagos, cambiar tu password y descargar tus datos → <strong style={{ color: '#7C3AED' }}>Mi cuenta</strong>
+                Tu plan ANMA, historial de pagos, cambiar tu password y descargar tus datos → <strong style={{ color: '#F2762E' }}>Mi cuenta</strong>
               </div>
             </div>
-            <i className="fa fa-arrow-right" style={{ color: '#7C3AED', fontSize: 13, flexShrink: 0 }} />
+            <i className="fa fa-arrow-right" style={{ color: '#F2762E', fontSize: 13, flexShrink: 0 }} />
           </div>
 
           <div className="card">
@@ -1510,7 +1510,7 @@ export default function Config() {
               </label>
               <button className="btn btn-secondary btn-sm" onClick={loadSnapshots}><i className="fa fa-clock-rotate-left" /> Ver snapshots automáticos</button>
               <p style={{ fontSize: 11, color: 'var(--txt3)', textAlign: 'center', marginTop: 4, marginBottom: 0, lineHeight: 1.5 }}>
-                <i className="fa fa-circle-info" style={{ marginRight: 5, color: '#7C3AED' }} />
+                <i className="fa fa-circle-info" style={{ marginRight: 5, color: '#F2762E' }} />
                 ¿Querés descargar tu backup? Andá a <strong>Mi cuenta → Descargar mis datos</strong>
               </p>
               {snapshots.length > 0 && (

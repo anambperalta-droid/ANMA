@@ -675,7 +675,7 @@ export default function Insumos() {
                   const insumo = insumos.find(x => x.id === m.insumoId)
                   const costoTotal = m.costAtTime ? m.qty * m.costAtTime : null
                   const qtyColor = isAdjust ? 'var(--brand)' : isIn ? '#16A34A' : '#DC2626'
-                  const iconBg = isAdjust ? 'rgba(124,58,237,.12)' : isIn ? 'rgba(22,163,74,.12)' : 'rgba(220,38,38,.12)'
+                  const iconBg = isAdjust ? 'rgba(242,118,46,.12)' : isIn ? 'rgba(22,163,74,.12)' : 'rgba(220,38,38,.12)'
                   return (
                     <div key={m.id} className="ins-move-card">
                       <div className="mov-icon" style={{ background: iconBg, color: qtyColor }}>
@@ -818,7 +818,7 @@ export default function Insumos() {
                   </div>
                   <div className="fg" style={{ marginBottom: 10 }}>
                     <label style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                      <i className="fa fa-truck" style={{ color: '#8B5CF6', fontSize: 10 }} />
+                      <i className="fa fa-truck" style={{ color: '#F2994A', fontSize: 10 }} />
                       Envío del pedido
                       <span style={{ fontWeight: 400, color: 'var(--txt4)', fontSize: 10 }}>(opcional — se suma al costo total)</span>
                     </label>
@@ -843,7 +843,7 @@ export default function Insumos() {
                       <div style={{ fontSize: 10, color: 'rgba(99,102,241,.7)', marginTop: 3 }}>
                         {fmtDec((parseFloat(form.packCost) || 0) + (parseFloat(form.shippingCost) || 0))} ÷ {form.packQty} × {form.qtyPerGift} {form.unit || 'un'}
                         {parseFloat(form.shippingCost) > 0 && (
-                          <span style={{ display: 'block', color: '#8B5CF6', marginTop: 1 }}>
+                          <span style={{ display: 'block', color: '#F2994A', marginTop: 1 }}>
                             <i className="fa fa-truck" style={{ marginRight: 3 }} />
                             incl. {fmtDec(parseFloat(form.shippingCost))} de envío ({fmtDec((parseFloat(form.shippingCost) / (parseFloat(form.packQty) || 1)) * (parseFloat(form.qtyPerGift) || 1))} por unidad)
                           </span>
@@ -863,7 +863,7 @@ export default function Insumos() {
 
               {/* Fila 3: Proveedor */}
               <div className="fg" style={{ marginTop: 10 }}>
-                <label><i className="fa fa-truck" style={{ color: '#8B5CF6', fontSize: 10, marginRight: 4 }} />Proveedor</label>
+                <label><i className="fa fa-truck" style={{ color: '#F2994A', fontSize: 10, marginRight: 4 }} />Proveedor</label>
                 <select value={form.supplierId || ''} onChange={e => setF('supplierId', e.target.value ? Number(e.target.value) : '')}>
                   <option value="">Sin proveedor asignado</option>
                   {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}

@@ -170,7 +170,7 @@ function PaymentsModal({ budget, onSave, onClose }) {
         )}
 
         {/* Form nuevo pago — denso */}
-        <div style={{ background: 'rgba(124,58,237,.04)', border: '1px solid rgba(124,58,237,.15)', borderRadius: 10, padding: '11px 13px' }}>
+        <div style={{ background: 'rgba(242,118,46,.04)', border: '1px solid rgba(242,118,46,.15)', borderRadius: 10, padding: '11px 13px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
             <span style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.06em' }}>
               <i className="fa fa-plus-circle" style={{ marginRight: 4 }} />Nuevo pago
@@ -512,7 +512,7 @@ function BarChart({ data, prevData = [], type = 'income' }) {
   const hasPrev = prevData.some(m => m.val > 0)
   if (!hasData) return (
     <div style={{ textAlign: 'center', padding: '34px 14px 18px', color: 'var(--txt4)', fontSize: 13 }}>
-      <div style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', width:46, height:46, borderRadius:14, background:'rgba(124,58,237,.06)', color:'var(--brand)', marginBottom:14 }}>
+      <div style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', width:46, height:46, borderRadius:14, background:'rgba(242,118,46,.06)', color:'var(--brand)', marginBottom:14 }}>
         <i className="fa fa-chart-column" style={{ fontSize: 18 }} />
       </div>
       <div style={{ fontWeight: 700, color: 'var(--txt2)', fontSize:14, letterSpacing:'-.2px' }}>Acá va a vivir tu mes</div>
@@ -1915,8 +1915,8 @@ export default function Historial() {
               )}
               {aConfirmar.length > 0 && (
                 <div onClick={() => setTab('seguimiento')}
-                  style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(124,58,237,.06), rgba(124,58,237,.02))', border: '1.5px solid var(--brand)', borderRadius: 14, padding: '14px 16px', transition: 'transform .15s, box-shadow .2s' }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(124,58,237,.15)' }}
+                  style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(242,118,46,.06), rgba(242,118,46,.02))', border: '1.5px solid var(--brand)', borderRadius: 14, padding: '14px 16px', transition: 'transform .15s, box-shadow .2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(242,118,46,.15)' }}
                   onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: 'var(--brand)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-comments" /></div>
@@ -2156,7 +2156,7 @@ export default function Historial() {
                     const confirmados = periodBudgets.filter(b => ['confirmed', 'inprogress', 'delivered'].includes(b.status)).length
                     const cobrados = periodBudgets.filter(b => b.payStatus === 'paid').length
                     const steps = [
-                      { label: 'Enviados', count: enviados, color: '#7C3AED', pct: total > 0 ? Math.round(enviados / total * 100) : 0 },
+                      { label: 'Enviados', count: enviados, color: '#F2762E', pct: total > 0 ? Math.round(enviados / total * 100) : 0 },
                       { label: 'Confirmados', count: confirmados, color: '#059669', pct: enviados > 0 ? Math.round(confirmados / enviados * 100) : 0 },
                       { label: 'Cobrados', count: cobrados, color: '#2563EB', pct: confirmados > 0 ? Math.round(cobrados / confirmados * 100) : 0 },
                     ]

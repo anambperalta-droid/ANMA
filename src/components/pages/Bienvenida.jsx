@@ -417,10 +417,10 @@ export default function Bienvenida() {
             }}
             style={{
               marginTop: 16, width: '100%', padding: '12px 18px',
-              background: 'linear-gradient(135deg,#7C3AED,#059669)',
+              background: 'linear-gradient(135deg,#F2762E,#059669)',
               color: '#fff', border: 'none', borderRadius: 10,
               fontSize: 14, fontWeight: 700, cursor: 'pointer',
-              boxShadow: '0 6px 20px rgba(124,58,237,.35)',
+              boxShadow: '0 6px 20px rgba(242,118,46,.35)',
             }}>
             <i className="fa fa-arrow-right-to-bracket" style={{ marginRight: 8 }} />
             Limpiar y volver a Ingresar
@@ -551,7 +551,7 @@ const styles = {
   },
   logo: {
     width: 64, height: 64, borderRadius: 16,
-    background: 'linear-gradient(135deg, #7C3AED, #059669)',
+    background: 'linear-gradient(135deg, #F2762E, #059669)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: 24, fontWeight: 800, color: '#fff', marginBottom: 24,
     letterSpacing: 2,

@@ -62,7 +62,7 @@ const deriveTemperature = (data) => {
 }
 
 const urgencyTone = (u) => ({
-  fresh:   { bg: 'rgba(124,58,237,.10)', fg: '#7C3AED' },
+  fresh:   { bg: 'rgba(242,118,46,.10)', fg: '#F2762E' },
   warm:    { bg: 'rgba(217,119,6,.12)',  fg: '#D97706' },
   hot:     { bg: 'rgba(220,38,38,.12)',  fg: '#DC2626' },
   last:    { bg: '#DC2626',              fg: '#fff' },
@@ -608,7 +608,7 @@ export default function Admin() {
         kind: 'trial_closing',
         urgency: 'high',
         icon: 'fa-rocket',
-        color: '#7C3AED',
+        color: '#F2762E',
         title: `${trialsClosing.length} trial${trialsClosing.length !== 1 ? 's' : ''} cierra${trialsClosing.length === 1 ? '' : 'n'} pronto`,
         subtitle: 'Última oportunidad de conversión',
         workspaces: trialsClosing,
@@ -705,7 +705,7 @@ export default function Admin() {
       <div style={{ marginBottom: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
         <div>
           <h1 style={{ margin: 0, fontSize: 20, fontWeight: 800, letterSpacing: '-.3px' }}>
-            <i className="fa fa-shield-halved" style={{ marginRight: 8, color: '#7C3AED' }} />
+            <i className="fa fa-shield-halved" style={{ marginRight: 8, color: '#F2762E' }} />
             Admin
           </h1>
         </div>
@@ -715,7 +715,7 @@ export default function Admin() {
               className="btn btn-secondary"
               onClick={enableNotifs}
               title={notifPerm === 'denied' ? 'Notificaciones bloqueadas en el navegador — activalas manualmente' : 'Activar notificaciones del navegador'}
-              style={notifPerm === 'denied' ? { opacity: .7 } : { background: 'rgba(124,58,237,.08)', color: '#7C3AED', borderColor: 'rgba(124,58,237,.25)' }}
+              style={notifPerm === 'denied' ? { opacity: .7 } : { background: 'rgba(242,118,46,.08)', color: '#F2762E', borderColor: 'rgba(242,118,46,.25)' }}
             >
               <i className={`fa ${notifPerm === 'denied' ? 'fa-bell-slash' : 'fa-bell'}`} style={{ marginRight: 6 }} />
               {notifPerm === 'denied' ? 'Notif. bloqueadas' : 'Activar avisos'}
@@ -748,8 +748,8 @@ export default function Admin() {
 
       {/* Banner de signups recientes detectados en esta sesión */}
       {recentSignups.length > 0 && (
-        <div style={{ marginBottom: 14, padding: '10px 14px', background: 'linear-gradient(90deg, rgba(124,58,237,.08), rgba(99,102,241,.05))', border: '1px solid rgba(124,58,237,.25)', borderRadius: 10, fontSize: 12.5, color: 'var(--txt2)' }}>
-          <i className="fa fa-bolt" style={{ color: '#7C3AED', marginRight: 6 }} />
+        <div style={{ marginBottom: 14, padding: '10px 14px', background: 'linear-gradient(90deg, rgba(242,118,46,.08), rgba(99,102,241,.05))', border: '1px solid rgba(242,118,46,.25)', borderRadius: 10, fontSize: 12.5, color: 'var(--txt2)' }}>
+          <i className="fa fa-bolt" style={{ color: '#F2762E', marginRight: 6 }} />
           <strong>{recentSignups.length} signup{recentSignups.length !== 1 ? 's' : ''} en esta sesión:</strong>{' '}
           {recentSignups.slice(0, 3).map((s, i) => (
             <span key={s.id}>
@@ -867,7 +867,7 @@ export default function Admin() {
       {/* ── Métricas headline ────────────────────────────────────────── */}
       <div className="admin-mgrid">
         <div className="admin-mcard">
-          <div className="admin-mcard-ico" style={{ background: 'rgba(124,58,237,.12)', color: '#7C3AED' }}>
+          <div className="admin-mcard-ico" style={{ background: 'rgba(242,118,46,.12)', color: '#F2762E' }}>
             <i className="fa fa-rocket" />
           </div>
           <div>
@@ -916,7 +916,7 @@ export default function Admin() {
           </div>
         </div>
         <div className="admin-mcard">
-          <div className="admin-mcard-ico" style={{ background: 'rgba(124,58,237,.12)', color: '#7C3AED' }}>
+          <div className="admin-mcard-ico" style={{ background: 'rgba(242,118,46,.12)', color: '#F2762E' }}>
             <i className="fa fa-dollar-sign" />
           </div>
           <div>
@@ -925,7 +925,7 @@ export default function Admin() {
           </div>
         </div>
         <div className="admin-mcard">
-          <div className="admin-mcard-ico" style={{ background: 'rgba(99,102,241,.12)', color: '#6366F1' }}>
+          <div className="admin-mcard-ico" style={{ background: 'rgba(99,102,241,.12)', color: '#F2994A' }}>
             <i className="fa fa-chart-line" />
           </div>
           <div>
@@ -970,11 +970,11 @@ export default function Admin() {
           border: '1.5px solid #A78BFA',
           borderRadius: 12,
           display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
-          boxShadow: '0 4px 14px rgba(124,58,237,.12)',
+          boxShadow: '0 4px 14px rgba(242,118,46,.12)',
         }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8,
-            background: 'linear-gradient(135deg, #7C3AED, #6366F1)',
+            background: 'linear-gradient(135deg, #F2762E, #F2994A)',
             color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 13, flexShrink: 0,
           }}>
@@ -984,7 +984,7 @@ export default function Admin() {
             <div style={{ fontSize: 13, fontWeight: 800, color: '#4C1D95' }}>
               {selectedBilling.size} workspace{selectedBilling.size !== 1 ? 's' : ''} seleccionado{selectedBilling.size !== 1 ? 's' : ''}
             </div>
-            <div style={{ fontSize: 11.5, color: '#6D28D9', opacity: .85, marginTop: 2 }}>
+            <div style={{ fontSize: 11.5, color: '#D4521E', opacity: .85, marginTop: 2 }}>
               Total a cobrar: <strong>{fmtMoney(selectedBilling.size * MONTHLY_AMOUNT)}</strong>
             </div>
           </div>
@@ -1012,7 +1012,7 @@ export default function Admin() {
             style={{
               padding: '9px 14px', borderRadius: 10,
               background: 'transparent', border: '1.5px solid #A78BFA',
-              color: '#6D28D9', fontSize: 12, fontWeight: 600,
+              color: '#D4521E', fontSize: 12, fontWeight: 600,
               cursor: 'pointer', fontFamily: 'inherit',
             }}
           >
@@ -1092,7 +1092,7 @@ export default function Admin() {
                   'trial'
                 return (
                   <>
-                    <tr key={w.id} className="trial-row" style={{ borderTop: '1px solid var(--border)', background: tab === 'billing' && selectedBilling.has(w.id) ? 'rgba(124,58,237,.06)' : undefined }}>
+                    <tr key={w.id} className="trial-row" style={{ borderTop: '1px solid var(--border)', background: tab === 'billing' && selectedBilling.has(w.id) ? 'rgba(242,118,46,.06)' : undefined }}>
                       {tab === 'billing' && (
                         <td style={{ ...td, textAlign: 'center', width: 34 }}>
                           <input
@@ -1278,7 +1278,7 @@ export default function Admin() {
         <div style={{ marginTop: 14, padding: '10px 14px', background: 'var(--surface2)', borderRadius: 10, fontSize: 11.5, color: 'var(--txt3)', lineHeight: 1.6 }}>
           <strong style={{ color: 'var(--txt2)' }}>Acciones:</strong>{' '}
           <strong style={{ color: '#25D366' }}>Cobrar $30k</strong> genera link MP + abre WhatsApp con mensaje precargado ·{' '}
-          <strong style={{ color: '#7C3AED' }}>Marcar pagado</strong> registra pago manual (transferencia/efectivo) ·{' '}
+          <strong style={{ color: '#F2762E' }}>Marcar pagado</strong> registra pago manual (transferencia/efectivo) ·{' '}
           <strong style={{ color: '#6B7280' }}>Historial</strong> muestra todos los pagos del workspace
         </div>
       )}
@@ -1311,7 +1311,7 @@ export default function Admin() {
             }}>
               <div>
                 <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--txt)' }}>
-                  <i className="fa fa-clock-rotate-left" style={{ marginRight: 8, color: '#7C3AED' }} />
+                  <i className="fa fa-clock-rotate-left" style={{ marginRight: 8, color: '#F2762E' }} />
                   Historial de pagos
                 </h3>
                 <div style={{ fontSize: 12, color: 'var(--txt3)', marginTop: 2 }}>
@@ -1477,7 +1477,7 @@ export default function Admin() {
                       style={{
                         padding: '8px 4px', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit',
                         border: `1.5px solid ${active ? 'var(--brand)' : 'var(--border)'}`,
-                        background: active ? 'rgba(124,58,237,.08)' : 'var(--surface)',
+                        background: active ? 'rgba(242,118,46,.08)' : 'var(--surface)',
                         color: active ? 'var(--brand)' : 'var(--txt2)',
                         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
                         fontSize: 11,

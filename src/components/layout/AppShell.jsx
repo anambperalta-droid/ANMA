@@ -276,7 +276,9 @@ function AppShellInner() {
 
   useEffect(() => {
     const c = config()
-    applyThemeColors(c.brandColor || '#7C3AED', c.accentColor || '#059669')
+    // Migración Feria luminosa: quien tenía el violeta legacy (o nada) pasa al naranja feria.
+    const brand = (!c.brandColor || c.brandColor === '#7C3AED') ? '#F2762E' : c.brandColor
+    applyThemeColors(brand, c.accentColor || '#059669')
   })
 
   // ── Tocar fuera de un campo cierra el teclado (mobile) ──
@@ -438,7 +440,7 @@ function AppShellInner() {
           <BottomSheetItem icon="fa-brands fa-whatsapp" label="Mensajes WA" sub="Plantillas y envíos" onClick={() => goSheet('/mensajes')} iconBg="#DCFCE7" iconColor="#16A34A" />
         )}
         {can('config.access') && (
-          <BottomSheetItem icon="fa-file-import" label="Importador" sub="Cargá datos desde CSV o Excel" onClick={() => goSheet('/importador')} iconBg="#EDE9FE" iconColor="#7C3AED" />
+          <BottomSheetItem icon="fa-file-import" label="Importador" sub="Cargá datos desde CSV o Excel" onClick={() => goSheet('/importador')} iconBg="#EDE9FE" iconColor="#F2762E" />
         )}
         {can('config.access') && (
           <BottomSheetItem icon="fa-gear" label="Configuración" sub="Personalización y datos" onClick={() => goSheet('/config')} iconBg="var(--surface2)" iconColor="var(--txt2)" />

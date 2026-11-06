@@ -26,11 +26,11 @@ export default function GuideBanner() {
       borderRadius: 14,
       padding: '12px 16px',
       margin: '0 0 14px',
-      boxShadow: '0 4px 14px -10px rgba(124,58,237,.2)',
+      boxShadow: '0 4px 14px -10px rgba(242,118,46,.2)',
     }}>
       <div style={{
         flexShrink: 0, width: 36, height: 36, borderRadius: 10,
-        background: 'linear-gradient(135deg, #7C3AED, #5B21B6)',
+        background: 'linear-gradient(135deg, #F2762E, #5B21B6)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         color: '#fff', fontSize: 15,
       }}>
@@ -46,14 +46,14 @@ export default function GuideBanner() {
         href="/guia"
         style={{
           flexShrink: 0,
-          background: '#7C3AED', color: '#fff',
+          background: '#F2762E', color: '#fff',
           padding: '8px 14px', borderRadius: 9,
           fontSize: 12.5, fontWeight: 700,
           textDecoration: 'none', whiteSpace: 'nowrap',
           transition: 'background .15s, transform .15s',
         }}
         onMouseOver={(e) => { e.currentTarget.style.background = '#5B21B6'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-        onMouseOut={(e) => { e.currentTarget.style.background = '#7C3AED'; e.currentTarget.style.transform = 'none' }}
+        onMouseOut={(e) => { e.currentTarget.style.background = '#F2762E'; e.currentTarget.style.transform = 'none' }}
       >
         Ver la guía →
       </a>

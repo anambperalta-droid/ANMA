@@ -135,7 +135,7 @@ function ProductAutocomplete({ value, products, onChangeText, onPick, placeholde
             maxHeight: 280,
             overflowY: 'auto',
             background: 'var(--surface, #fff)',
-            border: '1.5px solid var(--brand, #7C3AED)',
+            border: '1.5px solid var(--brand, #F2762E)',
             borderRadius: 10,
             boxShadow: '0 10px 32px rgba(0,0,0,.18)',
             zIndex: 9999,
@@ -945,7 +945,7 @@ export default function Presupuesto() {
           title: '25 presupuestos. Sos usuaria power.',
           body: 'Mirá el margen promedio en Historial → Análisis. Ahí ves cuánto rinde tu trabajo.',
           icon: 'fa-trophy',
-          gradient: 'linear-gradient(135deg, #7C3AED, #EC4899)',
+          gradient: 'linear-gradient(135deg, #F2762E, #EC4899)',
         })
       } else if (totalBudgets === 100) {
         triggerMilestone('budgets-100', {
@@ -1104,7 +1104,7 @@ export default function Presupuesto() {
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;')
     const fmtD = iso => { if (!iso) return ''; const p = String(iso).slice(0,10).split('-'); return p.length===3 ? `${p[2]}/${p[1]}/${p[0]}` : iso }
-    const brandColor = c.brandColor || '#7C3AED'
+    const brandColor = c.brandColor || '#F2762E'
     const bName = c.businessName || 'ANMA'
     const prodRows = items.filter(i => i.name).map(i =>
       `<tr><td>${i.name}${i.variant ? ' <span style="color:#888;font-size:10px">· ' + i.variant + '</span>' : ''}</td><td style="text-align:center">${i.qty}</td><td style="text-align:right">${fmt(i.priceUnit)}</td><td style="text-align:right">${fmt(i.qty * i.priceUnit)}</td></tr>`
@@ -1395,7 +1395,7 @@ export default function Presupuesto() {
       .items-scroll table tbody input[type=text]:focus,
       .items-scroll table tbody input[type=number]:focus{
         border-color:var(--brand)!important;background:#fff!important;outline:none;
-        box-shadow:0 0 0 3px rgba(124,58,237,.08);
+        box-shadow:0 0 0 3px rgba(242,118,46,.08);
       }
       /* Fila de parada de Logística — grid 4 col limpio, coherente con kit-tbl */
       .logi-parada-row{
@@ -1412,7 +1412,7 @@ export default function Presupuesto() {
       .logi-parada-row select:hover,.logi-parada-row input:hover{background:rgba(0,0,0,.025)!important}
       .logi-parada-row select:focus,.logi-parada-row input:focus{
         border-color:var(--brand)!important;background:#fff!important;outline:none;
-        box-shadow:0 0 0 3px rgba(124,58,237,.08);
+        box-shadow:0 0 0 3px rgba(242,118,46,.08);
       }
       @media(max-width:640px){
         /* Card mobile: [tipo 1fr | costo 92 | trash 40] arriba · descripción full abajo.
@@ -1477,7 +1477,7 @@ export default function Presupuesto() {
         font-family:inherit;font-size:11.5px;font-weight:600;color:#6B7280;
         cursor:pointer;transition:all .15s;
       }
-      .tbl-add-btn:hover{border-color:var(--brand);color:var(--brand);background:rgba(124,58,237,.04)}
+      .tbl-add-btn:hover{border-color:var(--brand);color:var(--brand);background:rgba(242,118,46,.04)}
       .tbl-add-btn i{font-size:11px}
       /* En mobile: full-width para alinearse con el wiz-tip y mantener jerarquía */
       @media(max-width:640px){
@@ -1491,7 +1491,7 @@ export default function Presupuesto() {
         <div className="ph-left" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontSize: 14, fontWeight: 800, letterSpacing: '.01em', color: 'var(--txt)' }}>{budgetNum}</span>
           {(form.status === 'draft' || !editId) && (
-            <span style={{ background: '#F5F3FF', color: '#7C3AED', border: '1px solid #DDD6FE', borderRadius: 9999, padding: '1px 7px', fontSize: 10, fontWeight: 700, lineHeight: 1.5, whiteSpace: 'nowrap' }}>Borrador</span>
+            <span style={{ background: '#F5F3FF', color: '#F2762E', border: '1px solid #DDD6FE', borderRadius: 9999, padding: '1px 7px', fontSize: 10, fontWeight: 700, lineHeight: 1.5, whiteSpace: 'nowrap' }}>Borrador</span>
           )}
         </div>
         <div className="ph-right"><button className="btn btn-ghost btn-sm" onClick={() => { dbDel(DRAFT_KEY); setDraftRestored(false); nav('/') }}><i className="fa fa-xmark" /><span className="desc-txt"> Descartar</span></button></div>
@@ -2090,7 +2090,7 @@ export default function Presupuesto() {
                           </span>
                         </label>
                         {form.logisticaCharged === true && (
-                          <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, cursor: 'pointer', fontSize: 12.5, paddingLeft: 14, borderLeft: '2px solid rgba(124,58,237,.2)' }}>
+                          <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, cursor: 'pointer', fontSize: 12.5, paddingLeft: 14, borderLeft: '2px solid rgba(242,118,46,.2)' }}>
                             <input type="checkbox" checked={form.logisticaShowDetail === true}
                               onChange={e => setF('logisticaShowDetail', e.target.checked)}
                               style={{ marginTop: 2, accentColor: 'var(--brand)' }} />

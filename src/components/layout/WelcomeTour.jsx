@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext'
 
 const STEPS = [
   {
-    icon: 'fa-seedling', color: '#7C3AED',
+    icon: 'fa-seedling', color: '#F2762E',
     title: 'Tu negocio, en orden',
     body: 'ANMA es el lugar donde tu operativa descansa. Ventas, cobros, stock y clientes — todo junto, sin ruido. Tomalo con calma, cada cosa tiene su lugar.',
     cta: 'Vamos',

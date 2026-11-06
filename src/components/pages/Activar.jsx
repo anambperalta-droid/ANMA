@@ -88,7 +88,7 @@ export default function Activar() {
   if (loading || !authed) {
     return (
       <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <i className="fa fa-spinner fa-spin" style={{ fontSize: 24, color: '#7C3AED' }} />
+        <i className="fa fa-spinner fa-spin" style={{ fontSize: 24, color: '#F2762E' }} />
       </div>
     )
   }
@@ -118,7 +118,7 @@ export default function Activar() {
               display: 'inline-flex', alignItems: 'center', gap: 6,
               padding: '6px 14px', borderRadius: 99,
               background: trialDaysLeft <= 1 ? '#FEE2E2' : trialDaysLeft <= 3 ? '#FEF3C7' : '#EDE9FE',
-              color: trialDaysLeft <= 1 ? '#DC2626' : trialDaysLeft <= 3 ? '#D97706' : '#7C3AED',
+              color: trialDaysLeft <= 1 ? '#DC2626' : trialDaysLeft <= 3 ? '#D97706' : '#F2762E',
               fontSize: 12, fontWeight: 700, marginBottom: 14,
             }}>
               <i className="fa fa-hourglass-half" />
@@ -140,7 +140,7 @@ export default function Activar() {
         <div style={{
           background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0a57 100%)',
           color: '#fff', borderRadius: 24, padding: '36px 32px',
-          boxShadow: '0 20px 60px rgba(124,58,237,.3)',
+          boxShadow: '0 20px 60px rgba(242,118,46,.3)',
           marginBottom: 24,
         }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 28, alignItems: 'center' }}>
@@ -148,7 +148,7 @@ export default function Activar() {
             <div>
               <span style={{
                 display: 'inline-block', padding: '5px 12px', borderRadius: 99,
-                background: 'rgba(124,58,237,.25)', color: '#c4b5fd',
+                background: 'rgba(242,118,46,.25)', color: '#c4b5fd',
                 fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em',
                 marginBottom: 14,
               }}>
@@ -157,7 +157,7 @@ export default function Activar() {
 
               {/* Pago de ingreso */}
               <div style={{
-                background: 'rgba(99,102,241,.12)', border: '1.5px solid rgba(124,58,237,.4)',
+                background: 'rgba(99,102,241,.12)', border: '1.5px solid rgba(242,118,46,.4)',
                 borderRadius: 14, padding: '14px 18px', marginBottom: 14,
               }}>
                 <div style={{ fontSize: 10.5, fontWeight: 800, color: '#c4b5fd', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -207,7 +207,7 @@ export default function Activar() {
                 }}>
                   <div style={{
                     width: 28, height: 28, borderRadius: 8,
-                    background: b.accent ? 'rgba(110,231,183,.18)' : b.brand ? 'rgba(37,211,102,.15)' : 'rgba(124,58,237,.2)',
+                    background: b.accent ? 'rgba(110,231,183,.18)' : b.brand ? 'rgba(37,211,102,.15)' : 'rgba(242,118,46,.2)',
                     color: b.accent ? '#6ee7b7' : b.brand ? '#25D366' : '#c4b5fd',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 12, flexShrink: 0, marginTop: 1,
@@ -337,13 +337,13 @@ export default function Activar() {
         {/* Trust line */}
         <div style={{ textAlign: 'center', marginTop: 18, display: 'flex', justifyContent: 'center', gap: 18, flexWrap: 'wrap', fontSize: 11.5, color: 'var(--txt3)' }}>
           <span><i className="fa fa-building-columns" style={{ marginRight: 5, color: '#059669' }} /> Transferencia directa sin comision</span>
-          <span><i className="fa fa-shield-halved" style={{ marginRight: 5, color: '#7C3AED' }} /> SSL · Encriptacion E2E</span>
+          <span><i className="fa fa-shield-halved" style={{ marginRight: 5, color: '#F2762E' }} /> SSL · Encriptacion E2E</span>
         </div>
 
         {/* FAQ resumido */}
         <div style={{ marginTop: 36, padding: '24px 28px', background: 'var(--surface)', border: '1.5px solid var(--border)', borderRadius: 16 }}>
           <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--txt)', margin: '0 0 14px', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <i className="fa fa-circle-question" style={{ color: '#7C3AED' }} />
+            <i className="fa fa-circle-question" style={{ color: '#F2762E' }} />
             Preguntas frecuentes
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

@@ -35,7 +35,7 @@ export default function TrialExpirado() {
 
         .te-icon-wrap {
           width:72px;height:72px;border-radius:50%;margin:0 auto 20px;
-          background:linear-gradient(135deg,rgba(217,70,239,.18),rgba(124,58,237,.18));
+          background:linear-gradient(135deg,rgba(217,70,239,.18),rgba(242,118,46,.18));
           border:1px solid rgba(217,70,239,.35);
           display:flex;align-items:center;justify-content:center;
           animation:te-pulse 2.5s ease-out 1.2s 2;

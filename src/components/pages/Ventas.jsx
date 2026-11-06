@@ -31,7 +31,7 @@ function todayISO() {
 // Instagram y Web si son fuentes de atribucion identificables.
 const CANAL_OPTS = [
   { value: 'whatsapp',   label: 'WhatsApp',   icon: 'fa-brands fa-whatsapp',  color: '#25D366' },
-  { value: 'presencial', label: 'Presencial', icon: 'fa-store',               color: '#7C3AED' },
+  { value: 'presencial', label: 'Presencial', icon: 'fa-store',               color: '#F2762E' },
   { value: 'instagram',  label: 'Instagram',  icon: 'fa-brands fa-instagram', color: '#E1306C' },
   { value: 'web',        label: 'Web',        icon: 'fa-globe',               color: '#2563EB' },
   { value: 'otro',       label: 'Otro',       icon: 'fa-ellipsis',            color: '#64748b' },
@@ -110,7 +110,7 @@ function median(nums) {
 // o si va a precio final (Consumidor Final / Monotributo).
 const FISCAL_OPTS = [
   { value: 'consumidor',   label: 'Consumidor final', badge: 'CF', iva: false, color: '#64748b' },
-  { value: 'respInscripto',label: 'Responsable Inscripto', badge: 'A',  iva: true,  color: '#7C3AED' },
+  { value: 'respInscripto',label: 'Responsable Inscripto', badge: 'A',  iva: true,  color: '#F2762E' },
   { value: 'monotributo',  label: 'Monotributo',      badge: 'M',  iva: false, color: '#0891B2' },
   { value: 'exento',       label: 'Exento',           badge: 'E',  iva: false, color: '#94a3b8' },
 ]
@@ -607,7 +607,7 @@ export default function Ventas() {
     const r = (size - stroke) / 2
     const circ = 2 * Math.PI * r
     const offset = circ - (Math.min(percent, 100) / 100) * circ
-    const ringColor = percent >= 100 ? '#15803d' : percent >= 50 ? '#7C3AED' : '#b45309'
+    const ringColor = percent >= 100 ? '#15803d' : percent >= 50 ? '#F2762E' : '#b45309'
     return (
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display: 'block', flexShrink: 0 }}>
         <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="var(--border)" strokeWidth={stroke} />
@@ -759,13 +759,13 @@ export default function Ventas() {
             background: 'var(--grad)', color: '#fff', fontSize: 12.5, fontWeight: 700,
             cursor: 'pointer', fontFamily: 'inherit',
             display: 'inline-flex', alignItems: 'center', gap: 6,
-            boxShadow: '0 4px 12px rgba(124,58,237,.25)', flexShrink: 0,
+            boxShadow: '0 4px 12px rgba(242,118,46,.25)', flexShrink: 0,
           }}>
             <i className="fa fa-plus" style={{ fontSize: 10 }} /> Nueva venta
           </button>
           <div className="vt-hero-stats">
             <div className="vt-hero-stat">
-              <div className="vt-hero-stat-icon" style={{ background: 'rgba(99,102,241,.1)', color: '#6366f1' }}>
+              <div className="vt-hero-stat-icon" style={{ background: 'rgba(99,102,241,.1)', color: '#F2994A' }}>
                 <i className="fa fa-receipt" />
               </div>
               <div>
@@ -788,7 +788,7 @@ export default function Ventas() {
               <>
                 <div className="vt-hero-divider" />
                 <div className="vt-hero-stat">
-                  <div className="vt-hero-stat-icon" style={{ background: 'rgba(124,58,237,.1)', color: '#7C3AED' }}>
+                  <div className="vt-hero-stat-icon" style={{ background: 'rgba(242,118,46,.1)', color: '#F2762E' }}>
                     <i className="fa fa-crown" />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -889,7 +889,7 @@ export default function Ventas() {
 
         {filteredBudgets.length === 0 && monthBudgets.length === 0 && (
           <div style={{ padding: '48px 24px', textAlign: 'center' }}>
-            <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg,rgba(124,58,237,.1),rgba(124,58,237,.04))', color: '#7C3AED', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, marginBottom: 12 }}>
+            <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg,rgba(242,118,46,.1),rgba(242,118,46,.04))', color: '#F2762E', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, marginBottom: 12 }}>
               <i className="fa fa-receipt" />
             </div>
             <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--txt)', marginBottom: 4, letterSpacing: '-.2px' }}>
@@ -903,7 +903,7 @@ export default function Ventas() {
               background: 'var(--grad)', color: '#fff', fontSize: 13, fontWeight: 700,
               cursor: 'pointer', fontFamily: 'inherit',
               display: 'inline-flex', alignItems: 'center', gap: 7,
-              boxShadow: '0 4px 12px rgba(124,58,237,.25)',
+              boxShadow: '0 4px 12px rgba(242,118,46,.25)',
             }}>
               <i className="fa fa-plus" /> Cargar primera venta
             </button>
@@ -1105,7 +1105,7 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
         .sd-fg{margin-bottom:9px}
         .sd-lbl{font-size:11px;font-weight:600;color:var(--txt3);margin-bottom:5px;display:block}
         .sd-inp{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;color:var(--txt);background:var(--bg);outline:none;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
-        .sd-inp:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+        .sd-inp:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(242,118,46,.1)}
         .sd-inp::placeholder{color:var(--txt4)}
         .sd-inp-icon{position:relative}
         .sd-inp-icon i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--txt4);font-size:12px;pointer-events:none}
@@ -1134,14 +1134,14 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
         .sd-switch-off{background:var(--border)}
         .sd-btn{padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:filter .15s,transform .1s}
         .sd-btn:active{transform:scale(.97)}
-        .sd-btn-pri{border:none;background:var(--grad);color:#fff;box-shadow:0 4px 12px rgba(124,58,237,.25);width:100%}
+        .sd-btn-pri{border:none;background:var(--grad);color:#fff;box-shadow:0 4px 12px rgba(242,118,46,.25);width:100%}
         .sd-btn-pri:hover{filter:brightness(1.05)}
         .sd-btn-sec{border:1.5px solid var(--border);background:var(--surface);color:var(--txt2);width:100%}
         .sd-btn-sec:hover{border-color:var(--txt3)}
-        .sd-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;background:rgba(124,58,237,.1);color:var(--brand)}
+        .sd-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;background:rgba(242,118,46,.1);color:var(--brand)}
         .sd-nota-link{font-size:11px;color:var(--txt4);cursor:pointer;border:none;background:none;font-family:inherit;padding:0;transition:color .15s;display:inline-flex;align-items:center;gap:4px}
         .sd-nota-link:hover{color:var(--txt2)}
-        .sd-breakdown{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.12);margin-top:4px;font-size:11px;color:var(--txt2);font-weight:600;animation:sd-fade-in .2s ease}
+        .sd-breakdown{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;background:rgba(242,118,46,.06);border:1px solid rgba(242,118,46,.12);margin-top:4px;font-size:11px;color:var(--txt2);font-weight:600;animation:sd-fade-in .2s ease}
         .sd-breakdown i{color:var(--brand);font-size:10px}
         .sd-saved-flash{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;border-radius:8px;background:rgba(5,150,105,.08);border:1px solid rgba(5,150,105,.2);color:#059669;font-size:12px;font-weight:700;animation:sd-pop .3s cubic-bezier(.17,.67,.25,1.3)}
         @keyframes sd-pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
@@ -1344,10 +1344,10 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
                 <label className="sd-lbl">Fecha</label>
                 <input className="sd-inp" type="date" value={draft.fecha}
                   onChange={e => setDraft(d => ({ ...d, fecha: e.target.value }))}
-                  style={offMonth ? { borderColor: '#7C3AED' } : {}}
+                  style={offMonth ? { borderColor: '#F2762E' } : {}}
                 />
                 {offMonth && (
-                  <div style={{ marginTop: 5, fontSize: 10.5, fontWeight: 600, color: '#7C3AED', display: 'flex', alignItems: 'center', gap: 5, lineHeight: 1.3 }}>
+                  <div style={{ marginTop: 5, fontSize: 10.5, fontWeight: 600, color: '#F2762E', display: 'flex', alignItems: 'center', gap: 5, lineHeight: 1.3 }}>
                     <i className="fa fa-arrow-turn-up" style={{ transform: 'rotate(90deg)', fontSize: 9 }} />
                     Se guarda en {offLabel}
                   </div>
@@ -1361,7 +1361,7 @@ function SaleDrawer({ open, onClose, draft, setDraft, inputRef, clientSuggestion
               return (
                 <div style={{
                   marginTop: 10, padding: '8px 11px', borderRadius: 8,
-                  background: 'rgba(124,58,237,.06)', border: '1px solid rgba(124,58,237,.15)',
+                  background: 'rgba(242,118,46,.06)', border: '1px solid rgba(242,118,46,.15)',
                   fontSize: 11, color: 'var(--txt2)', fontWeight: 600, display: 'flex',
                   justifyContent: 'space-between', gap: 8, alignItems: 'center',
                   fontVariantNumeric: 'tabular-nums',

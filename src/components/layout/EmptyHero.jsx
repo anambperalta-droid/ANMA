@@ -15,9 +15,9 @@
  *   accent     — 'brand' | 'green' (default: 'brand')
  */
 export default function EmptyHero({ icon = 'fa-folder-open', title, subtitle, primary, secondary, tip, accent = 'brand' }) {
-  const accentColor = accent === 'green' ? '#059669' : '#7C3AED'
-  const accentBg    = accent === 'green' ? 'rgba(5,150,105,.10)' : 'rgba(124,58,237,.10)'
-  const accentBg2   = accent === 'green' ? 'rgba(5,150,105,.04)' : 'rgba(124,58,237,.04)'
+  const accentColor = accent === 'green' ? '#059669' : '#F2762E'
+  const accentBg    = accent === 'green' ? 'rgba(5,150,105,.10)' : 'rgba(242,118,46,.10)'
+  const accentBg2   = accent === 'green' ? 'rgba(5,150,105,.04)' : 'rgba(242,118,46,.04)'
 
   return (
     <div style={{
@@ -69,7 +69,7 @@ export default function EmptyHero({ icon = 'fa-folder-open', title, subtitle, pr
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 7,
               padding: '11px 22px', borderRadius: 10, border: 'none',
-              background: `linear-gradient(135deg, ${accentColor}, ${accent === 'green' ? '#047857' : '#6D28D9'})`,
+              background: `linear-gradient(135deg, ${accentColor}, ${accent === 'green' ? '#047857' : '#D4521E'})`,
               color: '#fff', fontSize: 13.5, fontWeight: 700,
               cursor: 'pointer', fontFamily: 'inherit',
               boxShadow: `0 4px 14px ${accentBg}`,

@@ -63,7 +63,7 @@ const CSS = `
                linear-gradient(135deg,#0e0524 0%,#1a0636 35%,#2d0a57 70%,#1a1233 100%); }
 
   .rg-orb { position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px) }
-  .rg-orb1 { width:500px;height:500px;top:-150px;right:-130px;background:radial-gradient(circle,rgba(124,58,237,.4),transparent 70%);animation:rg-orb-a 16s ease-in-out infinite }
+  .rg-orb1 { width:500px;height:500px;top:-150px;right:-130px;background:radial-gradient(circle,rgba(242,118,46,.4),transparent 70%);animation:rg-orb-a 16s ease-in-out infinite }
   .rg-orb2 { width:360px;height:360px;bottom:-100px;left:-80px;background:radial-gradient(circle,rgba(5,150,105,.3),transparent 70%);animation:rg-orb-b 20s ease-in-out infinite }
   @media(prefers-reduced-motion:reduce){.rg-orb1,.rg-orb2{animation:none}}
 
@@ -76,7 +76,7 @@ const CSS = `
 
   .rg-brand { display:flex;align-items:center;gap:12px;margin-bottom:26px }
   .rg-logo { width:46px;height:46px;border-radius:13px;background:#fff;
-    display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(124,58,237,.4);flex-shrink:0;overflow:hidden }
+    display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(242,118,46,.4);flex-shrink:0;overflow:hidden }
   .rg-logo img { width:80%;height:80%;object-fit:contain;display:block }
   .rg-brand-name { font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1 }
   .rg-brand-tag  { font-size:11px;color:rgba(255,255,255,.45);margin-top:3px }

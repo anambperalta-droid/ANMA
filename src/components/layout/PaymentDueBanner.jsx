@@ -122,7 +122,7 @@ export default function PaymentDueBanner() {
           body: 'Para seguir usando ANMA Hub activá tu plan. Tus datos están guardados y disponibles apenas actives — nada se borra.',
           cta: 'Activar mi plan',
           icon: 'fa-hourglass-end',
-          iconGrad: 'linear-gradient(135deg, #7C3AED, #6366F1)',
+          iconGrad: 'linear-gradient(135deg, #F2762E, #F2994A)',
         }
       : {
           title: billing.bannerCopy.title,
@@ -163,9 +163,9 @@ export default function PaymentDueBanner() {
               onClick={handlePay}
               style={{
                 width: '100%', padding: '14px 24px', borderRadius: 12, border: 'none',
-                background: 'linear-gradient(135deg, #7C3AED, #6366F1)',
+                background: 'linear-gradient(135deg, #F2762E, #F2994A)',
                 color: '#fff', fontSize: 14.5, fontWeight: 800, cursor: 'pointer',
-                fontFamily: 'inherit', boxShadow: '0 10px 28px rgba(124,58,237,.4)',
+                fontFamily: 'inherit', boxShadow: '0 10px 28px rgba(242,118,46,.4)',
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               }}
             >
