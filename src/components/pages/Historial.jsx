@@ -2543,7 +2543,7 @@ export default function Historial() {
                         )}
                       </td>
                       <td data-cell="total" data-label="Total" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.01em', fontSize: 13.5, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>
-                        <div>{money(b.totalFinal || b.total)}</div>
+                        <div>{(b.totalFinal || b.total) ? money(b.totalFinal || b.total) : <span style={{ color: 'var(--txt4)', fontWeight: 600 }}>—</span>}</div>
                         <div className="col-hide-mobile" style={{ fontSize: 10.5, fontWeight: 600, color: hidden ? 'var(--txt4)' : (b.totalGain == null ? 'var(--txt4)' : '#16A34A'), marginTop: 2, fontStyle: b.totalGain == null ? 'italic' : undefined }}>
                           {b.totalGain == null ? 'gan. pendiente' : `+${money(b.totalGain)} gan.`}
                         </div>

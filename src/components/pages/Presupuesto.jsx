@@ -1922,17 +1922,20 @@ export default function Presupuesto() {
 
                 {/* ─── 📦 Insumos Operativos de Despacho ─── */}
                 {!['retira', 'local', 'showroom'].some(kw => (form.delivery || '').toLowerCase().includes(kw)) && (
-                  <div style={{ marginTop: 20, padding: '18px 20px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12 }}>
-                    <button type="button" onClick={() => setDispOpen(o => !o)}
-                      style={{ width: '100%', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', padding: 0, marginBottom: dispOpen ? 10 : 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-                      <div style={{ minWidth: 0 }}>
-                        <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                          <i className="fa fa-box-open" style={{ color: 'var(--brand)', fontSize: 13 }} /> Insumos Operativos de Despacho
-                        </div>
-                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
-                          {!dispOpen && (form.dispatchInsumos || []).length > 0
-                            ? `${(form.dispatchInsumos || []).length} insumo${(form.dispatchInsumos || []).length !== 1 ? 's' : ''}${calc.dispatchCost > 0 ? ` · ${fmt(calc.dispatchCost)}` : ''} — tocá para editar`
-                            : 'Packaging y materiales del envío — invisibles para el cliente, impactan en tu costo real'}
+                  <div className="logi-section-card" style={{ marginTop: 18 }}>
+                    <button type="button" onClick={() => setDispOpen(o => !o)} className="logi-section-hd"
+                      style={{ width: '100%', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', padding: 0,
+                        border: 'none', borderBottom: dispOpen ? '1px solid var(--border)' : 'none',
+                        marginBottom: dispOpen ? 12 : 0, paddingBottom: dispOpen ? 12 : 0 }}>
+                      <div className="logi-section-hd-l">
+                        <div className="logi-section-ico"><i className="fa fa-box-open" /></div>
+                        <div className="logi-section-tx">
+                          <div className="logi-section-title">Insumos de Despacho</div>
+                          <div className="logi-section-hint">
+                            {!dispOpen && (form.dispatchInsumos || []).length > 0
+                              ? `${(form.dispatchInsumos || []).length} insumo${(form.dispatchInsumos || []).length !== 1 ? 's' : ''}${calc.dispatchCost > 0 ? ` · ${fmt(calc.dispatchCost)}` : ''} — tocá para editar`
+                              : 'Packaging del envío · invisible para el cliente'}
+                          </div>
                         </div>
                       </div>
                       <i className={`fa fa-chevron-${dispOpen ? 'up' : 'down'}`} style={{ color: 'var(--txt3)', fontSize: 13, flexShrink: 0 }} />
