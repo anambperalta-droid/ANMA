@@ -2157,9 +2157,9 @@ export default function Historial() {
                     const confirmados = periodBudgets.filter(b => ['confirmed', 'inprogress', 'delivered'].includes(b.status)).length
                     const cobrados = periodBudgets.filter(b => b.payStatus === 'paid').length
                     const steps = [
-                      { label: 'Enviados', count: enviados, color: '#F2762E', pct: total > 0 ? Math.round(enviados / total * 100) : 0 },
-                      { label: 'Confirmados', count: confirmados, color: '#059669', pct: enviados > 0 ? Math.round(confirmados / enviados * 100) : 0 },
-                      { label: 'Cobrados', count: cobrados, color: '#2563EB', pct: confirmados > 0 ? Math.round(cobrados / confirmados * 100) : 0 },
+                      { label: 'Enviados', count: enviados, pct: total > 0 ? Math.round(enviados / total * 100) : 0 },
+                      { label: 'Confirmados', count: confirmados, pct: enviados > 0 ? Math.round(confirmados / enviados * 100) : 0 },
+                      { label: 'Cobrados', count: cobrados, pct: confirmados > 0 ? Math.round(cobrados / confirmados * 100) : 0 },
                     ]
                     return (
                       <div className="bento-chart" style={{ padding: 14 }}>
@@ -2169,16 +2169,16 @@ export default function Historial() {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
                           {steps.map((s, i) => {
                             const widthPct = total > 0 ? Math.max(s.count / total * 100, 12) : 12
+                            // Degradé de un solo color (la marca): más intenso arriba (mayor) → más suave abajo (menor)
+                            const shade = `color-mix(in srgb, var(--brand) ${100 - i * 26}%, #fff)`
                             return (
                               <div key={s.label}>
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-                                  <span style={{ fontSize: 11, fontWeight: 700, color: s.color }}>{s.label}</span>
+                                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--brand)' }}>{s.label}</span>
                                   <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', fontVariantNumeric: 'tabular-nums' }}>{s.count} <span style={{ fontWeight: 500, color: 'var(--txt4)' }}>({s.pct}%)</span></span>
                                 </div>
                                 <div style={{ height: 28, borderRadius: 8, background: 'var(--surface2)', overflow: 'hidden', marginBottom: i < steps.length - 1 ? 2 : 0, position: 'relative' }}>
-                                  <div style={{ height: '100%', width: `${widthPct}%`, background: `linear-gradient(90deg, ${s.color}, ${s.color}cc)`, borderRadius: 8, transition: 'width .5s ease', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    {s.count > 0 && <span style={{ fontSize: 10, fontWeight: 800, color: '#fff' }}>{s.count}</span>}
-                                  </div>
+                                  <div style={{ height: '100%', width: `${widthPct}%`, background: shade, borderRadius: 8, transition: 'width .5s ease' }} />
                                 </div>
                                 {i < steps.length - 1 && (
                                   <div style={{ textAlign: 'center', padding: '2px 0' }}>
