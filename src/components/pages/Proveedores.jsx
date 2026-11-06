@@ -579,7 +579,7 @@ export default function Proveedores() {
       </div>
       <div className="pill-row">
         <div className="search-row zt-search-row"><i className="fa fa-magnifying-glass" /><input type="text" placeholder="Buscar proveedor, rubro..." value={search} onChange={e => setSearch(e.target.value)} /></div>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
+        <div className="prov-view-toggle" style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
           <button className={`pill ${viewMode === 'table' ? 'active' : ''}`} onClick={() => setViewMode('table')}><i className="fa fa-table-list" /></button>
           <button className={`pill ${viewMode === 'cards' ? 'active' : ''}`} onClick={() => setViewMode('cards')}><i className="fa fa-grip" /></button>
         </div>
@@ -712,7 +712,7 @@ export default function Proveedores() {
         .prov-mob-act::before{content:'';position:absolute;top:-7px;right:-7px;bottom:-7px;left:-7px}
         .prov-mob-act:active{opacity:.7;transform:scale(.9)}
         .prov-mob-act-del{background:#FEF2F2!important;border-color:#FECACA!important;color:#DC2626!important}
-        @media(max-width:640px){.prov-desk-only{display:none!important}.prov-mob-list{display:flex}.prov-ph-title{display:none!important}.cli-pill{width:40px;height:40px;padding:0;justify-content:center}.cli-pill span{display:none}.cli-pill i{font-size:15px}.cli-pill-new{height:40px;padding:0 16px}.cli-pill-group{gap:8px}}
+        @media(max-width:640px){.prov-desk-only{display:none!important}.prov-mob-list{display:flex}.prov-ph-title{display:none!important}.cli-pill{width:40px;height:40px;padding:0;justify-content:center}.cli-pill span{display:none}.cli-pill i{font-size:15px}.cli-pill-new{height:40px;padding:0 16px}.cli-pill-group{gap:8px}.prov-view-toggle{display:none!important}}
         @media(min-width:641px){.prov-mob-list{display:none!important}}
 
         /* ── PROVEEDORES DETAIL: bottom sheet en mobile ── */
