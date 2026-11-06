@@ -98,7 +98,7 @@ export default function Activar() {
   return (
     <div style={{
       minHeight: 'calc(100vh - 100px)',
-      background: 'linear-gradient(160deg, #faf8ff 0%, #f0fdf4 100%)',
+      background: 'linear-gradient(160deg, #FBF4EC 0%, #F0FDF4 100%)',
       padding: '32px 20px',
     }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
@@ -138,7 +138,7 @@ export default function Activar() {
 
         {/* Card principal */}
         <div style={{
-          background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0a57 100%)',
+          background: 'linear-gradient(135deg, #2A1810 0%, #3A2416 100%)',
           color: '#fff', borderRadius: 24, padding: '36px 32px',
           boxShadow: '0 20px 60px rgba(242,118,46,.3)',
           marginBottom: 24,
@@ -148,7 +148,7 @@ export default function Activar() {
             <div>
               <span style={{
                 display: 'inline-block', padding: '5px 12px', borderRadius: 99,
-                background: 'rgba(242,118,46,.25)', color: '#c4b5fd',
+                background: 'rgba(242,118,46,.25)', color: '#FDBA74',
                 fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em',
                 marginBottom: 14,
               }}>
@@ -160,16 +160,16 @@ export default function Activar() {
                 background: 'rgba(242,118,46,.12)', border: '1.5px solid rgba(242,118,46,.4)',
                 borderRadius: 14, padding: '14px 18px', marginBottom: 14,
               }}>
-                <div style={{ fontSize: 10.5, fontWeight: 800, color: '#c4b5fd', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <div style={{ fontSize: 10.5, fontWeight: 800, color: '#FDBA74', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
                   <i className="fa fa-bolt" />
                   Pago de ingreso
                 </div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 4 }}>
                   <span style={{ fontSize: 36, fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1 }}>$120.000</span>
-                  <span style={{ fontSize: 13, color: '#c4b5fd', fontWeight: 600 }}>por única vez</span>
+                  <span style={{ fontSize: 13, color: '#FDBA74', fontWeight: 600 }}>por única vez</span>
                 </div>
                 <p style={{ fontSize: 12, color: '#cbd5e1', margin: 0, lineHeight: 1.5 }}>
-                  Incluye <strong style={{ color: '#fff' }}>Setup llave en mano</strong> (configuración y carga de tus datos) + <strong style={{ color: '#c4b5fd' }}>tu primer mes totalmente cubierto</strong>.
+                  Incluye <strong style={{ color: '#fff' }}>Setup llave en mano</strong> (configuración y carga de tus datos) + <strong style={{ color: '#FDBA74' }}>tu primer mes totalmente cubierto</strong>.
                 </p>
               </div>
 
@@ -190,7 +190,7 @@ export default function Activar() {
 
             {/* Columna derecha: beneficios */}
             <div>
-              <div style={{ fontSize: 11, fontWeight: 800, color: '#c4b5fd', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 14 }}>
+              <div style={{ fontSize: 11, fontWeight: 800, color: '#FDBA74', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 14 }}>
                 Lo que incluye
               </div>
               {[
@@ -208,7 +208,7 @@ export default function Activar() {
                   <div style={{
                     width: 28, height: 28, borderRadius: 8,
                     background: b.accent ? 'rgba(110,231,183,.18)' : b.brand ? 'rgba(37,211,102,.15)' : 'rgba(242,118,46,.2)',
-                    color: b.accent ? '#6ee7b7' : b.brand ? '#25D366' : '#c4b5fd',
+                    color: b.accent ? '#6ee7b7' : b.brand ? '#25D366' : '#FDBA74',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 12, flexShrink: 0, marginTop: 1,
                   }}>
