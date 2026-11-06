@@ -39,15 +39,11 @@ const compressImage = (file, maxBytes = 180000) => new Promise((resolve) => {
 })
 
 /* Paleta de colores para categorías */
+// Un solo chip neutro cálido para todas las categorías: la categoría es
+// metadato, no debe competir con el nombre del producto ni con los acentos
+// de marca. Evita el ruido visual del arcoíris anterior.
 const CAT_PALETTE = [
-  { bg: '#FBF4EC', color: '#F2994A' },
-  { bg: '#FBF4EC', color: '#60A5FA' },
-  { bg: '#ECFDF5', color: '#34D399' },
-  { bg: '#FFFBEB', color: '#F59E0B' },
-  { bg: '#FDEFE6', color: '#F472B6' },
-  { bg: '#F0FDFA', color: '#2DD4BF' },
-  { bg: '#FFF7ED', color: '#FB923C' },
-  { bg: '#F1F5F9', color: '#94A3B8' },
+  { bg: 'var(--surface2)', color: 'var(--txt2)' },
 ]
 
 export default function Catalogo() {
