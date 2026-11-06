@@ -2515,6 +2515,12 @@ export default function Historial() {
                           <td data-cell="num" title={title} style={{ fontSize: 12.5, fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: 'var(--txt)' }}>
                             <div>{b.num || '—'}</div>
                             <div className="col-hide-mobile" style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500, marginTop: 2 }}>{relLabel}</div>
+                            {b.deliveryDate && dDays !== null && !terminalStates.includes(b.status) && (
+                              <div className="hist-mob-only" style={{ fontSize: 10.5, fontWeight: 700, marginTop: 3, color: overdue ? 'var(--red)' : dDays <= 2 ? 'var(--amber)' : 'var(--txt3)' }}>
+                                <i className="fa fa-truck" style={{ marginRight: 4, opacity: .75 }} />
+                                {overdue ? (dDays === 0 ? 'Entrega HOY' : `Atrasado ${Math.abs(dDays)}d`) : `Entrega en ${dDays}d`}
+                              </div>
+                            )}
                           </td>
                         )
                       })()}
