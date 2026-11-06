@@ -333,6 +333,12 @@ export default function Compras() {
           .cp-hero-main .cp-new-btn{width:100%!important;flex:1 0 100%;order:10;justify-content:center}
           .cp-hero-stat-icon{width:26px;height:26px;font-size:11px}
           .cp-hero-stat-val{font-size:14px}
+          /* Mobile: "Mayor gasto" y el botón "Copiar recurrentes" se apilan
+             (antes el botón quedaba en media fila y envolvía en 4 líneas). */
+          .cp-hero-stats{flex-direction:column!important;gap:10px!important}
+          .cp-hero-divider{display:none!important}
+          .cp-hero-stat{flex:none!important;width:100%!important}
+          .cp-copy-recurrent{width:100%!important;justify-content:center!important;min-height:40px!important;white-space:nowrap}
           .cp-month-nav{margin-left:14px!important;margin-right:14px!important;padding:6px 10px!important;margin-bottom:10px!important;border-radius:10px!important}
           .cp-month-label{font-size:13px!important}
           .cp-table-wrap{border-radius:0!important;border-left:none!important;border-right:none!important}
