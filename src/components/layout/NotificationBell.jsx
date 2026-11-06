@@ -45,7 +45,7 @@ const ACTION_MAP = {
   logistica: {
     label: 'Cambiar Estado',
     icon: 'fa-truck-ramp-box',
-    color: '#2563EB',
+    color: '#2E8BD6',
     bg: '#FBF4EC',
     handler: (alert, { nav, setOpen }) => {
       setOpen(false)
@@ -112,7 +112,7 @@ const ACTION_MAP = {
   cumpleaños: {
     label: 'Saludar',
     icon: 'fa-cake-candles',
-    color: '#EC4899',
+    color: '#E0458A',
     bg: '#FCE7F3',
     handler: (alert, { nav, setOpen }) => {
       setOpen(false)
@@ -403,7 +403,7 @@ const LEVEL_COLORS = {
    Regla: el borde-izquierdo dice "¿qué tan urgente?"; el ícono dice "¿qué tipo?".
    Así Ana ve de un vistazo dónde mirar y qué tocar. */
 const CATEGORY_STYLE = {
-  logistica:    { color: '#2563EB', bg: '#FBF4EC', label: 'Entrega' },
+  logistica:    { color: '#2E8BD6', bg: '#FBF4EC', label: 'Entrega' },
   pago:         { color: '#059669', bg: '#ECFDF5', label: 'Cobro' },
   comercial:    { color: '#F2762E', bg: '#FBF4EC', label: 'Presupuesto' },
   stock:        { color: '#B45309', bg: '#FEF3C7', label: 'Stock' },

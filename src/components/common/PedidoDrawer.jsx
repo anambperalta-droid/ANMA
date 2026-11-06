@@ -21,7 +21,7 @@ import { fmt, fmtDate, STATUS_MAP, PAY_STATUS_MAP } from '../../lib/storage'
 
 const STATUS_COLOR = {
   draft:       '#94A3B8',
-  sent:        '#3B82F6',
+  sent:        '#2E8BD6',
   negotiating: '#D97706',
   confirmed:   '#16A34A',
   lost:        '#DC2626',

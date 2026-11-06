@@ -30,7 +30,7 @@ const CARRIER_QUOTE = {
 
 const STATUS_SELECT_STYLE = {
   'Preparando':   { background: '#FEF3C7', color: '#92400E', border: '1.5px solid #FCD34D' },
-  'Despachado':   { background: '#DBEAFE', color: '#1E40AF', border: '1.5px solid #93C5FD' },
+  'Despachado':   { background: '#DBEAFE', color: '#1F6FB0', border: '1.5px solid #93C5FD' },
   'En tránsito':  { background: '#FCE9DC', color: '#D4521E', border: '1.5px solid #F0C49E' },
   'Entregado':    { background: '#DCFCE7', color: '#14532D', border: '1.5px solid #86EFAC' },
   'Con problema': { background: '#FEF2F2', color: '#991B1B', border: '1.5px solid #FCA5A5' },
@@ -38,7 +38,7 @@ const STATUS_SELECT_STYLE = {
 
 const DONUT_COLORS = {
   'Preparando':   '#FCD34D',
-  'Despachado':   '#60A5FA',
+  'Despachado':   '#5AA9E0',
   'En tránsito':  '#F2762E',
   'Entregado':    '#34D399',
   'Con problema': '#F87171',
@@ -94,7 +94,7 @@ const getTrackingUrl = (carrier, code) => {
    bidireccional con Presupuestos vía paradas.budgetId. */
 const PARADA_TIPOS = [
   { val: 'insumos',    lbl: 'Retiro Insumos',   icon: 'fa-box', color: '#F2762E' },
-  { val: 'mercaderia', lbl: 'Retiro Mercadería',icon: 'fa-cart-shopping', color: '#2563EB' },
+  { val: 'mercaderia', lbl: 'Retiro Mercadería',icon: 'fa-cart-shopping', color: '#2E8BD6' },
   { val: 'entrega',    lbl: 'Entrega Pedido',   icon: 'fa-truck-fast', color: '#059669' },
 ]
 const tipoMeta = (t) => PARADA_TIPOS.find(x => x.val === t) || PARADA_TIPOS[0]
@@ -275,7 +275,7 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
             <div className="viajes-kpi-val" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{stats.totalParadas}</div>
             <div className="viajes-kpi-chips">
               {stats.tipoCount.insumos > 0 && <span><i className="fa fa-box" style={{ color: '#F2762E' }} /> {stats.tipoCount.insumos}</span>}
-              {stats.tipoCount.mercaderia > 0 && <span><i className="fa fa-cart-shopping" style={{ color: '#2563EB' }} /> {stats.tipoCount.mercaderia}</span>}
+              {stats.tipoCount.mercaderia > 0 && <span><i className="fa fa-cart-shopping" style={{ color: '#2E8BD6' }} /> {stats.tipoCount.mercaderia}</span>}
               {stats.tipoCount.entrega > 0 && <span><i className="fa fa-truck-fast" style={{ color: '#059669' }} /> {stats.tipoCount.entrega}</span>}
             </div>
           </div>
@@ -316,7 +316,7 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
                     <div className="viaje-card-meta">
                       <span><b>{(v.paradas || []).length}</b> parada{(v.paradas || []).length !== 1 ? 's' : ''}</span>
                       {conteo.insumos ? <span><i className="fa fa-box" style={{ color: '#F2762E' }} /> {conteo.insumos}</span> : null}
-                      {conteo.mercaderia ? <span><i className="fa fa-cart-shopping" style={{ color: '#2563EB' }} /> {conteo.mercaderia}</span> : null}
+                      {conteo.mercaderia ? <span><i className="fa fa-cart-shopping" style={{ color: '#2E8BD6' }} /> {conteo.mercaderia}</span> : null}
                       {conteo.entrega ? <span><i className="fa fa-truck-fast" style={{ color: '#059669' }} /> {conteo.entrega}</span> : null}
                       {budgetNums.length > 0 && <span style={{ color: 'var(--brand)' }}><i className="fa fa-link" /> {budgetNums.join(', ')}</span>}
                     </div>
@@ -698,7 +698,7 @@ export default function Logistica() {
         .logi-card-act{width:28px;height:28px;border-radius:50%;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:transform .1s}
         .logi-card-act:active{transform:scale(.88)}
         .logi-card-act-wa{background:#DCFCE7;color:#16A34A}
-        .logi-card-act-trk{background:#FBF4EC;color:#2563EB}
+        .logi-card-act-trk{background:#FBF4EC;color:#2E8BD6}
         .logi-card-act-edit{background:var(--surface2);color:var(--txt2)}
         .logi-card-act-del{background:#FEF2F2;color:#DC2626}
         /* Fila 2: metadatos tiny (presupuesto · ciudad · transporte) */
@@ -737,7 +737,7 @@ export default function Logistica() {
         .logi-act-circ:hover{box-shadow:0 2px 8px rgba(0,0,0,.14)}
         .logi-act-circ:active{transform:scale(.88)}
         .logi-act-circ.wa{background:#DCFCE7;color:#16A34A}
-        .logi-act-circ.trk{background:#FBF4EC;color:#2563EB}
+        .logi-act-circ.trk{background:#FBF4EC;color:#2E8BD6}
         .logi-act-circ.del{background:#FEF2F2;color:#DC2626}
         /* Status quick-select */
         .logi-status-sel{border-radius:20px;padding:3px 22px 3px 9px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-repeat:no-repeat;background-position:right 7px center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath fill='%236B7280' d='M0 0l4 5 4-5z'/%3E%3C/svg%3E")}
@@ -1600,16 +1600,16 @@ export default function Logistica() {
               {fleteEstimado !== null && (
                 <div style={{ background: '#FBF4EC', border: '1.5px solid #93C5FD', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                   <span style={{ fontSize: 12, color: 'var(--txt2)' }}>
-                    <i className="fa fa-calculator" style={{ marginRight: 6, color: '#3B82F6' }} />
+                    <i className="fa fa-calculator" style={{ marginRight: 6, color: '#2E8BD6' }} />
                     Flete estimado · <b>{form.service}</b>
                     {(SERVICE_MULTIPLIER[form.service] || 1) !== 1 && (
-                      <span style={{ marginLeft: 6, fontSize: 10, fontWeight: 700, color: '#3B82F6', background: '#DBEAFE', padding: '1px 6px', borderRadius: 8 }}>
+                      <span style={{ marginLeft: 6, fontSize: 10, fontWeight: 700, color: '#2E8BD6', background: '#DBEAFE', padding: '1px 6px', borderRadius: 8 }}>
                         ×{SERVICE_MULTIPLIER[form.service]}
                       </span>
                     )}
                   </span>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontSize: 18, fontWeight: 800, color: '#1D4ED8' }}>{fmt(fleteEstimado)}</span>
+                    <span style={{ fontSize: 18, fontWeight: 800, color: '#1F6FB0' }}>{fmt(fleteEstimado)}</span>
                     <button className="btn btn-primary btn-sm" style={{ padding: '3px 10px', fontSize: 11 }} onClick={() => setF('freight', fleteEstimado)}>
                       Usar
                     </button>

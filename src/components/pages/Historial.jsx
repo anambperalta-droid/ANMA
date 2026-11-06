@@ -1407,7 +1407,7 @@ export default function Historial() {
   }
   const STATUS_COLORS = {
     draft:       { bg: '#F1F5F9', color: '#475569', border: '#CBD5E1' },
-    pending:     { bg: '#FBF4EC', color: '#1D4ED8', border: '#93C5FD' },
+    pending:     { bg: '#FBF4EC', color: '#1F6FB0', border: '#93C5FD' },
     confirmed:   { bg: '#F0FDF4', color: '#16A34A', border: '#86EFAC' },
     inprogress:  { bg: '#FFFBEB', color: '#D97706', border: '#FCD34D' },
     shipped:     { bg: '#E0F2FE', color: '#0369A1', border: '#7DD3FC' },
@@ -1938,12 +1938,12 @@ export default function Historial() {
                   onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(37,99,235,.12)' }}
                   onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                    <div style={{ width: 32, height: 32, borderRadius: 10, background: '#2563EB', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-calendar-day" /></div>
+                    <div style={{ width: 32, height: 32, borderRadius: 10, background: '#2E8BD6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-calendar-day" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 10, fontWeight: 700, color: '#2563EB', textTransform: 'uppercase', letterSpacing: '.06em' }}>Proximas entregas</div>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: '#2E8BD6', textTransform: 'uppercase', letterSpacing: '.06em' }}>Proximas entregas</div>
                       <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{proximasEntregas.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>en 7 dias</span></div>
                     </div>
-                    <i className="fa fa-arrow-right" style={{ color: '#2563EB', fontSize: 12 }} />
+                    <i className="fa fa-arrow-right" style={{ color: '#2E8BD6', fontSize: 12 }} />
                   </div>
                   <div style={{ fontSize: 11.5, color: 'var(--txt2)', lineHeight: 1.4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {proximasEntregas.slice(0, 2).map(b => `${b.contact || b.company || b.num} (${new Date(b.deliveryDate + 'T00:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })})`).join(', ')}{proximasEntregas.length > 2 ? ` +${proximasEntregas.length - 2}` : ''}

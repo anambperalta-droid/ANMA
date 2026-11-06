@@ -17,7 +17,7 @@ const STEPS = [
     highlight: '/pedido',
   },
   {
-    icon: 'fa-cube', color: '#2563EB',
+    icon: 'fa-cube', color: '#2E8BD6',
     title: 'Tu catálogo, siempre al día',
     body: 'Cargá tus productos con costo y precio. Cuando confirmás un pedido, el stock se actualiza solo. Sin planillas paralelas.',
     cta: 'Siguiente',

@@ -25,7 +25,7 @@ const ALL_SITES = {
     url: 'https://anma-host.vercel.app',
     redirectTo: 'https://anma-host.vercel.app/bienvenida',
     icon: 'fa-gift',
-    color: '#EC4899',
+    color: '#E0458A',
   },
 }
 

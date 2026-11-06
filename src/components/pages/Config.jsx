@@ -514,7 +514,7 @@ export default function Config() {
     { key: 'costoInterno',      icon: 'fa-eye-slash',    color: '#F2762E', label: 'Costo interno visible',           desc: 'Muestra la columna de costo en la tabla de productos' },
     { key: 'margenTabla',       icon: 'fa-percent',      color: '#059669', label: 'Margen % en presupuestos',        desc: 'Muestra el margen de ganancia en cada ítem del presupuesto' },
     { key: 'descuentoCliente',  icon: 'fa-tag',          color: '#D97706', label: 'Descuento fijo por cliente',      desc: 'Permite asignar un % de descuento personalizado a cada cliente' },
-    { key: 'notasInternas',     icon: 'fa-note-sticky',  color: '#2563EB', label: 'Notas internas en pedidos',       desc: 'Campo privado de notas en cada presupuesto (no aparece en el PDF)' },
+    { key: 'notasInternas',     icon: 'fa-note-sticky',  color: '#2E8BD6', label: 'Notas internas en pedidos',       desc: 'Campo privado de notas en cada presupuesto (no aparece en el PDF)' },
   ]
 
   // 8 secciones separadas: cada una con su foco. Patrón dashboard: desktop
@@ -879,7 +879,7 @@ export default function Config() {
           <ListEditor label="Modalidades de entrega" icon="fa-truck" accentColor="#D97706"
             items={c.deliveryModes || []} onAdd={v => handleListAdd('deliveryModes', v)} onRemove={i => handleListRemove('deliveryModes', i)} />
           {(c.customLists || []).map((cl, idx) => {
-            const COLORS = ['#EC4899','#F2994A','#06B6D4','#F59E0B','#10B981','#EF4444']
+            const COLORS = ['#E0458A','#F2994A','#06B6D4','#F59E0B','#10B981','#EF4444']
             return (
               <ListEditor key={cl.key} label={cl.label} icon="fa-layer-group"
                 accentColor={COLORS[idx % COLORS.length]}

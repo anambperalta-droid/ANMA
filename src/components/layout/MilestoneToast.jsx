@@ -145,7 +145,7 @@ export default function MilestoneToast() {
     left: 10 + (i * 11) % 80,
     delay: (i * 0.08) % 0.6,
     duration: 1.8 + ((i * 0.15) % 1.2),
-    color: ['#F2762E', '#059669', '#F59E0B', '#EC4899', '#2563EB'][i % 5],
+    color: ['#F2762E', '#059669', '#F59E0B', '#E0458A', '#2E8BD6'][i % 5],
     size: 5 + (i % 3) * 2,
   }))
 

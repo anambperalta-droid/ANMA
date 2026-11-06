@@ -761,7 +761,7 @@ export default function Clientes() {
         .cli-mob-ci{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;font-size:14px;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
         .cli-mob-ci:active{opacity:.7}
         .cli-mob-ci-wa{background:#DCFCE7;color:#16A34A}
-        .cli-mob-ci-mail{background:#FBF4EC;color:#2563EB}
+        .cli-mob-ci-mail{background:#FBF4EC;color:#2E8BD6}
         .cli-mob-ci-ph{display:inline-block;width:28px;height:28px}
         .cli-mob-date{font-size:10.5px;font-variant-numeric:tabular-nums;line-height:1;text-align:center}
         .cli-mob-acts{flex-shrink:0;display:flex;gap:2px;align-items:center}
@@ -850,7 +850,7 @@ export default function Clientes() {
                     <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
                       {c.email ? (
                         <a href={`mailto:${c.email}`} title={c.email}
-                          className="zt-ci" style={{ background: '#FBF4EC', color: '#2563EB' }}>
+                          className="zt-ci" style={{ background: '#FBF4EC', color: '#2E8BD6' }}>
                           <i className="fa fa-envelope" />
                         </a>
                       ) : <span style={{ color: 'var(--txt4)', fontSize: 11 }}>—</span>}
@@ -935,13 +935,13 @@ export default function Clientes() {
                   )}
                   {c.email && (
                     <a href={`mailto:${c.email}`} title={c.email} onClick={e => e.stopPropagation()}
-                      style={{ width:30,height:30,borderRadius:'50%',border:'none',background:'#FBF4EC',color:'#2563EB',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,textDecoration:'none' }}>
+                      style={{ width:30,height:30,borderRadius:'50%',border:'none',background:'#FBF4EC',color:'#2E8BD6',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,textDecoration:'none' }}>
                       <i className="fa fa-envelope" />
                     </a>
                   )}
                   {c.wa && (
                     <a href={`tel:${c.wa.replace(/\D/g,'')}`} title={`Llamar · ${c.wa}`} onClick={e => e.stopPropagation()}
-                      style={{ width:30,height:30,borderRadius:'50%',border:'none',background:'#FBF4EC',color:'#2563EB',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,textDecoration:'none' }}>
+                      style={{ width:30,height:30,borderRadius:'50%',border:'none',background:'#FBF4EC',color:'#2E8BD6',cursor:'pointer',fontSize:12,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,textDecoration:'none' }}>
                       <i className="fa fa-phone" />
                     </a>
                   )}
@@ -1187,7 +1187,7 @@ export default function Clientes() {
                             {r.contact && <span style={{ fontSize: 10, background: '#DCFCE7', color: '#15803D', padding: '2px 9px', borderRadius: 20, fontWeight: 600 }}><i className="fa fa-user" style={{ marginRight: 4 }} />{r.contact}</span>}
                             {r.company && <span style={{ fontSize: 10, background: 'var(--brand-xlt)', color: 'var(--brand)', padding: '2px 9px', borderRadius: 20, fontWeight: 600 }}><i className="fa fa-building" style={{ marginRight: 4 }} />{r.company}</span>}
                             {r.wa && <span style={{ fontSize: 10, background: '#DCFCE7', color: '#059669', padding: '2px 9px', borderRadius: 20, fontWeight: 600 }}><i className="fa-brands fa-whatsapp" style={{ marginRight: 4 }} />{r.wa}</span>}
-                            {r.email && <span style={{ fontSize: 10, background: '#DBEAFE', color: '#2563EB', padding: '2px 9px', borderRadius: 20, fontWeight: 600 }}><i className="fa fa-envelope" style={{ marginRight: 4 }} />{r.email}</span>}
+                            {r.email && <span style={{ fontSize: 10, background: '#DBEAFE', color: '#2E8BD6', padding: '2px 9px', borderRadius: 20, fontWeight: 600 }}><i className="fa fa-envelope" style={{ marginRight: 4 }} />{r.email}</span>}
                             <button className="btn btn-primary btn-xs" style={{ marginLeft: 'auto' }}
                               onClick={() => {
                                 setForm(f => ({ ...f, ...(r.contact ? { contact: r.contact } : {}), ...(r.company ? { company: r.company } : {}), ...(r.wa ? { wa: r.wa } : {}), ...(r.email ? { email: r.email } : {}) }))
@@ -1685,7 +1685,7 @@ export default function Clientes() {
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 4 }}>
-                {[{ icon:'fa-brands fa-whatsapp',bg:'#DCFCE7',col:'#16A34A',label:'Story de WA' },{ icon:'fa fa-print',bg:'#FDEBD9',col:'#F2762E',label:'Impreso' },{ icon:'fa fa-envelope',bg:'#DBEAFE',col:'#2563EB',label:'Email / web' }].map(it => (
+                {[{ icon:'fa-brands fa-whatsapp',bg:'#DCFCE7',col:'#16A34A',label:'Story de WA' },{ icon:'fa fa-print',bg:'#FDEBD9',col:'#F2762E',label:'Impreso' },{ icon:'fa fa-envelope',bg:'#DBEAFE',col:'#2E8BD6',label:'Email / web' }].map(it => (
                   <div key={it.label} style={{ textAlign:'center',padding:'10px 8px',background:it.bg+'66',borderRadius:8,border:`1px solid ${it.bg}` }}>
                     <i className={it.icon} style={{ fontSize:18,color:it.col,display:'block',marginBottom:5 }} /><div style={{ fontSize:10,fontWeight:600,color:'var(--txt2)' }}>{it.label}</div>
                   </div>

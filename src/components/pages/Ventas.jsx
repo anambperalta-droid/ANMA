@@ -33,7 +33,7 @@ const CANAL_OPTS = [
   { value: 'whatsapp',   label: 'WhatsApp',   icon: 'fa-brands fa-whatsapp',  color: '#25D366' },
   { value: 'presencial', label: 'Presencial', icon: 'fa-store',               color: '#F2762E' },
   { value: 'instagram',  label: 'Instagram',  icon: 'fa-brands fa-instagram', color: '#E1306C' },
-  { value: 'web',        label: 'Web',        icon: 'fa-globe',               color: '#2563EB' },
+  { value: 'web',        label: 'Web',        icon: 'fa-globe',               color: '#2E8BD6' },
   { value: 'otro',       label: 'Otro',       icon: 'fa-ellipsis',            color: '#64748b' },
 ]
 

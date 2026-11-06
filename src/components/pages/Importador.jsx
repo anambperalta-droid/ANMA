@@ -70,7 +70,7 @@ function KpiChip({ count, label, color, bg, icon }) {
 function StatusDot({ status }) {
   const MAP = {
     valid:     { color: '#059669', icon: 'fa-plus-circle',    title: 'Nuevo' },
-    duplicate: { color: '#2563EB', icon: 'fa-rotate',         title: 'Actualiza' },
+    duplicate: { color: '#2E8BD6', icon: 'fa-rotate',         title: 'Actualiza' },
     empty:     { color: '#94A3B8', icon: 'fa-minus-circle',   title: 'Vacío' },
   }
   const s = MAP[status] || MAP.empty
@@ -165,7 +165,7 @@ function SeccionEntidad({ ent, existingList, onChange, resetKey }) {
           {total > 0 ? (
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 3 }}>
               {validas  > 0 && <KpiChip count={validas}  label="nuevos"    color="#059669" bg="#D1FAE5" icon="fa-plus-circle" />}
-              {dupls    > 0 && <KpiChip count={dupls}    label="actualiza" color="#2563EB" bg="#DBEAFE" icon="fa-rotate" />}
+              {dupls    > 0 && <KpiChip count={dupls}    label="actualiza" color="#2E8BD6" bg="#DBEAFE" icon="fa-rotate" />}
               {omitidas > 0 && <KpiChip count={omitidas} label="omitidos"  color="#94A3B8" bg="var(--surface2)" icon="fa-minus-circle" />}
             </div>
           ) : (
@@ -404,7 +404,7 @@ export default function Importador() {
         {hayDatos && (
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 10 }}>
             <KpiChip count={totalNuevos} label="nuevos" color="#059669" bg="#D1FAE5" icon="fa-plus-circle" />
-            <KpiChip count={totalDupls}  label="a actualizar" color="#2563EB" bg="#DBEAFE" icon="fa-rotate" />
+            <KpiChip count={totalDupls}  label="a actualizar" color="#2E8BD6" bg="#DBEAFE" icon="fa-rotate" />
             <span style={{ fontSize: 11, color: 'var(--txt4)', alignSelf: 'center' }}>
               {totalFilas} filas totales en {Object.values(parsed).filter(a => a.length > 0).length} categorías
             </span>
@@ -486,7 +486,7 @@ export default function Importador() {
                     <i className={`fa ${ent.icon}`} style={{ color: ent.color, fontSize: 14, width: 18, textAlign: 'center' }} />
                     <span style={{ flex: 1, fontSize: 12, fontWeight: 600, color: 'var(--txt)' }}>{ent.label}</span>
                     <span style={{ fontSize: 11, color: '#059669', fontWeight: 700 }}>{res.nuevos} nuevos</span>
-                    {res.actualizados > 0 && <span style={{ fontSize: 11, color: '#2563EB', fontWeight: 700 }}>{res.actualizados} actualiz.</span>}
+                    {res.actualizados > 0 && <span style={{ fontSize: 11, color: '#2E8BD6', fontWeight: 700 }}>{res.actualizados} actualiz.</span>}
                   </div>
                 )
               })}

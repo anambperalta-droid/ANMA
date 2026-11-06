@@ -55,7 +55,7 @@ export default function FirstBudgetCelebration() {
     left: (i * 4.17) % 100,
     delay: (i * 0.12) % 1.4,
     duration: 2.5 + ((i * 0.13) % 1.5),
-    color: ['#F2762E', '#059669', '#D946EF', '#F59E0B', '#2563EB', '#EC4899'][i % 6],
+    color: ['#F2762E', '#059669', '#E0458A', '#F59E0B', '#2E8BD6', '#E0458A'][i % 6],
     size: 6 + (i % 4) * 2,
     rotateStart: (i * 47) % 360,
   }))

@@ -31,7 +31,7 @@ import {
 const PRIORITIES = [
   { key: 'today',    label: 'Urgente hoy',  color: '#DC2626', bg: '#FEF2F2' },
   { key: 'tomorrow', label: 'Mañana',        color: '#D97706', bg: '#FFFBEB' },
-  { key: 'week',     label: 'Esta semana',   color: '#2563EB', bg: '#FBF4EC' },
+  { key: 'week',     label: 'Esta semana',   color: '#2E8BD6', bg: '#FBF4EC' },
 ]
 const getPriority = (key) => PRIORITIES.find(p => p.key === key) || PRIORITIES[2]
 
