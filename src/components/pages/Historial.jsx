@@ -1934,8 +1934,8 @@ export default function Historial() {
               )}
               {proximasEntregas.length > 0 && (
                 <div onClick={() => setTab('lista')}
-                  style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(37,99,235,.06), rgba(37,99,235,.02))', border: '1.5px solid rgba(37,99,235,.25)', borderRadius: 14, padding: '14px 16px', transition: 'transform .15s, box-shadow .2s' }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(37,99,235,.12)' }}
+                  style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(46,139,214,.06), rgba(46,139,214,.02))', border: '1.5px solid rgba(46,139,214,.25)', borderRadius: 14, padding: '14px 16px', transition: 'transform .15s, box-shadow .2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(46,139,214,.12)' }}
                   onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: '#2E8BD6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-calendar-day" /></div>

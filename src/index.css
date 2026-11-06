@@ -2328,6 +2328,19 @@ td b{color:var(--txt);font-weight:600}
   .wiz-pane{padding-bottom:250px!important}
 }
 
+/* ── Dashboard "Hoy importa": cards compactas en mobile ──
+   En celular estas señales se apilan full-width; sin compactar empujan
+   las métricas muy abajo. Reducimos padding, achicamos el número y
+   truncamos la descripción a una línea. Hooks por posición (child) para
+   no tocar las 6 tarjetas de JSX una por una. */
+@media(max-width:640px){
+  .modo-hoy-grid{gap:8px!important}
+  .modo-hoy-grid > div{padding:11px 13px!important;border-radius:12px!important}
+  .modo-hoy-grid > div > div:first-child{margin-bottom:3px!important}
+  .modo-hoy-grid > div > div:first-child > div:nth-child(2) > div:last-child{font-size:16px!important}
+  .modo-hoy-grid > div > div:last-child{font-size:10.5px!important;line-height:1.35!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+}
+
 /* ── Theme variants ── */
 :root.theme-logistica{--brand:#0369A1;--brand-dark:#075985;--brand-light:#0EA5E9;--brand-xlt:rgba(3,105,161,.08);--grad:#0369A1;--panel-grad:linear-gradient(160deg,#0C1445,#1E3A5F,#0369A1)}
 :root.theme-ventas{--brand:#16A34A;--brand-dark:#15803D;--brand-light:#22C55E;--brand-xlt:rgba(22,163,74,.08);--grad:#16A34A;--panel-grad:linear-gradient(160deg,#052E16,#14532D,#16A34A)}
