@@ -2451,10 +2451,11 @@ export default function Historial() {
             @media(max-width:640px){
               .hist-quick-chips{flex-wrap:wrap!important;overflow:visible!important;gap:5px!important}
             }
-            /* En mobile angosto: el botón "Ver motivo pérdida" se reduce a icono solo */
-            @media(max-width:540px){
-              .hist-loss-btn .hist-loss-label{display:none}
-              .hist-loss-btn{padding:5px 9px!important;min-width:30px;justify-content:center}
+            /* En mobile el botón "Ver motivo pérdida" se oculta: es una función
+               de escritorio (revisar por qué se perdió un pedido) y su versión
+               icono-solo se confundía con un "limpiar". Queda full en desktop. */
+            @media(max-width:640px){
+              .hist-loss-btn{display:none!important}
             }
           `}</style>
           {selectedIds.size > 0 && (
