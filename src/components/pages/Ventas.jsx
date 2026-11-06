@@ -175,6 +175,7 @@ export default function Ventas() {
   const [sortCol, setSortCol] = useState(null)
   const [sortDir, setSortDir] = useState('desc')
   const [tab, setTab] = useState('all')  // all | paid | pending — Smart Tab filter 02/10/26
+  const [vtMenuOpen, setVtMenuOpen] = useState(false)
   const [filterCanal, setFilterCanal] = useState('')
   const [filterMedio, setFilterMedio] = useState('')
   const inputRef = useRef(null)
@@ -681,7 +682,13 @@ export default function Ventas() {
         .vt-stab:hover{color:var(--txt2)}
         .vt-stab-on{color:var(--brand)}
         .vt-stab-ct{font-size:10px;font-weight:800;padding:1px 7px;border-radius:99px;background:var(--surface);color:var(--txt3)}
+        .vt-tab-more{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--txt3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;transition:all .12s;-webkit-tap-highlight-color:transparent;font-family:inherit}
+        .vt-tab-more:hover,.vt-tab-more.open{border-color:var(--brand);color:var(--brand);background:var(--brand-xlt)}
         @media(max-width:600px){
+          /* Smart tabs sin scroll: 3 tabs compactas + kebab entran a 360px */
+          .vt-smarttabs{padding:0 8px!important}
+          .vt-stab{padding:10px 9px!important;font-size:11.5px!important;gap:4px!important}
+          .vt-stab-ct{padding:1px 6px!important}
           .ventas-page{padding:8px 0 90px!important}
           .vt-header{padding:0 14px!important}
           .vt-new-btn{padding:10px 16px!important;font-size:13px!important;width:100%!important;justify-content:center;min-height:44px!important;border-radius:12px!important}
@@ -826,11 +833,26 @@ export default function Ventas() {
               <span className="vt-stab-ct" style={tab === t.k ? { background: t.color + '20', color: t.color } : undefined}>{t.count}</span>
             </button>
           ))}
-          <button onClick={exportCSV} disabled={!filteredBudgets.length}
-            title="Descargar como CSV (Excel)"
-            style={{ marginLeft: 'auto', marginRight: 10, padding: '5px 12px', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--txt2)', borderRadius: 999, cursor: filteredBudgets.length ? 'pointer' : 'not-allowed', fontSize: 11.5, fontWeight: 600, fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 5, opacity: filteredBudgets.length ? 1 : .5 }}>
-            <i className="fa fa-arrow-down-to-line" style={{ fontSize: 10 }} /> Exportar
-          </button>
+          <div style={{ marginLeft: 'auto', marginRight: 8, position: 'relative', flexShrink: 0 }}>
+            <button onClick={() => setVtMenuOpen(o => !o)}
+              className={`vt-tab-more${vtMenuOpen ? ' open' : ''}`}
+              title="Más acciones" aria-label="Más acciones" aria-haspopup="menu" aria-expanded={vtMenuOpen}>
+              <i className="fa fa-ellipsis" />
+            </button>
+            {vtMenuOpen && (
+              <>
+                <div onClick={() => setVtMenuOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 199, background: 'transparent' }} />
+                <div role="menu" style={{ position: 'absolute', top: 'calc(100% + 6px)', right: 0, zIndex: 200, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 10px 28px rgba(0,0,0,.15)', minWidth: 184, overflow: 'hidden', padding: 4 }} onClick={e => e.stopPropagation()}>
+                  <button role="menuitem" onClick={() => { exportCSV(); setVtMenuOpen(false) }} disabled={!filteredBudgets.length}
+                    style={{ display: 'flex', alignItems: 'center', gap: 9, width: '100%', padding: '9px 11px', border: 'none', background: 'transparent', color: filteredBudgets.length ? 'var(--txt)' : 'var(--txt4)', fontFamily: 'inherit', fontSize: 12.5, fontWeight: 500, cursor: filteredBudgets.length ? 'pointer' : 'not-allowed', textAlign: 'left', borderRadius: 8 }}
+                    onMouseEnter={e => { if (filteredBudgets.length) e.currentTarget.style.background = 'var(--surface2)' }}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                    <i className="fa fa-arrow-down-to-line" style={{ width: 15, textAlign: 'center', color: 'var(--brand)' }} /> Exportar CSV
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
         {/* Chips de filtro secundario — agrupados por dimensión (canal / medio
             de pago). Cada chip lleva su propio ícono para que el usuario sepa
