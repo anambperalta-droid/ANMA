@@ -354,7 +354,7 @@ export default function PedidoDrawer({
                   <button onClick={() => onRegistrarPago(b)} title="Registrar un pago recibido"
                     style={{
                       flex: 1, padding: '9px 12px',
-                      background: '#F0FDF4', color: '#15803D', border: '1px solid #86EFAC',
+                      background: 'var(--surface)', color: 'var(--txt2)', border: '1.5px solid var(--border-soft)',
                       borderRadius: 9, cursor: 'pointer', fontSize: 12, fontWeight: 700,
                       fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
                     }}>
@@ -465,14 +465,16 @@ export default function PedidoDrawer({
           padding: '14px 22px', borderTop: '1px solid var(--border)',
           display: 'flex', gap: 8, background: 'var(--surface)', flexShrink: 0,
         }}>
-          <button onClick={onEdit} className="btn btn-primary" style={{ flex: 1 }}>
+          <button onClick={onEdit}
+            className={(!sinCompromiso && payStatus !== 'paid' && (onRegistrarPago || onCobrarWA)) ? 'btn btn-secondary' : 'btn btn-primary'}
+            style={{ flex: 1 }}>
             <i className="fa fa-pen" /> Editar pedido
           </button>
           {b.wa && onWA && (
             <button onClick={onWA} title="Enviar por WhatsApp" style={{
-              padding: '8px 14px', borderRadius: 10, border: 'none',
-              background: '#25D366', color: '#fff', cursor: 'pointer',
-              fontSize: 13, fontWeight: 700, fontFamily: 'inherit',
+              padding: '8px 14px', borderRadius: 10,
+              background: 'transparent', color: '#128C7E', border: '1.5px solid rgba(37,211,102,.4)',
+              cursor: 'pointer', fontSize: 13, fontWeight: 700, fontFamily: 'inherit',
               display: 'flex', alignItems: 'center', gap: 6,
             }}>
               <i className="fa-brands fa-whatsapp" /> WA

@@ -495,7 +495,7 @@ function LossReasonModal({ budget, onSave, onClose }) {
   )
 }
 
-const DOT_STATUS = { draft: '#94A3B8', sent: '#3B82F6', negotiating: '#D97706', confirmed: '#16A34A', lost: '#DC2626' }
+const DOT_STATUS = { draft: '#C2B29A', sent: '#2E8BD6', negotiating: '#F2A93B', confirmed: '#15A66A', lost: '#DC2626' }
 const DOT_PAY = { pending: '#DC2626', partial: '#D97706', paid: '#16A34A' }
 
 function DotBadge({ status }) {
@@ -524,6 +524,7 @@ function BarChart({ data, prevData = [], type = 'income' }) {
   const maxV = Math.max(...shown.map(m => m.val), ...shown.map(m => m.prev), 1)
   const H = 104
   const barMax = 96
+  const barColor = type === 'gain' ? 'var(--feria-verde)' : 'var(--brand)'
   return (
     <div style={{ overflow: 'hidden', width: '100%' }}>
       <div className="bar-chart" style={{ height: H }}>
@@ -536,14 +537,14 @@ function BarChart({ data, prevData = [], type = 'income' }) {
                 <div style={{
                   position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)',
                   width: '70%', height: Math.max(2, prevPct * barMax),
-                  background: 'var(--brand)', opacity: 0.15, borderRadius: '3px 3px 0 0', zIndex: 0
+                  background: barColor, opacity: 0.15, borderRadius: '3px 3px 0 0', zIndex: 0
                 }} />
               )}
               <div
                 className="bb"
                 style={{
                   height: Math.max(4, pct * barMax),
-                  background: 'var(--brand)',
+                  background: barColor,
                   opacity: pct === 0 ? 0.12 : 0.35 + pct * 0.65,
                   position: 'relative', zIndex: 1,
                 }}
@@ -562,7 +563,7 @@ function BarChart({ data, prevData = [], type = 'income' }) {
       </div>
       {hasPrev && (
         <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 6, fontSize: 10, color: 'var(--txt4)' }}>
-          <div style={{ width: 10, height: 10, background: 'var(--brand)', opacity: 0.18, borderRadius: 2, flexShrink: 0 }} />
+          <div style={{ width: 10, height: 10, background: barColor, opacity: 0.18, borderRadius: 2, flexShrink: 0 }} />
           <span>Período anterior</span>
         </div>
       )}
@@ -1156,10 +1157,10 @@ export default function Historial() {
 
   // Status
   const statuses = [
-    { k: 'draft', l: 'Borrador', c: '#94A3B8' },
-    { k: 'sent', l: 'Enviado', c: 'var(--blue)' },
-    { k: 'negotiating', l: 'Negociando', c: 'var(--amber)' },
-    { k: 'confirmed', l: 'Confirmado', c: 'var(--green)' },
+    { k: 'draft', l: 'Borrador', c: '#C2B29A' },
+    { k: 'sent', l: 'Enviado', c: 'var(--feria-azul)' },
+    { k: 'negotiating', l: 'Negociando', c: 'var(--feria-amarillo)' },
+    { k: 'confirmed', l: 'Confirmado', c: 'var(--feria-verde)' },
     { k: 'lost', l: 'Perdido', c: 'var(--red)' },
   ]
 
