@@ -324,7 +324,7 @@ function ClientCombo({ clients, value, onSelect, onChange }) {
             }}
               onMouseEnter={e => e.currentTarget.style.background = 'var(--brand-xlt)'}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-              <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--grad)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800, color: '#fff', flexShrink: 0 }}>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800, color: '#fff', flexShrink: 0 }}>
                 {(c.company || c.contact || '?')[0].toUpperCase()}
               </div>
               <div style={{ minWidth: 0 }}>

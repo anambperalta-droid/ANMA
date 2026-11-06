@@ -713,22 +713,22 @@ export default function Clientes() {
       </div>
 
       <style>{`
-        .zt-tbl{max-width:1100px;margin:0 auto}
+        .zt-tbl{max-width:1340px;margin:0 auto}
         .zt-tbl table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
-        .zt-tbl thead th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--txt3);padding:8px 8px;white-space:nowrap}
+        .zt-tbl thead th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--txt3);padding:11px 12px;white-space:nowrap}
         .zt-tbl thead tr{border-bottom:1px solid var(--border)}
-        .zt-tbl tbody td{padding:9px 8px;font-size:13px;vertical-align:middle}
+        .zt-tbl tbody td{padding:14px 12px;font-size:14px;vertical-align:middle}
         .zt-tbl tbody tr{cursor:pointer;transition:background .12s}
-        .zt-tbl tbody tr:hover{background:#F8FAFC}
+        .zt-tbl tbody tr:hover{background:var(--surface2)}
         .zt-chk{appearance:none;-webkit-appearance:none;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;cursor:pointer;position:relative;display:block;margin:auto;transition:border-color .12s,background .12s}
         .zt-chk:hover{border-color:var(--brand)}
         .zt-chk:checked{border-color:var(--brand);background:var(--brand)}
         .zt-chk:checked::after{content:'';position:absolute;top:2px;left:5px;width:4px;height:7px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(42deg)}
         .zt-acts{opacity:.6;transition:opacity .15s;display:flex;align-items:center;gap:4px;justify-content:flex-end}
         .zt-tbl tbody tr:hover .zt-acts{opacity:1}
-        .zt-icon-btn{width:28px;height:28px;border-radius:8px;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-family:inherit;transition:transform .12s}
+        .zt-icon-btn{width:30px;height:30px;border-radius:8px;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:13.5px;font-family:inherit;transition:transform .12s}
         .zt-icon-btn:hover{transform:scale(1.1)}
-        .zt-ci{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;font-size:16px;text-decoration:none;transition:transform .12s,opacity .15s;opacity:.45}
+        .zt-ci{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;font-size:16px;text-decoration:none;transition:transform .12s,opacity .15s;opacity:.45}
         .zt-tbl tbody tr:hover .zt-ci{opacity:1}
         .zt-ci:hover{transform:scale(1.12)}
         .zt-ph{align-items:center!important}
