@@ -659,13 +659,13 @@ export default function Proveedores() {
       )}
 
       <style>{`
-        .zt-tbl{max-width:1100px;margin:0 auto}
+        .zt-tbl{max-width:1340px;margin:0 auto}
         .zt-tbl table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
-        .zt-tbl thead th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--txt3);padding:8px 8px;white-space:nowrap}
+        .zt-tbl thead th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--txt3);padding:11px 12px;white-space:nowrap}
         .zt-tbl thead tr{border-bottom:1px solid var(--border)}
-        .zt-tbl tbody td{padding:9px 8px;font-size:13px;vertical-align:middle}
+        .zt-tbl tbody td{padding:14px 12px;font-size:14px;vertical-align:middle}
         .zt-tbl tbody tr{cursor:pointer;transition:background .12s}
-        .zt-tbl tbody tr:hover{background:#F8FAFC}
+        .zt-tbl tbody tr:hover{background:var(--surface2)}
         .zt-chk{appearance:none;-webkit-appearance:none;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;cursor:pointer;position:relative;display:block;margin:auto;transition:border-color .12s,background .12s}
         .zt-chk:hover{border-color:var(--brand)}
         .zt-chk:checked{border-color:var(--brand);background:var(--brand)}
