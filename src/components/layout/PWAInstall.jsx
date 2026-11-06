@@ -82,7 +82,7 @@ export default function PWAInstall() {
 
   const icon = {
     width: 44, height: 44, borderRadius: 12,
-    background: 'linear-gradient(135deg,#F2762E,#4F46E5)',
+    background: 'linear-gradient(135deg,#F2762E,#D4521E)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     flexShrink: 0, fontSize: 22,
     boxShadow: '0 4px 12px rgba(242,118,46,.45)',
@@ -91,7 +91,7 @@ export default function PWAInstall() {
   const btnInstall = {
     display: 'flex', alignItems: 'center', gap: 6,
     marginTop: 10, padding: '8px 16px',
-    background: 'linear-gradient(135deg,#F2762E,#4F46E5)',
+    background: 'linear-gradient(135deg,#F2762E,#D4521E)',
     border: 'none', borderRadius: 8,
     color: '#fff', fontSize: 12, fontWeight: 700,
     cursor: 'pointer', fontFamily: 'inherit',

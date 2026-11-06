@@ -788,7 +788,7 @@ export default function Insumos() {
               {/* ── Calculadora de fraccionamiento ── */}
               <button
                 onClick={() => setShowCalc(p => !p)}
-                style={{ background: showCalc ? 'rgba(99,102,241,.08)' : 'var(--surface2)', border: `1.5px solid ${showCalc ? 'rgba(99,102,241,.3)' : 'var(--border)'}`, borderRadius: 8, cursor: 'pointer', padding: '7px 12px', fontSize: 11.5, fontWeight: 700, color: showCalc ? 'var(--brand)' : 'var(--txt3)', display: 'flex', alignItems: 'center', gap: 6, width: '100%', marginTop: 10, transition: 'all .15s' }}
+                style={{ background: showCalc ? 'rgba(242,118,46,.08)' : 'var(--surface2)', border: `1.5px solid ${showCalc ? 'rgba(242,118,46,.3)' : 'var(--border)'}`, borderRadius: 8, cursor: 'pointer', padding: '7px 12px', fontSize: 11.5, fontWeight: 700, color: showCalc ? 'var(--brand)' : 'var(--txt3)', display: 'flex', alignItems: 'center', gap: 6, width: '100%', marginTop: 10, transition: 'all .15s' }}
               >
                 <i className="fa fa-calculator" style={{ fontSize: 10 }} />
                 {showCalc ? 'Ocultar calculadora de fraccionamiento' : 'Calcular costo por unidad desde un pack'}
@@ -796,7 +796,7 @@ export default function Insumos() {
               </button>
 
               {showCalc && (
-                <div style={{ background: 'rgba(99,102,241,.05)', border: '1.5px solid rgba(99,102,241,.18)', borderRadius: 10, padding: '14px 14px 10px', marginTop: 8 }}>
+                <div style={{ background: 'rgba(242,118,46,.05)', border: '1.5px solid rgba(242,118,46,.18)', borderRadius: 10, padding: '14px 14px 10px', marginTop: 8 }}>
                   <div style={{ fontSize: 10, fontWeight: 800, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 5 }}>
                     <i className="fa fa-calculator" style={{ fontSize: 9 }} /> Fraccionamiento de pack
                   </div>
@@ -832,7 +832,7 @@ export default function Insumos() {
                     <input type="number" value={form.qtyPerGift || ''} onChange={e => setF('qtyPerGift', e.target.value)} onFocus={numFocus} placeholder="1" min="0" step="0.1" />
                   </div>
                   {costPerGift !== null && (
-                    <div style={{ background: 'rgba(99,102,241,.12)', borderRadius: 8, padding: '10px 14px', marginTop: 4 }}>
+                    <div style={{ background: 'rgba(242,118,46,.12)', borderRadius: 8, padding: '10px 14px', marginTop: 4 }}>
                       <div style={{ fontSize: 10, color: 'var(--brand)', fontWeight: 700, marginBottom: 2, textTransform: 'uppercase', letterSpacing: '.06em' }}>
                         <i className="fa fa-equals" style={{ marginRight: 4 }} />Costo por unidad calculado
                       </div>
@@ -840,7 +840,7 @@ export default function Insumos() {
                         {fmtDec(costPerGift)}
                         <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--txt3)', marginLeft: 5 }}>/ {form.unit || 'un'}</span>
                       </div>
-                      <div style={{ fontSize: 10, color: 'rgba(99,102,241,.7)', marginTop: 3 }}>
+                      <div style={{ fontSize: 10, color: 'rgba(242,118,46,.7)', marginTop: 3 }}>
                         {fmtDec((parseFloat(form.packCost) || 0) + (parseFloat(form.shippingCost) || 0))} ÷ {form.packQty} × {form.qtyPerGift} {form.unit || 'un'}
                         {parseFloat(form.shippingCost) > 0 && (
                           <span style={{ display: 'block', color: '#F2994A', marginTop: 1 }}>

@@ -89,10 +89,10 @@ export default function TaskFab() {
             style={{
               width: 28, height: 28, borderRadius: 8,
               background: '#EEF2FF', border: 'none', cursor: 'pointer', fontSize: 11,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#4F46E5',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)',
               transition: 'background .15s',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = '#312e81'}
+            onMouseEnter={e => e.currentTarget.style.background = '#D4521E'}
             onMouseLeave={e => e.currentTarget.style.background = '#EEF2FF'}
           >
             <i className="fa fa-expand" style={{ pointerEvents: 'none' }} />

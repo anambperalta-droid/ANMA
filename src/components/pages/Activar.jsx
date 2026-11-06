@@ -157,7 +157,7 @@ export default function Activar() {
 
               {/* Pago de ingreso */}
               <div style={{
-                background: 'rgba(99,102,241,.12)', border: '1.5px solid rgba(242,118,46,.4)',
+                background: 'rgba(242,118,46,.12)', border: '1.5px solid rgba(242,118,46,.4)',
                 borderRadius: 14, padding: '14px 18px', marginBottom: 14,
               }}>
                 <div style={{ fontSize: 10.5, fontWeight: 800, color: '#c4b5fd', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>

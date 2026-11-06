@@ -1469,7 +1469,7 @@ export default function Config() {
             tabIndex={0}
             onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && nav('/mi-cuenta')}
             style={{
-              background: 'linear-gradient(135deg, rgba(242,118,46,.08), rgba(99,102,241,.04))',
+              background: 'linear-gradient(135deg, rgba(242,118,46,.08), rgba(242,118,46,.04))',
               border: '1.5px solid rgba(242,118,46,.22)',
               borderRadius: 14, padding: '14px 18px', marginBottom: 20,
               display: 'flex', alignItems: 'center', gap: 14,

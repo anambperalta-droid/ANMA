@@ -79,7 +79,7 @@ function FocusOverlay() {
         {/* Header */}
         <div style={{
           padding: '18px 20px 16px',
-          background: 'linear-gradient(135deg, #1e1b4b, #312e81)',
+          background: 'linear-gradient(135deg, #2A1810, #5A2E14)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           flexShrink: 0,
         }}>
@@ -159,7 +159,7 @@ function FocusOverlay() {
             </div>
             <button onClick={addTask} disabled={!desc.trim()} style={{
               width: '100%', padding: '8px', borderRadius: 8, border: 'none',
-              background: desc.trim() ? 'linear-gradient(135deg,#312e81,#4F46E5)' : 'var(--surface2)',
+              background: desc.trim() ? 'linear-gradient(135deg,#8A3A14,#D4521E)' : 'var(--surface2)',
               color: desc.trim() ? '#fff' : 'var(--txt4)',
               fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
             }}>
@@ -182,7 +182,7 @@ function FocusOverlay() {
                 onClick={() => setFormOpen(true)}
                 style={{
                   marginTop: 8, padding: '8px 20px', borderRadius: 20,
-                  background: 'linear-gradient(135deg,#312e81,#4F46E5)',
+                  background: 'linear-gradient(135deg,#8A3A14,#D4521E)',
                   color: '#fff', border: 'none', fontSize: 12, fontWeight: 700, cursor: 'pointer',
                 }}
               >

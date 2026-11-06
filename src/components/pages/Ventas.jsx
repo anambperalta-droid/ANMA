@@ -765,7 +765,7 @@ export default function Ventas() {
           </button>
           <div className="vt-hero-stats">
             <div className="vt-hero-stat">
-              <div className="vt-hero-stat-icon" style={{ background: 'rgba(99,102,241,.1)', color: '#F2994A' }}>
+              <div className="vt-hero-stat-icon" style={{ background: 'rgba(242,118,46,.1)', color: '#F2994A' }}>
                 <i className="fa fa-receipt" />
               </div>
               <div>

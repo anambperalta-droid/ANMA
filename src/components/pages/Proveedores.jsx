@@ -1404,7 +1404,7 @@ export default function Proveedores() {
                                 <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {title || <span style={{ color: 'var(--txt4)', fontStyle: 'italic', fontWeight: 500 }}>Sin concepto</span>}
                                   {c.recurrente && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'var(--brand-xlt)', color: 'var(--brand)' }}><i className="fa fa-rotate" style={{ fontSize: 7, marginRight: 2 }} />recurrente</span>}
-                                  {hasItems && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'rgba(99,102,241,.1)', color: '#F2994A' }}><i className="fa fa-list" style={{ fontSize: 7, marginRight: 2 }} />{c.items.length} items</span>}
+                                  {hasItems && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'rgba(242,118,46,.1)', color: '#F2994A' }}><i className="fa fa-list" style={{ fontSize: 7, marginRight: 2 }} />{c.items.length} items</span>}
                                 </div>
                                 <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 2 }}>
                                   {fechaCorta}{c.cantidad > 0 ? ` · ${c.cantidad}u` : ''}{c.nota ? ` · ${c.nota}` : ''}

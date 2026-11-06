@@ -748,7 +748,7 @@ export default function Admin() {
 
       {/* Banner de signups recientes detectados en esta sesión */}
       {recentSignups.length > 0 && (
-        <div style={{ marginBottom: 14, padding: '10px 14px', background: 'linear-gradient(90deg, rgba(242,118,46,.08), rgba(99,102,241,.05))', border: '1px solid rgba(242,118,46,.25)', borderRadius: 10, fontSize: 12.5, color: 'var(--txt2)' }}>
+        <div style={{ marginBottom: 14, padding: '10px 14px', background: 'linear-gradient(90deg, rgba(242,118,46,.08), rgba(242,118,46,.05))', border: '1px solid rgba(242,118,46,.25)', borderRadius: 10, fontSize: 12.5, color: 'var(--txt2)' }}>
           <i className="fa fa-bolt" style={{ color: '#F2762E', marginRight: 6 }} />
           <strong>{recentSignups.length} signup{recentSignups.length !== 1 ? 's' : ''} en esta sesión:</strong>{' '}
           {recentSignups.slice(0, 3).map((s, i) => (
@@ -925,7 +925,7 @@ export default function Admin() {
           </div>
         </div>
         <div className="admin-mcard">
-          <div className="admin-mcard-ico" style={{ background: 'rgba(99,102,241,.12)', color: '#F2994A' }}>
+          <div className="admin-mcard-ico" style={{ background: 'rgba(242,118,46,.12)', color: '#F2994A' }}>
             <i className="fa fa-chart-line" />
           </div>
           <div>

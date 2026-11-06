@@ -453,7 +453,7 @@ export default function MiCuenta() {
           <div style={{ padding: '36px 20px', textAlign: 'center' }}>
             <div style={{
               width: 60, height: 60, borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(242,118,46,.10), rgba(99,102,241,.06))',
+              background: 'linear-gradient(135deg, rgba(242,118,46,.10), rgba(242,118,46,.06))',
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               marginBottom: 12, color: '#F2762E', fontSize: 22,
             }}>
