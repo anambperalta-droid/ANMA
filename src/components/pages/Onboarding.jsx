@@ -81,7 +81,7 @@ export default function Onboarding() {
     card: {
       width: '100%', maxWidth: 620, background: '#fff', borderRadius: 22,
       padding: '36px 32px 28px',
-      boxShadow: '0 12px 48px rgba(30,27,75,.12), 0 2px 6px rgba(0,0,0,.04)',
+      boxShadow: '0 12px 48px rgba(42,33,24,.12), 0 2px 6px rgba(0,0,0,.04)',
       border: '1px solid rgba(242,118,46,.08)',
     },
     badge: {
