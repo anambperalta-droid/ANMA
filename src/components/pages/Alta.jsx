@@ -66,7 +66,7 @@ export default function Alta({ appName = 'ANMA Hub' }) {
     page: { minHeight: '100vh', background: 'linear-gradient(140deg,#F5F3FF 0%,#EFF6FF 60%,#F0FDF4 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px 16px', fontFamily: "'Inter',system-ui,sans-serif" },
     card: { width: '100%', maxWidth: 440, background: '#fff', borderRadius: 24, padding: '28px 26px 24px', boxShadow: '0 6px 40px rgba(0,0,0,.1),0 1px 4px rgba(0,0,0,.06)', border: '1px solid rgba(0,0,0,.05)' },
     logo: { width: 56, height: 56, borderRadius: 16, background: 'linear-gradient(135deg,#F2762E,#9D5CF5)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px', fontSize: 24, fontWeight: 800, color: '#fff', letterSpacing: '-.5px', boxShadow: '0 8px 24px rgba(242,118,46,.28)' },
-    title: { fontSize: 21, fontWeight: 800, color: '#1E1B4B', margin: '0 0 3px', letterSpacing: '-.5px', textAlign: 'center' },
+    title: { fontSize: 21, fontWeight: 800, color: '#2A1810', margin: '0 0 3px', letterSpacing: '-.5px', textAlign: 'center' },
     sub: { fontSize: 13, color: '#6B7280', margin: '0 0 22px', textAlign: 'center' },
     label: { display: 'block', fontSize: 11, fontWeight: 700, color: '#374151', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 5 },
     input: { width: '100%', padding: '11px 14px', border: '1.5px solid #E5E7EB', borderRadius: 10, fontFamily: 'inherit', fontSize: 14, color: '#111827', outline: 'none', boxSizing: 'border-box', transition: 'border-color .15s' },
@@ -164,7 +164,7 @@ export default function Alta({ appName = 'ANMA Hub' }) {
             /* ── ÉXITO ── */
             <div style={s.success}>
               <div style={{ fontSize: 46, marginBottom: 8, color: '#16A34A' }}><i className="fa fa-circle-check" /></div>
-              <h2 style={{ fontSize: 20, fontWeight: 800, color: '#1E1B4B', margin: '0 0 6px', letterSpacing: '-.4px' }}>¡Listo, {form.contact || form.company}!</h2>
+              <h2 style={{ fontSize: 20, fontWeight: 800, color: '#2A1810', margin: '0 0 6px', letterSpacing: '-.4px' }}>¡Listo, {form.contact || form.company}!</h2>
               <p style={{ fontSize: 13, color: '#6B7280', margin: '0 0 20px', lineHeight: 1.6 }}>
                 {adminWa
                   ? `Enviá tus datos a ${negocio} con el botón de abajo:`

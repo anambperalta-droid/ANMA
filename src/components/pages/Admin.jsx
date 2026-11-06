@@ -967,7 +967,7 @@ export default function Admin() {
         <div style={{
           marginBottom: 10, padding: '12px 16px',
           background: 'linear-gradient(135deg, #EDE9FE, #C7D2FE)',
-          border: '1.5px solid #A78BFA',
+          border: '1.5px solid #F2994A',
           borderRadius: 12,
           display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
           boxShadow: '0 4px 14px rgba(242,118,46,.12)',
@@ -981,7 +981,7 @@ export default function Admin() {
             <i className="fa fa-check" />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 13, fontWeight: 800, color: '#4C1D95' }}>
+            <div style={{ fontSize: 13, fontWeight: 800, color: '#7A2E12' }}>
               {selectedBilling.size} workspace{selectedBilling.size !== 1 ? 's' : ''} seleccionado{selectedBilling.size !== 1 ? 's' : ''}
             </div>
             <div style={{ fontSize: 11.5, color: '#D4521E', opacity: .85, marginTop: 2 }}>
@@ -1011,7 +1011,7 @@ export default function Admin() {
             onClick={clearBillingSelection}
             style={{
               padding: '9px 14px', borderRadius: 10,
-              background: 'transparent', border: '1.5px solid #A78BFA',
+              background: 'transparent', border: '1.5px solid #F2994A',
               color: '#D4521E', fontSize: 12, fontWeight: 600,
               cursor: 'pointer', fontFamily: 'inherit',
             }}

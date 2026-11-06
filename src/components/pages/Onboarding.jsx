@@ -92,7 +92,7 @@ export default function Onboarding() {
       textTransform: 'uppercase', letterSpacing: '.06em',
       marginBottom: 10,
     },
-    h1: { fontSize: 26, fontWeight: 800, color: '#1E1B4B', margin: '0 0 6px', letterSpacing: '-.5px' },
+    h1: { fontSize: 26, fontWeight: 800, color: '#2A1810', margin: '0 0 6px', letterSpacing: '-.5px' },
     sub: { fontSize: 13.5, color: '#6B7280', margin: '0 0 28px', lineHeight: 1.55 },
     section: { marginBottom: 22 },
     label: {
@@ -320,7 +320,7 @@ function SelectCard({ fa, label, sub, selected, onClick }) {
         <LineIcon fa={fa} size={21} color={selected ? '#fff' : '#F2762E'} />
       </div>
       <div style={{ flex: 1, minWidth: 0, paddingRight: selected ? 18 : 0 }}>
-        <div style={{ fontSize: 14, fontWeight: 800, color: selected ? '#D4521E' : '#1E1B4B', letterSpacing: '-.1px', lineHeight: 1.2 }}>{label}</div>
+        <div style={{ fontSize: 14, fontWeight: 800, color: selected ? '#D4521E' : '#2A1810', letterSpacing: '-.1px', lineHeight: 1.2 }}>{label}</div>
         <div style={{ fontSize: 11, color: '#6B7280', lineHeight: 1.4, marginTop: 2 }}>{sub}</div>
       </div>
       {selected && (

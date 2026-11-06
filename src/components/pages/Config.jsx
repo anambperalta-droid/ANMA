@@ -317,6 +317,10 @@ export default function Config() {
     // Idem para el subtitle si era el default o el del rubro anterior.
     const patch = {
       businessName: bname, subtitle: bsub, brandColor: bcolor, accentColor: acolor,
+      // Marca el color como elegido a propósito solo si difiere de la base feria.
+      // Si coincide con feria, queda como base (brandCustomized:false) y el sistema
+      // lo trata como el default coherente.
+      brandCustomized: (bcolor.toUpperCase() !== '#F2762E' || acolor.toUpperCase() !== '#059669'),
       contactEmail: cEmail, contactWA: cWA.replace(/[^\d]/g, ''), contactIG: cIG, contactWeb: cWeb, address: cAddr,
       currency, numberFormat, budgetPrefix: prefix, defaultMargin: Number(defMargin), defaultDeposit: Number(defDeposit), validity: Number(validity),
       tipoVenta, rubro,

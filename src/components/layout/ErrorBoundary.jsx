@@ -90,7 +90,7 @@ export default class ErrorBoundary extends Component {
             margin: '0 0 8px',
             fontSize: '20px',
             fontWeight: 800,
-            color: '#1E1B4B',
+            color: '#2A1810',
             letterSpacing: '-.4px',
           }}>
             Algo salió mal

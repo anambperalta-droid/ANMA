@@ -234,7 +234,7 @@ export default function MiCuenta() {
       {/* ═══ HEADER con avatar + estado ═══ */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 16, padding: '18px 22px',
-        background: 'linear-gradient(135deg, #4C1D95, #F2762E 50%, #A78BFA)',
+        background: 'linear-gradient(135deg, #7A2E12, #F2762E 50%, #F2A93B)',
         borderRadius: 18, marginBottom: 20,
         boxShadow: '0 10px 30px rgba(242,118,46,.25)',
         flexWrap: 'wrap',

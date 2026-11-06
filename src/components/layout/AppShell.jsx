@@ -256,7 +256,7 @@ function AdminGuard({ children }) {
 const COLLAPSED_KEY = 'anma_sidebar_collapsed'
 
 function AppShellInner() {
-  const { config, updateConfig } = useData()
+  const { config } = useData()
   const { can } = useAuth()
   const { focusMode } = useTaskFab()
   const nav = useNavigate()
@@ -276,16 +276,15 @@ function AppShellInner() {
 
   useEffect(() => {
     const c = config()
-    // Migración única a Feria luminosa: normaliza colores legacy (violeta/magenta/lima)
-    // guardados en el workspace a la paleta feria. Después respeta lo que el usuario
-    // elija en Configuración (el flag evita volver a pisarlo).
-    if (!c.feriaColorsMigrated) {
-      updateConfig({ brandColor: '#F2762E', accentColor: '#059669', feriaColorsMigrated: true })
-      applyThemeColors('#F2762E', '#059669')
-      return
-    }
-    const brand = (!c.brandColor || c.brandColor === '#7C3AED') ? '#F2762E' : c.brandColor
-    applyThemeColors(brand, c.accentColor || '#059669')
+    // Feria luminosa es la base del design system. Solo aplicamos un color propio
+    // si el usuario lo eligió explícitamente en Configuración (brandCustomized).
+    // Cualquier color legacy sembrado (violeta/magenta/lima) se normaliza a feria
+    // en cada carga → armonía garantizada y a prueba de sync.
+    const custom = c.brandCustomized === true
+    applyThemeColors(
+      custom && c.brandColor ? c.brandColor : '#F2762E',
+      custom && c.accentColor ? c.accentColor : '#059669'
+    )
   })
 
   // ── Tocar fuera de un campo cierra el teclado (mobile) ──

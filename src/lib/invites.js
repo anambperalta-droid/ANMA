@@ -16,7 +16,7 @@ const ALL_SITES = {
     url: 'https://anmahub.com',
     redirectTo: 'https://anmahub.com/app/bienvenida',
     icon: 'fa-chart-line',
-    color: '#7C3AED',
+    color: '#D4521E',
   },
   host: {
     key: 'host',

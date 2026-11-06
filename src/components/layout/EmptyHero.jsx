@@ -34,7 +34,7 @@ export default function EmptyHero({ icon = 'fa-folder-open', title, subtitle, pr
       }}>
         <div style={{
           width: 64, height: 64, borderRadius: 18,
-          background: `linear-gradient(135deg, ${accentColor}, ${accent === 'green' ? '#10B981' : '#A78BFA'})`,
+          background: `linear-gradient(135deg, ${accentColor}, ${accent === 'green' ? '#10B981' : '#F2994A'})`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           color: '#fff', fontSize: 26,
           boxShadow: `0 8px 24px ${accentBg}`,

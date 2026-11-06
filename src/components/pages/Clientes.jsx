@@ -28,7 +28,7 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
       </tr>`).join('')
     const html = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
       <title>${budget.num || 'Presupuesto'}</title>
-      <style>*{box-sizing:border-box}body{font-family:system-ui,sans-serif;margin:32px;color:#1E1B4B}table{width:100%;border-collapse:collapse}@media print{body{margin:20px}}</style>
+      <style>*{box-sizing:border-box}body{font-family:system-ui,sans-serif;margin:32px;color:#2A1810}table{width:100%;border-collapse:collapse}@media print{body{margin:20px}}</style>
       </head><body>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:16px;border-bottom:3px solid ${brandColor};margin-bottom:20px">
         <div>${c.logo ? `<img src="${c.logo}" style="height:40px;margin-bottom:4px">` : `<div style="font-size:22px;font-weight:800;color:${brandColor}">${bName}</div>`}${c.subtitle ? `<div style="font-size:11px;color:#888;margin-top:2px">${c.subtitle}</div>` : ''}</div>
@@ -86,7 +86,7 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
               {c.subtitle && <div style={{ fontSize: 10, color: '#888', marginTop: 2 }}>{c.subtitle}</div>}
             </div>
             <div style={{ textAlign: 'right', flexShrink: 0 }}>
-              <div style={{ fontSize: 17, fontWeight: 800, color: '#1E1B4B', letterSpacing: '-.5px' }}>{budget.num || '—'}</div>
+              <div style={{ fontSize: 17, fontWeight: 800, color: '#2A1810', letterSpacing: '-.5px' }}>{budget.num || '—'}</div>
               <div style={{ fontSize: 11, color: '#666', marginTop: 2 }}>Fecha: {budget.date || '—'}</div>
               {budget.deliveryDate && <div style={{ fontSize: 11, color: '#666' }}>Entrega: {budget.deliveryDate}</div>}
             </div>
@@ -95,7 +95,7 @@ function BudgetPreviewModal({ budget, config, onClose, onEdit }) {
           {/* Datos cliente */}
           <div style={{ background: '#F8F9FE', borderRadius: 8, padding: '12px 14px', marginBottom: 16 }}>
             <div style={{ fontSize: 9, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 6 }}>Cliente</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '4px 16px', fontSize: 12, color: '#1E1B4B' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '4px 16px', fontSize: 12, color: '#2A1810' }}>
               {budget.contact && <div><span style={{ color: '#888', fontSize: 10 }}>Contacto: </span><b>{budget.contact}</b></div>}
               {budget.company && <div><span style={{ color: '#888', fontSize: 10 }}>Empresa: </span><b>{budget.company}</b></div>}
               {budget.wa && <div><span style={{ color: '#888', fontSize: 10 }}>WhatsApp: </span>{budget.wa}</div>}
@@ -741,7 +741,7 @@ export default function Clientes() {
         .cli-pill:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-xlt)}
         .cli-pill:active{transform:scale(.95)}
         .cli-pill i{font-size:12px}
-        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light,#F2994A) 100%);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
+        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:var(--brand);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
         .cli-pill-new:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 10px 26px var(--brand-dim)}
         .cli-pill-new:active{transform:scale(.95)}
         .cli-pill-new i{font-size:11px}

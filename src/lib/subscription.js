@@ -103,7 +103,7 @@ export function getBillingStatus(workspace) {
       daysUntilDue,
       label: 'Esperando setup',
       urgency: 'fresh',
-      tone: { bg: 'rgba(124,58,237,.12)', fg: '#7C3AED' },
+      tone: { bg: 'rgba(242,118,46,.12)', fg: '#D4521E' },
       shouldShowBanner: false,  // No molestar — ya pagó
       shouldBlock: false,
     }
@@ -203,7 +203,7 @@ export function getBillingStatus(workspace) {
     daysUntilDue,
     label: 'Trial',
     urgency: 'fresh',
-    tone: { bg: 'rgba(124,58,237,.12)', fg: '#7C3AED' },
+    tone: { bg: 'rgba(242,118,46,.12)', fg: '#D4521E' },
     shouldShowBanner: false,
     shouldBlock: false,
   }

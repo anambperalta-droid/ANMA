@@ -41,7 +41,7 @@ function getLuminance(hex) {
  * Garantiza ratio mínimo ~4.5:1 (WCAG AA) para cualquier marca.
  */
 function contrastText(bgHex) {
-  return getLuminance(bgHex) > 0.35 ? '#1E1B4B' : '#FFFFFF'
+  return getLuminance(bgHex) > 0.35 ? '#2A1810' : '#FFFFFF'
 }
 
 /**
@@ -69,7 +69,7 @@ export function applyThemeColors(principal, acento) {
     root.setProperty('--brand-100', `rgba(${r},${g},${b},.10)`)
     root.setProperty('--brand-200', `rgba(${r},${g},${b},.20)`)
 
-    root.setProperty('--grad', `linear-gradient(135deg, ${principal} 0%, ${mixHex(principal, '#F2A93B', 0.5)} 100%)`)
+    root.setProperty('--grad', principal)
     root.setProperty('--grad-soft', `linear-gradient(135deg, rgba(${r},${g},${b},.08) 0%, rgba(${r},${g},${b},.04) 100%)`)
     root.setProperty('--sh-brand', `0 6px 20px rgba(${r},${g},${b},.28)`)
 

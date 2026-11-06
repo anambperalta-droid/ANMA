@@ -131,8 +131,8 @@ function doGet() {
 function getOrCreateSheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName(SHEET_NAME);
-  if (!sh) { sh = ss.insertSheet(SHEET_NAME); sh.appendRow(HEADERS); sh.getRange(1,1,1,HEADERS.length).setFontWeight('bold').setBackground('#7C3AED').setFontColor('#ffffff'); sh.setFrozenRows(1); }
-  if (sh.getLastRow() === 0) { sh.appendRow(HEADERS); sh.getRange(1,1,1,HEADERS.length).setFontWeight('bold').setBackground('#7C3AED').setFontColor('#ffffff'); sh.setFrozenRows(1); }
+  if (!sh) { sh = ss.insertSheet(SHEET_NAME); sh.appendRow(HEADERS); sh.getRange(1,1,1,HEADERS.length).setFontWeight('bold').setBackground('#F2762E').setFontColor('#ffffff'); sh.setFrozenRows(1); }
+  if (sh.getLastRow() === 0) { sh.appendRow(HEADERS); sh.getRange(1,1,1,HEADERS.length).setFontWeight('bold').setBackground('#F2762E').setFontColor('#ffffff'); sh.setFrozenRows(1); }
   return sh;
 }
 
