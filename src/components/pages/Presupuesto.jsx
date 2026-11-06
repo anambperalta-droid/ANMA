@@ -398,6 +398,7 @@ export default function Presupuesto() {
   const [waTouched, setWaTouched] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
   const [draftRestored, setDraftRestored] = useState(false)
+  const [logiOpen, setLogiOpen] = useState(false)
   // Anti doble-guardado: el ref frena la reentrada inmediata (doble-tap en
   // celular, antes de que React re-renderice), el state desactiva el botón.
   const savingRef = useRef(false)
@@ -2009,9 +2010,16 @@ export default function Presupuesto() {
                   <div className="fg"><label>Nota al cliente (PDF)</label><textarea value={form.noteCli} onChange={e => setF('noteCli', e.target.value)} rows={2} placeholder="Visible en el presupuesto..." style={{ minHeight: 42 }} /></div>
                 </div>
 
-                {/* ─── 🚚 Logística / Comisionista — al FINAL del paso para no obstruir el flujo principal ─── */}
+                {/* ─── 🚚 Logística / Comisionista — al FINAL del paso, colapsable para no obstruir el flujo principal ─── */}
+                {(() => {
+                const hasLogiData = !!(form.comisionista || form.viajeFecha || (form.logisticaParadas || []).length || form.viajeId)
+                const logiShown = logiOpen || hasLogiData
+                return (
                 <div className="logi-section-card" style={{ marginTop: 18 }}>
-                  <div className="logi-section-hd">
+                  <button type="button" className="logi-section-hd" onClick={() => setLogiOpen(o => !o)}
+                    style={{ width: '100%', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', padding: 0,
+                      border: 'none', borderBottom: logiShown ? '1px solid var(--border)' : 'none',
+                      marginBottom: logiShown ? 12 : 0, paddingBottom: logiShown ? 12 : 0 }}>
                     <div className="logi-section-hd-l">
                       <div className="logi-section-ico"><i className="fa fa-truck-fast" /></div>
                       <div className="logi-section-tx">
@@ -2019,12 +2027,15 @@ export default function Presupuesto() {
                         <div className="logi-section-hint">Opcional · suma al costo total</div>
                       </div>
                     </div>
-                    {form.viajeId && (
+                    {form.viajeId ? (
                       <span className="logi-section-tag" title="Vinculado a un viaje registrado">
                         <i className="fa fa-link" /> Viaje #{form.viajeId}
                       </span>
+                    ) : (
+                      <i className={`fa fa-chevron-${logiShown ? 'up' : 'down'}`} style={{ color: 'var(--txt3)', fontSize: 13, flexShrink: 0 }} />
                     )}
-                  </div>
+                  </button>
+                  {logiShown && <>
                   <div className="grid2 logi-section-fields">
                     <div className="fg">
                       <label>Comisionista / Transportista</label>
@@ -2112,7 +2123,9 @@ export default function Presupuesto() {
                       </div>
                     </>
                   )}
+                  </>}
                 </div>
+                ) })()}
               </>
             )}
 
