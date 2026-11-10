@@ -734,13 +734,27 @@ export default function Proveedores() {
         @media(max-width:640px){
           .prov-detail-panel{position:fixed;left:0;right:0;bottom:0;max-height:88vh;background:var(--surface);z-index:401;display:flex;flex-direction:column;border-radius:20px 20px 0 0;box-shadow:0 -4px 32px rgba(0,0,0,.14);animation:provSheetUp .28s cubic-bezier(.32,1.28,.58,1) both;overflow:hidden}
           .prov-detail-panel::before{content:'';display:block;width:36px;height:4px;background:var(--border2,var(--border2));border-radius:2px;margin:10px auto 0;flex-shrink:0}
-          .prov-detail-hd{padding:12px 16px 10px!important}
-          .prov-detail-avatar{width:36px!important;height:36px!important;font-size:15px!important}
-          .prov-detail-name{font-size:15px!important}
-          .prov-detail-sub{font-size:11px!important}
-          .prov-detail-hd-acts .btn{padding:0!important;width:34px;height:34px;min-width:34px;border-radius:50%;justify-content:center}
+          /* Mismo patron que la ficha de Cliente (.cli-dt-* en index.css):
+             identidad a ancho completo, acciones en su propia fila con la
+             principal ocupando el resto, y la X fija arriba a la derecha. */
+          .prov-detail-hd{padding:14px 16px 12px!important;position:relative}
+          .prov-detail-hd > div:first-child{flex-wrap:wrap;gap:0!important}
+          .prov-detail-hd > div:first-child > div:first-child{flex:1 1 100%!important;min-width:0;padding-right:38px}
+          .prov-detail-avatar{width:40px!important;height:40px!important;font-size:16px!important}
+          .prov-detail-name{font-size:16px!important}
+          .prov-detail-sub{font-size:11.5px!important}
+          .prov-detail-hd-acts{width:100%;margin-top:12px;gap:6px!important}
+          .prov-detail-hd-acts .btn{padding:0!important;width:36px;height:36px;min-width:36px;
+            border-radius:50%;justify-content:center;flex-shrink:0}
           .prov-detail-hd-acts .btn span{display:none}
           .prov-detail-hd-acts .btn i{margin:0;font-size:13px}
+          /* La accion principal conserva el texto y se estira, como
+             "+ Nuevo pedido" en Clientes. */
+          .prov-detail-hd-acts .prov-hd-primary{width:auto;min-width:0;flex:1;order:-1;
+            border-radius:9px;padding:0 14px!important}
+          .prov-detail-hd-acts .prov-hd-primary span{display:inline}
+          .prov-detail-hd-acts .prov-hd-primary i{margin-right:6px}
+          .prov-detail-hd-acts .mclose{position:absolute;top:12px;right:12px}
           .prov-detail-body{padding:14px 16px!important}
           /* 5 pestanas no entran en 390px: scroll con la barra oculta y un
              fade a la derecha para que se vea que hay mas. Sin el fade el
@@ -1031,14 +1045,14 @@ export default function Proveedores() {
                   </div>
                   <div style={{ minWidth: 0, flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
-                      <h3 className="prov-detail-name" style={{ fontSize: 17, fontWeight: 900, color: 'var(--txt)', letterSpacing: '-.4px', margin: 0, lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{detailSupplier.name}</h3>
+                      <h3 className="prov-detail-name" style={{ fontSize: 17, fontWeight: 900, color: 'var(--txt)', letterSpacing: '-.4px', margin: 0, lineHeight: 1.2 }}>{detailSupplier.name}</h3>
                       {(() => {
                         const e = supplierEstado(detailSupplier)
                         const m = PROV_ESTADO_META[e]
                         return <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: m.bg, color: m.color, fontSize: 10, fontWeight: 800, padding: '3px 9px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: '.5px' }}><i className={`fa ${m.icon}`} />{m.label}</span>
                       })()}
                     </div>
-                    <div className="prov-detail-sub" style={{ fontSize: 12, color: 'var(--txt3)', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div className="prov-detail-sub" style={{ fontSize: 12, color: 'var(--txt3)', marginTop: 2 }}>
                       {detailSupplier.contact && <>{detailSupplier.contact}</>}
                       {detailSupplier.rubro && <span style={{ color: 'var(--txt4)' }}>{detailSupplier.contact ? ' · ' : ''}{detailSupplier.rubro}</span>}
                       {(() => {
@@ -1053,7 +1067,7 @@ export default function Proveedores() {
                   <button className="btn btn-ghost btn-sm" onClick={() => sharePortalLink(detailSupplier)} title="Compartir portal">
                     <i className="fa fa-share-nodes" /> <span>Compartir</span>
                   </button>
-                  <button className="btn btn-ghost btn-sm" onClick={() => { const n = detailSupplier.name; setDetailSupplier(null); nav(`/compras?prov=${encodeURIComponent(n)}&new=1`) }} title="Registrar gasto">
+                  <button className="btn btn-primary btn-sm prov-hd-primary" onClick={() => { const n = detailSupplier.name; setDetailSupplier(null); nav(`/compras?prov=${encodeURIComponent(n)}&new=1`) }} title="Registrar gasto">
                     <i className="fa fa-cart-shopping" /> <span>Registrar gasto</span>
                   </button>
                   <button className="btn btn-ghost btn-sm" onClick={() => { const s = detailSupplier; setDetailSupplier(null); openEdit(s) }} title="Editar"><i className="fa fa-pen" /> <span>Editar</span></button>
@@ -1065,11 +1079,12 @@ export default function Proveedores() {
             {/* Pestañas */}
             <div className="detail-tabs prov-detail-tabs">
               {[['info', 'Información'], ['productos', 'Productos'], ['precios', 'Precios'], ['compras', 'Compras'], ['notas', 'Notas']].map(([k, l]) => {
-                const count = k === 'compras' ? supplierCompras(detailSupplier).length : 0
+                const count = k === 'compras' ? supplierCompras(detailSupplier).length
+                  : k === 'productos' ? supplierProducts(detailSupplier).length : 0
                 return (
                   <div key={k} className={`detail-tab ${detailTab === k ? 'active' : ''}`} onClick={() => setDetailTab(k)}>
                     {l}
-                    {k === 'compras' && count > 0 && (
+                    {count > 0 && (
                       <span style={{ marginLeft: 5, background: 'var(--brand-xlt)', color: 'var(--brand)', fontSize: 9, fontWeight: 800, padding: '1px 6px', borderRadius: 999, verticalAlign: 'middle' }}>{count}</span>
                     )}
                   </div>
@@ -1088,16 +1103,18 @@ export default function Proveedores() {
                     const low = supplierProducts(detailSupplier).filter(p => isLowStock(p))
                     if (!low.length) return null
                     return (
-                      <div style={{ background: '#FFFBEB', border: '1px solid #FCD34D', borderRadius: 12, padding: '12px 14px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                        <div style={{ flex: 1, minWidth: 140 }}>
-                          <div style={{ fontSize: 10.5, fontWeight: 700, color: '#92400E', textTransform: 'uppercase', letterSpacing: '.5px' }}>Reposición pendiente</div>
-                          <div style={{ fontSize: 16, fontWeight: 800, color: '#92400E', lineHeight: 1.15, marginTop: 2 }}>{low.length} producto{low.length !== 1 ? 's' : ''} bajo stock</div>
+                      <div className="cli-alert-band" style={{ background: '#FFFBEB', border: '1px solid #FCD34D' }}>
+                        <div className="cli-alert-label" style={{ color: '#92400E' }}>Reposición pendiente</div>
+                        <div className="cli-alert-main">
+                          <div className="cli-alert-val" style={{ color: '#92400E', fontSize: 17 }}>
+                            {low.length} producto{low.length !== 1 ? 's' : ''} bajo stock
+                          </div>
+                          {detailSupplier.wa && (
+                            <button className="cli-alert-btn" onClick={() => sendReorderWA(detailSupplier, low)} style={{ background: '#16A34A' }}>
+                              <i className="fa-brands fa-whatsapp" /> Pedir reposición
+                            </button>
+                          )}
                         </div>
-                        {detailSupplier.wa && (
-                          <button onClick={() => sendReorderWA(detailSupplier, low)} style={{ background: '#16A34A', color: '#fff', border: 'none', fontSize: 12, fontWeight: 700, padding: '9px 14px', borderRadius: 9, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'inherit' }}>
-                            <i className="fa-brands fa-whatsapp" /> Pedir reposición
-                          </button>
-                        )}
                       </div>
                     )
                   })()}
@@ -1157,39 +1174,40 @@ export default function Proveedores() {
                     </div>
                   )}
 
-                  {/* KPI rápido */}
-                  {(() => {
-                    const prods = supplierProducts(detailSupplier)
-                    const costTotal = supplierCostTotal(detailSupplier)
-                    if (!prods.length) return null
-                    return (
-                      <div style={{ display: 'flex', gap: 8, marginBottom: 14, flexWrap: 'wrap' }}>
-                        <div style={{ flex: '1 1 100px', background: 'var(--surface2)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
-                          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)' }}>{prods.length}</div>
-                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>Productos</div>
-                        </div>
-                        <div style={{ flex: '1 1 120px', background: 'var(--surface2)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
-                          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--money)' }}>{fmt(costTotal)}</div>
-                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>Costo total</div>
-                        </div>
-                      </div>
-                    )
-                  })()}
-
-                  {/* KPIs de Compras — vida real del proveedor */}
+                  {/* KPIs — una sola card dividida, igual que la ficha de Cliente.
+                      Antes eran dos bloques (2 cajas grises + 4 cajas, una celeste)
+                      con tres estilos distintos para seis numeros. "Productos" paso
+                      al contador de su pestana y "Costo total" se fue: es la suma de
+                      precios de lista del catalogo, no plata gastada, y al lado de
+                      "Total gastado" se leia como lo mismo. */}
                   {(() => {
                     const stats = supplierComprasStats(detailSupplier)
+                    const prods = supplierProducts(detailSupplier)
                     if (stats.count === 0) {
                       return (
-                        <div
-                          onClick={() => { const n = detailSupplier.name; setDetailSupplier(null); nav(`/compras?prov=${encodeURIComponent(n)}&new=1`) }}
-                          style={{ background: 'linear-gradient(135deg, rgba(242,118,46,.06), rgba(242,118,46,.02))', borderRadius: 10, padding: '14px 16px', marginBottom: 14, fontSize: 12.5, color: 'var(--txt3)', borderLeft: '3px solid var(--brand)', cursor: 'pointer', transition: 'background .15s' }}
-                          onMouseEnter={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(242,118,46,.12), rgba(242,118,46,.05))'}
-                          onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(242,118,46,.06), rgba(242,118,46,.02))'}
-                        >
-                          <i className="fa fa-cart-shopping" style={{ marginRight: 6, color: 'var(--brand)' }} />
-                          <b style={{ color: 'var(--txt2)' }}>Todavía sin compras.</b> Registrá el primer gasto a este proveedor para empezar a ver su historial.
-                        </div>
+                        <>
+                          {prods.length > 0 && (
+                            <div className="cli-kpis" style={{ '--kpi-cols': 2 }}>
+                              <div className="cli-kpi">
+                                <div className="cli-kpi-v">{prods.length}</div>
+                                <div className="cli-kpi-l">Productos</div>
+                              </div>
+                              <div className="cli-kpi">
+                                <div className="cli-kpi-v" style={{ color: 'var(--money)' }}>{fmt(supplierCostTotal(detailSupplier))}</div>
+                                <div className="cli-kpi-l">Costo de lista</div>
+                              </div>
+                            </div>
+                          )}
+                          <div
+                            onClick={() => { const n = detailSupplier.name; setDetailSupplier(null); nav(`/compras?prov=${encodeURIComponent(n)}&new=1`) }}
+                            style={{ background: 'linear-gradient(135deg, rgba(242,118,46,.06), rgba(242,118,46,.02))', borderRadius: 10, padding: '14px 16px', marginBottom: 14, fontSize: 12.5, color: 'var(--txt3)', borderLeft: '3px solid var(--brand)', cursor: 'pointer', transition: 'background .15s' }}
+                            onMouseEnter={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(242,118,46,.12), rgba(242,118,46,.05))'}
+                            onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(242,118,46,.06), rgba(242,118,46,.02))'}
+                          >
+                            <i className="fa fa-cart-shopping" style={{ marginRight: 6, color: 'var(--brand)' }} />
+                            <b style={{ color: 'var(--txt2)' }}>Todavía sin compras.</b> Registrá el primer gasto para ver su historial.
+                          </div>
+                        </>
                       )
                     }
                     const lastDate = stats.last.fecha ? (() => {
@@ -1197,22 +1215,22 @@ export default function Proveedores() {
                       return `${Number(d)}/${Number(m)}/${y.slice(2)}`
                     })() : '—'
                     return (
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 8, marginBottom: 14 }}>
-                        <div style={{ background: 'var(--brand-xlt)', borderRadius: 10, padding: '10px 12px' }}>
-                          <div style={{ fontSize: 9, color: 'var(--brand)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Total gastado</div>
-                          <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--brand)', marginTop: 2, fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em' }}>{fmt(stats.total)}</div>
+                      <div className="cli-kpis">
+                        <div className="cli-kpi">
+                          <div className="cli-kpi-v" style={{ color: 'var(--money)' }}>{fmt(stats.total)}</div>
+                          <div className="cli-kpi-l">Total gastado</div>
                         </div>
-                        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 12px' }}>
-                          <div style={{ fontSize: 9, color: 'var(--txt3)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Compras</div>
-                          <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--txt)', marginTop: 2, fontVariantNumeric: 'tabular-nums' }}>{stats.count}</div>
+                        <div className="cli-kpi">
+                          <div className="cli-kpi-v">{fmt(stats.avgMensual)}</div>
+                          <div className="cli-kpi-l">Prom/mes</div>
                         </div>
-                        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 12px' }}>
-                          <div style={{ fontSize: 9, color: 'var(--txt3)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Última</div>
-                          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--txt)', marginTop: 2 }}>{lastDate}</div>
+                        <div className="cli-kpi">
+                          <div className="cli-kpi-v">{lastDate}</div>
+                          <div className="cli-kpi-l">Última compra</div>
                         </div>
-                        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 12px' }} title="Promedio por mes con actividad">
-                          <div style={{ fontSize: 9, color: 'var(--txt3)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Prom/mes</div>
-                          <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--money)', marginTop: 2, fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em' }}>{fmt(stats.avgMensual)}</div>
+                        <div className="cli-kpi">
+                          <div className="cli-kpi-v">{stats.count}</div>
+                          <div className="cli-kpi-l">Compras</div>
                         </div>
                       </div>
                     )
@@ -1231,7 +1249,7 @@ export default function Proveedores() {
                       onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(245,158,11,.06), rgba(245,158,11,.02))'}
                     >
                       <i className="fa fa-lightbulb" style={{ marginRight: 6, color: '#F59E0B' }} />
-                      <b style={{ color: 'var(--txt2)' }}>Dato clave:</b> anotá plazos de entrega, condiciones de pago o mínimos de compra. Cuando necesites reponer, ya tenés todo.
+                      <b style={{ color: 'var(--txt2)' }}>Dato clave:</b> anotá plazos, condiciones de pago o mínimos de compra.
                     </div>
                   )}
                 </div>

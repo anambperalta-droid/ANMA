@@ -3051,6 +3051,34 @@ td b{color:var(--txt);font-weight:600}
   .detail-tab{padding:11px 14px!important;font-size:12.5px!important}
 }
 
+/* Banda de saldo pendiente / reposicion pendiente.
+   Ocupaba ~135px: titulo, monto grande y el boton a lo ancho, cada uno en su
+   renglon. El monto y la accion comparten linea y queda en ~72px, que es lo
+   que merece un dato que ya se entiende de un vistazo. */
+.cli-alert-band{
+  border-radius:12px;padding:11px 14px;margin-bottom:14px;
+  display:flex;flex-direction:column;gap:7px;
+}
+.cli-alert-label{
+  font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+}
+.cli-alert-main{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.cli-alert-val{font-size:20px;font-weight:900;letter-spacing:-.5px;line-height:1.1}
+.cli-alert-band .cli-alert-btn{
+  border:none;font-size:12px;font-weight:700;padding:0 14px;min-height:40px;border-radius:9px;
+  cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+  font-family:inherit;color:#fff;flex-shrink:0;
+}
+@media (max-width: 340px){
+  /* Solo en pantallas muy angostas el boton baja, y lo hace a lo ancho:
+     medio boton apretado al lado de un monto largo se ve peor que uno entero
+     abajo. A 390px monto y boton comparten linea de sobra. */
+  .cli-alert-main{flex-direction:column;align-items:stretch}
+  .cli-alert-band .cli-alert-btn{justify-content:center}
+}
+
 /* Contacto en las fichas: solo el icono. El numero y el mail completos
    ocupaban dos chips anchos y el dato en si no se usa para leer, se usa
    para tocar. */
@@ -3069,7 +3097,7 @@ td b{color:var(--txt);font-weight:600}
 /* Los 4 KPIs eran 4 cajas con fondo propio: mucho borde para 4 numeros.
    Una sola card dividida pesa menos y se lee igual. */
 .cli-kpis{
-  display:grid;grid-template-columns:repeat(4,1fr);
+  display:grid;grid-template-columns:repeat(var(--kpi-cols,4),1fr);
   background:var(--surface2);border-radius:10px;overflow:hidden;margin-bottom:14px;
 }
 .cli-kpi{padding:11px 8px;text-align:center;position:relative}

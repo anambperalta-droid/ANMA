@@ -1352,16 +1352,18 @@ export default function Clientes() {
                     const pends = clientPedidosConSaldo(detailClient)
                     if (saldo <= 0) return null
                     return (
-                      <div className="cli-saldo-box" style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', borderRadius: 12, padding: '12px 14px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                        <div style={{ flex: 1, minWidth: 140 }}>
-                          <div style={{ fontSize: 10.5, fontWeight: 700, color: '#991B1B', textTransform: 'uppercase', letterSpacing: '.5px' }}>Saldo pendiente · {pends.length} pedido{pends.length !== 1 ? 's' : ''}</div>
-                          <div style={{ fontSize: 21, fontWeight: 900, color: '#991B1B', letterSpacing: '-.5px', lineHeight: 1.15 }}>{fmt(saldo)}</div>
+                      <div className="cli-alert-band" style={{ background: '#FEF2F2', border: '1px solid #FCA5A5' }}>
+                        <div className="cli-alert-label" style={{ color: '#991B1B' }}>
+                          Saldo pendiente · {pends.length} pedido{pends.length !== 1 ? 's' : ''}
                         </div>
-                        {detailClient.wa && (
-                          <button onClick={() => cobrarWA(detailClient)} style={{ background: '#DC2626', color: '#fff', border: 'none', fontSize: 12, fontWeight: 700, padding: '9px 14px', borderRadius: 9, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'inherit' }}>
-                            <i className="fa-brands fa-whatsapp" /> Enviar recordatorio
-                          </button>
-                        )}
+                        <div className="cli-alert-main">
+                          <div className="cli-alert-val" style={{ color: '#991B1B' }}>{fmt(saldo)}</div>
+                          {detailClient.wa && (
+                            <button className="cli-alert-btn" onClick={() => cobrarWA(detailClient)} style={{ background: '#DC2626' }}>
+                              <i className="fa-brands fa-whatsapp" /> Enviar recordatorio
+                            </button>
+                          )}
+                        </div>
                       </div>
                     )
                   })()}
