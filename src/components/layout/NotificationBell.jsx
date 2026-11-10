@@ -283,7 +283,10 @@ function buildAlerts(budgets, products, insumos) {
     const delivDays = daysUntil(b.deliveryDate)
     const active = !['cancelled', 'lost'].includes(b.status)
     const cliente = b.contact || b.company || 'el cliente'
-    const meta = { wa: b.wa, clientName: cliente, budgetNum: b.num, amount: fmt(b.total) }
+    // totalFinal || total: `amount` termina en el mensaje de WhatsApp que se le
+    // manda al cliente ("queda pendiente el pago de *$X*"), asi que tiene que
+    // ser la plata con IVA, la que el cliente realmente debe.
+    const meta = { wa: b.wa, clientName: cliente, budgetNum: b.num, amount: fmt(b.totalFinal || b.total) }
 
     // 🔴 CRÍTICO: entrega vencida → logística
     if (b.deliveryDate && delivDays !== null && delivDays < 0 && active && b.status !== 'delivered') {
@@ -293,7 +296,7 @@ function buildAlerts(budgets, products, insumos) {
         category: 'logistica',
         icon: 'fa-fire',
         title: `Entrega vencida — ${b.num}`,
-        body: `${cliente} · ${Math.abs(delivDays)}d de retraso · ${fmt(b.total)}`,
+        body: `${cliente} · ${Math.abs(delivDays)}d de retraso · ${fmt(b.totalFinal || b.total)}`,
         route: `/pedido/${b.id}`,
         ts: b.id,
         ...meta,
@@ -308,7 +311,7 @@ function buildAlerts(budgets, products, insumos) {
         category: 'pago',
         icon: 'fa-circle-dollar-to-slot',
         title: `Cobro pendiente — ${b.num}`,
-        body: `${cliente} · ${sinceDays}d sin cobrar · ${fmt(b.total)}`,
+        body: `${cliente} · ${sinceDays}d sin cobrar · ${fmt(b.totalFinal || b.total)}`,
         route: `/pedido/${b.id}`,
         ts: b.id,
         ...meta,
@@ -326,7 +329,7 @@ function buildAlerts(budgets, products, insumos) {
         title: delivDays <= 1
           ? `Debés entregar ${whenLabel} a ${cliente}`
           : `Entregá el pedido de ${cliente} ${whenLabel}`,
-        body: `${b.num} · ${fmt(b.total)}`,
+        body: `${b.num} · ${fmt(b.totalFinal || b.total)}`,
         route: `/pedido/${b.id}`,
         ts: b.id,
         ...meta,
@@ -341,7 +344,7 @@ function buildAlerts(budgets, products, insumos) {
         category: 'pago',
         icon: 'fa-clock-rotate-left',
         title: `${b.num} lleva ${sinceDays}d sin la seña`,
-        body: `${cliente} — pedido confirmado pero sin cobrar depósito · ${fmt(b.total)}`,
+        body: `${cliente} — pedido confirmado pero sin cobrar depósito · ${fmt(b.totalFinal || b.total)}`,
         route: `/pedido/${b.id}`,
         ts: b.id,
         ...meta,
@@ -356,7 +359,7 @@ function buildAlerts(budgets, products, insumos) {
         category: 'comercial',
         icon: 'fa-hourglass-half',
         title: `Seguimiento necesario — ${b.num}`,
-        body: `${cliente} · ${sinceDays}d sin respuesta · ${fmt(b.total)}`,
+        body: `${cliente} · ${sinceDays}d sin respuesta · ${fmt(b.totalFinal || b.total)}`,
         route: '/',
         ts: b.id,
         ...meta,

@@ -173,7 +173,11 @@ function VariablesPanel({ client, config, budget }) {
   // presupuestos con IVA). Usar total/depositAmt mandaba montos sin IVA al cliente.
   const senia = budget ? (Number(budget.depositFinal || budget.depositAmt) || 0) : 0
   const total = budget ? (Number(budget.totalFinal || budget.total) || 0) : 0
-  const saldo = Math.max(0, total - senia)
+  /* El saldo se calcula contra lo realmente cobrado: si el cliente ya pago
+     cuotas despues de la senia, restarle solo la senia le reclamaba de mas. */
+  const pagosB = Array.isArray(budget?.payments) ? budget.payments : []
+  const cobradoB = pagosB.length > 0 ? pagosB.reduce((s2, p) => s2 + (Number(p.amount) || 0), 0) : senia
+  const saldo = Math.max(0, total - cobradoB)
   const deliveryISO = budget?.deliveryDate
   const dd = deliveryISO ? Math.ceil((new Date(deliveryISO + 'T00:00') - new Date()) / 86400000) : null
   const diasVencido = dd !== null && dd < 0 ? Math.abs(dd) : null
@@ -298,7 +302,10 @@ export default function Mensajes() {
     const fecha = formatFechaAR(clientBudget?.deliveryDate || clientBudget?.date)
     const seniaN = clientBudget ? (Number(clientBudget.depositFinal || clientBudget.depositAmt) || 0) : 0
     const totalN = clientBudget ? (Number(clientBudget.totalFinal || clientBudget.total) || 0) : 0
-    const saldo = clientBudget && (totalN - seniaN) > 0 ? fmt(totalN - seniaN) : ''
+    /* Mismo criterio que el panel de variables: contra lo cobrado, no contra la senia */
+    const pagosC = Array.isArray(clientBudget?.payments) ? clientBudget.payments : []
+    const cobradoC = pagosC.length > 0 ? pagosC.reduce((s2, p) => s2 + (Number(p.amount) || 0), 0) : seniaN
+    const saldo = clientBudget && (totalN - cobradoC) > 0 ? fmt(totalN - cobradoC) : ''
     const seña = clientBudget && seniaN > 0 ? fmt(seniaN) : ''
     const deliveryISO = clientBudget?.deliveryDate
     const dd = deliveryISO ? Math.ceil((new Date(deliveryISO + 'T00:00') - new Date()) / 86400000) : null

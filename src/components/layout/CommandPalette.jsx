@@ -39,7 +39,7 @@ export default function CommandPalette({ onClose }) {
 
   const budgets = get('budgets').map(b => ({
     type: 'bud', icon: 'fa-file-invoice', label: `${b.num || '—'} — ${b.company || b.contact || 'Sin cliente'}`,
-    sub: `${STATUS_MAP[b.status] || 'Borrador'} · ${b.date || '—'} · ${fmt(b.total)}`,
+    sub: `${STATUS_MAP[b.status] || 'Borrador'} · ${b.date || '—'} · ${fmt(b.totalFinal || b.total)}`,
     path: `/pedido/${b.id}`,
   }))
 
