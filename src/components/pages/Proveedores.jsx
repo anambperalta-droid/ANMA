@@ -1394,13 +1394,12 @@ export default function Proveedores() {
                   <div>
                     {/* Resumen top */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, gap: 10, flexWrap: 'wrap' }}>
-                      <div>
-                        <div style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 600 }}>
-                          {stats.count} {stats.count === 1 ? 'compra' : 'compras'} · {stats.months} {stats.months === 1 ? 'mes' : 'meses'} con actividad
-                        </div>
-                        <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--brand)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.03em', marginTop: 2 }}>
-                          {fmt(stats.total)}
-                        </div>
+                      {/* El total gastado ya es un KPI en la pestana Informacion y los
+                          meses con actividad son la base de "Prom/mes": aca alcanza una
+                          linea corta de contexto, asi el boton entra al lado. */}
+                      <div style={{ fontSize: 11.5, color: 'var(--txt3)', fontWeight: 600, minWidth: 0 }}>
+                        {stats.count} {stats.count === 1 ? 'compra' : 'compras'}
+                        <b style={{ color: 'var(--txt)', fontVariantNumeric: 'tabular-nums' }}> · {fmt(stats.total)}</b>
                       </div>
                       <button className="btn btn-primary btn-sm"
                         onClick={() => { const n = detailSupplier.name; setDetailSupplier(null); nav(`/compras?prov=${encodeURIComponent(n)}&new=1`) }}>
@@ -1408,38 +1407,52 @@ export default function Proveedores() {
                       </button>
                     </div>
                     {/* Lista */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 420, overflowY: 'auto' }}>
+                    {/* Sin maxHeight: un scroll adentro de otro se come el gesto en celular */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                       {arr.map(c => {
                         const [y, m, d] = (c.fecha || '').split('-')
                         const fechaCorta = c.fecha ? `${Number(d)}/${Number(m)}/${y.slice(2)}` : '—'
-                        const hasItems = Array.isArray(c.items) && c.items.length > 0
-                        const title = c.concepto || (hasItems ? c.items.map(i => i.name).filter(Boolean).join(', ') : null)
+                        const items = Array.isArray(c.items) ? c.items : []
+                        const title = c.concepto || (items.length ? items.map(i => i.name).filter(Boolean).join(', ') : null)
+                        /* Con un solo item el desglose repetia el nombre y el total que ya
+                           estan en la fila. Lo unico que sumaba era el precio unitario, asi
+                           que ese sube a la linea de la fecha y el desglose queda solo para
+                           las compras de 2 items o mas. */
+                        const unico = items.length === 1 ? items[0] : null
+                        const puUnico = unico
+                          ? (Number(unico.pu) || (Number(unico.qty) > 0 ? Math.round((Number(unico.subtotal) || Number(c.monto) || 0) / Number(unico.qty)) : 0))
+                          : 0
+                        const desglose = items.length > 1 ? items : []
+                        const qtyLinea = unico && Number(unico.qty) > 0 ? Number(unico.qty) : (c.cantidad > 0 ? c.cantidad : 0)
                         return (
-                          <div
-                            key={c.id}
-                            style={{ background: 'var(--surface2)', borderRadius: 8, borderLeft: hasItems ? '3px solid var(--brand)' : '3px solid transparent' }}
-                          >
+                          <div key={c.id} style={{ background: 'var(--surface2)', borderRadius: 8 }}>
                             <div
                               onClick={() => { setDetailSupplier(null); nav(`/compras?mes=${(c.fecha || '').slice(0, 7)}&edit=${c.id}`) }}
                               style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', cursor: 'pointer' }}
                             >
                               <div style={{ flex: 1, minWidth: 0 }}>
-                                <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                  {title || <span style={{ color: 'var(--txt4)', fontStyle: 'italic', fontWeight: 500 }}>Sin concepto</span>}
-                                  {c.recurrente && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'var(--brand-xlt)', color: 'var(--brand)' }}><i className="fa fa-rotate" style={{ fontSize: 7, marginRight: 2 }} />recurrente</span>}
-                                  {hasItems && <span style={{ marginLeft: 6, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'rgba(242,118,46,.1)', color: '#F2994A' }}><i className="fa fa-list" style={{ fontSize: 7, marginRight: 2 }} />{c.items.length} items</span>}
+                                {/* El titulo se trunca; los chips van afuera para que no los corte */}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+                                  <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>
+                                    {title || <span style={{ color: 'var(--txt4)', fontStyle: 'italic', fontWeight: 500 }}>Sin concepto</span>}
+                                  </span>
+                                  {c.recurrente && <span style={{ flexShrink: 0, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'var(--brand-xlt)', color: 'var(--brand)', whiteSpace: 'nowrap' }}><i className="fa fa-rotate" style={{ fontSize: 7, marginRight: 2 }} />recurrente</span>}
+                                  {desglose.length > 0 && <span style={{ flexShrink: 0, fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 5, background: 'rgba(242,118,46,.1)', color: '#F2994A', whiteSpace: 'nowrap' }}>{desglose.length} ítems</span>}
                                 </div>
-                                <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 2 }}>
-                                  {fechaCorta}{c.cantidad > 0 ? ` · ${c.cantidad}u` : ''}{c.nota ? ` · ${c.nota}` : ''}
+                                <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                  {fechaCorta}
+                                  {qtyLinea > 0 ? ` · ${qtyLinea}u` : ''}
+                                  {puUnico > 0 ? ` × ${fmt(puUnico)}` : ''}
+                                  {c.nota ? ` · ${c.nota}` : ''}
                                 </div>
                               </div>
                               <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--txt)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.02em', flexShrink: 0 }}>
                                 {fmt(c.monto || 0)}
                               </div>
                             </div>
-                            {hasItems && (
+                            {desglose.length > 0 && (
                               <div style={{ padding: '0 12px 10px 12px', display: 'flex', flexDirection: 'column', gap: 3 }}>
-                                {c.items.map((it, idx) => (
+                                {desglose.map((it, idx) => (
                                   <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '5px 8px', background: 'var(--surface)', borderRadius: 6, fontSize: 11 }}>
                                     <span style={{ flex: 1, color: 'var(--txt2)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{it.name || '—'}</span>
                                     <span style={{ color: 'var(--txt4)', fontVariantNumeric: 'tabular-nums' }}>{it.qty}u × {fmt(it.pu)}</span>
