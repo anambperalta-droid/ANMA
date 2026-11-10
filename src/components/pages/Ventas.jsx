@@ -246,6 +246,12 @@ export default function Ventas() {
   const cobroPercent = totals.facturado > 0 ? Math.round((totals.cobrado / totals.facturado) * 100) : 0
 
   const avgTicket = totals.count > 0 ? Math.round(totals.facturado / totals.count) : 0
+  /* Ventas del mes sin monto cargado. El ticket promedio divide el facturado
+     por TODAS las ventas del mes, asi que cada venta sin monto lo baja sin que
+     se note: con 2 de 3 en cero, "$73.370" es en realidad una sola venta de
+     $220.110 dividida por tres. No cambiamos la formula (una venta de $0 puede
+     ser una muestra o un regalo, y es decision de Ana), pero se avisa. */
+  const sinMonto = useMemo(() => monthBudgets.filter(b => montoConIva(b) <= 0).length, [monthBudgets])
   // Mediana del ticket (Fase 2 auditoria 02/10/26).
   // Si hay outliers (max > 3x avg) la mediana es un indicador mas honesto
   // del ticket "tipico" que el promedio.
@@ -640,7 +646,7 @@ export default function Ventas() {
   }
 
   return (
-    <div className="ventas-page" style={{ padding: '10px 20px 80px', maxWidth: 1000, margin: '0 auto' }}>
+    <div className="ventas-page" style={{ padding: '10px 20px 80px', maxWidth: 1340, margin: '0 auto' }}>
       <style>{`
         .vt-row{display:grid;grid-template-columns:.4fr .4fr 1fr .7fr .3fr .7fr .4fr .55fr .5fr;gap:0;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;transition:background .1s}
         .vt-row:hover{background:var(--surface2)}
@@ -781,7 +787,15 @@ export default function Ventas() {
                   <span className="vt-hero-stat-val">{hidden ? '***' : fmt(avgTicket)}</span>
                   {deltaTicket !== null && <Delta value={deltaTicket} />}
                 </div>
-                {hasOutlier && !hidden && (
+                {/* El aviso de ventas sin monto manda sobre el de la mediana:
+                    antes de discutir si el promedio es tipico, conviene saber
+                    que hay ventas a medio cargar bajandolo. */}
+                {sinMonto > 0 && !hidden ? (
+                  <div title="Estas ventas cuentan en el promedio con monto 0 y lo bajan. Cargales el monto para que el ticket sea real."
+                    style={{ fontSize: 9.5, color: '#b45309', fontWeight: 700, marginTop: 1, letterSpacing: '.02em' }}>
+                    {sinMonto} de {totals.count} sin monto cargado
+                  </div>
+                ) : hasOutlier && !hidden && (
                   <div title="Hay un ticket mucho mayor al resto. La mediana representa mejor lo tipico." style={{ fontSize: 9.5, color: 'var(--txt4)', fontWeight: 600, marginTop: 1, letterSpacing: '.02em' }}>
                     mediana <b style={{ color: 'var(--txt3)' }}>{fmt(medianTicket)}</b>
                   </div>
@@ -971,12 +985,12 @@ export default function Ventas() {
                 {method ? PAY_METHOD_LABEL[method] || method : '—'}
               </span>
               <span style={{ textAlign: 'center' }} onClick={e => { e.stopPropagation(); const nx = b.payStatus === 'pending' ? 'partial' : b.payStatus === 'partial' ? 'paid' : 'pending'; updatePayStatus(b.id, nx) }}>
-                <span className="vt-pay-chip" style={{ background: pi.bg, color: pi.color }}>{pi.label}</span>
-                {b.payStatus === 'partial' && !hidden && (
-                  <div style={{ fontSize: 9.5, color: 'var(--txt4)', marginTop: 3, fontVariantNumeric: 'tabular-nums', lineHeight: 1.1 }}>
-                    {fmt(paid)} / <span style={{ color: '#b45309', fontWeight: 700 }}>{fmt(owed)}</span>
-                  </div>
-                )}
+                {/* El desglose "$47.000 / $173.110" se fue: ese dato esta en el
+                    detalle de la venta. Ademas en una venta sin monto cargado
+                    mostraba "Parcial · $0 / $0", que no significa nada. Los
+                    importes quedan en el title del chip. */}
+                <span className="vt-pay-chip" title={b.payStatus === 'partial' && !hidden && totalDue > 0 ? `Cobrado ${fmt(paid)} de ${fmt(totalDue)} · falta ${fmt(owed)}` : undefined}
+                  style={{ background: pi.bg, color: pi.color }}>{pi.label}</span>
               </span>
             </div>
           )
@@ -991,12 +1005,6 @@ export default function Ventas() {
             const methodLbl = method ? PAY_METHOD_LABEL[method] || method : null
             // Mobile: comprobante + fecha + producto + metodo encadenados en el sub-line
             const productText = [b.num, b.items?.[0]?.name, b.items?.[0]?.qty > 1 ? `x${b.items[0].qty}` : '', dateStr, methodLbl].filter(Boolean).join(' · ')
-            // Desglose parcial — Fase 1 auditoria 02/10/26.
-            const totalDue = montoConIva(b)
-            const paidM = b.payStatus === 'paid' ? totalDue
-                       : b.payStatus === 'partial' ? senaCobrada(b)
-                       : 0
-            const owedM = Math.max(0, totalDue - paidM)
             return (
               <div key={b.id} className="vt-card-item" style={{ borderLeftColor: pi.color }} onClick={() => setPreviewBudget(b)}>
                 <div className="vt-card-info">
@@ -1005,11 +1013,6 @@ export default function Ventas() {
                 </div>
                 <div className="vt-card-right">
                   <div className="vt-card-amt">{hidden ? '***' : fmt(montoConIva(b))}</div>
-                  {b.payStatus === 'partial' && !hidden && (
-                    <div style={{ fontSize: 9.5, color: 'var(--txt4)', fontVariantNumeric: 'tabular-nums', lineHeight: 1.1 }}>
-                      {fmt(paidM)} / <span style={{ color: '#b45309', fontWeight: 700 }}>{fmt(owedM)}</span>
-                    </div>
-                  )}
                   <button className="vt-card-pay" style={{ background: pi.bg, color: pi.color }} onClick={e => { e.stopPropagation(); const nx = b.payStatus === 'pending' ? 'partial' : b.payStatus === 'partial' ? 'paid' : 'pending'; updatePayStatus(b.id, nx) }}>
                     <i className={`fa ${pi.icon}`} style={{ fontSize: 8 }} /> {pi.label}
                   </button>
