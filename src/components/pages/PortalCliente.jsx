@@ -154,6 +154,17 @@ export default function PortalCliente() {
         .pc-fade { animation: pcIn .35s ease-out both; }
         .pc-timeline-step { transition: all .2s; }
         .pc-pay-btn:active { transform: scale(.97); }
+        /* El nombre del producto es el dato central del portal: nunca truncarlo,
+           preferimos dos lineas a un "..." que no dice que compro el cliente. */
+        .pc-item-name { line-height: 1.3; overflow-wrap: anywhere; }
+        @media (max-width: 560px) {
+          /* CBU/alias: el cliente los copia a mano para transferir. En una fila
+             de 3 columnas el CBU de 22 digitos partia dejando un digito suelto. */
+          .pc-pay-row { flex-wrap: wrap; row-gap: 4px; padding: 10px 2px !important; }
+          .pc-pay-key { flex: 1 1 100%; min-width: 0 !important; }
+          .pc-pay-val { flex: 1 1 auto; font-size: 14px !important; letter-spacing: .02em; }
+          .pc-copy-btn { min-height: 44px; padding: 10px 14px !important; font-size: 12px !important; }
+        }
       `}</style>
 
       <div style={S.container} className="pc-fade">
@@ -236,7 +247,7 @@ export default function PortalCliente() {
                     borderBottom: i < items.length - 1 ? '1px solid #F1F5F9' : 'none',
                   }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: '#111', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{it.n}</div>
+                      <div className="pc-item-name" style={{ fontSize: 14, fontWeight: 700, color: '#111' }}>{it.n}</div>
                       <div style={{ fontSize: 11, color: '#64748b', marginTop: 2, fontVariantNumeric: 'tabular-nums' }}>
                         {hasPrice ? `${qty}u × ${fmt(pu)}` : `${qty}u`}
                       </div>
@@ -398,11 +409,11 @@ export default function PortalCliente() {
 
 function PayRow({ label, value, onCopy }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 2px', borderBottom: '1px solid #F1F5F9' }}>
-      <div style={{ minWidth: 60, fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.06em' }}>{label}</div>
-      <div style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 700, color: '#111', fontFamily: "'SF Mono','Courier New',monospace", overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-all' }}>{value}</div>
+    <div className="pc-pay-row" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 2px', borderBottom: '1px solid #F1F5F9' }}>
+      <div className="pc-pay-key" style={{ minWidth: 60, fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.06em' }}>{label}</div>
+      <div className="pc-pay-val" style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 700, color: '#111', fontFamily: "'SF Mono','Courier New',monospace", wordBreak: 'break-all' }}>{value}</div>
       {onCopy && (
-        <button onClick={onCopy} style={{
+        <button onClick={onCopy} className="pc-copy-btn" style={{
           background: '#F3F4F6', border: 'none', borderRadius: 8, padding: '6px 10px',
           fontSize: 11, fontWeight: 700, color: '#374151', cursor: 'pointer',
           display: 'inline-flex', alignItems: 'center', gap: 4,

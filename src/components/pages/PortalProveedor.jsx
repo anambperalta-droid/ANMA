@@ -6,6 +6,16 @@ import { supabase } from '../../lib/supabase'
  * Portal público de proveedor (sin auth) — ANMA Hub.
  * Lee datos serializados desde el query param ?d=BASE64.
  */
+/**
+ * conDias(v) — los plazos se guardan como texto libre: a veces "30", a veces
+ * "30 dias fecha factura". Solo agregamos "dias" si el valor es un numero
+ * pelado; si no, quedaba "30 dias fecha factura dias" en el portal.
+ */
+function conDias(v) {
+  const t = String(v).trim()
+  return /^\d+$/.test(t) ? `${t} días` : t
+}
+
 export default function PortalProveedor() {
   const loc = useLocation()
   const [data, setData] = useState(null)
@@ -159,6 +169,23 @@ export default function PortalProveedor() {
         .pp-btn-out { transition: background .2s, transform .15s }
         .pp-btn-out:hover { background: rgba(242,118,46,.06); transform:translateY(-1px) }
         .pp-row:hover { background:#FBF4EC !important }
+        .pp-reorder-name { line-height:1.3; overflow-wrap:anywhere }
+        /* La tabla tiene min-width 400px: en un celular de 390 el proveedor
+           veia "Subtotal" solo si descubria un scroll horizontal sin indicador.
+           En mobile la pasamos a fichas apiladas con la etiqueta de cada dato. */
+        @media (max-width: 560px) {
+          .pp-tbl { min-width:0 !important; font-size:14px }
+          .pp-tbl thead { display:none }
+          .pp-tbl tbody tr { display:block; padding:12px 2px }
+          .pp-tbl td { display:flex; justify-content:space-between; align-items:baseline;
+            padding:3px 0 !important; text-align:right !important }
+          .pp-tbl td::before { content:attr(data-k); font-size:11px; font-weight:800;
+            color:#6B7280; text-transform:uppercase; letter-spacing:.6px; margin-right:12px }
+          .pp-tbl td[data-k="Producto"] { display:block; text-align:left !important; margin-bottom:6px }
+          .pp-tbl td[data-k="Producto"]::before { display:none }
+          .pp-tbl td[data-k="Subtotal"] { margin-top:4px; padding-top:7px !important;
+            border-top:1px solid #FBF4EC }
+        }
       `}</style>
 
       <div style={S.container}>
@@ -196,8 +223,8 @@ export default function PortalProveedor() {
               <div style={{ background: 'linear-gradient(135deg,#F0FDF4,#DCFCE7)', borderRadius: 10, padding: '12px 14px' }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: '#047857', textTransform: 'uppercase', letterSpacing: '.5px' }}>Plazos acordados</div>
                 <div style={{ fontSize: 13, color: '#2A1810', marginTop: 5, lineHeight: 1.5 }}>
-                  {data.paymentTerm ? <div><i className="fa fa-credit-card" style={{ color: '#047857', fontSize: 11, marginRight: 5 }} /><b>Pago:</b> {data.paymentTerm} días</div> : <div style={{ color: '#9CA3AF', fontSize: 12 }}>Pago: sin plazo definido</div>}
-                  {data.leadTime ? <div style={{ marginTop: 3 }}><i className="fa fa-truck-fast" style={{ color: '#047857', fontSize: 11, marginRight: 5 }} /><b>Entrega:</b> {data.leadTime} días</div> : <div style={{ color: '#9CA3AF', fontSize: 12, marginTop: 3 }}>Entrega: sin lead time</div>}
+                  {data.paymentTerm ? <div><i className="fa fa-credit-card" style={{ color: '#047857', fontSize: 11, marginRight: 5 }} /><b>Pago:</b> {conDias(data.paymentTerm)}</div> : <div style={{ color: '#9CA3AF', fontSize: 12 }}>Pago: sin plazo definido</div>}
+                  {data.leadTime ? <div style={{ marginTop: 3 }}><i className="fa fa-truck-fast" style={{ color: '#047857', fontSize: 11, marginRight: 5 }} /><b>Entrega:</b> {conDias(data.leadTime)}</div> : <div style={{ color: '#9CA3AF', fontSize: 12, marginTop: 3 }}>Entrega: sin lead time</div>}
                 </div>
                 {Number(data.leadTime) > 0 && (
                   <button onClick={agendarEntrega} style={{ marginTop: 8, background: '#fff', color: '#047857', border: '1.5px solid #86EFAC', fontSize: 11, fontWeight: 700, padding: '6px 10px', borderRadius: 8, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5, fontFamily: 'inherit' }}>
@@ -223,7 +250,7 @@ export default function PortalProveedor() {
                 const need = Math.max(1, (p.minStock || 0) - (p.stock || 0))
                 return (
                   <div key={i} style={S.reorderItem}>
-                    <div style={{ ...S.reorderItemName, flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</div>
+                    <div className="pp-reorder-name" style={{ ...S.reorderItemName, flex: 1, minWidth: 0 }}>{p.name}</div>
                     <div style={{ fontWeight: 700, fontSize: 13, color: '#F2762E', whiteSpace: 'nowrap', fontFamily: "'Space Grotesk','Inter',sans-serif", marginRight: 10 }}>{need} u.</div>
                     <div style={S.reorderItemCost}>{fmt(p.cost)} <span style={{ fontSize: 9, color: '#F2994A', fontWeight: 500 }}>/u</span></div>
                   </div>
@@ -249,7 +276,7 @@ export default function PortalProveedor() {
               </button>
             </div>
             <div style={{ overflowX: 'auto' }}>
-              <table style={S.table}>
+              <table className="pp-tbl" style={S.table}>
                 <thead>
                   <tr style={S.thead}>
                     <th style={S.th}>Producto</th>
@@ -263,12 +290,12 @@ export default function PortalProveedor() {
                     const qty = Math.max(1, p.stock || 0)
                     return (
                     <tr key={i} className="pp-row" style={S.tr}>
-                      <td style={S.td}>
+                      <td data-k="Producto" style={S.td}>
                         <div style={{ fontWeight: 600, color: '#2A1810' }}>{p.name}</div>
                       </td>
-                      <td style={{ ...S.td, textAlign: 'center', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{qty}</td>
-                      <td style={{ ...S.td, textAlign: 'right', color: '#374151', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</td>
-                      <td style={{ ...S.td, textAlign: 'right', fontWeight: 700, color: '#F2762E', fontVariantNumeric: 'tabular-nums', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{fmt(p.cost * qty)}</td>
+                      <td data-k="Cantidad" style={{ ...S.td, textAlign: 'center', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{qty} u.</td>
+                      <td data-k="Precio u." style={{ ...S.td, textAlign: 'right', color: '#374151', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</td>
+                      <td data-k="Subtotal" style={{ ...S.td, textAlign: 'right', fontWeight: 700, color: '#F2762E', fontVariantNumeric: 'tabular-nums', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{fmt(p.cost * qty)}</td>
                     </tr>
                     )
                   })}
