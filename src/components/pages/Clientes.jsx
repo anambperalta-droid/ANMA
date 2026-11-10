@@ -494,8 +494,16 @@ export default function Clientes() {
     return result
   }
 
-  const clientTotalVendido = (c) => clientBudgets(c)
-    .filter(b => ['confirmed', 'paid', 'partial'].includes(b.status))
+  /* Que cuenta como venta. Una sola lista para los tres KPIs de la ficha:
+   * antes "Total vendido" excluia 'delivered' (un pedido entregado es la venta
+   * mas firme que hay) mientras "Ticket promedio" si lo contaba, y "Pedidos"
+   * contaba hasta los borradores. Los tres numeros no hablaban del mismo
+   * conjunto y "total / pedidos" no daba nunca el ticket promedio. */
+  const VENTA_STATUS = ['confirmed', 'paid', 'partial', 'delivered']
+
+  const clientVentas = (c) => clientBudgets(c).filter(b => VENTA_STATUS.includes(b.status))
+
+  const clientTotalVendido = (c) => clientVentas(c)
     .reduce((s, b) => s + (Number(b.totalFinal || b.total) || 0), 0)
 
   /* Saldo pendiente por presupuesto — usa payments[] con fallback a depositAmt (legacy). */
@@ -516,7 +524,7 @@ export default function Clientes() {
   const clientSaldoTotal = (c) => clientPedidosConSaldo(c).reduce((s, b) => s + b._saldo, 0)
 
   const clientTicketPromedio = (c) => {
-    const bs = clientBudgets(c).filter(b => ['confirmed', 'paid', 'partial', 'delivered'].includes(b.status))
+    const bs = clientVentas(c)
     if (!bs.length) return 0
     return bs.reduce((s, b) => s + (Number(b.totalFinal || b.total) || 0), 0) / bs.length
   }
@@ -534,7 +542,7 @@ export default function Clientes() {
   }, [clients, budgets])
 
   const clientEstado = (c) => {
-    const bs = clientBudgets(c).filter(b => ['confirmed', 'paid', 'partial', 'delivered'].includes(b.status))
+    const bs = clientVentas(c)
     if (!bs.length) return 'lead'
     const total = clientTotalVendido(c)
     const lastDays = clientLastBudgetDays(c)
@@ -1344,12 +1352,10 @@ export default function Clientes() {
                     const pends = clientPedidosConSaldo(detailClient)
                     if (saldo <= 0) return null
                     return (
-                      <div style={{ background: 'linear-gradient(135deg,#FEE2E2,#FEF2F2)', border: '1.5px solid #FCA5A5', borderRadius: 12, padding: '12px 14px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#DC2626', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, flexShrink: 0 }}><i className="fa fa-circle-exclamation" /></div>
+                      <div className="cli-saldo-box" style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', borderRadius: 12, padding: '12px 14px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                         <div style={{ flex: 1, minWidth: 140 }}>
-                          <div style={{ fontSize: 11, fontWeight: 700, color: '#991B1B', textTransform: 'uppercase', letterSpacing: '.5px' }}>Saldo pendiente</div>
-                          <div style={{ fontSize: 22, fontWeight: 900, color: '#991B1B', letterSpacing: '-.5px', lineHeight: 1.1 }}>{fmt(saldo)}</div>
-                          <div style={{ fontSize: 11, color: '#991B1B', marginTop: 2 }}>{pends.length} pedido{pends.length !== 1 ? 's' : ''} sin cobrar</div>
+                          <div style={{ fontSize: 10.5, fontWeight: 700, color: '#991B1B', textTransform: 'uppercase', letterSpacing: '.5px' }}>Saldo pendiente · {pends.length} pedido{pends.length !== 1 ? 's' : ''}</div>
+                          <div style={{ fontSize: 21, fontWeight: 900, color: '#991B1B', letterSpacing: '-.5px', lineHeight: 1.15 }}>{fmt(saldo)}</div>
                         </div>
                         {detailClient.wa && (
                           <button onClick={() => cobrarWA(detailClient)} style={{ background: '#DC2626', color: '#fff', border: 'none', fontSize: 12, fontWeight: 700, padding: '9px 14px', borderRadius: 9, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'inherit' }}>
@@ -1359,50 +1365,46 @@ export default function Clientes() {
                       </div>
                     )
                   })()}
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
+                  <div className="cli-contact-row" style={{ marginBottom: 14 }}>
                     {detailClient.wa && (
                       <a href="#" onClick={e => { e.preventDefault(); openWA(detailClient) }}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#DCFCE7', color: '#16A34A', fontSize: 11, fontWeight: 600, padding: '5px 12px', borderRadius: 20, textDecoration: 'none', cursor: 'pointer', transition: 'opacity .15s' }}
-                        onMouseEnter={e => e.currentTarget.style.opacity = '.8'}
-                        onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-                        title="Abrir chat de WhatsApp">
-                        <i className="fa-brands fa-whatsapp" />{detailClient.wa}
+                        className="cli-ico-btn cli-ico-wa"
+                        title={`WhatsApp · ${detailClient.wa}`} aria-label={`Abrir WhatsApp de ${detailClient.company}`}>
+                        <i className="fa-brands fa-whatsapp" />
                       </a>
                     )}
                     {detailClient.email && (
                       <a href={`mailto:${detailClient.email}`}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'var(--blue-lt)', color: 'var(--blue)', fontSize: 11, fontWeight: 600, padding: '5px 12px', borderRadius: 20, textDecoration: 'none', transition: 'opacity .15s' }}
-                        onMouseEnter={e => e.currentTarget.style.opacity = '.8'}
-                        onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-                        <i className="fa fa-envelope" />{detailClient.email}
+                        className="cli-ico-btn cli-ico-mail"
+                        title={`Email · ${detailClient.email}`} aria-label={`Escribir a ${detailClient.company}`}>
+                        <i className="fa fa-envelope" />
                       </a>
                     )}
-                    {detailClient.rubro && <span className="badge b-purple">{detailClient.rubro}</span>}
                   </div>
                   {(() => {
-                    const bgs = clientBudgets(detailClient)
+                    const bgs = clientVentas(detailClient)
                     const totalVendido = clientTotalVendido(detailClient)
                     const lastDays = clientLastBudgetDays(detailClient)
                     const ticket = clientTicketPromedio(detailClient)
                     if (bgs.length > 0) return (
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, marginBottom: 14 }}>
-                        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
-                          <div style={{ fontSize: 17, fontWeight: 800, color: 'var(--money)' }}>{fmt(totalVendido)}</div>
-                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>Total vendido</div>
+                      <div className="cli-kpis">
+                        <div className="cli-kpi">
+                          <div className="cli-kpi-v" style={{ color: 'var(--money)' }}>{fmt(totalVendido)}</div>
+                          <div className="cli-kpi-l">Total vendido</div>
                         </div>
-                        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
-                          <div style={{ fontSize: 17, fontWeight: 800, color: 'var(--txt)' }}>{ticket > 0 ? fmt(ticket) : '—'}</div>
-                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>Ticket promedio</div>
+                        <div className="cli-kpi">
+                          <div className="cli-kpi-v">{ticket > 0 ? fmt(ticket) : '—'}</div>
+                          <div className="cli-kpi-l">Ticket promedio</div>
                         </div>
-                        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
-                          <div style={{ fontSize: 17, fontWeight: 800, color: 'var(--txt)' }}>
+                        <div className="cli-kpi">
+                          <div className="cli-kpi-v">
                             {lastDays === null ? '—' : lastDays === 0 ? 'Hoy' : `hace ${lastDays}d`}
                           </div>
-                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>Último pedido</div>
+                          <div className="cli-kpi-l">Último pedido</div>
                         </div>
-                        <div style={{ background: 'var(--surface2)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
-                          <div style={{ fontSize: 17, fontWeight: 800, color: 'var(--txt)' }}>{bgs.length}</div>
-                          <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>Pedidos</div>
+                        <div className="cli-kpi">
+                          <div className="cli-kpi-v">{bgs.length}</div>
+                          <div className="cli-kpi-l">Pedidos</div>
                         </div>
                       </div>
                     )
@@ -1420,7 +1422,7 @@ export default function Clientes() {
                       onMouseLeave={e => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(242,118,46,.06), rgba(242,118,46,.02))'}
                     >
                       <i className="fa fa-lightbulb" style={{ marginRight: 6, color: 'var(--brand)' }} />
-                      <b style={{ color: 'var(--txt2)' }}>Dato clave:</b> anotá horarios de contacto, condiciones de pago o preferencias. La próxima vez que te escriba, ya sabés cómo atenderlo.
+                      <b style={{ color: 'var(--txt2)' }}>Dato clave:</b> anotá horarios, condiciones de pago o preferencias.
                     </div>
                   )}
                 </div>

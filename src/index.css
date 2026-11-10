@@ -3023,38 +3023,69 @@ td b{color:var(--txt);font-weight:600}
 .modal.modal-hbf::before{display:none!important}
 .bar-chart{overflow:hidden}
 
-/* ===== Mobile: headers de las fichas de detalle (Cliente / Proveedor) ===== */
-/* Antes el nombre largo y la botonera se enciman en celular: pasamos a
-   identidad arriba (ancho completo) + acciones abajo + cerrar fijo arriba a la derecha. */
+/* ===== Mobile: header de la ficha de Cliente ===== */
+/* El nombre largo, el chip de estado y la botonera se encimaban en celular:
+   la identidad toma el ancho completo, las acciones bajan a su propia fila y
+   la X queda fija arriba a la derecha.
+   Proveedores NO va aca: ese panel trae su propio bloque <style> en
+   Proveedores.jsx (bottom sheet, botones circulares de 34px) y dos juegos de
+   reglas compitiendo le desarmaban el header. */
 @media (max-width: 768px){
-  .cli-dt-header,
-  .prov-detail-hd{position:relative;padding:14px 16px 12px!important}
-
-  .cli-dt-head,
-  .prov-detail-hd > div:first-child{flex-wrap:wrap;gap:0!important}
-
-  .cli-dt-id,
-  .prov-detail-hd > div:first-child > div:first-child{
-    flex:1 1 100%!important;min-width:0;gap:11px!important;padding-right:38px;
-  }
-
-  .cli-dt-ava,
-  .prov-detail-avatar{width:40px!important;height:40px!important;font-size:16px!important}
-
-  .cli-dt-id h3,
-  .prov-detail-name{font-size:16px!important}
-
-  .cli-dt-acts,
-  .prov-detail-hd-acts{width:100%;margin-top:12px}
-
+  .cli-dt-header{position:relative;padding:14px 16px 12px!important}
+  .cli-dt-head{flex-wrap:wrap;gap:0!important}
+  .cli-dt-id{flex:1 1 100%!important;min-width:0;gap:11px!important;padding-right:38px}
+  .cli-dt-ava{width:40px!important;height:40px!important;font-size:16px!important}
+  .cli-dt-id h3{font-size:16px!important}
+  .cli-dt-acts{width:100%;margin-top:12px}
   .cli-dt-acts .btn-primary{flex:1}
+  .cli-dt-acts .mclose{position:absolute;top:12px;right:12px}
+}
 
-  .prov-detail-hd-acts{display:grid!important;grid-template-columns:1fr 1fr;gap:6px}
-  .prov-detail-hd-acts .btn{justify-content:center}
-  .prov-detail-hd-acts .btn:nth-child(2){order:-1;grid-column:1/-1}
+/* Tabs de las fichas de detalle: scroll horizontal con la barra oculta.
+   El fade de "hay mas a la derecha" se aplica solo donde realmente desborda
+   (Proveedores, 5 pestanas); en Clientes son 3 y entran, un fade ahi mentiria. */
+.detail-tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.detail-tabs::-webkit-scrollbar{display:none}
+@media (max-width: 768px){
+  .detail-tabs{padding:0 16px!important;position:relative}
+  .detail-tab{padding:11px 14px!important;font-size:12.5px!important}
+}
 
-  .cli-dt-acts .mclose,
-  .prov-detail-hd-acts .mclose{position:absolute;top:12px;right:12px}
+/* Contacto en las fichas: solo el icono. El numero y el mail completos
+   ocupaban dos chips anchos y el dato en si no se usa para leer, se usa
+   para tocar. */
+.cli-contact-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.cli-ico-btn{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:15px;text-decoration:none;cursor:pointer;border:none;
+  transition:transform .12s,filter .12s;
+}
+.cli-ico-btn:hover{transform:translateY(-1px);filter:brightness(.96)}
+.cli-ico-btn:active{transform:scale(.94)}
+.cli-ico-wa{background:#DCFCE7;color:#16A34A}
+.cli-ico-mail{background:var(--blue-lt);color:var(--blue)}
+
+/* Los 4 KPIs eran 4 cajas con fondo propio: mucho borde para 4 numeros.
+   Una sola card dividida pesa menos y se lee igual. */
+.cli-kpis{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--surface2);border-radius:10px;overflow:hidden;margin-bottom:14px;
+}
+.cli-kpi{padding:11px 8px;text-align:center;position:relative}
+.cli-kpi + .cli-kpi::before{
+  content:'';position:absolute;left:0;top:9px;bottom:9px;width:1px;background:var(--border);
+}
+.cli-kpi-v{font-size:15px;font-weight:800;color:var(--txt);line-height:1.15}
+.cli-kpi-l{font-size:9.5px;color:var(--txt3);margin-top:2px}
+@media (max-width: 560px){
+  .cli-kpis{grid-template-columns:repeat(2,1fr)}
+  /* En 2x2 el 3er KPI abre fila nueva: su divisor izquierdo quedaria colgado
+     contra el borde de la card. Las filas se separan con una linea arriba. */
+  .cli-kpi:nth-child(3)::before{display:none}
+  .cli-kpi:nth-child(3),.cli-kpi:nth-child(4){border-top:1px solid var(--border)}
+  .cli-kpi-v{font-size:16px}
+  .cli-kpi-l{font-size:10px}
 }
 
 /* ===== Mobile: Importador ===== */

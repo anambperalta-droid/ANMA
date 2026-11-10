@@ -8,6 +8,15 @@ import { isLowStock, lowVariants } from '../../lib/stock'
 import { supabase } from '../../lib/supabase'
 import { triggerEncouragement } from '../layout/MilestoneToast'
 
+/**
+ * conDias(v) — los plazos son texto libre: a veces "30", a veces "30 dias
+ * fecha factura". Solo agregamos "dias" si el valor es un numero pelado.
+ */
+function conDias(v) {
+  const t = String(v).trim()
+  return /^\d+$/.test(t) ? `${t} días` : t
+}
+
 export default function Proveedores() {
   const { get, set, saveEntity, deleteEntity } = useData()
   const nav = useNavigate()
@@ -733,7 +742,14 @@ export default function Proveedores() {
           .prov-detail-hd-acts .btn span{display:none}
           .prov-detail-hd-acts .btn i{margin:0;font-size:13px}
           .prov-detail-body{padding:14px 16px!important}
-          .prov-detail-tabs{padding:0 16px!important;overflow-x:auto;-webkit-overflow-scrolling:touch}
+          /* 5 pestanas no entran en 390px: scroll con la barra oculta y un
+             fade a la derecha para que se vea que hay mas. Sin el fade el
+             corte es seco y parece que la ultima pestana es "Compras". */
+          .prov-detail-tabs{padding:0 16px!important;overflow-x:auto;-webkit-overflow-scrolling:touch;
+            scrollbar-width:none;
+            -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);
+            mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent)}
+          .prov-detail-tabs::-webkit-scrollbar{display:none}
           /* Modal crear/editar: padding más compacto */
           .prov-edit-modal .modal-form-card{max-width:100vw!important;border-radius:20px 20px 0 0!important}
           .prov-edit-hd{padding:14px 16px 10px!important}
@@ -1072,12 +1088,10 @@ export default function Proveedores() {
                     const low = supplierProducts(detailSupplier).filter(p => isLowStock(p))
                     if (!low.length) return null
                     return (
-                      <div style={{ background: 'linear-gradient(135deg,#FEF3C7,#FFFBEB)', border: '1.5px solid #FCD34D', borderRadius: 12, padding: '12px 14px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#D97706', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}><i className="fa fa-boxes-stacked" /></div>
+                      <div style={{ background: '#FFFBEB', border: '1px solid #FCD34D', borderRadius: 12, padding: '12px 14px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                         <div style={{ flex: 1, minWidth: 140 }}>
-                          <div style={{ fontSize: 11, fontWeight: 700, color: '#92400E', textTransform: 'uppercase', letterSpacing: '.5px' }}>Reposición pendiente</div>
-                          <div style={{ fontSize: 15, fontWeight: 800, color: '#92400E', lineHeight: 1.15, marginTop: 2 }}>{low.length} producto{low.length !== 1 ? 's' : ''} bajo stock</div>
-                          <div style={{ fontSize: 11, color: '#92400E', marginTop: 2 }}>Pedí reposición antes de quedarte sin unidades.</div>
+                          <div style={{ fontSize: 10.5, fontWeight: 700, color: '#92400E', textTransform: 'uppercase', letterSpacing: '.5px' }}>Reposición pendiente</div>
+                          <div style={{ fontSize: 16, fontWeight: 800, color: '#92400E', lineHeight: 1.15, marginTop: 2 }}>{low.length} producto{low.length !== 1 ? 's' : ''} bajo stock</div>
                         </div>
                         {detailSupplier.wa && (
                           <button onClick={() => sendReorderWA(detailSupplier, low)} style={{ background: '#16A34A', color: '#fff', border: 'none', fontSize: 12, fontWeight: 700, padding: '9px 14px', borderRadius: 9, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'inherit' }}>
@@ -1088,29 +1102,20 @@ export default function Proveedores() {
                     )
                   })()}
                   {/* Contacto activo — links funcionales */}
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
+                  <div className="cli-contact-row" style={{ marginBottom: 14 }}>
                     {detailSupplier.wa && (
                       <a href="#" onClick={e => { e.preventDefault(); openWA(detailSupplier) }}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#DCFCE7', color: '#16A34A', fontSize: 11, fontWeight: 600, padding: '5px 12px', borderRadius: 20, textDecoration: 'none', transition: 'opacity .15s' }}
-                        onMouseEnter={e => e.currentTarget.style.opacity = '.8'}
-                        onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-                      >
-                        <i className="fa-brands fa-whatsapp" /> WA: {detailSupplier.wa}
+                        className="cli-ico-btn cli-ico-wa"
+                        title={`WhatsApp · ${detailSupplier.wa}`} aria-label={`Abrir WhatsApp de ${detailSupplier.name}`}>
+                        <i className="fa-brands fa-whatsapp" />
                       </a>
                     )}
                     {detailSupplier.email && (
                       <a href={`mailto:${detailSupplier.email}`}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#DBEAFE', color: '#1F6FB0', fontSize: 11, fontWeight: 600, padding: '5px 12px', borderRadius: 20, textDecoration: 'none', transition: 'opacity .15s' }}
-                        onMouseEnter={e => e.currentTarget.style.opacity = '.8'}
-                        onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-                      >
-                        <i className="fa fa-envelope" /> Email: {detailSupplier.email}
+                        className="cli-ico-btn cli-ico-mail"
+                        title={`Email · ${detailSupplier.email}`} aria-label={`Escribir a ${detailSupplier.name}`}>
+                        <i className="fa fa-envelope" />
                       </a>
-                    )}
-                    {detailSupplier.rubro && (
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#FCE9DC', color: '#F2762E', fontSize: 11, fontWeight: 600, padding: '5px 12px', borderRadius: 20 }}>
-                        <i className="fa fa-tag" /> Rubro: {detailSupplier.rubro}
-                      </span>
                     )}
                   </div>
 
@@ -1134,13 +1139,13 @@ export default function Proveedores() {
                       {detailSupplier.paymentTerm && (
                         <div style={{ background: 'var(--surface2)', borderRadius: 8, padding: '8px 12px' }}>
                           <div style={{ fontSize: 9, color: 'var(--txt3)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Plazo pago</div>
-                          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt)', marginTop: 2 }}>{detailSupplier.paymentTerm} días</div>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt)', marginTop: 2 }}>{conDias(detailSupplier.paymentTerm)}</div>
                         </div>
                       )}
                       {detailSupplier.leadTime && (
                         <div style={{ background: 'var(--surface2)', borderRadius: 8, padding: '8px 12px' }}>
                           <div style={{ fontSize: 9, color: 'var(--txt3)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Lead time</div>
-                          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt)', marginTop: 2 }}>{detailSupplier.leadTime} días</div>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt)', marginTop: 2 }}>{conDias(detailSupplier.leadTime)}</div>
                         </div>
                       )}
                       {detailSupplier.cbu && (
