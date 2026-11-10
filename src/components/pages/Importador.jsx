@@ -145,6 +145,7 @@ function SeccionEntidad({ ent, existingList, onChange, resetKey }) {
       {/* Header de sección */}
       <button
         onClick={() => setOpen(o => !o)}
+        className="imp-sec-hd"
         style={{
           width: '100%', display: 'flex', alignItems: 'center', gap: 10,
           padding: '11px 14px', background: total > 0 ? ent.bg : 'var(--surface2)',
@@ -177,9 +178,9 @@ function SeccionEntidad({ ent, existingList, onChange, resetKey }) {
 
       {/* Cuerpo expandible */}
       {open && (
-        <div style={{ padding: '12px 14px', borderTop: '1px solid var(--border)' }}>
+        <div className="imp-sec-body" style={{ padding: '12px 14px', borderTop: '1px solid var(--border)' }}>
           {/* Hint de columnas */}
-          <div style={{
+          <div className="imp-hint" style={{
             fontSize: 10, color: 'var(--txt3)', marginBottom: 8, padding: '6px 8px',
             background: 'var(--surface2)', borderRadius: 6, fontFamily: 'monospace',
             lineHeight: 1.6,
@@ -209,7 +210,7 @@ function SeccionEntidad({ ent, existingList, onChange, resetKey }) {
           />
 
           {/* Botones auxiliares */}
-          <div style={{ display: 'flex', gap: 6, marginTop: 6, alignItems: 'center' }}>
+          <div className="imp-aux" style={{ display: 'flex', gap: 6, marginTop: 6, alignItems: 'center' }}>
             <button
               onClick={() => fileRef.current?.click()}
               style={{
@@ -250,6 +251,7 @@ function SeccionEntidad({ ent, existingList, onChange, resetKey }) {
               {currentFilas.length > 5 && (
                 <button
                   onClick={() => setShowAll(s => !s)}
+                  className="imp-more"
                   style={{
                     marginTop: 4, fontSize: 11, color: ent.color, background: 'none',
                     border: 'none', cursor: 'pointer', fontWeight: 600, padding: '2px 0',
@@ -346,7 +348,7 @@ export default function Importador() {
   }
 
   return (
-    <div style={{ padding: '24px 20px 100px', maxWidth: 720, margin: '0 auto' }}>
+    <div className="imp-page" style={{ padding: '24px 20px 100px', maxWidth: 720, margin: '0 auto' }}>
 
       {/* Hero */}
       <div style={{ marginBottom: 24 }}>
@@ -364,7 +366,7 @@ export default function Importador() {
         </div>
 
         {/* Instrucción rápida */}
-        <div style={{
+        <div className="imp-steps" style={{
           display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12,
         }}>
           {['1 · Expandí la sección', '2 · Pegá tus datos', '3 · Revisá la vista previa', '4 · Confirmá la migración'].map((s, i) => (
@@ -391,7 +393,7 @@ export default function Importador() {
       </div>
 
       {/* Barra de resumen global + Confirmar */}
-      <div style={{
+      <div className="imp-bar" style={{
         position: 'sticky', bottom: 0, left: 0, right: 0,
         marginTop: 20,
         background: 'var(--surface)',
