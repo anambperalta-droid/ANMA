@@ -1180,7 +1180,7 @@ export default function Historial() {
     list = [...list].sort((a, b) => {
       const dir = sortDir === 'asc' ? 1 : -1
       if (sortKey === 'date') return ((a.date || '') > (b.date || '') ? 1 : -1) * dir
-      if (sortKey === 'total') return ((a.total || 0) - (b.total || 0)) * dir
+      if (sortKey === 'total') return (((a.totalFinal || a.total || 0)) - ((b.totalFinal || b.total || 0))) * dir
       if (sortKey === 'gain') return ((a.totalGain || 0) - (b.totalGain || 0)) * dir
       return (a.id - b.id) * dir
     })
@@ -1286,7 +1286,10 @@ export default function Historial() {
 
   // Top clients
   const byClient = {}
-  confirmed.forEach(b => { const k = b.company || b.contact || '—'; byClient[k] = (byClient[k] || 0) + (b.total || 0) })
+  /* totalFinal || total: en los presupuestos con IVA, `total` es la base sin
+     IVA. Sumando `total` a secas, los clientes con IVA facturado aparecian
+     mas chicos de lo que son y podian quedar fuera del top. */
+  confirmed.forEach(b => { const k = b.company || b.contact || '—'; byClient[k] = (byClient[k] || 0) + (b.totalFinal || b.total || 0) })
   const topClients = Object.entries(byClient).sort((a, b) => b[1] - a[1]).slice(0, 3)
 
   // Analysis metrics
@@ -1321,7 +1324,7 @@ export default function Historial() {
   const handleDelete = (b) => {
     const label = b.num || `#${b.id}`
     confirm({
-      body: `⚠ ELIMINAR ${label}\n\nCliente: ${b.contact || b.company || '—'}\nTotal: ${fmt(b.total)}\n\nEsta acción no se puede deshacer.`,
+      body: `⚠ ELIMINAR ${label}\n\nCliente: ${b.contact || b.company || '—'}\nTotal: ${fmt(b.totalFinal || b.total)}\n\nEsta acción no se puede deshacer.`,
       danger: true,
       requireText: 'ELIMINAR',
       confirmLabel: 'Eliminar definitivamente',
@@ -1603,7 +1606,7 @@ export default function Historial() {
     // 1) Concentración de ventas (top cliente). Mínimo 3 ventas confirmadas:
     // con 1-2 ventas, "100% en un cliente" es trivial, no una señal real.
     if (topClients.length > 0 && totBudgeted > 0 && confirmed.length >= 3) {
-      const topPct = Math.round((topClients[0][1] / Math.max(1, confirmed.reduce((s, b) => s + (b.total || 0), 0))) * 100)
+      const topPct = Math.round((topClients[0][1] / Math.max(1, confirmed.reduce((s, b) => s + (b.totalFinal || b.total || 0), 0))) * 100)
       if (topPct >= 60) {
         out.push({
           tone: 'warning',
@@ -1964,7 +1967,7 @@ export default function Historial() {
                     <i className="fa fa-arrow-right" style={{ color: '#EA580C', fontSize: 12 }} />
                   </div>
                   <div style={{ fontSize: 11.5, color: 'var(--txt2)', lineHeight: 1.4 }}>
-                    <b style={{ color: '#EA580C', fontVariantNumeric: 'tabular-nums' }}>{money(sinCobrar7d.reduce((s, b) => s + ((b.total || 0) - cobrado(b)), 0))}</b> pendiente hace mas de una semana
+                    <b style={{ color: '#EA580C', fontVariantNumeric: 'tabular-nums' }}>{money(sinCobrar7d.reduce((s, b) => s + ((b.totalFinal || b.total || 0) - cobrado(b)), 0))}</b> pendiente hace mas de una semana
                   </div>
                 </div>
               )}
@@ -2759,7 +2762,7 @@ export default function Historial() {
                     { l: 'Total cobrado', v: money(totCobrado), tip: 'Pagos recibidos (totales + señas)' },
                     { l: 'Ticket promedio', v: money(avgTicket), tip: 'Monto promedio por presupuesto' },
                     { l: 'Tasa de conversión', v: convRate, tip: 'Presupuestos cobrados ÷ presupuestos cargados' },
-                    { l: 'N° de presupuestos', v: periodBudgets.length },
+                    { l: 'N° de pedidos', v: periodBudgets.length },
                   ],
                 },
                 {
@@ -2821,7 +2824,7 @@ export default function Historial() {
             const byReason = {}
             withReason.forEach(b => { byReason[b.lossReason] = (byReason[b.lossReason] || 0) + 1 })
             const sorted = Object.entries(byReason).sort((a, b) => b[1] - a[1])
-            const lostValue = lost.reduce((s, b) => s + (b.total || 0), 0)
+            const lostValue = lost.reduce((s, b) => s + (b.totalFinal || b.total || 0), 0)
             return (
               <div className="card" style={{ gridColumn: '1 / -1' }}>
                 <div className="card-header" style={{ marginBottom: 10 }}>
@@ -2849,10 +2852,12 @@ export default function Historial() {
                 ) : (
                   <div style={{ fontSize: 12, color: 'var(--txt3)', display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0' }}>
                     <i className="fa fa-circle-info" />
-                    {lost.length > 0 ? `${lost.length} pedido${lost.length > 1 ? 's' : ''} perdido${lost.length > 1 ? 's' : ''} sin motivo registrado — marcalos uno a uno para ver el análisis acá.` : 'Sin pedidos perdidos en el período. ¡Muy bien!'}
+                    {`${lost.length} pedido${lost.length > 1 ? 's' : ''} perdido${lost.length > 1 ? 's' : ''} sin motivo registrado — marcalos uno a uno para ver el análisis acá.`}
                   </div>
                 )}
-                {withReason.length < lost.length && lost.length > 0 && (
+                {/* Solo si hay motivos cargados: sin ninguno, el mensaje de arriba
+                    ya dice exactamente esto y salia dos veces seguidas. */}
+                {withReason.length > 0 && withReason.length < lost.length && (
                   <div style={{ marginTop: 8, fontSize: 10, color: 'var(--txt4)', borderTop: '1px solid var(--border)', paddingTop: 8 }}>
                     <i className="fa fa-circle-info" style={{ marginRight: 4 }} />
                     {lost.length - withReason.length} pedido{lost.length - withReason.length > 1 ? 's' : ''} sin motivo registrado
