@@ -240,24 +240,35 @@ export default function Ventas() {
     }
 
     const facturado = pmBudgets.reduce((s, b) => s + montoConIva(b), 0)
-    return { count: pmBudgets.length, facturado }
+    /* countConMonto: el ticket promedio del mes anterior tiene que calcularse
+       con el mismo criterio que el de este mes, si no el delta compara una
+       base contra otra y la flecha miente. */
+    return { count: pmBudgets.length, facturado, countConMonto: pmBudgets.filter(b => montoConIva(b) > 0).length }
   }, [allBudgets, month, year])
 
   const cobroPercent = totals.facturado > 0 ? Math.round((totals.cobrado / totals.facturado) * 100) : 0
 
-  const avgTicket = totals.count > 0 ? Math.round(totals.facturado / totals.count) : 0
-  /* Ventas del mes sin monto cargado. El ticket promedio divide el facturado
-     por TODAS las ventas del mes, asi que cada venta sin monto lo baja sin que
-     se note: con 2 de 3 en cero, "$73.370" es en realidad una sola venta de
-     $220.110 dividida por tres. No cambiamos la formula (una venta de $0 puede
-     ser una muestra o un regalo, y es decision de Ana), pero se avisa. */
-  const sinMonto = useMemo(() => monthBudgets.filter(b => montoConIva(b) <= 0).length, [monthBudgets])
+  /* Ticket promedio solo sobre las ventas CON monto (decision de Ana, 10/11).
+     Una venta a medio cargar no es una venta de $0: dividir por ella bajaba el
+     promedio sin que se notara — con 2 de 3 en cero, "$73.370" era una sola
+     venta de $220.110 dividida por tres. */
+  const ventasConMonto = useMemo(() => monthBudgets.filter(b => montoConIva(b) > 0), [monthBudgets])
+  const sinMonto = totals.count - ventasConMonto.length
+  const avgTicket = ventasConMonto.length > 0
+    ? Math.round(totals.facturado / ventasConMonto.length)
+    : 0
   // Mediana del ticket (Fase 2 auditoria 02/10/26).
   // Si hay outliers (max > 3x avg) la mediana es un indicador mas honesto
   // del ticket "tipico" que el promedio.
-  const medianTicket = useMemo(() => median(monthBudgets.map(b => Number(b.total) || 0)), [monthBudgets])
-  const maxTicket    = monthBudgets.reduce((m, b) => Math.max(m, Number(b.total) || 0), 0)
-  const hasOutlier   = totals.count >= 3 && avgTicket > 0 && maxTicket > avgTicket * 3
+  // Misma base que el promedio: con monto y con IVA. Antes usaba b.total (sin
+  // IVA) sobre todas las ventas, asi que con dos ceros la mediana daba 0.
+  const medianTicket = useMemo(() => median(ventasConMonto.map(b => montoConIva(b))), [ventasConMonto])
+  const maxTicket    = ventasConMonto.reduce((m, b) => Math.max(m, montoConIva(b)), 0)
+  /* El umbral se compara contra la MEDIANA, no contra el promedio. Contra el
+     promedio no se cumplia nunca con 3 ventas: el outlier arrastra el propio
+     promedio, y "max > avg*3" con tres valores positivos exige que los otros
+     dos sumen menos que cero. El aviso de la mediana estaba muerto. */
+  const hasOutlier   = ventasConMonto.length >= 3 && medianTicket > 0 && maxTicket > medianTicket * 3
 
   const topClient = useMemo(() => {
     const rev = {}
@@ -295,8 +306,8 @@ export default function Ventas() {
   const capDelta = (v) => v === null ? null : Math.max(-999, Math.min(999, v))
   const deltaCount = prevMonthData.count >= 3 ? capDelta(Math.round(((totals.count - prevMonthData.count) / prevMonthData.count) * 100)) : null
   const deltaFact = prevMonthData.count >= 3 && prevMonthData.facturado > 0 ? capDelta(Math.round(((totals.facturado - prevMonthData.facturado) / prevMonthData.facturado) * 100)) : null
-  const prevAvgTicket = prevMonthData.count > 0 ? Math.round(prevMonthData.facturado / prevMonthData.count) : 0
-  const deltaTicket = prevMonthData.count >= 3 && prevAvgTicket > 0 ? capDelta(Math.round(((avgTicket - prevAvgTicket) / prevAvgTicket) * 100)) : null
+  const prevAvgTicket = prevMonthData.countConMonto > 0 ? Math.round(prevMonthData.facturado / prevMonthData.countConMonto) : 0
+  const deltaTicket = prevMonthData.countConMonto >= 3 && prevAvgTicket > 0 ? capDelta(Math.round(((avgTicket - prevAvgTicket) / prevAvgTicket) * 100)) : null
 
   const toggleSort = (col) => {
     if (sortCol === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
@@ -787,11 +798,10 @@ export default function Ventas() {
                   <span className="vt-hero-stat-val">{hidden ? '***' : fmt(avgTicket)}</span>
                   {deltaTicket !== null && <Delta value={deltaTicket} />}
                 </div>
-                {/* El aviso de ventas sin monto manda sobre el de la mediana:
-                    antes de discutir si el promedio es tipico, conviene saber
-                    que hay ventas a medio cargar bajandolo. */}
+                {/* Las ventas sin monto ya no entran en el promedio, pero se
+                    avisan igual: son ventas a medio cargar y conviene cerrarlas. */}
                 {sinMonto > 0 && !hidden ? (
-                  <div title="Estas ventas cuentan en el promedio con monto 0 y lo bajan. Cargales el monto para que el ticket sea real."
+                  <div title="Estas ventas no se cuentan en el promedio porque no tienen monto. Cargáselo para que entren."
                     style={{ fontSize: 9.5, color: '#b45309', fontWeight: 700, marginTop: 1, letterSpacing: '.02em' }}>
                     {sinMonto} de {totals.count} sin monto cargado
                   </div>
