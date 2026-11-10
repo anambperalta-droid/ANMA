@@ -415,6 +415,12 @@ input,select,textarea{font-family:inherit}
 /* ─── BENTO GRID — premium feel, breathing room ─── */
 .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(0,auto);gap:18px;margin-bottom:24px}
 .bento-kpis-4{grid-template-columns:repeat(4,1fr)}
+/* Dos KPIs: no se estiran a media pantalla cada uno, se quedan a la izquierda
+   con un ancho legible y el resto del aire queda libre.
+   Con !important como .bento-kpis-4, porque .bento trae varios media queries
+   con !important que si no lo pisan. */
+.bento-kpis-2{grid-template-columns:repeat(2,minmax(0,230px))!important}
+@media(max-width:560px){.bento-kpis-2{grid-template-columns:repeat(2,1fr)!important;gap:10px!important}}
 @media(max-width:900px){.bento-kpis-4{grid-template-columns:repeat(2,1fr)!important;gap:10px!important}}
 @media(max-width:380px){.bento-kpis-4{grid-template-columns:1fr!important}}
 /* Logística: KPI strip 3->1 col en pantallas chicas */
@@ -2473,10 +2479,23 @@ td b{color:var(--txt);font-weight:600}
 /* Insumos 65/35 asymmetric layout */
 .ins-layout{display:block}
 .ins-main{min-width:0}
-.ins-panel{display:none}
+/* El panel lateral de Insumos se elimino: repetia los KPIs de arriba.
+   .ins-panel queda neutralizado por si algun estilo viejo lo referencia. */
+.ins-panel{display:none!important}
+
+/* Eliminar deja de estar siempre a la vista: aparece al pasar por la fila
+   o cuando llega el foco de teclado, para no tener una papelera roja fija
+   por cada insumo compitiendo con los numeros. */
+.tbl .ins-row-del{opacity:0;transition:opacity .12s}
+.tbl tr:hover .ins-row-del,
+.tbl .ins-row-del:focus-visible{opacity:1}
+@media (hover:none){
+  /* En tactil no hay hover: si se esconde, no hay forma de llegar */
+  .tbl .ins-row-del{opacity:1}
+}
 @media(min-width:641px){
-  .ins-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start}
-  .ins-panel{display:flex;flex-direction:column;gap:12px}
+  /* Antes: grid 2fr/1fr con el panel lateral. Sin panel, la tabla toma todo. */
+  .ins-layout{display:block}
 }
 /* Panel stat rows */
 .ins-pstat{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--txt3)}

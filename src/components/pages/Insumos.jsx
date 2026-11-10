@@ -155,6 +155,9 @@ export default function Insumos() {
   }, [insumos, catFilter, showLowOnly, search, sortField, sortDir])
 
   const lowStock = useMemo(() => insumos.filter(x => stockLevel(x.stock, x.minStock) === 'low'), [insumos])
+  /* Los 'warn' (hasta 10% por encima del minimo) no se contaban en ningun lado:
+     la fila se pintaba de ambar mientras el tablero decia "Todo en orden". */
+  const warnStock = useMemo(() => insumos.filter(x => stockLevel(x.stock, x.minStock) === 'warn'), [insumos])
   const totalValue = insumos.reduce((s, x) => s + (x.stock || 0) * (Number(x.cost) || 0), 0)
 
   const catLabel = (id) => cats.find(cat => cat.id === id)?.label || id || '—'
@@ -297,31 +300,34 @@ export default function Insumos() {
         </button>
       </div>
 
-      {/* ── KPIs (visible en desktop + mobile 2×2) ── */}
-      <div className="bento bento-kpis-4 ins-kpis" style={{ marginBottom: 14 }}>
-        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--brand)', padding: '12px 14px 10px' }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Total insumos</div>
-          <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{insumos.length}</div>
-        </div>
+      {/* ── KPIs: solo los dos que mueven una decision de compra ──
+          "Total insumos" y "Categorias" se fueron: contar las filas de la tabla
+          que esta abajo, o cuantas categorias configuraste, no cambia nada de lo
+          que hacés. Van como linea de contexto junto a los filtros. */}
+      <div className="bento bento-kpis-2 ins-kpis" style={{ marginBottom: 14 }}>
         <div className="bento-kpi" style={{ borderLeft: '3px solid var(--green)', padding: '12px 14px 10px' }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Valor Total en Stock</div>
-          <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{fmtDec(totalValue)}</div>
+          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Valor en stock</div>
+          <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{fmtDec(totalValue)}</div>
+          <div style={{ fontSize: 9.5, color: 'var(--txt3)', marginTop: 2 }}>capital inmovilizado</div>
         </div>
-        <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : 'var(--green)'}`, ...(lowStock.length === 0 ? { borderTop: '4px solid #10B981' } : {}), padding: '12px 14px 10px' }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Stock bajo</div>
-          <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-.03em', lineHeight: 1.1, color: lowStock.length > 0 ? 'var(--red)' : 'var(--green)', fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{lowStock.length}</div>
-          {lowStock.length === 0
-            ? <div style={{ fontSize: 9.5, color: '#16A34A', marginTop: 2, fontWeight: 600 }}>Todo en orden</div>
-            : <button
-                onClick={() => { setShowLowOnly(true); setTab('list') }}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 10, fontWeight: 700, color: '#DC2626', marginTop: 5, display: 'flex', alignItems: 'center', gap: 3, lineHeight: 1 }}>
-                Ver faltantes <i className="fa fa-arrow-right" style={{ fontSize: 8 }} />
-              </button>
-          }
-        </div>
-        <div className="bento-kpi" style={{ borderLeft: '3px solid var(--amber)', padding: '12px 14px 10px' }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Categorías</div>
-          <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--txt)', letterSpacing: '-.03em', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{cats.length}</div>
+        <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : warnStock.length > 0 ? 'var(--amber)' : 'var(--green)'}`, padding: '12px 14px 10px' }}>
+          <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Para reponer</div>
+          <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-.03em', lineHeight: 1.1, color: lowStock.length > 0 ? 'var(--red)' : 'var(--txt)', fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{lowStock.length}</div>
+          {/* Un insumo en ambar (por caer bajo el minimo) con el tablero diciendo
+              "Todo en orden" es justo lo que no queres ver como jefe de compras. */}
+          {lowStock.length > 0 ? (
+            <button
+              onClick={() => { setShowLowOnly(true); setTab('list') }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 10, fontWeight: 700, color: '#DC2626', marginTop: 5, display: 'flex', alignItems: 'center', gap: 3, lineHeight: 1 }}>
+              Ver faltantes <i className="fa fa-arrow-right" style={{ fontSize: 8 }} />
+            </button>
+          ) : warnStock.length > 0 ? (
+            <div style={{ fontSize: 9.5, color: '#D97706', marginTop: 2, fontWeight: 600 }}>
+              {warnStock.length} cerca del mínimo
+            </div>
+          ) : (
+            <div style={{ fontSize: 9.5, color: '#16A34A', marginTop: 2, fontWeight: 600 }}>Todo en orden</div>
+          )}
         </div>
       </div>
 
@@ -405,6 +411,16 @@ export default function Insumos() {
                 <span className="ins-fg-alert-txt">Stock bajo</span>
                 {lowStock.length > 0 && <span className="cnt">{lowStock.length}</span>}
               </button>
+            </div>
+
+            {/* Linea de contexto — reemplaza los KPIs "Total insumos" y "Categorias".
+                Dice lo mismo al costo de un renglon, y cuando hay un filtro puesto
+                aclara cuantos estas viendo de cuantos. */}
+            <div className="ins-desk-only" style={{ fontSize: 11, color: 'var(--txt3)', margin: '2px 2px 10px' }}>
+              {filtered.length === insumos.length
+                ? `${insumos.length} insumo${insumos.length !== 1 ? 's' : ''}`
+                : `${filtered.length} de ${insumos.length} insumos`}
+              {cats.length > 0 && ` · ${cats.length} categoría${cats.length !== 1 ? 's' : ''}`}
             </div>
 
             {/* Panel colapsable mobile — Cat/Sort/StockBajo/Exportar (visible al tocar filtro) */}
@@ -520,7 +536,6 @@ export default function Insumos() {
                   <thead>
                     <tr>
                       <th className="tbl-sort" onClick={() => toggleSort('name')}>Insumo {sortIcon('name')}</th>
-                      <th>Unidad</th>
                       <th className="tbl-sort" style={{ textAlign: 'right' }} onClick={() => toggleSort('cost')}>Costo U. {sortIcon('cost')}</th>
                       <th>Proveedor</th>
                       <th style={{ textAlign: 'right', color: 'var(--txt3)', fontWeight: 500 }}>Última act.</th>
@@ -529,7 +544,7 @@ export default function Insumos() {
                   </thead>
                   <tbody>
                     {filtered.length === 0 && (
-                      <tr><td colSpan={6} style={{ textAlign: 'center', padding: 40, color: 'var(--txt3)' }}>
+                      <tr><td colSpan={5} style={{ textAlign: 'center', padding: 40, color: 'var(--txt3)' }}>
                         <i className="fa fa-box-open" style={{ fontSize: 24, marginBottom: 8, display: 'block' }} />
                         No hay insumos cargados
                       </td></tr>
@@ -546,7 +561,7 @@ export default function Insumos() {
                                 <div style={{ fontWeight: 600, fontSize: 13 }}>{item.name}</div>
                                 <div style={{ fontSize: 10.5, marginTop: 1, display: 'flex', alignItems: 'center', gap: 6 }}>
                                   <span style={{ color: level === 'low' ? '#DC2626' : level === 'warn' ? '#D97706' : 'var(--txt3)', fontWeight: level !== 'ok' ? 700 : 400 }}>
-                                    {item.stock || 0} en stock
+                                    {item.stock || 0} {shortUnit(item.unit)}
                                   </span>
                                   {item.minStock > 0 && <span style={{ color: 'var(--txt4)' }}>· mín {item.minStock}</span>}
                                   <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 1 }} onClick={e => e.stopPropagation()}>
@@ -557,14 +572,17 @@ export default function Insumos() {
                               </div>
                             </div>
                           </td>
-                          <td style={{ fontSize: 12, color: 'var(--txt3)' }}>{item.unit || 'un'}</td>
                           <td style={{ textAlign: 'right' }}>{fmtDec(item.cost)}</td>
                           <td style={{ fontSize: 11 }}>{supplierName(item.supplierId)}</td>
                           <td style={{ textAlign: 'right', fontSize: 10, color: 'var(--txt4)', whiteSpace: 'nowrap' }}>
                             {relTime(item.lastMove) || '—'}
                           </td>
                           <td>
-                            <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
+                            {/* Cinco papeleras rojas fijas competian con los datos.
+                                Registrar movimiento y editar son lo de todos los dias;
+                                eliminar aparece al pasar por la fila (y con foco de
+                                teclado), que es lo que se hace una vez cada tanto. */}
+                            <div className="ins-row-acts" style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
                               <button title="Registrar movimiento" onClick={() => openMove(item)}
                                 style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
                                 <i className="fa fa-arrows-rotate" />
@@ -573,7 +591,7 @@ export default function Insumos() {
                                 style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid var(--border2)',background:'var(--surface2)',color:'var(--txt2)',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
                                 <i className="fa fa-pen" />
                               </button>
-                              <button title="Eliminar" onClick={() => remove(item.id)}
+                              <button title="Eliminar" onClick={() => remove(item.id)} className="ins-row-del"
                                 style={{ width:28,height:28,borderRadius:'50%',border:'1.5px solid #FECACA',background:'#FEF2F2',color:'#DC2626',cursor:'pointer',fontSize:11,display:'inline-flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0 }}>
                                 <i className="fa fa-trash" />
                               </button>
@@ -588,54 +606,11 @@ export default function Insumos() {
             </div>
           </div>
 
-          {/* ── RIGHT: panel lateral (desktop only) ── */}
-          <div className="ins-panel">
-
-            {/* Resumen stats */}
-            <div className="card" style={{ padding: '14px 16px' }}>
-              <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt4)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 5 }}>
-                <i className="fa fa-chart-simple" /> Resumen
-              </div>
-              <div className="ins-pstat">
-                <span><i className="fa fa-boxes-stacked" style={{ color: 'var(--brand)', marginRight: 5, fontSize: 11 }} />Total insumos</span>
-                <b>{insumos.length}</b>
-              </div>
-              <div className="ins-pstat">
-                <span><i className="fa fa-coins" style={{ color: '#F59E0B', marginRight: 5, fontSize: 11 }} />Valor stock</span>
-                <b style={{ color: 'var(--money)' }}>{fmtDec(totalValue)}</b>
-              </div>
-              <div className="ins-pstat">
-                <span><i className="fa fa-tag" style={{ color: '#64748B', marginRight: 5, fontSize: 11 }} />Categorías</span>
-                <b>{cats.length}</b>
-              </div>
-            </div>
-
-            {/* Stock crítico / Todo OK */}
-            {lowStock.length > 0 ? (
-              <div className="card" style={{ padding: '14px 16px' }}>
-                <div style={{ fontSize: 9, fontWeight: 700, color: '#DC2626', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <i className="fa fa-triangle-exclamation" /> Stock crítico ({lowStock.length})
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  {lowStock.slice(0, 7).map(item => (
-                    <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
-                      <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 600, color: 'var(--txt)', marginRight: 8 }}>{item.name}</div>
-                      <div style={{ fontSize: 11, color: '#DC2626', fontWeight: 700, flexShrink: 0 }}>
-                        {item.stock || 0}<span style={{ color: 'var(--txt4)', fontWeight: 400, marginLeft: 2 }}>{item.unit || 'un'}</span>
-                      </div>
-                    </div>
-                  ))}
-                  {lowStock.length > 7 && <div style={{ fontSize: 10, color: 'var(--txt4)', paddingTop: 6 }}>+{lowStock.length - 7} insumos más</div>}
-                </div>
-              </div>
-            ) : (
-              <div className="card" style={{ padding: '20px 16px', textAlign: 'center' }}>
-                <i className="fa fa-circle-check" style={{ color: 'var(--green)', fontSize: 24, marginBottom: 8, display: 'block' }} />
-                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--txt2)', marginBottom: 3 }}>Stock al día</div>
-                <div style={{ fontSize: 11, color: 'var(--txt3)' }}>Todos los insumos tienen stock suficiente</div>
-              </div>
-            )}
-          </div>
+          {/* El panel lateral derecho se fue: "Resumen" repetia los KPIs de arriba
+              (total insumos, valor en stock, categorias) y "Stock al dia" repetia
+              el KPI de stock bajo. La lista de criticos ya la da el banner rojo y
+              el filtro "Stock bajo". Tres copias del mismo dato en una pantalla.
+              La tabla se queda con todo el ancho. */}
 
         </div>
       )}
