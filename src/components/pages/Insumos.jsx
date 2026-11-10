@@ -73,6 +73,27 @@ const relTime = (iso) => {
   return new Date(iso).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })
 }
 
+/* Los movimientos guardan la fecha como "YYYY-MM-DD" y la tabla la mostraba
+   tal cual ("2026-11-10"), mientras el resto de la pantalla usa "hace 3d" o
+   "6 nov". relTime() no sirve aca porque cuenta horas y estas fechas no las
+   tienen: para la de hoy devolvia "hace <1h". */
+const diaCorto = (iso) => {
+  if (!iso) return '—'
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0)
+  const [y, m, d] = String(iso).split('-').map(Number)
+  if (!y || !m || !d) return iso
+  const f = new Date(y, m - 1, d)
+  const dias = Math.round((hoy - f) / 86400000)
+  if (dias === 0) return 'hoy'
+  if (dias === 1) return 'ayer'
+  if (dias > 1 && dias < 7) return `hace ${dias}d`
+  /* Con el ano cuando no es el actual: "24 abr" a secas no dice si fue de
+     este ano o del pasado, y en un historial de stock eso importa.
+     Armado a mano porque es-AR con year:'2-digit' devuelve "28 de dic de 25". */
+  const mes = f.toLocaleDateString('es-AR', { month: 'short' }).replace('.', '')
+  return hoy.getFullYear() === y ? `${d} ${mes}` : `${d} ${mes} ${String(y).slice(2)}`
+}
+
 export default function Insumos() {
   const { get, config, saveEntity, deleteEntity, recordStockMove } = useData()
   const toast   = useToast()
@@ -234,6 +255,10 @@ export default function Insumos() {
   const insumoMoves = useMemo(() => {
     return stockMoves.filter(m => m.insumoId).sort((a, b) => (b.id || 0) - (a.id || 0)).slice(0, 100)
   }, [stockMoves])
+  /* Total real, para avisar cuando la lista esta recortada a 100 */
+  const insumoMovesTotal = useMemo(() => stockMoves.filter(m => m.insumoId).length, [stockMoves])
+  /* Indice por id: cada fila hacia su propio find() sobre todos los insumos */
+  const insumoById = useMemo(() => new Map(insumos.map(x => [x.id, x])), [insumos])
 
   const supplierName = (id) => { const s = suppliers.find(x => x.id === id); return s ? s.name : '—' }
 
@@ -624,10 +649,14 @@ export default function Insumos() {
               <i className="fa fa-arrows-rotate" />
               {insumoMoves.length} movimiento{insumoMoves.length !== 1 ? 's' : ''}
             </span>
-            <button className="ins-moves-back" onClick={() => setTab('list')} title="Volver a inventario" aria-label="Volver a inventario">
-              <i className="fa fa-arrow-left" />
-              <span className="ins-moves-back-lbl">Inventario</span>
-            </button>
+            {/* El boton "volver a inventario" se fue: la pestana Inventario esta
+                justo arriba, siempre visible. Dos controles para lo mismo a
+                40px de distancia. */}
+            {insumoMovesTotal > insumoMoves.length && (
+              <span style={{ fontSize: 10.5, color: 'var(--txt4)' }}>
+                últimos {insumoMoves.length} de {insumoMovesTotal}
+              </span>
+            )}
           </div>
           {insumoMoves.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '52px 24px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12 }}>
@@ -647,7 +676,7 @@ export default function Insumos() {
                 {insumoMoves.map(m => {
                   const isIn = m.type === 'in' || m.type === 'return'
                   const isAdjust = m.type === 'adjust'
-                  const insumo = insumos.find(x => x.id === m.insumoId)
+                  const insumo = insumoById.get(m.insumoId)
                   const costoTotal = m.costAtTime ? m.qty * m.costAtTime : null
                   const qtyColor = isAdjust ? 'var(--brand)' : isIn ? '#16A34A' : '#DC2626'
                   const iconBg = isAdjust ? 'rgba(242,118,46,.12)' : isIn ? 'rgba(22,163,74,.12)' : 'rgba(220,38,38,.12)'
@@ -660,7 +689,7 @@ export default function Insumos() {
                         <div className="mov-name">{m.ref || insumo?.name || '—'}</div>
                         <div className="mov-meta">
                           <span className={`badge ${MOVE_CLS[m.type] || 'b-draft'}`} style={{ fontSize: 9, padding: '1px 6px' }}>{MOVE_TYPES[m.type] || m.type}</span>
-                          <span className="mov-date">{m.date}</span>
+                          <span className="mov-date">{diaCorto(m.date)}</span>
                           {m.note && <span className="mov-note" title={m.note}>· {m.note}</span>}
                         </div>
                       </div>
@@ -684,23 +713,29 @@ export default function Insumos() {
                       <th>Tipo</th>
                       <th>Insumo</th>
                       <th style={{ textAlign: 'right' }}>Cant.</th>
-                      <th style={{ textAlign: 'right' }}>Costo Total</th>
-                      <th>Nota</th>
+                      <th style={{ textAlign: 'right' }}>Costo total</th>
                     </tr>
                   </thead>
                   <tbody>
                     {insumoMoves.map(m => {
                       const isIn = m.type === 'in' || m.type === 'return'
                       const isAdjust = m.type === 'adjust'
-                      const insumo = insumos.find(x => x.id === m.insumoId)
+                      const insumo = insumoById.get(m.insumoId)
                       const costoTotal = m.costAtTime ? m.qty * m.costAtTime : null
                       return (
                         <tr key={m.id}>
-                          <td style={{ fontSize: 11, color: 'var(--txt3)', whiteSpace: 'nowrap' }}>{m.date}</td>
+                          <td style={{ fontSize: 11, color: 'var(--txt3)', whiteSpace: 'nowrap' }} title={m.date}>{diaCorto(m.date)}</td>
                           <td><span className={`badge ${MOVE_CLS[m.type] || 'b-draft'}`}>{MOVE_TYPES[m.type] || m.type}</span></td>
                           <td>
                             <div style={{ fontWeight: 600, fontSize: 12 }}>{m.ref || insumo?.name || '—'}</div>
-                            {insumo?.subcat && <div style={{ fontSize: 10, color: '#64748B' }}>{insumo.subcat}</div>}
+                            {/* La nota tenia columna propia y casi siempre decia "—":
+                                una columna entera de guiones. Va acá, donde se lee
+                                junto al movimiento que explica. */}
+                            {(m.note || insumo?.subcat) && (
+                              <div style={{ fontSize: 10, color: '#64748B', marginTop: 1 }}>
+                                {m.note || insumo.subcat}
+                              </div>
+                            )}
                           </td>
                           <td style={{ textAlign: 'right' }}>
                             <span style={{ fontWeight: 800, fontSize: 13, color: isAdjust ? 'var(--brand)' : isIn ? '#16A34A' : '#DC2626', fontFamily: 'ui-monospace,SFMono-Regular,monospace' }}>
@@ -711,7 +746,6 @@ export default function Insumos() {
                           <td style={{ textAlign: 'right', fontWeight: 600, fontSize: 12 }}>
                             {costoTotal !== null ? fmtDec(costoTotal) : <span style={{ color: 'var(--txt4)' }}>—</span>}
                           </td>
-                          <td style={{ fontSize: 11, color: 'var(--txt3)' }}>{m.note || '—'}</td>
                         </tr>
                       )
                     })}

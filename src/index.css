@@ -2693,16 +2693,6 @@ td b{color:var(--txt);font-weight:600}
     display:inline-flex;align-items:center;gap:6px;
   }
   .ins-moves-count i{font-size:11px;opacity:.7}
-  .ins-moves-back{
-    display:inline-flex;align-items:center;gap:5px;
-    height:32px;padding:0 12px;border-radius:8px;
-    border:1px solid var(--border);background:var(--surface2);
-    color:var(--txt2);font-family:inherit;font-size:12px;font-weight:600;
-    cursor:pointer;transition:all .12s;-webkit-tap-highlight-color:transparent;
-  }
-  .ins-moves-back:hover{border-color:var(--brand);color:var(--brand)}
-  .ins-moves-back i{font-size:10px}
-  .ins-moves-back-lbl{display:inline}
 
   /* Lista de cards mobile */
   .ins-move-list{display:flex;flex-direction:column;gap:8px;padding-bottom:112px}
