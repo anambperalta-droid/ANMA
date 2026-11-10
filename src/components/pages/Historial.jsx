@@ -1092,6 +1092,10 @@ export default function Historial() {
 
   const { proximasEntregas, sinCobrar7d, stockCriticoCount } = useMemo(() => {
     const today = new Date(); today.setHours(0,0,0,0)
+    /* Un pedido confirmado, impago y con la entrega ya pasada cumplia las dos
+       condiciones: salia en "Cobros vencidos" Y en "Sin cobrar +7d", y las dos
+       tarjetas llevan al mismo filtro. Se queda en la mas urgente. */
+    const yaEnVencidos = new Set(cobrosVencidos.map(b => b.id))
     const in7 = new Date(today); in7.setDate(in7.getDate() + 7)
     const proximasEntregas = budgets.filter(b => {
       if (['lost', 'delivered'].includes(b.status)) return false
@@ -1107,7 +1111,8 @@ export default function Historial() {
       const ref = b.deliveryDate || b.date
       if (!ref) return false
       const days = Math.floor((today - new Date(ref + 'T00:00')) / 86400000)
-      return days >= 7
+      if (days < 7) return false
+      return !yaEnVencidos.has(b.id)
     })
 
     let stockCriticoCount = 0
@@ -1119,7 +1124,18 @@ export default function Historial() {
     ;(insumos || []).forEach(i => { if (i.minStock > 0 && (i.stock || 0) <= i.minStock) stockCriticoCount++ })
 
     return { proximasEntregas, sinCobrar7d, stockCriticoCount }
-  }, [budgets, products, insumos])
+  }, [budgets, products, insumos, cobrosVencidos])
+
+  /* "Hoy importa" contaba la suma de las cinco listas, y un mismo pedido podia
+     estar en varias: el numero salia mas alto que la cantidad real de pedidos
+     que necesitan algo. Ahora son pedidos distintos, mas el stock como un
+     unico item. */
+  const hoyImportaCount = useMemo(() => {
+    const ids = new Set()
+    ;[cobrosVencidos, entregasHoy, aConfirmar, proximasEntregas, sinCobrar7d]
+      .forEach(arr => (arr || []).forEach(b => ids.add(b.id)))
+    return ids.size + (stockCriticoCount > 0 ? 1 : 0)
+  }, [cobrosVencidos, entregasHoy, aConfirmar, proximasEntregas, sinCobrar7d, stockCriticoCount])
 
   // Insight banner — ignoramos deltas al cap +-999% (comparación poco confiable).
   const deltaConfiable = deltaBrutas !== null && Math.abs(deltaBrutas) < 999 ? deltaBrutas : null
@@ -1889,14 +1905,12 @@ export default function Historial() {
       {tab === 'resumen' && (
         <>
           {/* ── MODO HOY: 3 acciones inmediatas ── */}
-          {!loading && !filterLoading && (cobrosVencidos.length + entregasHoy.length + aConfirmar.length + proximasEntregas.length + sinCobrar7d.length + stockCriticoCount) > 0 && (
+          {!loading && !filterLoading && hoyImportaCount > 0 && (
             <div style={{ marginBottom: 22 }}>
               <div className="hoy-importa-header">
                 <span className="hoy-importa-bolt"><i className="fa fa-bolt" /></span>
                 <h3 className="hoy-importa-title">Hoy importa</h3>
-                <span className="hoy-importa-count">
-                  {cobrosVencidos.length + entregasHoy.length + aConfirmar.length + proximasEntregas.length + sinCobrar7d.length + (stockCriticoCount > 0 ? 1 : 0)}
-                </span>
+                <span className="hoy-importa-count">{hoyImportaCount}</span>
                 <button onClick={toggleTodayCollapsed}
                   title={todayCollapsed ? 'Mostrar' : 'Ocultar'}
                   style={{ marginLeft: 'auto', background: 'transparent', border: '1px solid var(--border)', borderRadius: 9, padding: '6px 12px', fontSize: 11.5, fontWeight: 600, color: 'var(--txt3)', cursor: 'pointer', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 6, transition: 'all .15s' }}>
@@ -1956,7 +1970,7 @@ export default function Historial() {
                     <i className="fa fa-arrow-right" style={{ color: 'var(--brand)', fontSize: 12 }} />
                   </div>
                   <div style={{ fontSize: 11.5, color: 'var(--txt2)', lineHeight: 1.4 }}>
-                    Enviados hace 3+ dias — recordales antes de que se enfrien
+                    Enviados hace 3+ días — recordales antes de que se enfríen
                   </div>
                 </div>
               )}
@@ -1968,8 +1982,8 @@ export default function Historial() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: '#2E8BD6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-calendar-day" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 10, fontWeight: 700, color: '#2E8BD6', textTransform: 'uppercase', letterSpacing: '.06em' }}>Proximas entregas</div>
-                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{proximasEntregas.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>en 7 dias</span></div>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: '#2E8BD6', textTransform: 'uppercase', letterSpacing: '.06em' }}>Próximas entregas</div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{proximasEntregas.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>en 7 días</span></div>
                     </div>
                     <i className="fa fa-arrow-right" style={{ color: '#2E8BD6', fontSize: 12 }} />
                   </div>
