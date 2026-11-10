@@ -816,18 +816,22 @@ const returnedGain     = (b) => {
   }, 0), 0)
 }
 
-const cobrado = (b) => {
-  // Si hay registro de pagos individuales (seña + saldo + etc.), lo sumamos
-  let total = 0
+/* Lo cobrado ANTES de descontar devoluciones. Se separo para que ganCobrada()
+   pueda usar la misma base sin descontar dos veces (ella ya resta la ganancia
+   devuelta por su cuenta). */
+const cobradoBruto = (b) => {
   if (Array.isArray(b.payments) && b.payments.length > 0) {
-    total = b.payments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
-  } else {
-    const totalCobrado = b.totalFinal || b.total || 0
-    if (b.payStatus === 'paid')    total = totalCobrado
-    else if (b.payStatus === 'partial') total = b.depositFinal || b.depositAmt || Math.round(totalCobrado * (b.deposit || 50) / 100)
+    return b.payments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
   }
+  const base = b.totalFinal || b.total || 0
+  if (b.payStatus === 'paid')    return base
+  if (b.payStatus === 'partial') return b.depositFinal || b.depositAmt || Math.round(base * (b.deposit || 50) / 100)
+  return 0
+}
+
+const cobrado = (b) => {
   // Restamos reembolsos por devoluciones
-  return Math.max(0, total - returnedTotal(b))
+  return Math.max(0, cobradoBruto(b) - returnedTotal(b))
 }
 
 /**
@@ -866,7 +870,14 @@ const ganCobrada = (b) => {
   let gain
   if (b.payStatus === 'paid') gain = b.totalGain || 0
   else if (b.payStatus === 'partial') {
-    const pct = (b.depositAmt || 0) / ((b.total || 1))
+    /* Antes: pct = depositAmt / total, o sea SIEMPRE el porcentaje de la seña
+       original. Si el cliente despues pagaba dos cuotas mas, cobrado() las
+       sumaba pero esta ganancia seguia contando solo la seña, asi que el
+       "Resultado operativo" salia mas bajo de lo real. Ahora el porcentaje se
+       calcula sobre lo efectivamente cobrado, con la misma base (con IVA)
+       que el monto cobrado. */
+    const base = b.totalFinal || b.total || 0
+    const pct = base > 0 ? Math.min(1, cobradoBruto(b) / base) : 0
     gain = Math.round((b.totalGain || 0) * pct)
   } else gain = 0
   // Restamos la ganancia que se "perdió" con las devoluciones
