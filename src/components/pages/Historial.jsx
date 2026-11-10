@@ -2436,14 +2436,16 @@ export default function Historial() {
                 </button>
               )}
             </div>
-            <button
+            {/* Solo si hay algo que mostrar: el boton estaba fijo en la esquina
+                aunque en la lista no hubiera ni un pedido perdido. */}
+            {filteredBudgets.some(b => b.status === 'lost' && b.lossReason) && <button
               onClick={() => setShowLossReason(v => !v)}
               className="hist-loss-btn"
               style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s', border: `1.5px solid ${showLossReason ? '#DC2626' : 'var(--border)'}`, background: showLossReason ? '#FEE2E2' : 'transparent', color: showLossReason ? '#DC2626' : 'var(--txt3)', whiteSpace: 'nowrap', flexShrink: 0 }}
               title={showLossReason ? 'Ocultar motivo de pérdida' : 'Mostrar motivo de pérdida'}>
               <i className="fa fa-circle-xmark" style={{ fontSize: 10 }} />
               <span className="hist-loss-label">{showLossReason ? 'Ocultar motivo' : 'Ver motivo pérdida'}</span>
-            </button>
+            </button>}
           </div>
           <style>{`
             .hist-quick-chips::-webkit-scrollbar{display:none}
@@ -2513,8 +2515,10 @@ export default function Historial() {
                         const title = `Pedido ${b.num || '—'} · creado ${fmtDate(b.date) || 's/f'}${lastActivityTs ? ` · última actividad ${new Date(lastActivityTs).toLocaleString('es-AR')}` : ''}`
                         return (
                           <td data-cell="num" title={title} style={{ fontSize: 12.5, fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: 'var(--txt)' }}>
-                            <div>{b.num || '—'}</div>
-                            <div className="col-hide-mobile" style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500, marginTop: 2 }}>{relLabel}</div>
+                            {/* Sin numero (borrador) no ponemos "—": la columna Estado
+                                ya dice "Borrador" y el guion solo suma ruido. */}
+                            {b.num && <div>{b.num}</div>}
+                            <div className="col-hide-mobile" style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: b.num ? 500 : 600, marginTop: b.num ? 2 : 0 }}>{relLabel}</div>
                             {b.deliveryDate && dDays !== null && !terminalStates.includes(b.status) && (
                               <div className="hist-mob-only" style={{ fontSize: 10.5, fontWeight: 700, marginTop: 3, color: overdue ? 'var(--red)' : dDays <= 2 ? 'var(--amber)' : 'var(--txt3)' }}>
                                 <i className="fa fa-truck" style={{ marginRight: 4, opacity: .75 }} />
@@ -2550,9 +2554,14 @@ export default function Historial() {
                       </td>
                       <td data-cell="total" data-label="Total" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.01em', fontSize: 13.5, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>
                         <div>{(b.totalFinal || b.total) ? money(b.totalFinal || b.total) : <span style={{ color: 'var(--txt4)', fontWeight: 600 }}>—</span>}</div>
-                        <div className="col-hide-mobile" style={{ fontSize: 10.5, fontWeight: 600, color: hidden ? 'var(--txt4)' : (b.totalGain == null ? 'var(--txt4)' : '#16A34A'), marginTop: 2, fontStyle: b.totalGain == null ? 'italic' : undefined }}>
-                          {b.totalGain == null ? 'gan. pendiente' : `+${money(b.totalGain)} gan.`}
-                        </div>
+                        {/* "gan. pendiente" no es un dato, es la falta de uno, y salia
+                            en gris en la mayoria de las filas. Si no hay ganancia
+                            calculada, la celda no dice nada. */}
+                        {b.totalGain != null && (
+                          <div className="col-hide-mobile" style={{ fontSize: 10.5, fontWeight: 600, color: hidden ? 'var(--txt4)' : '#16A34A', marginTop: 2 }}>
+                            +{money(b.totalGain)} gan.
+                          </div>
+                        )}
                       </td>
                       <td data-cell="estado" data-label="Estado" style={{ whiteSpace: 'nowrap' }}>
                         <div>
@@ -2588,7 +2597,7 @@ export default function Historial() {
                                          : b.payStatus === 'partial' ? '#FFFBEB'
                                          : '#FEF2F2'
                           return (
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 130, maxWidth: 170 }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 110, maxWidth: 170 }}>
                               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: statusBg, padding: '3px 9px', borderRadius: 99, alignSelf: 'flex-start', maxWidth: 'fit-content' }}>
                                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: statusColor, flexShrink: 0, display: 'inline-block' }} />
                                 <select
@@ -2600,16 +2609,19 @@ export default function Historial() {
                                   {Object.entries(PAY_STATUS_MAP).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                                 </select>
                               </span>
-                              {b.payStatus === 'paid' && hasPayments ? (
-                                <span style={{ fontSize: 10.5, color: 'var(--txt4)' }}>
-                                  <i className="fa fa-check" style={{ color: '#16A34A', marginRight: 4 }} />
-                                  {pays.length} pago{pays.length > 1 ? 's' : ''}
-                                </span>
-                              ) : b.payStatus === 'partial' ? (
+                              {/* Antes: "$186.489 / $372.978" en los parciales y "1 pago"
+                                  en los pagados. El cuanto llevas cobrado esta en el
+                                  detalle del pedido; "1 pago" es lo mismo que el chip
+                                  verde de al lado. En una lista no necesitas saber cuanto
+                                  falta, necesitas poder cobrarlo: el parcial pasa a
+                                  mostrar la misma accion "Cobrar" que los pendientes,
+                                  que abre donde estaban esos numeros. */}
+                              {b.payStatus === 'paid' && hasPayments ? null
+                              : b.payStatus === 'partial' ? (
                                 <button onClick={e => { e.stopPropagation(); setPaymentsBudget(b) }}
-                                  title="Ver / agregar pagos"
-                                  style={{ background: 'transparent', border: 'none', color: 'var(--brand)', cursor: 'pointer', padding: 0, fontSize: 10.5, fontWeight: 700, textAlign: 'left', fontFamily: 'inherit' }}>
-                                  {fmt(paid)}<span style={{ color: 'var(--txt4)', fontWeight: 400 }}> / {fmt(totalDue)}</span>
+                                  title={`Cobrar saldo · lleva ${fmt(paid)} de ${fmt(totalDue)}`}
+                                  style={{ background: 'var(--brand-xlt, #FBF4EC)', border: '1px solid var(--brand)', color: 'var(--brand)', cursor: 'pointer', padding: '3px 10px', fontSize: 10.5, fontWeight: 700, borderRadius: 6, alignSelf: 'flex-start', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                  <i className="fa fa-hand-holding-dollar" /> Cobrar saldo
                                 </button>
                               ) : b.payStatus === 'paid' ? (
                                 <button onClick={e => { e.stopPropagation(); setPaymentsBudget(b) }}
@@ -2689,7 +2701,7 @@ export default function Historial() {
           </div>
           <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
             <span style={{ fontSize: 11, color: 'var(--txt3)' }}>
-              {filteredBudgets.length} presupuesto{filteredBudgets.length !== 1 ? 's' : ''}
+              {filteredBudgets.length} pedido{filteredBudgets.length !== 1 ? 's' : ''}
               {filter !== 'all' && <span style={{ marginLeft: 4, padding: '1px 7px', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, fontWeight: 600, color: 'var(--txt3)' }}>{STATUS_MAP[filter]}</span>}
             </span>
           </div>
