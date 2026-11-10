@@ -539,6 +539,15 @@ export default function Proveedores() {
     return { pct, date: last.date }
   }
 
+  /* Que productos tienen el historico completo abierto. Antes se cortaba en 5
+     con un "...y N mas" que no era clickeable: el resto no habia forma de verlo. */
+  const [histAbierto, setHistAbierto] = useState(() => new Set())
+  const toggleHist = (id) => setHistAbierto(prev => {
+    const n = new Set(prev)
+    if (n.has(id)) n.delete(id); else n.add(id)
+    return n
+  })
+
   const openPriceModal = (product) => {
     setPriceModal({ product })
     setPriceForm({ newCost: String(product.cost || ''), note: '' })
@@ -727,6 +736,8 @@ export default function Proveedores() {
         /* ── PROVEEDORES DETAIL: bottom sheet en mobile ── */
         @keyframes provSheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
         @keyframes provDrawerIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+        .prov-price-edit{width:32px;height:32px;min-width:32px;padding:0;border-radius:8px;
+          display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
         .prov-detail-backdrop{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.32);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);animation:fadeIn .2s ease both}
         @media(min-width:641px){
           .prov-detail-panel{position:fixed;right:0;top:0;bottom:0;width:min(560px,96vw);background:var(--surface);z-index:401;display:flex;flex-direction:column;box-shadow:-6px 0 32px rgba(0,0,0,.14);animation:provDrawerIn .24s cubic-bezier(.22,1,.36,1) both;overflow:hidden;border-left:1px solid var(--border)}
@@ -755,6 +766,9 @@ export default function Proveedores() {
           .prov-detail-hd-acts .prov-hd-primary span{display:inline}
           .prov-detail-hd-acts .prov-hd-primary i{margin-right:6px}
           .prov-detail-hd-acts .mclose{position:absolute;top:12px;right:12px}
+          /* El lapiz de "registrar precio" era btn-xs: no se le pega con el dedo */
+          .prov-price-edit{width:38px;height:38px;min-width:38px;padding:0!important;
+            border-radius:9px;display:inline-flex;align-items:center;justify-content:center}
           .prov-detail-body{padding:14px 16px!important}
           /* 5 pestanas no entran en 390px: scroll con la barra oculta y un
              fade a la derecha para que se vea que hay mas. Sin el fade el
@@ -1269,22 +1283,28 @@ export default function Proveedores() {
                               <i className="fa fa-cube" />
                             </div>
                             <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ fontWeight: 600, fontSize: 12, color: 'var(--txt)' }}>{p.name}</div>
-                              <div style={{ fontSize: 10, color: 'var(--txt3)' }}>
+                              <div style={{ fontWeight: 600, fontSize: 12, color: 'var(--txt)', lineHeight: 1.3 }}>{p.name}</div>
+                              <div style={{ fontSize: 10, color: 'var(--txt3)', marginTop: 1 }}>
                                 {p.cat}
                                 {paid && (
                                   <> · último pagado <b style={{ color: 'var(--txt2)' }}>{fmt(paid.pu)}</b></>
                                 )}
                               </div>
                             </div>
-                            <div style={{ textAlign: 'right' }}>
+                            {/* flexShrink 0: con nombres largos esta columna se dejaba
+                                apretar y el precio quedaba partido. El % compara lo que
+                                PAGASTE contra lo acordado — distinto del % de la pestana
+                                Precios, que es el ultimo aumento de lista. Sin decirlo,
+                                dos flechas iguales en dos pestanas significan cosas
+                                distintas. */}
+                            <div style={{ textAlign: 'right', flexShrink: 0 }}>
                               <div style={{ fontSize: 9, color: 'var(--txt3)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.5px' }}>Acordado</div>
                               <div style={{ fontWeight: 700, fontSize: 12.5, color: 'var(--money)', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</div>
                               {diff !== null && Math.abs(diff) >= 2 && (
-                                <div style={{ fontSize: 10, fontWeight: 700, color: diff > 0 ? '#DC2626' : '#15803D', marginTop: 2, display: 'inline-flex', alignItems: 'center', gap: 3 }}
-                                  title={`Pagaste ${fmt(paid.pu)} vs. acordado ${fmt(p.cost)}`}>
+                                <div style={{ fontSize: 9.5, fontWeight: 700, color: diff > 0 ? '#DC2626' : '#15803D', marginTop: 2, display: 'inline-flex', alignItems: 'center', gap: 3, whiteSpace: 'nowrap' }}
+                                  title={`Pagaste ${fmt(paid.pu)} contra ${fmt(p.cost)} acordado`}>
                                   <i className={`fa fa-arrow-${diff > 0 ? 'up' : 'down'}`} style={{ fontSize: 8 }} />
-                                  {diff > 0 ? '+' : ''}{diff}%
+                                  pagaste {diff > 0 ? '+' : ''}{diff}%
                                 </div>
                               )}
                             </div>
@@ -1307,7 +1327,7 @@ export default function Proveedores() {
                     <>
                       <div style={{ fontSize: 11, color: 'var(--txt3)', marginBottom: 8 }}>
                         <i className="fa fa-circle-info" style={{ marginRight: 4 }} />
-                        Registrá cambios de precio para detectar aumentos y comparar con otros proveedores.
+                        Registrá cada cambio para ver cómo te viene aumentando.
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 14 }}>
                         {supplierProducts(detailSupplier).map(p => {
@@ -1322,37 +1342,50 @@ export default function Proveedores() {
                                     {hist.length} cambio{hist.length !== 1 ? 's' : ''} registrado{hist.length !== 1 ? 's' : ''}
                                   </div>
                                 </div>
-                                <div style={{ textAlign: 'right' }}>
-                                  <div style={{ fontWeight: 800, fontSize: 13, color: 'var(--money)' }}>{fmt(p.cost)}</div>
+                                <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                                  <div style={{ fontWeight: 800, fontSize: 13, color: 'var(--money)', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</div>
                                   {change && (
-                                    <div style={{ fontSize: 10, fontWeight: 700, color: change.pct > 0 ? '#DC2626' : '#16A34A', marginTop: 2 }}>
+                                    <div style={{ fontSize: 9.5, fontWeight: 700, color: change.pct > 0 ? '#DC2626' : '#16A34A', marginTop: 2, whiteSpace: 'nowrap' }}
+                                      title={`Último cambio de precio de lista, ${change.date}`}>
                                       <i className={`fa fa-arrow-${change.pct > 0 ? 'up' : 'down'}`} style={{ marginRight: 3 }} />
-                                      {change.pct > 0 ? '+' : ''}{change.pct.toFixed(1)}%
+                                      {change.pct > 0 ? '+' : ''}{change.pct.toFixed(1)}% último
                                     </div>
                                   )}
                                 </div>
-                                <button className="btn btn-ghost btn-xs" onClick={() => openPriceModal(p)} title="Registrar nuevo precio">
+                                <button className="btn btn-ghost prov-price-edit" onClick={() => openPriceModal(p)}
+                                  title="Registrar nuevo precio" aria-label={`Registrar nuevo precio de ${p.name}`}>
                                   <i className="fa fa-pen-to-square" />
                                 </button>
                               </div>
+                              {/* Eran 5 datos en una sola linea de 10px (reloj, fecha,
+                                  "de -> a", % y nota) dentro de 334px: se apretaban y la
+                                  nota desbordaba. Ahora fecha e importe arriba, nota abajo. */}
                               {hist.length > 0 && (
-                                <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px dashed var(--border)', display: 'flex', flexDirection: 'column', gap: 4 }}>
-                                  {hist.slice(0, 5).map((h, i) => {
+                                <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px dashed var(--border)', display: 'flex', flexDirection: 'column', gap: 7 }}>
+                                  {(histAbierto.has(p.id) ? hist : hist.slice(0, 3)).map((h, i) => {
                                     const pct = h.prevCost > 0 ? ((h.newCost - h.prevCost) / h.prevCost) * 100 : 0
                                     return (
-                                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 10, color: 'var(--txt2)' }}>
-                                        <i className="fa fa-clock" style={{ color: 'var(--txt4)' }} />
-                                        <span style={{ color: 'var(--txt3)' }}>{h.date}</span>
-                                        <span>{fmt(h.prevCost)} → <b>{fmt(h.newCost)}</b></span>
-                                        <span style={{ color: pct > 0 ? '#DC2626' : '#16A34A', fontWeight: 700 }}>
-                                          {pct > 0 ? '+' : ''}{pct.toFixed(1)}%
-                                        </span>
-                                        {h.note && <span style={{ color: 'var(--txt4)', fontStyle: 'italic' }}>· {h.note}</span>}
+                                      <div key={i} style={{ fontSize: 10.5, color: 'var(--txt2)', lineHeight: 1.45 }}>
+                                        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                                          <span style={{ color: 'var(--txt3)', flexShrink: 0 }}>{h.date}</span>
+                                          <span style={{ fontVariantNumeric: 'tabular-nums', flex: 1, minWidth: 0 }}>
+                                            {fmt(h.prevCost)} → <b style={{ color: 'var(--txt)' }}>{fmt(h.newCost)}</b>
+                                          </span>
+                                          <span style={{ color: pct > 0 ? '#DC2626' : '#16A34A', fontWeight: 700, flexShrink: 0, whiteSpace: 'nowrap' }}>
+                                            {pct > 0 ? '+' : ''}{pct.toFixed(1)}%
+                                          </span>
+                                        </div>
+                                        {h.note && (
+                                          <div style={{ color: 'var(--txt4)', fontStyle: 'italic', fontSize: 10, overflowWrap: 'anywhere' }}>{h.note}</div>
+                                        )}
                                       </div>
                                     )
                                   })}
-                                  {hist.length > 5 && (
-                                    <div style={{ fontSize: 10, color: 'var(--txt4)' }}>...y {hist.length - 5} más</div>
+                                  {hist.length > 3 && (
+                                    <button onClick={() => toggleHist(p.id)}
+                                      style={{ alignSelf: 'flex-start', background: 'none', border: 'none', padding: '4px 0', fontSize: 10.5, fontWeight: 700, color: 'var(--brand)', cursor: 'pointer', fontFamily: 'inherit' }}>
+                                      {histAbierto.has(p.id) ? 'Ver menos' : `Ver ${hist.length - 3} cambio${hist.length - 3 !== 1 ? 's' : ''} más`}
+                                    </button>
                                   )}
                                 </div>
                               )}
