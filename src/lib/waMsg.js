@@ -18,7 +18,7 @@ export const RUBRO_SIGNOFF = {
   default:      (neg) => `¡Saludos!\n${neg || 'ANMA'}`,
 }
 
-function pickSignoff(cfg) {
+export function pickSignoff(cfg) {
   if (!cfg) return null
   if (typeof cfg.waSignoff === 'string' && cfg.waSignoff.trim()) return cfg.waSignoff.trim()
   const neg = cfg.businessName || ''

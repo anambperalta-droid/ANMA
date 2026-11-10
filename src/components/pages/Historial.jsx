@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, fmtDate, MONTHS, STATUS_MAP, STATUS_CLS, PAY_STATUS_MAP, PAY_STATUS_CLS, db, dbW } from '../../lib/storage'
-import { buildWAMsg, openWAFor, relTimeShort, sharePortalCliente } from '../../lib/waMsg'
+import { buildWAMsg, openWAFor, relTimeShort, sharePortalCliente, pickSignoff } from '../../lib/waMsg'
 import PedidoDrawer from '../common/PedidoDrawer'
 import { usePrivacy } from '../../context/PrivacyContext'
 import GuideBanner from '../layout/GuideBanner'
@@ -673,8 +673,22 @@ function SeguimientoCard({ b, onEdit, onWA, onResend }) {
 }
 
 /* ── Resend Modal ── */
-function ResendModal({ budget, onClose, onSend }) {
-  const defaultMsg = `Hola ${budget.contact || ''}!\n\nTe escribo para darle seguimiento al presupuesto ${budget.num || ''} que te enviamos el ${budget.date || '—'} por un total de ${fmt(budget.total)}.\n\nPudiste revisarlo? Estamos a disposicion para cualquier consulta o ajuste que necesites.\n\nSaludos!\nEquipo ANMA`
+function ResendModal({ budget, cfg, onClose, onSend }) {
+  /* Este texto sale hacia el cliente, asi que tenia tres problemas serios:
+     - fmt(budget.total) es la base SIN IVA: le mandabamos un monto menor al
+       que figura en su presupuesto.
+     - la fecha iba cruda ("2026-11-10") en vez de formateada.
+     - firmaba "Equipo ANMA" fijo, ignorando el nombre del negocio; ahora usa
+       la misma firma que el resto de los mensajes de la app (pickSignoff,
+       que respeta el rubro y cfg.waSignoff). */
+  const firma = pickSignoff(cfg) || '¡Saludos!'
+  const defaultMsg = `¡Hola ${budget.contact || ''}!
+
+Te escribo para darle seguimiento al presupuesto ${budget.num || ''} que te enviamos el ${fmtDate(budget.date) || '—'} por un total de ${fmt(budget.totalFinal || budget.total)}.
+
+¿Pudiste revisarlo? Estamos a disposición para cualquier consulta o ajuste que necesites.
+
+${firma}`
   const [msg, setMsg] = useState(defaultMsg)
 
   const copyAndClose = () => {
@@ -705,7 +719,7 @@ function ResendModal({ budget, onClose, onSend }) {
             <i className="fa fa-building" style={{ marginRight: 6 }} />{budget.company || budget.contact || '—'}
           </div>
           <div style={{ background: 'var(--green-lt)', color: 'var(--green)', padding: '6px 14px', borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
-            {fmt(budget.total)}
+            {fmt(budget.totalFinal || budget.total)}
           </div>
         </div>
 
@@ -2887,12 +2901,9 @@ export default function Historial() {
       {/* ═══ SEGUIMIENTO ACTIVO — Grouped by urgency tier ═══ */}
       {tab === 'seguimiento' && (
         <>
-          <div className="seg-legend">
-            <span className="seg-legend-item"><span className="seg-legend-dot" style={{ background: 'var(--red)' }} />15+ Crítico</span>
-            <span className="seg-legend-item"><span className="seg-legend-dot" style={{ background: '#EA580C' }} />8–14 Urgente</span>
-            <span className="seg-legend-item"><span className="seg-legend-dot" style={{ background: 'var(--amber)' }} />4–7 Atención</span>
-            <span className="seg-legend-item"><span className="seg-legend-dot" style={{ background: 'var(--green)' }} />0–3 Reciente</span>
-          </div>
+          {/* La leyenda de 4 colores se fue: cada grupo de abajo ya viene con su
+              nombre ("Critico", "Urgente"...), su color y su contador. Una leyenda
+              hace falta cuando el color aparece solo, no cuando viene etiquetado. */}
 
           {seguimiento.length ? (
             tierGroups.map(tier => {
@@ -2922,7 +2933,7 @@ export default function Historial() {
 
       {/* ═══ Resend Modal ═══ */}
       {resendBudget && (
-        <ResendModal budget={resendBudget} onClose={() => setResendBudget(null)} onSend={handleResendSent} />
+        <ResendModal budget={resendBudget} cfg={c} onClose={() => setResendBudget(null)} onSend={handleResendSent} />
       )}
 
       {/* ═══ Budget Preview Drawer (reemplazó el modal con iframe PDF, 02/10/26) ═══ */}
