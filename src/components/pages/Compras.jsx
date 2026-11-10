@@ -291,7 +291,7 @@ export default function Compras() {
   }
 
   return (
-    <div className="compras-page" style={{ padding: '10px 20px 80px', maxWidth: 1000, margin: '0 auto' }}>
+    <div className="compras-page" style={{ padding: '10px 20px 80px', maxWidth: 1340, margin: '0 auto' }}>
       <style>{`
         .cp-row{display:grid;grid-template-columns:.7fr 1fr 1.2fr .7fr .35fr;gap:0;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;transition:background .1s}
         .cp-row:hover{background:var(--surface2)}
@@ -303,6 +303,12 @@ export default function Compras() {
         .cp-nav-btn:active{background:var(--surface2);transform:scale(.94)}
         .cp-icon-btn{width:26px;height:26px;border-radius:6px;border:none;background:transparent;color:var(--txt4);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:11px;transition:all .12s;-webkit-tap-highlight-color:transparent;font-family:inherit;padding:0}
         .cp-icon-btn:hover{background:var(--surface2);color:var(--txt2)}
+        /* Eliminar aparece al pasar por la fila, como en la tabla de Insumos:
+           una X fija por gasto compite con los montos. En tactil no hay hover,
+           asi que ahi queda visible. */
+        .cp-row .cp-icon-btn{opacity:0;transition:opacity .12s}
+        .cp-row:hover .cp-icon-btn,.cp-row .cp-icon-btn:focus-visible{opacity:1}
+        @media(hover:none){.cp-row .cp-icon-btn{opacity:1}}
         .cp-recur{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:1px 6px;border-radius:5px;background:rgba(242,118,46,.1);color:var(--brand);vertical-align:middle;margin-left:6px}
         .cp-card-m{display:none}
         .cp-card-item{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;-webkit-tap-highlight-color:transparent;border-left:3px solid transparent;min-height:54px}
@@ -378,9 +384,11 @@ export default function Compras() {
               {hidden ? '***' : fmt(totals.gastado)}
               {deltaGasto !== null && <Delta value={deltaGasto} />}
             </div>
-            <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 3 }}>
-              {totals.count > 0 ? `${totals.count} ${totals.count === 1 ? 'gasto registrado' : 'gastos registrados'}` : 'Sin gastos registrados'}
-            </div>
+            {/* El conteo ya lo da la nav de meses justo arriba ("3 gastos", con
+                su delta). Aca solo tiene sentido decir algo cuando no hay nada. */}
+            {totals.count === 0 && (
+              <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 3 }}>Sin gastos registrados</div>
+            )}
           </div>
           <button className="cp-new-btn" onClick={openDrawer} style={{
             padding: '9px 16px', borderRadius: 10, border: 'none',
@@ -472,11 +480,13 @@ export default function Compras() {
                     style={{ cursor: 'pointer', borderBottom: '1px dotted var(--txt4)' }}
                     title="Ver proveedor"
                   >{c.proveedor}</span>
-                ) : '---'}
+                ) : <span style={{ color: 'var(--txt4)', fontWeight: 500 }}>Sin proveedor</span>}
                 {c.recurrente && <span className="cp-recur"><i className="fa fa-rotate" style={{ fontSize: 8 }} />recurrente</span>}
               </span>
+              {/* Concepto vacio: celda vacia. Un "---" ocupa el mismo lugar
+                  que un dato y no dice nada. */}
               <span className="cp-cell cp-hide-m" style={{ color: 'var(--txt2)' }}>
-                {c.concepto || '---'}
+                {c.concepto || ''}
                 {c.cantidad > 0 && <span style={{ marginLeft: 6, color: 'var(--txt4)', fontSize: 11, fontWeight: 600 }}>· {c.cantidad}u</span>}
               </span>
               <span className="cp-cell cp-cell-r" style={{ fontWeight: 700, color: 'var(--txt)' }}>{hidden ? '***' : fmt(c.monto || 0)}</span>
@@ -499,10 +509,10 @@ export default function Compras() {
               <div key={c.id} className="cp-card-item" style={{ borderLeftColor: c.recurrente ? 'var(--brand)' : 'transparent' }} onClick={() => editCompra(c)}>
                 <div className="cp-card-info">
                   <div className="cp-card-name">
-                    {c.proveedor || '---'}
+                    {c.proveedor || 'Sin proveedor'}
                     {c.recurrente && <span className="cp-recur"><i className="fa fa-rotate" style={{ fontSize: 8 }} />rec</span>}
                   </div>
-                  <div className="cp-card-sub">{sub || '---'}</div>
+                  <div className="cp-card-sub">{sub || '—'}</div>
                 </div>
                 <div className="cp-card-right">
                   <div className="cp-card-amt">{hidden ? '***' : fmt(c.monto || 0)}</div>
