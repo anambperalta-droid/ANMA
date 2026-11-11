@@ -204,8 +204,9 @@ export default function PedidoDrawer({
             )
           })()}
 
-          {/* KPIs */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 16 }}>
+          {/* KPIs — auto-fit: en mobile caen a 2x2. Con 4 columnas fijas el monto
+              tabular de 13px se cortaba a 375px (drawer full-bleed). */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 8, marginBottom: 16 }}>
             {[
               { label: 'Facturado', value: fmt(t.total),    icon: 'fa-file-invoice-dollar', color: '#F2762E' },
               { label: 'Costo',     value: fmt(t.costo),    icon: 'fa-lock',                color: '#b45309' },
