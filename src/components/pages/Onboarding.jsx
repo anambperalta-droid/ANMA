@@ -146,7 +146,6 @@ export default function Onboarding() {
             onChange={e => setBusinessName(e.target.value)}
             placeholder="Ej: Anma Deco &amp; Home"
             style={s.input}
-            className="onb-input"
             onFocus={e => Object.assign(e.target.style, s.inputFocus)}
             onBlur={e => Object.assign(e.target.style, { borderColor: '#E5E7EB', boxShadow: 'none', background: '#FAFAFB' })}
             maxLength={60}
@@ -220,8 +219,6 @@ export default function Onboarding() {
           .onb-page{padding:20px 14px!important}
           .onb-card{padding:26px 18px 22px!important;border-radius:18px!important}
           .onb-grid-rubro{grid-template-columns:1fr!important}
-          /* iOS Safari hace zoom al enfocar un input de menos de 16px. */
-          .onb-input{font-size:16px!important}
         }
       `}</style>
     </div>

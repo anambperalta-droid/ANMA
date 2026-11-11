@@ -3172,8 +3172,9 @@ td b{color:var(--txt);font-weight:600}
   .bv-wrap{padding:16px}
   .bv-card{padding:32px 20px 28px!important}
   .bv-title{font-size:20px!important}
-  /* anti-zoom iOS Safari al enfocar (menos de 16px hace zoom) */
-  .bv-card .f-inp{font-size:16px!important}
+  /* El anti-zoom de iOS no hace falta aca: la regla global de inputs
+     (index.css, "iOS zoom prevention") ya fuerza 16px en <=768 y gana por
+     !important incluso contra un style inline. */
 }
 
 /* ── Ficha de detalle: anclada arriba, no centrada ──

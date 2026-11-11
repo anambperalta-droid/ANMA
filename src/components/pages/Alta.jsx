@@ -79,10 +79,6 @@ export default function Alta({ appName = 'ANMA Hub' }) {
 
   return (
     <div style={s.page}>
-      {/* iOS Safari hace zoom al enfocar un input de menos de 16px: el cliente
-          que abre el link de alta desde el celular quedaba con la pagina
-          ampliada y la tenia que volver a cerrar a mano. */}
-      <style>{`@media(max-width:480px){.alta-input{font-size:16px!important}}`}</style>
       <div style={{ width: '100%', maxWidth: 440 }}>
         {/* Encabezado */}
         <div style={{ textAlign: 'center', marginBottom: 18 }}>
@@ -101,7 +97,6 @@ export default function Alta({ appName = 'ANMA Hub' }) {
                 <label style={s.label}>Empresa / Nombre del negocio *</label>
                 <input
                   style={s.input}
-                  className="alta-input"
                   type="text"
                   value={form.company}
                   onChange={e => setF('company', e.target.value)}
@@ -116,7 +111,6 @@ export default function Alta({ appName = 'ANMA Hub' }) {
                 <label style={s.label}>Persona de contacto</label>
                 <input
                   style={s.input}
-                  className="alta-input"
                   type="text"
                   value={form.contact}
                   onChange={e => setF('contact', e.target.value)}
@@ -131,7 +125,6 @@ export default function Alta({ appName = 'ANMA Hub' }) {
                   <label style={s.label}>WhatsApp</label>
                   <input
                     style={s.input}
-                  className="alta-input"
                     type="tel"
                     value={form.wa}
                     onChange={e => setF('wa', e.target.value)}
@@ -144,7 +137,6 @@ export default function Alta({ appName = 'ANMA Hub' }) {
                   <label style={s.label}>Email</label>
                   <input
                     style={s.input}
-                  className="alta-input"
                     type="email"
                     value={form.email}
                     onChange={e => setF('email', e.target.value)}
