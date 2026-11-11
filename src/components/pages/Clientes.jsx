@@ -1381,7 +1381,7 @@ export default function Clientes() {
                           <div className="cli-alert-val">{fmt(saldo)}</div>
                         </div>
                         {detailClient.wa && (
-                          <button className="cli-alert-btn" onClick={() => cobrarWA(detailClient)}>
+                          <button className="btn btn-secondary btn-sm cli-alert-btn" onClick={() => cobrarWA(detailClient)}>
                             <i className="fa-brands fa-whatsapp" /> Recordar cobro
                           </button>
                         )}

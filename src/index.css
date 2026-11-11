@@ -3058,43 +3058,38 @@ td b{color:var(--txt);font-weight:600}
 }
 
 /* Banda de saldo pendiente / reposicion pendiente.
-   Tercera pasada: era un recuadro rojo lleno, con borde rojo, monto de 20px
-   en peso 900 y un boton rojo solido — tres capas gritando lo mismo, y cada
-   cosa en su propio renglon. Ahora es UNA linea sobre la superficie neutra
-   de la ficha: el color queda en una regla de 3px al costado y en el monto,
-   y el boton pasa a contorno. De ~83px a ~52px. */
+   Cuarta pasada. El recuadro de color lleno con boton solido ya se fue; lo
+   que quedaba fuera de lugar era el boton, con esquinas cuadradas y tipografia
+   propia mientras TODOS los botones de la app son pastilla en Space Grotesk.
+   Ahora la accion es un `.btn.btn-secondary.btn-sm` del sistema, igual que
+   "Nuevo pedido" o "Portal" del mismo header, y la banda solo aporta el tono:
+   una regla de 3px al costado y el monto en el color del estado. */
 .cli-alert-band{
   display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-  padding:9px 12px;margin-bottom:12px;
-  border-radius:10px;
+  padding:11px 14px;margin-bottom:14px;
+  border-radius:12px;
   background:var(--surface2);
   border:1px solid var(--border);
   border-left:3px solid var(--alert-tone);
 }
-.cli-alert-txt{flex:1;min-width:150px;display:flex;flex-direction:column;gap:1px}
+.cli-alert-txt{flex:1;min-width:150px;display:flex;flex-direction:column;gap:2px}
 .cli-alert-label{
   font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
   color:var(--txt3);
 }
-.cli-alert-val{font-size:17px;font-weight:800;letter-spacing:-.3px;line-height:1.15;color:var(--alert-ink)}
-.cli-alert-band .cli-alert-btn{
-  flex-shrink:0;height:32px;padding:0 12px;border-radius:8px;
-  background:var(--surface);border:1px solid var(--alert-br);
-  color:var(--alert-ink);font-size:11.5px;font-weight:700;font-family:inherit;
-  cursor:pointer;display:inline-flex;align-items:center;gap:6px;
-  transition:background .12s,border-color .12s;
-}
-.cli-alert-band .cli-alert-btn:hover{background:var(--alert-bg)}
-.cli-alert-band .cli-alert-btn:active{transform:scale(.97)}
+.cli-alert-val{font-size:18px;font-weight:800;letter-spacing:-.3px;line-height:1.15;color:var(--alert-ink)}
+/* Solo el icono lleva el color de la accion; el resto del boton es el del sistema. */
+.cli-alert-band .cli-alert-btn{flex-shrink:0}
+.cli-alert-band .cli-alert-btn i{color:var(--alert-tone)}
+.cli-alert-band .cli-alert-btn:hover i{color:inherit}
 /* Tonos: deuda (rojo) y reposicion (ambar). */
-.cli-alert-band.is-debt{--alert-tone:var(--red);--alert-ink:#991B1B;--alert-br:rgba(220,38,38,.3);--alert-bg:var(--red-lt)}
-.cli-alert-band.is-stock{--alert-tone:var(--amber);--alert-ink:#92400E;--alert-br:rgba(217,119,6,.3);--alert-bg:var(--amber-lt)}
+.cli-alert-band.is-debt{--alert-tone:var(--red);--alert-ink:#991B1B}
+.cli-alert-band.is-stock{--alert-tone:var(--amber);--alert-ink:#92400E}
 :root[data-theme="dark"] .cli-alert-band.is-debt{--alert-ink:#FCA5A5}
 :root[data-theme="dark"] .cli-alert-band.is-stock{--alert-ink:#FCD34D}
 @media (max-width: 380px){
-  /* Solo en pantallas muy angostas el boton baja, y lo hace a lo ancho. */
   .cli-alert-band{gap:8px}
-  .cli-alert-band .cli-alert-btn{width:100%;justify-content:center}
+  .cli-alert-band .cli-alert-btn{width:100%}
 }
 
 /* Contacto en las fichas: solo el icono. El numero y el mail completos

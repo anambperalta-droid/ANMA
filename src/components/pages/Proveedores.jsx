@@ -5,7 +5,7 @@ import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, cfg, db, dbW } from '../../lib/storage'
 import { isLowStock, lowVariants } from '../../lib/stock'
-import { supabase } from '../../lib/supabase'
+import { createPortalShortLink } from '../../lib/portalLink'
 import { triggerEncouragement } from '../layout/MilestoneToast'
 
 /**
@@ -507,18 +507,12 @@ export default function Proveedores() {
     // un parrafo de base64 sin que nadie se enterara de por que.
     let url
     try {
-      /* Sin sesion la peticion sale como anonima y RLS la rechaza con un
-         mensaje que no dice nada. Lo chequeamos antes para poder explicarlo. */
-      const { data: sess } = await supabase.auth.getSession()
-      if (!sess?.session) throw new Error('sesión vencida: recargá la página')
-      const id = (crypto?.randomUUID?.() || (Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2))).replace(/-/g, '').slice(0, 16)
-      const { error } = await supabase.from('portal_links').insert({ id, payload, expires_at: new Date(payload.e).toISOString() })
-      if (error) throw error
+      const id = await createPortalShortLink(payload, payload.e)
       url = `${window.location.origin}/app/portal-proveedor?id=${id}`
     } catch (err) {
       /* El motivo va en el toast a proposito: sin el, "el link sale largo" no
          se puede diagnosticar sin abrir la consola del navegador. */
-      const motivo = err?.message || err?.code || 'error desconocido'
+      const motivo = err?.message || 'error desconocido'
       console.warn('[portal proveedor] no se pudo crear el short-link:', err)
       toast(`Link largo: no se pudo acortar (${String(motivo).slice(0, 90)})`, 'in')
       /* El link embebido lleva TODO el payload adentro, asi que lo achicamos:
@@ -1142,7 +1136,7 @@ export default function Proveedores() {
                           </div>
                         </div>
                         {detailSupplier.wa && (
-                          <button className="cli-alert-btn" onClick={() => sendReorderWA(detailSupplier, low)}>
+                          <button className="btn btn-secondary btn-sm cli-alert-btn" onClick={() => sendReorderWA(detailSupplier, low)}>
                             <i className="fa-brands fa-whatsapp" /> Pedir reposición
                           </button>
                         )}
