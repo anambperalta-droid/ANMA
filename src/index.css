@@ -2162,6 +2162,25 @@ td b{color:var(--txt);font-weight:600}
   .modal .grid2,.modal .grid3{grid-template-columns:1fr!important}
 }
 
+/* ── Linea de venta en pantallas angostas ─────────────────────
+   Cantidad y monto tienen columnas fijas, asi que el nombre se queda con
+   lo que sobra: ~107px a 375px. Con el input a 16px por la regla anti-zoom
+   de iOS se ven seis caracteres mientras se escribe. Dos filas, mismo
+   patron que .pedido-linea-row; los hijos se toman por posicion. */
+@media(max-width:560px){
+  .sd-line-grid{
+    grid-template-columns:1fr 1fr 28px!important;
+    grid-template-areas:
+      'nombre nombre borrar'
+      'cant   precio borrar'!important;
+    row-gap:6px!important;
+  }
+  .sd-line-grid > :nth-child(1){grid-area:nombre;min-width:0}
+  .sd-line-grid > :nth-child(2){grid-area:cant}
+  .sd-line-grid > :nth-child(3){grid-area:precio}
+  .sd-line-grid > :nth-child(4){grid-area:borrar;align-self:start;justify-self:end}
+}
+
 /* ── Floating bulk bar: above tab bar ── */
 @media(max-width:768px){
   .bulk-float{bottom:calc(78px + env(safe-area-inset-bottom) + 8px)!important}
