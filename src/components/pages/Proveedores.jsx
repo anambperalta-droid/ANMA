@@ -507,13 +507,20 @@ export default function Proveedores() {
     // un parrafo de base64 sin que nadie se enterara de por que.
     let url
     try {
+      /* Sin sesion la peticion sale como anonima y RLS la rechaza con un
+         mensaje que no dice nada. Lo chequeamos antes para poder explicarlo. */
+      const { data: sess } = await supabase.auth.getSession()
+      if (!sess?.session) throw new Error('sesión vencida: recargá la página')
       const id = (crypto?.randomUUID?.() || (Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2))).replace(/-/g, '').slice(0, 16)
       const { error } = await supabase.from('portal_links').insert({ id, payload, expires_at: new Date(payload.e).toISOString() })
       if (error) throw error
       url = `${window.location.origin}/app/portal-proveedor?id=${id}`
     } catch (err) {
-      console.warn('[portal proveedor] no se pudo crear el short-link:', err?.message || err)
-      toast('No pudimos acortar el link: va el largo. Avisale a soporte si se repite.', 'in')
+      /* El motivo va en el toast a proposito: sin el, "el link sale largo" no
+         se puede diagnosticar sin abrir la consola del navegador. */
+      const motivo = err?.message || err?.code || 'error desconocido'
+      console.warn('[portal proveedor] no se pudo crear el short-link:', err)
+      toast(`Link largo: no se pudo acortar (${String(motivo).slice(0, 90)})`, 'in')
       /* El link embebido lleva TODO el payload adentro, asi que lo achicamos:
          el historial de precios y el stock son contexto nuestro, no algo que
          el proveedor necesite para cotizar o reponer. */
@@ -1127,18 +1134,18 @@ export default function Proveedores() {
                     const low = supplierProducts(detailSupplier).filter(p => isLowStock(p))
                     if (!low.length) return null
                     return (
-                      <div className="cli-alert-band" style={{ background: '#FFFBEB', border: '1px solid #FCD34D' }}>
-                        <div className="cli-alert-label" style={{ color: '#92400E' }}>Reposición pendiente</div>
-                        <div className="cli-alert-main">
-                          <div className="cli-alert-val" style={{ color: '#92400E', fontSize: 17 }}>
+                      <div className="cli-alert-band is-stock">
+                        <div className="cli-alert-txt">
+                          <div className="cli-alert-label">Reposición pendiente</div>
+                          <div className="cli-alert-val">
                             {low.length} producto{low.length !== 1 ? 's' : ''} bajo stock
                           </div>
-                          {detailSupplier.wa && (
-                            <button className="cli-alert-btn" onClick={() => sendReorderWA(detailSupplier, low)} style={{ background: '#16A34A' }}>
-                              <i className="fa-brands fa-whatsapp" /> Pedir reposición
-                            </button>
-                          )}
                         </div>
+                        {detailSupplier.wa && (
+                          <button className="cli-alert-btn" onClick={() => sendReorderWA(detailSupplier, low)}>
+                            <i className="fa-brands fa-whatsapp" /> Pedir reposición
+                          </button>
+                        )}
                       </div>
                     )
                   })()}

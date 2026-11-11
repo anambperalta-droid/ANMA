@@ -237,12 +237,16 @@ export async function sharePortalCliente(b, cfg = {}, { toast } = {}) {
   let link = buildClientePortalLink(b, cfg)
   try {
     const payload = buildClientePortalPayload(b, cfg)
+    const { data: sess } = await supabase.auth.getSession()
+    if (!sess?.session) throw new Error('sesión vencida: recargá la página')
     const id = (crypto?.randomUUID?.() || (Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2))).replace(/-/g, '').slice(0, 16)
     const { error } = await supabase.from('portal_links').insert({ id, payload, expires_at: new Date(payload.e).toISOString() })
     if (error) throw error
     link = `${portalClienteBase()}?id=${id}`
   } catch (err) {
-    console.warn('[portal cliente] no se pudo crear el short-link:', err?.message || err)
+    const motivo = err?.message || err?.code || 'error desconocido'
+    console.warn('[portal cliente] no se pudo crear el short-link:', err)
+    if (typeof toast === 'function') toast(`Link largo: no se pudo acortar (${String(motivo).slice(0, 90)})`, 'in')
   }
   try { navigator.clipboard?.writeText(link) } catch { /* ignore */ }
   const nombre = b.contact || ''

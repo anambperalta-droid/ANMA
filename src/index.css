@@ -3058,31 +3058,43 @@ td b{color:var(--txt);font-weight:600}
 }
 
 /* Banda de saldo pendiente / reposicion pendiente.
-   Ocupaba ~135px: titulo, monto grande y el boton a lo ancho, cada uno en su
-   renglon. El monto y la accion comparten linea y queda en ~72px, que es lo
-   que merece un dato que ya se entiende de un vistazo. */
+   Tercera pasada: era un recuadro rojo lleno, con borde rojo, monto de 20px
+   en peso 900 y un boton rojo solido — tres capas gritando lo mismo, y cada
+   cosa en su propio renglon. Ahora es UNA linea sobre la superficie neutra
+   de la ficha: el color queda en una regla de 3px al costado y en el monto,
+   y el boton pasa a contorno. De ~83px a ~52px. */
 .cli-alert-band{
-  border-radius:12px;padding:11px 14px;margin-bottom:14px;
-  display:flex;flex-direction:column;gap:7px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:9px 12px;margin-bottom:12px;
+  border-radius:10px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-left:3px solid var(--alert-tone);
 }
+.cli-alert-txt{flex:1;min-width:150px;display:flex;flex-direction:column;gap:1px}
 .cli-alert-label{
-  font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--txt3);
 }
-.cli-alert-main{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-}
-.cli-alert-val{font-size:20px;font-weight:900;letter-spacing:-.5px;line-height:1.1}
+.cli-alert-val{font-size:17px;font-weight:800;letter-spacing:-.3px;line-height:1.15;color:var(--alert-ink)}
 .cli-alert-band .cli-alert-btn{
-  border:none;font-size:12px;font-weight:700;padding:0 14px;min-height:40px;border-radius:9px;
+  flex-shrink:0;height:32px;padding:0 12px;border-radius:8px;
+  background:var(--surface);border:1px solid var(--alert-br);
+  color:var(--alert-ink);font-size:11.5px;font-weight:700;font-family:inherit;
   cursor:pointer;display:inline-flex;align-items:center;gap:6px;
-  font-family:inherit;color:#fff;flex-shrink:0;
+  transition:background .12s,border-color .12s;
 }
-@media (max-width: 340px){
-  /* Solo en pantallas muy angostas el boton baja, y lo hace a lo ancho:
-     medio boton apretado al lado de un monto largo se ve peor que uno entero
-     abajo. A 390px monto y boton comparten linea de sobra. */
-  .cli-alert-main{flex-direction:column;align-items:stretch}
-  .cli-alert-band .cli-alert-btn{justify-content:center}
+.cli-alert-band .cli-alert-btn:hover{background:var(--alert-bg)}
+.cli-alert-band .cli-alert-btn:active{transform:scale(.97)}
+/* Tonos: deuda (rojo) y reposicion (ambar). */
+.cli-alert-band.is-debt{--alert-tone:var(--red);--alert-ink:#991B1B;--alert-br:rgba(220,38,38,.3);--alert-bg:var(--red-lt)}
+.cli-alert-band.is-stock{--alert-tone:var(--amber);--alert-ink:#92400E;--alert-br:rgba(217,119,6,.3);--alert-bg:var(--amber-lt)}
+:root[data-theme="dark"] .cli-alert-band.is-debt{--alert-ink:#FCA5A5}
+:root[data-theme="dark"] .cli-alert-band.is-stock{--alert-ink:#FCD34D}
+@media (max-width: 380px){
+  /* Solo en pantallas muy angostas el boton baja, y lo hace a lo ancho. */
+  .cli-alert-band{gap:8px}
+  .cli-alert-band .cli-alert-btn{width:100%;justify-content:center}
 }
 
 /* Contacto en las fichas: solo el icono. El numero y el mail completos

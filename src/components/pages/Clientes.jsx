@@ -523,6 +523,15 @@ export default function Clientes() {
 
   const clientSaldoTotal = (c) => clientPedidosConSaldo(c).reduce((s, b) => s + b._saldo, 0)
 
+  /* Pedido que abre el portal desde la ficha: el que tiene saldo (que es de lo
+     que se habla con el cliente) y, si no hay, el ultimo. */
+  const clientPedidoPortal = (c) => {
+    const conSaldo = clientPedidosConSaldo(c).sort((a, b) => b.id - a.id)
+    if (conSaldo.length) return conSaldo[0]
+    const todos = clientBudgets(c).slice().sort((a, b) => b.id - a.id)
+    return todos[0] || null
+  }
+
   const clientTicketPromedio = (c) => {
     const bs = clientVentas(c)
     if (!bs.length) return 0
@@ -1330,6 +1339,18 @@ export default function Clientes() {
                 </div>
                 <div className="cli-dt-acts" style={{ display: 'flex', gap: 6, alignItems: 'center', flexShrink: 0 }}>
                   <button className="btn btn-primary btn-sm" onClick={() => nuevoPedidoParaCliente(detailClient)} title="Crear pedido para este cliente"><i className="fa fa-plus" /> Nuevo pedido</button>
+                  {/* Portal del cliente a mano: antes solo se llegaba desde el
+                      detalle del pedido en Historial. */}
+                  {(() => {
+                    const bp = clientPedidoPortal(detailClient)
+                    if (!bp) return null
+                    return (
+                      <button className="btn btn-ghost btn-sm" title={`Compartir portal del pedido ${bp.num || ''}`}
+                        onClick={() => sharePortalCliente(bp, config(), { toast })}>
+                        <i className="fa fa-share-nodes" /> Portal
+                      </button>
+                    )
+                  })()}
                   <button className="btn btn-ghost btn-sm" onClick={() => { const c = detailClient; setDetailClient(null); openEdit(c) }}><i className="fa fa-pen" /></button>
                   <button className="mclose" onClick={() => setDetailClient(null)}><i className="fa fa-xmark" /></button>
                 </div>
@@ -1352,18 +1373,18 @@ export default function Clientes() {
                     const pends = clientPedidosConSaldo(detailClient)
                     if (saldo <= 0) return null
                     return (
-                      <div className="cli-alert-band" style={{ background: '#FEF2F2', border: '1px solid #FCA5A5' }}>
-                        <div className="cli-alert-label" style={{ color: '#991B1B' }}>
-                          Saldo pendiente · {pends.length} pedido{pends.length !== 1 ? 's' : ''}
+                      <div className="cli-alert-band is-debt">
+                        <div className="cli-alert-txt">
+                          <div className="cli-alert-label">
+                            Saldo pendiente · {pends.length} pedido{pends.length !== 1 ? 's' : ''}
+                          </div>
+                          <div className="cli-alert-val">{fmt(saldo)}</div>
                         </div>
-                        <div className="cli-alert-main">
-                          <div className="cli-alert-val" style={{ color: '#991B1B' }}>{fmt(saldo)}</div>
-                          {detailClient.wa && (
-                            <button className="cli-alert-btn" onClick={() => cobrarWA(detailClient)} style={{ background: '#DC2626' }}>
-                              <i className="fa-brands fa-whatsapp" /> Enviar recordatorio
-                            </button>
-                          )}
-                        </div>
+                        {detailClient.wa && (
+                          <button className="cli-alert-btn" onClick={() => cobrarWA(detailClient)}>
+                            <i className="fa-brands fa-whatsapp" /> Recordar cobro
+                          </button>
+                        )}
                       </div>
                     )
                   })()}
