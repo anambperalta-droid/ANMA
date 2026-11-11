@@ -95,6 +95,18 @@ const ivaDe = (b) => Number(b.ivaAmt || b._quickIva) || 0
 // Sin esto, las señas de pedidos con IVA se cobraban "de menos".
 const senaCobrada = (b) => Number(b.depositFinal || b.depositAmt) || 0
 
+/* Lo REALMENTE cobrado de un pedido. Si hay `payments[]` (seña + cuotas) se
+   suman todos: tomar solo la seña dejaba afuera cada cuota posterior, asi que
+   el KPI "Cobrado" salia mas bajo y "Pendiente" mas alto de lo real. Sin
+   payments[] (pedidos viejos) cae al criterio historico. */
+const cobradoReal = (b) => {
+  const pays = Array.isArray(b.payments) ? b.payments : []
+  if (pays.length > 0) return pays.reduce((s, p) => s + (Number(p.amount) || 0), 0)
+  if (b.payStatus === 'paid')    return montoConIva(b)
+  if (b.payStatus === 'partial') return senaCobrada(b)
+  return 0
+}
+
 // Mediana — Fase 2 auditoria 02/10/26.
 // Robusta contra outliers: la mediana de [100, 100, 100, 100, 2.700.000]
 // es 100, no 540.020 como el promedio. Representa mejor el ticket "tipico".
@@ -213,7 +225,7 @@ export default function Ventas() {
       const ivaAmt = ivaDe(b)
       facturado += t; iva += ivaAmt
       if (b.payStatus === 'paid') cobrado += t
-      else if (b.payStatus === 'partial') { const sena = senaCobrada(b); cobrado += sena; pendiente += t - sena }
+      else if (b.payStatus === 'partial') { const ya = Math.min(t, cobradoReal(b)); cobrado += ya; pendiente += t - ya }
       else pendiente += t
     })
     return { facturado, iva, cobrado, pendiente, count: monthBudgets.length }
@@ -294,7 +306,12 @@ export default function Ventas() {
     return monthBudgets.reduce((s, b) => {
       if (b.payStatus === 'paid') return s + (Number(b.totalGain) || 0)
       if (b.payStatus === 'partial') {
-        const pct = (Number(b.depositAmt) || 0) / (Number(b.total) || 1)
+        /* El porcentaje cobrado va contra lo REALMENTE cobrado y con la misma
+           base (con IVA) que ese monto. Antes era depositAmt / total: siempre
+           el % de la seña original, asi que las cuotas posteriores no subian
+           la ganancia y el "Resultado operativo" salia mas bajo de lo real. */
+        const base = montoConIva(b)
+        const pct = base > 0 ? Math.min(1, cobradoReal(b) / base) : 0
         return s + Math.round((Number(b.totalGain) || 0) * pct)
       }
       return s
@@ -971,7 +988,7 @@ export default function Ventas() {
           // En celda de cobro mostramos "$X cobrado · $Y pendiente" para pedidos partial.
           const totalDue = montoConIva(b)
           const paid = b.payStatus === 'paid' ? totalDue
-                     : b.payStatus === 'partial' ? senaCobrada(b)
+                     : b.payStatus === 'partial' ? Math.min(totalDue, cobradoReal(b))
                      : 0
           const owed = Math.max(0, totalDue - paid)
           const method = payMethodOf(b)
