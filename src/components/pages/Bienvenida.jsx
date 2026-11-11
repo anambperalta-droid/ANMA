@@ -379,7 +379,7 @@ export default function Bienvenida() {
 
   if (loading) {
     return (
-      <div style={styles.container}>
+      <div style={styles.container} className="bv-wrap">
         <div style={styles.card} className="bv-card">
           <div style={styles.logo}>AN</div>
           <p style={styles.subtitle}>Verificando invitacion...</p>
@@ -391,7 +391,7 @@ export default function Bienvenida() {
 
   if (!sessionReady) {
     return (
-      <div style={styles.container}>
+      <div style={styles.container} className="bv-wrap">
         <div style={styles.card} className="bv-card">
           <div style={styles.logo}>AN</div>
           <h1 style={styles.title} className="bv-title">Enlace no válido</h1>
@@ -441,14 +441,7 @@ export default function Bienvenida() {
   }
 
   return (
-    <div style={styles.container}>
-      <style>{`
-        @media(max-width:480px){
-          .bv-card{padding:32px 20px 28px!important}
-          .bv-title{font-size:20px!important}
-          .f-inp{font-size:16px!important}  /* anti-zoom iOS Safari al hacer focus */
-        }
-      `}</style>
+    <div style={styles.container} className="bv-wrap">
       <div style={styles.card} className="bv-card">
         <div style={styles.logo}>AN</div>
         <h1 style={styles.title} className="bv-title">

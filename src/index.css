@@ -3156,3 +3156,15 @@ td b{color:var(--txt);font-weight:600}
   .imp-steps{gap:6px!important;margin-top:10px!important}
   .imp-steps > span{flex:1 1 calc(50% - 3px);white-space:nowrap;text-align:center}
 }
+
+/* ── Bienvenida / set de contraseña (≤480) ──
+   Las reglas vivian en un <style> dentro del return principal del componente,
+   asi que las pantallas de error y de carga —que son returns aparte— se
+   quedaban sin ellas: card de 48/40px de padding y sin margen lateral. */
+@media(max-width:480px){
+  .bv-wrap{padding:16px}
+  .bv-card{padding:32px 20px 28px!important}
+  .bv-title{font-size:20px!important}
+  /* anti-zoom iOS Safari al enfocar (menos de 16px hace zoom) */
+  .bv-card .f-inp{font-size:16px!important}
+}

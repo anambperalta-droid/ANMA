@@ -125,8 +125,8 @@ export default function Onboarding() {
   }
 
   return (
-    <div style={s.page}>
-      <div style={s.card}>
+    <div style={s.page} className="onb-page">
+      <div style={s.card} className="onb-card">
         <div style={s.badge}>
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#F2762E', display: 'inline-block' }} />
           Perfil comercial · Paso 1 de 3
@@ -146,6 +146,7 @@ export default function Onboarding() {
             onChange={e => setBusinessName(e.target.value)}
             placeholder="Ej: Anma Deco &amp; Home"
             style={s.input}
+            className="onb-input"
             onFocus={e => Object.assign(e.target.style, s.inputFocus)}
             onBlur={e => Object.assign(e.target.style, { borderColor: '#E5E7EB', boxShadow: 'none', background: '#FAFAFB' })}
             maxLength={60}
@@ -156,7 +157,7 @@ export default function Onboarding() {
         {/* Campo 2: Rubro */}
         <div style={s.section}>
           <label style={s.label}>¿Cuál es el rubro principal?</label>
-          <div style={s.grid4}>
+          <div style={s.grid4} className="onb-grid-rubro">
             {RUBROS.map(r => (
               <SelectCard
                 key={r.val}
@@ -212,6 +213,16 @@ export default function Onboarding() {
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg) } }
+        /* Los 4 rubros en 2 columnas a 390px dejaban ~82px de texto al lado del
+           icono de 42px: "Indumentaria" y su bajada entraban partidas. En una
+           columna la card se lee entera. */
+        @media(max-width:480px){
+          .onb-page{padding:20px 14px!important}
+          .onb-card{padding:26px 18px 22px!important;border-radius:18px!important}
+          .onb-grid-rubro{grid-template-columns:1fr!important}
+          /* iOS Safari hace zoom al enfocar un input de menos de 16px. */
+          .onb-input{font-size:16px!important}
+        }
       `}</style>
     </div>
   )
