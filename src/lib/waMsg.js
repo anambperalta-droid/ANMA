@@ -1,4 +1,5 @@
 import { fmt, fmtDate } from './storage'
+import { supabase } from './supabase'
 
 /**
  * Templates por rubro — personalización ligera de la firma y el saludo
@@ -153,11 +154,22 @@ export function openWAFor(b, { onNoNumber, onSent, cfg } = {}) {
 }
 
 /**
- * buildClientePortalLink(b, cfg) — Genera link público /portal-cliente?d=BASE64
- * con un payload compacto (keys cortas) para que la URL no sea gigante.
- * Expira a los 60 días. Backward-compatible con el patrón del PortalProveedor.
+ * Portal del cliente — el link se arma de dos formas:
+ *   ?id=CORTO  (preferido) el payload vive en `portal_links` de Supabase
+ *   ?d=BASE64  (fallback)  el payload va embebido en la URL
+ * En los dos casos expira a los 60 dias. Mismo patron que PortalProveedor.
  */
-export function buildClientePortalLink(b, cfg = {}) {
+
+/** Base publica del portal del cliente (en Hub cuelga de /app). */
+export function portalClienteBase() {
+  const origin = typeof window !== 'undefined' ? window.location.origin : ''
+  return typeof window !== 'undefined' && window.location.pathname.startsWith('/app')
+    ? origin + '/app/portal-cliente'
+    : origin + '/portal-cliente'
+}
+
+/** Payload del portal — compartido por el link embebido y por el short-link. */
+export function buildClientePortalPayload(b, cfg = {}) {
   // Precio unitario con múltiples fallbacks: pu, price, unitPrice, precio.
   // Si no hay ninguno pero el item trae su subtotal/total, lo derivamos de qty.
   const items = (Array.isArray(b.items) ? b.items : []).map(i => {
@@ -202,16 +214,15 @@ export function buildClientePortalLink(b, cfg = {}) {
     mp: cfg.linkPago || cfg.mpLink || '',
     e: Date.now() + 60 * 86400000, // 60 días
   }
-  const json = JSON.stringify(payload)
+  return payload
+}
+
+export function buildClientePortalLink(b, cfg = {}) {
+  const json = JSON.stringify(buildClientePortalPayload(b, cfg))
   // base64 URL-safe (igual que PortalProveedor)
   const b64 = btoa(unescape(encodeURIComponent(json)))
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-  const origin = typeof window !== 'undefined' ? window.location.origin : ''
-  // En Hub el app está bajo /app; portal es público bajo /portal-cliente
-  const base = typeof window !== 'undefined' && window.location.pathname.startsWith('/app')
-    ? origin + '/app/portal-cliente'
-    : origin + '/portal-cliente'
-  return `${base}?d=${b64}`
+  return `${portalClienteBase()}?d=${b64}`
 }
 
 /**
@@ -219,8 +230,20 @@ export function buildClientePortalLink(b, cfg = {}) {
  * y abre WhatsApp con un mensaje corto + el link. Si no hay número, abre WA
  * en vacío para que el usuario elija contacto.
  */
-export function sharePortalCliente(b, cfg = {}, { toast } = {}) {
-  const link = buildClientePortalLink(b, cfg)
+export async function sharePortalCliente(b, cfg = {}, { toast } = {}) {
+  /* El link embebido (?d=) mete TODO el pedido en la URL: al cliente le llega
+     un parrafo de base64 por WhatsApp. Guardamos el payload en `portal_links`
+     y mandamos un id corto; si eso falla, cae al link largo de siempre. */
+  let link = buildClientePortalLink(b, cfg)
+  try {
+    const payload = buildClientePortalPayload(b, cfg)
+    const id = (crypto?.randomUUID?.() || (Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2))).replace(/-/g, '').slice(0, 16)
+    const { error } = await supabase.from('portal_links').insert({ id, payload, expires_at: new Date(payload.e).toISOString() })
+    if (error) throw error
+    link = `${portalClienteBase()}?id=${id}`
+  } catch (err) {
+    console.warn('[portal cliente] no se pudo crear el short-link:', err?.message || err)
+  }
   try { navigator.clipboard?.writeText(link) } catch { /* ignore */ }
   const nombre = b.contact || ''
   const neg = cfg.businessName || 'nosotros'

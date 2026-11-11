@@ -3168,3 +3168,26 @@ td b{color:var(--txt);font-weight:600}
   /* anti-zoom iOS Safari al enfocar (menos de 16px hace zoom) */
   .bv-card .f-inp{font-size:16px!important}
 }
+
+/* ── Ficha de detalle: anclada arriba, no centrada ──
+   Una ficha alta centrada con `align-items:safe center` + `margin:auto 0`
+   arranca muy abajo en la pantalla y se corta contra el borde inferior.
+   Anclada a 5vh del techo siempre abre en el mismo lugar. */
+.modal-bg.open.modal-bg-top{align-items:flex-start;padding-top:5vh}
+.modal-bg.open.modal-bg-top > .modal-form-card{margin-top:0;margin-bottom:24px}
+
+/* Accion "compartir portal" en cada pedido de la ficha del cliente */
+.cli-portal-btn{
+  width:30px;height:30px;flex-shrink:0;border-radius:8px;
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--txt3);font-size:12px;cursor:pointer;padding:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:border-color .12s,color .12s,background .12s;
+}
+.cli-portal-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-xlt)}
+.cli-portal-btn:active{transform:scale(.94)}
+@media(max-width:768px){
+  /* En mobile la ficha ocupa la pantalla completa desde arriba (regla global
+     de .modal-bg.open en <=768), asi que no agregamos tope extra. */
+  .modal-bg.open.modal-bg-top{padding-top:0}
+}

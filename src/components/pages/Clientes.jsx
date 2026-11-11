@@ -5,7 +5,7 @@ import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
 import { fmt, STATUS_MAP, STATUS_CLS } from '../../lib/storage'
 import { getClientVocab, getClientRubroPlaceholder } from '../../lib/voice'
-import { openWAFor } from '../../lib/waMsg'
+import { openWAFor, sharePortalCliente } from '../../lib/waMsg'
 import EmptyHero from '../layout/EmptyHero'
 import { triggerMilestone, triggerEncouragement } from '../layout/MilestoneToast'
 
@@ -1299,8 +1299,8 @@ export default function Clientes() {
 
       {/* FICHA DETALLE */}
       {detailClient && (
-        <div className="modal-bg open" onClick={e => { if (e.target === e.currentTarget) setDetailClient(null) }}>
-          <div className="modal-form-card cli-detail-card" style={{ width: '100%', maxWidth: 860, maxHeight: '95vh', display: 'flex', flexDirection: 'column' }} onClick={e => e.stopPropagation()}>
+        <div className="modal-bg open modal-bg-top" onClick={e => { if (e.target === e.currentTarget) setDetailClient(null) }}>
+          <div className="modal-form-card cli-detail-card" style={{ width: '100%', maxWidth: 860, maxHeight: '90vh', display: 'flex', flexDirection: 'column' }} onClick={e => e.stopPropagation()}>
 
             {/* Header */}
             <div className="cli-dt-header" style={{ padding: '20px 24px 16px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
@@ -1458,6 +1458,14 @@ export default function Clientes() {
                           <div style={{ textAlign: 'right', flexShrink: 0 }}>
                             <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--money)' }}>{fmt(b.totalFinal || b.total)}</div>
                           </div>
+                          {/* El portal del cliente solo se podia compartir desde el detalle
+                              del pedido en Historial: desde la ficha del cliente, que es de
+                              donde se lo manda, no habia forma de llegar. */}
+                          <button className="cli-portal-btn" title="Compartir portal de este pedido con el cliente"
+                            aria-label={`Compartir portal del pedido ${b.num || ''}`}
+                            onClick={e => { e.stopPropagation(); sharePortalCliente(b, config(), { toast }) }}>
+                            <i className="fa fa-share-nodes" />
+                          </button>
                           <i className="fa fa-chevron-right" style={{ color: 'var(--txt4)', fontSize: 10 }} />
                         </div>
                       ))}

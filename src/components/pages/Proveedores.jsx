@@ -502,15 +502,25 @@ export default function Proveedores() {
     const ph = (s.priceHistory || []).slice(-8).reverse()
     if (ph.length)    payload.ph = ph
     // Short-link: guardamos el payload en Supabase y compartimos un id corto.
-    // Si la tabla no existe o falla, caemos al link largo embebido (?d=).
+    // Si falla, caemos a un link embebido (?d=) — pero recortado y avisando,
+    // porque antes el error se tragaba en silencio y al proveedor le llegaba
+    // un parrafo de base64 sin que nadie se enterara de por que.
     let url
     try {
       const id = (crypto?.randomUUID?.() || (Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2))).replace(/-/g, '').slice(0, 16)
       const { error } = await supabase.from('portal_links').insert({ id, payload, expires_at: new Date(payload.e).toISOString() })
       if (error) throw error
       url = `${window.location.origin}/app/portal-proveedor?id=${id}`
-    } catch {
-      const json = JSON.stringify(payload)
+    } catch (err) {
+      console.warn('[portal proveedor] no se pudo crear el short-link:', err?.message || err)
+      toast('No pudimos acortar el link: va el largo. Avisale a soporte si se repite.', 'in')
+      /* El link embebido lleva TODO el payload adentro, asi que lo achicamos:
+         el historial de precios y el stock son contexto nuestro, no algo que
+         el proveedor necesite para cotizar o reponer. */
+      const slim = { ...payload }
+      delete slim.ph
+      slim.p = (payload.p || []).map(({ n, c, r }) => (r ? { n, c, r } : { n, c }))
+      const json = JSON.stringify(slim)
       const b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
       url = `${window.location.origin}/app/portal-proveedor?d=${b64}`
     }
