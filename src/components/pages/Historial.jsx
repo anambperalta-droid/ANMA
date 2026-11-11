@@ -1019,8 +1019,11 @@ export default function Historial() {
       return b.payStatus === 'paid' || b.payStatus === 'partial'
     })
     const totCobrado  = pagados.reduce((s, b) => s + cobrado(b), 0)
-    // Ticket promedio: sobre ventas NO perdidas (coherente con Ventas Brutas).
-    const avgTicket   = nonLost.length ? Math.round(totBudgeted / nonLost.length) : 0
+    /* Ticket promedio: sobre ventas NO perdidas y CON monto. Un pedido a medio
+       cargar no es una venta de $0: dividir por el bajaba el promedio sin que
+       se notara. Mismo criterio que Ventas (decision de Ana, 10/11). */
+    const conMonto    = nonLost.filter(b => (b.totalFinal || b.total || 0) > 0)
+    const avgTicket   = conMonto.length ? Math.round(totBudgeted / conMonto.length) : 0
     // Conversión: confirmados sobre el TOTAL de presupuestos del período (incluye
     // perdidos en el denominador — son parte del embudo de conversión).
     const convRate    = periodBudgets.length ? Math.round(confirmed.length / periodBudgets.length * 100) + '%' : '—'
@@ -1040,7 +1043,12 @@ export default function Historial() {
     } else if (period === 'year') {
       prevPeriodBudgets = budgets.filter(b => b.date?.startsWith(String(n.getFullYear() - 1)))
     }
-    const prevPagados      = prevPeriodBudgets.filter(b => b.payStatus === 'paid' || b.payStatus === 'partial')
+    /* Misma regla que `pagados`: un perdido con la plata devuelta no es ingreso.
+       Sin esto el delta de Cobrado comparaba una base contra otra. */
+    const prevPagados      = prevPeriodBudgets.filter(b => {
+      if (b.status === 'lost' && !b.keptDeposit) return false
+      return b.payStatus === 'paid' || b.payStatus === 'partial'
+    })
     // Excluye perdidos, igual que totBudgeted, para que el % de variación sea justo.
     const prevTotBudgeted  = prevPeriodBudgets.filter(b => b.status !== 'lost').reduce((s, b) => s + (b.totalFinal || b.total || 0), 0)
     const prevTotCobrado   = prevPagados.reduce((s, b) => s + cobrado(b), 0)
@@ -1064,7 +1072,9 @@ export default function Historial() {
       brutas.push(dayBs.reduce((s, b) => s + (b.totalFinal || b.total || 0), 0))
       // Caja del día: pagos efectivamente recibidos. Excluye perdidos sin seña preservada.
       caja.push(budgets.filter(b => !(b.status === 'lost' && !b.keptDeposit)).reduce((s, b) => s + cobradoEnFecha(b, ds), 0))
-      ticket.push(dayBs.length ? dayBs.reduce((s, b) => s + (b.totalFinal || b.total || 0), 0) / dayBs.length : 0)
+      // Misma base que el KPI: solo las ventas con monto cargado.
+      const dayConMonto = dayBs.filter(b => (b.totalFinal || b.total || 0) > 0)
+      ticket.push(dayConMonto.length ? dayConMonto.reduce((s, b) => s + (b.totalFinal || b.total || 0), 0) / dayConMonto.length : 0)
     }
     return { sparkBrutas: brutas, sparkCaja: caja, sparkTicket: ticket }
   }, [budgets])
@@ -1137,30 +1147,16 @@ export default function Historial() {
     return ids.size + (stockCriticoCount > 0 ? 1 : 0)
   }, [cobrosVencidos, entregasHoy, aConfirmar, proximasEntregas, sinCobrar7d, stockCriticoCount])
 
-  // Insight banner — ignoramos deltas al cap +-999% (comparación poco confiable).
-  const deltaConfiable = deltaBrutas !== null && Math.abs(deltaBrutas) < 999 ? deltaBrutas : null
-  const insightIcon = deltaConfiable !== null && deltaConfiable > 20 ? 'fa-rocket' : deltaConfiable !== null && deltaConfiable > 0 ? 'fa-chart-line' : deltaConfiable !== null && deltaConfiable < -20 ? 'fa-triangle-exclamation' : deltaConfiable !== null && deltaConfiable < 0 ? 'fa-arrow-trend-down' : convRate !== '—' && parseInt(convRate) >= 60 ? 'fa-star' : periodBudgets.length === 0 ? 'fa-circle-info' : 'fa-chart-bar'
-  const insightColor = deltaConfiable !== null && deltaConfiable > 0 ? 'var(--green)' : deltaConfiable !== null && deltaConfiable < 0 ? 'var(--amber)' : 'var(--brand)'
-  const insightText = periodBudgets.length === 0
-    ? 'Todavía no hay datos para este período. Registrá presupuestos para ver tus métricas.'
-    : deltaConfiable !== null && deltaConfiable > 20
-      ? `Las ventas crecieron un ${deltaConfiable}% respecto al período anterior. ¡Excelente momento!`
-      : deltaConfiable !== null && deltaConfiable > 0
-        ? `Crecimiento del ${deltaConfiable}% en ventas vs. el período anterior. Buen ritmo.`
-        : deltaConfiable !== null && deltaConfiable < -20
-          ? `Las ventas bajaron un ${Math.abs(deltaConfiable)}% vs. el período anterior. Momento de reforzar el seguimiento.`
-          : deltaConfiable !== null && deltaConfiable < 0
-            ? `Leve caída del ${Math.abs(deltaConfiable)}% en ventas respecto al período anterior.`
-            : convRate !== '—' && parseInt(convRate) >= 60
-              ? `Conversión del ${convRate} — cerrás más de la mitad de los presupuestos que enviás.`
-              : `${periodBudgets.length} presupuesto${periodBudgets.length !== 1 ? 's' : ''} en el período · Ticket promedio ${money(avgTicket)} · Conversión ${convRate}`
-
   // ── Chart data (memoized — only recalculates when budgets or period changes) ──
   const barMonths = period === '3m' ? 3 : period === 'year' ? 12 : 6
   const isDaily = period === 'thismonth' || period === 'prevmonth'
   const { chartData, prevChartData, gainData } = useMemo(() => {
     const n = now; const bm = period === '3m' ? 3 : period === 'year' ? 12 : 6
     const chartData = []; const prevChartData = []; const gainData = []
+    /* El grafico de ingresos sumaba TODOS los pedidos, incluidos los perdidos
+       donde la plata se devolvio. El KPI "Cobrado" y el sparkline ya los
+       excluian, asi que la barra del dia no cerraba con el KPI de arriba. */
+    const cobrables = budgets.filter(b => !(b.status === 'lost' && !b.keptDeposit))
     if (period === 'thismonth') {
       const cy = n.getFullYear(); const cmo = n.getMonth()
       const cymStr = `${cy}-${String(cmo + 1).padStart(2, '0')}`
@@ -1169,29 +1165,29 @@ export default function Historial() {
       const daysInMonth = new Date(cy, cmo + 1, 0).getDate()
       const daysInPrev = new Date(py, pmo + 1, 0).getDate()
       // Cash flow REAL: sumamos los payments[] del día (no la fecha de creación del presupuesto)
-      for (let d = 1; d <= daysInMonth; d++) { const ds = String(d).padStart(2, '0'); const fecha = `${cymStr}-${ds}`; chartData.push({ lbl: String(d), val: budgets.reduce((s, b) => s + cobradoEnFecha(b, fecha), 0) }) }
-      for (let d = 1; d <= daysInPrev; d++) { const ds = String(d).padStart(2, '0'); const fecha = `${pymStr}-${ds}`; prevChartData.push({ lbl: String(d), val: budgets.reduce((s, b) => s + cobradoEnFecha(b, fecha), 0) }) }
+      for (let d = 1; d <= daysInMonth; d++) { const ds = String(d).padStart(2, '0'); const fecha = `${cymStr}-${ds}`; chartData.push({ lbl: String(d), val: cobrables.reduce((s, b) => s + cobradoEnFecha(b, fecha), 0) }) }
+      for (let d = 1; d <= daysInPrev; d++) { const ds = String(d).padStart(2, '0'); const fecha = `${pymStr}-${ds}`; prevChartData.push({ lbl: String(d), val: cobrables.reduce((s, b) => s + cobradoEnFecha(b, fecha), 0) }) }
     } else if (period === 'prevmonth') {
       const pmd = new Date(n.getFullYear(), n.getMonth() - 1, 1); const pymStr1 = `${pmd.getFullYear()}-${String(pmd.getMonth() + 1).padStart(2, '0')}`
       const pmd2 = new Date(n.getFullYear(), n.getMonth() - 2, 1); const pymStr2 = `${pmd2.getFullYear()}-${String(pmd2.getMonth() + 1).padStart(2, '0')}`
       const daysInMonth = new Date(pmd.getFullYear(), pmd.getMonth() + 1, 0).getDate()
       const daysInPrev = new Date(pmd2.getFullYear(), pmd2.getMonth() + 1, 0).getDate()
-      for (let d = 1; d <= daysInMonth; d++) { const ds = String(d).padStart(2, '0'); const fecha = `${pymStr1}-${ds}`; chartData.push({ lbl: String(d), val: budgets.reduce((s, b) => s + cobradoEnFecha(b, fecha), 0) }) }
-      for (let d = 1; d <= daysInPrev; d++) { const ds = String(d).padStart(2, '0'); const fecha = `${pymStr2}-${ds}`; prevChartData.push({ lbl: String(d), val: budgets.reduce((s, b) => s + cobradoEnFecha(b, fecha), 0) }) }
+      for (let d = 1; d <= daysInMonth; d++) { const ds = String(d).padStart(2, '0'); const fecha = `${pymStr1}-${ds}`; chartData.push({ lbl: String(d), val: cobrables.reduce((s, b) => s + cobradoEnFecha(b, fecha), 0) }) }
+      for (let d = 1; d <= daysInPrev; d++) { const ds = String(d).padStart(2, '0'); const fecha = `${pymStr2}-${ds}`; prevChartData.push({ lbl: String(d), val: cobrables.reduce((s, b) => s + cobradoEnFecha(b, fecha), 0) }) }
     } else {
       // Vista mensual: cobrado del mes = suma de payments en ese mes
       for (let i = bm - 1; i >= 0; i--) {
         const d = new Date(n.getFullYear(), n.getMonth() - i, 1); const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
         const from = `${key}-01`; const to = `${key}-31`
-        chartData.push({ lbl: MONTHS[d.getMonth()], val: budgets.reduce((s, b) => s + cobradoEnRango(b, from, to), 0) })
+        chartData.push({ lbl: MONTHS[d.getMonth()], val: cobrables.reduce((s, b) => s + cobradoEnRango(b, from, to), 0) })
         const pd = new Date(n.getFullYear(), n.getMonth() - i - bm, 1); const pkey = `${pd.getFullYear()}-${String(pd.getMonth() + 1).padStart(2, '0')}`
         const pfrom = `${pkey}-01`; const pto = `${pkey}-31`
-        prevChartData.push({ lbl: MONTHS[pd.getMonth()], val: budgets.reduce((s, b) => s + cobradoEnRango(b, pfrom, pto), 0) })
+        prevChartData.push({ lbl: MONTHS[pd.getMonth()], val: cobrables.reduce((s, b) => s + cobradoEnRango(b, pfrom, pto), 0) })
       }
     }
     for (let i = bm - 1; i >= 0; i--) {
       const d = new Date(n.getFullYear(), n.getMonth() - i, 1); const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
-      gainData.push({ lbl: MONTHS[d.getMonth()], val: budgets.filter(b => b.date?.startsWith(key)).reduce((s, b) => s + ganCobrada(b), 0) })
+      gainData.push({ lbl: MONTHS[d.getMonth()], val: cobrables.filter(b => b.date?.startsWith(key)).reduce((s, b) => s + ganCobrada(b), 0) })
     }
     return { chartData, prevChartData, gainData }
   }, [budgets, period]) // eslint-disable-line
@@ -2198,15 +2194,18 @@ export default function Historial() {
                     const enviados = periodBudgets.filter(b => !['draft'].includes(b.status)).length
                     const confirmados = periodBudgets.filter(b => ['confirmed', 'inprogress', 'delivered'].includes(b.status)).length
                     const cobrados = periodBudgets.filter(b => b.payStatus === 'paid').length
+                    /* Cada % tenia una base distinta — el primero sobre el total, los
+                       otros sobre el paso anterior — y nada lo decia. Ahora cada fila
+                       aclara contra que se compara. */
                     const steps = [
-                      { label: 'Enviados', count: enviados, pct: total > 0 ? Math.round(enviados / total * 100) : 0 },
-                      { label: 'Confirmados', count: confirmados, pct: enviados > 0 ? Math.round(confirmados / enviados * 100) : 0 },
-                      { label: 'Cobrados', count: cobrados, pct: confirmados > 0 ? Math.round(cobrados / confirmados * 100) : 0 },
+                      { label: 'Enviados', count: enviados, pct: total > 0 ? Math.round(enviados / total * 100) : 0, base: 'del total' },
+                      { label: 'Confirmados', count: confirmados, pct: enviados > 0 ? Math.round(confirmados / enviados * 100) : 0, base: 'de los enviados' },
+                      { label: 'Cobrados', count: cobrados, pct: confirmados > 0 ? Math.round(cobrados / confirmados * 100) : 0, base: 'de los confirmados' },
                     ]
                     return (
                       <div className="bento-chart" style={{ padding: 14 }}>
                         <div className="card-header" style={{ marginBottom: 10 }}>
-                          <span className="card-title"><i className="fa fa-filter" style={{ color: 'var(--brand)', marginRight: 7 }} />Embudo de conversion</span>
+                          <span className="card-title"><i className="fa fa-filter" style={{ color: 'var(--brand)', marginRight: 7 }} />Embudo de conversión</span>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
                           {steps.map((s, i) => {
@@ -2217,7 +2216,7 @@ export default function Historial() {
                               <div key={s.label}>
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
                                   <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--brand)' }}>{s.label}</span>
-                                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', fontVariantNumeric: 'tabular-nums' }}>{s.count} <span style={{ fontWeight: 500, color: 'var(--txt4)' }}>({s.pct}%)</span></span>
+                                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--txt2)', fontVariantNumeric: 'tabular-nums' }}>{s.count} <span style={{ fontWeight: 500, color: 'var(--txt4)' }}>({s.pct}% {s.base})</span></span>
                                 </div>
                                 <div style={{ height: 28, borderRadius: 8, background: 'var(--surface2)', overflow: 'hidden', marginBottom: i < steps.length - 1 ? 2 : 0, position: 'relative' }}>
                                   <div style={{ height: '100%', width: `${widthPct}%`, background: shade, borderRadius: 8, transition: 'width .5s ease' }} />
@@ -2232,7 +2231,7 @@ export default function Historial() {
                           })}
                         </div>
                         <div style={{ marginTop: 8, textAlign: 'center', fontSize: 10, color: 'var(--txt4)' }}>
-                          Conversion global: <b style={{ color: 'var(--txt2)' }}>{total > 0 ? Math.round(cobrados / total * 100) : 0}%</b> del total cobrado
+                          Conversión global: <b style={{ color: 'var(--txt2)' }}>{total > 0 ? Math.round(cobrados / total * 100) : 0}%</b> de los pedidos del período ya cobrados
                         </div>
                       </div>
                     )
