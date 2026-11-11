@@ -20,7 +20,7 @@ import { createPortal } from 'react-dom'
 import { fmt, fmtDate, STATUS_MAP, PAY_STATUS_MAP } from '../../lib/storage'
 
 const STATUS_COLOR = {
-  draft:       '#94A3B8',
+  draft:       '#A89A86',
   sent:        '#2E8BD6',
   negotiating: '#D97706',
   confirmed:   '#16A34A',
@@ -82,7 +82,7 @@ export default function PedidoDrawer({
 
   const b = budget
   const estado  = b.status || 'draft'
-  const eColor  = STATUS_COLOR[estado] || '#94A3B8'
+  const eColor  = STATUS_COLOR[estado] || '#A89A86'
   const payStatus = b.payStatus || 'pending'
   const t = derive(b)
   const sinCompromiso = SIN_COMPROMISO.has(estado)
@@ -187,7 +187,7 @@ export default function PedidoDrawer({
             // Perdido con cobros: aclara si se devolvió o se quedó
             if (estado === 'lost' && t.cobrado > 0) {
               const kept = b.keptDeposit === true
-              alerts.push({ color: kept ? '#15803D' : '#DC2626', bg: kept ? '#F0FDF4' : '#FEE2E2', border: kept ? '#86EFAC' : '#FCA5A5', icon: kept ? 'fa-circle-check' : 'fa-rotate-left', title: kept ? 'Perdido · seña preservada' : 'Perdido · falta devolución', msg: kept ? `Te quedaste con ${fmt(t.cobrado)} como compensación.` : `Debés devolver ${fmt(t.cobrado)} al cliente.` })
+              alerts.push({ color: kept ? '#15803D' : '#DC2626', bg: kept ? '#F2F8EB' : '#FEE2E2', border: kept ? '#86EFAC' : '#FCA5A5', icon: kept ? 'fa-circle-check' : 'fa-rotate-left', title: kept ? 'Perdido · seña preservada' : 'Perdido · falta devolución', msg: kept ? `Te quedaste con ${fmt(t.cobrado)} como compensación.` : `Debés devolver ${fmt(t.cobrado)} al cliente.` })
             }
             return alerts.length === 0 ? null : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 14 }}>
@@ -299,9 +299,9 @@ export default function PedidoDrawer({
                 <span style={{
                   display: 'inline-flex', alignItems: 'center', gap: 5,
                   padding: '2px 9px', borderRadius: 999, fontSize: 11, fontWeight: 700,
-                  background: '#F1F5F9', color: '#64748B', border: '1px solid #E2E8F0',
+                  background: '#F6F1E9', color: '#6E6355', border: '1px solid #ECE3D6',
                 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#94A3B8' }} />
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#A89A86' }} />
                   Sin cobros aún
                 </span>
               ) : (

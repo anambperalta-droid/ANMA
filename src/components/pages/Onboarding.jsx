@@ -101,10 +101,10 @@ export default function Onboarding() {
     },
     input: {
       width: '100%', padding: '13px 16px',
-      border: '1.5px solid #E5E7EB', borderRadius: 12,
+      border: '1.5px solid #ECE3D6', borderRadius: 12,
       fontFamily: 'inherit', fontSize: 15, color: '#111827',
       outline: 'none', boxSizing: 'border-box', transition: 'border-color .15s, box-shadow .15s',
-      background: '#FAFAFB',
+      background: '#FDFBF7',
     },
     inputFocus: { borderColor: '#F2762E', boxShadow: '0 0 0 4px rgba(242,118,46,.08)', background: '#fff' },
     grid4: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 11 },
@@ -118,7 +118,7 @@ export default function Onboarding() {
       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
     },
     ctaDisabled: {
-      background: '#E5E7EB', color: '#9CA3AF', cursor: 'not-allowed',
+      background: '#ECE3D6', color: '#9CA3AF', cursor: 'not-allowed',
       boxShadow: 'none', opacity: .7,
     },
     progress: { fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 14 },
@@ -147,7 +147,7 @@ export default function Onboarding() {
             placeholder="Ej: Anma Deco &amp; Home"
             style={s.input}
             onFocus={e => Object.assign(e.target.style, s.inputFocus)}
-            onBlur={e => Object.assign(e.target.style, { borderColor: '#E5E7EB', boxShadow: 'none', background: '#FAFAFB' })}
+            onBlur={e => Object.assign(e.target.style, { borderColor: '#ECE3D6', boxShadow: 'none', background: '#FDFBF7' })}
             maxLength={60}
             autoFocus
           />
@@ -304,7 +304,7 @@ function LineIcon({ fa, size = 20, color = '#F2762E' }) {
    Ícono line-only sofisticado (sin relleno) en chip sobrio. */
 function SelectCard({ fa, label, sub, selected, onClick }) {
   const base = {
-    border: `1.5px solid ${selected ? '#F2762E' : '#E5E7EB'}`,
+    border: `1.5px solid ${selected ? '#F2762E' : '#ECE3D6'}`,
     background: selected ? '#FBF4EC' : '#fff',
     borderRadius: 14, padding: '15px 16px',
     cursor: 'pointer', fontFamily: 'inherit',
@@ -316,7 +316,7 @@ function SelectCard({ fa, label, sub, selected, onClick }) {
   return (
     <button type="button" onClick={onClick} style={base}
       onMouseEnter={e => { if (!selected) { e.currentTarget.style.borderColor = '#F0C49E'; e.currentTarget.style.transform = 'translateY(-1px)' } }}
-      onMouseLeave={e => { if (!selected) { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.transform = 'none' } }}>
+      onMouseLeave={e => { if (!selected) { e.currentTarget.style.borderColor = '#ECE3D6'; e.currentTarget.style.transform = 'none' } }}>
       <div style={{
         width: 42, height: 42, borderRadius: 12, flexShrink: 0,
         background: selected ? 'linear-gradient(135deg,#F2762E,#F2A93B)' : '#FBF4EC',

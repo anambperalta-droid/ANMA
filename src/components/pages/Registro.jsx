@@ -78,7 +78,7 @@ const CSS = `
   .rg-logo { width:46px;height:46px;border-radius:13px;background:#fff;
     display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(242,118,46,.4);flex-shrink:0;overflow:hidden }
   .rg-logo img { width:80%;height:80%;object-fit:contain;display:block }
-  .rg-brand-name { font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1 }
+  .rg-brand-name { font-size:20px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1 }
   .rg-brand-tag  { font-size:11px;color:rgba(255,255,255,.45);margin-top:3px }
 
   .rg-h { font-size:23px;font-weight:800;color:#fff;letter-spacing:-.45px;line-height:1.2;margin-bottom:4px }

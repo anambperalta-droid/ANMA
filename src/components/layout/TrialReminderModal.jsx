@@ -42,7 +42,7 @@ const MILESTONES = {
     daysLeft: -1,
     icon: 'fa-pause',
     color: '#6B7280',
-    bg: 'linear-gradient(135deg, #F3F4F6, #E5E7EB)',
+    bg: 'linear-gradient(135deg, #F6F1E9, #ECE3D6)',
     title: 'Tu workspace está pausado',
     body: 'Tus datos están guardados y seguros. Activá tu plan para retomar exactamente donde quedaste — sin perder nada.',
     cta: 'Reactivar workspace',
@@ -204,7 +204,7 @@ export default function TrialReminderModal() {
               onClick={close}
               style={{
                 width: '100%', padding: '12px 18px', borderRadius: 11,
-                background: 'transparent', border: '1.5px solid var(--border, #e5e7eb)',
+                background: 'transparent', border: '1.5px solid var(--border, #ECE3D6)',
                 color: 'var(--txt3, #6B7280)', fontSize: 13, fontWeight: 600,
                 cursor: 'pointer', fontFamily: 'inherit',
               }}

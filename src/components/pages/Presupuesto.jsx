@@ -1205,7 +1205,7 @@ export default function Presupuesto() {
       /* Bloque de datos para el pago */
       .cobro-block{
         margin-top:16px;padding:14px 18px;
-        background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:10px;
+        background:#F2F8EB;border:1.5px solid #86EFAC;border-radius:10px;
       }
       .cobro-title{font-size:13px;font-weight:800;color:#065F46;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
       .cobro-tbl{width:100%;border-collapse:collapse;font-size:14px}
@@ -1370,7 +1370,7 @@ export default function Presupuesto() {
     )}
     <style>{`
       /* ── Lavado visual unificado (Pro · estética coherente con Regalos) ── */
-      .tbl-card{background:#FAFAFB;border:1px solid #ECECF1;border-radius:12px;padding:6px 12px 10px;margin-top:2px}
+      .tbl-card{background:#FDFBF7;border:1px solid #ECECF1;border-radius:12px;padding:6px 12px 10px;margin-top:2px}
       /* Headers de tabla nativos — tipografía secundaria gris */
       .items-scroll table thead th{
         font-size:9.5px!important;font-weight:600!important;color:#9CA3AF!important;

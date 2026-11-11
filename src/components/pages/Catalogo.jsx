@@ -1229,7 +1229,7 @@ export default function Catalogo() {
                     // Se muestra readonly con indicador visual para evitar confusión.
                     <div style={{
                       padding: '10px 12px',
-                      background: comboCost > 0 ? '#F0FDF4' : 'var(--surface)',
+                      background: comboCost > 0 ? '#F2F8EB' : 'var(--surface)',
                       border: `1.5px solid ${comboCost > 0 ? '#86EFAC' : 'var(--border)'}`,
                       borderRadius: 8,
                       fontSize: 13,
@@ -1435,11 +1435,11 @@ export default function Catalogo() {
 
                 {/* Total costo del combo */}
                 {comboCost > 0 && (
-                  <div style={{ marginTop: 12, padding: '10px 14px', background: 'linear-gradient(135deg,#F0FDF4,#ECFDF5)', borderRadius: 10, border: '1.5px solid #6EE7B7', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ marginTop: 12, padding: '10px 14px', background: 'linear-gradient(135deg,#F2F8EB,#EFF6E9)', borderRadius: 10, border: '1.5px solid #6EE7B7', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ fontSize: 10.5, fontWeight: 800, color: '#059669', textTransform: 'uppercase', letterSpacing: .6 }}>
                       <i className="fa fa-calculator" style={{ marginRight: 5 }} />Costo del combo
                     </div>
-                    <div style={{ fontSize: 20, fontWeight: 900, color: '#059669', fontVariantNumeric: 'tabular-nums' }}>${comboCost.toLocaleString('es-AR')}</div>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: '#059669', fontVariantNumeric: 'tabular-nums' }}>${comboCost.toLocaleString('es-AR')}</div>
                   </div>
                 )}
               </div>

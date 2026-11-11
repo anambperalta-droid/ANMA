@@ -10,7 +10,7 @@ import PedidoDrawer from '../common/PedidoDrawer'
 
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 const PAY_OPTS = [
-  { value: 'pending', label: 'Pendiente', icon: 'fa-clock',        color: '#64748b', bg: '#f1f5f9' },
+  { value: 'pending', label: 'Pendiente', icon: 'fa-clock',        color: '#6E6355', bg: '#F6F1E9' },
   { value: 'partial', label: 'Parcial',   icon: 'fa-hand-holding', color: '#b45309', bg: '#fef3c7' },
   { value: 'paid',    label: 'Cobrado',   icon: 'fa-circle-check', color: '#15803d', bg: '#dcfce7' },
 ]
@@ -34,7 +34,7 @@ const CANAL_OPTS = [
   { value: 'presencial', label: 'Presencial', icon: 'fa-store',               color: '#F2762E' },
   { value: 'instagram',  label: 'Instagram',  icon: 'fa-brands fa-instagram', color: '#E1306C' },
   { value: 'web',        label: 'Web',        icon: 'fa-globe',               color: '#2E8BD6' },
-  { value: 'otro',       label: 'Otro',       icon: 'fa-ellipsis',            color: '#64748b' },
+  { value: 'otro',       label: 'Otro',       icon: 'fa-ellipsis',            color: '#6E6355' },
 ]
 
 // Medio de pago — Fase 1 auditoria 02/10/26.
@@ -121,10 +121,10 @@ function median(nums) {
 // Determina si al cliente le cobramos IVA discriminado (Factura A)
 // o si va a precio final (Consumidor Final / Monotributo).
 const FISCAL_OPTS = [
-  { value: 'consumidor',   label: 'Consumidor final', badge: 'CF', iva: false, color: '#64748b' },
+  { value: 'consumidor',   label: 'Consumidor final', badge: 'CF', iva: false, color: '#6E6355' },
   { value: 'respInscripto',label: 'Responsable Inscripto', badge: 'A',  iva: true,  color: '#F2762E' },
   { value: 'monotributo',  label: 'Monotributo',      badge: 'M',  iva: false, color: '#0891B2' },
-  { value: 'exento',       label: 'Exento',           badge: 'E',  iva: false, color: '#94a3b8' },
+  { value: 'exento',       label: 'Exento',           badge: 'E',  iva: false, color: '#A89A86' },
 ]
 const FISCAL_MAP = Object.fromEntries(FISCAL_OPTS.map(o => [o.value, o]))
 
@@ -762,7 +762,7 @@ export default function Ventas() {
       {/* HEADER — hidden as tab but kept for standalone */}
       <div className="vt-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, flexWrap: 'wrap', gap: 8 }}>
         <div>
-          <h1 style={{ fontSize: 22, fontWeight: 900, color: 'var(--txt)', margin: 0, letterSpacing: '-.4px' }}>Registro de ventas</h1>
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: 'var(--txt)', margin: 0, letterSpacing: '-.4px' }}>Registro de ventas</h1>
         </div>
       </div>
 
@@ -1614,7 +1614,7 @@ function PendientesCobro({ budgets, hidden, nav, saveBudget, toast, mesLabel }) 
         const owed = b.payStatus === 'partial' ? (Number(b.total) || 0) - (Number(b.depositAmt) || 0) : Number(b.total) || 0
         const isFlash = justPaidId === b.id
         const urgency = days > 30 ? 'critical' : days > 7 ? 'warn' : 'normal'
-        const dotColor = urgency === 'critical' ? '#DC2626' : urgency === 'warn' ? '#D97706' : b.payStatus === 'partial' ? '#D97706' : '#94A3B8'
+        const dotColor = urgency === 'critical' ? '#DC2626' : urgency === 'warn' ? '#D97706' : b.payStatus === 'partial' ? '#D97706' : '#A89A86'
         return (
           <div key={b.id} className={`pc-row ${isFlash ? 'pc-flash' : ''}`} onClick={() => nav(`/pedido/${b.id}`)}>
             <div className="pc-dot" style={{ background: dotColor }} />
@@ -1757,7 +1757,7 @@ function LineRow({ line, idx, products, onSelectProduct, onChange, onRemove, can
               type="button"
               onClick={() => setEditCost(true)}
               title="Editar costo del catálogo"
-              style={{ background: 'none', border: '1px dashed var(--border2, #cbd5e1)', borderRadius: 5, padding: '1px 6px', cursor: 'pointer', fontSize: 10.5, color: cost > 0 ? 'var(--txt2)' : 'var(--txt4)', fontFamily: 'inherit' }}
+              style={{ background: 'none', border: '1px dashed var(--border2, #DCD1C0)', borderRadius: 5, padding: '1px 6px', cursor: 'pointer', fontSize: 10.5, color: cost > 0 ? 'var(--txt2)' : 'var(--txt4)', fontFamily: 'inherit' }}
             >
               {cost > 0 ? fmt(cost) : 'Agregar'}
             </button>

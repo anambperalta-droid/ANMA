@@ -35,7 +35,7 @@ const STAGE_ICONS = {
 const P = {
   card: 'var(--surface)',
   cardBorder: 'var(--border)',
-  bubble: '#f0fdf4',
+  bubble: '#F2F8EB',
   bubbleBorder: '#dcfce7',
   text: 'var(--txt)',
   textSoft: 'var(--txt3)',

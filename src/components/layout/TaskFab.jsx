@@ -88,12 +88,12 @@ export default function TaskFab() {
             title="Modo Enfoque — pantalla completa"
             style={{
               width: 28, height: 28, borderRadius: 8,
-              background: '#EEF2FF', border: 'none', cursor: 'pointer', fontSize: 11,
+              background: '#FBF4EC', border: 'none', cursor: 'pointer', fontSize: 11,
               display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--brand)',
               transition: 'background .15s',
             }}
             onMouseEnter={e => e.currentTarget.style.background = '#D4521E'}
-            onMouseLeave={e => e.currentTarget.style.background = '#EEF2FF'}
+            onMouseLeave={e => e.currentTarget.style.background = '#FBF4EC'}
           >
             <i className="fa fa-expand" style={{ pointerEvents: 'none' }} />
           </button>

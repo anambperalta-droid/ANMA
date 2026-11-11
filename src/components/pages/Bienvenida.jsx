@@ -5,7 +5,7 @@ import { passwordStrength } from '../../lib/validate'
 import { consumeAcquisitionAfterOAuth } from '../../lib/acquisitionTracking'
 
 const STRENGTH_LABELS = ['', 'Débil', 'Aceptable', 'Buena', 'Excelente']
-const STRENGTH_COLORS = ['#E5E7EB', '#DC2626', '#D97706', '#10B981', '#059669']
+const STRENGTH_COLORS = ['#ECE3D6', '#DC2626', '#D97706', '#10B981', '#059669']
 
 // Detecta si estamos atrapados en un webview in-app (Gmail iOS, Instagram, Facebook)
 // — ahí los tokens no persisten entre webview y browser real, causando "enlace inválido".
@@ -551,11 +551,11 @@ const styles = {
   },
   title: {
     margin: 0, fontSize: 24, fontWeight: 700,
-    color: 'var(--c-text, #e2e8f0)',
+    color: 'var(--c-text, #ECE3D6)',
   },
   subtitle: {
     margin: '8px 0 24px', fontSize: 14,
-    color: 'var(--c-muted, #94a3b8)', textAlign: 'center',
+    color: 'var(--c-muted, #A89A86)', textAlign: 'center',
   },
   error: {
     width: '100%', padding: '10px 14px', marginBottom: 16,

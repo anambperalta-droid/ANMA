@@ -39,9 +39,9 @@ export default class ErrorBoundary extends Component {
     // Chunk viejo: pantalla neutra mientras recarga (no "Algo salió mal")
     if (this.state.reloading) {
       return (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: 'linear-gradient(180deg,#FAFAFB 0%,#FBF4EC 100%)', fontFamily: 'Inter, system-ui, sans-serif', color: '#F2762E' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: 'linear-gradient(180deg,#FDFBF7 0%,#FBF4EC 100%)', fontFamily: 'Inter, system-ui, sans-serif', color: '#F2762E' }}>
           <i className="fa fa-arrows-rotate fa-spin" style={{ fontSize: 26 }} />
-          <p style={{ fontSize: 14, color: '#64748B', margin: 0 }}>Actualizando a la última versión…</p>
+          <p style={{ fontSize: 14, color: '#6E6355', margin: 0 }}>Actualizando a la última versión…</p>
         </div>
       )
     }
@@ -54,7 +54,7 @@ export default class ErrorBoundary extends Component {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(180deg, #FAFAFB 0%, #FBF4EC 100%)',
+        background: 'linear-gradient(180deg, #FDFBF7 0%, #FBF4EC 100%)',
         padding: '24px',
         fontFamily: 'var(--font-sans, Inter, system-ui, sans-serif)',
       }}>
@@ -100,7 +100,7 @@ export default class ErrorBoundary extends Component {
           <p style={{
             margin: '0 0 24px',
             fontSize: '13.5px',
-            color: '#64748B',
+            color: '#6E6355',
             lineHeight: 1.6,
             maxWidth: 360,
             marginLeft: 'auto',
@@ -137,7 +137,7 @@ export default class ErrorBoundary extends Component {
               style={{
                 padding: '12px 22px',
                 borderRadius: 11,
-                border: '1.5px solid #E5E7EB',
+                border: '1.5px solid #ECE3D6',
                 background: '#fff',
                 color: '#374151',
                 fontWeight: 600,
@@ -146,8 +146,8 @@ export default class ErrorBoundary extends Component {
                 fontFamily: 'inherit',
                 transition: 'border-color .15s, background .15s',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#F2762E'; e.currentTarget.style.background = '#FAFAFB' }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.background = '#fff' }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#F2762E'; e.currentTarget.style.background = '#FDFBF7' }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#ECE3D6'; e.currentTarget.style.background = '#fff' }}
             >
               Intentar de nuevo
             </button>
@@ -179,7 +179,7 @@ export default class ErrorBoundary extends Component {
                   <pre style={{
                     marginTop: '.75rem',
                     padding: '.875rem',
-                    background: 'var(--bg, #f3f4f6)',
+                    background: 'var(--bg, #F6F1E9)',
                     borderRadius: 8,
                     fontSize: '.72rem',
                     color: '#dc2626',

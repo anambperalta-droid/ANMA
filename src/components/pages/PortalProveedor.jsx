@@ -220,7 +220,7 @@ export default function PortalProveedor() {
                 <div style={{ fontSize: 22, fontWeight: 800, color: '#2A1810', fontFamily: "'Space Grotesk','Inter',sans-serif", letterSpacing: '-.5px', lineHeight: 1.15, marginTop: 3 }}>{fmt(totalValue)}</div>
                 <div style={{ fontSize: 11, color: '#6B7280', marginTop: 2 }}>{products.length} producto{products.length !== 1 ? 's' : ''} · {totalUnits} u.</div>
               </div>
-              <div style={{ background: 'linear-gradient(135deg,#F0FDF4,#DCFCE7)', borderRadius: 10, padding: '12px 14px' }}>
+              <div style={{ background: 'linear-gradient(135deg,#F2F8EB,#DCFCE7)', borderRadius: 10, padding: '12px 14px' }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: '#047857', textTransform: 'uppercase', letterSpacing: '.5px' }}>Plazos acordados</div>
                 <div style={{ fontSize: 13, color: '#2A1810', marginTop: 5, lineHeight: 1.5 }}>
                   {data.paymentTerm ? <div><i className="fa fa-credit-card" style={{ color: '#047857', fontSize: 11, marginRight: 5 }} /><b>Pago:</b> {conDias(data.paymentTerm)}</div> : <div style={{ color: '#9CA3AF', fontSize: 12 }}>Pago: sin plazo definido</div>}
@@ -326,7 +326,7 @@ export default function PortalProveedor() {
                       <i className="fa fa-arrow-right" style={{ fontSize: 9, color: '#F0C49E' }} />
                       <b style={{ color: '#2A1810' }}>{fmt(h.newCost)}</b>
                     </div>
-                    <span style={{ ...S.histPct, color: up ? '#DC2626' : '#16A34A', background: up ? '#FEF2F2' : '#F0FDF4' }}>
+                    <span style={{ ...S.histPct, color: up ? '#DC2626' : '#16A34A', background: up ? '#FEF2F2' : '#F2F8EB' }}>
                       <i className={`fa fa-arrow-${up ? 'up' : 'down'}`} style={{ fontSize: 9, marginRight: 3 }} />
                       {pct > 0 ? '+' : ''}{pct.toFixed(1)}%
                     </span>
@@ -390,7 +390,7 @@ export default function PortalProveedor() {
 const S = {
   wrap: {
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #FBF4EC 0%, #FCE9DC 50%, #F0FDF4 100%)',
+    background: 'linear-gradient(135deg, #FBF4EC 0%, #FCE9DC 50%, #F2F8EB 100%)',
     fontFamily: "'Inter',system-ui,sans-serif",
     padding: '20px 14px 40px',
   },
@@ -490,7 +490,7 @@ const S = {
     borderRadius: 12, fontSize: 9.5, fontWeight: 800, letterSpacing: '.3px',
   },
   statusOk: {
-    background: '#F0FDF4', color: '#16A34A', padding: '3px 8px',
+    background: '#F2F8EB', color: '#16A34A', padding: '3px 8px',
     borderRadius: 12, fontSize: 9.5, fontWeight: 800, letterSpacing: '.3px',
   },
 
@@ -507,7 +507,7 @@ const S = {
 
   // Conditions
   condsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10 },
-  condCard: { background: 'linear-gradient(135deg,#FBF4EC,#F0FDF4)', borderRadius: 12, padding: '14px 16px', border: '1px solid #FCE9DC' },
+  condCard: { background: 'linear-gradient(135deg,#FBF4EC,#F2F8EB)', borderRadius: 12, padding: '14px 16px', border: '1px solid #FCE9DC' },
   condIcon: { fontSize: 22, marginBottom: 4 },
   condLabel: { fontSize: 10, color: '#6B7280', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.6px' },
   condValue: { fontSize: 22, fontWeight: 700, color: '#2A1810', marginTop: 3, letterSpacing: '-.5px', fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' },

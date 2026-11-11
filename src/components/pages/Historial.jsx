@@ -89,7 +89,7 @@ function PaymentsModal({ budget, onSave, onClose }) {
   const totalPaid  = payments.reduce((s, p) => s + (Number(p.amount) || 0), 0)
   const remaining  = totalDue - totalPaid
   const newStatus  = totalPaid <= 0 ? 'pending' : (totalDue > 0 && totalPaid >= totalDue ? 'paid' : 'partial')
-  const statusInfo = { pending:{bg:'#FEF2F2',c:'#DC2626',l:'Pendiente'}, partial:{bg:'#FFFBEB',c:'#D97706',l:'Parcial'}, paid:{bg:'#F0FDF4',c:'#15803D',l:'Pagado'} }[newStatus]
+  const statusInfo = { pending:{bg:'#FEF2F2',c:'#DC2626',l:'Pendiente'}, partial:{bg:'#FFFBEB',c:'#D97706',l:'Parcial'}, paid:{bg:'#F2F8EB',c:'#15803D',l:'Pagado'} }[newStatus]
 
   // Agrega el pago Y guarda automáticamente — antes había 2 pasos confusos
   // (Agregar → Guardar) y el usuario perdía la info si solo hacía Agregar.
@@ -501,7 +501,7 @@ const DOT_PAY = { pending: '#DC2626', partial: '#D97706', paid: '#16A34A' }
 function DotBadge({ status }) {
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--txt2)', fontSize: 12, whiteSpace: 'nowrap', fontWeight: 500 }}>
-      <span style={{ width: 8, height: 8, borderRadius: '50%', background: DOT_STATUS[status] || '#94A3B8', flexShrink: 0, display: 'inline-block' }} />
+      <span style={{ width: 8, height: 8, borderRadius: '50%', background: DOT_STATUS[status] || '#A89A86', flexShrink: 0, display: 'inline-block' }} />
       {STATUS_MAP[status] || 'Borrador'}
     </span>
   )
@@ -1446,9 +1446,9 @@ export default function Historial() {
     setReturnBudget(null)
   }
   const STATUS_COLORS = {
-    draft:       { bg: '#F1F5F9', color: '#475569', border: '#CBD5E1' },
+    draft:       { bg: '#F6F1E9', color: '#4A4237', border: '#DCD1C0' },
     pending:     { bg: '#FBF4EC', color: '#1F6FB0', border: '#93C5FD' },
-    confirmed:   { bg: '#F0FDF4', color: '#16A34A', border: '#86EFAC' },
+    confirmed:   { bg: '#F2F8EB', color: '#16A34A', border: '#86EFAC' },
     inprogress:  { bg: '#FFFBEB', color: '#D97706', border: '#FCD34D' },
     shipped:     { bg: '#E0F2FE', color: '#0369A1', border: '#7DD3FC' },
     delivered:   { bg: '#DCFCE7', color: '#15803D', border: '#4ADE80' },
@@ -1457,7 +1457,7 @@ export default function Historial() {
   const PAY_STATUS_COLORS = {
     pending: { bg: '#FEF2F2', color: '#DC2626', border: '#FCA5A5' },
     partial: { bg: '#FFFBEB', color: '#D97706', border: '#FCD34D' },
-    paid:    { bg: '#F0FDF4', color: '#16A34A', border: '#86EFAC' },
+    paid:    { bg: '#F2F8EB', color: '#16A34A', border: '#86EFAC' },
   }
   const handlePayStatusChange = (id, payStatus) => {
     const b = budgets.find(x => x.id === id)
@@ -2408,7 +2408,7 @@ export default function Historial() {
                           {OVERFLOW.map(f => (
                             <button key={f} onClick={() => { setFilter(f); setShowStatusMenu(false) }}
                               className={`hist-status-menu-item${filter === f ? ' active' : ''}`}>
-                              <span className="hist-status-menu-dot" style={{ background: DOT_STATUS[f] || '#94A3B8' }} />
+                              <span className="hist-status-menu-dot" style={{ background: DOT_STATUS[f] || '#A89A86' }} />
                               {STATUS_MAP[f]}
                               {filter === f && <i className="fa fa-check" style={{ marginLeft: 'auto', fontSize: 10 }} />}
                             </button>
@@ -2581,7 +2581,7 @@ export default function Historial() {
                           onMouseEnter={(e) => { e.currentTarget.querySelector('[data-cli]').style.color = 'var(--brand)' }}
                           onMouseLeave={(e) => { e.currentTarget.querySelector('[data-cli]').style.color = 'var(--txt)' }}
                         >
-                          <div data-cli style={{ fontWeight: 700, fontSize: 12, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textDecoration: 'underline', textDecorationStyle: 'dotted', textDecorationColor: 'var(--border2, #cbd5e1)', textUnderlineOffset: 3, transition: 'color .12s' }}>{b.company || b.contact || '—'}</div>
+                          <div data-cli style={{ fontWeight: 700, fontSize: 12, color: 'var(--txt)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textDecoration: 'underline', textDecorationStyle: 'dotted', textDecorationColor: 'var(--border2, #DCD1C0)', textUnderlineOffset: 3, transition: 'color .12s' }}>{b.company || b.contact || '—'}</div>
                           {b.company && b.contact && <div style={{ fontSize: 11, color: 'var(--txt3)', marginTop: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.contact}</div>}
                         </button>
                       </td>
@@ -2607,7 +2607,7 @@ export default function Historial() {
                       <td data-cell="estado" data-label="Estado" style={{ whiteSpace: 'nowrap' }}>
                         <div>
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                            <span style={{ width: 7, height: 7, borderRadius: '50%', background: DOT_STATUS[b.status] || '#94A3B8', flexShrink: 0, display: 'inline-block' }} />
+                            <span style={{ width: 7, height: 7, borderRadius: '50%', background: DOT_STATUS[b.status] || '#A89A86', flexShrink: 0, display: 'inline-block' }} />
                             <select
                               style={{ fontSize: 11, padding: '2px 2px 2px 0', border: 'none', background: 'transparent', color: 'var(--txt2)', cursor: 'pointer', outline: 'none', fontWeight: 600, fontFamily: 'inherit' }}
                               value={b.status}
@@ -2634,7 +2634,7 @@ export default function Historial() {
                           const pays        = Array.isArray(b.payments) ? b.payments : []
                           const hasPayments = pays.length > 0
                           const statusColor = DOT_PAY[b.payStatus] || '#DC2626'
-                          const statusBg = b.payStatus === 'paid' ? '#F0FDF4'
+                          const statusBg = b.payStatus === 'paid' ? '#F2F8EB'
                                          : b.payStatus === 'partial' ? '#FFFBEB'
                                          : '#FEF2F2'
                           return (

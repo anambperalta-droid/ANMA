@@ -123,7 +123,7 @@ export default function MetricsTab({ workspaces = [] }) {
             <div style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 600, letterSpacing: '.5px', textTransform: 'uppercase' }}>
               MRR — Ingresos recurrentes mensuales
             </div>
-            <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--txt)', letterSpacing: '-1px', fontVariantNumeric: 'tabular-nums', marginTop: 4 }}>
+            <div style={{ fontSize: 32, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-1px', fontVariantNumeric: 'tabular-nums', marginTop: 4 }}>
               {fmtMoney(m.mrr)}
             </div>
             <div style={{ fontSize: 12.5, color: 'var(--txt3)', marginTop: 4 }}>

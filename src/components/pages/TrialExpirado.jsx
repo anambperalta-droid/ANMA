@@ -42,7 +42,7 @@ export default function TrialExpirado() {
         }
         .te-icon { font-size:28px;color:#d946ef }
 
-        .te-h { font-size:24px;font-weight:900;color:#fff;margin:0 0 8px;letter-spacing:-.5px }
+        .te-h { font-size:24px;font-weight:800;color:#fff;margin:0 0 8px;letter-spacing:-.5px }
         .te-sub { font-size:14.5px;color:rgba(255,255,255,.6);margin:0 0 28px;line-height:1.65 }
         .te-sub em { color:#a78bfa;font-style:normal;font-weight:700 }
 
@@ -55,9 +55,9 @@ export default function TrialExpirado() {
           font-size:10px;font-weight:800;text-transform:uppercase;padding:3px 12px;border-radius:20px;
           letter-spacing:1px;margin-bottom:10px }
         .te-price-row { display:flex;align-items:baseline;gap:5px;margin-bottom:4px }
-        .te-price-num { font-size:48px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1 }
+        .te-price-num { font-size:48px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1 }
         .te-price-per { font-size:18px;font-weight:700;color:#a78bfa }
-        .te-price-note { font-size:12px;color:#64748b;margin:0;line-height:1.5 }
+        .te-price-note { font-size:12px;color:#6E6355;margin:0;line-height:1.5 }
         .te-entregables { margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07) }
         .te-item { display:flex;align-items:center;gap:8px;font-size:12.5px;color:rgba(255,255,255,.7);margin-bottom:6px }
         .te-item:last-child { margin-bottom:0 }

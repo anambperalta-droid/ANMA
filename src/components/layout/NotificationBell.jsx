@@ -413,7 +413,7 @@ const LEVEL_COLORS = {
    Así Ana ve de un vistazo dónde mirar y qué tocar. */
 const CATEGORY_STYLE = {
   logistica:    { color: '#2E8BD6', bg: '#FBF4EC', label: 'Entrega' },
-  pago:         { color: '#059669', bg: '#ECFDF5', label: 'Cobro' },
+  pago:         { color: '#059669', bg: '#EFF6E9', label: 'Cobro' },
   comercial:    { color: '#F2762E', bg: '#FBF4EC', label: 'Presupuesto' },
   stock:        { color: '#B45309', bg: '#FEF3C7', label: 'Stock' },
   insumo:       { color: '#B45309', bg: '#FEF3C7', label: 'Insumo' },

@@ -566,7 +566,7 @@ export default function Clientes() {
     activo:  { label: 'Activo',   color: '#047857', bg: '#D1FAE5', icon: 'fa-circle-check' },
     dormido: { label: 'Dormido',  color: '#B45309', bg: '#FEF3C7', icon: 'fa-moon' },
     nuevo:   { label: 'Nuevo',    color: '#D4521E', bg: '#FDEBD9', icon: 'fa-seedling' },
-    lead:    { label: 'Sin pedidos', color: '#64748B', bg: '#F1F5F9', icon: 'fa-user-plus' },
+    lead:    { label: 'Sin pedidos', color: '#6E6355', bg: '#F6F1E9', icon: 'fa-user-plus' },
   }
 
   const nuevoPedidoParaCliente = (c) => {
@@ -839,7 +839,7 @@ export default function Clientes() {
                 <tr key={i}><td colSpan={5}><div className="sk sk-text" style={{ height: 16, width: `${55 + Math.random() * 35}%` }} /></td></tr>
               )) : filtered.length ? filtered.map(c => {
                 const days = clientLastBudgetDays(c)
-                const dotColor = days === null ? '#CBD5E1' : days <= 15 ? '#16A34A' : days <= 45 ? '#D97706' : '#DC2626'
+                const dotColor = days === null ? '#DCD1C0' : days <= 15 ? '#16A34A' : days <= 45 ? '#D97706' : '#DC2626'
                 const dotTip = days === null ? 'Sin pedidos' : days <= 15 ? `Activo — hace ${days}d` : days <= 45 ? `Tibio — hace ${days}d` : `Frío — hace ${days}d`
                 const isCold = days === null || days > 30
                 return (
@@ -1008,7 +1008,7 @@ export default function Clientes() {
           </div>
         )) : filtered.length ? filtered.map(c => {
           const days = clientLastBudgetDays(c)
-          const dotColor = days === null ? '#CBD5E1' : days <= 15 ? '#16A34A' : days <= 45 ? '#D97706' : '#DC2626'
+          const dotColor = days === null ? '#DCD1C0' : days <= 15 ? '#16A34A' : days <= 45 ? '#D97706' : '#DC2626'
           const dotTip = days === null ? 'Sin pedidos' : days <= 15 ? `Activo — hace ${days}d` : days <= 45 ? `Tibio — hace ${days}d` : `Frío — hace ${days}d`
           const isCold = days === null || days > 30
           const lastDate = clientLastDate(c)
@@ -1320,7 +1320,7 @@ export default function Clientes() {
                   </div>
                   <div style={{ minWidth: 0, flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                      <h3 style={{ fontSize: 18, fontWeight: 900, color: 'var(--txt)', letterSpacing: '-.4px', margin: 0, lineHeight: 1.2 }}>{detailClient.company}</h3>
+                      <h3 style={{ fontSize: 18, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.4px', margin: 0, lineHeight: 1.2 }}>{detailClient.company}</h3>
                       {(() => {
                         const e = clientEstado(detailClient)
                         const m = ESTADO_META[e]

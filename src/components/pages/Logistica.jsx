@@ -749,7 +749,7 @@ export default function Logistica() {
         @media(min-width:768px){.cotiz-layout{grid-template-columns:1fr 1.2fr;gap:16px;grid-template-areas:"cliente tools" "despacho tools"}}
         .cotiz-search-input{width:100%;box-sizing:border-box;padding:0 36px 0 38px;height:44px;font-size:14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface2);color:var(--txt);outline:none;font-family:inherit;transition:border-color .15s}
         .cotiz-search-input:focus{border-color:var(--brand)}
-        .cotiz-vc-badge{display:flex;align-items:center;gap:12px;background:#F0FDF4;border:1.5px solid #A7F3D0;border-radius:14px;padding:12px 16px}
+        .cotiz-vc-badge{display:flex;align-items:center;gap:12px;background:#F2F8EB;border:1.5px solid #A7F3D0;border-radius:14px;padding:12px 16px}
         .cotiz-preview{margin:0;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font-size:13px;color:var(--txt2);line-height:1.7;font-style:italic}
         .cotiz-wa-btn{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;padding:13px 24px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;width:100%;font-family:inherit}
         .cotiz-wa-btn:hover{filter:brightness(1.06)}
@@ -850,7 +850,7 @@ export default function Logistica() {
             }
             /* Pills de status: scroll horizontal + fade derecho para invitar a deslizar */
             .logi-pills-wrap{position:relative;margin-bottom:10px}
-            .logi-pills-wrap::after{content:"";position:absolute;top:0;bottom:0;right:0;width:28px;background:linear-gradient(90deg,transparent,var(--bg,#f8fafc) 85%);pointer-events:none;border-radius:0 8px 8px 0}
+            .logi-pills-wrap::after{content:"";position:absolute;top:0;bottom:0;right:0;width:28px;background:linear-gradient(90deg,transparent,var(--bg,#FBF7F0) 85%);pointer-events:none;border-radius:0 8px 8px 0}
             .logi-pills-row{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 24px 2px 0}
             .logi-pills-row::-webkit-scrollbar{display:none}
             .logi-pills-row .pill{flex-shrink:0;white-space:nowrap}
@@ -1078,7 +1078,7 @@ export default function Logistica() {
                         <td style={{ paddingTop: 10, paddingBottom: 10 }}>
                           <div style={{ fontWeight: 600, fontSize: 13 }}>{s.client || '—'}</div>
                           {(s.city || s.carrier) && (
-                            <div style={{ fontSize: 10, color: '#94A3B8', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                            <div style={{ fontSize: 10, color: '#A89A86', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                               {[s.city, s.carrier].filter(Boolean).join(' · ')}
                             </div>
                           )}
@@ -1193,7 +1193,7 @@ export default function Logistica() {
 
             {/* Cliente seleccionado */}
             {cotizClient && (
-              <div style={{ background: '#F0FDF4', border: '1.5px solid #86EFAC', borderRadius: 14, padding: '14px 16px' }}>
+              <div style={{ background: '#F2F8EB', border: '1.5px solid #86EFAC', borderRadius: 14, padding: '14px 16px' }}>
                 <div style={{ fontWeight: 800, fontSize: 15, color: 'var(--txt)', marginBottom: 2 }}>{cotizClient.company || cotizClient.contact}</div>
                 {cotizClient.company && cotizClient.contact && (
                   <div style={{ fontSize: 12, color: 'var(--txt3)', marginBottom: 8 }}>{cotizClient.contact}</div>
@@ -1296,7 +1296,7 @@ export default function Logistica() {
                 }
               }}
               style={{
-                background: cotizClient?.wa ? '#16A34A' : '#F0FDF4',
+                background: cotizClient?.wa ? '#16A34A' : '#F2F8EB',
                 border: `1.5px solid ${cotizClient?.wa ? '#15803D' : '#86EFAC'}`,
                 color: cotizClient?.wa ? '#fff' : '#15803D',
               }}>
@@ -1442,7 +1442,7 @@ export default function Logistica() {
                       <div key={b.label} onMouseEnter={() => setHoveredStatus(b.label)} onMouseLeave={() => setHoveredStatus(null)}
                         style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 10px', borderRadius: 12, cursor: 'default', transition: 'background .12s', background: hoveredStatus === b.label ? 'var(--surface2)' : 'transparent' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                          <span style={{ width: 10, height: 10, borderRadius: '50%', background: DONUT_COLORS[b.label] || '#CBD5E1', flexShrink: 0, display: 'inline-block', boxShadow: hoveredStatus === b.label ? `0 0 0 3px ${(DONUT_COLORS[b.label] || '#CBD5E1')}30` : 'none', transition: 'box-shadow .15s' }} />
+                          <span style={{ width: 10, height: 10, borderRadius: '50%', background: DONUT_COLORS[b.label] || '#DCD1C0', flexShrink: 0, display: 'inline-block', boxShadow: hoveredStatus === b.label ? `0 0 0 3px ${(DONUT_COLORS[b.label] || '#DCD1C0')}30` : 'none', transition: 'box-shadow .15s' }} />
                           <span style={{ fontSize: 12.5, color: 'var(--txt)', fontWeight: hoveredStatus === b.label ? 700 : 500 }}>{b.label}</span>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
@@ -1553,7 +1553,7 @@ export default function Logistica() {
             <div className="ship-modal-body" style={{ background: 'var(--surface2)', borderRadius: 10, padding: '14px 16px', marginBottom: 10, border: '1.5px solid var(--border)' }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <i className="fa fa-location-dot" style={{ color: 'var(--brand)' }} />Destinatario
-                {form.budgetId && <span style={{ fontSize: 9, fontWeight: 600, color: 'var(--green)', background: '#F0FDF4', padding: '1px 8px', borderRadius: 10 }}>Auto-completado del presupuesto</span>}
+                {form.budgetId && <span style={{ fontSize: 9, fontWeight: 600, color: 'var(--green)', background: '#F2F8EB', padding: '1px 8px', borderRadius: 10 }}>Auto-completado del presupuesto</span>}
               </div>
               <div className="grid2">
                 <div className="fg" style={{ marginBottom: 10 }}>
@@ -1570,7 +1570,7 @@ export default function Logistica() {
                 <input type="text" value={form.addr || ''} onChange={e => setF('addr', e.target.value)} placeholder="Av. Colón 1234, B° Centro" />
               </div>
               {estimatedArrival && (
-                <div style={{ marginTop: 10, background: '#F0FDF4', border: '1px solid #86EFAC', borderRadius: 8, padding: '8px 12px', fontSize: 12, color: '#065F46', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ marginTop: 10, background: '#F2F8EB', border: '1px solid #86EFAC', borderRadius: 8, padding: '8px 12px', fontSize: 12, color: '#065F46', display: 'flex', alignItems: 'center', gap: 8 }}>
                   <i className="fa fa-calendar-check" style={{ color: '#16A34A' }} />
                   Llegada estimada: <b style={{ textTransform: 'capitalize' }}>{estimatedArrival}</b>
                 </div>
@@ -1633,7 +1633,7 @@ export default function Logistica() {
                 </div>
               </div>
               {marginImpact !== null && (
-                <div style={{ background: marginImpact >= 0 ? '#F0FDF4' : '#FFF1F2', border: `1.5px solid ${marginImpact >= 0 ? '#86EFAC' : '#FCA5A5'}`, borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ background: marginImpact >= 0 ? '#F2F8EB' : '#FFF1F2', border: `1.5px solid ${marginImpact >= 0 ? '#86EFAC' : '#FCA5A5'}`, borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: 12, color: 'var(--txt2)' }}>
                     <i className="fa fa-chart-line" style={{ marginRight: 6, color: marginImpact >= 0 ? '#16A34A' : '#DC2626' }} />
                     Ganancia neta del presupuesto <span style={{ fontSize: 10, color: 'var(--txt3)' }}>(después del flete)</span>

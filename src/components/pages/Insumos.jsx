@@ -732,7 +732,7 @@ export default function Insumos() {
                                 una columna entera de guiones. Va acá, donde se lee
                                 junto al movimiento que explica. */}
                             {(m.note || insumo?.subcat) && (
-                              <div style={{ fontSize: 10, color: '#64748B', marginTop: 1 }}>
+                              <div style={{ fontSize: 10, color: '#6E6355', marginTop: 1 }}>
                                 {m.note || insumo.subcat}
                               </div>
                             )}
@@ -787,7 +787,7 @@ export default function Insumos() {
                   <MoneyInput value={form.cost === '' ? '' : Number(form.cost)} onChange={v => setF('cost', v)} allowEmpty placeholder="0" />
                 </div>
                 <div className="fg">
-                  <label><i className="fa fa-ruler-combined" style={{ color: '#64748B', fontSize: 10, marginRight: 4 }} />Unidad de medida</label>
+                  <label><i className="fa fa-ruler-combined" style={{ color: '#6E6355', fontSize: 10, marginRight: 4 }} />Unidad de medida</label>
                   <select value={form.unit} onChange={e => setF('unit', e.target.value)}>
                     {units.map(u => <option key={u} value={u}>{u}</option>)}
                   </select>
@@ -845,7 +845,7 @@ export default function Insumos() {
                       <div style={{ fontSize: 10, color: 'var(--brand)', fontWeight: 700, marginBottom: 2, textTransform: 'uppercase', letterSpacing: '.06em' }}>
                         <i className="fa fa-equals" style={{ marginRight: 4 }} />Costo por unidad calculado
                       </div>
-                      <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--brand)', letterSpacing: '-.03em', lineHeight: 1.1 }}>
+                      <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--brand)', letterSpacing: '-.03em', lineHeight: 1.1 }}>
                         {fmtDec(costPerGift)}
                         <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--txt3)', marginLeft: 5 }}>/ {form.unit || 'un'}</span>
                       </div>
@@ -995,7 +995,7 @@ export default function Insumos() {
               </div>
             )}
             {cppPreview !== null && (
-              <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 8, padding: '8px 12px', marginTop: 4, fontSize: 12, color: '#15803D', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ background: '#F2F8EB', border: '1px solid #BBF7D0', borderRadius: 8, padding: '8px 12px', marginTop: 4, fontSize: 12, color: '#15803D', display: 'flex', alignItems: 'center', gap: 6 }}>
                 <i className="fa fa-calculator" style={{ fontSize: 11 }} />
                 Nuevo costo promedio ponderado: <b style={{ marginLeft: 4 }}>{fmtDec(cppPreview)}</b> / {moveModal.unit || 'un'}
               </div>

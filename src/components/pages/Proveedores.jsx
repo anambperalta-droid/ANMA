@@ -214,7 +214,7 @@ export default function Proveedores() {
     activo:    { label: 'Activo',    color: '#047857', bg: '#D1FAE5', icon: 'fa-circle-check' },
     dormido:   { label: 'Dormido',   color: '#B45309', bg: '#FEF3C7', icon: 'fa-moon' },
     nuevo:     { label: 'Nuevo',     color: '#D4521E', bg: '#FCE9DC', icon: 'fa-seedling' },
-    sin_compras: { label: 'Sin compras', color: '#64748B', bg: '#F1F5F9', icon: 'fa-user-plus' },
+    sin_compras: { label: 'Sin compras', color: '#6E6355', bg: '#F6F1E9', icon: 'fa-user-plus' },
   }
 
   // Último precio pagado por producto, tomado de los items de compras (más reciente primero)
@@ -822,7 +822,7 @@ export default function Proveedores() {
           </div>
         )) : filtered.length ? filtered.map(s => {
           const days = supplierLastActivity(s)
-          const dotColor = days === null ? '#CBD5E1' : days <= 30 ? '#16A34A' : days <= 90 ? '#D97706' : '#DC2626'
+          const dotColor = days === null ? '#DCD1C0' : days <= 30 ? '#16A34A' : days <= 90 ? '#D97706' : '#DC2626'
           const np = supplierProducts(s).length
           return (
             <div key={s.id} className="prov-mob-card" onClick={() => openDetail(s)}>
@@ -1070,7 +1070,7 @@ export default function Proveedores() {
                   </div>
                   <div style={{ minWidth: 0, flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
-                      <h3 className="prov-detail-name" style={{ fontSize: 17, fontWeight: 900, color: 'var(--txt)', letterSpacing: '-.4px', margin: 0, lineHeight: 1.2 }}>{detailSupplier.name}</h3>
+                      <h3 className="prov-detail-name" style={{ fontSize: 17, fontWeight: 800, color: 'var(--txt)', letterSpacing: '-.4px', margin: 0, lineHeight: 1.2 }}>{detailSupplier.name}</h3>
                       {(() => {
                         const e = supplierEstado(detailSupplier)
                         const m = PROV_ESTADO_META[e]

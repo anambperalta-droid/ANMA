@@ -321,13 +321,13 @@ input,select,textarea{font-family:inherit}
 .sb-quick-icon:active{transform:scale(.94)}
 .sb-quick-icon.is-on{background:rgba(255,255,255,.1);color:var(--brand-light,#F2994A);box-shadow:inset 0 0 0 1px rgba(242,118,46,.35)}
 .sb-quick-bar .sb-quick-icon.notif-bell.is-alert{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7)}
-.sb-quick-bar .sb-quick-icon.notif-bell .notif-badge{border-color:var(--sidebar-bg,#0f172a)}
+.sb-quick-bar .sb-quick-icon.notif-bell .notif-badge{border-color:var(--sidebar-bg,#2A2118)}
 .sb-quick-icon-badge{
   position:absolute;top:-3px;right:-3px;
   min-width:14px;height:14px;padding:0 3px;border-radius:99px;
   background:#DC2626;color:#fff;font-size:8px;font-weight:800;
   display:inline-flex;align-items:center;justify-content:center;line-height:1;
-  border:1.5px solid var(--sidebar-bg,#0f172a);
+  border:1.5px solid var(--sidebar-bg,#2A2118);
 }
 .sidebar.slim .sb-quick-bar{flex-direction:column;padding:6px 4px;gap:3px}
 .sidebar.slim .sb-quick-icon{width:28px;height:28px;flex:none}
@@ -455,7 +455,7 @@ input,select,textarea{font-family:inherit}
   background:linear-gradient(90deg,#16A34A,#22C55E,#16A34A);
 }
 .kpi-label-elegant{
-  font-size:10.5px;font-weight:700;color:#94A3B8;
+  font-size:10.5px;font-weight:700;color:var(--txt3);
   letter-spacing:.085em;text-transform:uppercase;
   line-height:1.2;
 }
@@ -507,7 +507,7 @@ input,select,textarea{font-family:inherit}
 /* Legacy aliases — algunas demos viejas */
 .kpi-glow{position:absolute;top:-16px;right:-16px;width:70px;height:70px;border-radius:50%;opacity:.08}
 .kpi-icon-wrap{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px}
-.kpi-label{font-size:10.5px;font-weight:700;color:#94A3B8;letter-spacing:.085em;text-transform:uppercase;margin-bottom:6px}
+.kpi-label{font-size:10.5px;font-weight:700;color:var(--txt3);letter-spacing:.085em;text-transform:uppercase;margin-bottom:6px}
 .kpi-val{font-size:28px;font-weight:800;letter-spacing:-.03em;margin-bottom:4px;line-height:1.05;color:var(--money)!important}
 .kpi-foot{font-size:11px;color:var(--txt3)}
 .bento-wide{grid-column:span 2}
@@ -1428,7 +1428,7 @@ td b{color:var(--txt);font-weight:600}
   .hist-tbl td[data-cell="sel"] input{
     appearance:none;-webkit-appearance:none;
     width:16px;height:16px;
-    border:1.5px solid var(--border2,#cbd5e1);border-radius:5px;
+    border:1.5px solid var(--border2,#DCD1C0);border-radius:5px;
     background:var(--surface);cursor:pointer;flex-shrink:0;
     position:relative;transition:all .12s;
     -webkit-tap-highlight-color:transparent;
@@ -1611,7 +1611,7 @@ td b{color:var(--txt);font-weight:600}
 .nc:hover{box-shadow:var(--sh-md)}
 .nc+.nc{margin-top:8px}
 
-.nc-ava{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;flex-shrink:0;position:relative;letter-spacing:-1px;text-transform:uppercase}
+.nc-ava{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;position:relative;letter-spacing:-1px;text-transform:uppercase}
 .nc-ava-brand{background:var(--brand-xlt);color:var(--brand)}
 .nc-ava-green{background:#DCFCE7;color:#16A34A}
 .nc-ava-amber{background:#FFFBEB;color:#D97706}
@@ -2469,9 +2469,9 @@ td b{color:var(--txt);font-weight:600}
   .ins-desk-view{display:block!important}
 }
 /* Stock ±1 mini buttons */
-.ins-stk-btn{width:14px;height:14px;border-radius:50%;border:1px solid #CBD5E1;background:transparent;color:#94A3B8;font-size:9px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;font-family:inherit;transition:background .12s,color .12s,border-color .12s;flex-shrink:0}
+.ins-stk-btn{width:14px;height:14px;border-radius:50%;border:1px solid var(--border2);background:transparent;color:var(--txt3);font-size:9px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;font-family:inherit;transition:background .12s,color .12s,border-color .12s;flex-shrink:0}
 .ins-stk-btn:hover:not(:disabled){background:var(--surface2);color:var(--txt2);border-color:var(--border2)}
-.ins-stk-btn:active:not(:disabled){background:#E2E8F0}
+.ins-stk-btn:active:not(:disabled){background:var(--surface3)}
 .ins-stk-btn:disabled{opacity:.28;cursor:not-allowed}
 /* Insumos 65/35 asymmetric layout */
 .ins-layout{display:block}
@@ -2747,7 +2747,7 @@ td b{color:var(--txt);font-weight:600}
   }
   .ins-detail-sheet::before{
     content:'';position:absolute;top:8px;left:50%;transform:translateX(-50%);
-    width:38px;height:4px;border-radius:99px;background:var(--border2,#cbd5e1);
+    width:38px;height:4px;border-radius:99px;background:var(--border2,#DCD1C0);
     z-index:1;pointer-events:none;
   }
   @keyframes sheetUp{
@@ -2853,7 +2853,7 @@ td b{color:var(--txt);font-weight:600}
   .ins-mob-card-stock .stk-num{font-size:22px;font-weight:800;line-height:1;letter-spacing:-.03em}
   .ins-mob-card-stock .stk-unit{font-size:10px;color:currentColor;opacity:.6;font-weight:600;margin-top:2px;text-transform:lowercase}
   /* Barra de progreso stock */
-  .ins-mob-card-bar{position:relative;height:4px;background:var(--surface3,#E2E8F0);border-radius:99px;overflow:visible}
+  .ins-mob-card-bar{position:relative;height:4px;background:var(--surface3,#EFE8DC);border-radius:99px;overflow:visible}
   .ins-mob-card-bar-fill{height:100%;border-radius:99px;transition:width .3s ease}
   .ins-mob-card-bar-min{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--txt3);border-radius:2px;opacity:.5}
   /* Footer: precio + stepper compacto */
