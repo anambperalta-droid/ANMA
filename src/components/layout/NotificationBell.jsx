@@ -283,10 +283,16 @@ function buildAlerts(budgets, products, insumos) {
     const delivDays = daysUntil(b.deliveryDate)
     const active = !['cancelled', 'lost'].includes(b.status)
     const cliente = b.contact || b.company || 'el cliente'
-    // totalFinal || total: `amount` termina en el mensaje de WhatsApp que se le
-    // manda al cliente ("queda pendiente el pago de *$X*"), asi que tiene que
-    // ser la plata con IVA, la que el cliente realmente debe.
-    const meta = { wa: b.wa, clientName: cliente, budgetNum: b.num, amount: fmt(b.totalFinal || b.total) }
+    /* `amount` termina en el mensaje de WhatsApp ("queda pendiente el pago de
+       *$X*"), asi que es el SALDO con IVA, no el total: a quien ya pago la
+       seña o alguna cuota le estabamos reclamando el pedido entero. */
+    const totalConIva = Number(b.totalFinal || b.total) || 0
+    const pagosB = Array.isArray(b.payments) ? b.payments : []
+    const cobradoB = pagosB.length > 0
+      ? pagosB.reduce((s2, p) => s2 + (Number(p.amount) || 0), 0)
+      : (Number(b.depositFinal || b.depositAmt) || 0)
+    const saldoB = Math.max(0, totalConIva - cobradoB)
+    const meta = { wa: b.wa, clientName: cliente, budgetNum: b.num, amount: fmt(saldoB > 0 ? saldoB : totalConIva) }
 
     // 🔴 CRÍTICO: entrega vencida → logística
     if (b.deliveryDate && delivDays !== null && delivDays < 0 && active && b.status !== 'delivered') {
