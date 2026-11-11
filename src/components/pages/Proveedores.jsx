@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import { useConfirm } from '../../context/ConfirmContext'
-import { fmt, cfg, db, dbW } from '../../lib/storage'
+import { fmt, fmtDate, cfg, db, dbW } from '../../lib/storage'
 import { isLowStock, lowVariants } from '../../lib/stock'
 import { createPortalShortLink } from '../../lib/portalLink'
 import { triggerEncouragement } from '../layout/MilestoneToast'
@@ -1235,10 +1235,6 @@ export default function Proveedores() {
                         </>
                       )
                     }
-                    const lastDate = stats.last.fecha ? (() => {
-                      const [y, m, d] = stats.last.fecha.split('-')
-                      return `${Number(d)}/${Number(m)}/${y.slice(2)}`
-                    })() : '—'
                     return (
                       <div className="cli-kpis">
                         <div className="cli-kpi">
@@ -1250,7 +1246,7 @@ export default function Proveedores() {
                           <div className="cli-kpi-l">Prom/mes</div>
                         </div>
                         <div className="cli-kpi">
-                          <div className="cli-kpi-v">{lastDate}</div>
+                          <div className="cli-kpi-v">{fmtDate(stats.last.fecha)}</div>
                           <div className="cli-kpi-l">Última compra</div>
                         </div>
                         <div className="cli-kpi">
@@ -1357,7 +1353,7 @@ export default function Proveedores() {
                                   <div style={{ fontWeight: 800, fontSize: 13, color: 'var(--money)', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</div>
                                   {change && (
                                     <div style={{ fontSize: 9.5, fontWeight: 700, color: change.pct > 0 ? '#DC2626' : '#16A34A', marginTop: 2, whiteSpace: 'nowrap' }}
-                                      title={`Último cambio de precio de lista, ${change.date}`}>
+                                      title={`Último cambio de precio de lista, ${fmtDate(change.date)}`}>
                                       <i className={`fa fa-arrow-${change.pct > 0 ? 'up' : 'down'}`} style={{ marginRight: 3 }} />
                                       {change.pct > 0 ? '+' : ''}{change.pct.toFixed(1)}% último
                                     </div>
@@ -1378,7 +1374,7 @@ export default function Proveedores() {
                                     return (
                                       <div key={i} style={{ fontSize: 10.5, color: 'var(--txt2)', lineHeight: 1.45 }}>
                                         <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                                          <span style={{ color: 'var(--txt3)', flexShrink: 0 }}>{h.date}</span>
+                                          <span style={{ color: 'var(--txt3)', flexShrink: 0 }}>{fmtDate(h.date)}</span>
                                           <span style={{ fontVariantNumeric: 'tabular-nums', flex: 1, minWidth: 0 }}>
                                             {fmt(h.prevCost)} → <b style={{ color: 'var(--txt)' }}>{fmt(h.newCost)}</b>
                                           </span>

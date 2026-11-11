@@ -11,6 +11,15 @@ import { supabase } from '../../lib/supabase'
  * "30 dias fecha factura". Solo agregamos "dias" si el valor es un numero
  * pelado; si no, quedaba "30 dias fecha factura dias" en el portal.
  */
+/* Fecha en formato ANMA d-m-aa. Local: el portal es publico y no importa
+   nada de lib/storage, que toca localStorage al cargar. */
+function fmtDate(iso) {
+  if (!iso) return '—'
+  const p = String(iso).slice(0, 10).split('-')
+  if (p.length < 3) return iso
+  return `${Number(p[2])}-${Number(p[1])}-${p[0].slice(2)}`
+}
+
 function conDias(v) {
   const t = String(v).trim()
   return /^\d+$/.test(t) ? `${t} días` : t
@@ -319,7 +328,7 @@ export default function PortalProveedor() {
                 const up = pct > 0
                 return (
                   <div key={i} style={S.histRow}>
-                    <span style={S.histDate}>{h.date}</span>
+                    <span style={S.histDate}>{fmtDate(h.date)}</span>
                     <span style={S.histName}>{h.productName}</span>
                     <div style={S.histPrice}>
                       <span style={{ color: '#6B7280' }}>{fmt(h.prevCost)}</span>
