@@ -1970,10 +1970,14 @@ td b{color:var(--txt);font-weight:600}
   .card-header{margin-bottom:6px!important}
 }
 
-/* ── Modals → bottom sheet on mobile ── */
-@keyframes bsheetUp{from{transform:translateY(100%);opacity:.8}to{transform:translateY(0);opacity:1}}
+/* ── Modals en mobile: bajan desde arriba ──
+   El encabezado decia "bottom sheet" y abajo habia dos reglas seguidas para
+   .modal-bg.open: la primera anclaba abajo (flex-end) y la segunda la pisaba
+   con flex-start!important. Gana la segunda, y el border-radius de las cards
+   (redondeado abajo) confirma que esa es la decision vigente. Queda una sola
+   regla y el nombre correcto. @keyframes bsheetUp se fue con ella: no lo
+   usaba nadie mas. */
 @media(max-width:768px){
-  .modal-bg.open{padding:0;align-items:flex-end}
   /* Mobile: .modal (form chico) scrollea junto al modal-bg; .modal-form-card
      mantiene su body interno scrolleable con footer sticky para que
      el botón Guardar nunca se pierda. */
