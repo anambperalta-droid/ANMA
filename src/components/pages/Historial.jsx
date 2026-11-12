@@ -951,6 +951,13 @@ export default function Historial() {
   const products = get('products')
   const insumos  = get('insumos')
   const clients = get('clients')
+  /* El pedido guarda una copia del telefono del dia que se cargo. Para
+     escribirle hoy vale el de la ficha de la clienta; el del pedido queda
+     de respaldo para los que se cargaron sin vincular. */
+  const waActualDe = (b) => {
+    if (!b?.clientId) return ''
+    return clients.find(c => String(c.id) === String(b.clientId))?.wa || ''
+  }
   const allCompras = get('compras')
   const c = config()
   const { role } = useAuth()
@@ -1343,6 +1350,7 @@ export default function Historial() {
   // copyWA — SIEMPRE abre WhatsApp con el mensaje contextual + registra lastContact.
   const copyWA = (b) => {
     openWAFor(b, {
+      wa: waActualDe(b),
       onNoNumber: (bb) => toast(`${bb.contact || 'El cliente'} no tiene WhatsApp cargado — elegí contacto en WhatsApp`, 'in'),
       onSent: (bb) => {
         // Registramos último contacto (para "sin contactar en 7 días" y para
