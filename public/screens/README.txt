@@ -125,10 +125,15 @@ caminos:
      6 pedidos en estados distintos. Es un rato de trabajo pero queda
      reusable para las proximas capturas.
 
-  b) Inyectar datos de ejemplo en el localStorage de esa cuenta de
-     prueba (las claves son anma4_u_<userId>_<coleccion>). Mas rapido
-     y repetible, pero hay que respetar la forma exacta de cada
-     coleccion.
+  b) Correr scripts/demo-capturas.js — ya esta hecho. Se pega en la
+     consola del navegador (F12 → Console) estando logueada con la
+     cuenta de prueba, y carga 12 productos con margenes repartidos
+     del 23% al 67%, 6 clientas, 3 proveedores y 8 pedidos de los
+     ultimos 26 dias en todos los estados: cobrados, con seña,
+     pendientes y uno vencido.
+
+     Si la cuenta ya tiene datos, el script se niega a correr. Nunca
+     en la cuenta real.
 
 ═══════════════════════════════════════════════════════════════
 5. COMO REEMPLAZAR
