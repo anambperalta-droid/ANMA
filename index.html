@@ -183,7 +183,7 @@ a{color:inherit;text-decoration:none}
   .sp-chip{padding:10px 14px}
   .sp-chip span{font-size:13px}
 }
-.h1{font-family:'Fraunces',serif;font-size:56px;line-height:1.06;font-weight:600;letter-spacing:-1.4px;margin:0 0 14px;text-wrap:balance}
+.h1{font-family:'Fraunces',serif;font-size:clamp(34px,4.4vw + 8px,56px);line-height:1.08;font-weight:600;letter-spacing:-.025em;margin:0 0 14px;text-wrap:balance}
 .h1 em{font-style:normal;background:linear-gradient(90deg,#F2C98A,#F2C98A);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{font-size:18px;color:rgba(255,255,255,.78);max-width:540px;margin:0 0 20px;line-height:1.6}
 .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end}
@@ -202,7 +202,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:920px){
   .hero{padding:48px 0 58px}
   .hero-grid{grid-template-columns:1fr;gap:42px}
-  .h1{font-size:38px;letter-spacing:-1px;margin-bottom:18px}
+  .h1{margin-bottom:18px}
   .lead{font-size:17px;margin-bottom:30px;max-width:none}
   .hero-ctas{gap:16px;margin-bottom:22px}
   .hero-trust{gap:12px 18px;margin-top:10px}
@@ -212,7 +212,7 @@ a{color:inherit;text-decoration:none}
 /* SECTIONS */
 section{padding:44px 0}
 .eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#EFE8DC;color:#B8431A;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
-.h2{font-family:'Fraunces',serif;font-size:44px;font-weight:600;letter-spacing:-.8px;line-height:1.12;margin:0 0 14px;color:#2A2118;text-wrap:balance}
+.h2{font-family:'Fraunces',serif;font-size:clamp(28px,2.6vw + 18px,44px);font-weight:600;letter-spacing:-.018em;line-height:1.14;margin:0 0 14px;color:#2A2118;text-wrap:balance}
 .h2 em{font-style:normal;background:linear-gradient(135deg,#D4521E,#F2762E,#F2762E);-webkit-background-clip:text;background-clip:text;color:transparent}
 .h2.h2-light{color:#fff}
 .h2.h2-light em{background:linear-gradient(135deg,#F2A93B,#F2A93B,#E0458A);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -225,7 +225,6 @@ p{text-wrap:pretty}
    (los títulos quedan grandes y prominentes, solo se agrega espacio) */
 @media(max-width:640px){
   section{padding:48px 0}
-  .h2{font-size:32px;letter-spacing:-.5px;line-height:1.18;margin-bottom:14px}
   .sub{font-size:16.5px;line-height:1.7;margin-bottom:26px}
   .eyebrow-dark{margin-bottom:16px}
 }
@@ -691,7 +690,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
 /* ── TABLET 920px ── */
 @media(max-width:920px){
-  .h1{font-size:36px!important;letter-spacing:-.8px!important}
   .hero-grid{gap:28px!important}
   .kpi-strip{grid-template-columns:1fr 1fr!important;gap:10px!important}
   #caracteristicas-grid{grid-template-columns:1fr!important;gap:40px!important}
@@ -737,10 +735,8 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
 /* ── MOBILE 540px ── */
 @media(max-width:540px){
-  .h1{font-size:28px!important;letter-spacing:-.4px!important;line-height:1.1!important}
   .lead{font-size:15px!important;max-width:100%!important}
   .hero{padding:36px 0 48px!important}
-  .h2{font-size:24px!important;letter-spacing:-.4px!important}
   .sub{font-size:15px!important}
   .hero-ctas{flex-direction:column!important;align-items:center!important}
   .wa-cta-btn{font-size:15px!important;padding:16px 24px!important;width:100%!important;max-width:340px!important;justify-content:center!important}
@@ -786,7 +782,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
 /* ── MOBILE 400px ── */
 @media(max-width:400px){
-  .h1{font-size:22px!important;line-height:1.08!important}
   /* Mantener 2 columnas en footer incluso en pantallas ultra-pequeñas — más compacto */
   .foot-grid{grid-template-columns:1fr 1fr!important;gap:18px 12px!important}
   .foot-col a{font-size:12px!important;padding:3px 0!important}
@@ -865,7 +860,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
   #demo .app-view{min-width:560px}
   #demo .app-tbl-wrap{padding:0 14px 14px!important}
   #demo .app-tbl th,#demo .app-tbl td{font-size:11px!important;padding:7px 9px!important;white-space:nowrap!important}
-  #demo .demo-section-head h2,#demo h2{font-size:22px!important;letter-spacing:-.4px!important;line-height:1.2!important}
   #demo .demo-section-head p,#demo > .wrap > div > p{font-size:13px!important}
   /* Hint visual: desliza */
   #demo .app-shell-wrap::after{content:"← desliza →";display:block;font-size:10px;color:rgba(255,255,255,.4);text-align:center;padding:6px 0;background:rgba(0,0,0,.3)}
@@ -881,7 +875,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
   #pricing{padding:44px 0!important}
   #pricing > div{padding:0 14px!important}
   #pricing > div > div[style*="background:#2A2118"]{padding:24px 20px!important;border-radius:18px!important}
-  #pricing h2{font-size:22px!important;letter-spacing:-.3px!important;line-height:1.2!important}
   #pricing h2 br{display:none}
   .pricing-left span[style*="font-size:56px"]{font-size:42px!important;letter-spacing:-1.5px!important}
   .pricing-left span[style*="font-size:19px"]{font-size:15px!important}
@@ -896,21 +889,18 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
   /* ── CTA FINAL ── */
   #contact{padding:64px 16px!important}
-  #contact h2{font-size:24px!important;line-height:1.18!important;letter-spacing:-.5px!important;margin-bottom:16px!important}
   #contact h2 br{display:none}
   #contact > div > p{font-size:15px!important;line-height:1.65!important;margin-bottom:24px!important}
   #contact a.cta-primary-btn{width:100%!important;padding:16px 22px!important;font-size:15.5px!important;justify-content:center;box-sizing:border-box}
 
   /* ── EMPATÍA ── */
   #sec-empathy{padding:48px 16px!important}
-  #sec-empathy h2{font-size:26px!important;line-height:1.15!important;letter-spacing:-.4px!important}
   #sec-empathy h3{font-size:17px!important;line-height:1.35!important;margin-bottom:18px!important}
   #sec-empathy p{font-size:14.5px!important;line-height:1.7!important;text-align:left}
 
   /* ── CÓMO FUNCIONA ── */
   #como-funciona{padding:48px 0!important}
   #como-funciona > .wrap > div:first-child{margin-bottom:36px!important}
-  #como-funciona h2{font-size:24px!important;line-height:1.2!important}
   #como-funciona h2 br{display:none}
   #como-funciona > .wrap > div:first-child p{font-size:14.5px!important}
   #como-funciona .grid{gap:36px!important}
@@ -924,7 +914,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
   /* ── PARA QUIÉN ── */
   #para-quien{padding:48px 16px!important}
-  #para-quien h2{font-size:24px!important;letter-spacing:-.3px!important}
   #para-quien > div > div:first-child p{font-size:14.5px!important}
   #para-quien-grid{gap:16px!important}
   #para-quien-grid > div{padding:24px 22px!important;border-radius:16px!important}
@@ -933,7 +922,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
   /* ── FAQ ── */
   #faq{padding:52px 0!important}
-  #faq h2{font-size:24px!important;letter-spacing:-.3px!important;line-height:1.2!important}
   #faq h2 br{display:none}
   .faq summary{padding:16px 18px!important;font-size:14px!important;gap:10px;align-items:flex-start}
   .faq summary::after{margin-top:2px}
@@ -953,13 +941,10 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 @media(max-width:420px){
   .logo{font-size:14px!important}
   .nav-cta .btn{padding:7px 10px!important;font-size:11.5px!important}
-  .h1{font-size:24px!important;letter-spacing:-.3px!important;line-height:1.12!important}
   .lead{font-size:14px!important}
   .cta-primary-btn{font-size:14.5px!important;padding:15px 20px!important;letter-spacing:-.2px}
   .pricing-left span[style*="font-size:56px"]{font-size:36px!important}
   #demo .app-layout,#demo .app-view{min-width:500px}
-  #contact h2{font-size:22px!important}
-  #sec-empathy h2,#para-quien h2,#faq h2,#como-funciona h2,#pricing h2{font-size:22px!important}
   .mobile-cta-bar a{font-size:12.5px!important;padding:12px 8px!important}
 }
 
@@ -1134,7 +1119,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow"><span class="pulse-dot"></span> Presupuestos, stock, cobros y análisis en un solo lugar</span>
-      <h1 class="h1 font-black tracking-tight text-balance">La app de gestión con <em>inteligencia comercial</em></h1>
+      <h1 class="h1 tracking-tight text-balance">La app de gestión con <em>inteligencia comercial</em></h1>
       <p class="lead text-balance">Vendé, cobrá y controlá tu stock. Descubrí qué productos y clientes te dan ganancia real — para decidir con datos, no con intuición</p>
       <!-- CTA: foco único + enlace secundario mínimo -->
       <div class="hero-cta-row" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:22px">
@@ -1241,7 +1226,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
     <!-- Encabezado -->
     <div class="text-center" style="max-width:720px;margin:0 auto 38px">
       <div class="eyebrow-dark" style="margin-bottom:16px">Cómo funciona</div>
-      <h2 class="h2" style="font-size:clamp(28px,4vw,44px)">
+      <h2 class="h2">
         Cómo se ve tu día <em>con ANMA Hub</em>
       </h2>
       <p class="text-lg text-slate-600 text-balance" style="margin:0 auto;max-width:580px;line-height:1.65;color:#374151">
@@ -1299,7 +1284,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
     <!-- Encabezado -->
     <div style="text-align:center;max-width:660px;margin:0 auto 26px">
       <span class="eyebrow" style="color:#F2C98A;background:rgba(242,201,138,.08);border:1px solid rgba(242,201,138,.18);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">Así se ve por dentro</span>
-      <h2 class="h2" style="color:#fff;font-size:clamp(24px,3.8vw,38px);margin:12px 0 10px;font-weight:900;letter-spacing:-.8px">
+      <h2 class="h2" style="color:#fff;margin:12px 0 10px">
         Todo lo que necesitás <em style="font-style:italic;color:#F2C98A">en una sola pantalla</em>
       </h2>
       <p style="color:rgba(255,255,255,.7);font-size:15px;line-height:1.65;margin:0 auto;max-width:520px">
@@ -1416,7 +1401,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
     <!-- Encabezado -->
     <div style="text-align:center;max-width:640px;margin:0 auto 20px">
       <span class="eyebrow" style="color:#F2C98A;background:rgba(242,201,138,.08);border:1px solid rgba(242,201,138,.18);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">También en tu bolsillo</span>
-      <h2 class="h2" style="color:#fff;font-size:clamp(26px,4vw,42px);margin:14px 0 12px;font-weight:900;letter-spacing:-.8px">
+      <h2 class="h2" style="color:#fff;margin:14px 0 12px">
         La misma app, <em style="font-style:italic;color:#F2C98A">desde el celu</em>
       </h2>
       <p style="color:rgba(255,255,255,.72);font-size:15.5px;line-height:1.65;margin:0 auto;max-width:540px">
@@ -1564,7 +1549,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
     <div style="text-align:center;max-width:660px;margin:0 auto 32px">
       <span class="eyebrow-dark" style="margin-bottom:16px">Para quién es</span>
-      <h2 class="h2" style="font-size:clamp(28px,4vw,44px);text-align:center">
+      <h2 class="h2" style="text-align:center">
         Cada rubro tiene su ritmo, <em>el tuyo también</em>
       </h2>
       <p class="text-lg text-balance text-center" style="color:#6B7280;margin:0 auto;max-width:580px;line-height:1.65">
@@ -1688,7 +1673,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
     <!-- Encabezado -->
     <div style="text-align:center;margin-bottom:28px">
-      <h2 class="h2 h2-light" style="font-size:32px;margin:0 0 10px">
+      <h2 class="h2 h2-light" style="margin:0 0 10px">
         Una sola inversión<br><em>Tu operación, ordenada desde el primer día</em>
       </h2>
       <p style="color:#6B7280;font-size:14.5px;margin:0;line-height:1.6">Todo incluido, con soporte real desde el día uno</p>
@@ -1828,7 +1813,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
     <div style="text-align:center;max-width:700px;margin:0 auto 32px">
       <span class="eyebrow-dark" style="margin-bottom:16px">Preguntas frecuentes</span>
-      <h2 class="h2" style="font-size:clamp(28px,4vw,44px);text-align:center;margin:0">
+      <h2 class="h2" style="text-align:center;margin:0">
         Tus dudas, <em>resueltas</em>
       </h2>
     </div>
@@ -1873,7 +1858,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 <section id="contact" style="padding:52px 16px;background:radial-gradient(ellipse 80% 60% at 50% 50%,#3A2A1C 0%,#16110B 65%);text-align:center">
   <div style="max-width:900px;margin:0 auto">
 
-    <h2 class="h2 h2-light" style="font-size:clamp(28px,4vw,42px)">
+    <h2 class="h2 h2-light">
       Recuperá el control de tus números<br> <em>y volvé a tomar aire</em>
     </h2>
 
