@@ -677,8 +677,8 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 .hero-app-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
 .hero-app-title{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:800;letter-spacing:-.03em;color:var(--txt);line-height:1.1}
 .hero-app-sub{font-size:12px;color:var(--txt-2);font-weight:500;margin-top:3px}
-.hero-app-live{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--verde-700);background:#E6F6F0;border:1px solid #C6EADD;padding:5px 10px;border-radius:var(--r-pill);flex-shrink:0}
-.hero-app-live i{width:6px;height:6px;border-radius:50%;background:var(--verde);animation:pulse 2s infinite}
+.hero-app-live{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--violeta-700);background:var(--lila);border:1px solid var(--borde);padding:5px 10px;border-radius:var(--r-pill);flex-shrink:0}
+.hero-app-live i{width:6px;height:6px;border-radius:50%;background:var(--violeta);animation:pulse 2s infinite}
 /* tiles de color pleno — el patron de feria luminosa */
 .hero-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .h-tile{border-radius:var(--r-row);padding:12px 12px 11px;display:flex;flex-direction:column;gap:5px;min-width:0}
@@ -691,7 +691,9 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 .h-tile-g{background:var(--verde-700)}
 /* filas de pedidos */
 .hero-rows{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.hero-row{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--borde);border-radius:var(--r-row);background:var(--papel)}
+.hero-row{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--borde);border-radius:var(--r-row);background:var(--papel);position:relative;overflow:hidden}
+.hero-row-late::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:#B42318}
+.hero-row-late{border-color:#F4CDCA}
 .h-av{width:30px;height:30px;border-radius:50%;background:var(--violeta-50);color:var(--violeta-700);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;letter-spacing:.02em;flex-shrink:0}
 .h-row-txt{display:flex;flex-direction:column;min-width:0;flex:1}
 .h-row-txt b{font-size:13px;font-weight:700;color:var(--txt);line-height:1.25}
@@ -702,7 +704,7 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 .h-chip-late{background:#FDECEC;color:#B42318}
 /* pie accionable */
 .hero-app-foot{display:flex;align-items:center;gap:12px;border-top:1px solid var(--borde);padding-top:13px}
-.hero-app-btn{display:inline-flex;align-items:center;gap:7px;background:var(--verde-700);color:#fff;font-size:12.5px;font-weight:700;padding:9px 15px;border-radius:10px;white-space:nowrap}
+.hero-app-btn{display:inline-flex;align-items:center;gap:7px;background:var(--violeta);color:#fff;font-size:12.5px;font-weight:700;padding:9px 15px;border-radius:10px;white-space:nowrap}
 .hero-app-note{font-size:11.5px;color:var(--txt-2);font-weight:600}
 /* aviso flotante */
 .hero-ping{position:absolute;top:-4px;right:16px;z-index:5;background:var(--papel);border:1px solid var(--borde);border-radius:var(--r-pill);padding:8px 16px 8px 12px;display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:600;color:var(--txt);box-shadow:var(--sh-card);white-space:nowrap;animation:floatChip 3.2s ease-in-out infinite}
@@ -1221,7 +1223,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
           </div>
 
           <div class="hero-tiles">
-            <div class="h-tile h-tile-v">
+            <div class="h-tile h-tile-g">
               <span class="h-tile-l">Cobrado hoy</span>
               <span class="h-tile-n">$84.200</span>
             </div>
@@ -1229,7 +1231,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
               <span class="h-tile-l">Por cobrar</span>
               <span class="h-tile-n">$212.000</span>
             </div>
-            <div class="h-tile h-tile-g">
+            <div class="h-tile h-tile-v">
               <span class="h-tile-l">Pedidos</span>
               <span class="h-tile-n">6</span>
             </div>
@@ -1246,7 +1248,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
               <span class="h-row-txt"><b>Martín T.</b><small>Pedido #1041 · $64.000</small></span>
               <span class="h-chip h-chip-mid">Seña</span>
             </div>
-            <div class="hero-row">
+            <div class="hero-row hero-row-late">
               <span class="h-av">LP</span>
               <span class="h-row-txt"><b>Lucía P.</b><small>Pedido #1039 · $21.300</small></span>
               <span class="h-chip h-chip-late">Vencido</span>
