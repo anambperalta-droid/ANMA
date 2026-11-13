@@ -172,13 +172,13 @@ a{color:inherit;text-decoration:none}
    Sin esto, el mockup (tabla nowrap + sidebar 196px) fuerza ~700px de ancho y
    el celu hace zoom-out para que entre (se ve "alejado"). */
 .hero-grid>*{min-width:0}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:#fff;border:1px solid #DCCEFA;border-radius:99px;font-size:12px;font-weight:600;color:#36107F;margin-bottom:14px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:#fff;border:1px solid #DCCEFA;border-radius:99px;font-size:12px;font-weight:600;color:#36107F;margin-bottom:12px}
 .eyebrow .pulse-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:pulse 2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.7)}70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
 @keyframes ctaGlow{0%,100%{box-shadow:0 8px 32px rgba(5,150,105,.45)}50%{box-shadow:0 10px 44px rgba(5,150,105,.72),0 0 80px rgba(5,150,105,.18)}}
 
 /* CTA hero — dominancia visual */
-.cta-primary-btn{display:inline-flex;align-items:center;gap:13px;background:var(--verde-700);color:#fff;padding:19px 36px;border-radius:14px;font-size:17px;font-weight:700;text-decoration:none;letter-spacing:-.3px;box-shadow:0 8px 32px rgba(5,150,105,.45);white-space:nowrap}
+.cta-primary-btn{display:inline-flex;align-items:center;gap:13px;background:var(--verde-700);color:#fff;padding:15px 28px;border-radius:14px;font-size:16px;font-weight:700;text-decoration:none;letter-spacing:-.3px;box-shadow:0 8px 32px rgba(5,150,105,.45);white-space:nowrap}
 .cta-primary-btn:hover{box-shadow:0 14px 44px rgba(5,150,105,.65)!important}
 .cta-secondary-btn{display:inline-flex;align-items:center;gap:10px;color:#574A6B;font-size:14.5px;font-weight:600;text-decoration:none;transition:color .15s;white-space:nowrap}
 .cta-secondary-btn:hover{color:#221433}
@@ -198,9 +198,9 @@ a{color:inherit;text-decoration:none}
   .sp-chip{padding:10px 14px}
   .sp-chip span{font-size:13px}
 }
-.h1{font-family:'Figtree',sans-serif;font-size:clamp(34px,4.4vw + 8px,56px);line-height:1.08;font-weight:800;letter-spacing:normal;margin:0 0 16px;text-wrap:balance}
+.h1{font-family:'Figtree',sans-serif;font-size:clamp(32px,4.1vw + 8px,50px);line-height:1.08;font-weight:800;letter-spacing:normal;margin:0 0 12px;text-wrap:balance}
 .h1 em{font-style:normal;color:#4718AE}
-.lead{font-size:18px;color:#574A6B;max-width:540px;margin:0 0 20px;line-height:1.6}
+.lead{font-size:18px;color:#574A6B;max-width:540px;margin:0 0 18px;line-height:1.5}
 .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end}
 .hero-cta-btn{width:200px;justify-content:center}
 .hero-demo-group{display:flex;flex-direction:column;align-items:center;gap:5px}
@@ -215,23 +215,23 @@ a{color:inherit;text-decoration:none}
 .mock-bar span:nth-child(2){background:#F6DE8B}
 .mock-bar span:nth-child(3){background:#10b981}
 @media(max-width:920px){
-  .hero{padding:48px 0 58px}
+  .hero{padding:40px 0 48px}
   .hero-grid{grid-template-columns:1fr;gap:42px}
   .h1{margin-bottom:18px}
   .lead{font-size:17px;margin-bottom:30px;max-width:none}
   .hero-ctas{gap:16px;margin-bottom:22px}
   .hero-trust{gap:12px 18px;margin-top:10px}
-  .eyebrow{margin-bottom:18px}
+  .eyebrow{margin-bottom:12px}
 }
 
 /* SECTIONS */
-section{padding:76px 0}
-.eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#FDF6DD;color:#4718AE;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
-.h2{font-family:'Figtree',sans-serif;font-size:clamp(28px,2.6vw + 18px,44px);font-weight:800;letter-spacing:normal;line-height:1.06;margin:0 0 14px;color:#221433;text-wrap:balance}
+section{padding:56px 0}
+.eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#FDF6DD;color:#4718AE;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.h2{font-family:'Figtree',sans-serif;font-size:clamp(26px,2.2vw + 16px,40px);font-weight:800;letter-spacing:normal;line-height:1.08;margin:0 0 10px;color:#221433;text-wrap:balance}
 .h2 em{font-style:normal;color:#4718AE}
 .h2.h2-light{color:#fff}
 .h2.h2-light em{font-style:normal;color:var(--amarillo)}
-.sub{font-size:17.5px;color:#574A6B;max-width:680px;margin:0 0 28px;line-height:1.65;text-wrap:pretty}
+.sub{font-size:17px;color:#574A6B;max-width:680px;margin:0 0 22px;line-height:1.5;text-wrap:pretty}
 .lead{text-wrap:pretty}
 p{text-wrap:pretty}
 .center{text-align:center;margin-left:auto;margin-right:auto}
@@ -240,7 +240,7 @@ p{text-wrap:pretty}
    (los títulos quedan grandes y prominentes, solo se agrega espacio) */
 @media(max-width:640px){
   .sub{font-size:16.5px;line-height:1.7;margin-bottom:26px}
-  .eyebrow-dark{margin-bottom:16px}
+  .eyebrow-dark{margin-bottom:12px}
 }
 
 /* ── DEMO APP SHELL ── */
@@ -317,7 +317,7 @@ p{text-wrap:pretty}
 /* PARA QUIEN */
 .para-quien{background:#FBF7F0}
 .pq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-.pq{background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px;text-align:center;transition:transform .2s,border-color .2s}
+.pq{background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:22px 22px;text-align:center;transition:transform .2s,border-color .2s}
 .pq:hover{transform:translateY(-3px);border-color:#652BDF}
 .pq i{font-size:26px;color:#652BDF;margin-bottom:12px}
 .pq h5{font-size:14px;margin:0 0 4px;font-weight:700}
@@ -338,7 +338,7 @@ p{text-wrap:pretty}
 .contact{background:#FBF7F0}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
 .contact-info h3{font-size:24px;font-weight:700;margin:0 0 14px}
-.contact-info p{font-size:15px;color:#574A6B;margin:0 0 28px;line-height:1.65}
+.contact-info p{font-size:15px;color:#574A6B;margin:0 0 22px;line-height:1.55}
 .contact-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid #E9E1F5}
 .contact-item:first-of-type{border-top:none}
 .contact-item-icon{width:42px;height:42px;border-radius:11px;background:#652BDF15;color:#652BDF;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
@@ -363,7 +363,7 @@ p{text-wrap:pretty}
 
 /* DEMO REAL */
 .demo-section{background:#221433;padding:52px 0}
-.demo-section-head{text-align:center;max-width:680px;margin:0 auto 32px}
+.demo-section-head{text-align:center;max-width:680px;margin:0 auto 26px}
 .demo-section-head h2{font-size:32px;font-weight:700;color:#fff;letter-spacing:normal;margin:0 0 10px}
 .demo-section-head p{font-size:15px;color:rgba(255,255,255,.6);margin:0}
 .demo-shell{border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.06)}
@@ -475,11 +475,11 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
    frame blanco pasa a ser lo mas claro en pantalla.
    Referencia de tono: violeta Nave (#652BDF / #360C72).
    ═════════════════════════════════════════════ */
-.adentro-dark{background:#360C72;border-top:none!important;border-bottom:none!important;padding:76px 0!important}
+.adentro-dark{background:#360C72;border-top:none!important;border-bottom:none!important;padding:56px 0!important}
 .adentro-dark .h2{color:#fff}
 .adentro-dark .h2 em{font-style:normal;color:#F6DE8B}
-.adentro-dark .adentro-intro{color:#CFBFF0;font-size:18px;line-height:1.6;margin:0 auto;max-width:540px;letter-spacing:-.01em}
-.adentro-dark .eyebrow-feria{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:#F6DE8B;color:#3A2E02;border:none;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px}
+.adentro-dark .adentro-intro{color:#CFBFF0;font-size:18px;line-height:1.5;margin:0 auto;max-width:540px;letter-spacing:-.01em}
+.adentro-dark .eyebrow-feria{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:#F6DE8B;color:#3A2E02;border:none;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px}
 /* Frame: lo unico blanco sobre el violeta, con aro tenue para despegarlo */
 .adentro-dark button.adentro-frame{border-color:rgba(255,255,255,.2);box-shadow:0 2px 0 rgba(255,255,255,.08) inset,0 34px 72px -26px rgba(12,2,34,.75)}
 .adentro-dark button.adentro-frame:hover{border-color:#F6DE8B;box-shadow:0 40px 84px -26px rgba(12,2,34,.85)}
@@ -500,7 +500,7 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
 .adentro-dark .adentro-counter{color:rgba(255,255,255,.6)}
 .adentro-dark .adentro-foot{font-size:11px;color:#B59BF5;margin-top:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
 @media(max-width:680px){
-  .adentro-dark{padding:44px 0!important}
+  .adentro-dark{padding:40px 0!important}
 }
 /* ── Lightbox: overlay full-screen que abre al hacer click en cualquier shot ── */
 .adentro-lb{position:fixed;inset:0;background:rgba(20,10,34,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:9999;padding:24px;animation:adentro-lb-in .18s ease-out both}
@@ -552,8 +552,8 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
 /* Instalacion PWA — nota fluida, no steps. Conversacional, con las
    palabras clave marcadas para que "salten" sin ruptura tipografica.
    El PWA-chip inline sirve de anclaje conceptual sin robar peso. */
-.install-note{margin:32px auto 0;max-width:680px;padding:22px 24px;background:#fff;border:1px solid #E9E1F5;border-radius:18px;text-align:center;font-family:'Figtree',sans-serif}
-.install-note p{color:#574A6B;font-size:15px;line-height:1.75;margin:0;letter-spacing:-.01em}
+.install-note{margin:32px auto 0;max-width:680px;padding:22px 22px;background:#fff;border:1px solid #E9E1F5;border-radius:18px;text-align:center;font-family:'Figtree',sans-serif}
+.install-note p{color:#574A6B;font-size:15px;line-height:1.6;margin:0;letter-spacing:-.01em}
 .install-note p b{color:#221433;font-weight:700}
 .install-note p em{font-style:normal;color:#4718AE;font-weight:700}
 @media(max-width:640px){
@@ -639,7 +639,7 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
    HERO INSIGHT CARD · editorial + horizontal
    ═════════════════════════════════════════════ */
 .hero-insight-wrap{position:relative;padding:16px 0 38px}
-.insight-card{background:#fff;border-radius:18px;padding:26px 24px 20px;box-shadow:0 24px 60px -24px rgba(34,20,51,.35),0 0 0 1px #E9E1F5;position:relative;z-index:2;overflow:hidden}
+.insight-card{background:#fff;border-radius:18px;padding:22px 22px 20px;box-shadow:0 24px 60px -24px rgba(34,20,51,.35),0 0 0 1px #E9E1F5;position:relative;z-index:2;overflow:hidden}
 .insight-card::before{content:"";position:absolute;top:-40%;right:-30%;width:360px;height:360px;background:transparent;pointer-events:none;z-index:0}
 .insight-card > *{position:relative;z-index:1}
 
@@ -867,7 +867,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
   .kpi-strip{grid-template-columns:1fr 1fr!important;gap:10px!important}
   /* Reducir más en mobile pequeño */
   /* Números del proceso: reducir tamaño en mobile */
-  .paso-num{font-size:56px!important;letter-spacing:normal!important}
+  .paso-num{font-size:48px!important;letter-spacing:normal!important}
   /* CTA final: botón full-width en mobile */
   #contact a.cta-primary-btn{width:100%!important;padding:17px 24px!important;justify-content:center!important}
 }
@@ -875,7 +875,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 /* ── TESTIMONIOS · antes vs ahora ── */
 .testi-stat{text-align:center;padding:0 8px}
 .testi-stat-tag{display:inline-block;font-size:10.5px;font-weight:700;color:#4718AE;text-transform:uppercase;letter-spacing:1.4px;background:#FDF6DD;padding:6px 13px;border-radius:99px;margin-bottom:22px;border:1px solid rgba(246,222,139,.75)}
-.testi-stat-num{font-family:'Figtree',sans-serif;font-size:88px;font-weight:700;color:#221433;line-height:1;letter-spacing:normal;margin-bottom:18px;display:inline-flex;align-items:baseline;justify-content:center;gap:6px}
+.testi-stat-num{font-family:'Figtree',sans-serif;font-size:64px;font-weight:700;color:#221433;line-height:1;letter-spacing:normal;margin-bottom:12px;display:inline-flex;align-items:baseline;justify-content:center;gap:6px}
 .testi-stat-unit{font-family:'Figtree',sans-serif;font-size:38px;font-weight:700;color:#652BDF;letter-spacing:normal}
 .testi-stat-title{font-family:'Figtree',sans-serif;font-size:19px;font-weight:700;color:#221433;letter-spacing:-.3px;margin:0 0 12px;line-height:1.25}
 .testi-stat-old{font-size:12.5px;color:#8A7F9B;margin:0 0 14px;font-weight:500;line-height:1.4}
@@ -886,7 +886,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 @media(min-width:540px) and (max-width:860px){.testi-stats{grid-template-columns:1fr 1fr!important;gap:44px 32px!important}}
 @media(max-width:540px){
   .testi-stat-tag{font-size:9.5px;padding:5px 11px;margin-bottom:16px;letter-spacing:1.2px}
-  .testi-stat-num{font-size:68px;letter-spacing:normal;margin-bottom:14px;gap:4px}
+  .testi-stat-num{font-size:52px;letter-spacing:normal;margin-bottom:10px;gap:4px}
   .testi-stat-unit{font-size:30px}
   .testi-stat-title{font-size:17px;margin-bottom:10px}
   .testi-stat-old{font-size:12px;margin-bottom:12px}
@@ -903,13 +903,13 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
   .nav-btn-login{display:none!important}
   .cta-primary-btn{font-size:15px!important;padding:15px 18px!important}
   /* Paso números aún más pequeños */
-  .paso-num{font-size:44px!important}
+  .paso-num{font-size:40px!important}
 }
 
 /* CONTACTO — nuevo bloque WA */
 .contact-wa-block{background:#fff;padding:60px 20px;text-align:center}
 .contact-wa-block h3{font-size:26px;font-weight:700;color:#221433;margin:0 0 10px;letter-spacing:-.4px}
-.contact-wa-block p{font-size:15px;color:#574A6B;margin:0 0 32px;line-height:1.65;max-width:520px;margin-left:auto;margin-right:auto}
+.contact-wa-block p{font-size:15px;color:#574A6B;margin:0 0 32px;line-height:1.55;max-width:520px;margin-left:auto;margin-right:auto}
 .wa-cta-btn{display:inline-flex;align-items:center;gap:12px;background:#25D366;color:#fff;text-decoration:none;padding:18px 36px;border-radius:14px;font-size:17px;font-weight:700;box-shadow:0 12px 32px rgba(37,211,102,.35);line-height:1}
 .wa-cta-btn:hover{box-shadow:0 16px 40px rgba(37,211,102,.45)}
 .wa-cta-btn i{font-size:22px}
@@ -1013,7 +1013,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
   #como-funciona > .wrap > div:first-child p{font-size:14.5px!important}
   #como-funciona .grid{gap:36px!important}
   #como-funciona h3{font-size:17px!important}
-  #como-funciona .paso-num{font-size:52px!important;letter-spacing:normal!important;margin-bottom:2px!important}
+  #como-funciona .paso-num{font-size:44px!important;letter-spacing:normal!important;margin-bottom:2px!important}
 
   /* ── TESTIMONIOS ── */
   .testi-grid{gap:14px!important}
@@ -1128,7 +1128,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
 /* ── ESCENAS · antes/ahora (versión corta, reemplaza stat-cards) ── */
 .esc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1180px;margin:0 auto}
-.esc{background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px;display:flex;flex-direction:column;gap:12px;transition:transform .2s,box-shadow .2s,border-color .2s}
+.esc{background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:22px 22px;display:flex;flex-direction:column;gap:12px;transition:transform .2s,box-shadow .2s,border-color .2s}
 .esc:hover{transform:translateY(-3px);box-shadow:0 14px 34px -14px rgba(100,41,209,.35);border-color:rgba(100,41,209,.35)}
 .esc-tag{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;font-size:10.5px;font-weight:700;color:#4718AE;text-transform:uppercase;letter-spacing:1.2px;background:#FDF6DD;padding:6px 12px;border-radius:99px;border:1px solid rgba(246,222,139,.75)}
 .esc-tag svg{width:12px;height:12px}
@@ -1154,13 +1154,13 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
 /* ── Espaciado compacto mobile (ajuste final, gana por orden) ── */
 @media(max-width:680px){
-  section:not(.hero){padding:44px 0}
-  #para-quien,#contact{padding:44px 16px!important}
+  section:not(.hero){padding:40px 0}
+  #para-quien,#contact{padding:40px 16px!important}
 }
 
 /* ── Flujo de pago (3 pasos claros) ── */
 .pay-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 auto 14px}
-.pay-step{background:rgba(255,255,255,.04);border:1px solid rgba(100,41,209,.22);border-radius:18px;padding:22px 24px;text-align:left}
+.pay-step{background:rgba(255,255,255,.04);border:1px solid rgba(100,41,209,.22);border-radius:18px;padding:22px 22px;text-align:left}
 .pay-step-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .pay-step-n{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;background:rgba(100,41,209,.28);color:#E2D2FF;font-size:12px;font-weight:700;flex-shrink:0}
 .pay-step h4{color:#fff;font-size:14px;font-weight:700;margin:0}
@@ -1322,12 +1322,12 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
   <div class="wrap">
 
     <!-- Encabezado -->
-    <div class="text-center" style="max-width:720px;margin:0 auto 38px">
-      <div class="eyebrow-dark" style="margin-bottom:16px">Cómo funciona</div>
+    <div class="text-center" style="max-width:720px;margin:0 auto 26px">
+      <div class="eyebrow-dark">Cómo funciona</div>
       <h2 class="h2">
         Cómo se ve tu día <em>con ANMA Hub</em>
       </h2>
-      <p class="text-lg text-slate-600 text-balance" style="margin:0 auto;max-width:580px;line-height:1.6;color:#574A6B">
+      <p class="text-lg text-slate-600 text-balance" style="margin:0 auto;max-width:580px;line-height:1.5;color:#574A6B">
         Si sabés usar WhatsApp, ya sabés usar ANMA Hub
       </p>
     </div>
@@ -1337,7 +1337,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
       <!-- Paso 01 -->
       <div style="position:relative;padding:0 8px">
-        <span class="paso-num block select-none" style="font-family:'Figtree',sans-serif;font-weight:700;letter-spacing:normal;font-size:80px;line-height:1;margin-bottom:4px;color:#652BDF;letter-spacing:normal">01</span>
+        <span class="paso-num block select-none" style="font-family:'Figtree',sans-serif;font-weight:700;letter-spacing:normal;font-size:64px;line-height:1;margin-bottom:4px;color:#652BDF;letter-spacing:normal">01</span>
         <div style="width:48px;height:3px;background:#652BDF;border-radius:99px;margin:0 auto 20px"></div>
         <h3 class="text-xl sm:text-2xl font-bold text-slate-900" style="margin:0 0 12px;color:#221433">
           Cargás tu catálogo y tus clientes
@@ -1380,9 +1380,9 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
   <div class="wrap">
 
     <!-- Encabezado -->
-    <div style="text-align:center;max-width:680px;margin:0 auto 32px">
+    <div style="text-align:center;max-width:680px;margin:0 auto 26px">
       <span class="eyebrow-feria">Así se ve por dentro</span>
-      <h2 class="h2" style="margin:14px 0 12px">
+      <h2 class="h2" style="margin:0 0 10px">
         Todo lo que necesitás <em>en una sola pantalla</em>
       </h2>
       <p class="adentro-intro">
@@ -1498,11 +1498,11 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
     <!-- Encabezado -->
     <div style="text-align:center;max-width:680px;margin:0 auto 20px">
-      <span class="eyebrow" style="color:#4718AE;background:#FDF6DD;border:1px solid rgba(246,222,139,.75);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">También en tu bolsillo</span>
-      <h2 class="h2" style="margin:14px 0 12px">
+      <span class="eyebrow-dark">También en tu bolsillo</span>
+      <h2 class="h2" style="margin:0 0 10px">
         La misma app, <em>desde el celu</em>
       </h2>
-      <p style="color:#574A6B;font-size:18px;line-height:1.6;margin:0 auto;max-width:560px">
+      <p style="color:#574A6B;font-size:18px;line-height:1.5;margin:0 auto;max-width:560px">
         Se instala como aplicación en el teléfono. Todo funciona igual que en la compu — cargás pedidos en la calle y ves tu negocio sin abrir la laptop.
       </p>
 
@@ -1638,15 +1638,15 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- PARA QUIÉN -->
-<section id="para-quien" style="padding:76px 24px;background:#FBF7F0;border-top:1px solid #E9E1F5">
+<section id="para-quien" style="padding:56px 24px;background:#FBF7F0;border-top:1px solid #E9E1F5">
   <div style="max-width:1180px;margin:0 auto">
 
-    <div style="text-align:center;max-width:680px;margin:0 auto 32px">
-      <span class="eyebrow-dark" style="margin-bottom:16px">Para quién es</span>
+    <div style="text-align:center;max-width:680px;margin:0 auto 26px">
+      <span class="eyebrow-dark">Para quién es</span>
       <h2 class="h2" style="text-align:center">
         Cada rubro tiene su ritmo, <em>el tuyo también</em>
       </h2>
-      <p class="text-lg text-balance text-center" style="color:#574A6B;margin:0 auto;max-width:580px;line-height:1.6">
+      <p class="text-lg text-balance text-center" style="color:#574A6B;margin:0 auto;max-width:580px;line-height:1.5">
         Público, mayorista o los dos — variantes, listas de precios y cuentas corrientes en una pantalla
       </p>
     </div>
@@ -1654,7 +1654,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
     <div id="para-quien-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:0 auto">
 
       <!-- Indumentaria -->
-      <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px">
+      <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:22px 22px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
           <div style="width:50px;height:50px;border-radius:14px;background:#652BDF;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.55)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -1672,7 +1672,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       </div>
 
       <!-- Decoración -->
-      <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px">
+      <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:22px 22px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
           <div style="width:50px;height:50px;border-radius:14px;background:#652BDF;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.5)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -1692,7 +1692,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       </div>
 
       <!-- Tecnología -->
-      <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px">
+      <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:22px 22px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
           <div style="width:50px;height:50px;border-radius:14px;background:#652BDF;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.5)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -1711,7 +1711,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       </div>
 
       <!-- Almacén / distribución -->
-      <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px">
+      <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:22px 22px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
           <div style="width:50px;height:50px;border-radius:14px;background:#652BDF;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.5)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -1905,8 +1905,8 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 <section id="faq" style="background:#FBF7F0;border-top:1px solid #E9E1F5">
   <div class="wrap">
 
-    <div style="text-align:center;max-width:700px;margin:0 auto 32px">
-      <span class="eyebrow-dark" style="margin-bottom:16px">Preguntas frecuentes</span>
+    <div style="text-align:center;max-width:700px;margin:0 auto 26px">
+      <span class="eyebrow-dark">Preguntas frecuentes</span>
       <h2 class="h2" style="text-align:center;margin:0">
         Tus dudas, <em>resueltas</em>
       </h2>
@@ -1949,14 +1949,14 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- CTA FINAL -->
-<section id="contact" style="padding:76px 16px;background:var(--violeta-900);text-align:center">
+<section id="contact" style="padding:56px 16px;background:var(--violeta-900);text-align:center">
   <div style="max-width:960px;margin:0 auto">
 
     <h2 class="h2 h2-light">
       Recuperá el control de tus números<br> <em>y volvé a tomar aire</em>
     </h2>
 
-    <p class="text-balance" style="max-width:560px;margin:0 auto 36px;line-height:1.7;color:rgba(255,255,255,.9);font-size:17px">
+    <p class="text-balance" style="max-width:560px;margin:0 auto 26px;line-height:1.7;color:rgba(255,255,255,.9);font-size:17px">
       En 60 segundos estás dentro, con tu operación ordenada por primera vez
     </p>
 
