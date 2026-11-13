@@ -225,7 +225,7 @@ a{color:inherit;text-decoration:none}
 }
 
 /* SECTIONS */
-section{padding:48px 0}
+section{padding:76px 0}
 .eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#FDF6DD;color:#4718AE;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
 .h2{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,2.6vw + 18px,44px);font-weight:800;font-variation-settings:'opsz' 72;letter-spacing:-.034em;line-height:1.06;margin:0 0 14px;color:#221433;text-wrap:balance}
 .h2 em{font-style:normal;color:#4718AE}
@@ -475,7 +475,7 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
    frame blanco pasa a ser lo mas claro en pantalla.
    Referencia de tono: violeta Nave (#652BDF / #360C72).
    ═════════════════════════════════════════════ */
-.adentro-dark{background:#360C72;border-top:none!important;border-bottom:none!important;padding:72px 0!important}
+.adentro-dark{background:#360C72;border-top:none!important;border-bottom:none!important;padding:76px 0!important}
 .adentro-dark .h2{color:#fff}
 .adentro-dark .h2 em{font-style:normal;color:#F6DE8B}
 .adentro-dark .adentro-intro{color:#CFBFF0;font-size:18px;line-height:1.6;margin:0 auto;max-width:540px;letter-spacing:-.01em}
@@ -500,7 +500,7 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
 .adentro-dark .adentro-counter{color:rgba(255,255,255,.6)}
 .adentro-dark .adentro-foot{font-size:11px;color:#B59BF5;margin-top:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
 @media(max-width:680px){
-  .adentro-dark{padding:48px 0!important}
+  .adentro-dark{padding:44px 0!important}
 }
 /* ── Lightbox: overlay full-screen que abre al hacer click en cualquier shot ── */
 .adentro-lb{position:fixed;inset:0;background:rgba(20,10,34,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:9999;padding:24px;animation:adentro-lb-in .18s ease-out both}
@@ -532,16 +532,6 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
    ═════════════════════════════════════════════ */
 .bolsillo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;max-width:960px;margin:0 auto;align-items:start}
 .bolsillo-shot{margin:0;display:flex;flex-direction:column;align-items:center}
-/* Phone frame: bezel oscuro sutil, notch top, aspect ratio 9:19.5 */
-button.bolsillo-phone{width:100%;max-width:240px;aspect-ratio:9/19.5;background:#221433;border-radius:36px;padding:10px;border:1px solid rgba(255,255,255,.14);box-shadow:0 32px 80px rgba(0,0,0,.55),0 2px 0 rgba(255,255,255,.06) inset;cursor:zoom-in;position:relative;transition:transform .2s,box-shadow .2s,border-color .2s;font-family:inherit}
-button.bolsillo-phone:hover{transform:translateY(-4px);border-color:rgba(100,41,209,.5);box-shadow:0 40px 100px rgba(0,0,0,.65),0 0 0 1px rgba(201,182,247,.28)}
-button.bolsillo-phone:focus-visible{outline:2px solid #E2D2FF;outline-offset:4px}
-/* Notch: pill center-top */
-button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);width:66px;height:16px;background:#1A0E2B;border-radius:12px;z-index:3;border:1px solid rgba(255,255,255,.06)}
-/* Pantalla interior con la captura */
-.bolsillo-screen{width:100%;height:100%;border-radius:26px;overflow:hidden;background:#EFE7FE;position:relative}
-.bolsillo-screen::before{content:"Vista previa mobile";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#8A7F9B;font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;z-index:0;text-align:center;padding:0 20px}
-.bolsillo-screen img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;position:relative;z-index:1}
 .bolsillo-cap{color:#574A6B;font-size:13.5px;line-height:1.55;padding:20px 8px 0;text-align:center;max-width:220px;font-family:'Inter',sans-serif;font-weight:600}
 .bolsillo-cap b{color:#221433;font-weight:800}
 /* Chips de trust bajo el titulo — en UNA SOLA LINEA (nowrap).
@@ -574,28 +564,26 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 .bolsillo-controls{display:none}
 
 /* ═════════════════════════════════════════════
-   STAGE LAVANDA + MANOS
+   PANEL LAVANDA CON LAS FOTOS
    Los celus son oscuros: para que resalten va un
-   panel claro (lavanda Nave #E2D2FF) y no uno
-   oscuro como en "Adentro", donde el frame es blanco.
-   Las manos son ilustracion plana, misma paleta,
-   y el borde inferior del panel las recorta.
+   panel claro, al reves que "Adentro", donde el
+   frame es blanco y el panel es violeta profundo.
+   Las tres fotos comparten el lavanda del panel,
+   asi que se leen como una sola escena y el borde
+   de abajo corta las mangas.
    ═════════════════════════════════════════════ */
-.bolsillo-stage{background:#E2D2FF;border-radius:32px;max-width:1000px;margin:34px auto 0;padding:34px 28px 0;overflow:hidden}
-.bolsillo-stage .bolsillo-grid{margin-top:0!important;padding-bottom:104px;align-items:end}
+.bolsillo-stage{background:#DECDFC;border-radius:32px;max-width:1040px;margin:36px auto 0;padding:30px 20px 0;overflow:hidden}
+.bolsillo-stage .bolsillo-grid{margin-top:0!important;max-width:none;gap:10px;align-items:end}
 .bolsillo-stage .bolsillo-shot{flex-direction:column-reverse}
-.bolsillo-stage .bolsillo-cap{color:#4718AE;padding:0 8px 18px;font-size:13.5px}
+.bolsillo-stage .bolsillo-cap{color:#4718AE;padding:0 6px 16px;max-width:260px}
 .bolsillo-stage .bolsillo-cap b{color:#221433}
-/* La mano: dos capas sobre la caja del celu (240x520 de referencia) */
-.held{position:relative;width:100%;max-width:240px;display:flex;justify-content:center}
-.held .mano{position:absolute;left:-39.58%;top:-7.69%;width:179.17%;height:138.46%;pointer-events:none;transform:rotate(var(--giro,-3deg));transform-origin:50% 72%}
-.held .mano-atras{z-index:0}
-.held .mano-frente{z-index:3}
-.held button.bolsillo-phone{position:relative;z-index:2}
+.bolsillo-foto{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;font-family:inherit;border-radius:14px;transition:transform .2s ease}
+.bolsillo-foto img{display:block;width:100%;height:auto}
+.bolsillo-foto:hover{transform:translateY(-4px)}
+.bolsillo-foto:focus-visible{outline:2px solid #4718AE;outline-offset:3px}
 @media(max-width:900px){
-  .bolsillo-stage{border-radius:22px;padding:26px 16px 0;margin-top:26px}
-  .bolsillo-stage .bolsillo-grid{padding-bottom:0}
-  .held .mano{display:none}
+  .bolsillo-stage{border-radius:22px;padding:24px 14px 0;margin-top:28px}
+  .bolsillo-stage .bolsillo-cap{padding-bottom:12px}
 }
 @media(max-width:768px){
   /* Grid pasa a carrusel scroll-snap horizontal. Desktop mantiene grid 3 cols. */
@@ -617,7 +605,6 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
     scroll-snap-stop:always;
     max-width:none;
   }
-  button.bolsillo-phone{max-width:220px}
   .bolsillo-cap{font-size:14px;max-width:280px}
   /* Controles visibles + con misma estetica sutil del carrusel #adentro */
   .bolsillo-controls{
@@ -1167,8 +1154,8 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
 /* ── Espaciado compacto mobile (ajuste final, gana por orden) ── */
 @media(max-width:680px){
-  section:not(.hero){padding:36px 0}
-  #para-quien,#contact{padding:36px 16px!important}
+  section:not(.hero){padding:44px 0}
+  #para-quien,#contact{padding:44px 16px!important}
 }
 
 /* ── Flujo de pago (3 pasos claros) ── */
@@ -1538,38 +1525,14 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
     <!-- Grid 3 phones en desktop / Carrusel horizontal en mobile -->
     <div class="bolsillo-carousel" id="bolsillo-carousel">
-      <!-- Mano ilustrada (paleta ANMA). Dos capas: palma y antebrazo
-           detras del celu, pulgar y yemas adelante. El panel la recorta. -->
-      <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-        <defs>
-          <symbol id="mano-atras" viewBox="0 0 430 720">
-            <path d="M224 720 L228 596 Q232 560 270 558 L312 556 Q348 554 352 592 L364 720 Z" fill="#E0A579"/>
-            <path d="M54 448 Q54 396 112 394 L286 392 Q346 390 346 450 L346 544 Q346 606 286 608 L120 610 Q54 612 54 552 Z" fill="#E0A579"/>
-            <path d="M56 452 H98 M55 498 H98 M57 544 H98" stroke="#CE8F64" stroke-width="3.5" stroke-linecap="round"/>
-            <rect x="222" y="664" width="166" height="56" rx="18" fill="#652BDF"/>
-          </symbol>
-          <symbol id="mano-frente" viewBox="0 0 430 720">
-            <path d="M330 596 Q322 540 324 476 Q326 430 352 430 Q378 430 378 476 L376 560 Q374 598 352 598 Z" fill="#E0A579"/>
-            <rect x="86" y="410" width="32" height="30" rx="15" fill="#E0A579"/>
-            <rect x="85" y="458" width="34" height="30" rx="15" fill="#E0A579"/>
-            <rect x="86" y="506" width="32" height="30" rx="15" fill="#E0A579"/>
-          </symbol>
-        </defs>
-      </svg>
       <div class="bolsillo-stage">
       <div class="bolsillo-grid" id="bolsillo-track" style="margin-top:32px" role="region" aria-label="Vistas mobile de la app" tabindex="0">
 
         <!-- Análisis mobile — Insights del período + métricas globales -->
         <figure class="bolsillo-shot">
-          <div class="held" style="--giro:-6deg">
-            <svg class="mano mano-atras" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-atras"/></svg>
-            <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-analisis.png" data-adentro-title="Análisis · mobile" aria-label="Ver Análisis mobile en grande">
-            <div class="bolsillo-screen">
-              <picture><img src="/screens/mobile-analisis.png" alt="Insights del período: crecimiento, cobros vencidos, ticket promedio y métricas globales" loading="lazy" onerror="this.style.display='none'"></picture>
-            </div>
+          <button type="button" class="bolsillo-foto" data-adentro-zoom="/screens/mobile-analisis.png" data-adentro-title="Análisis · mobile" aria-label="Ver Análisis mobile en grande">
+            <img src="/screens/celu-analisis.webp" alt="Una mano sosteniendo el celular con los insights del período de ANMA Hub en pantalla" width="680" height="1039" loading="lazy" decoding="async">
           </button>
-            <svg class="mano mano-frente" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-frente"/></svg>
-          </div>
           <figcaption class="bolsillo-cap">
             <b>Insights del período</b><br>crecimiento y cobros vencidos
           </figcaption>
@@ -1577,15 +1540,9 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
         <!-- Nuevo pedido mobile — uso estrella del celu -->
         <figure class="bolsillo-shot">
-          <div class="held" style="--giro:-3deg">
-            <svg class="mano mano-atras" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-atras"/></svg>
-            <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-pedido.png" data-adentro-title="Nuevo pedido · mobile" aria-label="Ver Nuevo pedido mobile en grande">
-            <div class="bolsillo-screen">
-              <picture><img src="/screens/mobile-pedido.png" alt="Wizard de nuevo pedido en versión mobile" loading="lazy" onerror="this.style.display='none'"></picture>
-            </div>
+          <button type="button" class="bolsillo-foto" data-adentro-zoom="/screens/mobile-pedido.png" data-adentro-title="Nuevo pedido · mobile" aria-label="Ver Nuevo pedido mobile en grande">
+            <img src="/screens/celu-pedido.webp" alt="Una mano sosteniendo el celular con un pedido nuevo de ANMA Hub en pantalla" width="680" height="1039" loading="lazy" decoding="async">
           </button>
-            <svg class="mano mano-frente" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-frente"/></svg>
-          </div>
           <figcaption class="bolsillo-cap">
             <b>Cargás un pedido</b><br>en la calle, en el cliente
           </figcaption>
@@ -1593,15 +1550,9 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
         <!-- Logística mobile — ciclo completo: no vendés solo, entregás -->
         <figure class="bolsillo-shot">
-          <div class="held" style="--giro:4deg">
-            <svg class="mano mano-atras" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-atras"/></svg>
-            <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-logistica.png" data-adentro-title="Logística · mobile" aria-label="Ver Logística mobile en grande">
-            <div class="bolsillo-screen">
-              <picture><img src="/screens/mobile-logistica.png" alt="Paradas de logística y entregas del día en versión mobile" loading="lazy" onerror="this.style.display='none'"></picture>
-            </div>
+          <button type="button" class="bolsillo-foto" data-adentro-zoom="/screens/mobile-logistica.png" data-adentro-title="Logística · mobile" aria-label="Ver Logística mobile en grande">
+            <img src="/screens/celu-logistica.webp" alt="Una mano sosteniendo el celular con las entregas del día de ANMA Hub en pantalla" width="680" height="1039" loading="lazy" decoding="async">
           </button>
-            <svg class="mano mano-frente" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-frente"/></svg>
-          </div>
           <figcaption class="bolsillo-cap">
             <b>Seguís las entregas</b><br>del día, en la ruta
           </figcaption>
@@ -1687,7 +1638,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- PARA QUIÉN -->
-<section id="para-quien" style="padding:48px 24px;background:#FBF7F0;border-top:1px solid #E9E1F5">
+<section id="para-quien" style="padding:76px 24px;background:#FBF7F0;border-top:1px solid #E9E1F5">
   <div style="max-width:1180px;margin:0 auto">
 
     <div style="text-align:center;max-width:680px;margin:0 auto 32px">
@@ -1998,7 +1949,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- CTA FINAL -->
-<section id="contact" style="padding:64px 16px;background:var(--violeta-900);text-align:center">
+<section id="contact" style="padding:76px 16px;background:var(--violeta-900);text-align:center">
   <div style="max-width:960px;margin:0 auto">
 
     <h2 class="h2 h2-light">

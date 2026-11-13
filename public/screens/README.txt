@@ -155,3 +155,27 @@ caminos:
 
 Si un archivo falta o esta roto, el marco no muestra una imagen rota:
 el <img> se oculta solo y queda el fondo lila con "Vista previa".
+
+─────────────────────────────────────────────
+CELUS EN MANO (celu-*.webp)
+─────────────────────────────────────────────
+Las tres imagenes de la seccion "La misma app, desde el celu" son una
+foto real de una mano sosteniendo un celular, con la captura mobile
+montada adentro de la pantalla.
+
+  mano-base.png   foto original, 1024x1536, pantalla en verde (#00FF00)
+                  sobre fondo lavanda. NO borrar: es la base de las tres.
+  celu-*.webp     resultado final, 680x1039, ~60 KB cada una.
+
+Para cambiar las capturas: reemplaza mobile-analisis.png,
+mobile-pedido.png y mobile-logistica.png (540x1170) y corre
+
+  node scripts/montar-celus.js
+
+El script recorta la foto, detecta la pantalla verde, mete la captura
+con esquinas redondeadas y exporta las tres .webp. La del medio sale
+espejada para que las tres manos no se vean clonadas.
+
+El fondo lavanda de la foto es #DECDFC y el panel de la landing usa
+ese mismo valor, por eso no se ve el borde de las imagenes. Si
+recomprimis las fotos, revisa que el fondo siga dando #DECDFC.
