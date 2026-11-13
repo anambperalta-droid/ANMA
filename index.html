@@ -155,7 +155,7 @@ a{color:inherit;text-decoration:none}
 .nav-menu-mobile a i{font-size:13px;color:#6E6383;width:18px;text-align:center}
 @media(max-width:780px){
   .nav-links{display:none}
-  .nav-burger{display:inline-flex;align-items:center;justify-content:center;margin-right:4px;font-size:20px;padding:6px 10px}
+  .nav-burger{display:inline-flex;align-items:center;justify-content:center;margin-right:4px;font-size:20px;padding:6px 10px;min-width:44px;min-height:44px}
   .nav-in{gap:6px}
   /* En mobile el logo queda centrado entre burger y CTAs */
   .logo{flex:1;justify-content:flex-start}
@@ -163,7 +163,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:480px){
   /* En pantallas muy chicas: ocultamos "Probar gratis" para no apilar y dejamos solo Ingresar */
   .nav-cta .btn-primary{display:none}
-  .nav-burger{padding:6px 8px;font-size:19px}
+  .nav-burger{padding:6px 8px;font-size:19px;min-width:44px;min-height:44px}
 }
 
 /* HERO */
@@ -457,7 +457,7 @@ p{text-wrap:pretty}
    Dots: chicos, activo violeta pastel ancho. */
 .adentro-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px}
 .adentro-dots{display:flex;gap:6px;align-items:center}
-.adentro-dot{width:6px;height:6px;border-radius:99px;background:#CFC2E8;border:none;cursor:pointer;padding:0;transition:background .18s,width .25s ease;font-family:inherit}
+.adentro-dot{width:6px;height:6px;border-radius:99px;background:#CFC2E8;border:none;cursor:pointer;padding:9px 6px;background-clip:content-box;box-sizing:content-box;transition:background .18s,width .25s ease;font-family:inherit}
 .adentro-dot:hover{background:#A68BF0}
 .adentro-dot.is-active{background:#652BDF;width:18px}
 .adentro-dot:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
@@ -626,7 +626,7 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
   .adentro-cap-sub{font-size:12.5px;line-height:1.5}
   .adentro-url{font-size:10px}
   .adentro-controls{gap:8px;margin-top:10px}
-  .adentro-arrow{width:28px;height:28px}
+  .adentro-arrow{width:40px;height:40px}
 }
 
 /* FLOAT WA */
@@ -773,7 +773,7 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
   .hero-tiles{gap:6px}
   .h-tile{padding:10px 9px}
   .h-tile-n{font-size:17px}
-  .h-tile-l{font-size:8.5px;letter-spacing:.05em}
+  .h-tile-l{font-size:9.5px;letter-spacing:.04em}
   .hero-row{padding:8px 10px;gap:9px}
   .h-row-txt b{font-size:12.5px}
   .h-row-txt small{font-size:11px}
@@ -805,13 +805,13 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
   .foot-brand{grid-column:1/-1}
   .foot-brand p{font-size:12px;margin:8px 0 10px;max-width:none}
   .foot-col h6{font-size:10px;margin:0 0 8px}
-  .foot-col a{font-size:12.5px;padding:2px 0}
+  .foot-col a{font-size:12.5px;padding:8px 0}
   footer{padding:20px 0 12px}
   .foot-bot{padding-top:12px;font-size:11px}
 }
 @media(max-width:480px){
   .foot-grid{grid-template-columns:1fr 1fr;gap:16px 12px}
-  .foot-col a{font-size:12px;padding:2px 0;line-height:1.45}
+  .foot-col a{font-size:12.5px;padding:9px 0;line-height:1.45}
 }
 
 /* PRICING mobile */
@@ -905,7 +905,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 @media(max-width:400px){
   /* Mantener 2 columnas en footer incluso en pantallas ultra-pequeñas — más compacto */
   .foot-grid{grid-template-columns:1fr 1fr!important;gap:18px 12px!important}
-  .foot-col a{font-size:12px!important;padding:3px 0!important}
+  .foot-col a{font-size:12.5px!important;padding:9px 0!important}
   .hero-trust{gap:8px!important;font-size:11px!important}
   /* Ocultar botón Ingresar para no sobrecargar nav */
   .nav-btn-login{display:none!important}
@@ -959,7 +959,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 @media(max-width:680px){
   /* ── HERO ── */
   .hero{padding:32px 0 52px!important}
-  .eyebrow{font-size:10.5px!important;padding:5px 11px!important;line-height:1.4;max-width:100%;white-space:normal;text-align:center}
+  .eyebrow{font-size:11.5px!important;padding:6px 12px!important;line-height:1.4;max-width:100%;white-space:normal;text-align:center}
   .eyebrow strong{display:inline}
   .lead{font-size:15px!important;margin-bottom:22px!important;line-height:1.6!important}
   .hero-ctas{gap:14px!important;margin-bottom:18px!important;flex-direction:column;align-items:stretch}
@@ -967,7 +967,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
   .hero-ctas .cta-secondary-btn,.hero-ctas > a[href="/demo.html"]{align-self:center!important;justify-content:center!important}
   /* Micro-garantías: 1 línea por garantía, centradas, separación cómoda
      (el div usa estilos inline → necesita !important para pisarlos) */
-  .hero-trust{flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:10px!important;margin-top:18px!important;font-size:10.5px!important}
+  .hero-trust{flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:10px!important;margin-top:16px!important;font-size:11.5px!important}
 
   /* ── DEMO INTERACTIVO ── scroll horizontal con indicador */
   #demo .wrap{padding:0 12px!important}
