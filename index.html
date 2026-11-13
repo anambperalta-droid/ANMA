@@ -103,7 +103,7 @@ if ((window.matchMedia && window.matchMedia('(display-mode: standalone)').matche
    complementario del violeta— como unico acento. Verde solo para
    acciones. Sin naranja, sin azul. Tocar aca, no regla por regla. */
 :root{
-  --crema:#FBF7F0; --papel:#fff; --lila:#F1EBFD;
+  --crema:#F5EFE4; --papel:#fff; --lila:#F1EBFD;
   --violeta:#652BDF; --violeta-700:#4718AE; --violeta-900:#360C72;
   --violeta-100:#E2D2FF; --violeta-50:#EFE7FE;
   --ink:#221433; --ink-2:#2B1A45;
@@ -118,7 +118,7 @@ if ((window.matchMedia && window.matchMedia('(display-mode: standalone)').matche
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden}
-body{margin:0;font-family:'Figtree',sans-serif;color:#221433;background:#FBF7F0;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;font-family:'Figtree',sans-serif;color:#221433;background:#F5EFE4;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
@@ -207,6 +207,9 @@ a{color:inherit;text-decoration:none}
 .hero-demo-tag{font-size:11px;color:#6E6383;font-weight:600;margin:0;font-style:italic;letter-spacing:.2px}
 .hero-trust{display:flex;align-items:center;gap:18px;font-size:13px;color:#574A6B;flex-wrap:wrap;margin-top:4px}
 .hero-trust i{color:#34d399}
+/* Entre 1024 y 1180 la columna del hero se angosta: achicamos un punto
+   para que los tres sellos sigan en una sola linea. */
+@media(max-width:1180px){.hero-trust{font-size:10px!important;gap:12px!important;letter-spacing:.4px!important}}
 .mock{position:relative;background:#221433;border-radius:14px;padding:14px;box-shadow:0 30px 80px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.08);transform:rotate(-1.5deg);transition:transform .4s}
 .mock:hover{transform:rotate(0)}
 .mock-bar{display:flex;gap:6px;margin-bottom:10px;align-items:center}
@@ -225,7 +228,7 @@ a{color:inherit;text-decoration:none}
 }
 
 /* SECTIONS */
-section{padding:56px 0}
+section{padding:44px 0}
 .eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#FDF6DD;color:#4718AE;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
 .h2{font-family:'Figtree',sans-serif;font-size:clamp(26px,2.2vw + 16px,40px);font-weight:800;letter-spacing:normal;line-height:1.08;margin:0 0 10px;color:#221433;text-wrap:balance}
 .h2 em{font-style:normal;color:#4718AE}
@@ -315,7 +318,7 @@ p{text-wrap:pretty}
 .mg-lo{color:#dc2626;font-weight:700}
 
 /* PARA QUIEN */
-.para-quien{background:#FBF7F0}
+.para-quien{background:#F5EFE4}
 .pq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
 .pq{background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:22px 22px;text-align:center;transition:transform .2s,border-color .2s}
 .pq:hover{transform:translateY(-3px);border-color:#652BDF}
@@ -335,7 +338,7 @@ p{text-wrap:pretty}
 .faq-body{padding:18px 22px;font-size:14px;color:#574A6B;line-height:1.7}
 
 /* CONTACTO */
-.contact{background:#FBF7F0}
+.contact{background:#F5EFE4}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
 .contact-info h3{font-size:24px;font-weight:700;margin:0 0 14px}
 .contact-info p{font-size:15px;color:#574A6B;margin:0 0 22px;line-height:1.55}
@@ -348,7 +351,7 @@ p{text-wrap:pretty}
 .form{background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:32px;position:relative}
 .form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form label{display:block;font-size:11px;font-weight:700;color:#574A6B;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase}
-.form input,.form textarea,.form select{width:100%;padding:12px 14px;border:1.5px solid #E9E1F5;border-radius:10px;font-size:14px;font-family:inherit;color:#221433;background:#FBF7F0;outline:none;transition:border-color .2s,box-shadow .2s;box-sizing:border-box}
+.form input,.form textarea,.form select{width:100%;padding:12px 14px;border:1.5px solid #E9E1F5;border-radius:10px;font-size:14px;font-family:inherit;color:#221433;background:#F5EFE4;outline:none;transition:border-color .2s,box-shadow .2s;box-sizing:border-box}
 .form input:focus,.form textarea:focus,.form select:focus{border-color:#652BDF;box-shadow:0 0 0 3px rgba(100,41,209,.1);background:#fff}
 .form .fg{margin-bottom:14px}
 .form textarea{resize:vertical;min-height:90px}
@@ -390,7 +393,7 @@ p{text-wrap:pretty}
 .dtable th{font-size:10px;color:#8A7F9B;text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:8px 14px;background:#F1EBFD;border-bottom:1px solid #CFC2E8;text-align:left;white-space:nowrap}
 .dtable td{font-size:12.5px;color:#574A6B;padding:9px 14px;border-bottom:1px solid #F0EAFC;vertical-align:middle;background:#fff}
 .dtable tr:last-child td{border-bottom:none}
-.dtable tr:hover td{background:#FBF7F0}
+.dtable tr:hover td{background:#F5EFE4}
 .row-red td{border-left:3px solid #ef4444}
 .row-warn td{border-left:3px solid #F6DE8B}
 .dbadge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:99px;font-size:10.5px;font-weight:700;white-space:nowrap}
@@ -475,7 +478,7 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
    frame blanco pasa a ser lo mas claro en pantalla.
    Referencia de tono: violeta Nave (#652BDF / #360C72).
    ═════════════════════════════════════════════ */
-.adentro-dark{background:#360C72;border-top:none!important;border-bottom:none!important;padding:56px 0!important}
+.adentro-dark{background:#360C72;border-top:none!important;border-bottom:none!important;padding:44px 0!important}
 .adentro-dark .h2{color:#fff}
 .adentro-dark .h2 em{font-style:normal;color:#F6DE8B}
 .adentro-dark .adentro-intro{color:#CFBFF0;font-size:18px;line-height:1.5;margin:0 auto;max-width:540px;letter-spacing:-.01em}
@@ -500,7 +503,7 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
 .adentro-dark .adentro-counter{color:rgba(255,255,255,.6)}
 .adentro-dark .adentro-foot{font-size:11px;color:#B59BF5;margin-top:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
 @media(max-width:680px){
-  .adentro-dark{padding:40px 0!important}
+  .adentro-dark{padding:34px 0!important}
 }
 /* ── Lightbox: overlay full-screen que abre al hacer click en cualquier shot ── */
 .adentro-lb{position:fixed;inset:0;background:rgba(20,10,34,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:9999;padding:24px;animation:adentro-lb-in .18s ease-out both}
@@ -552,13 +555,13 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
 /* Instalacion PWA — nota fluida, no steps. Conversacional, con las
    palabras clave marcadas para que "salten" sin ruptura tipografica.
    El PWA-chip inline sirve de anclaje conceptual sin robar peso. */
-.install-note{margin:32px auto 0;max-width:680px;padding:22px 22px;background:#fff;border:1px solid #E9E1F5;border-radius:18px;text-align:center;font-family:'Figtree',sans-serif}
-.install-note p{color:#574A6B;font-size:15px;line-height:1.6;margin:0;letter-spacing:-.01em}
+.install-note{margin:26px auto 0;max-width:720px;padding:26px 30px;background:#EFE7FE;border:1px solid #CFC2E8;border-radius:18px;text-align:center;font-family:'Figtree',sans-serif}
+.install-note p{color:#4A3A63;font-size:16.5px;line-height:1.6;margin:0;letter-spacing:-.01em}
 .install-note p b{color:#221433;font-weight:700}
 .install-note p em{font-style:normal;color:#4718AE;font-weight:700}
 @media(max-width:640px){
-  .install-note{margin-top:30px;padding:18px 20px;border-radius:14px}
-  .install-note p{font-size:13.5px;line-height:1.65}
+  .install-note{margin-top:24px;padding:20px 18px;border-radius:14px}
+  .install-note p{font-size:15px;line-height:1.6}
 }
 /* Controles del carrusel: solo mobile */
 .bolsillo-controls{display:none}
@@ -1154,8 +1157,8 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
 /* ── Espaciado compacto mobile (ajuste final, gana por orden) ── */
 @media(max-width:680px){
-  section:not(.hero){padding:40px 0}
-  #para-quien,#contact{padding:40px 16px!important}
+  section:not(.hero){padding:34px 0}
+  #para-quien,#contact{padding:34px 16px!important}
 }
 
 /* ── Flujo de pago (3 pasos claros) ── */
@@ -1234,17 +1237,17 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       </div>
 
       <!-- Micro-garantías (sin Tailwind — tamaños fijos inline para que NUNCA exploten) -->
-      <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:24px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#574A6B" class="hero-trust">
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#574A6B" class="hero-trust">
         <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:rgba(255,255,255,.32);flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;color:#652BDF;flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           Listo en 60 segundos
         </span>
         <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:rgba(255,255,255,.32);flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;color:#652BDF;flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
           Sin tarjeta de crédito
         </span>
         <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:rgba(255,255,255,.32);flex-shrink:0"><circle cx="12" cy="12" r="9"/><polyline points="8.5 12 11 14.5 15.5 9.5"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;color:#652BDF;flex-shrink:0"><circle cx="12" cy="12" r="9"/><polyline points="8.5 12 11 14.5 15.5 9.5"/></svg>
           Cancelás cuando quieras
         </span>
       </div>
@@ -1318,7 +1321,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- CÓMO FUNCIONA -->
-<section id="como-funciona" style="background:#FBF7F0;border-top:1px solid #E9E1F5">
+<section id="como-funciona" style="background:#F5EFE4;border-top:1px solid #E9E1F5">
   <div class="wrap">
 
     <!-- Encabezado -->
@@ -1479,7 +1482,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
     </div>
 
     <!-- CTA final: curiosidad → registro -->
-    <div style="text-align:center;margin-top:20px">
+    <div style="text-align:center;margin-top:14px">
       <a href="/app/registro" class="cta-primary-btn" style="padding:15px 30px;font-size:15px">
         Probalo con tu catálogo
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -1493,7 +1496,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- BOLSILLO · mobile / PWA -->
-<section id="bolsillo" style="background:#FBF7F0;border-bottom:1px solid #E9E1F5">
+<section id="bolsillo" style="background:#F5EFE4;border-bottom:1px solid #E9E1F5">
   <div class="wrap">
 
     <!-- Encabezado -->
@@ -1590,7 +1593,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- TESTIMONIOS -->
-<section style="background:#FBF7F0">
+<section style="background:#F5EFE4">
   <div class="wrap">
     <div style="text-align:center;max-width:680px;margin:0 auto 28px">
       <span class="eyebrow-dark">Tu día con ANMA</span>
@@ -1638,7 +1641,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- PARA QUIÉN -->
-<section id="para-quien" style="padding:56px 24px;background:#FBF7F0;border-top:1px solid #E9E1F5">
+<section id="para-quien" style="padding:44px 24px;background:#F5EFE4;border-top:1px solid #E9E1F5">
   <div style="max-width:1180px;margin:0 auto">
 
     <div style="text-align:center;max-width:680px;margin:0 auto 26px">
@@ -1739,7 +1742,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- ROI BLOCK -->
-<section style="background:#FBF7F0">
+<section style="background:#F5EFE4">
   <div class="wrap">
     <div class="why-band">
       <span class="why-eyebrow">Tu tiempo vale</span>
@@ -1902,7 +1905,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- FAQ -->
-<section id="faq" style="background:#FBF7F0;border-top:1px solid #E9E1F5">
+<section id="faq" style="background:#F5EFE4;border-top:1px solid #E9E1F5">
   <div class="wrap">
 
     <div style="text-align:center;max-width:700px;margin:0 auto 26px">
@@ -1949,7 +1952,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- CTA FINAL -->
-<section id="contact" style="padding:56px 16px;background:var(--violeta-900);text-align:center">
+<section id="contact" style="padding:44px 16px;background:var(--violeta-900);text-align:center">
   <div style="max-width:960px;margin:0 auto">
 
     <h2 class="h2 h2-light">
