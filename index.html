@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#6429D1">
+<meta name="theme-color" content="#652BDF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="ANMA Hub">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -103,12 +103,12 @@ if ((window.matchMedia && window.matchMedia('(display-mode: standalone)').matche
    complementario del violeta— como unico acento. Verde solo para
    acciones. Sin naranja, sin azul. Tocar aca, no regla por regla. */
 :root{
-  --crema:#FBF7F0; --papel:#fff; --lila:#F4EFFE;
-  --violeta:#6429D1; --violeta-700:#4B1BA6; --violeta-900:#2E0F6B;
-  --violeta-100:#E4D8FC; --violeta-50:#EDE4FD;
+  --crema:#FBF7F0; --papel:#fff; --lila:#F1EBFD;
+  --violeta:#652BDF; --violeta-700:#4718AE; --violeta-900:#360C72;
+  --violeta-100:#E2D2FF; --violeta-50:#EFE7FE;
   --ink:#221433; --ink-2:#2B1A45;
   --amarillo:#F6DE8B; --amarillo-50:#FDF6DD; --amarillo-900:#5A4A05;
-  --violeta-300:#B9A3F2;
+  --violeta-300:#B59BF5;
   --verde:#0E9B6E; --verde-700:#0B7D59;
   --txt:#221433; --txt-2:#574A6B; --txt-3:#6E6383; --txt-4:#8A7F9B;
   --borde:#E9E1F5; --borde-2:#CFC2E8;
@@ -145,12 +145,12 @@ a{color:inherit;text-decoration:none}
 
 /* Burger menu mobile — slide-down panel */
 .nav-burger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:#221433;font-size:18px;border-radius:8px;transition:background .15s}
-.nav-burger:hover{background:#F0EAFB}
+.nav-burger:hover{background:#F0EAFC}
 .nav-menu-mobile{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid #E9E1F5;box-shadow:0 8px 24px rgba(34,20,51,.08);padding:8px 0;flex-direction:column;z-index:60}
 .nav-menu-mobile.open{display:flex}
-.nav-menu-mobile a{padding:14px 22px;font-size:14.5px;font-weight:600;color:#221433;border-bottom:1px solid #F0EAFB;display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-menu-mobile a{padding:14px 22px;font-size:14.5px;font-weight:600;color:#221433;border-bottom:1px solid #F0EAFC;display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-menu-mobile a:last-child{border-bottom:none}
-.nav-menu-mobile a:hover{background:#F4EFFE;color:#3C1580}
+.nav-menu-mobile a:hover{background:#F1EBFD;color:#36107F}
 .nav-menu-mobile a i{font-size:13px;color:#8A7F9B;width:18px;text-align:center}
 @media(max-width:780px){
   .nav-links{display:none}
@@ -166,13 +166,13 @@ a{color:inherit;text-decoration:none}
 }
 
 /* HERO */
-.hero{position:relative;background:#F4EFFE;color:#221433;padding:60px 0 72px;overflow:hidden;border-bottom:1px solid #E9E1F5}
+.hero{position:relative;background:#F1EBFD;color:#221433;padding:60px 0 72px;overflow:hidden;border-bottom:1px solid #E9E1F5}
 .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
 /* min-width:0 permite que las columnas se encojan por debajo de su contenido.
    Sin esto, el mockup (tabla nowrap + sidebar 196px) fuerza ~700px de ancho y
    el celu hace zoom-out para que entre (se ve "alejado"). */
 .hero-grid>*{min-width:0}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:#fff;border:1px solid #DED2F6;border-radius:99px;font-size:12px;font-weight:600;color:#3C1580;margin-bottom:14px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:#fff;border:1px solid #DCCEFA;border-radius:99px;font-size:12px;font-weight:600;color:#36107F;margin-bottom:14px}
 .eyebrow .pulse-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:pulse 2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.7)}70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
 @keyframes ctaGlow{0%,100%{box-shadow:0 8px 32px rgba(5,150,105,.45)}50%{box-shadow:0 10px 44px rgba(5,150,105,.72),0 0 80px rgba(5,150,105,.18)}}
@@ -187,9 +187,9 @@ a{color:inherit;text-decoration:none}
 
 /* Social proof chips */
 .sp-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #E9E1F5;border-radius:14px;padding:12px 20px;transition:border-color .2s,transform .2s,box-shadow .2s}
-.sp-chip:hover{border-color:#6429D1;transform:translateY(-2px);box-shadow:0 6px 20px rgba(100,41,209,.1)}
-.sp-chip-icon{width:36px;height:36px;border-radius:10px;background:#EDE4FD;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sp-chip-icon i{color:#6429D1;font-size:15px}
+.sp-chip:hover{border-color:#652BDF;transform:translateY(-2px);box-shadow:0 6px 20px rgba(100,41,209,.1)}
+.sp-chip-icon{width:36px;height:36px;border-radius:10px;background:#EFE7FE;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sp-chip-icon i{color:#652BDF;font-size:15px}
 .sp-chip span{font-size:14px;font-weight:700;color:#2F1E4E}
 
 @media(max-width:640px){
@@ -199,7 +199,7 @@ a{color:inherit;text-decoration:none}
   .sp-chip span{font-size:13px}
 }
 .h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(34px,4.4vw + 8px,56px);line-height:1.02;font-weight:800;font-variation-settings:'opsz' 96;letter-spacing:-.038em;margin:0 0 16px;text-wrap:balance}
-.h1 em{font-style:normal;color:#4B1BA6}
+.h1 em{font-style:normal;color:#4718AE}
 .lead{font-size:18px;color:#574A6B;max-width:540px;margin:0 0 20px;line-height:1.6}
 .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end}
 .hero-cta-btn{width:200px;justify-content:center}
@@ -226,9 +226,9 @@ a{color:inherit;text-decoration:none}
 
 /* SECTIONS */
 section{padding:48px 0}
-.eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#FDF6DD;color:#4B1BA6;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#FDF6DD;color:#4718AE;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
 .h2{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,2.6vw + 18px,44px);font-weight:800;font-variation-settings:'opsz' 72;letter-spacing:-.034em;line-height:1.06;margin:0 0 14px;color:#221433;text-wrap:balance}
-.h2 em{font-style:normal;color:#4B1BA6}
+.h2 em{font-style:normal;color:#4718AE}
 .h2.h2-light{color:#fff}
 .h2.h2-light em{font-style:normal;color:var(--amarillo)}
 .sub{font-size:17.5px;color:#574A6B;max-width:680px;margin:0 0 28px;line-height:1.65;text-wrap:pretty}
@@ -256,7 +256,7 @@ p{text-wrap:pretty}
 /* sidebar */
 .app-nav{width:196px;background:#221433;flex-shrink:0;display:flex;flex-direction:column;padding:10px 0;border-right:1px solid rgba(255,255,255,.06)}
 .app-nav-logo{display:flex;align-items:center;gap:8px;padding:6px 14px 14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:6px}
-.app-nav-logo-mark{width:26px;height:26px;border-radius:7px;background:#6429D1;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;flex-shrink:0}
+.app-nav-logo-mark{width:26px;height:26px;border-radius:7px;background:#652BDF;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;flex-shrink:0}
 .app-nav-logo span{font-size:14px;font-weight:900;color:#fff;letter-spacing:-.3px}
 .app-nav-item{display:flex;align-items:center;gap:9px;padding:8px 14px;font-size:13px;color:rgba(255,255,255,.55);cursor:pointer;border-radius:7px;margin:0 6px 1px;transition:all .15s;font-weight:500;border:none;background:none;font-family:inherit;width:calc(100% - 12px);text-align:left}
 .app-nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
@@ -264,7 +264,7 @@ p{text-wrap:pretty}
 .app-nav-item i{width:15px;text-align:center;font-size:12px;flex-shrink:0}
 .app-nav-section{font-size:9px;font-weight:800;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1.2px;padding:10px 14px 4px;margin-top:4px}
 /* main */
-.app-main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:#F4EFFE}
+.app-main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:#F1EBFD}
 .app-topbar{padding:11px 20px;background:#fff;border-bottom:1px solid #CFC2E8;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .app-topbar-left{font-size:13px;color:#6E6383;font-weight:500}
 .app-topbar-left b{color:#221433;font-weight:800}
@@ -290,9 +290,9 @@ p{text-wrap:pretty}
 /* table */
 .app-tbl-wrap{padding:0 20px 20px;flex:1}
 .app-tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;border:1.5px solid #CFC2E8}
-.app-tbl thead tr{background:#F4EFFE;border-bottom:1.5px solid #CFC2E8}
+.app-tbl thead tr{background:#F1EBFD;border-bottom:1.5px solid #CFC2E8}
 .app-tbl th{padding:10px 14px;font-size:10px;font-weight:800;color:#8A7F9B;text-transform:uppercase;letter-spacing:.6px;text-align:left;white-space:nowrap}
-.app-tbl tbody tr{border-bottom:1px solid #F0EAFB}
+.app-tbl tbody tr{border-bottom:1px solid #F0EAFC}
 .app-tbl tbody tr:last-child{border-bottom:none}
 .app-tbl td{padding:11px 14px;color:#574A6B;vertical-align:middle;white-space:nowrap}
 .app-tbl td b{color:#221433;font-weight:700;display:block}
@@ -304,7 +304,7 @@ p{text-wrap:pretty}
 .sp-stock-ok{background:#dcfce7;color:#15803d}
 .sp-stock-bajo{background:#FDF6DD;color:#5A4A05}
 .sp-sin-stock{background:#fee2e2;color:#dc2626}
-.sp-inactivo{background:#F0EAFB;color:#6E6383}
+.sp-inactivo{background:#F0EAFC;color:#6E6383}
 /* table actions */
 .t-edit{background:none;border:none;color:#8A7F9B;cursor:default;font-size:14px;padding:3px 5px}
 .t-del{background:none;border:none;color:#fca5a5;cursor:default;font-size:14px;padding:3px 5px}
@@ -318,8 +318,8 @@ p{text-wrap:pretty}
 .para-quien{background:#FBF7F0}
 .pq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
 .pq{background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px;text-align:center;transition:transform .2s,border-color .2s}
-.pq:hover{transform:translateY(-3px);border-color:#6429D1}
-.pq i{font-size:26px;color:#6429D1;margin-bottom:12px}
+.pq:hover{transform:translateY(-3px);border-color:#652BDF}
+.pq i{font-size:26px;color:#652BDF;margin-bottom:12px}
 .pq h5{font-size:14px;margin:0 0 4px;font-weight:700}
 .pq p{font-size:12px;color:#6E6383;margin:0}
 @media(max-width:780px){.pq-grid{grid-template-columns:1fr 1fr}}
@@ -331,7 +331,7 @@ p{text-wrap:pretty}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"";width:22px;height:22px;flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F2762E' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;transition:transform .2s ease}
 .faq[open] summary::after{content:"";transform:rotate(180deg)}
-.faq[open] summary{border-bottom:1px solid #F0EAFB}
+.faq[open] summary{border-bottom:1px solid #F0EAFC}
 .faq-body{padding:18px 22px;font-size:14px;color:#574A6B;line-height:1.7}
 
 /* CONTACTO */
@@ -341,19 +341,19 @@ p{text-wrap:pretty}
 .contact-info p{font-size:15px;color:#574A6B;margin:0 0 28px;line-height:1.65}
 .contact-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid #E9E1F5}
 .contact-item:first-of-type{border-top:none}
-.contact-item-icon{width:42px;height:42px;border-radius:11px;background:#6429D115;color:#6429D1;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.contact-item-icon{width:42px;height:42px;border-radius:11px;background:#652BDF15;color:#652BDF;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .contact-item .l{font-size:11px;color:#6E6383;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:2px}
 .contact-item .v{font-size:14.5px;color:#221433;font-weight:600}
-.contact-item .v a:hover{color:#6429D1}
+.contact-item .v a:hover{color:#652BDF}
 .form{background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:32px;position:relative}
 .form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form label{display:block;font-size:11px;font-weight:700;color:#574A6B;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase}
 .form input,.form textarea,.form select{width:100%;padding:12px 14px;border:1.5px solid #E9E1F5;border-radius:10px;font-size:14px;font-family:inherit;color:#221433;background:#FBF7F0;outline:none;transition:border-color .2s,box-shadow .2s;box-sizing:border-box}
-.form input:focus,.form textarea:focus,.form select:focus{border-color:#6429D1;box-shadow:0 0 0 3px rgba(100,41,209,.1);background:#fff}
+.form input:focus,.form textarea:focus,.form select:focus{border-color:#652BDF;box-shadow:0 0 0 3px rgba(100,41,209,.1);background:#fff}
 .form .fg{margin-bottom:14px}
 .form textarea{resize:vertical;min-height:90px}
 .form .privacy{font-size:11px;color:#6E6383;margin:10px 0 0;line-height:1.5;text-align:center}
-.form .privacy a{color:#3C1580;font-weight:600}
+.form .privacy a{color:#36107F;font-weight:600}
 .form .honeypot{position:absolute;left:-9999px;opacity:0;pointer-events:none}
 .form-success{display:none;text-align:center;padding:30px 20px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;color:#166534}
 .form-success.show{display:block}
@@ -374,8 +374,8 @@ p{text-wrap:pretty}
 .demo-tabs{display:flex;gap:2px;background:#111827;padding:10px 14px 0;border:1px solid rgba(255,255,255,.07);border-bottom:none;border-radius:14px 14px 0 0}
 .demo-tab{padding:9px 18px;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.55);border-radius:8px 8px 0 0;cursor:pointer;display:inline-flex;align-items:center;gap:7px;border:1px solid transparent;border-bottom:none;transition:background .15s,color .15s}
 .demo-tab:hover:not(.active){background:rgba(255,255,255,.04);color:rgba(255,255,255,.85)}
-.demo-tab.active{background:#F4EFFE;color:#221433;border-color:rgba(255,255,255,.07);font-weight:700}
-.demo-tab.active i{color:#3C1580}
+.demo-tab.active{background:#F1EBFD;color:#221433;border-color:rgba(255,255,255,.07);font-weight:700}
+.demo-tab.active i{color:#36107F}
 /* App shell se conecta al tab strip — sin border-radius arriba */
 #demo .app-shell-wrap{border-radius:0 0 14px 14px;border-top:none}
 .demo-tab i{font-size:11px}
@@ -384,19 +384,19 @@ p{text-wrap:pretty}
 .demo-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;border-bottom:1px solid #CFC2E8}
 .demo-toolbar-left{display:flex;align-items:center;gap:8px}
 .demo-toolbar-left h5{font-size:13px;font-weight:800;color:#221433;margin:0}
-.demo-count{font-size:11px;background:#F0EAFB;color:#6E6383;padding:2px 8px;border-radius:99px;font-weight:600}
+.demo-count{font-size:11px;background:#F0EAFC;color:#6E6383;padding:2px 8px;border-radius:99px;font-weight:600}
 .demo-btn-new{background:#0E9B6E;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:7px;white-space:nowrap}
-.dtable{width:100%;border-collapse:collapse;background:#F4EFFE}
-.dtable th{font-size:10px;color:#8A7F9B;text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:8px 14px;background:#F4EFFE;border-bottom:1px solid #CFC2E8;text-align:left;white-space:nowrap}
-.dtable td{font-size:12.5px;color:#574A6B;padding:9px 14px;border-bottom:1px solid #F0EAFB;vertical-align:middle;background:#fff}
+.dtable{width:100%;border-collapse:collapse;background:#F1EBFD}
+.dtable th{font-size:10px;color:#8A7F9B;text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:8px 14px;background:#F1EBFD;border-bottom:1px solid #CFC2E8;text-align:left;white-space:nowrap}
+.dtable td{font-size:12.5px;color:#574A6B;padding:9px 14px;border-bottom:1px solid #F0EAFC;vertical-align:middle;background:#fff}
 .dtable tr:last-child td{border-bottom:none}
 .dtable tr:hover td{background:#FBF7F0}
 .row-red td{border-left:3px solid #ef4444}
 .row-warn td{border-left:3px solid #F6DE8B}
 .dbadge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:99px;font-size:10.5px;font-weight:700;white-space:nowrap}
 .dbadge-green{background:#dcfce7;color:#15803d}
-.dbadge-blue{background:#E4D8FC;color:#4B1BA6}
-.dbadge-purple{background:#EDE4FD;color:#3C1580}
+.dbadge-blue{background:#E2D2FF;color:#4718AE}
+.dbadge-purple{background:#EFE7FE;color:#36107F}
 .dbadge-amber{background:#FDF6DD;color:#5A4A05}
 .dbadge-red{background:#fee2e2;color:#dc2626}
 .dstatus{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;white-space:nowrap}
@@ -405,7 +405,7 @@ p{text-wrap:pretty}
 .ddot-r{background:#dc2626}
 .ddot-a{background:#F6DE8B}
 .dwa{color:#25D366;font-size:15px}
-.dact{display:inline-flex;width:26px;height:26px;border-radius:7px;background:#F0EAFB;align-items:center;justify-content:center;font-size:10px;color:#6E6383}
+.dact{display:inline-flex;width:26px;height:26px;border-radius:7px;background:#F0EAFC;align-items:center;justify-content:center;font-size:10px;color:#6E6383}
 .dnum-ok{color:#16a34a;font-weight:700}
 .dnum-low{color:#dc2626;font-weight:700}
 .dnum-warn{color:#F6DE8B;font-weight:700}
@@ -424,25 +424,25 @@ p{text-wrap:pretty}
 .adentro-track::-webkit-scrollbar{display:none}
 .adentro-slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;display:flex;flex-direction:column;align-items:stretch;margin:0}
 .adentro-shot{margin:0;display:flex;flex-direction:column}
-.adentro-frame{background:#fff;border-radius:14px;overflow:hidden;border:1px solid #DED2F6;box-shadow:0 20px 50px -22px rgba(34,20,51,.35)}
-.adentro-bar{display:flex;align-items:center;gap:6px;padding:11px 14px;background:#F0EAFB;border-bottom:1px solid #E9E1F5}
+.adentro-frame{background:#fff;border-radius:14px;overflow:hidden;border:1px solid #DCCEFA;box-shadow:0 20px 50px -22px rgba(34,20,51,.35)}
+.adentro-bar{display:flex;align-items:center;gap:6px;padding:11px 14px;background:#F0EAFC;border-bottom:1px solid #E9E1F5}
 .adentro-bar > span{width:9px;height:9px;border-radius:99px;background:#CFC2E8;flex-shrink:0}
 .adentro-url{margin-left:14px;font-size:10.5px;font-weight:600;color:#6E6383;letter-spacing:.02em;font-family:'Inter',sans-serif}
 /* img: si carga bien, tapa el background del <picture>. Si aún no está
    subida (Ana pendiente), el background se ve como un shot violeta elegante
    con "captura próxima" — no queda "imagen rota". */
-.adentro-frame picture{display:block;position:relative;min-height:240px;background:#EDE4FD;overflow:hidden}
+.adentro-frame picture{display:block;position:relative;min-height:240px;background:#EFE7FE;overflow:hidden}
 .adentro-frame picture::before{content:"Vista previa";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#8A7F9B;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;z-index:0}
 .adentro-frame picture::after{content:"";position:absolute;inset:0;background:transparent;z-index:0;pointer-events:none}
 .adentro-frame img{display:block;width:100%;height:auto;position:relative;z-index:1}
 /* Captions con jerarquía consistente con el resto de la landing */
 .adentro-cap{color:#574A6B;font-size:15px;line-height:1.6;padding:22px 8px 0;text-align:center;max-width:360px;margin:0 auto;font-family:'Inter',sans-serif}
 .adentro-cap b{color:#221433;font-weight:800;letter-spacing:-.01em}
-.adentro-cap i{font-style:normal;color:#4B1BA6;font-weight:700}
+.adentro-cap i{font-style:normal;color:#4718AE;font-weight:700}
 /* Pie de imagen: título en negrita + descripción muted debajo */
 .adentro-cap-title{color:#221433;font-weight:800;font-size:16px;letter-spacing:-.01em;display:block;margin-bottom:4px;font-family:'Inter',sans-serif}
 .adentro-cap-sub{color:#574A6B;font-size:13px;font-weight:500;line-height:1.5;display:block}
-.adentro-cap-sub i{font-style:normal;color:#4B1BA6;font-weight:700}
+.adentro-cap-sub i{font-style:normal;color:#4718AE;font-weight:700}
 /* ── Controles del carrusel (flechas + dots) ── */
 /* Controles sutiles — no compiten con las capturas.
    Flechas: solo icono con opacity baja, sin border/background hasta hover.
@@ -451,22 +451,57 @@ p{text-wrap:pretty}
 .adentro-dots{display:flex;gap:6px;align-items:center}
 .adentro-dot{width:6px;height:6px;border-radius:99px;background:#CFC2E8;border:none;cursor:pointer;padding:0;transition:background .18s,width .25s ease;font-family:inherit}
 .adentro-dot:hover{background:#A68BF0}
-.adentro-dot.is-active{background:#6429D1;width:18px}
-.adentro-dot:focus-visible{outline:2px solid #E4D8FC;outline-offset:3px}
+.adentro-dot.is-active{background:#652BDF;width:18px}
+.adentro-dot:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
 .adentro-arrow{width:30px;height:30px;border-radius:50%;border:none;background:transparent;color:#8A7F9B;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .18s,color .18s;font-family:inherit;flex-shrink:0;padding:0}
-.adentro-arrow:hover{background:#EDE4FD;color:#3C1580}
+.adentro-arrow:hover{background:#EFE7FE;color:#36107F}
 .adentro-arrow:disabled{opacity:.25;cursor:default}
 .adentro-arrow:disabled:hover{background:transparent;color:#8A7F9B}
-.adentro-arrow:focus-visible{outline:2px solid #E4D8FC;outline-offset:3px}
+.adentro-arrow:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
 /* Contador "N de M" — texto minimo, muy sutil */
 .adentro-counter{color:#6E6383;font-size:10.5px;font-weight:600;letter-spacing:.06em;font-family:'Inter',sans-serif;min-width:38px;text-align:center;font-variant-numeric:tabular-nums}
 /* Frame como boton clickeable — hover invita a ampliar */
-button.adentro-frame{width:100%;padding:0;border:1px solid #DED2F6;background:#fff;color:inherit;font-family:inherit;cursor:zoom-in;text-align:left;display:block;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+button.adentro-frame{width:100%;padding:0;border:1px solid #DCCEFA;background:#fff;color:inherit;font-family:inherit;cursor:zoom-in;text-align:left;display:block;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
 button.adentro-frame:hover{transform:translateY(-3px);border-color:#A68BF0;box-shadow:0 26px 60px -24px rgba(34,20,51,.4)}
-button.adentro-frame:hover .adentro-zoom-hint{opacity:1;background:#E4D8FC}
-button.adentro-frame:focus-visible{outline:2px solid #E4D8FC;outline-offset:3px}
+button.adentro-frame:hover .adentro-zoom-hint{opacity:1;background:#E2D2FF}
+button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
 /* Icono de expandir en la esquina de la topbar del frame */
-.adentro-zoom-hint{margin-left:auto;width:22px;height:22px;border-radius:6px;background:#EDE4FD;color:#4B1BA6;display:inline-flex;align-items:center;justify-content:center;opacity:.65;transition:opacity .2s,background .2s;flex-shrink:0}
+.adentro-zoom-hint{margin-left:auto;width:22px;height:22px;border-radius:6px;background:#EFE7FE;color:#4718AE;display:inline-flex;align-items:center;justify-content:center;opacity:.65;transition:opacity .2s,background .2s;flex-shrink:0}
+
+/* ═════════════════════════════════════════════
+   ADENTRO EN OSCURO · banda de contraste
+   La captura es el protagonista: el panel violeta
+   profundo la separa del resto de la pagina y el
+   frame blanco pasa a ser lo mas claro en pantalla.
+   Referencia de tono: violeta Nave (#652BDF / #360C72).
+   ═════════════════════════════════════════════ */
+.adentro-dark{background:#360C72;border-top:none!important;border-bottom:none!important;padding:72px 0!important}
+.adentro-dark .h2{color:#fff}
+.adentro-dark .h2 em{font-style:normal;color:#F6DE8B}
+.adentro-dark .adentro-intro{color:#CFBFF0;font-size:18px;line-height:1.6;margin:0 auto;max-width:540px;letter-spacing:-.01em}
+.adentro-dark .eyebrow-feria{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:#F6DE8B;color:#3A2E02;border:none;border-radius:99px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px}
+/* Frame: lo unico blanco sobre el violeta, con aro tenue para despegarlo */
+.adentro-dark button.adentro-frame{border-color:rgba(255,255,255,.2);box-shadow:0 2px 0 rgba(255,255,255,.08) inset,0 34px 72px -26px rgba(12,2,34,.75)}
+.adentro-dark button.adentro-frame:hover{border-color:#F6DE8B;box-shadow:0 40px 84px -26px rgba(12,2,34,.85)}
+/* Pie de cada captura */
+.adentro-dark .adentro-cap{color:#BCA9EB}
+.adentro-dark .adentro-cap-title{color:#fff}
+.adentro-dark .adentro-cap-sub{color:#BCA9EB}
+.adentro-dark .adentro-cap-sub i{color:#F6DE8B}
+/* Controles del carrusel invertidos */
+.adentro-dark .adentro-dot{background:rgba(255,255,255,.3)}
+.adentro-dark .adentro-dot:hover{background:rgba(255,255,255,.55)}
+.adentro-dark .adentro-dot.is-active{background:#F6DE8B}
+.adentro-dark .adentro-dot:focus-visible{outline-color:#F6DE8B}
+.adentro-dark .adentro-arrow{color:rgba(255,255,255,.62)}
+.adentro-dark .adentro-arrow:hover{background:rgba(255,255,255,.14);color:#fff}
+.adentro-dark .adentro-arrow:disabled:hover{background:transparent;color:rgba(255,255,255,.62)}
+.adentro-dark .adentro-arrow:focus-visible{outline-color:#F6DE8B}
+.adentro-dark .adentro-counter{color:rgba(255,255,255,.6)}
+.adentro-dark .adentro-foot{font-size:11px;color:#B59BF5;margin-top:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+@media(max-width:680px){
+  .adentro-dark{padding:48px 0!important}
+}
 /* ── Lightbox: overlay full-screen que abre al hacer click en cualquier shot ── */
 .adentro-lb{position:fixed;inset:0;background:rgba(20,10,34,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:9999;padding:24px;animation:adentro-lb-in .18s ease-out both}
 .adentro-lb.open{display:flex}
@@ -478,7 +513,7 @@ button.adentro-frame:focus-visible{outline:2px solid #E4D8FC;outline-offset:3px}
 .adentro-lb-title{margin-left:12px;font-size:12px;font-weight:700;color:rgba(255,255,255,.72);letter-spacing:.02em}
 .adentro-lb-close{margin-left:auto;width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-family:inherit;transition:background .15s}
 .adentro-lb-close:hover{background:rgba(255,255,255,.14)}
-.adentro-lb-img-wrap{max-height:calc(90vh - 60px);overflow:auto;background:#F4EFFE}
+.adentro-lb-img-wrap{max-height:calc(90vh - 60px);overflow:auto;background:#F1EBFD}
 .adentro-lb-img-wrap img{display:block;width:100%;height:auto}
 .adentro-lb-hint{position:absolute;bottom:-32px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
 @media(max-width:640px){
@@ -500,11 +535,11 @@ button.adentro-frame:focus-visible{outline:2px solid #E4D8FC;outline-offset:3px}
 /* Phone frame: bezel oscuro sutil, notch top, aspect ratio 9:19.5 */
 button.bolsillo-phone{width:100%;max-width:240px;aspect-ratio:9/19.5;background:#221433;border-radius:36px;padding:10px;border:1px solid rgba(255,255,255,.14);box-shadow:0 32px 80px rgba(0,0,0,.55),0 2px 0 rgba(255,255,255,.06) inset;cursor:zoom-in;position:relative;transition:transform .2s,box-shadow .2s,border-color .2s;font-family:inherit}
 button.bolsillo-phone:hover{transform:translateY(-4px);border-color:rgba(100,41,209,.5);box-shadow:0 40px 100px rgba(0,0,0,.65),0 0 0 1px rgba(201,182,247,.28)}
-button.bolsillo-phone:focus-visible{outline:2px solid #E4D8FC;outline-offset:4px}
+button.bolsillo-phone:focus-visible{outline:2px solid #E2D2FF;outline-offset:4px}
 /* Notch: pill center-top */
 button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);width:66px;height:16px;background:#1A0E2B;border-radius:12px;z-index:3;border:1px solid rgba(255,255,255,.06)}
 /* Pantalla interior con la captura */
-.bolsillo-screen{width:100%;height:100%;border-radius:26px;overflow:hidden;background:#EDE4FD;position:relative}
+.bolsillo-screen{width:100%;height:100%;border-radius:26px;overflow:hidden;background:#EFE7FE;position:relative}
 .bolsillo-screen::before{content:"Vista previa mobile";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#8A7F9B;font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;z-index:0;text-align:center;padding:0 20px}
 .bolsillo-screen img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;position:relative;z-index:1}
 .bolsillo-cap{color:#574A6B;font-size:13.5px;line-height:1.55;padding:20px 8px 0;text-align:center;max-width:220px;font-family:'Inter',sans-serif;font-weight:600}
@@ -512,8 +547,8 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 /* Chips de trust bajo el titulo — en UNA SOLA LINEA (nowrap).
    En mobile con textos cortos + font chico para que entren los 3. */
 .bolsillo-chips{display:flex;flex-wrap:nowrap;justify-content:center;gap:8px;margin:22px auto 0;max-width:100%;padding:0 6px}
-.bolsillo-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #DED2F6;color:#574A6B;padding:8px 14px;border-radius:99px;font-size:12px;font-weight:600;letter-spacing:.02em;white-space:nowrap;flex-shrink:0}
-.bolsillo-chip svg{color:#6429D1;flex-shrink:0}
+.bolsillo-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #DCCEFA;color:#574A6B;padding:8px 14px;border-radius:99px;font-size:12px;font-weight:600;letter-spacing:.02em;white-space:nowrap;flex-shrink:0}
+.bolsillo-chip svg{color:#652BDF;flex-shrink:0}
 /* Etiquetas responsive: se muestran largas en desktop, cortas en mobile */
 .bolsillo-chip .chip-long{display:inline}
 .bolsillo-chip .chip-short{display:none}
@@ -530,13 +565,38 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 .install-note{margin:32px auto 0;max-width:680px;padding:22px 24px;background:#fff;border:1px solid #E9E1F5;border-radius:18px;text-align:center;font-family:'Inter',sans-serif}
 .install-note p{color:#574A6B;font-size:15px;line-height:1.75;margin:0;letter-spacing:-.01em}
 .install-note p b{color:#221433;font-weight:700}
-.install-note p em{font-style:normal;color:#4B1BA6;font-weight:700}
+.install-note p em{font-style:normal;color:#4718AE;font-weight:700}
 @media(max-width:640px){
   .install-note{margin-top:30px;padding:18px 20px;border-radius:14px}
   .install-note p{font-size:13.5px;line-height:1.65}
 }
 /* Controles del carrusel: solo mobile */
 .bolsillo-controls{display:none}
+
+/* ═════════════════════════════════════════════
+   STAGE LAVANDA + MANOS
+   Los celus son oscuros: para que resalten va un
+   panel claro (lavanda Nave #E2D2FF) y no uno
+   oscuro como en "Adentro", donde el frame es blanco.
+   Las manos son ilustracion plana, misma paleta,
+   y el borde inferior del panel las recorta.
+   ═════════════════════════════════════════════ */
+.bolsillo-stage{background:#E2D2FF;border-radius:32px;max-width:1000px;margin:34px auto 0;padding:34px 28px 0;overflow:hidden}
+.bolsillo-stage .bolsillo-grid{margin-top:0!important;padding-bottom:104px;align-items:end}
+.bolsillo-stage .bolsillo-shot{flex-direction:column-reverse}
+.bolsillo-stage .bolsillo-cap{color:#4718AE;padding:0 8px 18px;font-size:13.5px}
+.bolsillo-stage .bolsillo-cap b{color:#221433}
+/* La mano: dos capas sobre la caja del celu (240x520 de referencia) */
+.held{position:relative;width:100%;max-width:240px;display:flex;justify-content:center}
+.held .mano{position:absolute;left:-39.58%;top:-7.69%;width:179.17%;height:138.46%;pointer-events:none;transform:rotate(var(--giro,-3deg));transform-origin:50% 72%}
+.held .mano-atras{z-index:0}
+.held .mano-frente{z-index:3}
+.held button.bolsillo-phone{position:relative;z-index:2}
+@media(max-width:900px){
+  .bolsillo-stage{border-radius:22px;padding:26px 16px 0;margin-top:26px}
+  .bolsillo-stage .bolsillo-grid{padding-bottom:0}
+  .held .mano{display:none}
+}
 @media(max-width:768px){
   /* Grid pasa a carrusel scroll-snap horizontal. Desktop mantiene grid 3 cols. */
   .bolsillo-carousel{position:relative;max-width:100%}
@@ -580,7 +640,7 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 .mock-wrap{position:relative}
 .mock-notify{position:absolute;top:-18px;right:24px;background:#fff;border-radius:99px;padding:8px 18px 8px 12px;display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:#221433;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:3;border:1px solid rgba(0,0,0,.06);white-space:nowrap;animation:floatChip 3s ease-in-out infinite}
 .mock-notify .ndot{width:8px;height:8px;border-radius:50%;background:#10b981;flex-shrink:0;box-shadow:0 0 0 3px rgba(16,185,129,.25);animation:pulse 2s infinite}
-.mock-badge{position:absolute;bottom:-16px;left:18px;background:#6429D1;border-radius:14px;padding:11px 18px;display:flex;gap:16px;z-index:3;box-shadow:0 8px 24px rgba(100,41,209,.45)}
+.mock-badge{position:absolute;bottom:-16px;left:18px;background:#652BDF;border-radius:14px;padding:11px 18px;display:flex;gap:16px;z-index:3;box-shadow:0 8px 24px rgba(100,41,209,.45)}
 .mock-badge .bstat{text-align:center}
 .mock-badge .bv{font-size:16px;font-weight:800;color:#fff;line-height:1.1}
 .mock-badge .bl{font-size:9px;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
@@ -602,14 +662,14 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 .insight-chip-dot{width:7px;height:7px;border-radius:50%;background:#10b981;flex-shrink:0;box-shadow:0 0 0 3px rgba(16,185,129,.22);animation:pulse 2s infinite}
 
 /* Tag categoría — punchy */
-.insight-tag{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;color:#4B1BA6;text-transform:uppercase;letter-spacing:1.4px;background:#FDF6DD;padding:6px 12px;border-radius:99px;margin-bottom:16px;border:1px solid rgba(246,222,139,.75)}
+.insight-tag{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;color:#4718AE;text-transform:uppercase;letter-spacing:1.4px;background:#FDF6DD;padding:6px 12px;border-radius:99px;margin-bottom:16px;border:1px solid rgba(246,222,139,.75)}
 
 /* Body: layout horizontal texto + donut */
 .insight-body{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;margin-bottom:18px}
 
 /* Titular editorial */
 .insight-headline{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:700;font-variation-settings:'opsz' 48;color:#221433;line-height:1.15;letter-spacing:-.8px;margin:0 0 10px;text-wrap:balance}
-.insight-headline em{font-style:normal;color:#4B1BA6;font-weight:700}
+.insight-headline em{font-style:normal;color:#4718AE;font-weight:700}
 
 /* Sub mensaje corto */
 .insight-sub{font-size:13.5px;color:#574A6B;line-height:1.55;margin:0;text-wrap:balance}
@@ -620,20 +680,20 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 .insight-body-visual svg{display:block}
 
 /* Footer: avatar cliente + CTA */
-.insight-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:16px;border-top:1px solid #F0EAFB}
+.insight-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:16px;border-top:1px solid #F0EAFC}
 .insight-client{display:flex;align-items:center;gap:11px;min-width:0}
-.insight-client-avatar{width:38px;height:38px;border-radius:50%;background:#6429D1;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;letter-spacing:-.3px;flex-shrink:0;box-shadow:0 4px 12px rgba(100,41,209,.35)}
+.insight-client-avatar{width:38px;height:38px;border-radius:50%;background:#652BDF;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;letter-spacing:-.3px;flex-shrink:0;box-shadow:0 4px 12px rgba(100,41,209,.35)}
 .insight-client-info{min-width:0}
 .insight-client-name{font-size:13.5px;font-weight:800;color:#221433;display:flex;align-items:center;gap:6px;line-height:1.2}
-.insight-client-badge{font-size:9px;font-weight:800;background:#6429D1;color:#fff;padding:2px 6px;border-radius:5px;letter-spacing:.5px}
+.insight-client-badge{font-size:9px;font-weight:800;background:#652BDF;color:#fff;padding:2px 6px;border-radius:5px;letter-spacing:.5px}
 .insight-client-role{font-size:11.5px;color:#6E6383;font-weight:600;margin-top:2px}
-.insight-cta{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:#3C1580;text-decoration:none;padding:8px 14px;border-radius:10px;background:#F4EFFE;border:1px solid #EDE4FD;flex-shrink:0;transition:background .15s,color .15s,transform .15s}
-.insight-cta:hover{background:#6429D1;color:#fff;transform:translateX(2px)}
+.insight-cta{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:#36107F;text-decoration:none;padding:8px 14px;border-radius:10px;background:#F1EBFD;border:1px solid #EFE7FE;flex-shrink:0;transition:background .15s,color .15s,transform .15s}
+.insight-cta:hover{background:#652BDF;color:#fff;transform:translateX(2px)}
 .insight-cta svg{transition:transform .2s}
 .insight-cta:hover svg{transform:translateX(2px)}
 
 /* Badge flotante inferior */
-.insight-badge{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);background:#6429D1;border-radius:14px;padding:12px 20px;display:flex;gap:20px;z-index:3;box-shadow:0 14px 34px rgba(100,41,209,.55);white-space:nowrap}
+.insight-badge{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);background:#652BDF;border-radius:14px;padding:12px 20px;display:flex;gap:20px;z-index:3;box-shadow:0 14px 34px rgba(100,41,209,.55);white-space:nowrap}
 .ib-stat{text-align:center}
 .ib-num{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:#fff;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .ib-lbl{font-size:9px;color:rgba(255,255,255,.95);text-transform:uppercase;letter-spacing:.5px;margin-top:4px;font-weight:700}
@@ -736,7 +796,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 .foot-brand p{font-size:12.5px;margin:10px 0 12px;line-height:1.55;max-width:320px}
 .foot-soc{display:flex;gap:8px}
 .foot-soc a{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;transition:background .2s}
-.foot-soc a:hover{background:#6429D1}
+.foot-soc a:hover{background:#652BDF}
 .foot-col h6{font-size:10.5px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin:0 0 10px}
 .foot-col a{display:block;font-size:13px;padding:3px 0;color:rgba(255,255,255,.6);transition:color .2s;line-height:1.5}
 .foot-col a:hover{color:#fff}
@@ -827,12 +887,12 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
 /* ── TESTIMONIOS · antes vs ahora ── */
 .testi-stat{text-align:center;padding:0 8px}
-.testi-stat-tag{display:inline-block;font-size:10.5px;font-weight:800;color:#4B1BA6;text-transform:uppercase;letter-spacing:1.4px;background:#FDF6DD;padding:6px 13px;border-radius:99px;margin-bottom:22px;border:1px solid rgba(246,222,139,.75)}
+.testi-stat-tag{display:inline-block;font-size:10.5px;font-weight:800;color:#4718AE;text-transform:uppercase;letter-spacing:1.4px;background:#FDF6DD;padding:6px 13px;border-radius:99px;margin-bottom:22px;border:1px solid rgba(246,222,139,.75)}
 .testi-stat-num{font-family:'Bricolage Grotesque',sans-serif;font-size:88px;font-weight:800;font-variation-settings:'opsz' 96;color:#221433;line-height:1;letter-spacing:-3.5px;margin-bottom:18px;display:inline-flex;align-items:baseline;justify-content:center;gap:6px}
-.testi-stat-unit{font-family:'Bricolage Grotesque',sans-serif;font-size:38px;font-weight:700;color:#6429D1;letter-spacing:-1px}
+.testi-stat-unit{font-family:'Bricolage Grotesque',sans-serif;font-size:38px;font-weight:700;color:#652BDF;letter-spacing:-1px}
 .testi-stat-title{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:700;color:#221433;letter-spacing:-.3px;margin:0 0 12px;line-height:1.25}
 .testi-stat-old{font-size:12.5px;color:#8A7F9B;margin:0 0 14px;font-weight:500;line-height:1.4}
-.testi-stat-old s{color:#E4D8FC;text-decoration-thickness:1.5px;text-decoration-color:#E4D8FC}
+.testi-stat-old s{color:#E2D2FF;text-decoration-thickness:1.5px;text-decoration-color:#E2D2FF}
 .testi-stat-desc{font-size:13.5px;color:#574A6B;line-height:1.55;margin:0;max-width:280px;margin-left:auto;margin-right:auto}
 
 @media(max-width:860px){.testi-stats{grid-template-columns:1fr!important;gap:44px!important}}
@@ -867,7 +927,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 .wa-cta-btn:hover{box-shadow:0 16px 40px rgba(37,211,102,.45)}
 .wa-cta-btn i{font-size:22px}
 .contact-email-link{display:inline-flex;align-items:center;gap:7px;margin-top:22px;font-size:13px;color:#6E6383;text-decoration:none;font-weight:600;transition:color .2s}
-.contact-email-link:hover{color:#3C1580}
+.contact-email-link:hover{color:#36107F}
 .contact-email-link i{font-size:13px}
 
 /* STICKY MOBILE CTA BAR */
@@ -1083,10 +1143,10 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 .esc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1180px;margin:0 auto}
 .esc{background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px;display:flex;flex-direction:column;gap:12px;transition:transform .2s,box-shadow .2s,border-color .2s}
 .esc:hover{transform:translateY(-3px);box-shadow:0 14px 34px -14px rgba(100,41,209,.35);border-color:rgba(100,41,209,.35)}
-.esc-tag{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;font-size:10.5px;font-weight:800;color:#4B1BA6;text-transform:uppercase;letter-spacing:1.2px;background:#FDF6DD;padding:6px 12px;border-radius:99px;border:1px solid rgba(246,222,139,.75)}
+.esc-tag{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;font-size:10.5px;font-weight:800;color:#4718AE;text-transform:uppercase;letter-spacing:1.2px;background:#FDF6DD;padding:6px 12px;border-radius:99px;border:1px solid rgba(246,222,139,.75)}
 .esc-tag svg{width:12px;height:12px}
 .esc-body{font-size:16px;color:#221433;line-height:1.5;margin:0;font-weight:500}
-.esc-body b{color:#4B1BA6;font-weight:700}
+.esc-body b{color:#4718AE;font-weight:700}
 .esc-antes{font-size:13px;color:#6E6383;margin:auto 0 0;padding-top:14px;border-top:1px solid #E9E1F5;line-height:1.45}
 .esc-antes b{color:#be123c;font-weight:800;font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;margin-right:4px}
 .esc-antes s{color:#6E6383;text-decoration-thickness:2px;text-decoration-color:#e6a3b4}
@@ -1115,7 +1175,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 .pay-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 auto 14px}
 .pay-step{background:rgba(255,255,255,.04);border:1px solid rgba(100,41,209,.22);border-radius:18px;padding:22px 24px;text-align:left}
 .pay-step-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.pay-step-n{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;background:rgba(100,41,209,.28);color:#E4D8FC;font-size:12px;font-weight:800;flex-shrink:0}
+.pay-step-n{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;background:rgba(100,41,209,.28);color:#E2D2FF;font-size:12px;font-weight:800;flex-shrink:0}
 .pay-step h4{color:#fff;font-size:14px;font-weight:700;margin:0}
 .pay-step p{color:#8A7F9B;font-size:12.5px;line-height:1.5;margin:0}
 .pay-step p b{color:#fff;font-weight:700}
@@ -1123,7 +1183,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 .pay-step.pay-free .pay-step-n{background:rgba(52,211,153,.2);color:#6ee7b7}
 @media(max-width:680px){.pay-flow{grid-template-columns:1fr;gap:8px;margin-bottom:14px}}
 .pay-step-amt{font-family:'Bricolage Grotesque',sans-serif;color:#fff;font-size:32px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1;margin:0 0 6px}
-.pay-step-amt span{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#E4D8FC;letter-spacing:0}
+.pay-step-amt span{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#E2D2FF;letter-spacing:0}
 .pay-step.pay-free .pay-step-amt{color:#6ee7b7}
 @media(max-width:680px){.pay-step-amt{font-size:28px}}
 </style>
@@ -1280,7 +1340,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <h2 class="h2">
         Cómo se ve tu día <em>con ANMA Hub</em>
       </h2>
-      <p class="text-lg text-slate-600 text-balance" style="margin:0 auto;max-width:580px;line-height:1.65;color:#574A6B">
+      <p class="text-lg text-slate-600 text-balance" style="margin:0 auto;max-width:580px;line-height:1.6;color:#574A6B">
         Si sabés usar WhatsApp, ya sabés usar ANMA Hub
       </p>
     </div>
@@ -1290,8 +1350,8 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
       <!-- Paso 01 -->
       <div style="position:relative;padding:0 8px">
-        <span class="paso-num block select-none" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:80px;line-height:1;margin-bottom:4px;color:#6429D1;letter-spacing:-4px">01</span>
-        <div style="width:48px;height:3px;background:#6429D1;border-radius:99px;margin:0 auto 20px"></div>
+        <span class="paso-num block select-none" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:80px;line-height:1;margin-bottom:4px;color:#652BDF;letter-spacing:-4px">01</span>
+        <div style="width:48px;height:3px;background:#652BDF;border-radius:99px;margin:0 auto 20px"></div>
         <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900" style="margin:0 0 12px;color:#221433">
           Cargás tu catálogo y tus clientes
         </h3>
@@ -1302,8 +1362,8 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
       <!-- Paso 02 -->
       <div style="position:relative;padding:0 8px">
-        <span class="paso-num block select-none" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:80px;line-height:1;margin-bottom:4px;color:#6429D1;letter-spacing:-4px">02</span>
-        <div style="width:48px;height:3px;background:#6429D1;border-radius:99px;margin:0 auto 20px"></div>
+        <span class="paso-num block select-none" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:80px;line-height:1;margin-bottom:4px;color:#652BDF;letter-spacing:-4px">02</span>
+        <div style="width:48px;height:3px;background:#652BDF;border-radius:99px;margin:0 auto 20px"></div>
         <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900" style="margin:0 0 12px;color:#221433">
           Hacés presupuestos, ventas y cobros
         </h3>
@@ -1314,8 +1374,8 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
       <!-- Paso 03 -->
       <div style="position:relative;padding:0 8px">
-        <span class="paso-num block select-none" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:80px;line-height:1;margin-bottom:4px;color:#6429D1;letter-spacing:-4px">03</span>
-        <div style="width:48px;height:3px;background:#6429D1;border-radius:99px;margin:0 auto 20px"></div>
+        <span class="paso-num block select-none" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:80px;line-height:1;margin-bottom:4px;color:#652BDF;letter-spacing:-4px">03</span>
+        <div style="width:48px;height:3px;background:#652BDF;border-radius:99px;margin:0 auto 20px"></div>
         <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900" style="margin:0 0 12px;color:#221433">
           Ves cómo va el negocio de un vistazo
         </h3>
@@ -1329,16 +1389,16 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- ADENTRO · capturas reales de la app -->
-<section id="adentro" style="background:#F4EFFE;border-top:1px solid #E9E1F5;border-bottom:1px solid #E9E1F5">
+<section id="adentro" class="adentro-dark">
   <div class="wrap">
 
     <!-- Encabezado -->
-    <div style="text-align:center;max-width:680px;margin:0 auto 26px">
-      <span class="eyebrow" style="color:#4B1BA6;background:#FDF6DD;border:1px solid rgba(246,222,139,.75);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">Así se ve por dentro</span>
-      <h2 class="h2" style="margin:12px 0 10px">
+    <div style="text-align:center;max-width:680px;margin:0 auto 32px">
+      <span class="eyebrow-feria">Así se ve por dentro</span>
+      <h2 class="h2" style="margin:14px 0 12px">
         Todo lo que necesitás <em>en una sola pantalla</em>
       </h2>
-      <p style="color:#574A6B;font-size:15px;line-height:1.65;margin:0 auto;max-width:520px">
+      <p class="adentro-intro">
         Un vistazo real a lo que ves apenas entrás. Sin maquetas.
       </p>
     </div>
@@ -1437,7 +1497,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
         Probalo con tu catálogo
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
-      <div style="font-size:11px;color:#6E6383;margin-top:10px;text-transform:uppercase;letter-spacing:1px;font-weight:600">
+      <div class="adentro-foot">
         Sin tarjeta · Listo en 60 segundos
       </div>
     </div>
@@ -1451,11 +1511,11 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
     <!-- Encabezado -->
     <div style="text-align:center;max-width:680px;margin:0 auto 20px">
-      <span class="eyebrow" style="color:#4B1BA6;background:#FDF6DD;border:1px solid rgba(246,222,139,.75);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">También en tu bolsillo</span>
+      <span class="eyebrow" style="color:#4718AE;background:#FDF6DD;border:1px solid rgba(246,222,139,.75);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">También en tu bolsillo</span>
       <h2 class="h2" style="margin:14px 0 12px">
         La misma app, <em>desde el celu</em>
       </h2>
-      <p style="color:#574A6B;font-size:15.5px;line-height:1.65;margin:0 auto;max-width:540px">
+      <p style="color:#574A6B;font-size:18px;line-height:1.6;margin:0 auto;max-width:560px">
         Se instala como aplicación en el teléfono. Todo funciona igual que en la compu — cargás pedidos en la calle y ves tu negocio sin abrir la laptop.
       </p>
 
@@ -1478,15 +1538,38 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
     <!-- Grid 3 phones en desktop / Carrusel horizontal en mobile -->
     <div class="bolsillo-carousel" id="bolsillo-carousel">
+      <!-- Mano ilustrada (paleta ANMA). Dos capas: palma y antebrazo
+           detras del celu, pulgar y yemas adelante. El panel la recorta. -->
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+          <symbol id="mano-atras" viewBox="0 0 430 720">
+            <path d="M224 720 L228 596 Q232 560 270 558 L312 556 Q348 554 352 592 L364 720 Z" fill="#E0A579"/>
+            <path d="M54 448 Q54 396 112 394 L286 392 Q346 390 346 450 L346 544 Q346 606 286 608 L120 610 Q54 612 54 552 Z" fill="#E0A579"/>
+            <path d="M56 452 H98 M55 498 H98 M57 544 H98" stroke="#CE8F64" stroke-width="3.5" stroke-linecap="round"/>
+            <rect x="222" y="664" width="166" height="56" rx="18" fill="#652BDF"/>
+          </symbol>
+          <symbol id="mano-frente" viewBox="0 0 430 720">
+            <path d="M330 596 Q322 540 324 476 Q326 430 352 430 Q378 430 378 476 L376 560 Q374 598 352 598 Z" fill="#E0A579"/>
+            <rect x="86" y="410" width="32" height="30" rx="15" fill="#E0A579"/>
+            <rect x="85" y="458" width="34" height="30" rx="15" fill="#E0A579"/>
+            <rect x="86" y="506" width="32" height="30" rx="15" fill="#E0A579"/>
+          </symbol>
+        </defs>
+      </svg>
+      <div class="bolsillo-stage">
       <div class="bolsillo-grid" id="bolsillo-track" style="margin-top:32px" role="region" aria-label="Vistas mobile de la app" tabindex="0">
 
         <!-- Análisis mobile — Insights del período + métricas globales -->
         <figure class="bolsillo-shot">
-          <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-analisis.png" data-adentro-title="Análisis · mobile" aria-label="Ver Análisis mobile en grande">
+          <div class="held" style="--giro:-6deg">
+            <svg class="mano mano-atras" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-atras"/></svg>
+            <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-analisis.png" data-adentro-title="Análisis · mobile" aria-label="Ver Análisis mobile en grande">
             <div class="bolsillo-screen">
               <picture><img src="/screens/mobile-analisis.png" alt="Insights del período: crecimiento, cobros vencidos, ticket promedio y métricas globales" loading="lazy" onerror="this.style.display='none'"></picture>
             </div>
           </button>
+            <svg class="mano mano-frente" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-frente"/></svg>
+          </div>
           <figcaption class="bolsillo-cap">
             <b>Insights del período</b><br>crecimiento y cobros vencidos
           </figcaption>
@@ -1494,11 +1577,15 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
         <!-- Nuevo pedido mobile — uso estrella del celu -->
         <figure class="bolsillo-shot">
-          <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-pedido.png" data-adentro-title="Nuevo pedido · mobile" aria-label="Ver Nuevo pedido mobile en grande">
+          <div class="held" style="--giro:-3deg">
+            <svg class="mano mano-atras" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-atras"/></svg>
+            <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-pedido.png" data-adentro-title="Nuevo pedido · mobile" aria-label="Ver Nuevo pedido mobile en grande">
             <div class="bolsillo-screen">
               <picture><img src="/screens/mobile-pedido.png" alt="Wizard de nuevo pedido en versión mobile" loading="lazy" onerror="this.style.display='none'"></picture>
             </div>
           </button>
+            <svg class="mano mano-frente" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-frente"/></svg>
+          </div>
           <figcaption class="bolsillo-cap">
             <b>Cargás un pedido</b><br>en la calle, en el cliente
           </figcaption>
@@ -1506,16 +1593,21 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
         <!-- Logística mobile — ciclo completo: no vendés solo, entregás -->
         <figure class="bolsillo-shot">
-          <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-logistica.png" data-adentro-title="Logística · mobile" aria-label="Ver Logística mobile en grande">
+          <div class="held" style="--giro:4deg">
+            <svg class="mano mano-atras" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-atras"/></svg>
+            <button type="button" class="bolsillo-phone" data-adentro-zoom="/screens/mobile-logistica.png" data-adentro-title="Logística · mobile" aria-label="Ver Logística mobile en grande">
             <div class="bolsillo-screen">
               <picture><img src="/screens/mobile-logistica.png" alt="Paradas de logística y entregas del día en versión mobile" loading="lazy" onerror="this.style.display='none'"></picture>
             </div>
           </button>
+            <svg class="mano mano-frente" viewBox="0 0 430 720" aria-hidden="true" focusable="false"><use href="#mano-frente"/></svg>
+          </div>
           <figcaption class="bolsillo-cap">
             <b>Seguís las entregas</b><br>del día, en la ruta
           </figcaption>
         </figure>
 
+      </div>
       </div>
 
       <!-- Controles (solo mobile, ocultos en desktop via CSS) -->
@@ -1603,7 +1695,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <h2 class="h2" style="text-align:center">
         Cada rubro tiene su ritmo, <em>el tuyo también</em>
       </h2>
-      <p class="text-lg text-balance text-center" style="color:#6E6383;margin:0 auto;max-width:580px;line-height:1.65">
+      <p class="text-lg text-balance text-center" style="color:#574A6B;margin:0 auto;max-width:580px;line-height:1.6">
         Público, mayorista o los dos — variantes, listas de precios y cuentas corrientes en una pantalla
       </p>
     </div>
@@ -1613,7 +1705,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <!-- Indumentaria -->
       <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div style="width:50px;height:50px;border-radius:14px;background:#6429D1;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.55)">
+          <div style="width:50px;height:50px;border-radius:14px;background:#652BDF;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.55)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <path d="M16 4 L20 6 L22 11 L18 13 L18 20 Q18 21 17 21 L7 21 Q6 21 6 20 L6 13 L2 11 L4 6 L8 4"/>
               <path d="M8 4 Q12 7 16 4"/>
@@ -1631,7 +1723,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <!-- Decoración -->
       <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div style="width:50px;height:50px;border-radius:14px;background:#6429D1;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.5)">
+          <div style="width:50px;height:50px;border-radius:14px;background:#652BDF;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.5)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 11 L4 16 L20 16 L20 11"/>
               <path d="M4 11 Q4 8 6 8 L8 8 Q9 8 9 9 L9 13 L15 13 L15 9 Q15 8 16 8 L18 8 Q20 8 20 11"/>
@@ -1651,7 +1743,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <!-- Tecnología -->
       <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div style="width:50px;height:50px;border-radius:14px;background:#6429D1;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.5)">
+          <div style="width:50px;height:50px;border-radius:14px;background:#652BDF;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.5)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <rect x="4" y="5" width="16" height="11" rx="1.5"/>
               <path d="M2 19 L22 19"/>
@@ -1670,7 +1762,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <!-- Almacén / distribución -->
       <div style="background:#fff;border:1px solid #E9E1F5;border-radius:18px;padding:26px 24px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div style="width:50px;height:50px;border-radius:14px;background:#6429D1;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.5)">
+          <div style="width:50px;height:50px;border-radius:14px;background:#652BDF;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(100,41,209,.5)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 9 L4 4 L20 4 L21 9"/>
               <path d="M3 9 Q3 11 5 11 Q7 11 7 9"/>
@@ -1727,7 +1819,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <h2 class="h2 h2-light" style="margin:0 0 10px">
         Una sola inversión<br><em>Tu operación, ordenada desde el primer día</em>
       </h2>
-      <p style="color:rgba(255,255,255,.72);font-size:14.5px;margin:0;line-height:1.6">Todo incluido, con soporte real desde el día uno</p>
+      <p style="color:rgba(255,255,255,.82);font-size:16px;margin:0;line-height:1.6">Todo incluido, con soporte real desde el día uno</p>
     </div>
 
     <!-- Flujo de pago: 3 pasos claros -->
@@ -1757,7 +1849,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
         <div class="pricing-left" style="flex:1;min-width:240px;padding-right:32px;border-right:1px solid #3F2A6B;display:flex;flex-direction:column;gap:10px">
 
           <!-- Badge plan -->
-          <span style="background:rgba(100,41,209,.22);color:#E4D8FC;font-size:10px;font-weight:800;text-transform:uppercase;padding:4px 13px;border-radius:20px;letter-spacing:1px;align-self:flex-start">Plan Gestión Integral</span>
+          <span style="background:rgba(100,41,209,.22);color:#E2D2FF;font-size:10px;font-weight:800;text-transform:uppercase;padding:4px 13px;border-radius:20px;letter-spacing:1px;align-self:flex-start">Plan Gestión Integral</span>
 
           <!-- Resumen del plan (los montos viven en los 3 pasos de arriba) -->
           <div>
@@ -1783,7 +1875,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
           <!-- Trial gratuito — en una sola línea -->
           <div style="text-align:center;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
             <p style="color:rgba(255,255,255,.62);font-size:11.5px;margin:0">¿Querés probar antes de hablar?</p>
-            <a href="/app/registro" style="display:inline-flex;align-items:center;gap:6px;color:#E4D8FC;font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap">
+            <a href="/app/registro" style="display:inline-flex;align-items:center;gap:6px;color:#E2D2FF;font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap">
               Probá gratis 7 días sin tarjeta
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;stroke-width:2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
@@ -1796,7 +1888,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
           <div style="display:flex;gap:14px;align-items:flex-start">
             <div style="width:36px;height:36px;border-radius:10px;background:rgba(100,41,209,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
-              <i class="fa-solid fa-layer-group" style="color:#E4D8FC;font-size:14px"></i>
+              <i class="fa-solid fa-layer-group" style="color:#E2D2FF;font-size:14px"></i>
             </div>
             <div>
               <h4 style="color:#fff;font-size:14px;font-weight:700;margin:0 0 4px">Ecosistema ANMA Hub completo</h4>
@@ -1832,7 +1924,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
           <div style="display:flex;gap:14px;align-items:flex-start">
             <div style="width:36px;height:36px;border-radius:10px;background:rgba(100,41,209,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
-              <i class="fa-solid fa-shield-halved" style="color:#E4D8FC;font-size:14px"></i>
+              <i class="fa-solid fa-shield-halved" style="color:#E2D2FF;font-size:14px"></i>
             </div>
             <div>
               <h4 style="color:#fff;font-size:14px;font-weight:700;margin:0 0 4px">Infraestructura de alta disponibilidad</h4>
@@ -1849,7 +1941,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
     <div style="background:rgba(34,20,51,.6);border:1px solid rgba(242,153,74,.2);border-radius:16px;padding:14px 22px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap">
       <p style="color:#CFC2E8;font-size:13.5px;font-weight:500;margin:0">¿Necesitás funciones exclusivas para tu operación?</p>
       <div style="width:1px;height:18px;background:#3F2A6B;flex-shrink:0"></div>
-      <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Quer%C3%ADa%20consultar%20sobre%20personalizaci%C3%B3n%20de%20ANMA." target="_blank" style="color:#E4D8FC;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px">
+      <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Quer%C3%ADa%20consultar%20sobre%20personalizaci%C3%B3n%20de%20ANMA." target="_blank" style="color:#E2D2FF;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px">
         Consultar personalización
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;stroke-width:2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
@@ -1952,7 +2044,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       </div>
       <div class="foot-col">
         <h6>Recursos</h6>
-        <a href="/recursos/guia">Guía completa <span style="background:#6429D1;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:6px;letter-spacing:.4px">NUEVO</span></a>
+        <a href="/recursos/guia">Guía completa <span style="background:#652BDF;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:6px;letter-spacing:.4px">NUEVO</span></a>
         <a href="/recursos/primeros-pasos">Primeros pasos (10 min)</a>
         <a href="/recursos/">Todas las guías</a>
         <a href="#faq">Preguntas frecuentes</a>
