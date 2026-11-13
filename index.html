@@ -117,7 +117,7 @@ a{color:inherit;text-decoration:none}
 /* NAV */
 .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid #ECE3D6}
 .nav-in{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-weight:600;font-size:18.5px;letter-spacing:.2px;color:#1a1430}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-weight:600;font-size:18.5px;letter-spacing:.2px;color:#2A2118}
 .logo-mark{width:32px;height:32px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;overflow:hidden}
 .logo-mark img{width:100%;height:100%;object-fit:contain}
 .nav-links{display:flex;gap:28px;font-size:14px;font-weight:500;color:#374151}
@@ -126,11 +126,11 @@ a{color:inherit;text-decoration:none}
 .nav-cta .btn{padding:10px 18px;font-size:13.5px}
 
 /* Burger menu mobile — slide-down panel */
-.nav-burger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:#1E1B4B;font-size:18px;border-radius:8px;transition:background .15s}
+.nav-burger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:#2A2118;font-size:18px;border-radius:8px;transition:background .15s}
 .nav-burger:hover{background:#EFE8DC}
 .nav-menu-mobile{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid #ECE3D6;box-shadow:0 8px 24px rgba(42,33,24,.08);padding:8px 0;flex-direction:column;z-index:60}
 .nav-menu-mobile.open{display:flex}
-.nav-menu-mobile a{padding:14px 22px;font-size:14.5px;font-weight:600;color:#1E1B4B;border-bottom:1px solid #EFE8DC;display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-menu-mobile a{padding:14px 22px;font-size:14.5px;font-weight:600;color:#2A2118;border-bottom:1px solid #EFE8DC;display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-menu-mobile a:last-child{border-bottom:none}
 .nav-menu-mobile a:hover{background:#FDF6EF;color:#B8431A}
 .nav-menu-mobile a i{font-size:13px;color:#9CA3AF;width:18px;text-align:center}
@@ -189,7 +189,7 @@ a{color:inherit;text-decoration:none}
 .hero-demo-tag{font-size:11px;color:rgba(255,255,255,.62);font-weight:600;margin:0;font-style:italic;letter-spacing:.2px}
 .hero-trust{display:flex;align-items:center;gap:18px;font-size:13px;color:rgba(255,255,255,.65);flex-wrap:wrap;margin-top:4px}
 .hero-trust i{color:#34d399}
-.mock{position:relative;background:#2A2118;border-radius:18px;padding:14px;box-shadow:0 30px 80px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.08);transform:rotate(-1.5deg);transition:transform .4s}
+.mock{position:relative;background:#2A2118;border-radius:14px;padding:14px;box-shadow:0 30px 80px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.08);transform:rotate(-1.5deg);transition:transform .4s}
 .mock:hover{transform:rotate(0)}
 .mock-bar{display:flex;gap:6px;margin-bottom:10px;align-items:center}
 .mock-bar span{width:11px;height:11px;border-radius:50%;background:#374151}
@@ -207,13 +207,13 @@ a{color:inherit;text-decoration:none}
 }
 
 /* SECTIONS */
-section{padding:44px 0}
+section{padding:48px 0}
 .eyebrow-dark{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;background:#EFE8DC;color:#B8431A;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
 .h2{font-family:'Fraunces',serif;font-size:clamp(28px,2.6vw + 18px,44px);font-weight:700;font-variation-settings:'opsz' 120;letter-spacing:-.026em;line-height:1.08;margin:0 0 14px;color:#2A2118;text-wrap:balance}
 .h2 em{font-style:normal;color:#D4521E}
 .h2.h2-light{color:#fff}
 .h2.h2-light em{font-style:normal;color:#F2A93B}
-.sub{font-size:17.5px;color:#374151;max-width:600px;margin:0 0 28px;line-height:1.65;text-wrap:pretty}
+.sub{font-size:17.5px;color:#374151;max-width:680px;margin:0 0 28px;line-height:1.65;text-wrap:pretty}
 .lead{text-wrap:pretty}
 p{text-wrap:pretty}
 .center{text-align:center;margin-left:auto;margin-right:auto}
@@ -221,14 +221,13 @@ p{text-wrap:pretty}
 /* Aire en mobile — más respiro entre secciones SIN achicar la tipografía
    (los títulos quedan grandes y prominentes, solo se agrega espacio) */
 @media(max-width:640px){
-  section{padding:48px 0}
   .sub{font-size:16.5px;line-height:1.7;margin-bottom:26px}
   .eyebrow-dark{margin-bottom:16px}
 }
 
 /* ── DEMO APP SHELL ── */
-.app-shell-wrap{background:#2A2118;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07);max-width:100%}
-.app-chrome-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:#0a0a1a;border-bottom:1px solid #3A2E1F}
+.app-shell-wrap{background:#2A2118;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07);max-width:100%}
+.app-chrome-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:#1C1610;border-bottom:1px solid #3A2E1F}
 .app-chrome-dots{display:flex;gap:6px}
 .app-chrome-dots span{width:11px;height:11px;border-radius:50%}
 .app-chrome-dots span:nth-child(1){background:#ef4444}
@@ -237,7 +236,7 @@ p{text-wrap:pretty}
 .app-chrome-url{background:#3A2E1F;border-radius:6px;padding:4px 14px;font-size:11px;color:#6B7280;font-family:monospace}
 .app-layout{display:flex;height:540px;overflow:hidden}
 /* sidebar */
-.app-nav{width:196px;background:#1a1040;flex-shrink:0;display:flex;flex-direction:column;padding:10px 0;border-right:1px solid rgba(255,255,255,.06)}
+.app-nav{width:196px;background:#2A2118;flex-shrink:0;display:flex;flex-direction:column;padding:10px 0;border-right:1px solid rgba(255,255,255,.06)}
 .app-nav-logo{display:flex;align-items:center;gap:8px;padding:6px 14px 14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:6px}
 .app-nav-logo-mark{width:26px;height:26px;border-radius:7px;background:#F2762E;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;flex-shrink:0}
 .app-nav-logo span{font-size:14px;font-weight:900;color:#fff;letter-spacing:-.3px}
@@ -260,8 +259,8 @@ p{text-wrap:pretty}
 .app-view{flex:1;overflow-y:auto;display:none;flex-direction:column}
 .app-view.av-active{display:flex}
 /* kpi row */
-.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:18px 20px;flex-shrink:0}
-.kpi-card{background:#fff;border:1px solid rgba(42,33,24,.06);border-radius:18px;padding:22px 22px 18px;position:relative;box-shadow:0 1px 3px rgba(42,33,24,.04),0 4px 12px -6px rgba(42,33,24,.06);transition:box-shadow .25s,transform .15s,border-color .2s}
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:18px 20px;flex-shrink:0}
+.kpi-card{background:#fff;border:1px solid #ECE3D6;border-radius:18px;padding:22px 22px 18px;position:relative;box-shadow:0 1px 3px rgba(42,33,24,.04),0 4px 12px -6px rgba(42,33,24,.06);transition:box-shadow .25s,transform .15s,border-color .2s}
 .kpi-card:hover{box-shadow:0 2px 6px rgba(42,33,24,.06),0 12px 32px -10px rgba(42,33,24,.12);transform:translateY(-1px);border-color:rgba(242,118,46,.18)}
 .kpi-card-key{background:#fff;border-color:rgba(34,197,94,.22)}
 .kpi-card-key::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:18px 18px 0 0;background:#16A34A}
@@ -299,8 +298,8 @@ p{text-wrap:pretty}
 
 /* PARA QUIEN */
 .para-quien{background:#FBF7F0}
-.pq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.pq{background:#fff;border:1px solid #ECE3D6;border-radius:14px;padding:22px;text-align:center;transition:transform .2s,border-color .2s}
+.pq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.pq{background:#fff;border:1px solid #ECE3D6;border-radius:18px;padding:26px 24px;text-align:center;transition:transform .2s,border-color .2s}
 .pq:hover{transform:translateY(-3px);border-color:#F2762E}
 .pq i{font-size:26px;color:#F2762E;margin-bottom:12px}
 .pq h5{font-size:14px;margin:0 0 4px;font-weight:700}
@@ -308,7 +307,7 @@ p{text-wrap:pretty}
 @media(max-width:780px){.pq-grid{grid-template-columns:1fr 1fr}}
 
 /* FAQ */
-.faq-wrap{max-width:780px;margin:0 auto}
+.faq-wrap{max-width:720px;margin:0 auto}
 .faq{border:1px solid #ECE3D6;border-radius:12px;margin-bottom:10px;overflow:hidden;background:#fff}
 .faq summary{padding:18px 22px;font-weight:700;font-size:15px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:#2A2118}
 .faq summary::-webkit-details-marker{display:none}
@@ -349,7 +348,7 @@ p{text-wrap:pretty}
 .demo-section-head{text-align:center;max-width:680px;margin:0 auto 32px}
 .demo-section-head h2{font-size:32px;font-weight:900;color:#fff;letter-spacing:-.8px;margin:0 0 10px}
 .demo-section-head p{font-size:15px;color:rgba(255,255,255,.6);margin:0}
-.demo-shell{border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.06)}
+.demo-shell{border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.06)}
 .demo-topbar{background:#111827;padding:9px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.05)}
 .demo-dots{display:flex;gap:5px}
 .demo-dot{width:10px;height:10px;border-radius:50%}
@@ -400,10 +399,10 @@ p{text-wrap:pretty}
    Cada slide muestra un shot con "browser frame" +
    pie de imagen (caption) debajo.
    ═════════════════════════════════════════════ */
-.adentro-carousel{position:relative;max-width:920px;margin:0 auto}
+.adentro-carousel{position:relative;max-width:960px;margin:0 auto}
 /* align-items:flex-start evita que el track se estire a la altura del slide
    MAS ALTO (Productos) y deje huecos negros abajo de los slides mas cortos. */
-.adentro-track{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 4px 8px;scroll-padding:8px;align-items:flex-start}
+.adentro-track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 4px 8px;scroll-padding:8px;align-items:flex-start}
 .adentro-track::-webkit-scrollbar{display:none}
 .adentro-slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;display:flex;flex-direction:column;align-items:stretch;margin:0}
 .adentro-shot{margin:0;display:flex;flex-direction:column}
@@ -478,7 +477,7 @@ button.adentro-frame:focus-visible{outline:2px solid #F2C98A;outline-offset:3px}
    se instala como PWA en el celu. 3 phones side-
    by-side con las mismas capturas pero en mobile.
    ═════════════════════════════════════════════ */
-.bolsillo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;max-width:920px;margin:0 auto;align-items:start}
+.bolsillo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;max-width:960px;margin:0 auto;align-items:start}
 .bolsillo-shot{margin:0;display:flex;flex-direction:column;align-items:center}
 /* Phone frame: bezel oscuro sutil, notch top, aspect ratio 9:19.5 */
 button.bolsillo-phone{width:100%;max-width:240px;aspect-ratio:9/19.5;background:#2A2118;border-radius:36px;padding:10px;border:1px solid rgba(255,255,255,.14);box-shadow:0 32px 80px rgba(0,0,0,.55),0 2px 0 rgba(255,255,255,.06) inset;cursor:zoom-in;position:relative;transition:transform .2s,box-shadow .2s,border-color .2s;font-family:inherit}
@@ -510,7 +509,7 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
 /* Instalacion PWA — nota fluida, no steps. Conversacional, con las
    palabras clave marcadas para que "salten" sin ruptura tipografica.
    El PWA-chip inline sirve de anclaje conceptual sin robar peso. */
-.install-note{margin:32px auto 0;max-width:600px;padding:20px 26px;background:rgba(242,201,138,.05);border:1px solid rgba(242,201,138,.14);border-radius:16px;text-align:center;font-family:'Inter',sans-serif}
+.install-note{margin:32px auto 0;max-width:680px;padding:22px 24px;background:rgba(242,201,138,.05);border:1px solid rgba(242,201,138,.14);border-radius:18px;text-align:center;font-family:'Inter',sans-serif}
 .install-note p{color:rgba(255,255,255,.78);font-size:15px;line-height:1.75;margin:0;letter-spacing:-.01em}
 .install-note p b{color:#fff;font-weight:700}
 .install-note p em{font-style:normal;color:#F2C98A;font-weight:700}
@@ -575,7 +574,7 @@ button.bolsillo-phone::before{content:"";position:absolute;top:14px;left:50%;tra
    HERO INSIGHT CARD · editorial + horizontal
    ═════════════════════════════════════════════ */
 .hero-insight-wrap{position:relative;padding:16px 0 38px}
-.insight-card{background:#fff;border-radius:22px;padding:24px 26px 20px;box-shadow:0 40px 100px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06);position:relative;z-index:2;overflow:hidden}
+.insight-card{background:#fff;border-radius:18px;padding:26px 24px 20px;box-shadow:0 40px 100px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06);position:relative;z-index:2;overflow:hidden}
 .insight-card::before{content:"";position:absolute;top:-40%;right:-30%;width:360px;height:360px;background:transparent;pointer-events:none;z-index:0}
 .insight-card > *{position:relative;z-index:1}
 
@@ -715,12 +714,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
   .lead{margin-left:auto!important;margin-right:auto!important}
   .mobile-cta-bar{display:flex!important}
   /* Secciones nuevas sin .wrap — reducir padding y añadir horizontal */
-  #sec-empathy{padding:52px 16px!important}
-  #para-quien{padding:52px 16px!important}
-  #como-funciona{padding:52px 0!important}
-  #faq{padding:52px 0!important}
-  #pricing{padding:44px 0!important}
-  #contact{padding:60px 16px!important}
   /* ROI block: apilar texto y stats en vertical */
   .roi-stats-col{min-width:auto!important;width:100%!important}
   .roi-stats-col > a{width:100%!important;box-sizing:border-box!important}
@@ -744,12 +737,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
   .app-layout{height:300px!important}
   .kpi-strip{grid-template-columns:1fr 1fr!important;gap:10px!important}
   /* Reducir más en mobile pequeño */
-  #sec-empathy{padding:40px 16px!important}
-  #para-quien{padding:40px 16px!important}
-  #como-funciona{padding:40px 0!important}
-  #faq{padding:40px 0!important}
-  #contact{padding:52px 16px!important}
-  #pricing{padding:36px 0!important}
   /* Números del proceso: reducir tamaño en mobile */
   .paso-num{font-size:56px!important;letter-spacing:-2px!important}
   /* CTA final: botón full-width en mobile */
@@ -846,7 +833,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
   .hero-trust{flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:10px!important;margin-top:18px!important;font-size:10.5px!important}
 
   /* ── DEMO INTERACTIVO ── scroll horizontal con indicador */
-  #demo{padding:40px 0!important}
   #demo .wrap{padding:0 12px!important}
   #demo .demo-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:10px 10px 0 0}
   #demo .demo-tabs::-webkit-scrollbar{display:none}
@@ -869,7 +855,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
   .roi-stats-col > div div[style*="font-size:24px"]{font-size:22px!important}
 
   /* ── PRICING ── tarjeta compacta */
-  #pricing{padding:44px 0!important}
   #pricing > div{padding:0 14px!important}
   #pricing > div > div[style*="background:#2A2118"]{padding:24px 20px!important;border-radius:18px!important}
   #pricing h2 br{display:none}
@@ -885,18 +870,15 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
   #pricing > div > div[style*="rgba(42,33,24,.6)"] > div[style*="width:1px"]{display:none}
 
   /* ── CTA FINAL ── */
-  #contact{padding:64px 16px!important}
   #contact h2 br{display:none}
   #contact > div > p{font-size:15px!important;line-height:1.65!important;margin-bottom:24px!important}
   #contact a.cta-primary-btn{width:100%!important;padding:16px 22px!important;font-size:15.5px!important;justify-content:center;box-sizing:border-box}
 
   /* ── EMPATÍA ── */
-  #sec-empathy{padding:48px 16px!important}
   #sec-empathy h3{font-size:17px!important;line-height:1.35!important;margin-bottom:18px!important}
   #sec-empathy p{font-size:14.5px!important;line-height:1.7!important;text-align:left}
 
   /* ── CÓMO FUNCIONA ── */
-  #como-funciona{padding:48px 0!important}
   #como-funciona > .wrap > div:first-child{margin-bottom:36px!important}
   #como-funciona h2 br{display:none}
   #como-funciona > .wrap > div:first-child p{font-size:14.5px!important}
@@ -910,7 +892,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
   .testi-grid p{font-size:14px!important;line-height:1.65!important}
 
   /* ── PARA QUIÉN ── */
-  #para-quien{padding:48px 16px!important}
   #para-quien > div > div:first-child p{font-size:14.5px!important}
   #para-quien-grid{gap:16px!important}
   #para-quien-grid > div{padding:24px 22px!important;border-radius:16px!important}
@@ -918,7 +899,6 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
   #para-quien-grid p{font-size:13.5px!important;line-height:1.65!important}
 
   /* ── FAQ ── */
-  #faq{padding:52px 0!important}
   #faq h2 br{display:none}
   .faq summary{padding:16px 18px!important;font-size:14px!important;gap:10px;align-items:flex-start}
   .faq summary::after{margin-top:2px}
@@ -1018,8 +998,8 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 }
 
 /* ── ESCENAS · antes/ahora (versión corta, reemplaza stat-cards) ── */
-.esc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto}
-.esc{background:#fff;border:1px solid #ECE3D6;border-radius:16px;padding:26px 24px;display:flex;flex-direction:column;gap:12px;transition:transform .2s,box-shadow .2s,border-color .2s}
+.esc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1180px;margin:0 auto}
+.esc{background:#fff;border:1px solid #ECE3D6;border-radius:18px;padding:26px 24px;display:flex;flex-direction:column;gap:12px;transition:transform .2s,box-shadow .2s,border-color .2s}
 .esc:hover{transform:translateY(-3px);box-shadow:0 14px 34px -14px rgba(242,118,46,.35);border-color:rgba(242,118,46,.35)}
 .esc-tag{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;font-size:10.5px;font-weight:800;color:#B8431A;text-transform:uppercase;letter-spacing:1.2px;background:#FDF6EF;padding:6px 12px;border-radius:99px;border:1px solid rgba(242,118,46,.14)}
 .esc-tag svg{width:12px;height:12px}
@@ -1032,7 +1012,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 @media(min-width:540px) and (max-width:860px){.esc-grid{grid-template-columns:1fr 1fr}}
 
 /* ── BANDA "Tu tiempo vale" · cierre centrado (temporal, sin imagen) ── */
-.why-band{max-width:860px;margin:0 auto;background:#2A2118;border-radius:22px;padding:34px 40px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:13px;box-shadow:0 34px 80px -34px rgba(242,118,46,.55)}
+.why-band{max-width:960px;margin:0 auto;background:#2A2118;border-radius:18px;padding:34px 40px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:13px;box-shadow:0 34px 80px -34px rgba(242,118,46,.55)}
 .why-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(52,211,153,.14);color:#34d399;font-size:10px;font-weight:800;text-transform:uppercase;padding:5px 13px;border-radius:20px;letter-spacing:1.2px}
 .why-h{font-family:'Fraunces',serif;color:#fff;font-size:clamp(26px,3.6vw,36px);letter-spacing:-.026em;margin:0;line-height:1.1;font-weight:700;font-variation-settings:'opsz' 96;text-wrap:balance;max-width:18ch}
 .why-h em{font-style:normal;color:#F2A93B}
@@ -1045,14 +1025,13 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
 /* ── Espaciado compacto mobile (ajuste final, gana por orden) ── */
 @media(max-width:680px){
-  section:not(.hero){padding:32px 0!important}
-  #para-quien{padding:32px 16px!important}
-  #contact{padding:46px 16px!important}
+  section:not(.hero){padding:36px 0}
+  #para-quien,#contact{padding:36px 16px!important}
 }
 
 /* ── Flujo de pago (3 pasos claros) ── */
-.pay-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 auto 14px}
-.pay-step{background:rgba(255,255,255,.04);border:1px solid rgba(242,118,46,.22);border-radius:16px;padding:20px 22px;text-align:left}
+.pay-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 auto 14px}
+.pay-step{background:rgba(255,255,255,.04);border:1px solid rgba(242,118,46,.22);border-radius:18px;padding:22px 24px;text-align:left}
 .pay-step-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .pay-step-n{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;background:rgba(242,118,46,.28);color:#F2C98A;font-size:12px;font-weight:800;flex-shrink:0}
 .pay-step h4{color:#fff;font-size:14px;font-weight:700;margin:0}
@@ -1217,7 +1196,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- CÓMO FUNCIONA -->
-<section id="como-funciona" style="padding:40px 0 44px;background:#FBF7F0;border-top:1px solid #ECE3D6">
+<section id="como-funciona" style="background:#FBF7F0;border-top:1px solid #ECE3D6">
   <div class="wrap">
 
     <!-- Encabezado -->
@@ -1232,7 +1211,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
     </div>
 
     <!-- Pasos -->
-    <div class="pasos-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px;text-align:center;max-width:1020px;margin:0 auto;padding:0 4px">
+    <div class="pasos-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px;text-align:center;margin:0 auto;padding:0 4px">
 
       <!-- Paso 01 -->
       <div style="position:relative;padding:0 8px">
@@ -1275,11 +1254,11 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- ADENTRO · capturas reales de la app -->
-<section id="adentro" style="padding:48px 0 28px;background:#241C13;border-top:1px solid rgba(242,118,46,.18);border-bottom:1px solid rgba(242,118,46,.18)">
+<section id="adentro" style="background:#241C13;border-top:1px solid rgba(242,118,46,.18);border-bottom:1px solid rgba(242,118,46,.18)">
   <div class="wrap">
 
     <!-- Encabezado -->
-    <div style="text-align:center;max-width:660px;margin:0 auto 26px">
+    <div style="text-align:center;max-width:680px;margin:0 auto 26px">
       <span class="eyebrow" style="color:#F2C98A;background:rgba(242,201,138,.08);border:1px solid rgba(242,201,138,.18);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">Así se ve por dentro</span>
       <h2 class="h2 h2-light" style="margin:12px 0 10px">
         Todo lo que necesitás <em>en una sola pantalla</em>
@@ -1392,11 +1371,11 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- BOLSILLO · mobile / PWA -->
-<section id="bolsillo" style="padding:40px 0 40px;background:#2A2118;border-bottom:1px solid rgba(242,118,46,.18)">
+<section id="bolsillo" style="background:#2A2118;border-bottom:1px solid rgba(242,118,46,.18)">
   <div class="wrap">
 
     <!-- Encabezado -->
-    <div style="text-align:center;max-width:640px;margin:0 auto 20px">
+    <div style="text-align:center;max-width:680px;margin:0 auto 20px">
       <span class="eyebrow" style="color:#F2C98A;background:rgba(242,201,138,.08);border:1px solid rgba(242,201,138,.18);padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">También en tu bolsillo</span>
       <h2 class="h2 h2-light" style="margin:14px 0 12px">
         La misma app, <em>desde el celu</em>
@@ -1493,7 +1472,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- TESTIMONIOS -->
-<section style="padding:40px 0 48px;background:#FBF7F0">
+<section style="background:#FBF7F0">
   <div class="wrap">
     <div style="text-align:center;max-width:680px;margin:0 auto 28px">
       <span class="eyebrow-dark">Tu día con ANMA</span>
@@ -1541,10 +1520,10 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- PARA QUIÉN -->
-<section id="para-quien" style="padding:44px 24px;background:#FBF7F0;border-top:1px solid #ECE3D6">
-  <div style="max-width:1020px;margin:0 auto">
+<section id="para-quien" style="padding:48px 24px;background:#FBF7F0;border-top:1px solid #ECE3D6">
+  <div style="max-width:1180px;margin:0 auto">
 
-    <div style="text-align:center;max-width:660px;margin:0 auto 32px">
+    <div style="text-align:center;max-width:680px;margin:0 auto 32px">
       <span class="eyebrow-dark" style="margin-bottom:16px">Para quién es</span>
       <h2 class="h2" style="text-align:center">
         Cada rubro tiene su ritmo, <em>el tuyo también</em>
@@ -1554,10 +1533,10 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
       </p>
     </div>
 
-    <div id="para-quien-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto">
+    <div id="para-quien-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:0 auto">
 
       <!-- Indumentaria -->
-      <div style="background:#f5f2fc;border-radius:18px;padding:30px 28px">
+      <div style="background:#fff;border:1px solid #ECE3D6;border-radius:18px;padding:26px 24px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
           <div style="width:50px;height:50px;border-radius:14px;background:#F2762E;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(242,118,46,.55)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -1575,7 +1554,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
       </div>
 
       <!-- Decoración -->
-      <div style="background:#f5f2fc;border-radius:18px;padding:30px 28px">
+      <div style="background:#fff;border:1px solid #ECE3D6;border-radius:18px;padding:26px 24px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
           <div style="width:50px;height:50px;border-radius:14px;background:#F2762E;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(242,118,46,.5)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -1595,7 +1574,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
       </div>
 
       <!-- Tecnología -->
-      <div style="background:#f5f2fc;border-radius:18px;padding:30px 28px">
+      <div style="background:#fff;border:1px solid #ECE3D6;border-radius:18px;padding:26px 24px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
           <div style="width:50px;height:50px;border-radius:14px;background:#F2762E;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(242,118,46,.5)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -1614,7 +1593,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
       </div>
 
       <!-- Almacén / distribución -->
-      <div style="background:#f5f2fc;border-radius:18px;padding:30px 28px">
+      <div style="background:#fff;border:1px solid #ECE3D6;border-radius:18px;padding:26px 24px">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
           <div style="width:50px;height:50px;border-radius:14px;background:#F2762E;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 8px 20px -6px rgba(242,118,46,.5)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -1642,7 +1621,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- ROI BLOCK -->
-<section style="padding:34px 0;background:#FBF7F0">
+<section style="background:#FBF7F0">
   <div class="wrap">
     <div class="why-band">
       <span class="why-eyebrow">Tu tiempo vale</span>
@@ -1657,7 +1636,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- INVERSIÓN / PRECIO -->
-<section id="pricing" style="padding:48px 0 48px;background:#16110B">
+<section id="pricing" style="background:#16110B">
   <div style="max-width:960px;margin:0 auto;padding:0 20px">
 
     <!-- Urgencia -->
@@ -1673,7 +1652,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <h2 class="h2 h2-light" style="margin:0 0 10px">
         Una sola inversión<br><em>Tu operación, ordenada desde el primer día</em>
       </h2>
-      <p style="color:#6B7280;font-size:14.5px;margin:0;line-height:1.6">Todo incluido, con soporte real desde el día uno</p>
+      <p style="color:rgba(255,255,255,.72);font-size:14.5px;margin:0;line-height:1.6">Todo incluido, con soporte real desde el día uno</p>
     </div>
 
     <!-- Flujo de pago: 3 pasos claros -->
@@ -1722,13 +1701,13 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </p>
 
           <!-- Sin contratos -->
-          <p style="font-size:11.5px;color:#374151;text-align:center;margin:0;line-height:1.5">
+          <p style="font-size:11.5px;color:rgba(255,255,255,.62);text-align:center;margin:0;line-height:1.5">
             <i class="fa-solid fa-circle-check" style="color:#6ee7b7;margin-right:4px"></i>Sin contratos de permanencia · Cancelá cuando quieras
           </p>
 
           <!-- Trial gratuito — en una sola línea -->
           <div style="text-align:center;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
-            <p style="color:#374151;font-size:11.5px;margin:0">¿Querés probar antes de hablar?</p>
+            <p style="color:rgba(255,255,255,.62);font-size:11.5px;margin:0">¿Querés probar antes de hablar?</p>
             <a href="/app/registro" style="display:inline-flex;align-items:center;gap:6px;color:#F2C98A;font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap">
               Probá gratis 7 días sin tarjeta
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;stroke-width:2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -1746,7 +1725,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
             </div>
             <div>
               <h4 style="color:#fff;font-size:14px;font-weight:700;margin:0 0 4px">Ecosistema ANMA Hub completo</h4>
-              <p style="color:#6B7280;font-size:12px;margin:0;line-height:1.55">Pedidos, clientes, logística, proveedores, métricas y presupuestos en una sola pantalla</p>
+              <p style="color:rgba(255,255,255,.72);font-size:12px;margin:0;line-height:1.55">Pedidos, clientes, logística, proveedores, métricas y presupuestos en una sola pantalla</p>
             </div>
           </div>
 
@@ -1758,7 +1737,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
             </div>
             <div>
               <h4 style="color:#fff;font-size:14px;font-weight:700;margin:0 0 4px">Soporte humano por WhatsApp</h4>
-              <p style="color:#6B7280;font-size:12px;margin:0;line-height:1.55">Una persona real que te responde y resuelve · Sin tickets, sin bots</p>
+              <p style="color:rgba(255,255,255,.72);font-size:12px;margin:0;line-height:1.55">Una persona real que te responde y resuelve · Sin tickets, sin bots</p>
             </div>
           </div>
 
@@ -1770,7 +1749,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
             </div>
             <div>
               <h4 style="color:#fff;font-size:14px;font-weight:700;margin:0 0 4px">Migración asistida sin costo</h4>
-              <p style="color:#6B7280;font-size:12px;margin:0;line-height:1.55">Pasamos tus clientes, productos y stock desde Excel o papeles, listos para operar el primer día</p>
+              <p style="color:rgba(255,255,255,.72);font-size:12px;margin:0;line-height:1.55">Pasamos tus clientes, productos y stock desde Excel o papeles, listos para operar el primer día</p>
             </div>
           </div>
 
@@ -1782,7 +1761,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
             </div>
             <div>
               <h4 style="color:#fff;font-size:14px;font-weight:700;margin:0 0 4px">Infraestructura de alta disponibilidad</h4>
-              <p style="color:#6B7280;font-size:12px;margin:0;line-height:1.55">Tus datos protegidos con encriptación de extremo a extremo y respaldos automáticos diarios</p>
+              <p style="color:rgba(255,255,255,.72);font-size:12px;margin:0;line-height:1.55">Tus datos protegidos con encriptación de extremo a extremo y respaldos automáticos diarios</p>
             </div>
           </div>
 
@@ -1805,7 +1784,7 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- FAQ -->
-<section id="faq" style="padding:44px 0;background:#FBF7F0;border-top:1px solid #ECE3D6">
+<section id="faq" style="background:#FBF7F0;border-top:1px solid #ECE3D6">
   <div class="wrap">
 
     <div style="text-align:center;max-width:700px;margin:0 auto 32px">
@@ -1852,8 +1831,8 @@ footer{background:#2A2118;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </section>
 
 <!-- CTA FINAL -->
-<section id="contact" style="padding:52px 16px;background:#2A2118;text-align:center">
-  <div style="max-width:900px;margin:0 auto">
+<section id="contact" style="padding:48px 16px;background:#2A2118;text-align:center">
+  <div style="max-width:960px;margin:0 auto">
 
     <h2 class="h2 h2-light">
       Recuperá el control de tus números<br> <em>y volvé a tomar aire</em>
