@@ -9,10 +9,18 @@ una grilla con una captura "featured". Hoy son dos carruseles.
 Se ven dentro de un marco de navegador de 950px de ancho, con dots y
 barra de URL propios. Por eso:
 
-  Tamano      1920 x 880 px   (ratio 2.18 — el del marco)
+  Tamano      1920 x 880 px
   Formato     PNG
   Peso        hasta 300 KB cada una (cargan lazy, pero igual)
   Ventana     navegador a 1920 de ancho, zoom 100%, tema claro
+
+  Sobre el tamano: el marco NO recorta (el <img> va con height:auto),
+  asi que la altura es libre. Pero las 4 tienen que compartir la misma,
+  porque cada slide del carrusel mide lo suyo: si una es mas alta que
+  las otras, el carrusel pega un salto al pasar de una a la siguiente.
+  880 es la altura que ya tienen las actuales.
+  El ancho si importa: el marco las muestra a 950px, asi que 1920 es el
+  2x que hace falta para que no se vean blandas en pantalla retina.
 
 NO incluir en la captura:
   - La barra del navegador ni la del sistema. El marco de la landing ya
