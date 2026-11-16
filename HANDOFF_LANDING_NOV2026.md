@@ -85,12 +85,29 @@ El panel usa `#DECDFC`, **el mismo fondo de las fotos**, por eso no se ve el bor
 
 ---
 
+
+## La marca (16/11)
+
+Se reemplazo el logo viejo: tenia degrades y magenta, los dos vetados, y desaparecia sobre la banda violeta.
+
+- `public/logo-mark.svg` — fondo claro (nav). Tile violeta con esquina squircle, corte diagonal en violeta profundo y la A calada en crema. La A es grande y llega al borde de arriba.
+- `public/logo-mark-inv.svg` — fondo oscuro (pie).
+- `public/favicon.svg` — la misma marca a sangre, sin el tile mas bajo, para que aguante a 16px.
+
+**Falta:** regenerar los PNG desde el SVG nuevo (`favicon-32`, `favicon-48`, `favicon-a`, `icon-192`, `icon-512`, `apple-touch-icon`) y la imagen de compartir. Hasta que eso pase, la pestana del navegador y el icono de la PWA siguen mostrando la A con degrade.
+
 ## Pendientes
 
 1. **Las 4 capturas de escritorio son de septiembre.** Al reemplazar cualquier PNG, correr `node scripts/optimizar-capturas.cjs`: genera el `.webp` que la pagina sirve e imprime el width/height que hay que poner en el `<img>`. El PNG queda como fuente, no se publica a nadie (el `<source>` gana siempre). Siguen valiendo las reglas: `dashboard.png`, `productos.png`, `presupuesto.png`, `mensajes-wa.png`. Deben ir a 1920 de ancho y **las 4 con la misma altura** (el marco no recorta, pero el carrusel pega un salto si difieren). Hay un inyector de datos de ejemplo en `scripts/demo-capturas.js` para no publicar datos de clientes reales.
 2. **En celular esas capturas se ven borrosas** (1920px metidos en 290px). Ana decidió dejarlo por ahora. La solución sería un recorte de la zona importante + `srcset`.
 3. **No hay Tailwind.** El CDN se saco el 16/11: compilaba CSS en el navegador para veinte clases. Esas clases viven ahora en el bloque UTILIDADES del `<style>`, con los mismos valores que generaba Tailwind (incluidos los line-height, que Tailwind ata al font-size). Si aparece una clase nueva tipo `text-sm`, se escribe ahi.
 4. `sharp` está instalado con `--no-save`: está en `node_modules` pero no en `package.json`. Si alguna vez se corre `npm ci`, hay que reinstalarlo para usar el script de las manos.
+
+## Lo que falta de mobile first
+
+Secciones sin dar vuelta: **adentro, bolsillo, testimonios y planes**. Planes es la mas enredada: tiene cuatro selectores que enganchan por `[style*=...]`, asi que al sacar un inline hay que reapuntarlos a una clase.
+
+Metodo que funciono: medir la escalera real en el navegador (iframe, descontando el ancho de la barra de scroll), escribir base de telefono + `min-width`, y comparar los 578 elementos de la pagina en varios anchos antes y despues. Las reglas viejas se borran ANTES de escribir los escalones, para no borrar lo que uno acaba de escribir.
 
 ## Commits de esta ronda
 
