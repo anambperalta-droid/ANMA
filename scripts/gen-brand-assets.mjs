@@ -1,5 +1,6 @@
 /**
  * Genera los assets de marca ANMA Hub desde SVG:
+ *   public/favicon-32.png, favicon-48.png, favicon-a.png (160) — pestaña
  *   public/icon-192.png, icon-512.png, apple-touch-icon.png (180) — PWA/iOS
  *   public/og-image.png (1200×630) — preview al compartir en WA/redes
  * Uso: node scripts/gen-brand-assets.mjs  (requiere `npm i --no-save sharp`)
@@ -12,10 +13,24 @@ import { dirname, join } from 'path'
 const PUB = join(dirname(fileURLToPath(import.meta.url)), '..', 'public')
 const icon = readFileSync(join(PUB, 'favicon.svg'))
 
-// ── Íconos PWA/iOS ──
-for (const [size, name] of [[192, 'icon-192.png'], [512, 'icon-512.png'], [180, 'apple-touch-icon.png']]) {
-  await sharp(icon, { density: 300 }).resize(size, size).png().toFile(join(PUB, name))
-  console.log('✓', name)
+// ── Íconos: favicon, PWA, iOS ──
+// Se rasteriza el SVG al tamaño final (width/height reescritos) para que no
+// haya reescalado: a 16/32px la marca se tiene que leer nítida.
+const ICONS = [
+  [32, 'favicon-32.png'],
+  [48, 'favicon-48.png'],
+  [160, 'favicon-a.png'],
+  [180, 'apple-touch-icon.png'],
+  [192, 'icon-192.png'],
+  [512, 'icon-512.png'],
+]
+
+for (const [size, name] of ICONS) {
+  const svg = Buffer.from(
+    icon.toString('utf8').replace(/width="\d+" height="\d+"/, `width="${size}" height="${size}"`)
+  )
+  await sharp(svg).png({ compressionLevel: 9 }).toFile(join(PUB, name))
+  console.log('✓', name, `${size}×${size}`)
 }
 
 // ── OG image 1200×630 ──
@@ -72,5 +87,11 @@ const og = `
     <rect x="204" y="78" width="64" height="11" rx="5.5" fill="#34d399" opacity=".8"/>
   </g>
 </svg>`
-await sharp(Buffer.from(og), { density: 150 }).png().toFile(join(PUB, 'og-image.png'))
-console.log('✓ og-image.png')
+// La OG todavia usa la marca vieja (degrades y verde), que Ana veto.
+// Queda detras de un flag para no pisar og-image.png al regenerar iconos.
+if (process.argv.includes('--og')) {
+  await sharp(Buffer.from(og), { density: 150 }).png().toFile(join(PUB, 'og-image.png'))
+  console.log('✓ og-image.png')
+} else {
+  console.log('· og-image.png sin tocar (pasa --og para regenerarla)')
+}

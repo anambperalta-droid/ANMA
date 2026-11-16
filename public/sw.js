@@ -42,8 +42,12 @@
    v24: bump — MilestoneToast: refuerzos positivos en momentos clave
         (primer cliente, primer producto, N presupuestos). Toast en esquina
         con confetti minimalista, no invasivo.
+   v25: bump previo.
+   v26: bump — iconos regenerados con la marca nueva (la A sobre el tile con
+        corte). Igual que en v6, hay que limpiar los PNG viejos cacheados o la
+        pestaña sigue mostrando el logo anterior.
 */
-const CACHE_VER = 'anma-pro-v25'
+const CACHE_VER = 'anma-pro-v26'
 const RUNTIME = `${CACHE_VER}-runtime`
 const OFFLINE_FALLBACK = `${CACHE_VER}-offline`
 
