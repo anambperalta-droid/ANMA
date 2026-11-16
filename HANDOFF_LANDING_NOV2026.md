@@ -59,6 +59,7 @@ Se consolidó de ~40 colores sueltos a rampas con roles claros. **Al tocar color
 - Encabezado de sección, idéntico en las 8: **ojo → título 12px**, **título → bajada 10px**
 - Cards: padding 22px
 - Hero: 40px / 48px
+- **Cortes responsive (16/11):** 400 · 420 · 480 · 540 · 640 · 680 · 768 · 920 · 1023 · 1180. No agregar uno nuevo sin mirar si alguno de esos sirve. El CSS sigue escrito de escritorio hacia abajo (`max-width`); pasarlo a mobile first con `min-width` es una tanda propia, todavia sin hacer.
 
 ### Accesibilidad
 
