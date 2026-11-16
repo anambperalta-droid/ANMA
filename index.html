@@ -368,13 +368,14 @@ p{text-wrap:pretty}
 
 /* FAQ */
 .faq-wrap{max-width:720px;margin:0 auto}
+#faq h2 br{display:none}
 .faq{border:1px solid #E9E1F5;border-radius:12px;margin-bottom:10px;overflow:hidden;background:#fff}
-.faq summary{padding:18px 22px;font-weight:700;font-size:15px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:#221433}
+.faq summary{padding:16px 18px;font-weight:700;font-size:14px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;color:#221433}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"";width:22px;height:22px;flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F2762E' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;transition:transform .2s ease}
 .faq[open] summary::after{content:"";transform:rotate(180deg)}
 .faq[open] summary{border-bottom:1px solid #F1EBFD}
-.faq-body{padding:18px 22px;font-size:14px;color:#574A6B;line-height:1.7}
+.faq-body{padding:14px 18px 18px;font-size:13.5px;color:#574A6B;line-height:1.65}
 
 /* CONTACTO */
 .contact{background:#F5EFE4}
@@ -790,34 +791,22 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
 }
 
 /* FOOTER — compacto: menos altura, menos aire vertical */
-footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
-.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px;margin-bottom:14px}
+footer{background:#221433;color:rgba(255,255,255,.7);padding:32px 0 90px}
+.foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:12px}
+.foot-brand{grid-column:1/-1}
 .foot-brand .logo{color:#fff}
-.foot-brand p{font-size:12.5px;margin:10px 0 12px;line-height:1.55;max-width:320px}
+.foot-brand p{font-size:12px;margin:8px 0 10px;line-height:1.55;max-width:none}
 .foot-soc{display:flex;gap:8px}
 .foot-soc a{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;transition:background .2s}
 .foot-soc a:hover{background:#652BDF}
-.foot-col h6{font-size:10.5px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin:0 0 10px}
-.foot-col a{display:block;font-size:13px;padding:3px 0;color:rgba(255,255,255,.6);transition:color .2s;line-height:1.5}
+.foot-col h6{font-size:10px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin:0 0 8px}
+.foot-col a{display:flex;align-items:center;min-height:36px;font-size:12.5px;padding:7px 0;color:rgba(255,255,255,.6);transition:color .2s;line-height:1.5}
 .foot-col a:hover{color:#fff}
-.foot-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11.5px;color:rgba(255,255,255,.5)}
+.foot-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:rgba(255,255,255,.5)}
 .foot-bot .badges{display:flex;gap:12px;align-items:center}
 .foot-bot .badges span{display:inline-flex;align-items:center;gap:5px}
 .foot-bot .badges i{color:#0B7D59}
 /* Footer compacto en mobile: 2 columnas, padding aún menor */
-@media(max-width:768px){
-  .foot-grid{grid-template-columns:1fr 1fr;gap:18px 16px;margin-bottom:12px}
-  .foot-brand{grid-column:1/-1}
-  .foot-brand p{font-size:12px;margin:8px 0 10px;max-width:none}
-  .foot-col h6{font-size:10px;margin:0 0 8px}
-  .foot-col a{font-size:12.5px;padding:8px 0}
-  footer{padding:20px 0 12px}
-  .foot-bot{padding-top:12px;font-size:11px}
-}
-@media(max-width:480px){
-  .foot-grid{grid-template-columns:1fr 1fr;gap:16px 12px}
-  .foot-col a{font-size:12.5px;padding:9px 0;line-height:1.45}
-}
 
 /* PRICING mobile */
 @media(max-width:680px){
@@ -843,8 +832,6 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 /* ── MOBILE 540px ── */
 @media(max-width:540px){
   .sub{font-size:15px!important}
-  .faq summary{font-size:14px!important;padding:14px 16px!important}
-  .faq-body{padding:14px 16px!important}
   /* Reducir más en mobile pequeño */
   /* Números del proceso: reducir tamaño en mobile */
   .paso-num{font-size:48px!important;letter-spacing:normal!important}
@@ -867,9 +854,6 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
 /* ── MOBILE 400px ── */
 @media(max-width:400px){
-  /* Mantener 2 columnas en footer incluso en pantallas ultra-pequeñas — más compacto */
-  .foot-grid{grid-template-columns:1fr 1fr!important;gap:18px 12px!important}
-  .foot-col a{font-size:12.5px!important;padding:9px 0!important}
   /* Ocultar botón Ingresar para no sobrecargar nav */
   .nav-btn-login{display:none!important}
   /* Paso números aún más pequeños */
@@ -888,6 +872,26 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 .contact-email-link i{font-size:13px}
 
 /* STICKY MOBILE CTA BAR */
+
+/* PIE y FAQ, mobile first: la base es el telefono. */
+@media(min-width:681px){
+  footer{padding:20px 0 12px}
+  .foot-grid{gap:18px 16px}
+  .foot-col a{display:block;min-height:0;padding:8px 0}
+  #faq h2 br{display:inline}
+  .faq summary{padding:18px 22px;font-size:16px;align-items:center;gap:0}
+  .faq summary::after{margin-top:0}
+  .faq-body{padding:18px 22px;font-size:14px;line-height:1.7}
+}
+@media(min-width:769px){
+  footer{padding:24px 0 14px}
+  .foot-grid{grid-template-columns:2fr 1fr 1fr 1fr;gap:24px;margin-bottom:14px}
+  .foot-brand{grid-column:auto}
+  .foot-brand p{font-size:12.5px;margin:10px 0 12px;max-width:320px}
+  .foot-col h6{font-size:10.5px;margin:0 0 10px}
+  .foot-col a{font-size:13px;padding:3px 0}
+  .foot-bot{padding-top:14px;font-size:11.5px}
+}
 .mobile-cta-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fff;border-top:1px solid #E9E1F5;padding:12px 16px;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.1)}
 .mobile-cta-bar a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:14px;font-weight:700;font-size:14px;text-decoration:none}
 .mobile-cta-bar .mb-primary{background:var(--verde-700);color:#fff;box-shadow:0 2px 8px rgba(5,150,105,.3)}
@@ -905,7 +909,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 }
 
 /* Evitar zoom iOS en links/inputs (mínimo 16px en interactivos críticos) */
-.faq summary,.form input,.form textarea,.form select{font-size:16px}
+.form input,.form textarea,.form select{font-size:16px}
 
 /* Touch targets accesibles en navegación */
 
@@ -963,16 +967,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
   #para-quien-grid h3{font-size:17px!important;margin-bottom:8px!important}
   #para-quien-grid p{font-size:13.5px!important;line-height:1.65!important}
 
-  /* ── FAQ ── */
-  #faq h2 br{display:none}
-  .faq summary{padding:16px 18px!important;font-size:14px!important;gap:10px;align-items:flex-start}
-  .faq summary::after{margin-top:2px}
-  .faq-body{padding:14px 18px 18px!important;font-size:13.5px!important;line-height:1.65!important}
 
-  /* ── FOOTER ── */
-  footer{padding:32px 0 90px!important}
-  .foot-grid{gap:24px!important}
-  .foot-col a{padding:7px 0!important;min-height:36px;display:flex;align-items:center}
 
   /* Sticky CTA bar — más compacto en mobile, tap target ok */
   .mobile-cta-bar{padding:10px 12px!important;gap:8px!important}
