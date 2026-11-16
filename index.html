@@ -95,9 +95,7 @@ if ((window.matchMedia && window.matchMedia('(display-mode: standalone)').matche
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&family=Poppins:wght@600;700&display=swap" rel="stylesheet"><script>window.tailwind={config:{corePlugins:{preflight:false}}}</script>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&family=Poppins:wght@600;700&display=swap" rel="stylesheet"><style>
 /* ─── TOKENS ANMA · feria luminosa en violeta ───────────────
    Base crema, familia violeta como marca y amarillo pastel —el
    complementario del violeta— como unico acento. Verde solo para
@@ -119,7 +117,7 @@ if ((window.matchMedia && window.matchMedia('(display-mode: standalone)').matche
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden}
-body{margin:0;font-family:'Figtree',sans-serif;color:#221433;background:#F5EFE4;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;font-family:'Figtree',sans-serif;color:#221433;background:#F5EFE4;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
@@ -1069,11 +1067,11 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
   #demo .app-shell-wrap{max-width:100%}
 }
 
-/* ═══ TAILWIND FALLBACK ═══
-   La landing usa clases de Tailwind via CDN. Si el CDN no carga (red lenta,
-   bloqueador, CSP), estos fallbacks locales replican las clases usadas para
-   que la página NUNCA se vea rota. Cuando Tailwind carga, pisa estos valores
-   con resultado idéntico. */
+/* ═══ UTILIDADES ═══
+   Puñado de clases con nombre tipo Tailwind que quedaron en el markup.
+   NO hay Tailwind: el CDN se saco el 16/11 porque compilaba CSS en el
+   navegador para estas veinte reglas. Estas son las unicas que existen;
+   si hace falta una nueva, se escribe aca. */
 .font-black{font-weight:700}
 .font-extrabold{font-weight:700}
 .font-bold{font-weight:700}
@@ -1086,14 +1084,14 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 .leading-tight{line-height:1.25}
 .uppercase{text-transform:uppercase}
 .text-center{text-align:center}
-.text-xs{font-size:12px}
-.text-sm{font-size:14px}
-.text-base{font-size:16px}
-.text-lg{font-size:18px}
-.text-xl{font-size:20px}
-.text-2xl{font-size:24px}
-.text-3xl{font-size:30px}
-.text-4xl{font-size:36px}
+.text-xs{font-size:12px;line-height:16px}
+.text-sm{font-size:14px;line-height:20px}
+.text-base{font-size:16px;line-height:24px}
+.text-lg{font-size:18px;line-height:28px}
+.text-xl{font-size:20px;line-height:28px}
+.text-2xl{font-size:24px;line-height:32px}
+.text-3xl{font-size:30px;line-height:36px}
+.text-4xl{font-size:36px;line-height:40px}
 .block{display:block}
 .select-none{user-select:none}
 .flex{display:flex}
@@ -1117,14 +1115,14 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 .h-4{height:16px}
 .w-4{width:16px}
 @media(min-width:640px){
-  .sm\:text-base{font-size:16px}
-  .sm\:text-lg{font-size:18px}
-  .sm\:text-2xl{font-size:24px}
-  .sm\:text-4xl{font-size:36px}
+  .sm\:text-base{font-size:16px;line-height:24px}
+  .sm\:text-lg{font-size:18px;line-height:28px}
+  .sm\:text-2xl{font-size:24px;line-height:32px}
+  .sm\:text-4xl{font-size:36px;line-height:40px}
 }
 @media(min-width:768px){
-  .md\:text-lg{font-size:18px}
-  .md\:text-4xl{font-size:36px}
+  .md\:text-lg{font-size:18px;line-height:28px}
+  .md\:text-4xl{font-size:36px;line-height:40px}
 }
 @media(min-width:1024px){
   .lg\:grid-cols-3{grid-template-columns:repeat(3,1fr)}
@@ -1335,7 +1333,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <h2 class="h2">
         Cómo se ve tu día <em>con ANMA Hub</em>
       </h2>
-      <p class="text-lg text-slate-600 text-balance" style="margin:0 auto;max-width:580px;line-height:1.5;color:#574A6B">
+      <p class="text-lg text-balance" style="margin:0 auto;max-width:580px;line-height:1.5;color:#574A6B">
         Si sabés usar WhatsApp, ya sabés usar ANMA Hub
       </p>
     </div>
@@ -1347,10 +1345,10 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <div style="position:relative;padding:0 8px">
         <span class="paso-num block select-none" style="font-family:'Figtree',sans-serif;font-weight:700;letter-spacing:normal;font-size:64px;line-height:1;margin-bottom:4px;color:#652BDF;letter-spacing:normal">01</span>
         <div style="width:48px;height:3px;background:#652BDF;border-radius:99px;margin:0 auto 20px"></div>
-        <h3 class="text-xl sm:text-2xl font-bold text-slate-900" style="margin:0 0 12px;color:#221433">
+        <h3 class="text-xl sm:text-2xl font-bold" style="margin:0 0 12px;color:#221433">
           Cargás tu catálogo y tus clientes
         </h3>
-        <p class="text-slate-600 text-sm sm:text-base leading-relaxed" style="max-width:320px;margin:0 auto;color:#574A6B">
+        <p class="text-sm sm:text-base leading-relaxed" style="max-width:320px;margin:0 auto;color:#574A6B">
           Nos pasás tu Excel como esté y te lo dejamos listo. Empezás con todo cargado, no desde cero
         </p>
       </div>
@@ -1359,10 +1357,10 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <div style="position:relative;padding:0 8px">
         <span class="paso-num block select-none" style="font-family:'Figtree',sans-serif;font-weight:700;letter-spacing:normal;font-size:80px;line-height:1;margin-bottom:4px;color:#652BDF;letter-spacing:normal">02</span>
         <div style="width:48px;height:3px;background:#652BDF;border-radius:99px;margin:0 auto 20px"></div>
-        <h3 class="text-xl sm:text-2xl font-bold text-slate-900" style="margin:0 0 12px;color:#221433">
+        <h3 class="text-xl sm:text-2xl font-bold" style="margin:0 0 12px;color:#221433">
           Hacés presupuestos, ventas y cobros
         </h3>
-        <p class="text-slate-600 text-sm sm:text-base leading-relaxed" style="max-width:320px;margin:0 auto;color:#574A6B">
+        <p class="text-sm sm:text-base leading-relaxed" style="max-width:320px;margin:0 auto;color:#574A6B">
           Todo desde un solo lugar, sin saltar entre apps ni planillas
         </p>
       </div>
@@ -1371,10 +1369,10 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
       <div style="position:relative;padding:0 8px">
         <span class="paso-num block select-none" style="font-family:'Figtree',sans-serif;font-weight:700;letter-spacing:normal;font-size:80px;line-height:1;margin-bottom:4px;color:#652BDF;letter-spacing:normal">03</span>
         <div style="width:48px;height:3px;background:#652BDF;border-radius:99px;margin:0 auto 20px"></div>
-        <h3 class="text-xl sm:text-2xl font-bold text-slate-900" style="margin:0 0 12px;color:#221433">
+        <h3 class="text-xl sm:text-2xl font-bold" style="margin:0 0 12px;color:#221433">
           Ves cómo va el negocio de un vistazo
         </h3>
-        <p class="text-slate-600 text-sm sm:text-base leading-relaxed" style="max-width:320px;margin:0 auto;color:#574A6B">
+        <p class="text-sm sm:text-base leading-relaxed" style="max-width:320px;margin:0 auto;color:#574A6B">
           Entendés cómo viene tu mes, sin cuentas a mano ni sorpresas
         </p>
       </div>
@@ -1404,13 +1402,13 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
         <!-- Slide 1: Dashboard -->
         <figure class="adentro-slide">
-          <button type="button" class="adentro-frame" data-adentro-zoom="/screens/dashboard.png" data-adentro-title="Dashboard" aria-label="Ver Dashboard en grande">
+          <button type="button" class="adentro-frame" data-adentro-zoom="/screens/dashboard.webp" data-adentro-title="Dashboard" aria-label="Ver Dashboard en grande">
             <div class="adentro-bar">
               <span></span><span></span><span></span>
               <div class="adentro-url">anmahub.com/app · Dashboard</div>
               <div class="adentro-zoom-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
             </div>
-            <picture><img src="/screens/dashboard.png" alt="Dashboard con KPIs, ingresos y estado de pedidos del mes" loading="lazy" onerror="this.style.display='none'"></picture>
+            <picture><source srcset="/screens/dashboard.webp" type="image/webp"><img src="/screens/dashboard.png" alt="Dashboard con KPIs, ingresos y estado de pedidos del mes" width="1877" height="867" loading="lazy" decoding="async" onerror="this.style.display='none'"></picture>
           </button>
           <figcaption class="adentro-cap">
             <span class="adentro-cap-title">Dashboard · el pulso del mes</span>
@@ -1420,13 +1418,13 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
         <!-- Slide 2: Productos -->
         <figure class="adentro-slide">
-          <button type="button" class="adentro-frame" data-adentro-zoom="/screens/productos.png" data-adentro-title="Productos" aria-label="Ver Productos en grande">
+          <button type="button" class="adentro-frame" data-adentro-zoom="/screens/productos.webp" data-adentro-title="Productos" aria-label="Ver Productos en grande">
             <div class="adentro-bar">
               <span></span><span></span><span></span>
               <div class="adentro-url">anmahub.com/app · Productos</div>
               <div class="adentro-zoom-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
             </div>
-            <picture><img src="/screens/productos.png" alt="Catálogo de productos con costos, precios y márgenes en tiempo real" loading="lazy" onerror="this.style.display='none'"></picture>
+            <picture><source srcset="/screens/productos.webp" type="image/webp"><img src="/screens/productos.png" alt="Catálogo de productos con costos, precios y márgenes en tiempo real" width="1580" height="873" loading="lazy" decoding="async" onerror="this.style.display='none'"></picture>
           </button>
           <figcaption class="adentro-cap">
             <span class="adentro-cap-title">Productos · catálogo con margen en vivo</span>
@@ -1436,13 +1434,13 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
         <!-- Slide 3: Nuevo pedido -->
         <figure class="adentro-slide">
-          <button type="button" class="adentro-frame" data-adentro-zoom="/screens/presupuesto.png" data-adentro-title="Nuevo pedido" aria-label="Ver Nuevo pedido en grande">
+          <button type="button" class="adentro-frame" data-adentro-zoom="/screens/presupuesto.webp" data-adentro-title="Nuevo pedido" aria-label="Ver Nuevo pedido en grande">
             <div class="adentro-bar">
               <span></span><span></span><span></span>
               <div class="adentro-url">anmahub.com/app · Nuevo pedido</div>
               <div class="adentro-zoom-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
             </div>
-            <picture><img src="/screens/presupuesto.png" alt="Wizard de nuevo pedido en 4 pasos con panel de resumen en vivo" loading="lazy" onerror="this.style.display='none'"></picture>
+            <picture><source srcset="/screens/presupuesto.webp" type="image/webp"><img src="/screens/presupuesto.png" alt="Wizard de nuevo pedido en 4 pasos con panel de resumen en vivo" width="1915" height="872" loading="lazy" decoding="async" onerror="this.style.display='none'"></picture>
           </button>
           <figcaption class="adentro-cap">
             <span class="adentro-cap-title">Nuevo pedido · en 4 pasos</span>
@@ -1452,13 +1450,13 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 
         <!-- Slide 4: WhatsApp -->
         <figure class="adentro-slide">
-          <button type="button" class="adentro-frame" data-adentro-zoom="/screens/mensajes-wa.png" data-adentro-title="Mensajes WhatsApp" aria-label="Ver Mensajes WhatsApp en grande">
+          <button type="button" class="adentro-frame" data-adentro-zoom="/screens/mensajes-wa.webp" data-adentro-title="Mensajes WhatsApp" aria-label="Ver Mensajes WhatsApp en grande">
             <div class="adentro-bar">
               <span></span><span></span><span></span>
               <div class="adentro-url">anmahub.com/app · Mensajes WhatsApp</div>
               <div class="adentro-zoom-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
             </div>
-            <picture><img src="/screens/mensajes-wa.png" alt="Mensajes de WhatsApp organizados por embudo de ventas" loading="lazy" onerror="this.style.display='none'"></picture>
+            <picture><source srcset="/screens/mensajes-wa.webp" type="image/webp"><img src="/screens/mensajes-wa.png" alt="Mensajes de WhatsApp organizados por embudo de ventas" width="1611" height="883" loading="lazy" decoding="async" onerror="this.style.display='none'"></picture>
           </button>
           <figcaption class="adentro-cap">
             <span class="adentro-cap-title">WhatsApp · con embudo listo</span>

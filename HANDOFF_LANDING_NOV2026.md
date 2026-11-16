@@ -2,7 +2,7 @@
 
 **Cerrado el 13/11/2026. Todo pusheado a `main`.** Seguimos rediseñando la web.
 
-Archivo: `C:\Users\anamb\Downloads\ANMA\anma-app\index.html` (~140 KB, HTML plano con un `<style>` inline gigante + Tailwind por CDN). **No leerlo entero de una**, buscar por secciones.
+Archivo: `C:\Users\anamb\Downloads\ANMA\anma-app\index.html` (~140 KB, HTML plano con un `<style>` inline gigante; sin dependencias de CSS externas salvo Font Awesome y Google Fonts). **No leerlo entero de una**, buscar por secciones.
 
 ---
 
@@ -13,7 +13,7 @@ Archivo: `C:\Users\anamb\Downloads\ANMA\anma-app\index.html` (~140 KB, HTML plan
 - Sin emojis. Voz rioplatense profesional, sin jerga ("guita", "al toque", "al vuelo").
 - **Medir, no estimar.** Abrir la landing en el navegador, correr JS para medir estilos computados, anchos, desbordes y contraste. Dar el número.
 - Trabajar en tandas chicas y verificar a 375 y 1280 después de cada una.
-- **Ojo con Tailwind del CDN**: pisa el CSS local. Una clase como `tracking-tight` en el markup anula un `letter-spacing:normal` propio. Hay que sacar la clase, no redefinirla.
+- **Ya no hay Tailwind.** El CDN se saco el 16/11. Las clases con nombre de Tailwind que quedan en el markup son CSS propio, en el bloque UTILIDADES. Si falta una, se escribe ahi: no volver a cargar el CDN.
 - **El service worker de la PWA cachea.** "No veo los cambios" casi siempre es caché, no un deploy fallido. Incógnito o recarga forzada.
 
 ## Referencias visuales que eligió Ana
@@ -85,9 +85,10 @@ El panel usa `#DECDFC`, **el mismo fondo de las fotos**, por eso no se ve el bor
 
 ## Pendientes
 
-1. **Las 4 capturas de escritorio son de septiembre.** `dashboard.png`, `productos.png`, `presupuesto.png`, `mensajes-wa.png`. Deben ir a 1920 de ancho y **las 4 con la misma altura** (el marco no recorta, pero el carrusel pega un salto si difieren). Hay un inyector de datos de ejemplo en `scripts/demo-capturas.js` para no publicar datos de clientes reales.
+1. **Las 4 capturas de escritorio son de septiembre.** Al reemplazar cualquier PNG, correr `node scripts/optimizar-capturas.cjs`: genera el `.webp` que la pagina sirve e imprime el width/height que hay que poner en el `<img>`. El PNG queda como fuente, no se publica a nadie (el `<source>` gana siempre). Siguen valiendo las reglas: `dashboard.png`, `productos.png`, `presupuesto.png`, `mensajes-wa.png`. Deben ir a 1920 de ancho y **las 4 con la misma altura** (el marco no recorta, pero el carrusel pega un salto si difieren). Hay un inyector de datos de ejemplo en `scripts/demo-capturas.js` para no publicar datos de clientes reales.
 2. **En celular esas capturas se ven borrosas** (1920px metidos en 290px). Ana decidió dejarlo por ahora. La solución sería un recorte de la zona importante + `srcset`.
-3. `sharp` está instalado con `--no-save`: está en `node_modules` pero no en `package.json`. Si alguna vez se corre `npm ci`, hay que reinstalarlo para usar el script de las manos.
+3. **No hay Tailwind.** El CDN se saco el 16/11: compilaba CSS en el navegador para veinte clases. Esas clases viven ahora en el bloque UTILIDADES del `<style>`, con los mismos valores que generaba Tailwind (incluidos los line-height, que Tailwind ata al font-size). Si aparece una clase nueva tipo `text-sm`, se escribe ahi.
+4. `sharp` está instalado con `--no-save`: está en `node_modules` pero no en `package.json`. Si alguna vez se corre `npm ci`, hay que reinstalarlo para usar el script de las manos.
 
 ## Commits de esta ronda
 
