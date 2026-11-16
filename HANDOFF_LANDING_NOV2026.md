@@ -59,7 +59,7 @@ Se consolidó de ~40 colores sueltos a rampas con roles claros. **Al tocar color
 - Encabezado de sección, idéntico en las 8: **ojo → título 12px**, **título → bajada 10px**
 - Cards: padding 22px
 - Hero: 40px / 48px
-- **Cortes responsive (16/11):** 400 · 420 · 480 · 540 · 640 · 680 · 768 · 920 · 1023 · 1180. No agregar uno nuevo sin mirar si alguno de esos sirve. El CSS sigue escrito de escritorio hacia abajo (`max-width`); pasarlo a mobile first con `min-width` es una tanda propia, todavia sin hacer.
+- **Cortes responsive (16/11):** 400 · 420 · 480 · 540 · 640 · 680 · 768 · 920 · 1023 · 1180. No agregar uno nuevo sin mirar si alguno de esos sirve. **Mobile first, en marcha seccion por seccion.** Hecho: el NAV (base = telefono, y dos escalones `min-width` 481 y 769). Falta: hero, pasos, adentro, bolsillo, rubros, testimonios, planes, FAQ, pie. Regla al convertir: la base lleva los valores de telefono y los `min-width` solo agregan lo que entra con mas ancho; si una regla no tiene base con el mismo selector, hay que escribir el valor de escritorio a mano (son 160 casos, por eso va de a una seccion).
 
 ### Accesibilidad
 
