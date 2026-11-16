@@ -62,7 +62,7 @@ Se consolidó de ~40 colores sueltos a rampas con roles claros. **Al tocar color
 
 ### Accesibilidad
 
-Auditoría de contraste sobre toda la página: **0 fallos AA**. Áreas de toque en celular corregidas (menú 44px, flechas 40px, puntos del carrusel con padding, enlaces del pie 36px).
+Auditoría de contraste sobre toda la página: **0 fallos AA**. El 16/11 se sumaron cuatro cosas: un skip link (`.skip-link`, aparece al tabular), `prefers-reduced-motion` que apaga las once animaciones y el scroll suave de los carruseles, areas de toque de 24x24 minimo en los puntos y en dos enlaces de Planes, y los rotulos de los pasos de Planes pasaron de `<h4>` a `<p class="pay-step-t">` porque venian antes del `<h3>` de la seccion. Áreas de toque en celular corregidas (menú 44px, flechas 40px, puntos del carrusel con padding, enlaces del pie 36px).
 
 ---
 

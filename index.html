@@ -455,7 +455,7 @@ p{text-wrap:pretty}
    Dots: chicos, activo violeta pastel ancho. */
 .adentro-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px}
 .adentro-dots{display:flex;gap:6px;align-items:center}
-.adentro-dot{width:6px;height:6px;border-radius:99px;background:#CFC2E8;border:none;cursor:pointer;padding:9px 6px;background-clip:content-box;box-sizing:content-box;transition:background .18s,width .25s ease;font-family:inherit}
+.adentro-dot{width:6px;height:6px;border-radius:99px;background:#CFC2E8;border:none;cursor:pointer;padding:9px;background-clip:content-box;box-sizing:content-box;transition:background .18s,width .25s ease;font-family:inherit}
 .adentro-dot:hover{background:#A68BF0}
 .adentro-dot.is-active{background:#652BDF;width:18px}
 .adentro-dot:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
@@ -1169,7 +1169,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 .pay-step{background:rgba(255,255,255,.04);border:1px solid rgba(100,41,209,.22);border-radius:18px;padding:22px 22px;text-align:left}
 .pay-step-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .pay-step-n{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;background:rgba(100,41,209,.28);color:#E2D2FF;font-size:12px;font-weight:700;flex-shrink:0}
-.pay-step h4{color:#fff;font-size:14px;font-weight:700;margin:0}
+.pay-step-t{color:#fff;font-size:14px;font-weight:700;margin:0}
 .pay-step p{color:#B59BF5;font-size:12.5px;line-height:1.5;margin:0}
 .pay-step p b{color:#fff;font-weight:700}
 .pay-step.pay-free{border-color:rgba(52,211,153,.4)}
@@ -1179,6 +1179,18 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 .pay-step-amt span{font-family:'Figtree',sans-serif;font-size:13px;font-weight:700;color:#E2D2FF;letter-spacing:0}
 .pay-step.pay-free .pay-step-amt{color:#6ee7b7}
 @media(max-width:680px){.pay-step-amt{font-size:28px}}
+
+/* ═══ ACCESIBILIDAD ═══ */
+/* Saltar el menu con el teclado: invisible hasta que recibe foco. */
+.skip-link{position:fixed;left:12px;top:-72px;z-index:999;background:#fff;color:#4718AE;font-family:'Figtree',sans-serif;font-size:14px;font-weight:700;padding:12px 18px;border-radius:12px;border:2px solid #652BDF;text-decoration:none;transition:top .15s}
+.skip-link:focus,.skip-link:focus-visible{top:12px}
+
+/* Quien pidio menos movimiento en su sistema no deberia ver pulsos ni
+   desplazamientos. Se apaga todo, no se acorta: media pulsacion marea igual. */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .eyebrow .pulse-dot,.mock-notify .ndot,.insight-chip-dot,.hero-app-live i,.hero-ping-dot{box-shadow:none!important}
+}
 </style>
 <!-- Microsoft Clarity -->
 <script type="text/javascript">
@@ -1190,6 +1202,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
 </script>
 </head>
 <body>
+<a class="skip-link" href="#top">Saltar al contenido</a>
 
 <!-- NAV -->
 <header class="nav">
@@ -1782,17 +1795,17 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
     <!-- Flujo de pago: 3 pasos claros -->
     <div class="pay-flow">
       <div class="pay-step pay-free">
-        <div class="pay-step-head"><span class="pay-step-n">1</span><h4>Probás gratis</h4></div>
+        <div class="pay-step-head"><span class="pay-step-n">1</span><p class="pay-step-t">Probás gratis</p></div>
         <div class="pay-step-amt">Gratis</div>
         <p>7 días completos, sin tarjeta</p>
       </div>
       <div class="pay-step">
-        <div class="pay-step-head"><span class="pay-step-n">2</span><h4>Arrancás</h4></div>
+        <div class="pay-step-head"><span class="pay-step-n">2</span><p class="pay-step-t">Arrancás</p></div>
         <div class="pay-step-amt">$120.000</div>
         <p>Setup llave en mano + tu primer mes</p>
       </div>
       <div class="pay-step">
-        <div class="pay-step-head"><span class="pay-step-n">3</span><h4>Seguís</h4></div>
+        <div class="pay-step-head"><span class="pay-step-n">3</span><p class="pay-step-t">Seguís</p></div>
         <div class="pay-step-amt">$30.000 <span>/ mes</span></div>
         <p>Desde el 2º mes · cancelás cuando quieras</p>
       </div>
@@ -1832,7 +1845,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
           <!-- Trial gratuito — en una sola línea -->
           <div style="text-align:center;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
             <p style="color:rgba(255,255,255,.62);font-size:11.5px;margin:0">¿Querés probar antes de hablar?</p>
-            <a href="/app/registro" style="display:inline-flex;align-items:center;gap:6px;color:#E2D2FF;font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap">
+            <a href="/app/registro" style="display:inline-flex;align-items:center;gap:6px;color:#E2D2FF;font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap;min-height:24px">
               Probá gratis 7 días sin tarjeta
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;stroke-width:2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
@@ -1898,7 +1911,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:24px 0 14px}
     <div style="background:rgba(34,20,51,.6);border:1px solid rgba(207,191,240,.2);border-radius:16px;padding:14px 22px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap">
       <p style="color:#CFC2E8;font-size:13.5px;font-weight:500;margin:0">¿Necesitás funciones exclusivas para tu operación?</p>
       <div style="width:1px;height:18px;background:#3F2A6B;flex-shrink:0"></div>
-      <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Quer%C3%ADa%20consultar%20sobre%20personalizaci%C3%B3n%20de%20ANMA." target="_blank" style="color:#E2D2FF;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px">
+      <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Quer%C3%ADa%20consultar%20sobre%20personalizaci%C3%B3n%20de%20ANMA." target="_blank" style="color:#E2D2FF;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;min-height:24px">
         Consultar personalización
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;stroke-width:2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
@@ -2143,7 +2156,7 @@ document.querySelectorAll('.demo-tab').forEach(function(tab){
   function scrollTo(idx){
     var target = slides[Math.max(0, Math.min(total - 1, idx))];
     if (!target) return;
-    track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+    track.scrollTo({ left: target.offsetLeft, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
 
   function updateUI(){
@@ -2208,7 +2221,7 @@ document.querySelectorAll('.demo-tab').forEach(function(tab){
   function scrollTo(idx){
     var target = slides[Math.max(0, Math.min(total - 1, idx))];
     if (!target) return;
-    track.scrollTo({ left: target.offsetLeft - 20, behavior: 'smooth' });
+    track.scrollTo({ left: target.offsetLeft - 20, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
   function updateUI(){
     var idx = currentIndex();
