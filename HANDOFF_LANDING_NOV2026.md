@@ -39,7 +39,8 @@ Se consolidó de ~40 colores sueltos a rampas con roles claros. **Al tocar color
 - **Verde:** `#0B7D59` botón sobre claro · `#0E9B6E` medio · `#6EE7B7` sobre oscuro · `#25D366` solo WhatsApp
 - **Grises de texto:** `#574A6B` y `#6E6383` (dos pasos, no tres)
 - **Lavandas:** `#E2D2FF`, `#DECDFC`, `#EFE7FE`, `#F1EBFD`
-- **Cero degradés.** Rechazados por Ana, no volver a proponer: **naranja, magenta, azul**.
+- **Cero degradés.** Rechazados por Ana, no volver a proponer: **naranja, magenta, azul**. El 16/11 se limpiaron los tres que habian quedado escondidos en Planes: el magenta de la pildora, el naranja del borde del pie y el ambar de un icono. Ahora los tintes son del color que llevan adentro (amarillo con amarillo, violeta con violeta).
+- **Rojos:** una sola rampa para alertas — `#B42318` texto · `#DC2626` · `#FDECEC` fondo · `#F4CDCA` borde. El rosa carmin que usaban los testimonios se replego aca.
 - Sobre bandas violetas los botones llevan **sombra oscura, no halo verde, y sin pulso**.
 
 ### Tipografía
