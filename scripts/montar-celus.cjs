@@ -9,7 +9,7 @@ const FINAL = 680;
 
 const piezas = [
   { src: 'mobile-analisis.png',  out: 'celu-analisis.webp',  flip: false },
-  { src: 'mobile-pedido.png',    out: 'celu-pedido.webp',    flip: true  },
+  { src: 'mobile-pedido.png',    out: 'celu-pedido.webp',    flip: false },
   { src: 'mobile-logistica.png', out: 'celu-logistica.webp', flip: false },
 ];
 const mascara = Buffer.from(`<svg width="${S.w}" height="${S.h}"><rect width="${S.w}" height="${S.h}" rx="${S.r}" ry="${S.r}" fill="#fff"/></svg>`);

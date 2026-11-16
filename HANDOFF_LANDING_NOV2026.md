@@ -74,10 +74,10 @@ La sección "La misma app, desde el celu" usa **fotos reales** de una mano soste
 - Para rehacerlas: reemplazar `mobile-analisis.png`, `mobile-pedido.png`, `mobile-logistica.png` (540×1170) y correr:
 
 ```bash
-node scripts/montar-celus.js
+node scripts/montar-celus.cjs
 ```
 
-El script recorta la foto, detecta el rectángulo verde, mete la captura con esquinas redondeadas y exporta las tres `.webp`. La del medio sale espejada para que las manos no se vean clonadas.
+El script recorta la foto, detecta el rectángulo verde, mete la captura con esquinas redondeadas y exporta las tres `.webp`. Las tres van en el mismo sentido (mano derecha): el espejado del medio se sacÃ³ el 16/11.
 
 El panel usa `#DECDFC`, **el mismo fondo de las fotos**, por eso no se ve el borde de las imágenes. Si se recomprimen, verificar que el fondo siga dando `#DECDFC`.
 
