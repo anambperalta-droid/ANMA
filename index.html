@@ -94,6 +94,7 @@ if ((window.matchMedia && window.matchMedia('(display-mode: standalone)').matche
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"ANMA Hub","url":"https://anmahub.com","inLanguage":"es-AR","publisher":{"@type":"Organization","name":"ANMA Hub","url":"https://anmahub.com"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://anmahub.com/recursos/?q={search_term_string}"},"query-input":"required name=search_term_string"}}
 </script>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -794,7 +795,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:32px 0 90px}
 .foot-soc{display:flex;gap:8px}
 .foot-soc a{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;transition:background .2s}
 .foot-soc a:hover{background:#652BDF}
-.foot-col h6{font-size:10px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin:0 0 8px}
+.foot-col h3{font-size:10px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin:0 0 8px}
 .foot-col a{display:flex;align-items:center;min-height:36px;font-size:12.5px;padding:7px 0;color:rgba(255,255,255,.6);transition:color .2s;line-height:1.5}
 .foot-col a:hover{color:#fff}
 .foot-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:rgba(255,255,255,.5)}
@@ -858,7 +859,7 @@ footer{background:#221433;color:rgba(255,255,255,.7);padding:32px 0 90px}
   .foot-grid{grid-template-columns:2fr 1fr 1fr 1fr;gap:24px;margin-bottom:14px}
   .foot-brand{grid-column:auto}
   .foot-brand p{font-size:12.5px;margin:10px 0 12px;max-width:320px}
-  .foot-col h6{font-size:10.5px;margin:0 0 10px}
+  .foot-col h3{font-size:10.5px;margin:0 0 10px}
   .foot-col a{font-size:13px;padding:3px 0}
   .foot-bot{padding-top:14px;font-size:11.5px}
 }
@@ -1094,7 +1095,7 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
 </script>
 </head>
 <body>
-<a class="skip-link" href="#top">Saltar al contenido</a>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
 <!-- NAV -->
 <header class="nav">
@@ -1131,6 +1132,7 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
 </header>
 
 <!-- HERO -->
+<main id="contenido">
 <section id="top" class="hero">
   <div class="wrap hero-grid">
     <div>
@@ -1881,6 +1883,7 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
 
   </div>
 </section>
+</main>
 
 <!-- STICKY MOBILE CTA BAR -->
 <div class="mobile-cta-bar">
@@ -1900,12 +1903,12 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
         </div>
       </div>
       <div class="foot-col">
-        <h6>Producto</h6>
+        <h3>Producto</h3>
         <a href="#para-quien">Para quién</a>        <a href="#pricing">Planes</a>
         <a href="/app/login">Ingresar</a>
       </div>
       <div class="foot-col">
-        <h6>Recursos</h6>
+        <h3>Recursos</h3>
         <a href="/recursos/guia">Guía completa <span style="background:#652BDF;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:6px;letter-spacing:.4px">NUEVO</span></a>
         <a href="/recursos/primeros-pasos">Primeros pasos (10 min)</a>
         <a href="/recursos/">Todas las guías</a>
@@ -1913,7 +1916,7 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
         <a href="https://api.whatsapp.com/send?phone=5491169456863&text=%C2%A1Hola%21%20Quer%C3%ADa%20pedir%20una%20demo%20guiada%20de%20ANMA." target="_blank">Demo guiada</a>
       </div>
       <div class="foot-col">
-        <h6>Legal</h6>
+        <h3>Legal</h3>
         <a href="/terminos">Términos y Condiciones</a>
         <a href="/privacidad">Política de Privacidad</a>
       </div>

@@ -106,6 +106,14 @@ Regenera los seis iconos **y** la OG (antes la OG estaba detras de un flag `--og
 
 `public/og-image.svg` quedo viejo: es la fuente del diseno de junio y no lo usa nadie (el `<meta>` apunta al PNG). Borrarlo o rehacerlo cuando se pase por ahi.
 
+## Estructura y carga (17/11)
+
+- **`<main id="contenido">`**: la pagina no tenia landmark principal. Envuelve de `#top` hasta `#contact`; el pie y la barra sticky quedan afuera. El salto de teclado (`.skip-link`) apuntaba a `#top`, el hero; ahora cae en el `<main>`.
+- **Los titulos del pie eran `<h6>`** despues de un `<h2>`: dos niveles de salto. Pasaron a `<h3>` y el selector `.foot-col h6` a `.foot-col h3`. Mismo tamano, mismo peso, misma caja: verificado a 12 anchos, las unicas diferencias son los tres nombres de etiqueta.
+- **`preconnect` a cdnjs**: Font Awesome abria un origen nuevo recien al encontrar el `<link>`. Ahora el navegador arranca la conexion antes.
+
+**Font Awesome cuesta 171 KB** (18 KB de CSS + 153 KB de `fa-solid-900.woff2`) para **17 iconos**, y el CSS bloquea el pintado. Reemplazarlos por SVG inline, como los que la pagina ya usa (tildes, flechas, WhatsApp), saca esos 171 KB y un origen de terceros. Es la mejora de carga mas grande que queda. Cambia como se ven los iconos: hay que mirarlo antes de darle.
+
 ## Pendientes
 
 1. **Las 4 capturas de escritorio son de septiembre.** Al reemplazar cualquier PNG, correr `node scripts/optimizar-capturas.cjs`: genera el `.webp` que la pagina sirve e imprime el width/height que hay que poner en el `<img>`. El PNG queda como fuente, no se publica a nadie (el `<source>` gana siempre). Siguen valiendo las reglas: `dashboard.png`, `productos.png`, `presupuesto.png`, `mensajes-wa.png`. Deben ir a 1920 de ancho y **las 4 con la misma altura** (el marco no recorta, pero el carrusel pega un salto si difieren). Hay un inyector de datos de ejemplo en `scripts/demo-capturas.js` para no publicar datos de clientes reales.
