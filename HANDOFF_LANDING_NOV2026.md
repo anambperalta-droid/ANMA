@@ -142,6 +142,21 @@ Los nombres son en castellano y describen el dibujo, no la marca: `bars`, `xmark
 
 Dos cambiaron de dibujo a proposito: el escudo de `shield-halved` (la linea del medio lo hacia parecer un banderin) ahora lleva un tilde adentro, y `file-import` paso a ser una bandeja con una flecha entrando, que a 13px se lee y la hoja con flecha al lado no.
 
+## La app de /app tambien (17/11)
+
+Medido sobre produccion, la pantalla de login bajaba **1.060 KB**. Dos de esos pedidos sobraban:
+
+- **La hoja de Font Awesome de cdnjs, 18 KB, no la usaba nadie.** `src/main.jsx` ya importa `@fortawesome/fontawesome-free`, asi que Vite mete el CSS y la fuente en el bundle (`assets/fa-solid-900-*.woff2`, 153 KB) y esa es la que dibuja los iconos. La de cdnjs se bajaba y la pisaba la del bundle. Se saco el `<link>` y el `<noscript>`.
+- **Las tipografias ahora salen del propio dominio**, igual que en la landing: `inter-var-latin.woff2` (48 KB, la variable 300..800 en un solo archivo) y `poppins-600-latin.woff2`. Antes el `<link>` pedia Poppins 500, 600 **y** 700, y la app usa solo la 600, en dos lugares: el nombre del negocio en la barra lateral y la marca del login.
+
+Saldo: tres origenes de terceros menos (cdnjs, fonts.googleapis, fonts.gstatic) y 18 KB que se bajaban al pedo. Verificado en el dev server y en el build: cero pedidos externos salvo Clarity, y `document.fonts.check` da verdadero para Inter, Poppins y Font Awesome.
+
+**Lo que queda pesando en la app**, por si se encara: `app-*.css` 253 KB, `vendor-react` 227, `vendor-supabase` 181, `app-*.js` 163, y la fuente de Font Awesome 153. Esa ultima se podria recortar muchisimo (la app usa 214 iconos distintos de los miles que trae), pero hace falta `fonttools` y, sobre todo, cuidado: hay nombres de icono que se arman en tiempo de ejecucion (`` `fa fa-${cond ? 'x' : 'y'}` ``), asi que un subconjunto mal hecho deja huecos que no se ven hasta que un usuario llega a esa pantalla.
+
+**Hallazgo al pasar:** el CSS de la app pide `font-family:'Space Grotesk','Inter',sans-serif` en 35 lugares, pero **Space Grotesk no se carga en ningun lado**. O sea que la app siempre se vio con Inter. No lo toque: sacar el nombre del stack no cambia nada en pantalla, pero es una decision de diseno (si alguien tiene Space Grotesk instalada en su maquina, para esa persona si cambia).
+
+**El CSP de `vercel.json` sigue permitiendo cdnjs y Google Fonts** porque `public/demo.html` y las cuatro paginas de `public/recursos/` los siguen usando. Cuando les toque, ahi se puede cerrar `style-src` y `font-src` a `'self'`.
+
 ## Pendientes
 
 1. **Las 4 capturas de escritorio son de septiembre.** Al reemplazar cualquier PNG, correr `node scripts/optimizar-capturas.cjs`: genera el `.webp` que la pagina sirve e imprime el width/height que hay que poner en el `<img>`. El PNG queda como fuente, no se publica a nadie (el `<source>` gana siempre). Siguen valiendo las reglas: `dashboard.png`, `productos.png`, `presupuesto.png`, `mensajes-wa.png`. Deben ir a 1920 de ancho y **las 4 con la misma altura** (el marco no recorta, pero el carrusel pega un salto si difieren). Hay un inyector de datos de ejemplo en `scripts/demo-capturas.js` para no publicar datos de clientes reales.
