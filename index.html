@@ -472,7 +472,7 @@ p{text-wrap:pretty}
 .adentro-frame{background:#fff;border-radius:14px;overflow:hidden;border:1px solid #DECDFC;box-shadow:0 20px 50px -22px rgba(34,20,51,.35)}
 .adentro-bar{display:flex;align-items:center;gap:6px;padding:11px 14px;background:#F1EBFD;border-bottom:1px solid #E9E1F5}
 .adentro-bar > span{width:9px;height:9px;border-radius:99px;background:#CFC2E8;flex-shrink:0}
-.adentro-url{margin-left:14px;font-size:10.5px;font-weight:600;color:#6E6383;letter-spacing:.02em;font-family:'Figtree',sans-serif}
+.adentro-url{margin-left:14px;font-size:10px;font-weight:600;color:#6E6383;letter-spacing:.02em;font-family:'Figtree',sans-serif}
 /* img: si carga bien, tapa el background del <picture>. Si aún no está
    subida (Ana pendiente), el background se ve como un shot violeta elegante
    con "captura próxima" — no queda "imagen rota". */
@@ -481,24 +481,24 @@ p{text-wrap:pretty}
 .adentro-frame picture::after{content:"";position:absolute;inset:0;background:transparent;z-index:0;pointer-events:none}
 .adentro-frame img{display:block;width:100%;height:auto;position:relative;z-index:1}
 /* Captions con jerarquía consistente con el resto de la landing */
-.adentro-cap{color:#574A6B;font-size:15px;line-height:1.6;padding:22px 8px 0;text-align:center;max-width:360px;margin:0 auto;font-family:'Figtree',sans-serif}
+.adentro-cap{color:#574A6B;font-size:13px;line-height:1.6;padding:14px 8px 0;text-align:center;max-width:360px;margin:0 auto;font-family:'Figtree',sans-serif}
 .adentro-cap b{color:#221433;font-weight:700;letter-spacing:-.01em}
 .adentro-cap i{font-style:normal;color:#4718AE;font-weight:700}
 /* Pie de imagen: título en negrita + descripción muted debajo */
-.adentro-cap-title{color:#221433;font-weight:700;font-size:16px;letter-spacing:-.01em;display:block;margin-bottom:4px;font-family:'Figtree',sans-serif}
-.adentro-cap-sub{color:#574A6B;font-size:13px;font-weight:500;line-height:1.5;display:block}
+.adentro-cap-title{color:#221433;font-weight:700;font-size:14px;letter-spacing:-.01em;display:block;margin-bottom:4px;font-family:'Figtree',sans-serif}
+.adentro-cap-sub{color:#574A6B;font-size:12.5px;font-weight:500;line-height:1.5;display:block}
 .adentro-cap-sub i{font-style:normal;color:#4718AE;font-weight:700}
 /* ── Controles del carrusel (flechas + dots) ── */
 /* Controles sutiles — no compiten con las capturas.
    Flechas: solo icono con opacity baja, sin border/background hasta hover.
    Dots: chicos, activo violeta pastel ancho. */
-.adentro-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px}
+.adentro-controls{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px}
 .adentro-dots{display:flex;gap:6px;align-items:center}
 .adentro-dot{width:6px;height:6px;border-radius:99px;background:#CFC2E8;border:none;cursor:pointer;padding:9px;background-clip:content-box;box-sizing:content-box;transition:background .18s,width .25s ease;font-family:inherit}
 .adentro-dot:hover{background:#A68BF0}
 .adentro-dot.is-active{background:#652BDF;width:18px}
 .adentro-dot:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
-.adentro-arrow{width:30px;height:30px;border-radius:50%;border:none;background:transparent;color:#6E6383;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .18s,color .18s;font-family:inherit;flex-shrink:0;padding:0}
+.adentro-arrow{width:40px;height:40px;border-radius:50%;border:none;background:transparent;color:#6E6383;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .18s,color .18s;font-family:inherit;flex-shrink:0;padding:0}
 .adentro-arrow:hover{background:#EFE7FE;color:#4718AE}
 .adentro-arrow:disabled{opacity:.25;cursor:default}
 .adentro-arrow:disabled:hover{background:transparent;color:#6E6383}
@@ -520,7 +520,7 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
    frame blanco pasa a ser lo mas claro en pantalla.
    Referencia de tono: violeta Nave (#652BDF / #360C72).
    ═════════════════════════════════════════════ */
-.adentro-dark{background:#360C72;border-top:none!important;border-bottom:none!important;padding:44px 0!important}
+.adentro-dark{background:#360C72;border-top:none!important;border-bottom:none!important;padding:34px 0!important}
 .adentro-dark .h2{color:#fff}
 .adentro-dark .h2 em{font-style:normal;color:#F6DE8B}
 .adentro-dark .adentro-intro{color:#CFBFF0;font-size:18px;line-height:1.5;margin:0 auto;max-width:540px;letter-spacing:-.01em}
@@ -544,29 +544,29 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
 .adentro-dark .adentro-arrow:focus-visible{outline-color:#F6DE8B}
 .adentro-dark .adentro-counter{color:rgba(255,255,255,.6)}
 .adentro-dark .adentro-foot{font-size:11px;color:#B59BF5;margin-top:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
-@media(max-width:680px){
-  .adentro-dark{padding:34px 0!important}
+@media(min-width:681px){
+  .adentro-dark{padding:44px 0!important}
 }
 /* ── Lightbox: overlay full-screen que abre al hacer click en cualquier shot ── */
-.adentro-lb{position:fixed;inset:0;background:rgba(20,10,34,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:9999;padding:24px;animation:adentro-lb-in .18s ease-out both}
+.adentro-lb{position:fixed;inset:0;background:rgba(20,10,34,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:9999;padding:12px;animation:adentro-lb-in .18s ease-out both}
 .adentro-lb.open{display:flex}
 @keyframes adentro-lb-in{from{opacity:0}to{opacity:1}}
 .adentro-lb-frame{position:relative;max-width:min(1200px,95vw);max-height:90vh;background:#1A0E2B;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 40px 100px rgba(0,0,0,.7);animation:adentro-lb-zoom .22s ease-out both}
 @keyframes adentro-lb-zoom{from{transform:scale(.94);opacity:.6}to{transform:scale(1);opacity:1}}
-.adentro-lb-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#221433;border-bottom:1px solid rgba(255,255,255,.06)}
+.adentro-lb-bar{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#221433;border-bottom:1px solid rgba(255,255,255,.06)}
 .adentro-lb-bar > span.dot{width:9px;height:9px;border-radius:99px;background:rgba(255,255,255,.16)}
-.adentro-lb-title{margin-left:12px;font-size:12px;font-weight:700;color:rgba(255,255,255,.72);letter-spacing:.02em}
-.adentro-lb-close{margin-left:auto;width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-family:inherit;transition:background .15s}
+.adentro-lb-title{margin-left:12px;font-size:11px;font-weight:700;color:rgba(255,255,255,.72);letter-spacing:.02em}
+.adentro-lb-close{margin-left:auto;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-family:inherit;transition:background .15s}
 .adentro-lb-close:hover{background:rgba(255,255,255,.14)}
 .adentro-lb-img-wrap{max-height:calc(90vh - 60px);overflow:auto;background:#F1EBFD}
 .adentro-lb-img-wrap img{display:block;width:100%;height:auto}
-.adentro-lb-hint{position:absolute;bottom:-32px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
-@media(max-width:640px){
-  .adentro-lb{padding:12px}
-  .adentro-lb-bar{padding:10px 12px}
-  .adentro-lb-title{font-size:11px}
-  .adentro-lb-close{width:32px;height:32px}
-  .adentro-lb-hint{display:none}
+.adentro-lb-hint{display:none;position:absolute;bottom:-32px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+@media(min-width:641px){
+  .adentro-lb{padding:24px}
+  .adentro-lb-bar{padding:12px 16px}
+  .adentro-lb-title{font-size:12px}
+  .adentro-lb-close{width:34px;height:34px}
+  .adentro-lb-hint{display:block}
 }
 
 /* ═════════════════════════════════════════════
@@ -575,38 +575,40 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
    se instala como PWA en el celu. 3 phones side-
    by-side con las mismas capturas pero en mobile.
    ═════════════════════════════════════════════ */
-.bolsillo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;max-width:960px;margin:0 auto;align-items:start}
-.bolsillo-shot{margin:0;display:flex;flex-direction:column;align-items:center}
-.bolsillo-cap{color:#574A6B;font-size:13.5px;line-height:1.55;padding:20px 8px 0;text-align:center;max-width:220px;font-family:'Figtree',sans-serif;font-weight:600}
+.bolsillo-carousel{position:relative;max-width:100%}
+.bolsillo-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:16px;padding:8px 20px 12px;scroll-padding:20px;margin:0 auto;align-items:flex-start;max-width:100%!important}
+.bolsillo-grid::-webkit-scrollbar{display:none}
+.bolsillo-shot{margin:0;display:flex;flex-direction:column;align-items:center;flex:0 0 calc(100% - 40px);scroll-snap-align:center;scroll-snap-stop:always}
+.bolsillo-cap{color:#574A6B;font-size:14px;line-height:1.55;padding:20px 8px 0;text-align:center;max-width:280px;font-family:'Figtree',sans-serif;font-weight:600}
 .bolsillo-cap b{color:#221433;font-weight:700}
 /* Chips de trust bajo el titulo — en UNA SOLA LINEA (nowrap).
    En mobile con textos cortos + font chico para que entren los 3. */
-.bolsillo-chips{display:flex;flex-wrap:nowrap;justify-content:center;gap:8px;margin:22px auto 0;max-width:100%;padding:0 6px}
-.bolsillo-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #DECDFC;color:#574A6B;padding:8px 14px;border-radius:99px;font-size:12px;font-weight:600;letter-spacing:.02em;white-space:nowrap;flex-shrink:0}
-.bolsillo-chip svg{color:#652BDF;flex-shrink:0}
+.bolsillo-chips{display:flex;flex-wrap:nowrap;justify-content:center;gap:5px;margin:22px auto 0;max-width:100%;padding:0 4px}
+.bolsillo-chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #DECDFC;color:#574A6B;padding:6px 10px;border-radius:99px;font-size:10.5px;font-weight:600;letter-spacing:.02em;white-space:nowrap;flex-shrink:0}
+.bolsillo-chip svg{color:#652BDF;flex-shrink:0;width:11px;height:11px}
 /* Etiquetas responsive: se muestran largas en desktop, cortas en mobile */
-.bolsillo-chip .chip-long{display:inline}
-.bolsillo-chip .chip-short{display:none}
-@media(max-width:640px){
-  .bolsillo-chips{gap:5px;padding:0 4px}
-  .bolsillo-chip{padding:6px 10px;font-size:10.5px;gap:5px}
-  .bolsillo-chip svg{width:11px;height:11px}
-  .bolsillo-chip .chip-long{display:none}
-  .bolsillo-chip .chip-short{display:inline}
+.bolsillo-chip .chip-long{display:none}
+.bolsillo-chip .chip-short{display:inline}
+@media(min-width:641px){
+  .bolsillo-chips{gap:8px;padding:0 6px}
+  .bolsillo-chip{padding:8px 14px;font-size:12px;gap:6px}
+  .bolsillo-chip svg{width:13px;height:13px}
+  .bolsillo-chip .chip-long{display:inline}
+  .bolsillo-chip .chip-short{display:none}
 }
 /* Instalacion PWA — nota fluida, no steps. Conversacional, con las
    palabras clave marcadas para que "salten" sin ruptura tipografica.
    El PWA-chip inline sirve de anclaje conceptual sin robar peso. */
-.install-note{margin:26px auto 0;max-width:1132px;padding:26px 30px;background:#EFE7FE;border:1px solid #CFC2E8;border-radius:24px;text-align:center;font-family:'Figtree',sans-serif}
-.install-note p{color:#4A3A63;font-size:16.5px;line-height:1.6;margin:0 auto;max-width:720px;letter-spacing:-.01em}
+.install-note{margin:24px auto 0;max-width:1132px;padding:20px 18px;background:#EFE7FE;border:1px solid #CFC2E8;border-radius:14px;text-align:center;font-family:'Figtree',sans-serif}
+.install-note p{color:#4A3A63;font-size:15px;line-height:1.6;margin:0 auto;max-width:720px;letter-spacing:-.01em}
 .install-note p b{color:#221433;font-weight:700}
 .install-note p em{font-style:normal;color:#4718AE;font-weight:700}
-@media(max-width:640px){
-  .install-note{margin-top:24px;padding:20px 18px;border-radius:14px}
-  .install-note p{font-size:15px;line-height:1.6}
+@media(min-width:641px){
+  .install-note{margin-top:26px;padding:26px 30px;border-radius:24px}
+  .install-note p{font-size:16.5px}
 }
 /* Controles del carrusel: solo mobile */
-.bolsillo-controls{display:none}
+.bolsillo-controls{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px}
 
 /* ═════════════════════════════════════════════
    PANEL LAVANDA CON LAS FOTOS
@@ -617,53 +619,41 @@ button.adentro-frame:focus-visible{outline:2px solid #E2D2FF;outline-offset:3px}
    asi que se leen como una sola escena y el borde
    de abajo corta las mangas.
    ═════════════════════════════════════════════ */
-.bolsillo-stage{background:#DECDFC;border-radius:32px;max-width:1132px;margin:36px auto 0;padding:30px 20px 0;overflow:hidden}
+.bolsillo-stage{background:#DECDFC;border-radius:22px;max-width:1132px;margin:28px auto 0;padding:24px 14px 0;overflow:hidden}
 .bolsillo-stage .bolsillo-grid{margin-top:0!important;max-width:none;gap:10px;align-items:end}
 .bolsillo-stage .bolsillo-shot{flex-direction:column-reverse}
-.bolsillo-stage .bolsillo-cap{color:#4718AE;padding:0 6px 16px;max-width:260px}
+.bolsillo-stage .bolsillo-cap{color:#4718AE;padding:0 6px 12px;max-width:260px}
 .bolsillo-stage .bolsillo-cap b{color:#221433}
 .bolsillo-foto{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;font-family:inherit;border-radius:14px;transition:transform .2s ease}
 .bolsillo-foto img{display:block;width:100%;height:auto}
 .bolsillo-foto:hover{transform:translateY(-4px)}
 .bolsillo-foto:focus-visible{outline:2px solid #4718AE;outline-offset:3px}
-@media(max-width:920px){
-  .bolsillo-stage{border-radius:22px;padding:24px 14px 0;margin-top:28px}
-  .bolsillo-stage .bolsillo-cap{padding-bottom:12px}
+@media(min-width:921px){
+  .bolsillo-stage{border-radius:32px;padding:30px 20px 0;margin-top:36px}
+  .bolsillo-stage .bolsillo-cap{padding-bottom:16px}
 }
-@media(max-width:768px){
-  /* Grid pasa a carrusel scroll-snap horizontal. Desktop mantiene grid 3 cols. */
-  .bolsillo-carousel{position:relative;max-width:100%}
+@media(min-width:769px){
+  /* El carrusel del telefono vuelve a ser la grilla de tres columnas. */
   .bolsillo-grid{
-    display:flex!important;
-    grid-template-columns:none!important;
-    overflow-x:auto;scroll-snap-type:x mandatory;
-    scrollbar-width:none;-webkit-overflow-scrolling:touch;
-    gap:16px;padding:8px 20px 12px;
-    scroll-padding:20px;
-    align-items:flex-start;
-    max-width:100%!important;
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    overflow-x:visible;scroll-snap-type:none;
+    gap:32px;padding:0;
+    align-items:start;
+    max-width:960px!important;
   }
-  .bolsillo-grid::-webkit-scrollbar{display:none}
-  .bolsillo-shot{
-    flex:0 0 calc(100% - 40px);
-    scroll-snap-align:center;
-    scroll-snap-stop:always;
-    max-width:none;
-  }
-  .bolsillo-cap{font-size:14px;max-width:280px}
-  /* Controles visibles + con misma estetica sutil del carrusel #adentro */
-  .bolsillo-controls{
-    display:flex;align-items:center;justify-content:center;
-    gap:8px;margin-top:10px;
-  }
+  .bolsillo-stage .bolsillo-grid{max-width:none!important}
+  .bolsillo-shot{flex:none;scroll-snap-align:none}
+  .bolsillo-cap{font-size:13.5px;max-width:220px}
+  .bolsillo-controls{display:none}
 }
-@media(max-width:920px){
-  .adentro-cap{font-size:13px;padding-top:14px}
-  .adentro-cap-title{font-size:14px}
-  .adentro-cap-sub{font-size:12.5px;line-height:1.5}
-  .adentro-url{font-size:10px}
-  .adentro-controls{gap:8px;margin-top:10px}
-  .adentro-arrow{width:40px;height:40px}
+@media(min-width:921px){
+  .adentro-cap{font-size:15px;padding-top:22px}
+  .adentro-cap-title{font-size:16px}
+  .adentro-cap-sub{font-size:13px}
+  .adentro-url{font-size:10.5px}
+  .adentro-controls{gap:12px;margin-top:12px}
+  .adentro-arrow{width:30px;height:30px}
 }
 
 /* FLOAT WA */
