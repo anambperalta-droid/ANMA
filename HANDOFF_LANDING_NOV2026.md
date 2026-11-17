@@ -112,6 +112,20 @@ Regenera los seis iconos **y** la OG (antes la OG estaba detras de un flag `--og
 - **Los titulos del pie eran `<h6>`** despues de un `<h2>`: dos niveles de salto. Pasaron a `<h3>` y el selector `.foot-col h6` a `.foot-col h3`. Mismo tamano, mismo peso, misma caja: verificado a 12 anchos, las unicas diferencias son los tres nombres de etiqueta.
 - **`preconnect` a cdnjs**: Font Awesome abria un origen nuevo recien al encontrar el `<link>`. Ahora el navegador arranca la conexion antes.
 
+### Las tipografias se sirven desde el dominio (17/11)
+
+Google Fonts obligaba a dos conexiones nuevas (`fonts.googleapis.com` y `fonts.gstatic.com`) y a una hoja de estilos que frenaba el pintado. Los `.woff2` ahora viven en `public/fonts/` y se declaran con `@font-face` en el `<style>` de siempre. Son **los mismos archivos que servia Google**: medido a 375, 768 y 1280, los 578 elementos dan identicos, letra por letra.
+
+- `figtree-latin.woff2` (20 KB) — la variable 400..800, lo unico que la pagina baja de verdad
+- `figtree-latin-ext.woff2` (10 KB) — queda declarado con su `unicode-range` y **no se descarga**: ningun texto de la landing usa esos caracteres. Si algun dia entra uno, aparece solo
+- `poppins-600-anmahub.woff2` (896 bytes) — Poppins dibuja unicamente el wordmark, asi que el archivo trae los siete signos de "ANMA Hub" y nada mas. **Si el nombre cambia hay que rehacer el subconjunto** (`https://fonts.googleapis.com/css2?family=Poppins:wght@600&text=...` y bajar el woff2 que indica)
+
+Antes se bajaban Poppins 600 **y** 700, y el 700 no lo usaba nadie. El `<link rel="preload">` del Figtree latin esta arriba de todo para que empiece junto con el HTML. Las licencias OFL de las dos familias estan al lado de los archivos.
+
+`vercel.json` cachea `/fonts/` un ano con `immutable`. **Por eso, para cambiar una fuente hay que cambiarle el nombre al archivo**, no pisarlo: el navegador de quien ya entro no vuelve a preguntar.
+
+El CSP de `vercel.json` sigue permitiendo Google Fonts y cdnjs porque **la app de `/app` los sigue usando**. Cuando a la app le toque el mismo tratamiento, ahi se puede cerrar.
+
 ### Los iconos son propios (17/11)
 
 **Se saco Font Awesome.** Costaba 171 KB (18 de CSS que bloqueaba el pintado + 153 del `fa-solid-900.woff2`) para dibujar 17 simbolos, y abria un origen de terceros. En su lugar hay un sprite propio al principio del `<body>`: 17 `<symbol>` de trazo 2 sobre caja de 24, el mismo lenguaje de los SVG sueltos que ya estaban en la pagina (tildes, flechas, WhatsApp). Pesa 3 KB (1 KB comprimido), asi que el saldo es **-171 KB de red y +1,2 KB de HTML**, y un origen externo menos.

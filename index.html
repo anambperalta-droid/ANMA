@@ -94,9 +94,24 @@ if ((window.matchMedia && window.matchMedia('(display-mode: standalone)').matche
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"ANMA Hub","url":"https://anmahub.com","inLanguage":"es-AR","publisher":{"@type":"Organization","name":"ANMA Hub","url":"https://anmahub.com"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://anmahub.com/recursos/?q={search_term_string}"},"query-input":"required name=search_term_string"}}
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&family=Poppins:wght@600;700&display=swap" rel="stylesheet"><style>
+<!-- Las tipografias se sirven desde el propio dominio: Google Fonts obligaba a dos
+     conexiones nuevas y a una hoja de estilos que frenaba el pintado. Los archivos
+     son los mismos que servia Google (OFL, licencias en public/fonts). -->
+<link rel="preload" href="/fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Figtree variable 400..800. Los dos tramos son los mismos que corta Google: el
+   navegador baja latin-ext solo si la pagina usa alguno de esos caracteres. */
+@font-face{font-family:'Figtree';font-style:normal;font-weight:400 800;font-display:swap;
+src:url(/fonts/figtree-latin.woff2) format('woff2');
+unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Figtree';font-style:normal;font-weight:400 800;font-display:swap;
+src:url(/fonts/figtree-latin-ext.woff2) format('woff2');
+unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+/* Poppins solo dibuja el wordmark: el archivo tiene los siete signos de "ANMA Hub"
+   y nada mas, 896 bytes. Si el nombre cambia, hay que rehacer el subconjunto. */
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;
+src:url(/fonts/poppins-600-anmahub.woff2) format('woff2');
+unicode-range:U+20,U+41,U+48,U+4D-4E,U+62,U+75}
 /* ─── TOKENS ANMA · feria luminosa en violeta ───────────────
    Base crema, familia violeta como marca y amarillo pastel —el
    complementario del violeta— como unico acento. Verde solo para
