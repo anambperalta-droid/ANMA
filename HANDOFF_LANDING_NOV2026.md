@@ -94,7 +94,17 @@ Se reemplazo el logo viejo: tenia degrades y magenta, los dos vetados, y desapar
 - `public/logo-mark-inv.svg` — fondo oscuro (pie).
 - `public/favicon.svg` — la misma marca a sangre, sin el tile mas bajo, para que aguante a 16px.
 
-**Falta:** regenerar los PNG desde el SVG nuevo (`favicon-32`, `favicon-48`, `favicon-a`, `icon-192`, `icon-512`, `apple-touch-icon`) y la imagen de compartir. Hasta que eso pase, la pestana del navegador y el icono de la PWA siguen mostrando la A con degrade.
+**Cerrado el 17/11.** Los PNG (`favicon-32`, `favicon-48`, `favicon-a`, `icon-192`, `icon-512`, `apple-touch-icon`) se regeneraron desde `favicon.svg`, y la imagen de compartir (`public/og-image.png`, 1200x630) se rehizo con la marca nueva: banda violeta `#360C72`, el mismo tile con corte del nav, wordmark en crema, bajadas en lila, pildora en amarillo `#F6DE8B` sobre texto `#2B0A60`. Cero degrades, cero verde de marca. Los textos de la OG no se tocaron.
+
+Todo sale de un solo comando:
+
+```bash
+node scripts/gen-brand-assets.mjs
+```
+
+Regenera los seis iconos **y** la OG (antes la OG estaba detras de un flag `--og` para no pisar la version vieja; ya no hace falta).
+
+`public/og-image.svg` quedo viejo: es la fuente del diseno de junio y no lo usa nadie (el `<meta>` apunta al PNG). Borrarlo o rehacerlo cuando se pase por ahi.
 
 ## Pendientes
 
