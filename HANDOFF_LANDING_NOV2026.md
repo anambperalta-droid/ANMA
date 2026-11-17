@@ -112,7 +112,21 @@ Regenera los seis iconos **y** la OG (antes la OG estaba detras de un flag `--og
 - **Los titulos del pie eran `<h6>`** despues de un `<h2>`: dos niveles de salto. Pasaron a `<h3>` y el selector `.foot-col h6` a `.foot-col h3`. Mismo tamano, mismo peso, misma caja: verificado a 12 anchos, las unicas diferencias son los tres nombres de etiqueta.
 - **`preconnect` a cdnjs**: Font Awesome abria un origen nuevo recien al encontrar el `<link>`. Ahora el navegador arranca la conexion antes.
 
-**Font Awesome cuesta 171 KB** (18 KB de CSS + 153 KB de `fa-solid-900.woff2`) para **17 iconos**, y el CSS bloquea el pintado. Reemplazarlos por SVG inline, como los que la pagina ya usa (tildes, flechas, WhatsApp), saca esos 171 KB y un origen de terceros. Es la mejora de carga mas grande que queda. Cambia como se ven los iconos: hay que mirarlo antes de darle.
+### Los iconos son propios (17/11)
+
+**Se saco Font Awesome.** Costaba 171 KB (18 de CSS que bloqueaba el pintado + 153 del `fa-solid-900.woff2`) para dibujar 17 simbolos, y abria un origen de terceros. En su lugar hay un sprite propio al principio del `<body>`: 17 `<symbol>` de trazo 2 sobre caja de 24, el mismo lenguaje de los SVG sueltos que ya estaban en la pagina (tildes, flechas, WhatsApp). Pesa 3 KB (1 KB comprimido), asi que el saldo es **-171 KB de red y +1,2 KB de HTML**, y un origen externo menos.
+
+Como se usan:
+
+```html
+<i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-tag"/></svg></i>
+```
+
+El `<i>` que envuelve no es decorativo: es lo que deja en pie las reglas viejas (`.nav-cta .btn i{font-size:11px}`, `.nav-menu-mobile a i{width:18px;text-align:center}`, `.foot-bot .badges i{color:...}`). El `<svg>` mide `1em` y toma `currentColor`, asi que el tamano sigue saliendo del `font-size` y el color del `color`, igual que con la fuente de iconos. Para un icono nuevo: se agrega un `<symbol>` al sprite y se usa con `<use href="#i-loquesea"/>`. **No volver a cargar Font Awesome.**
+
+Los nombres son en castellano y describen el dibujo, no la marca: `bars`, `xmark`, `rocket`, `login`, `eye`, `celu`, `users`, `tag`, `libro`, `pregunta`, `check`, `capas`, `importar`, `escudo`, `sobre`, `base`, `soporte`.
+
+Dos cambiaron de dibujo a proposito: el escudo de `shield-halved` (la linea del medio lo hacia parecer un banderin) ahora lleva un tilde adentro, y `file-import` paso a ser una bandeja con una flecha entrando, que a 13px se lee y la hoja con flecha al lado no.
 
 ## Pendientes
 

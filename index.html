@@ -94,8 +94,6 @@ if ((window.matchMedia && window.matchMedia('(display-mode: standalone)').matche
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"ANMA Hub","url":"https://anmahub.com","inLanguage":"es-AR","publisher":{"@type":"Organization","name":"ANMA Hub","url":"https://anmahub.com"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://anmahub.com/recursos/?q={search_term_string}"},"query-input":"required name=search_term_string"}}
 </script>
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&family=Poppins:wght@600;700&display=swap" rel="stylesheet"><style>
@@ -1007,6 +1005,10 @@ body{padding-bottom:76px}
 
 /* ═══ ACCESIBILIDAD ═══ */
 /* Saltar el menu con el teclado: invisible hasta que recibe foco. */
+/* Iconos propios: el <svg> mide lo mismo que la letra que lo rodea y toma su color,
+   y el <i> que lo envuelve deja en pie las reglas de tamano y color que ya existian. */
+.ico{display:inline-block;vertical-align:-.125em;line-height:1}
+.ico svg{width:1em;height:1em;vertical-align:top;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .skip-link{position:fixed;left:12px;top:-72px;z-index:999;background:#fff;color:#4718AE;font-family:'Figtree',sans-serif;font-size:14px;font-weight:700;padding:12px 18px;border-radius:12px;border:2px solid #652BDF;text-decoration:none;transition:top .15s}
 .skip-link:focus,.skip-link:focus-visible{top:12px}
 
@@ -1095,13 +1097,35 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
 </script>
 </head>
 <body>
+<!-- Set de iconos propio. Trazo de 2 sobre caja de 24, el mismo lenguaje que
+     los SVG sueltos que ya estaban en la pagina. Reemplaza a Font Awesome: eran
+     171 KB (18 de CSS + 153 del woff2) para dibujar diecisiete simbolos. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-xmark" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+<symbol id="i-rocket" viewBox="0 0 24 24"><path d="M12 2.4c2.8 2.6 4.3 5.9 4.3 9.4v3.4L12 17.8l-4.3-2.6v-3.4c0-3.5 1.5-6.8 4.3-9.4z"/><circle cx="12" cy="9.8" r="1.9"/><path d="M7.7 12.6L5 15.3l.8 3.3 1.9-1.1M16.3 12.6l2.7 2.7-.8 3.3-1.9-1.1"/></symbol>
+<symbol id="i-login" viewBox="0 0 24 24"><path d="M15 3.5h3.5a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H15M3.5 12h10M10.2 8.4l3.6 3.6-3.6 3.6"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.2 12S5.9 5.9 12 5.9 21.8 12 21.8 12 18.1 18.1 12 18.1 2.2 12 2.2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-celu" viewBox="0 0 24 24"><rect x="6" y="2.2" width="12" height="19.6" rx="2.6"/><path d="M10.2 18.6h3.6"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9.1" cy="8.3" r="3.2"/><path d="M2.9 20.1c0-3.4 2.8-5.4 6.2-5.4s6.2 2 6.2 5.4"/><circle cx="17.4" cy="7.4" r="2.4"/><path d="M17.2 13.6c2.4.3 3.9 2 3.9 4.6"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.6 11.4V4.6a1 1 0 0 1 1-1h6.8a1 1 0 0 1 .7.3l8.3 8.3a1 1 0 0 1 0 1.4l-6.8 6.8a1 1 0 0 1-1.4 0L3.9 12.1a1 1 0 0 1-.3-.7z"/><circle cx="7.9" cy="7.9" r="1.4"/></symbol>
+<symbol id="i-libro" viewBox="0 0 24 24"><path d="M12 7.4C12 5.8 9.4 4.3 3.4 4.3v13.1c6 0 8.6 1.5 8.6 3.1 0-1.6 2.6-3.1 8.6-3.1V4.3c-6 0-8.6 1.5-8.6 3.1zM12 7.4v13.1"/></symbol>
+<symbol id="i-pregunta" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M9.3 9.5a2.8 2.8 0 0 1 5.5.8c0 1.9-2.8 2.4-2.8 4.1M12 17.6v.1"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.4l2.7 2.7 5.3-5.5"/></symbol>
+<symbol id="i-capas" viewBox="0 0 24 24"><path d="M12 2.9l9.1 4.6L12 12.1 2.9 7.5 12 2.9zM2.9 12.2l9.1 4.6 9.1-4.6M2.9 16.7l9.1 4.6 9.1-4.6"/></symbol>
+<symbol id="i-importar" viewBox="0 0 24 24"><path d="M3.5 13.8v3.7a2.6 2.6 0 0 0 2.6 2.6h11.8a2.6 2.6 0 0 0 2.6-2.6v-3.7"/><path d="M12 3.3v10.5M8.1 9.9l3.9 3.9 3.9-3.9"/></symbol>
+<symbol id="i-escudo" viewBox="0 0 24 24"><path d="M12 2.7l7.6 3v5.5c0 4.6-3.1 8.4-7.6 10.1-4.5-1.7-7.6-5.5-7.6-10.1V5.7l7.6-3z"/><path d="M8.9 11.9l2.3 2.3 4-4.2"/></symbol>
+<symbol id="i-sobre" viewBox="0 0 24 24"><rect x="2.6" y="4.9" width="18.8" height="14.2" rx="2.2"/><path d="M3.4 7.1l8.6 5.8 8.6-5.8"/></symbol>
+<symbol id="i-base" viewBox="0 0 24 24"><path d="M20 6.1c0 1.8-3.6 3.2-8 3.2S4 7.9 4 6.1 7.6 2.9 12 2.9s8 1.4 8 3.2zM4 6.1v11.8c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V6.1M4 12c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2"/></symbol>
+<symbol id="i-soporte" viewBox="0 0 24 24"><path d="M4.8 13.4v-1.6a7.2 7.2 0 0 1 14.4 0v1.6"/><rect x="2.9" y="12.9" width="4" height="5.6" rx="1.7"/><rect x="17.1" y="12.9" width="4" height="5.6" rx="1.7"/><path d="M19.1 18.5v.5a2.7 2.7 0 0 1-2.7 2.7h-2.6"/></symbol>
+</defs></svg>
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
 <!-- NAV -->
 <header class="nav">
   <div class="wrap nav-in">
     <button class="nav-burger" id="nav-burger" aria-label="Abrir menú" aria-expanded="false">
-      <i class="fa-solid fa-bars"></i>
+      <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bars"/></svg></i>
     </button>
     <a href="#top" class="logo">
       <img class="logo-mark" src="/logo-mark.svg" alt="ANMA Hub" width="32" height="32">
@@ -1116,18 +1140,18 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
       <a href="#faq">Preguntas</a>
     </nav>
     <div class="nav-cta">
-      <a href="/app/registro" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Probar gratis</a>
-      <a href="/app/login" class="btn btn-dark nav-btn-login"><i class="fa-solid fa-arrow-right-to-bracket"></i> Ingresar</a>
+      <a href="/app/registro" class="btn btn-primary"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-rocket"/></svg></i> Probar gratis</a>
+      <a href="/app/login" class="btn btn-dark nav-btn-login"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-login"/></svg></i> Ingresar</a>
     </div>
   </div>
   <!-- Menú mobile desplegable -->
   <div class="nav-menu-mobile" id="nav-menu-mobile">
-    <a href="#adentro"><i class="fa-solid fa-eye"></i> Por dentro</a>
-    <a href="#bolsillo"><i class="fa-solid fa-mobile-screen"></i> En el celu</a>
-    <a href="#para-quien"><i class="fa-solid fa-users"></i> Para quién</a>
-    <a href="#pricing"><i class="fa-solid fa-tag"></i> Planes</a>
-    <a href="/recursos/"><i class="fa-solid fa-book-open"></i> Recursos</a>
-    <a href="#faq"><i class="fa-solid fa-circle-question"></i> Preguntas</a>
+    <a href="#adentro"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-eye"/></svg></i> Por dentro</a>
+    <a href="#bolsillo"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-celu"/></svg></i> En el celu</a>
+    <a href="#para-quien"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-users"/></svg></i> Para quién</a>
+    <a href="#pricing"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-tag"/></svg></i> Planes</a>
+    <a href="/recursos/"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-libro"/></svg></i> Recursos</a>
+    <a href="#faq"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-pregunta"/></svg></i> Preguntas</a>
   </div>
 </header>
 
@@ -1733,7 +1757,7 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
 
           <!-- Sin contratos -->
           <p style="font-size:11.5px;color:rgba(255,255,255,.62);text-align:center;margin:0;line-height:1.5">
-            <i class="fa-solid fa-circle-check" style="color:#6ee7b7;margin-right:4px"></i>Sin contratos de permanencia · Cancelá cuando quieras
+            <i class="ico" aria-hidden="true" style="color:#6ee7b7;margin-right:4px"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></i>Sin contratos de permanencia · Cancelá cuando quieras
           </p>
 
           <!-- Trial gratuito — en una sola línea -->
@@ -1752,7 +1776,7 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
 
           <div style="display:flex;gap:14px;align-items:flex-start">
             <div style="width:36px;height:36px;border-radius:10px;background:rgba(100,41,209,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
-              <i class="fa-solid fa-layer-group" style="color:#E2D2FF;font-size:14px"></i>
+              <i class="ico" aria-hidden="true" style="color:#E2D2FF;font-size:14px"><svg viewBox="0 0 24 24"><use href="#i-capas"/></svg></i>
             </div>
             <div>
               <h4 class="eco-t">Ecosistema ANMA Hub completo</h4>
@@ -1776,7 +1800,7 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
 
           <div style="display:flex;gap:14px;align-items:flex-start">
             <div style="width:36px;height:36px;border-radius:10px;background:rgba(246,222,139,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
-              <i class="fa-solid fa-file-import" style="color:#F6DE8B;font-size:14px"></i>
+              <i class="ico" aria-hidden="true" style="color:#F6DE8B;font-size:14px"><svg viewBox="0 0 24 24"><use href="#i-importar"/></svg></i>
             </div>
             <div>
               <h4 class="eco-t">Migración asistida sin costo</h4>
@@ -1788,7 +1812,7 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
 
           <div style="display:flex;gap:14px;align-items:flex-start">
             <div style="width:36px;height:36px;border-radius:10px;background:rgba(100,41,209,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
-              <i class="fa-solid fa-shield-halved" style="color:#E2D2FF;font-size:14px"></i>
+              <i class="ico" aria-hidden="true" style="color:#E2D2FF;font-size:14px"><svg viewBox="0 0 24 24"><use href="#i-escudo"/></svg></i>
             </div>
             <div>
               <h4 class="eco-t">Infraestructura de alta disponibilidad</h4>
@@ -1899,7 +1923,7 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
         <div class="logo" style="color:#fff"><img class="logo-mark" src="/logo-mark-inv.svg" alt="ANMA Hub" width="32" height="32"> ANMA Hub</div>
         <p>Plataforma de gestión integral para tu negocio, pensada para tu día a día</p>
         <div class="foot-soc">
-          <a href="mailto:holaanmahub@gmail.com" title="Soporte por email"><i class="fa-solid fa-envelope"></i></a>
+          <a href="mailto:holaanmahub@gmail.com" title="Soporte por email"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-sobre"/></svg></i></a>
         </div>
       </div>
       <div class="foot-col">
@@ -1924,9 +1948,9 @@ section.contact-sec{padding:34px 16px;background:var(--violeta-900);text-align:c
     <div class="foot-bot">
       <div>© <span id="y"></span> ANMA Hub</div>
       <div class="badges">
-        <span><i class="fa-solid fa-shield-halved"></i> SSL</span>
-        <span><i class="fa-solid fa-database"></i> Backups diarios</span>
-        <span><i class="fa-solid fa-headset"></i> Soporte humano</span>
+        <span><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-escudo"/></svg></i> SSL</span>
+        <span><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-base"/></svg></i> Backups diarios</span>
+        <span><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-soporte"/></svg></i> Soporte humano</span>
       </div>
     </div>
   </div>
@@ -1937,6 +1961,8 @@ document.getElementById('y').textContent = new Date().getFullYear();
 
 // ── Burger menu (mobile) ──
 (function(){
+  var ICO_MENU = '<i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bars"/></svg></i>';
+  var ICO_X = '<i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-xmark"/></svg></i>';
   var burger = document.getElementById('nav-burger');
   var menu = document.getElementById('nav-menu-mobile');
   if (!burger || !menu) return;
@@ -1944,15 +1970,15 @@ document.getElementById('y').textContent = new Date().getFullYear();
     var open = menu.classList.toggle('open');
     burger.setAttribute('aria-expanded', String(open));
     burger.innerHTML = open
-      ? '<i class="fa-solid fa-xmark"></i>'
-      : '<i class="fa-solid fa-bars"></i>';
+      ? ICO_X
+      : ICO_MENU;
   });
   // Cerrar al clickear un link del menú
   menu.querySelectorAll('a').forEach(function(a){
     a.addEventListener('click', function(){
       menu.classList.remove('open');
       burger.setAttribute('aria-expanded', 'false');
-      burger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+      burger.innerHTML = ICO_MENU;
     });
   });
   // Cerrar al clickear fuera
@@ -1961,7 +1987,7 @@ document.getElementById('y').textContent = new Date().getFullYear();
     if (menu.contains(e.target) || burger.contains(e.target)) return;
     menu.classList.remove('open');
     burger.setAttribute('aria-expanded', 'false');
-    burger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    burger.innerHTML = ICO_MENU;
   });
 })();
 
