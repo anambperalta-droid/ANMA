@@ -273,6 +273,14 @@ Honesto incluye los que descarto.
 El punto 18 es el más importante de la tabla. La respuesta a "no tengo tráfico"
 no es la guía número 19.
 
+> **Corregido el 18/11, después de verificarlo:** la acción 2 pedía entrar en
+> las notas de "mejores sistemas 2026". Esas notas **las escriben competidores**
+> que se rankean a sí mismos: Commercy se pone #1 en su propio ranking y Wynges
+> pone a Líder Gestión, su producto, en el #3. Pedirles entrar no va a funcionar.
+> Lo que sí funciona es hacer la comparativa propia, como hacen ellos pero
+> honesta. Los destinatarios reales, los mensajes listos para mandar y de dónde
+> sacar cada lista están en **`LEADS_Y_MENSAJES.md`**.
+
 ### Las primeras 10 acciones
 
 En orden. Cada una con el mensaje, a quién, y cómo se sabe si funcionó.
