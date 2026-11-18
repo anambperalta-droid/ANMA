@@ -426,7 +426,7 @@ export default function Registro() {
           </Link>
 
           <div className="rg-foot">
-            <span><i className="fa fa-shield-halved" /> Encriptación E2E</span>
+            <span><i className="fa fa-shield-halved" /> Conexión cifrada</span>
             <span className="rg-dot" />
             <span><i className="fa fa-database" /> Backups diarios</span>
             <span className="rg-dot" />
