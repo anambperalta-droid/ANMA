@@ -240,202 +240,225 @@ export default function Login() {
   return (
     <>
       <style>{`
-        @keyframes lp-orb-a { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-32px,24px) scale(1.08)} }
-        @keyframes lp-orb-b { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(28px,-22px) scale(1.12)} }
-        @keyframes lp-orb-c { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,18px) scale(1.06)} }
-        @keyframes lp-card-in {
-          0%   { opacity:0; transform:translateY(18px) scale(.985); filter:blur(6px) }
-          100% { opacity:1; transform:none; filter:blur(0) }
-        }
+        /* ═══════════════════════════════════════════════════════
+           LA ENTRADA
+           El fondo era un degrade de violeta, naranja y magenta con
+           tres orbes borrosos: tres colores vetados por la marca y
+           ningun degrade sobrevive en la web. Ahora es el violeta
+           pleno de las bandas (#360C72) con el corte diagonal del
+           isotipo a escala de pantalla: una sola figura plana, que
+           da profundidad sin un solo degrade. La tarjeta va blanca,
+           como el mock del hero, y todo lo de adentro pasa a la
+           rampa clara: violeta para lo que lleva a algun lado,
+           verde para la accion, amarillo solo de acento.
+           ═══════════════════════════════════════════════════════ */
+
+        @keyframes lp-card-in { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
         @keyframes lp-fade { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
-        @keyframes lp-ring { 0%{box-shadow:0 0 0 0 rgba(167,139,250,.55)} 70%{box-shadow:0 0 0 16px rgba(167,139,250,0)} 100%{box-shadow:0 0 0 0 rgba(167,139,250,0)} }
 
         .lp-wrap{
-          position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+          position:fixed;inset:0;z-index:9999;
+          display:flex;align-items:center;justify-content:center;
           padding:24px;font-family:'Inter',system-ui,sans-serif;
-          background:radial-gradient(1200px 800px at 20% 10%,#3b1078 0%,transparent 60%),
-                     radial-gradient(900px 700px at 80% 90%,#0f7a55 0%,transparent 55%),
-                     linear-gradient(135deg,#0e0524 0%,#1a0636 35%,#2d0a57 70%,#1a1233 100%);
-          overflow:hidden;
+          background:#360C72;
+          /* Scroll, no recorte: con el teclado abierto o en apaisado la
+             tarjeta es mas alta que la pantalla y antes se cortaba el pie. */
+          overflow:auto;-webkit-overflow-scrolling:touch;
         }
-        .lp-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px)}
-        .lp-orb1{width:520px;height:520px;top:-160px;right:-140px;background:radial-gradient(circle,rgba(242,118,46,.45) 0%,transparent 70%);animation:lp-orb-a 16s ease-in-out infinite}
-        .lp-orb2{width:380px;height:380px;bottom:-120px;left:-90px;background:radial-gradient(circle,rgba(5,150,105,.35) 0%,transparent 70%);animation:lp-orb-b 20s ease-in-out infinite}
-        .lp-orb3{width:240px;height:240px;top:48%;left:18%;background:radial-gradient(circle,rgba(236,72,153,.20) 0%,transparent 70%);animation:lp-orb-c 22s ease-in-out infinite}
-        @media (prefers-reduced-motion:reduce){.lp-orb1,.lp-orb2,.lp-orb3{animation:none}}
-
-        .lp-grain{position:absolute;inset:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;
-          background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+        /* El corte del isotipo, a tamano de pantalla. */
+        .lp-wrap::before{
+          content:'';position:fixed;inset:0;pointer-events:none;
+          background:#2B0A60;
+          clip-path:polygon(100% 26%,100% 100%,26% 100%);
+        }
+        /* El filo amarillo de la imagen de compartir. */
+        .lp-wrap::after{
+          content:'';position:fixed;top:0;left:0;right:0;height:5px;
+          background:#F6DE8B;pointer-events:none;
+        }
 
         .lp-card{
-          position:relative;z-index:1;width:100%;max-width:540px;
-          background:rgba(255,255,255,.06);
-          backdrop-filter:blur(28px) saturate(180%);
-          -webkit-backdrop-filter:blur(28px) saturate(180%);
-          border:1px solid rgba(255,255,255,.12);
-          border-radius:28px;padding:48px 46px 40px;
-          box-shadow:0 24px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08);
-          animation:lp-card-in .6s cubic-bezier(.2,.7,.2,1) both;
+          position:relative;z-index:1;width:100%;max-width:480px;margin:auto;
+          background:#fff;
+          border:1px solid #E9E1F5;
+          border-radius:26px;padding:40px 38px 30px;
+          box-shadow:0 30px 70px -24px rgba(12,2,34,.6);
+          animation:lp-card-in .5s cubic-bezier(.2,.7,.2,1) both;
         }
 
-        .lp-top{display:flex;align-items:center;gap:14px;margin-bottom:26px}
-        .lp-logo{
-          width:46px;height:46px;border-radius:13px;flex-shrink:0;
-          background:#fff;
-          display:flex;align-items:center;justify-content:center;
-          box-shadow:0 8px 24px rgba(242,118,46,.4);
-          animation:lp-ring 2.6s ease-out 1.2s 1;
-        }
-        .lp-logo img{width:80%;height:80%;object-fit:contain;display:block}
+        .lp-top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+        .lp-logo{width:44px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+        .lp-logo img{width:100%;height:100%;object-fit:contain;display:block}
         .lp-brand-txt{display:flex;flex-direction:column;line-height:1}
-        .lp-brand-name{font-family:'Poppins',sans-serif;font-size:20px;font-weight:600;color:#fff;letter-spacing:.2px}
-        .lp-brand-tag{font-size:11px;color:rgba(255,255,255,.5);margin-top:3px;letter-spacing:.3px}
+        .lp-brand-name{font-family:'Poppins',sans-serif;font-size:19px;font-weight:600;color:#221433;letter-spacing:.2px}
+        .lp-brand-tag{font-size:11px;color:#6E6383;margin-top:4px;letter-spacing:.3px}
 
         .lp-greet{
-          font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2;
-          margin-bottom:8px;animation:lp-fade .5s .15s ease both
+          font-size:26px;font-weight:800;color:#221433;letter-spacing:-.5px;line-height:1.2;
+          margin-bottom:8px;animation:lp-fade .5s .1s ease both
         }
-        .lp-greet em{font-style:normal;background:linear-gradient(90deg,#a78bfa,#ec4899);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .lp-greet em{font-style:normal;color:#4718AE}
         .lp-sub{
-          font-size:13.5px;color:rgba(255,255,255,.6);margin-bottom:26px;line-height:1.55;
-          animation:lp-fade .5s .25s ease both
+          font-size:13.5px;color:#574A6B;margin-bottom:24px;line-height:1.55;
+          animation:lp-fade .5s .18s ease both
         }
-        .lp-sub b{color:rgba(255,255,255,.85);font-weight:600}
+        .lp-sub b{color:#221433;font-weight:700}
 
-        .lp-fg{margin-bottom:18px}
+        .lp-fg{margin-bottom:16px}
         .lp-lbl{
           display:flex;justify-content:space-between;align-items:center;
-          font-size:10.5px;font-weight:700;color:rgba(255,255,255,.7);
+          font-size:10.5px;font-weight:700;color:#6E6383;
           margin-bottom:7px;letter-spacing:.7px;text-transform:uppercase
         }
         .lp-inp{
-          width:100%;padding:15px 18px;box-sizing:border-box;
-          background:rgba(255,255,255,.07);
-          border:1.5px solid rgba(255,255,255,.12);
-          border-radius:14px;font-size:15px;color:#fff;outline:none;
-          transition:border-color .2s,background .2s,box-shadow .2s;
+          width:100%;padding:15px 16px;box-sizing:border-box;
+          background:#FBF8F4;
+          border:1.5px solid #DECDFC;
+          border-radius:13px;font-size:15px;color:#221433;outline:none;
+          transition:border-color .18s,background .18s,box-shadow .18s;
           font-family:'Inter',sans-serif;
         }
-        .lp-inp::placeholder{color:rgba(255,255,255,.3)}
+        .lp-inp::placeholder{color:#9A8FAE}
         .lp-inp:focus{
-          border-color:rgba(167,139,250,.6);
-          background:rgba(255,255,255,.10);
-          box-shadow:0 0 0 4px rgba(167,139,250,.12);
+          border-color:#652BDF;
+          background:#fff;
+          box-shadow:0 0 0 4px rgba(101,43,223,.14);
         }
         .lp-pw{position:relative}
         .lp-eye{
-          position:absolute;right:12px;top:50%;transform:translateY(-50%);
-          background:none;border:none;color:rgba(255,255,255,.45);
-          font-size:13px;padding:6px;cursor:pointer;transition:color .2s;
+          position:absolute;right:8px;top:50%;transform:translateY(-50%);
+          background:none;border:none;color:#6E6383;
+          font-size:13px;cursor:pointer;transition:color .15s;
+          width:38px;height:38px;display:flex;align-items:center;justify-content:center;
         }
-        .lp-eye:hover{color:rgba(255,255,255,.85)}
+        .lp-eye:hover{color:#221433}
 
         .lp-forgot{
-          background:none;border:none;color:#a78bfa;font-size:11px;font-weight:600;
+          background:none;border:none;color:#4718AE;font-size:11px;font-weight:700;
           cursor:pointer;padding:0;font-family:inherit;letter-spacing:.2px;
           transition:color .15s;text-transform:none
         }
-        .lp-forgot:hover{color:#c4b5fd;text-decoration:underline}
+        .lp-forgot:hover{color:#652BDF;text-decoration:underline}
 
         .lp-err{
-          background:rgba(220,38,38,.12);border:1.5px solid rgba(252,165,165,.4);border-radius:11px;
-          color:#fca5a5;font-size:12px;padding:10px 13px;margin-bottom:14px;
+          background:#FDECEC;border:1.5px solid #F4CDCA;border-radius:11px;
+          color:#B42318;font-size:12.5px;padding:11px 13px;margin-bottom:14px;
           display:flex;align-items:center;gap:8px;animation:lp-fade .25s ease both;
         }
-        .lp-caps{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:10.5px;color:#fbbf24;font-weight:600}
+        .lp-caps{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:10.5px;color:#7A4F00;font-weight:700}
 
         .lp-btn{
-          width:100%;padding:16px;margin-top:10px;
-          background:linear-gradient(135deg,#059669 0%,#10b981 100%);
-          color:#fff;border:none;border-radius:14px;
+          width:100%;padding:16px;margin-top:10px;min-height:52px;
+          background:#0B7D59;
+          color:#fff;border:none;border-radius:13px;
           font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
-          box-shadow:0 8px 24px rgba(5,150,105,.4),inset 0 1px 0 rgba(255,255,255,.18);
-          transition:transform .15s,box-shadow .25s,filter .2s;
+          box-shadow:0 8px 20px rgba(11,125,89,.26);
+          transition:background .18s,transform .15s,box-shadow .2s;
           display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.2px;
         }
-        .lp-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 30px rgba(5,150,105,.55)}
+        .lp-btn:hover:not(:disabled){background:#0E9B6E;transform:translateY(-1px);box-shadow:0 12px 26px rgba(11,125,89,.32)}
         .lp-btn:active:not(:disabled){transform:translateY(0)}
-        .lp-btn:disabled{opacity:.65;cursor:not-allowed}
+        .lp-btn:disabled{opacity:.55;cursor:not-allowed}
 
-        .lp-divider{
+        .lp-divider,.lp-sep{
           display:flex;align-items:center;gap:10px;
-          margin:20px 0 14px;font-size:10.5px;color:rgba(255,255,255,.35);
-          text-transform:uppercase;letter-spacing:1.2px;font-weight:600
+          font-size:10.5px;color:#6E6383;
+          text-transform:uppercase;letter-spacing:1.2px;font-weight:700
         }
-        .lp-divider::before,.lp-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.10)}
+        .lp-divider{margin:20px 0 14px}
+        .lp-sep{margin:0 0 16px}
+        .lp-divider::before,.lp-divider::after,
+        .lp-sep::before,.lp-sep::after{content:'';flex:1;height:1px;background:#E9E1F5}
 
         .lp-google{
           display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
-          padding:15px;background:#fff;color:#1f1f1f;border:none;border-radius:14px;
+          padding:15px;min-height:52px;
+          background:#fff;color:#221433;
+          border:1.5px solid #DECDFC;border-radius:13px;
           font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
-          box-shadow:0 4px 18px rgba(0,0,0,.28);
-          transition:transform .15s,box-shadow .2s;margin-bottom:18px;
+          transition:background .18s,border-color .18s,transform .15s;margin-bottom:14px;
         }
-        .lp-google:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.38)}
-        .lp-google:disabled{opacity:.6;cursor:not-allowed;transform:none}
-        .lp-sep{
-          display:flex;align-items:center;gap:10px;margin:0 0 16px;
-          font-size:10.5px;color:rgba(255,255,255,.35);
-          text-transform:uppercase;letter-spacing:1.2px;font-weight:600;
-        }
-        .lp-sep::before,.lp-sep::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.10)}
+        .lp-google:hover:not(:disabled){background:#F7F3FF;border-color:#A68BF0;transform:translateY(-1px)}
+        .lp-google:disabled{opacity:.55;cursor:not-allowed;transform:none}
 
         .lp-cta{
           display:flex;align-items:center;justify-content:center;gap:6px;
-          width:100%;padding:11px;border:1.5px solid rgba(255,255,255,.14);
-          background:rgba(255,255,255,.04);border-radius:11px;
-          color:rgba(255,255,255,.85);font-size:12.5px;font-weight:600;
-          text-decoration:none;transition:background .2s,border-color .2s,transform .15s;
+          width:100%;padding:12px;box-sizing:border-box;
+          border:1.5px solid #DECDFC;background:#F1EBFD;border-radius:12px;
+          color:#4718AE;font-size:12.5px;font-weight:600;
+          text-decoration:none;transition:background .18s,border-color .18s,transform .15s;
         }
-        .lp-cta:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.28);transform:translateY(-1px)}
-        .lp-cta-pill{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
-          background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:2px 7px;border-radius:8px;margin-right:4px}
+        .lp-cta:hover{background:#E2D2FF;border-color:#A68BF0;transform:translateY(-1px)}
+        .lp-cta-pill{
+          font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+          background:#F6DE8B;color:#3A2E02;padding:3px 7px;border-radius:8px;margin-right:4px
+        }
 
         .lp-foot{
-          margin-top:20px;text-align:center;font-size:10.5px;color:rgba(255,255,255,.32);
+          margin-top:18px;text-align:center;font-size:10.5px;color:#6E6383;
           letter-spacing:.4px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap
         }
-        .lp-foot i{color:#10b981}
-        .lp-foot b{color:rgba(255,255,255,.5);font-weight:600}
-        .lp-foot a{color:rgba(255,255,255,.5);text-decoration:none}
-        .lp-foot a:hover{color:#a78bfa}
-        .lp-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.2);display:inline-block}
+        .lp-foot i{color:#0B7D59}
+        .lp-foot b{color:#574A6B;font-weight:700}
+        .lp-foot a{color:#4718AE;text-decoration:none}
+        .lp-foot a:hover{text-decoration:underline}
+        .lp-dot{width:3px;height:3px;border-radius:50%;background:#CFC2E8;display:inline-block}
 
-        /* MODAL FORGOT */
-        .lp-modal-bg{position:fixed;inset:0;z-index:10000;background:rgba(10,5,30,.72);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
-        .lp-modal{
-          background:rgba(20,15,40,.85);backdrop-filter:blur(28px);
-          border:1px solid rgba(255,255,255,.12);
-          border-radius:20px;padding:30px 26px;width:100%;max-width:380px;
-          box-shadow:0 24px 64px rgba(0,0,0,.55);animation:lp-card-in .35s ease both;
+        /* MODAL: RECUPERAR CONTRASENA */
+        .lp-modal-bg{
+          position:fixed;inset:0;z-index:10000;background:rgba(27,8,66,.62);
+          display:flex;align-items:center;justify-content:center;padding:20px;
+          -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
         }
-        .lp-modal h3{font-size:17px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.3px}
-        .lp-modal p{font-size:13px;color:rgba(255,255,255,.6);margin:0 0 20px;line-height:1.6}
-        .lp-modal-ok{background:rgba(16,185,129,.12);border:1.5px solid rgba(110,231,183,.4);border-radius:12px;padding:14px;text-align:center;color:#86efac;font-size:13px;font-weight:600;line-height:1.6}
-        .lp-modal-ok i{color:#10b981;font-size:18px;display:block;margin-bottom:6px}
+        .lp-modal{
+          background:#fff;border:1px solid #E9E1F5;
+          border-radius:20px;padding:28px 26px;width:100%;max-width:380px;
+          box-shadow:0 30px 70px -24px rgba(12,2,34,.6);animation:lp-card-in .3s ease both;
+        }
+        .lp-modal h3{font-size:17px;font-weight:800;color:#221433;margin:0 0 6px;letter-spacing:-.3px}
+        .lp-modal p{font-size:13px;color:#574A6B;margin:0 0 20px;line-height:1.6}
+        .lp-modal-ok{
+          background:#E6F6F0;border:1.5px solid #6EE7B7;border-radius:12px;padding:14px;
+          text-align:center;color:#0B7D59;font-size:12.5px;line-height:1.6
+        }
+        .lp-modal-ok i{color:#0B7D59;font-size:18px;display:block;margin-bottom:6px}
         .lp-modal-row{display:flex;gap:8px;margin-top:16px}
-        .lp-modal-cancel{flex:1;padding:11px;border:1.5px solid rgba(255,255,255,.14);border-radius:10px;background:transparent;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
-        .lp-modal-cancel:hover{background:rgba(255,255,255,.04)}
-        .lp-modal-send{flex:2;padding:11px;border:none;border-radius:10px;background:linear-gradient(135deg,#F2762E,#a855f7);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
-        .lp-modal-send:disabled{opacity:.6;cursor:not-allowed}
+        .lp-modal-cancel{
+          flex:1;padding:12px;border:1.5px solid #DECDFC;border-radius:11px;
+          background:#fff;color:#574A6B;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;
+          transition:background .18s,border-color .18s
+        }
+        .lp-modal-cancel:hover{background:#F7F3FF;border-color:#A68BF0}
+        .lp-modal-send{
+          flex:2;padding:12px;border:none;border-radius:11px;
+          background:#652BDF;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;
+          transition:background .18s
+        }
+        .lp-modal-send:hover:not(:disabled){background:#4718AE}
+        .lp-modal-send:disabled{opacity:.55;cursor:not-allowed}
+
+        /* Quien navega con el teclado tiene que ver donde esta parado. */
+        .lp-card a:focus-visible,.lp-card button:focus-visible,
+        .lp-modal button:focus-visible{outline:2px solid #652BDF;outline-offset:3px;border-radius:10px}
+        .lp-btn:focus-visible{outline-color:#221433}
+
+        @media(prefers-reduced-motion:reduce){
+          .lp-card,.lp-greet,.lp-sub,.lp-err{animation:none!important}
+        }
 
         @media(max-width:480px){
-          .lp-card{padding:32px 24px 26px;border-radius:22px}
+          .lp-wrap{padding:16px}
+          .lp-card{padding:30px 22px 24px;border-radius:20px}
           .lp-greet{font-size:22px}
-          /* iOS zoom prevention: inputs necesitan font-size ≥16px */
+          /* iOS no hace zoom si el input mide 16px o mas */
           .lp-inp{font-size:16px!important;padding:14px 15px!important}
         }
       `}</style>
 
       <div className="lp-wrap">
-        <div className="lp-orb lp-orb1" />
-        <div className="lp-orb lp-orb2" />
-        <div className="lp-orb lp-orb3" />
-        <div className="lp-grain" />
-
         <form className="lp-card" onSubmit={e => { e.preventDefault(); handleLogin() }}>
           <div className="lp-top">
-            <div className="lp-logo"><img src="/favicon-a.png" alt="ANMA" /></div>
+            <div className="lp-logo"><img src="/logo-mark.svg" alt="" /></div>
             <div className="lp-brand-txt">
               <span className="lp-brand-name">ANMA</span>
               <span className="lp-brand-tag">Centro de mando</span>
@@ -459,9 +482,9 @@ export default function Login() {
           </button>
 
           {/* Rescate: si el user tuvo "link inválido" o intentos previos colgados */}
-          <div style={{ textAlign:'center', marginTop:8, marginBottom:4 }}>
+          <div style={{ textAlign:'center', marginTop:10, marginBottom:16 }}>
             <button type="button" onClick={handleHardReset} disabled={googleBusy}
-              style={{ background:'none', border:'none', color:'rgba(255,255,255,.45)', fontSize:11, cursor:'pointer', textDecoration:'underline', textUnderlineOffset:3, fontFamily:'inherit', padding:'4px 8px' }}>
+              style={{ background:'none', border:'none', color:'#6E6383', fontSize:11, cursor:'pointer', textDecoration:'underline', textUnderlineOffset:3, fontFamily:'inherit', padding:'4px 8px' }}>
               ¿Tuviste "link inválido" antes? Limpiar y reintentar →
             </button>
           </div>
@@ -518,14 +541,14 @@ export default function Login() {
           {/* Link directo a registro para usuarios nuevos */}
           <div style={{
             textAlign: 'center', marginTop: 18, marginBottom: 14,
-            fontSize: 13, color: 'rgba(255,255,255,.65)',
+            fontSize: 13, color: '#574A6B',
           }}>
             ¿No tenés cuenta?{' '}
             <a
               href="/app/registro"
               style={{
-                color: '#a78bfa', fontWeight: 700, textDecoration: 'none',
-                borderBottom: '1px dashed rgba(167,139,250,.5)', paddingBottom: 1,
+                color: '#4718AE', fontWeight: 700, textDecoration: 'none',
+                borderBottom: '1px dashed #C9B6F5', paddingBottom: 1,
               }}
             >
               Registrate gratis →
@@ -534,7 +557,7 @@ export default function Login() {
 
           <InstallButton
             label="Instalar app en mi celular"
-            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, margin: '0 auto 6px', background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.18)', color: 'rgba(255,255,255,.85)', borderRadius: 10, padding: '10px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, margin: '0 auto 6px', background: '#FBF8F4', border: '1.5px solid #DECDFC', color: '#574A6B', borderRadius: 11, padding: '11px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
           />
 
           <div className="lp-divider">o</div>
@@ -558,12 +581,12 @@ export default function Login() {
       {forgotModal && (
         <div className="lp-modal-bg" onClick={e => { if (e.target === e.currentTarget) setForgotModal(false) }}>
           <div className="lp-modal">
-            <h3><i className="fa fa-key" style={{ color: '#a78bfa', marginRight: 8, fontSize: 15 }} />Recuperar contraseña</h3>
+            <h3><i className="fa fa-key" style={{ color: '#4718AE', marginRight: 8, fontSize: 15 }} />Recuperar contraseña</h3>
             {resetSent ? (
               <>
                 <div className="lp-modal-ok">
                   <i className="fa fa-circle-check" />
-                  Listo. Te enviamos un enlace a <b style={{ color: '#fff' }}>{resetEmail}</b>.<br />
+                  Listo. Te enviamos un enlace a <b style={{ color: '#07533B' }}>{resetEmail}</b>.<br />
                   Revisá tu bandeja (incluso spam) para crear una nueva contraseña.
                 </div>
                 <div className="lp-modal-row">

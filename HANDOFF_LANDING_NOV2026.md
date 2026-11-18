@@ -157,6 +157,26 @@ Saldo: tres origenes de terceros menos (cdnjs, fonts.googleapis, fonts.gstatic) 
 
 **El CSP de `vercel.json` sigue permitiendo cdnjs y Google Fonts** porque `public/demo.html` y las cuatro paginas de `public/recursos/` los siguen usando. Cuando les toque, ahi se puede cerrar `style-src` y `font-src` a `'self'`.
 
+## La entrada a la app (18/11)
+
+`src/components/layout/Login.jsx`. El fondo era un degrade de violeta, naranja y magenta con tres orbes borrosos animados y una capa de grano, y la tarjeta era vidrio esmerilado oscuro. Tres de esos colores estan vetados por la marca y degrades no queda ninguno en la web.
+
+Ahora: **violeta pleno `#360C72`** con el corte diagonal del isotipo a escala de pantalla (una sola figura plana, `clip-path`, sin un solo degrade) y el filo amarillo de la imagen de compartir arriba. La tarjeta va **blanca**, como el mock del hero, y todo lo de adentro pasa a la rampa clara: violeta `#4718AE` para lo que lleva a algun lado, verde `#0B7D59` para la accion, amarillo `#F6DE8B` solo en la pildora "Nuevo".
+
+Se fueron los tres `.lp-orb`, el `.lp-grain`, las tres animaciones de orbe, el texto con degrade del saludo, el boton con degrade y el `linear-gradient(#F2762E,#a855f7)` del modal. Tambien los seis estilos sueltos escritos para fondo oscuro (`rgba(255,255,255,...)`, `#a78bfa`) que con la tarjeta blanca quedaban invisibles.
+
+Tres cosas que no eran de color y se arreglaron de paso:
+
+- **La tarjeta se cortaba.** El contenedor era `overflow:hidden` con la tarjeta centrada: en apaisado, o con el teclado abierto, el pie quedaba fuera de alcance. Ahora es `overflow:auto` con `margin:auto`, que centra cuando entra y deja scrollear cuando no.
+- **No habia foco visible.** Quien navega con el teclado dependia del contorno del navegador. Ahora hay anillo violeta propio en todo lo que recibe foco dentro de la tarjeta y del modal.
+- El link de rescate ("¿Tuviste link invalido antes?") quedaba pegado al separador de abajo.
+
+Contraste medido sobre la pantalla renderizada: **0 fallos AA** en 48 nodos de texto. El isotipo pasa de `/favicon-a.png` a `/logo-mark.svg`.
+
+**Ojo con esto:** la app y la landing tienen hoy dos paletas distintas. La landing es violeta + crema; los tokens de `src/index.css` siguen siendo los de "feria" con `--brand:#F2762E` naranja y `--sidebar-bg:#2A2118` calido. El login quedo del lado de la landing, que es de donde llega el usuario al apretar "Ingresar". Si se decide que la app tiene que ir a violeta, este login ya es el puente; si se decide al reves, hay que volver sobre el.
+
+**Queda un emoji** en el saludo (`<em> 👋</em>` cuando no hay nombre conocido), y la regla de la casa es que en la app no van emojis. No lo toque porque es texto.
+
 ## Pendientes
 
 1. **Las 4 capturas de escritorio son de septiembre.** Al reemplazar cualquier PNG, correr `node scripts/optimizar-capturas.cjs`: genera el `.webp` que la pagina sirve e imprime el width/height que hay que poner en el `<img>`. El PNG queda como fuente, no se publica a nadie (el `<source>` gana siempre). Siguen valiendo las reglas: `dashboard.png`, `productos.png`, `presupuesto.png`, `mensajes-wa.png`. Deben ir a 1920 de ancho y **las 4 con la misma altura** (el marco no recorta, pero el carrusel pega un salto si difieren). Hay un inyector de datos de ejemplo en `scripts/demo-capturas.js` para no publicar datos de clientes reales.
