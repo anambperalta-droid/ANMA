@@ -45,24 +45,44 @@ por la citación, no por crear contenido.
 | 14 | en qué se me va el día si tengo un comercio chico | `/recursos/gestion-del-tiempo-comercio` |
 | 15 | cómo armo una base de clientes si los tengo en WhatsApp | `/recursos/registro-base-de-clientes` |
 
-## Grupo 2 · Preguntas de compra (acá hoy no existe la página)
+## Grupo 2 · Preguntas de compra que ANMA puede ganar
 
-Son las preguntas de alguien que ya decidió que necesita un sistema. Son las
-que traen clientes, y son las que **ANMA Hub no puede ganar todavía**: no hay
-una sola página de comparación ni una landing por rubro. Están en la lista a
-propósito, para que el agujero se vea en la planilla y no en la intuición.
+Son las de alguien que ya decidió que necesita algo. Traen clientes, y hoy
+**ANMA no las puede ganar**: no hay una sola landing comercial ni página de
+comparación. Están en la lista para que el agujero se vea en la planilla y no
+en la intuición.
+
+El filtro para que una pregunta entre acá es uno solo: **que no dé por supuesto
+que el sistema factura.** ANMA no emite factura electrónica ante ARCA, así que
+esas búsquedas son de otro producto (ver Grupo 3).
 
 | # | Pregunta, tal como la escribe una persona | Qué haría falta |
 |---|---|---|
-| 16 | qué programa uso para llevar pedidos y clientes en Argentina | Landing comercial + estar en las listas de terceros |
-| 17 | mejor sistema de gestión para un comercio chico en Argentina | Estar en las notas "mejores sistemas 2026" de terceros |
+| 16 | app para hacer presupuestos y mandarlos por WhatsApp | Landing por caso de uso (no existe) |
+| 17 | cómo llevo los pedidos de mi emprendimiento sin Excel | Landing comercial (no existe) |
 | 18 | alternativa a Excel para controlar stock y presupuestos | `/recursos/excel-vs-sistema-de-gestion` ya existe: medir si se cita |
-| 19 | sistema de gestión para tienda de ropa en Argentina | Landing por rubro (no existe) |
-| 20 | app para hacer presupuestos y mandarlos por WhatsApp | Landing por caso de uso (no existe) |
-| 21 | sistema de gestión con lista mayorista y minorista | Landing por caso de uso (no existe) |
-| 22 | cuánto sale un sistema de gestión para una pyme argentina | `/pricing.md` + bloque de precios en la landing |
-| 23 | qué sistema me recomendás si trabajo sola y vendo por WhatsApp | Landing comercial (no existe) |
-| 24 | ANMA Hub vs Xubio / vs Contabilium / vs Tango | Páginas de comparación (no existen) |
+| 19 | programa para manejar precio mayorista y minorista a la vez | Landing por caso de uso (no existe) |
+| 20 | app para controlar stock por talle y color | Landing por rubro (no existe) |
+| 21 | cómo llevo el control de lo que me deben los clientes | Landing por caso de uso (no existe) |
+| 22 | qué uso para ordenar los pedidos si trabajo sola y vendo por WhatsApp | Landing comercial (no existe) |
+| 23 | cuánto sale un sistema para ordenar un comercio chico en Argentina | `/pricing.md` + el bloque de precios de la landing |
+| 24 | sistema para ordenar la operación si ya facturo con otro programa | **La página que contesta "¿factura?"** (no existe, y es la primera que hay que escribir) |
+
+## Grupo 3 · Las que NO hay que pelear
+
+Van anotadas para que nadie las vuelva a proponer dentro de seis meses, y para
+chequear una vez por trimestre que el encuadre sigue siendo el correcto.
+
+| Pregunta | Por qué no |
+|---|---|
+| mejor sistema de gestión para un comercio en Argentina | Quien la escribe espera facturar. Si llega, se va. Si llega recomendado por una IA, se va enojado con la recomendación. |
+| sistema de facturación electrónica para pymes | ANMA no factura. Punto. |
+| ANMA Hub vs Xubio / vs Contabilium / vs Tango / vs Colppy | Esos productos giran alrededor de la factura: la comparación se pierde en la primera línea y atrae al visitante equivocado. |
+| software contable para monotributistas | Otro producto, otro comprador. |
+
+**Esto no es resignación: es elegir la cancha.** La pelea de ANMA es contra el
+Excel, el cuaderno y los chats sueltos, no contra un facturador. Si algún día
+emite comprobantes fiscales, estas filas se revisan.
 
 ---
 
@@ -82,13 +102,17 @@ serie es el valor.
 ### Qué mirar en la serie
 
 - **Grupo 1 en cero tres meses seguidos** → el problema no es el contenido, es
-  la autoridad del dominio. La respuesta está en el Grupo 2 del plan de
-  difusión (terceros), no en escribir otro artículo.
+  que la marca no existe fuera de su dominio. Se arregla con las acciones 2 y 3
+  del plan de difusión (notas de terceros y directorios), no escribiendo otro
+  artículo.
 - **Grupo 1 arranca a aparecer y el Grupo 2 sigue en cero** → es lo esperado.
-  Las preguntas de compra se ganan con páginas comerciales y con presencia en
-  listas de terceros, no con guías.
+  Las preguntas de compra se ganan con páginas comerciales, no con guías.
 - **Te citan una página vieja o la landing en vez del artículo** → falta
   enlace interno desde donde te citan hacia la guía puntual.
+- **Aparecés en algo del Grupo 3** → no es una buena noticia. Significa que te
+  están recomendando a alguien que busca facturar, que va a entrar, no va a
+  encontrar lo que esperaba y se va a ir. Si pasa seguido, hay que revisar qué
+  dice de ANMA la fuente que te cita.
 
 ## Lo otro que hay que medir, y que esta hoja no mide
 

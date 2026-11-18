@@ -26,16 +26,83 @@ esta sesión hizo dos cosas distintas:
 
 ### Por qué el contenido actual no trae clientes
 
-Tres razones, en orden de peso:
+Cuatro razones, en orden de peso:
 
 | Razón | Qué significa |
 |---|---|
+| **ANMA Hub no emite factura electrónica ante ARCA.** | Verificado en el código: no hay emisión de comprobantes fiscales. Y para el comercio argentino, "sistema de gestión" quiere decir, antes que nada, facturar. Es la razón por la que la pelea de posicionamiento estaba mal planteada — ver abajo. |
 | **Las 18 guías responden preguntas de problema, no de compra.** | Quien busca "cómo le pongo precio a lo que vendo" está resolviendo un problema a mano, no comprando software. No hay **una sola** página que responda "qué sistema uso". |
-| **Todo el trabajo fue sobre el propio dominio.** | Las preguntas de compra las contestan notas de terceros ("los 12 mejores sistemas de gestión para pymes Argentina 2026"). ANMA no figura en ninguna. Una IA no te puede citar de una lista en la que no estás. |
+| **Todo el trabajo fue sobre el propio dominio.** | Las preguntas de compra las contestan notas de terceros. ANMA no figura en ninguna. Una IA no te puede citar de una lista en la que no estás. |
 | **El precio pide una conversación.** | $120.000 de ingreso más $30.000 por mes no se cierra con tráfico frío, ni con el mejor artículo del mundo. El tráfico orgánico sirve para que te conozcan; el cierre es 1 a 1. El canal no acompañaba al precio. |
 
 El precio es decisión cerrada de Ana y no se discute acá. Lo que cambia es
 **a qué canal le pedimos el cierre**.
+
+### La corrección más importante: contra qué compite ANMA
+
+Esto estaba mal en la primera versión de este documento y hay que decirlo.
+
+Si ANMA no factura, entonces **"mejor sistema de gestión para un comercio
+argentino" es una búsqueda que ANMA no puede ganar, y que no le conviene
+ganar.** Quien la escribe espera facturar. Si llega, se va; y si llega por una
+recomendación de una IA, se va enojado con la recomendación.
+
+Lo mismo con las páginas de comparación: proponer "ANMA Hub vs Xubio" o "vs
+Contabilium" era un error mío. Esos productos giran alrededor de la factura.
+La comparación se pierde en la primera línea y encima atrae al visitante
+equivocado.
+
+**Contra quién compite ANMA de verdad:** contra el Excel, el cuaderno, la
+calculadora y los chats sueltos. Eso no es una limitación, es la posición:
+
+> ANMA no reemplaza tu sistema de facturación. Se ocupa de todo lo que ese
+> sistema no hace: los pedidos, el stock por variante, los dos precios, lo que
+> te deben, el seguimiento por WhatsApp y cuánto ganás de verdad.
+
+Dicho así, **deja de ser una carencia y pasa a ser una respuesta**: conviven.
+Y es verificable, que es la regla de la casa.
+
+Consecuencia práctica, y vale para todo lo que sigue: **"¿factura?" va a ser
+la primera pregunta de casi todo prospecto.** Hoy el playbook no tiene una
+respuesta preparada para esa objeción. Es la que más se va a usar.
+
+### El embudo: el demo estaba desconectado del home
+
+Encontrado verificando el sitio en producción, no leyendo archivos:
+
+- La landing tiene **8 botones a `/app/registro`**, linkea tres veces a
+  `/recursos/` y muestra los dos precios. Eso está bien armado.
+- Pero **no linkea al demo en ningún lado.** Lo único que dice "demo" en el
+  home es un botón de WhatsApp para pedirte una demo guiada.
+- No es un descuido: el commit `234994e` del 26/08/2026 dice *"oculta accesos
+  al demo (nav, hero, sticky, footer) hasta rehacerlo con capturas reales"*.
+  Fue una decisión, y se respeta.
+
+**Mi error fue optimizar esa página sin mirar antes si alguien puede llegar.**
+Le puse schema, canonical y OG a una página que está deliberadamente oculta, y
+que además estaba en el sitemap pidiéndole a Google que la indexara.
+
+Corregido con el criterio que se desprende de la decisión de Ana: si el demo no
+está listo para una visita del home, que ya te conoce, menos lo está para ser
+la primera impresión de alguien que llega desde ChatGPT. Entonces queda
+`noindex,follow` y fuera del sitemap, fuera de `llms.txt` y fuera de
+`pricing.md`, **hasta que se rehaga**. Volver a indexarlo es borrar una línea;
+está documentado en un comentario adentro del propio archivo.
+
+Queda una incoherencia que es decisión de Ana y por eso no la toqué: **los 17
+artículos de `/recursos` siguen linkeando el demo en su pie.** O sea, está
+oculto para quien entra por el home y visible para quien llega por una guía.
+En agosto se ocultó solo de la landing. Las dos posturas se defienden —
+mostrárselo a quien ya leyó algo tuyo es un público más tibio— pero conviene
+que sea una decisión y no una herencia. Son dos minutos en cualquiera de los
+dos sentidos.
+
+### Lo que sí quedó confirmado
+
+Busqué "ANMA Hub" en la web: **cero menciones.** Ni una nota, ni un directorio,
+ni un foro. La marca no existe fuera de su propio dominio. Eso confirma que el
+cuello de botella del plan está bien identificado, y que las acciones 2 y 3 son
+las que más mueven la aguja.
 
 ---
 
@@ -86,7 +153,7 @@ Tres detalles de criterio que importan:
 | `recursos/primeros-pasos.html` | `HowTo` de 5 pasos leído de los pasos visibles. `dateModified` al día y fecha visible en el footer. |
 | `recursos/guia.html` | `SoftwareApplication` con los **tres precios reales** (prueba $0, ingreso $120.000, mensual $30.000) y `featureList` de 10 ítems. Fecha al día. |
 | `recursos/index.html` | `dateModified` e `inLanguage` en el `CollectionPage`. |
-| `public/demo.html` | **Era el agujero más grande.** Estaba en el sitemap y no tenía canonical, ni hreflang, ni OG, ni un solo bloque de schema. Y su description hablaba de un "sistema de distribución", que no es lo que vende Hub. Ahora: canonical, hreflang `es-AR` + `x-default`, OG completo, geo, `WebPage` + `BreadcrumbList` y description reescrita. |
+| `public/demo.html` | Primero le puse canonical, hreflang, OG, geo, `WebPage` + `BreadcrumbList` y reescribí la description, que hablaba de un "sistema de distribución". **Después apareció que la página está oculta a propósito desde agosto**, así que terminó en `noindex,follow` y fuera del sitemap. Lo que quedó sirve igual el día que se rehaga, y para cuando alguien comparte el link a mano: canonical y OG correctos. Ver la sección del embudo, más arriba. |
 | `recursos/playbook-ventas.html` | Sin tocar: es `noindex` y documento interno. |
 
 ### Infraestructura
@@ -115,9 +182,11 @@ gratis permanente). Decir qué no hacés es lo que hace confiable lo que sí.
 
 **`pricing.md`** — fecha al día y el mismo bloque de "qué no incluye".
 
-**`sitemap.xml`** — 20 `lastmod` al día. **`lighthouserc.json`** — de 4 a 8 URLs
-auditadas, suma `como-poner-precios`, `control-de-stock-tienda-de-ropa`, `guia`
-y `demo.html`.
+**`sitemap.xml`** — `lastmod` al día y el demo afuera: 22 URLs.
+
+**`lighthouserc.json`** — de 4 a 7 URLs auditadas: suma `como-poner-precios`,
+`control-de-stock-tienda-de-ropa` y `guia`. El demo no entra, porque auditar
+una página `noindex` da un rojo de SEO permanente que no significa nada.
 
 ### Lo que NO se hizo, y por qué
 
@@ -237,18 +306,24 @@ Los que hoy aparecen para esas búsquedas son blogs y comparadores:
 
 Mandar el mismo mail a los seis, buscando el contacto en cada sitio:
 
+El mensaje dice qué **no** hace, a propósito. Un editor que te incluye y después
+recibe quejas no te vuelve a incluir:
+
 > Asunto: ANMA Hub para tu comparativa de sistemas de gestión
 >
-> Hola, soy Ana, hice ANMA Hub: un sistema de gestión para comercios chicos
-> de Argentina — pedidos, stock con variantes, clientes mayoristas y
-> minoristas, cobros y WhatsApp, pensado para quien hoy trabaja con Excel.
+> Hola, soy Ana, hice ANMA Hub: gestión comercial para comercios chicos de
+> Argentina — pedidos y presupuestos, stock con variantes de talle y color,
+> precio público y mayorista en paralelo, cuentas corrientes, cobros y
+> seguimiento por WhatsApp.
 >
-> Vi tu nota de los mejores sistemas de gestión para pymes. Te dejo los datos
-> para que lo evalúes si te parece que suma: anmahub.com, demo sin registro en
-> anmahub.com/demo.html y los precios abiertos en anmahub.com/pricing.md.
+> Te aclaro de entrada algo que seguro te importa para la nota: **no emite
+> factura electrónica ante ARCA.** Convive con el sistema de facturación que
+> el comercio ya usa y se ocupa de la operación, que es lo que ese sistema no
+> cubre. Si tu comparativa es de facturadores, no soy el caso; si tenés una
+> sección de gestión de la operación, ahí sí entro.
 >
-> Si querés probarlo con datos reales te abro una cuenta sin cargo y sin
-> compromiso de que lo incluyas.
+> Precios abiertos en anmahub.com/pricing.md. Si querés probarlo con datos
+> reales te abro una cuenta sin cargo y sin compromiso de que lo incluyas.
 
 *Medida:* mails enviados / respuestas / notas donde apareciste. Una sola
 inclusión cambia la respuesta de las IA para la pregunta que más importa.
@@ -259,11 +334,18 @@ inclusión cambia la respuesta de las IA para la pregunta que más importa.
 
 AlternativeTo, SaaSHub, Capterra, GetApp y Software Advice. Mismo texto en los
 cinco, sacado de `llms.txt` (ya está escrito y es verificable), mismas
-capturas, link a `anmahub.com` y a `/recursos/guia`.
+capturas, link a `anmahub.com` y a `/recursos/guia`. **No linkear el demo**
+mientras siga sin rehacerse.
 
-En AlternativeTo listarlo explícitamente como alternativa a **Excel** y a los
-nombres que aparecen en todas las comparativas argentinas: Tango, Xubio,
-Colppy, Contabilium, Alegra, Dux. Esa es la búsqueda que hace la gente.
+Dos cosas que deciden si esto suma o resta:
+
+- **La categoría importa más que el texto.** Listarlo en "contabilidad" o
+  "facturación" garantiza visitantes que esperan facturar, se van, y encima
+  dejan una reseña mala que después te cita una IA. Va en inventario, gestión
+  de pedidos, CRM para pequeños comercios o gestión de stock.
+- **En AlternativeTo, la alternativa que corresponde es Excel**, y las
+  planillas de Google. No Tango, Xubio ni Colppy: esos facturan y ANMA no, así
+  que la comparación arranca perdida y atrae a quien no es.
 
 *Medida:* 5 perfiles publicados. Después, visitas con `utm_source` del
 directorio en el panel de la app.
@@ -301,10 +383,21 @@ derivados. Este canal se mide en clientes, no en clics.
 
 **5 · Completar Google Business al 100% y dejarlo activo** · 1 hora + 10 min semanales
 
-Está creado pero a medias. Categoría "Software company", descripción con las
-palabras que usa la gente, todas las fotos, horario, link al sitio. Después, un
-posteo por semana: una novedad, un tip, una captura. Google muestra más los
-perfiles activos.
+**Primero verificar que exista.** Una sesión vieja da por hecho que está
+creado, pero en el repo no hay ni una referencia a un perfil, y el schema de la
+landing no lo declara en `sameAs`. Entrar a business.google.com y mirar: si no
+está, crearlo es la tarea; si está, completarlo.
+
+Después: categoría "Software company", descripción con las palabras que usa la
+gente, todas las fotos, horario, link al sitio. Y un posteo por semana — una
+novedad, un tip, una captura. Google muestra más los perfiles activos.
+
+Cuando exista, **declararlo en el `sameAs`** del schema `Organization` de la
+landing. Hoy ese `sameAs` tiene una sola entrada, la página de empresa de
+LinkedIn, y **conviene confirmar a mano que esa página existe**: desde acá
+LinkedIn responde 403 a todo, así que no pude verificarlo. Un `sameAs` que
+apunta a una página inexistente debilita el reconocimiento de la marca como
+entidad, que es justo lo que queremos construir.
 
 *Medida:* el propio panel de Google Business da impresiones y clics por semana.
 
@@ -405,16 +498,26 @@ y funciona. La reseña va a Google Business (acción 5) y a los directorios
 No es para esta semana, pero es el trabajo que mueve el Grupo 2 de
 `GEO_MEDICION.md` — las preguntas de compra, las que hoy ANMA no puede ganar:
 
-1. **Tres páginas de comparación**: ANMA Hub vs Excel (ya existe como
-   artículo, hay que volverla comercial), vs Xubio y vs Contabilium. Las
-   comparativas son el tipo de contenido más citado por las IA. Honestas, con
-   los casos en que el otro conviene.
-2. **Tres landings por rubro**: `/sistema-gestion-tienda-de-ropa`,
+1. **La página que contesta "¿factura?".** Es la primera, antes que cualquier
+   otra, porque es la objeción número uno y hoy no hay respuesta escrita en
+   ningún lado. Algo tipo `/recursos/anma-y-tu-facturacion`: qué hace cada
+   herramienta, por qué conviven, y qué pasa con el IVA discriminado y el libro
+   de IVA Ventas, que ANMA sí calcula. Convierte la carencia en una respuesta.
+2. **Dos páginas de comparación, y ninguna contra un facturador**: contra
+   **Excel** (ya existe como artículo, hay que volverla comercial) y contra el
+   **cuaderno más WhatsApp más calculadora**, que es el verdadero sistema
+   actual de la clienta. Las comparativas son el contenido más citado por las
+   IA, pero solo si se ganan.
+3. **Tres landings por rubro**: `/sistema-gestion-tienda-de-ropa`,
    `/sistema-gestion-regaleria`, `/sistema-gestion-almacen`. Ya estaban en el
-   backlog de SEO de octubre, diferidas. Son las que responden "qué programa
-   uso para mi rubro".
-3. **Autor `Person`**, si Ana acepta poner su nombre.
-4. **El primer dato propio**, cuando haya clientes suficientes para que el
+   backlog de SEO de octubre, diferidas. Con el encuadre corregido: gestión de
+   la operación, no facturación.
+4. **Rehacer el demo con capturas reales** y recién ahí volver a indexarlo,
+   reponerlo en el sitemap y en `llms.txt`, y decidir si vuelve a la landing.
+   Hoy es una página de 158 KB que muestra bien el producto y a la que nadie
+   puede llegar. Es valor parado.
+5. **Autor `Person`**, si Ana acepta poner su nombre.
+6. **El primer dato propio**, cuando haya clientes suficientes para que el
    número signifique algo.
 
 ---

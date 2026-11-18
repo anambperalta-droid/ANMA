@@ -2,6 +2,8 @@
 
 Última actualización: 2026-11-18. Moneda: pesos argentinos (ARS).
 
+ANMA Hub **no emite factura electrónica ante ARCA**: convive con el sistema de facturación que el comercio ya usa.
+
 ## Prueba gratuita
 - Precio: $0
 - Duración: 7 días completos
@@ -23,4 +25,4 @@
 
 ## Contacto
 - Registro: https://anmahub.com/registro
-- Demo sin registro: https://anmahub.com/demo
+- Demo guiada con la fundadora, por WhatsApp: https://wa.me/5491169456863

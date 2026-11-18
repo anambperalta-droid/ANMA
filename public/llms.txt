@@ -2,7 +2,7 @@
 
 > Actualizado: 2026-11-18. Idioma: español (Argentina).
 
-> ANMA Hub es una plataforma web de gestión integral para comercios chicos y medianos de Argentina: tiendas de indumentaria, decoración y hogar, tecnología y electrónica, y almacenes o distribuidoras. Centraliza presupuestos, clientes, control de stock con variantes (talles, colores, modelos), logística de entregas y comunicación por WhatsApp en una sola pantalla. Además calcula ganancia real por producto, cliente y canal, y permite decidir precios con datos y no con intuición. En español rioplatense, mobile-first, PWA instalable.
+> ANMA Hub es una plataforma web de gestión integral para comercios chicos y medianos de Argentina: tiendas de indumentaria, decoración y hogar, tecnología y electrónica, y almacenes o distribuidoras. Centraliza presupuestos, clientes, control de stock con variantes (talles, colores, modelos), logística de entregas y comunicación por WhatsApp en una sola pantalla. Además calcula ganancia real por producto, cliente y canal, y permite decidir precios con datos y no con intuición. En español rioplatense, mobile-first, PWA instalable. No emite factura electrónica ante ARCA: convive con el sistema de facturación que el comercio ya usa, y se ocupa de la operación comercial que ese sistema no cubre.
 
 ## Qué resuelve
 
@@ -21,7 +21,6 @@ Emprendedores y pymes de Argentina que hoy gestionan con Excel, cuadernos y chat
 ## Páginas clave
 
 - [Landing](https://anmahub.com/): qué es ANMA Hub, para quién, precios y preguntas frecuentes.
-- [Demo interactiva](https://anmahub.com/demo): recorrido por el sistema con datos ficticios, sin registro.
 - [Registro](https://anmahub.com/registro): prueba gratuita de 7 días, sin tarjeta de crédito.
 - [Precios](https://anmahub.com/pricing.md): planes en formato legible por máquinas.
 - [Centro de recursos](https://anmahub.com/recursos/): índice de guías prácticas.
