@@ -462,6 +462,15 @@ Para que nadie se desanime en la semana tres:
   por archivo. Un reemplazo con el salto equivocado falla en silencio.
 - **El sprite de iconos y los `HowTo` se generan leyendo el HTML real**, nunca
   una lista escrita a mano. Mismo criterio, misma razón.
+- **`cleanUrls: true` en `vercel.json`: la URL real de la demo es `/demo`, no
+  `/demo.html`.** `/demo.html` responde 308 y redirige. Apareció verificando el
+  deploy: el canonical que le puse apuntaba a la URL que redirige, y los 18
+  links internos de los artículos iban al mismo lado. Corregido en todo
+  (canonical, hreflang, og:url, los dos schemas, sitemap, `llms.txt`,
+  `pricing.md`, `lighthouserc.json` y los links). **Toda URL del sitio va sin
+  `.html`** — era el único archivo que no seguía la regla.
+- **Verificar un deploy con `curl` requiere `-L`.** Sin seguir la redirección,
+  `/demo.html` devuelve 15 bytes y parece que el deploy falló.
 - **Los bloques JSON-LD no los bloquea el CSP**: `application/ld+json` no se
   ejecuta. Esta sesión no agregó ningún recurso externo, así que el CSP cerrado
   en `vercel.json` sigue intacto.

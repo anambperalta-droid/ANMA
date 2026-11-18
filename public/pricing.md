@@ -23,4 +23,4 @@
 
 ## Contacto
 - Registro: https://anmahub.com/registro
-- Demo sin registro: https://anmahub.com/demo.html
+- Demo sin registro: https://anmahub.com/demo
