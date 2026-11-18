@@ -279,8 +279,8 @@ export default function Login() {
 
         .lp-card{
           position:relative;z-index:1;width:100%;max-width:480px;margin:auto;
-          background:#fff;
-          border:1px solid #E9E1F5;
+          background:#F5EFE4;
+          border:1px solid #E4D9C6;
           border-radius:26px;padding:40px 38px 30px;
           box-shadow:0 30px 70px -24px rgba(12,2,34,.6);
           animation:lp-card-in .5s cubic-bezier(.2,.7,.2,1) both;
@@ -312,8 +312,8 @@ export default function Login() {
         }
         .lp-inp{
           width:100%;padding:15px 16px;box-sizing:border-box;
-          background:#FBF8F4;
-          border:1.5px solid #DECDFC;
+          background:#fff;
+          border:1.5px solid #8E7BB8;
           border-radius:13px;font-size:15px;color:#221433;outline:none;
           transition:border-color .18s,background .18s,box-shadow .18s;
           font-family:'Inter',sans-serif;
@@ -368,13 +368,13 @@ export default function Login() {
         .lp-divider{margin:20px 0 14px}
         .lp-sep{margin:0 0 16px}
         .lp-divider::before,.lp-divider::after,
-        .lp-sep::before,.lp-sep::after{content:'';flex:1;height:1px;background:#E9E1F5}
+        .lp-sep::before,.lp-sep::after{content:'';flex:1;height:1px;background:#E4D9C6}
 
         .lp-google{
           display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
           padding:15px;min-height:52px;
           background:#fff;color:#221433;
-          border:1.5px solid #DECDFC;border-radius:13px;
+          border:1.5px solid #8E7BB8;border-radius:13px;
           font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
           transition:background .18s,border-color .18s,transform .15s;margin-bottom:14px;
         }
@@ -411,7 +411,7 @@ export default function Login() {
           -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
         }
         .lp-modal{
-          background:#fff;border:1px solid #E9E1F5;
+          background:#F5EFE4;border:1px solid #E4D9C6;
           border-radius:20px;padding:28px 26px;width:100%;max-width:380px;
           box-shadow:0 30px 70px -24px rgba(12,2,34,.6);animation:lp-card-in .3s ease both;
         }
@@ -424,9 +424,9 @@ export default function Login() {
         .lp-modal-ok i{color:#0B7D59;font-size:18px;display:block;margin-bottom:6px}
         .lp-modal-row{display:flex;gap:8px;margin-top:16px}
         .lp-modal-cancel{
-          flex:1;padding:12px;border:1.5px solid #DECDFC;border-radius:11px;
+          flex:1;padding:12px;border:1.5px solid #8E7BB8;border-radius:11px;
           background:#fff;color:#574A6B;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;
-          transition:background .18s,border-color .18s
+          transition:background .18s,border-color .18s,transform .15s
         }
         .lp-modal-cancel:hover{background:#F7F3FF;border-color:#A68BF0}
         .lp-modal-send{
@@ -557,7 +557,7 @@ export default function Login() {
 
           <InstallButton
             label="Instalar app en mi celular"
-            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, margin: '0 auto 6px', background: '#FBF8F4', border: '1.5px solid #DECDFC', color: '#574A6B', borderRadius: 11, padding: '11px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, margin: '0 auto 6px', background: '#fff', border: '1.5px solid #8E7BB8', color: '#574A6B', borderRadius: 11, padding: '11px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
           />
 
           <div className="lp-divider">o</div>

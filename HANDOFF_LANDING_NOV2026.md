@@ -161,7 +161,7 @@ Saldo: tres origenes de terceros menos (cdnjs, fonts.googleapis, fonts.gstatic) 
 
 `src/components/layout/Login.jsx`. El fondo era un degrade de violeta, naranja y magenta con tres orbes borrosos animados y una capa de grano, y la tarjeta era vidrio esmerilado oscuro. Tres de esos colores estan vetados por la marca y degrades no queda ninguno en la web.
 
-Ahora: **violeta pleno `#360C72`** con el corte diagonal del isotipo a escala de pantalla (una sola figura plana, `clip-path`, sin un solo degrade) y el filo amarillo de la imagen de compartir arriba. La tarjeta va **blanca**, como el mock del hero, y todo lo de adentro pasa a la rampa clara: violeta `#4718AE` para lo que lleva a algun lado, verde `#0B7D59` para la accion, amarillo `#F6DE8B` solo en la pildora "Nuevo".
+Ahora: **violeta pleno `#360C72`** con el corte diagonal del isotipo a escala de pantalla (una sola figura plana, `clip-path`, sin un solo degrade) y el filo amarillo de la imagen de compartir arriba. La tarjeta va en el **crema de la web `#F5EFE4`** (se probo blanca y quedaba fria al lado del resto del sitio), con los campos en blanco adentro para que se lean como huecos donde escribir, y todo lo demas pasa a la rampa clara: violeta `#4718AE` para lo que lleva a algun lado, verde `#0B7D59` para la accion, amarillo `#F6DE8B` solo en la pildora "Nuevo".
 
 Se fueron los tres `.lp-orb`, el `.lp-grain`, las tres animaciones de orbe, el texto con degrade del saludo, el boton con degrade y el `linear-gradient(#F2762E,#a855f7)` del modal. Tambien los seis estilos sueltos escritos para fondo oscuro (`rgba(255,255,255,...)`, `#a78bfa`) que con la tarjeta blanca quedaban invisibles.
 
@@ -171,7 +171,7 @@ Tres cosas que no eran de color y se arreglaron de paso:
 - **No habia foco visible.** Quien navega con el teclado dependia del contorno del navegador. Ahora hay anillo violeta propio en todo lo que recibe foco dentro de la tarjeta y del modal.
 - El link de rescate ("¿Tuviste link invalido antes?") quedaba pegado al separador de abajo.
 
-Contraste medido sobre la pantalla renderizada: **0 fallos AA** en 48 nodos de texto. El isotipo pasa de `/favicon-a.png` a `/logo-mark.svg`.
+Contraste medido sobre la pantalla renderizada: **0 fallos AA** en 48 nodos de texto. El borde de los campos tuvo que subir de `#DECDFC` a `#8E7BB8`: contra el crema el lavanda daba 1,29 y el campo no se identificaba como campo. Ahora da 3,23 contra la tarjeta y 3,70 contra el blanco de adentro, que es lo que pide la WCAG para el contorno de un control. El isotipo pasa de `/favicon-a.png` a `/logo-mark.svg`.
 
 **Ojo con esto:** la app y la landing tienen hoy dos paletas distintas. La landing es violeta + crema; los tokens de `src/index.css` siguen siendo los de "feria" con `--brand:#F2762E` naranja y `--sidebar-bg:#2A2118` calido. El login quedo del lado de la landing, que es de donde llega el usuario al apretar "Ingresar". Si se decide que la app tiene que ir a violeta, este login ya es el puente; si se decide al reves, hay que volver sobre el.
 
