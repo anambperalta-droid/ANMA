@@ -185,7 +185,7 @@ Ojo con una diferencia entre los dos repos: en Hub `/landing.html` es un stub qu
 
 **Queda un emoji** en el saludo (`<em> 👋</em>` cuando no hay nombre conocido), y la regla de la casa es que en la app no van emojis. En Regalos pasa lo mismo con un 🎁. No los toque porque son texto.
 
-**El pie dice "Cifrado E2E"** con un candado, en las dos apps. E2E (punta a punta) significa que ni el servidor puede leer los datos, y con Supabase no es asi: hay cifrado en transito y en reposo, que es otra cosa y esta muy bien, pero no es lo mismo. Es una promesa de seguridad escrita en la pantalla donde la gente entrega su contrasena, asi que conviene decir lo que de verdad hace, por ejemplo "Conexion cifrada". No lo cambie porque es texto y es tuyo.
+**RESUELTO 18/11.** Decia **"Cifrado E2E"** con un candado, en las dos apps, y no en un solo lugar: pie del login, pie de registro (Hub), la lista de garantias de Activar y su pie, y el bloque de confianza de la landing de Regalos. Siete lugares en total. Todos dicen ahora **"Conexion cifrada"** ("Datos cifrados" en la landing de Regalos, que ya aclaraba "SSL y backups automaticos diarios" al lado). El detalle de por que: el pie decia "Cifrado E2E" con un candado, en las dos apps. E2E (punta a punta) significa que ni el servidor puede leer los datos, y con Supabase no es asi: hay cifrado en transito y en reposo, que es otra cosa y esta muy bien, pero no es lo mismo. Es una promesa de seguridad escrita en la pantalla donde la gente entrega su contrasena, asi que conviene decir lo que de verdad hace, por ejemplo "Conexion cifrada". No lo cambie porque es texto y es tuyo.
 
 ## Pendientes
 
