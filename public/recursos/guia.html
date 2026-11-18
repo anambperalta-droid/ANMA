@@ -19,41 +19,49 @@
 <meta property="og:image" content="https://anmahub.com/og-image.png">
 <meta property="og:type" content="article">
 <link rel="icon" href="/favicon-32.png" type="image/png">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+@font-face{font-family:'Figtree';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/figtree-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Figtree';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/figtree-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/poppins-600-anmahub.woff2) format('woff2');unicode-range:U+20,U+41,U+48,U+4D-4E,U+62,U+75}
+
+/* Iconos: sprite propio de 52 simbolos, inyectado al abrir el documento
+.
+   Antes venian de Font Awesome por cdnjs: 171 KB para 121 usos. */
+.ico{display:inline-block;vertical-align:-.125em;line-height:1}
+.ico svg{width:1em;height:1em;vertical-align:top;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 :root{
-  --brand:#7C3AED;--brand2:#C026D3;--brand-dk:#5B21B6;--brand-lt:#F5EFFE;
-  --emerald:#10B981;--emerald-dk:#047857;--emerald-lt:#ECFDF5;
-  --amber:#F59E0B;--amber-lt:#FFFBEB;--amber-dk:#92400E;
-  --ink:#1b1530;--txt:#3c3753;--txt2:#6a6680;--txt3:#94909f;
-  --line:#ece8f2;--bg:#fdfcfa;--surf:#f7f4fb;
+  --brand:#652BDF;--brand-dk:#4718AE;--deep:#2B0A60;--brand-lt:#EFE7FE;
+  --go:#0B7D59;--go-hover:#095E43;--go-on-dark:#6EE7B7;
+  --accent:#F6DE8B;--accent-lt:#FDF6DD;--lila:#CFBFF0;--lila2:#B59BF5;
+  --ink:#2B0A60;--txt:#574A6B;--txt2:#6E6383;--txt3:#6E6383;
+  --line:#B59BF5;--line-soft:#DECDFC;--bg:#F5EFE4;--surf:#EFE7FE;--sans:'Figtree',-apple-system,'Segoe UI',Roboto,sans-serif;
   --radius:14px;--max:720px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--txt);font-family:'Inter',-apple-system,'Segoe UI',sans-serif;font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-::selection{background:rgba(124,58,237,.15)}
+::selection{background:rgba(101,43,223,.18)}
+a:focus-visible{outline:3px solid var(--brand);outline-offset:3px;border-radius:6px}
 
 /* ── Nav ── */
-.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(253,252,250,.92);backdrop-filter:blur(14px);z-index:50}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-weight:600;color:var(--ink);font-size:17px}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(245,239,228,.92);backdrop-filter:blur(14px);z-index:50}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',var(--sans);font-weight:600;color:var(--ink);font-size:17px}
 .logo img{width:28px;height:28px;border-radius:8px}
 .nav-r{display:flex;align-items:center;gap:16px}
 .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--txt2);font-weight:600;font-size:13px;transition:.15s}
-.nav-back:hover{color:var(--brand)}
+.nav-back:hover{color:var(--brand-dk)}
 .nav-back i{font-size:12px}
-.nav .cta{background:var(--brand);color:#fff;font-weight:600;font-size:13px;padding:9px 18px;border-radius:10px;transition:.15s}
-.nav .cta:hover{background:var(--brand-dk);transform:translateY(-1px)}
+.nav .cta{background:var(--go);color:#fff;font-weight:600;font-size:13px;padding:9px 18px;border-radius:10px;transition:.15s}
+.nav .cta:hover{background:var(--go-hover);transform:translateY(-1px)}
 
 /* ── Hero ── */
 .hero{max-width:var(--max);margin:0 auto;padding:56px 24px 24px;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--brand-dk);background:var(--brand-lt);border:1px solid #e9ddfb;padding:6px 14px;border-radius:99px;letter-spacing:.4px;text-transform:uppercase;margin-bottom:18px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--brand-dk);background:var(--brand-lt);border:1px solid var(--line);padding:6px 14px;border-radius:99px;letter-spacing:.4px;text-transform:uppercase;margin-bottom:18px}
 .hero-badge i{font-size:9px;color:var(--emerald)}
-.hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(32px,5vw,46px);line-height:1.08;letter-spacing:-1.2px;color:var(--ink);margin-bottom:12px}
-.hero h1 em{font-style:italic;background:linear-gradient(120deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1{font-family:var(--sans);font-weight:800;font-size:clamp(32px,5vw,46px);line-height:1.08;letter-spacing:normal;color:var(--ink);margin-bottom:12px}
+.hero h1 em{font-style:normal;color:var(--brand)}
 .hero p{font-size:16px;color:var(--txt2);max-width:480px;margin:0 auto;line-height:1.6}
 
 /* ── Progress ── */
@@ -63,10 +71,10 @@ a{color:inherit;text-decoration:none}
 .progress-top h3{font-size:13px;font-weight:700;color:var(--ink)}
 .progress-top span{font-size:12px;color:var(--txt3);font-weight:600}
 .progress-bar{height:6px;background:var(--surf);border-radius:99px;overflow:hidden;margin-bottom:12px}
-.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:99px;transition:width .4s ease}
+.progress-fill{height:100%;width:0%;background:var(--brand);border-radius:99px;transition:width .4s ease}
 .progress-chips{display:flex;flex-wrap:wrap;gap:6px}
 .progress-chip{display:inline-flex;align-items:center;gap:5px;background:var(--surf);color:var(--txt2);font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:99px;border:1px solid var(--line);cursor:pointer;transition:.15s;font-family:inherit}
-.progress-chip:hover{background:var(--brand-lt);color:var(--brand-dk);border-color:#e9ddfb}
+.progress-chip:hover{background:var(--brand-lt);color:var(--brand-dk);border-color:var(--line)}
 .progress-chip.done{background:var(--emerald-lt);color:var(--emerald-dk);border-color:#a7f3d0}
 .progress-chip.done::before{content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;font-size:8px;margin-right:1px}
 
@@ -97,14 +105,14 @@ a{color:inherit;text-decoration:none}
 .sec:last-child{border-bottom:none;padding-bottom:24px}
 .sec-header{display:flex;gap:14px;align-items:center;margin-bottom:8px}
 .sec-icon{flex-shrink:0;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.sec-icon.purple{background:var(--brand-lt);color:var(--brand);border:1px solid #ece1fb}
+.sec-icon.purple{background:var(--brand-lt);color:var(--brand);border:1px solid var(--line)}
 .sec-icon.green{background:var(--emerald-lt);color:var(--emerald-dk);border:1px solid #a7f3d0}
-.sec-icon.orange{background:#fff7ed;color:#ea580c;border:1px solid #fed7aa}
-.sec-icon.wa{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+.sec-icon.orange{background:var(--surf);color:var(--brand-dk);border:1px solid var(--line)}
+.sec-icon.wa{background:#fff;color:var(--go);border:1px solid var(--go)}
 .sec-icon.blue{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
 .sec-meta{flex:1;min-width:0}
 .sec-tag{font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px}
-.sec h2{font-family:'Fraunces',serif;font-size:26px;font-weight:600;line-height:1.15;color:var(--ink);letter-spacing:-.4px}
+.sec h2{font-family:var(--sans);font-size:26px;font-weight:600;line-height:1.15;color:var(--ink);letter-spacing:-.4px}
 .sec-intro{font-size:15px;color:var(--txt);line-height:1.65;margin:12px 0 20px}
 .sec-intro b{color:var(--ink);font-weight:600}
 
@@ -113,7 +121,7 @@ a{color:inherit;text-decoration:none}
 .flow-card{background:#fff;padding:16px;display:flex;flex-direction:column;gap:6px}
 .flow-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
 .flow-label.action{color:var(--brand)}
-.flow-label.react{color:#ea580c}
+.flow-label.react{color:var(--brand-dk)}
 .flow-label.benefit{color:var(--emerald-dk)}
 .flow-title{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.35;display:flex;align-items:center;gap:7px}
 .flow-title i{font-size:13px;opacity:.6}
@@ -136,17 +144,17 @@ a{color:inherit;text-decoration:none}
 .ref i{font-size:10px;color:var(--brand);width:12px;text-align:center}
 .ref.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
 .ref.primary i{color:#fff}
-.ref.wa{background:#dcfce7;color:#15803d;border-color:#86efac}
+.ref.wa{background:#fff;color:var(--go);border-color:var(--go)}
 .ref.wa i{color:#16a34a}
-.ref.danger{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
+.ref.danger{background:#FDECEC;color:#B42318;border-color:#F4CDCA}
 .ref.danger i{color:#dc2626}
 
 /* ── Callout ── */
 .callout{display:flex;gap:10px;padding:12px 14px;border-radius:10px;font-size:13.5px;line-height:1.55;margin:0 0 20px;align-items:flex-start}
 .callout i{flex-shrink:0;margin-top:3px;font-size:13px}
-.callout.tip{background:var(--brand-lt);color:var(--brand-dk);border:1px solid #e9ddfb}
-.callout.warn{background:var(--amber-lt);color:var(--amber-dk);border:1px solid #fde68a}
-.callout.daily{background:linear-gradient(135deg,var(--brand-lt),#fbf5fe);border:1px solid #e9ddfb;color:var(--brand-dk)}
+.callout.tip{background:var(--brand-lt);color:var(--brand-dk);border:1px solid var(--line)}
+.callout.warn{background:var(--accent-lt);color:var(--ink);border:1px solid var(--accent)}
+.callout.daily{background:var(--surf);border:1px solid var(--line);color:var(--brand-dk)}
 .callout b{color:var(--ink);font-weight:600}
 
 /* ── Table ── */
@@ -162,7 +170,7 @@ a{color:inherit;text-decoration:none}
 .wiz-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;position:relative}
 .wiz-step::after{content:'';position:absolute;top:15px;left:calc(50% + 20px);width:calc(100% - 20px);height:1.5px;background:var(--line)}
 .wiz-step:last-child::after{display:none}
-.wiz-num{width:32px;height:32px;border-radius:50%;background:var(--brand-lt);color:var(--brand);border:1.5px solid #ece1fb;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:600;font-size:14px;z-index:1}
+.wiz-num{width:32px;height:32px;border-radius:50%;background:var(--brand-lt);color:var(--brand);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:800;font-size:14px;z-index:1}
 .wiz-label{font-size:11px;font-weight:700;color:var(--ink)}
 .wiz-desc{font-size:10px;color:var(--txt3);line-height:1.3}
 @media(max-width:520px){
@@ -177,7 +185,7 @@ a{color:inherit;text-decoration:none}
 .detail{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 10px;border-left:3px solid var(--brand)}
 .detail-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .detail-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
-.detail-head b{font-family:'Fraunces',serif;font-size:15px;color:var(--ink);font-weight:600}
+.detail-head b{font-family:var(--sans);font-size:15px;color:var(--ink);font-weight:600}
 .detail ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
 .detail ul li{font-size:13px;color:var(--txt);line-height:1.5;padding-left:14px;position:relative}
 .detail ul li::before{content:'\2014';position:absolute;left:0;color:var(--txt3);font-size:11px}
@@ -186,8 +194,8 @@ a{color:inherit;text-decoration:none}
 .detail-note i{flex-shrink:0;margin-top:2px;color:var(--brand)}
 .detail.green{border-left-color:var(--emerald)}
 .detail.green .detail-num{background:var(--emerald)}
-.detail.orange{border-left-color:#ea580c}
-.detail.orange .detail-num{background:#ea580c}
+.detail.orange{border-left-color:var(--brand)}
+.detail.orange .detail-num{background:var(--brand)}
 
 /* ── Section CTA ── */
 .sec-cta{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;margin-top:4px;transition:.15s}
@@ -196,15 +204,15 @@ a{color:inherit;text-decoration:none}
 
 /* ── Final CTA ── */
 .final{max-width:var(--max);margin:48px auto 0;padding:0 24px 60px}
-.final-box{background:linear-gradient(150deg,#120327 0%,#2d0a57 50%,#5b21b6 100%);border-radius:20px;padding:40px 32px;text-align:center;position:relative;overflow:hidden}
-.final-box::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(192,38,211,.3),transparent 60%);pointer-events:none}
-.final-box h2{font-family:'Fraunces',serif;color:#fff;font-size:26px;margin:0 0 8px;letter-spacing:-.4px;position:relative}
-.final-box p{color:rgba(255,255,255,.75);font-size:15px;margin:0 0 22px;line-height:1.55;position:relative;max-width:420px;margin-left:auto;margin-right:auto}
+.final-box{background:var(--deep);border-radius:20px;padding:40px 32px;text-align:center;position:relative;overflow:hidden}
+/* el orbe radial salio: cero degrades */
+.final-box h2{color:var(--accent);font-family:var(--sans);font-weight:800;font-size:26px;margin:0 0 8px;letter-spacing:normal;position:relative}
+.final-box p{color:var(--lila);font-size:15px;margin:0 0 22px;line-height:1.55;position:relative;max-width:420px;margin-left:auto;margin-right:auto}
 .final-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative}
-.final-btns a.primary{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--brand-dk);font-weight:700;padding:12px 24px;border-radius:12px;font-size:14px;transition:.15s;box-shadow:0 8px 24px -8px rgba(0,0,0,.3)}
+.final-btns a.primary{display:inline-flex;align-items:center;gap:7px;background:var(--go-on-dark);color:var(--deep);font-weight:700;padding:12px 24px;border-radius:12px;font-size:14px;transition:.15s;box-shadow:0 8px 24px -8px rgba(0,0,0,.3)}
 .final-btns a.primary:hover{transform:translateY(-2px)}
-.final-btns a.ghost{color:rgba(255,255,255,.9);font-weight:600;padding:12px 20px;font-size:13.5px;border:1px solid rgba(255,255,255,.2);border-radius:12px;transition:.15s}
-.final-btns a.ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.4)}
+.final-btns a.ghost{color:#fff;font-weight:600;padding:12px 20px;font-size:13.5px;border:1px solid var(--lila2);border-radius:12px;transition:.15s}
+.final-btns a.ghost:hover{background:rgba(255,255,255,.12);border-color:var(--lila)}
 
 footer{border-top:1px solid var(--line);padding:28px 20px;text-align:center;font-size:12.5px;color:var(--txt3)}
 footer a{color:var(--brand);font-weight:500}
@@ -225,28 +233,82 @@ footer a{color:var(--brand);font-weight:500}
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ANMA Hub","item":"https://anmahub.com/"},{"@type":"ListItem","position":2,"name":"Recursos","item":"https://anmahub.com/recursos/"},{"@type":"ListItem","position":3,"name":"Guía","item":"https://anmahub.com/recursos/guia"}]}</script>
 
 <style>
-.related-strip{max-width:960px;margin:48px auto 32px;padding:0 20px;font-family:'Inter',system-ui,sans-serif}
-.related-strip h3{font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:600;color:#1E1B4B;margin:0 0 18px;letter-spacing:-.3px}
+.related-strip{max-width:960px;margin:48px auto 32px;padding:0 20px;font-family:var(--sans)}
+.related-strip h3{font-family:var(--sans);font-size:22px;font-weight:800;color:var(--ink);margin:0 0 18px;letter-spacing:-.3px}
 .related-strip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .related-strip a{display:block;padding:16px 18px;border:1px solid #E5E7EB;border-radius:12px;background:#fff;text-decoration:none;color:inherit;transition:border-color .15s,transform .15s,box-shadow .15s}
-.related-strip a:hover{border-color:#7C3AED;transform:translateY(-2px);box-shadow:0 8px 22px rgba(124,58,237,.1)}
-.related-strip .tag{display:inline-block;font-size:10px;font-weight:800;color:#7C3AED;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
-.related-strip b{display:block;font-size:15px;font-weight:700;color:#1E1B4B;line-height:1.35;margin-bottom:4px}
+.related-strip a:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:0 8px 22px rgba(124,58,237,.1)}
+.related-strip .tag{display:inline-block;font-size:10px;font-weight:800;color:var(--brand);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.related-strip b{display:block;font-size:15px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:4px}
 .related-strip small{font-size:12.5px;color:#64748B;line-height:1.5}
 </style>
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><defs>
+<symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M3.9 12h16.2M14 5.9l6.1 6.1-6.1 6.1"/></symbol>
+<symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M20.1 12H3.9M10 18.1 3.9 12 10 5.9"/></symbol>
+<symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M3.1 20.9l1.3-4.6a8.4 8.4 0 1 1 3.2 3.1l-4.5 1.5z"/><path d="M9 9.1c-.2 1.9 1.4 4.3 3.4 5.1.7.3 1.3.4 1.7-.2.3-.5.6-.9 0-1.3-.5-.4-1.1-.8-1.5-.3-.3.4-.6.3-1-.1-.5-.4-.9-1-1-1.5-.1-.4.1-.6.4-.9.4-.4.1-.8-.2-1.3-.3-.5-.7-.4-1.1-.2-.4.2-.7.4-.7.7z"/></symbol>
+<symbol id="i-bullseye" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.2"/><circle cx="12" cy="12" r="1.4"/></symbol>
+<symbol id="i-truck-fast" viewBox="0 0 24 24"><path d="M9.6 17.2h4.9V6.4H4.8v10.8h1.3"/><path d="M14.5 9.6h3.2l2.5 3v4.6h-2"/><circle cx="7.8" cy="17.6" r="1.9"/><circle cx="16.9" cy="17.6" r="1.9"/><path d="M1.6 9.3h3.2M1.6 12.5h2.3"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4.8v14.4M4.8 12h14.4"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.6 11.4V4.6a1 1 0 0 1 1-1h6.8a1 1 0 0 1 .7.3l8.3 8.3a1 1 0 0 1 0 1.4l-6.8 6.8a1 1 0 0 1-1.4 0L3.9 12.1a1 1 0 0 1-.3-.7z"/><circle cx="7.9" cy="7.9" r="1.4"/></symbol>
+<symbol id="i-note-sticky" viewBox="0 0 24 24"><path d="M4.4 4.4h15.2v9.4l-5.8 5.8H4.4z"/><path d="M19.6 13.8h-5.8v5.8"/></symbol>
+<symbol id="i-file-invoice-dollar" viewBox="0 0 24 24"><path d="M14 2.9H6.6v18.2h10.8V6.3z"/><path d="M13.8 2.9v3.5h3.6"/><path d="M12 10.3v6.4M10.3 11.6h2.6a1.2 1.2 0 0 1 0 2.4h-1.8a1.2 1.2 0 0 0 0 2.4h2.6"/></symbol>
+<symbol id="i-chart-line" viewBox="0 0 24 24"><path d="M3.6 3.6v16.8h16.8"/><path d="M7 15.8l3.6-4.2 3 2.6 4.6-5.6"/></symbol>
+<symbol id="i-chart-bar" viewBox="0 0 24 24"><path d="M3.6 3.6v16.8h16.8"/><path d="M7.8 16.8v-4.6M12 16.8V8.4M16.2 16.8v-6.6"/></symbol>
+<symbol id="i-address-card" viewBox="0 0 24 24"><rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.4"/><circle cx="8.6" cy="10.6" r="2.1"/><path d="M5.3 16.2c0-1.8 1.5-2.8 3.3-2.8s3.3 1 3.3 2.8"/><path d="M15.2 10.2h3.4M15.2 13.6h3.4"/></symbol>
+<symbol id="i-id-card" viewBox="0 0 24 24"><rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.4"/><path d="M2.6 8.6h18.8"/><circle cx="8.6" cy="13.4" r="1.9"/><path d="M14.6 12.4h4M14.6 15.2h4"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9.1" cy="8.3" r="3.2"/><path d="M2.9 20.1c0-3.4 2.8-5.4 6.2-5.4s6.2 2 6.2 5.4"/><circle cx="17.4" cy="7.4" r="2.4"/><path d="M17.2 13.6c2.4.3 3.9 2 3.9 4.6"/></symbol>
+<symbol id="i-industry" viewBox="0 0 24 24"><path d="M3.2 20.4V9.6l6 3.6V9.6l6 3.6V4.8h5.6v15.6z"/><path d="M3.2 20.4h17.6"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1"/><path d="M19.2 14.6a1.6 1.6 0 0 0 .3 1.8l.1.1a1.9 1.9 0 1 1-2.7 2.7l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5v.2a1.9 1.9 0 1 1-3.8 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a1.9 1.9 0 1 1-2.7-2.7l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1h-.2a1.9 1.9 0 1 1 0-3.8h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a1.9 1.9 0 1 1 2.7-2.7l.1.1a1.6 1.6 0 0 0 1.8.3h.1a1.6 1.6 0 0 0 1-1.5v-.2a1.9 1.9 0 1 1 3.8 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a1.9 1.9 0 1 1 2.7 2.7l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1h.2a1.9 1.9 0 1 1 0 3.8h-.1a1.6 1.6 0 0 0-1.5 1z"/></symbol>
+<symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 2.9l8.4 4.4v9.4L12 21.1l-8.4-4.4V7.3z"/><path d="M3.9 7.4l8.1 4.3 8.1-4.3M12 11.7v9.3"/></symbol>
+<symbol id="i-boxes-stacked" viewBox="0 0 24 24"><rect x="8.4" y="2.9" width="7.2" height="6.4" rx="1"/><rect x="2.6" y="13.8" width="7.2" height="6.4" rx="1"/><rect x="14.2" y="13.8" width="7.2" height="6.4" rx="1"/><path d="M10.6 2.9v2.4h2.8V2.9M4.8 13.8v2.4h2.8v-2.4M16.4 13.8v2.4h2.8v-2.4"/></symbol>
+<symbol id="i-lightbulb" viewBox="0 0 24 24"><path d="M9.2 17.4a6 6 0 1 1 5.6 0v1.8a1.4 1.4 0 0 1-1.4 1.4h-2.8a1.4 1.4 0 0 1-1.4-1.4z"/><path d="M9.6 18.4h4.8"/></symbol>
+<symbol id="i-layer-group" viewBox="0 0 24 24"><path d="M12 2.9l9.1 4.6L12 12.1 2.9 7.5 12 2.9zM2.9 12.2l9.1 4.6 9.1-4.6M2.9 16.7l9.1 4.6 9.1-4.6"/></symbol>
+<symbol id="i-file-pdf" viewBox="0 0 24 24"><path d="M14 2.9H6.6v18.2h10.8V6.3z"/><path d="M13.8 2.9v3.5h3.6"/><path d="M9.4 17.6c2.2-1 3.6-3.1 4.4-5.4.3-.9-.6-1.6-1.2-.9-1 1.2.2 4 2 5.1.8.5 1.6.7 2.2.6"/></symbol>
+<symbol id="i-credit-card" viewBox="0 0 24 24"><rect x="2.6" y="5.2" width="18.8" height="13.6" rx="2.4"/><path d="M2.6 9.8h18.8M6.4 14.8h3.2"/></symbol>
+<symbol id="i-clock-rotate-left" viewBox="0 0 24 24"><path d="M3.4 12a8.6 8.6 0 1 0 2.6-6.1"/><path d="M3.1 3.6v4.1h4.1"/><path d="M12 7.8V12l2.9 1.7"/></symbol>
+<symbol id="i-circle-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 11.2v5.2M12 7.8v.1"/></symbol>
+<symbol id="i-box-open" viewBox="0 0 24 24"><path d="M2.9 9.8l2.2-4.4h13.8l2.2 4.4-9.1 2.6z"/><path d="M4.6 9.4v9.2h14.8V9.4"/><path d="M9.4 5.4l2.6 7 2.6-7"/></symbol>
+<symbol id="i-window-maximize" viewBox="0 0 24 24"><rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.4"/><path d="M2.6 8.8h18.8"/></symbol>
+<symbol id="i-triangle-exclamation" viewBox="0 0 24 24"><path d="M10.6 3.9L2.4 18.1a1.6 1.6 0 0 0 1.4 2.4h16.4a1.6 1.6 0 0 0 1.4-2.4L13.4 3.9a1.6 1.6 0 0 0-2.8 0z"/><path d="M12 9.4v4.2M12 17.2v.1"/></symbol>
+<symbol id="i-table-list" viewBox="0 0 24 24"><rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.4"/><path d="M9.4 4.6v14.8M12.6 9.6h5.6M12.6 14.4h5.6"/></symbol>
+<symbol id="i-table-cells-large" viewBox="0 0 24 24"><rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.4"/><path d="M12 4.6v14.8M2.6 12h18.8"/></symbol>
+<symbol id="i-stamp" viewBox="0 0 24 24"><path d="M8.2 11.4c-1.4-1.6-1.6-2.6-1.3-4.3A4 4 0 0 1 12 3.6a4 4 0 0 1 4 4.6c-.3 1.4-.6 1.8-1.4 3.2h2.9a2 2 0 0 1 2 2v2.4H4.5v-2.4a2 2 0 0 1 2-2z"/><path d="M4.5 20.4h15"/></symbol>
+<symbol id="i-shield-halved" viewBox="0 0 24 24"><path d="M12 2.7l7.6 3v5.5c0 4.6-3.1 8.4-7.6 10.1-4.5-1.7-7.6-5.5-7.6-10.1V5.7l7.6-3z"/><path d="M12 2.7v18.6"/></symbol>
+<symbol id="i-receipt" viewBox="0 0 24 24"><path d="M5.4 2.9v18.2l2.2-1.4 2.2 1.4 2.2-1.4 2.2 1.4 2.2-1.4 2.2 1.4V2.9z"/><path d="M8.6 8.2h6.8M8.6 12.4h6.8"/></symbol>
+<symbol id="i-pen-to-square" viewBox="0 0 24 24"><path d="M11 4.6H5.4a2.4 2.4 0 0 0-2.4 2.4v11.6a2.4 2.4 0 0 0 2.4 2.4H17a2.4 2.4 0 0 0 2.4-2.4V13"/><path d="M17.8 3.2a2.1 2.1 0 0 1 3 3L12.6 14.4l-3.9.9.9-3.9z"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M16.8 3.2a2.4 2.4 0 0 1 3.4 3.4L7.6 19.2l-4.4 1.2 1.2-4.4z"/><path d="M14.6 5.4l4 4"/></symbol>
+<symbol id="i-paper-plane" viewBox="0 0 24 24"><path d="M21.4 2.9L2.6 10.6l7 2.9 2.9 7z"/><path d="M21.4 2.9L9.6 13.5"/></symbol>
+<symbol id="i-mug-hot" viewBox="0 0 24 24"><path d="M3.9 9.4h12.4v6.4a4 4 0 0 1-4 4H7.9a4 4 0 0 1-4-4z"/><path d="M16.3 11.2h1.9a2.4 2.4 0 0 1 0 4.8h-1.9"/><path d="M8.2 6.2V4.4M12 6.2V4.4"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10.2 13.8a3.8 3.8 0 0 0 5.7.4l2.4-2.4a3.8 3.8 0 0 0-5.4-5.4l-1.4 1.4"/><path d="M13.8 10.2a3.8 3.8 0 0 0-5.7-.4l-2.4 2.4a3.8 3.8 0 0 0 5.4 5.4l1.4-1.4"/></symbol>
+<symbol id="i-house" viewBox="0 0 24 24"><path d="M3.4 10.2L12 3.4l8.6 6.8v9a1.6 1.6 0 0 1-1.6 1.6H5a1.6 1.6 0 0 1-1.6-1.6z"/><path d="M9.4 20.8v-7h5.2v7"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.3 5.6a4.9 4.9 0 0 0-7 0L12 6.9l-1.3-1.3a4.9 4.9 0 1 0-7 7l1.4 1.3L12 20.6l6.9-6.7 1.4-1.3a4.9 4.9 0 0 0 0-7z"/></symbol>
+<symbol id="i-floppy-disk" viewBox="0 0 24 24"><path d="M18.6 21.1H5.4a2.4 2.4 0 0 1-2.4-2.4V5.3a2.4 2.4 0 0 1 2.4-2.4h10l5 5v10.8a2.4 2.4 0 0 1-2.4 2.4z"/><path d="M7.4 21.1v-7h9.2v7M7.4 2.9v4.8h7"/></symbol>
+<symbol id="i-file-import" viewBox="0 0 24 24"><path d="M3.5 13.8v3.7a2.6 2.6 0 0 0 2.6 2.6h11.8a2.6 2.6 0 0 0 2.6-2.6v-3.7"/><path d="M12 3.3v10.5M8.1 9.9l3.9 3.9 3.9-3.9"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.2 12S5.9 5.9 12 5.9 21.8 12 21.8 12 18.1 18.1 12 18.1 2.2 12 2.2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M3.5 14.6v2.9a2.6 2.6 0 0 0 2.6 2.6h11.8a2.6 2.6 0 0 0 2.6-2.6v-2.9"/><path d="M12 3.3v11.3M7.8 10.4l4.2 4.2 4.2-4.2"/></symbol>
+<symbol id="i-dollar-sign" viewBox="0 0 24 24"><path d="M12 2.6v18.8"/><path d="M16.6 6.6H9.9a3.1 3.1 0 0 0 0 6.2h4.2a3.1 3.1 0 0 1 0 6.2H7.4"/></symbol>
+<symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4.6 12.8l4.8 4.8 10-11.2"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.4" y="5.4" width="17.2" height="15.2" rx="2.4"/><path d="M3.4 10.2h17.2M8.4 2.9v4.4M15.6 2.9v4.4"/></symbol>
+<symbol id="i-bullhorn" viewBox="0 0 24 24"><path d="M20.4 4.2v15.6l-9.6-3.9H6.2a2.4 2.4 0 0 1-2.4-2.4v-3a2.4 2.4 0 0 1 2.4-2.4h4.6z"/><path d="M7.6 15.9v3.4a1.6 1.6 0 0 0 1.6 1.6h.8a1.6 1.6 0 0 0 1.6-1.6v-2.3"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><path d="M5.4 20.6V4.6a1.6 1.6 0 0 1 1.6-1.6h10a1.6 1.6 0 0 1 1.6 1.6v16"/><path d="M3.4 20.6h17.2M9 7.4h2M13 7.4h2M9 11.4h2M13 11.4h2M10.4 20.6v-4.2h3.2v4.2"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.4 2.4L4.6 13.4h6.2l-1.2 8.2 9-11.2h-6.2z"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18.4 15.6V10a6.4 6.4 0 1 0-12.8 0v5.6l-1.6 2.4h16z"/><path d="M10.2 20.8a2.1 2.1 0 0 0 3.6 0"/></symbol>
+<symbol id="i-barcode" viewBox="0 0 24 24"><path d="M3.4 4.8v14.4M6.6 4.8v14.4M9.8 4.8v14.4M13.4 4.8v14.4M16.6 4.8v14.4M20.6 4.8v14.4"/></symbol>
+</defs></svg>
 
 <nav class="nav">
   <a href="/" class="logo"><img src="/favicon-a.png" alt=""> ANMA Hub</a>
   <span class="nav-r">
-    <a href="/recursos/" class="nav-back"><i class="fa fa-arrow-left"></i><span>Recursos</span></a>
+    <a href="/recursos/" class="nav-back"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-left"/></svg></i><span>Recursos</span></a>
     <a href="/app/registro" class="cta">Probar gratis</a>
   </span>
 </nav>
 
 <section class="hero">
-  <span class="hero-badge"><i class="fa fa-circle"></i> Manual de usuario</span>
+  <span class="hero-badge"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-circle"/></svg></i> Manual de usuario</span>
   <h1>ANMA Hub <em>en Acci&#243;n</em></h1>
   <p>Cada secci&#243;n con su flujo, pasos claros y conexi&#243;n con tu d&#237;a a d&#237;a. Consulta r&#225;pida, sin vueltas.</p>
 </section>
@@ -277,15 +339,15 @@ footer a{color:var(--brand);font-weight:500}
   <aside class="toc">
     <div class="toc-label">Secciones</div>
     <ol>
-      <li><a href="#config"><i class="fa fa-gear"></i> Configuraci&#243;n</a></li>
-      <li><a href="#productos"><i class="fa fa-cube"></i> Productos</a></li>
-      <li><a href="#clientes"><i class="fa fa-users"></i> Clientes</a></li>
-      <li><a href="#proveedores"><i class="fa fa-industry"></i> Proveedores</a></li>
-      <li><a href="#insumos"><i class="fa fa-boxes-stacked"></i> Insumos</a></li>
-      <li><a href="#pedidos"><i class="fa fa-file-invoice-dollar"></i> Pedidos</a></li>
-      <li><a href="#logistica"><i class="fa fa-truck-fast"></i> Log&#237;stica</a></li>
-      <li><a href="#mensajes"><i class="fa-brands fa-whatsapp"></i> Mensajes WA</a></li>
-      <li><a href="#dashboard"><i class="fa fa-chart-line"></i> Dashboard</a></li>
+      <li><a href="#config"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg></i> Configuraci&#243;n</a></li>
+      <li><a href="#productos"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-cube"/></svg></i> Productos</a></li>
+      <li><a href="#clientes"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-users"/></svg></i> Clientes</a></li>
+      <li><a href="#proveedores"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-industry"/></svg></i> Proveedores</a></li>
+      <li><a href="#insumos"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-boxes-stacked"/></svg></i> Insumos</a></li>
+      <li><a href="#pedidos"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-file-invoice-dollar"/></svg></i> Pedidos</a></li>
+      <li><a href="#logistica"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-truck-fast"/></svg></i> Log&#237;stica</a></li>
+      <li><a href="#mensajes"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Mensajes WA</a></li>
+      <li><a href="#dashboard"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-chart-line"/></svg></i> Dashboard</a></li>
     </ol>
   </aside>
 
@@ -294,7 +356,7 @@ footer a{color:var(--brand);font-weight:500}
     <!-- 1 CONFIGURACI&#211;N -->
     <section class="sec" id="config">
       <div class="sec-header">
-        <div class="sec-icon purple"><i class="fa fa-gear"></i></div>
+        <div class="sec-icon purple"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg></i></div>
         <div class="sec-meta">
           <span class="sec-tag">01 &#183; Punto de partida</span>
           <h2>Configur&#225; tu negocio</h2>
@@ -305,45 +367,45 @@ footer a{color:var(--brand);font-weight:500}
       <div class="flow">
         <div class="flow-card">
           <span class="flow-label action">Tu acci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-gear"></i> Toc&#225;s Configuraci&#243;n</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg></i> Toc&#225;s Configuraci&#243;n</div>
           <div class="flow-sub">Sidebar, secci&#243;n Sistema</div>
         </div>
         <div class="flow-card">
           <span class="flow-label react">Reacci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-window-maximize"></i> Panel con 8 pesta&#241;as</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-window-maximize"/></svg></i> Panel con 8 pesta&#241;as</div>
           <div class="flow-sub">Identidad, Comercial, Listas, M&#243;dulos, Pagos, Integraciones, Equipo, Cuenta</div>
         </div>
         <div class="flow-card">
           <span class="flow-label benefit">Para qu&#233;</span>
-          <div class="flow-title"><i class="fa fa-stamp"></i> Tu PDF sale firmado</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-stamp"/></svg></i> Tu PDF sale firmado</div>
           <div class="flow-sub">Logo, CUIT y datos en cada documento</div>
         </div>
       </div>
 
       <div class="callout tip">
-        <i class="fa fa-lightbulb"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-lightbulb"/></svg></i>
         <span><b>Para arrancar hoy, solo necesit&#225;s 3 de las 8 pesta&#241;as.</b> Las dem&#225;s las vas a usar m&#225;s adelante, a medida que el negocio lo pida.</span>
       </div>
 
       <ol class="steps">
-        <li><div class="step-text"><b>Pesta&#241;a <span class="ref"><i class="fa fa-building"></i> Identidad y contacto</span>:</b> sub&#237;s logo (PNG/JPG, m&#225;x 300 KB), eleg&#237;s color principal y de acento, carg&#225;s nombre, email, WhatsApp, Instagram y direcci&#243;n.</div></li>
-        <li><div class="step-text"><b>Pesta&#241;a <span class="ref"><i class="fa fa-dollar-sign"></i> Comercial</span>:</b> moneda, margen y se&#241;a por defecto, rubro y tipo de venta (p&#250;blico / mayorista / ambos). Si factur&#225;s, tild&#225;s <span class="ref"><i class="fa fa-file-invoice-dollar"></i> Mostrar IVA</span> y ah&#237; aparecen raz&#243;n social, CUIT y condici&#243;n.<small>Sin factura, dej&#225; el tilde apagado. Igual emit&#237;s presupuestos.</small></div></li>
-        <li><div class="step-text"><b>Pesta&#241;a <span class="ref"><i class="fa fa-credit-card"></i> Pagos</span>:</b> activ&#225; Mercado Pago (con tu Access Token) y/o transferencia bancaria con tu CBU o alias.</div></li>
+        <li><div class="step-text"><b>Pesta&#241;a <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-building"/></svg></i> Identidad y contacto</span>:</b> sub&#237;s logo (PNG/JPG, m&#225;x 300 KB), eleg&#237;s color principal y de acento, carg&#225;s nombre, email, WhatsApp, Instagram y direcci&#243;n.</div></li>
+        <li><div class="step-text"><b>Pesta&#241;a <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-dollar-sign"/></svg></i> Comercial</span>:</b> moneda, margen y se&#241;a por defecto, rubro y tipo de venta (p&#250;blico / mayorista / ambos). Si factur&#225;s, tild&#225;s <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-file-invoice-dollar"/></svg></i> Mostrar IVA</span> y ah&#237; aparecen raz&#243;n social, CUIT y condici&#243;n.<small>Sin factura, dej&#225; el tilde apagado. Igual emit&#237;s presupuestos.</small></div></li>
+        <li><div class="step-text"><b>Pesta&#241;a <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-credit-card"/></svg></i> Pagos</span>:</b> activ&#225; Mercado Pago (con tu Access Token) y/o transferencia bancaria con tu CBU o alias.</div></li>
         <li><div class="step-text"><b>Guard&#225;s cada pesta&#241;a por separado</b> &#8212; no hay un bot&#243;n &#250;nico al final, cada secci&#243;n tiene el suyo.</div></li>
       </ol>
 
       <div class="callout daily">
-        <i class="fa fa-bullseye"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i>
         <span><b>Tu d&#237;a a d&#237;a:</b> mandar una cotizaci&#243;n con tu logo, datos y formas de pago genera mejor impresi&#243;n que un mensaje suelto de WhatsApp.</span>
       </div>
 
-      <a href="/app/config" class="sec-cta">Ir a Configuraci&#243;n <i class="fa fa-arrow-right"></i></a>
+      <a href="/app/config" class="sec-cta">Ir a Configuraci&#243;n <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></i></a>
     </section>
 
     <!-- 2 PRODUCTOS -->
     <section class="sec" id="productos">
       <div class="sec-header">
-        <div class="sec-icon blue"><i class="fa fa-cube"></i></div>
+        <div class="sec-icon blue"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-cube"/></svg></i></div>
         <div class="sec-meta">
           <span class="sec-tag">02 &#183; Tu cat&#225;logo</span>
           <h2>Productos</h2>
@@ -354,40 +416,40 @@ footer a{color:var(--brand);font-weight:500}
       <div class="flow">
         <div class="flow-card">
           <span class="flow-label action">Tu acci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-cube"></i> Toc&#225;s Productos</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-cube"/></svg></i> Toc&#225;s Productos</div>
           <div class="flow-sub">Sidebar, secci&#243;n Tu negocio</div>
         </div>
         <div class="flow-card">
           <span class="flow-label react">Reacci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-table-list"></i> Cat&#225;logo en tabla</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-table-list"/></svg></i> Cat&#225;logo en tabla</div>
           <div class="flow-sub">Buscador, filtros y stock visible</div>
         </div>
         <div class="flow-card">
           <span class="flow-label benefit">Para qu&#233;</span>
-          <div class="flow-title"><i class="fa fa-bolt"></i> Cotiz&#225;s en segundos</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bolt"/></svg></i> Cotiz&#225;s en segundos</div>
           <div class="flow-sub">Nada de buscar precios en chats</div>
         </div>
       </div>
 
       <ol class="steps">
-        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="fa fa-plus"></i> Nuevo producto</span></b> arriba a la derecha.</div></li>
+        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></i> Nuevo producto</span></b> arriba a la derecha.</div></li>
         <li><div class="step-text"><b>Complet&#225;s nombre y precio</b> &#8212; &#250;nico campo obligatorio.<small>El resto (categor&#237;a, stock, foto) es opcional pero ayuda.</small></div></li>
         <li><div class="step-text"><b>Activ&#225;s precio mayorista</b> si trabaj&#225;s con dos listas. Se aplica solo seg&#250;n el tipo de cliente.</div></li>
-        <li><div class="step-text"><b>&#191;Ya ten&#233;s Excel?</b> Toc&#225; <span class="ref"><i class="fa fa-file-import"></i> Importar</span> y sub&#237; el archivo &#8212; 200 productos en 2 minutos.</div></li>
+        <li><div class="step-text"><b>&#191;Ya ten&#233;s Excel?</b> Toc&#225; <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-file-import"/></svg></i> Importar</span> y sub&#237; el archivo &#8212; 200 productos en 2 minutos.</div></li>
       </ol>
 
       <div class="callout daily">
-        <i class="fa fa-bullseye"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i>
         <span><b>Tu d&#237;a a d&#237;a:</b> entra un cliente preguntando &#8220;&#191;ten&#233;s esto?&#8221; &#8212; lo busc&#225;s en el cat&#225;logo, lo agreg&#225;s a la cotizaci&#243;n y se la mand&#225;s antes de que termine la conversaci&#243;n.</span>
       </div>
 
-      <a href="/app/catalogo" class="sec-cta">Ir a Productos <i class="fa fa-arrow-right"></i></a>
+      <a href="/app/catalogo" class="sec-cta">Ir a Productos <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></i></a>
     </section>
 
     <!-- 3 CLIENTES -->
     <section class="sec" id="clientes">
       <div class="sec-header">
-        <div class="sec-icon orange"><i class="fa fa-users"></i></div>
+        <div class="sec-icon orange"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-users"/></svg></i></div>
         <div class="sec-meta">
           <span class="sec-tag">03 &#183; Tu base de contactos</span>
           <h2>Clientes</h2>
@@ -398,50 +460,50 @@ footer a{color:var(--brand);font-weight:500}
       <div class="flow">
         <div class="flow-card">
           <span class="flow-label action">Tu acci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-users"></i> Toc&#225;s Clientes</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-users"/></svg></i> Toc&#225;s Clientes</div>
           <div class="flow-sub">Sidebar, secci&#243;n Tu negocio</div>
         </div>
         <div class="flow-card">
           <span class="flow-label react">Reacci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-id-card"></i> Tu base con saldos</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-id-card"/></svg></i> Tu base con saldos</div>
           <div class="flow-sub">Qui&#233;n debe, qui&#233;n hace tiempo no compra</div>
         </div>
         <div class="flow-card">
           <span class="flow-label benefit">Para qu&#233;</span>
-          <div class="flow-title"><i class="fa-brands fa-whatsapp"></i> Le escrib&#237;s con un clic</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Le escrib&#237;s con un clic</div>
           <div class="flow-sub">WhatsApp con su nombre y contexto</div>
         </div>
       </div>
 
       <ol class="steps">
-        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="fa fa-plus"></i> Nuevo cliente</span></b> arriba a la derecha.</div></li>
+        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></i> Nuevo cliente</span></b> arriba a la derecha.</div></li>
         <li><div class="step-text"><b>Nombre y WhatsApp</b> &#8212; lo m&#237;nimo. El n&#250;mero activa el chat verde directo desde la ficha.</div></li>
-        <li><div class="step-text"><b>Marc&#225;s tipo</b> <span class="ref"><i class="fa fa-tag"></i> P&#250;blico</span> o <span class="ref"><i class="fa fa-tag"></i> Mayorista</span>.<small>ANMA aplica la lista de precios correcta autom&#225;ticamente.</small></div></li>
-        <li><div class="step-text"><b>Al abrir un cliente</b> vas a ver 3 pesta&#241;as: <span class="ref"><i class="fa fa-address-card"></i> Informaci&#243;n</span>, <span class="ref"><i class="fa fa-clock-rotate-left"></i> Historial</span> y <span class="ref"><i class="fa fa-note-sticky"></i> Notas</span>.</div></li>
+        <li><div class="step-text"><b>Marc&#225;s tipo</b> <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-tag"/></svg></i> P&#250;blico</span> o <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-tag"/></svg></i> Mayorista</span>.<small>ANMA aplica la lista de precios correcta autom&#225;ticamente.</small></div></li>
+        <li><div class="step-text"><b>Al abrir un cliente</b> vas a ver 3 pesta&#241;as: <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-address-card"/></svg></i> Informaci&#243;n</span>, <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-clock-rotate-left"/></svg></i> Historial</span> y <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-note-sticky"/></svg></i> Notas</span>.</div></li>
       </ol>
 
-      <div class="sub-head"><i class="fa fa-layer-group"></i> Qu&#233; encontr&#225;s en cada pesta&#241;a</div>
+      <div class="sub-head"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-layer-group"/></svg></i> Qu&#233; encontr&#225;s en cada pesta&#241;a</div>
       <table class="info-table">
         <thead><tr><th>Pesta&#241;a</th><th>Qu&#233; muestra</th></tr></thead>
         <tbody>
-          <tr><td><i class="fa fa-address-card"></i> Informaci&#243;n</td><td>WhatsApp, email y rubro. Debajo: total vendido, &#250;ltimo pedido y cantidad de presupuestos.</td></tr>
-          <tr><td><i class="fa fa-clock-rotate-left"></i> Historial</td><td>Lista de presupuestos con estado y monto. Toc&#225;s uno y lo ves completo.</td></tr>
-          <tr><td><i class="fa fa-note-sticky"></i> Notas</td><td>Notas de seguimiento con fecha: &#8220;le gusta el negro&#8221;, &#8220;paga a 30 d&#237;as&#8221;, &#8220;prefiere que le escriban a la tarde&#8221;.</td></tr>
+          <tr><td><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-address-card"/></svg></i> Informaci&#243;n</td><td>WhatsApp, email y rubro. Debajo: total vendido, &#250;ltimo pedido y cantidad de presupuestos.</td></tr>
+          <tr><td><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-clock-rotate-left"/></svg></i> Historial</td><td>Lista de presupuestos con estado y monto. Toc&#225;s uno y lo ves completo.</td></tr>
+          <tr><td><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-note-sticky"/></svg></i> Notas</td><td>Notas de seguimiento con fecha: &#8220;le gusta el negro&#8221;, &#8220;paga a 30 d&#237;as&#8221;, &#8220;prefiere que le escriban a la tarde&#8221;.</td></tr>
         </tbody>
       </table>
 
       <div class="callout daily">
-        <i class="fa fa-bullseye"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i>
         <span><b>Tu d&#237;a a d&#237;a:</b> vuelve Mar&#237;a tres meses despu&#233;s &#8212; abr&#237;s su ficha, mir&#225;s el Historial y ves que se llev&#243; las botas marrones. Le propon&#233;s la cartera que combina sin tener que recordarlo.</span>
       </div>
 
-      <a href="/app/clientes" class="sec-cta">Ir a Clientes <i class="fa fa-arrow-right"></i></a>
+      <a href="/app/clientes" class="sec-cta">Ir a Clientes <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></i></a>
     </section>
 
     <!-- 4 PROVEEDORES -->
     <section class="sec" id="proveedores">
       <div class="sec-header">
-        <div class="sec-icon purple"><i class="fa fa-industry"></i></div>
+        <div class="sec-icon purple"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-industry"/></svg></i></div>
         <div class="sec-meta">
           <span class="sec-tag">04 &#183; A qui&#233;n le compr&#225;s</span>
           <h2>Proveedores</h2>
@@ -452,55 +514,55 @@ footer a{color:var(--brand);font-weight:500}
       <div class="flow">
         <div class="flow-card">
           <span class="flow-label action">Tu acci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-industry"></i> Toc&#225;s Proveedores</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-industry"/></svg></i> Toc&#225;s Proveedores</div>
           <div class="flow-sub">Sidebar, secci&#243;n Herramientas</div>
         </div>
         <div class="flow-card">
           <span class="flow-label react">Reacci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-chart-line"></i> Hist&#243;rico de precios</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-chart-line"/></svg></i> Hist&#243;rico de precios</div>
           <div class="flow-sub">Cu&#225;ndo y cu&#225;nto aument&#243; cada uno</div>
         </div>
         <div class="flow-card">
           <span class="flow-label benefit">Para qu&#233;</span>
-          <div class="flow-title"><i class="fa fa-shield-halved"></i> Cuid&#225;s el margen</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-shield-halved"/></svg></i> Cuid&#225;s el margen</div>
           <div class="flow-sub">Negoci&#225;s con n&#250;meros, no con la sensaci&#243;n</div>
         </div>
       </div>
 
       <ol class="steps">
-        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="fa fa-plus"></i> Nuevo proveedor</span></b> arriba a la derecha.</div></li>
+        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></i> Nuevo proveedor</span></b> arriba a la derecha.</div></li>
         <li><div class="step-text"><b>Carg&#225;s datos</b>: WhatsApp, email, rubro, CUIT, condici&#243;n frente al IVA, plazo de pago y lead time (d&#237;as de entrega).</div></li>
-        <li><div class="step-text"><b>Al abrir un proveedor</b> vas a ver 4 pesta&#241;as: <span class="ref"><i class="fa fa-address-card"></i> Informaci&#243;n</span>, <span class="ref"><i class="fa fa-box-open"></i> Productos</span>, <span class="ref"><i class="fa fa-tag"></i> Precios</span> y <span class="ref"><i class="fa fa-note-sticky"></i> Notas</span>.</div></li>
+        <li><div class="step-text"><b>Al abrir un proveedor</b> vas a ver 4 pesta&#241;as: <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-address-card"/></svg></i> Informaci&#243;n</span>, <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-box-open"/></svg></i> Productos</span>, <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-tag"/></svg></i> Precios</span> y <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-note-sticky"/></svg></i> Notas</span>.</div></li>
       </ol>
 
-      <div class="sub-head"><i class="fa fa-layer-group"></i> Qu&#233; encontr&#225;s en cada pesta&#241;a</div>
+      <div class="sub-head"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-layer-group"/></svg></i> Qu&#233; encontr&#225;s en cada pesta&#241;a</div>
       <table class="info-table">
         <thead><tr><th>Pesta&#241;a</th><th>Qu&#233; muestra</th></tr></thead>
         <tbody>
-          <tr><td><i class="fa fa-address-card"></i> Informaci&#243;n</td><td>Contacto, CUIT, condici&#243;n de IVA, plazo de pago, lead time, CBU/alias. Debajo, cantidad de productos y costo total.</td></tr>
-          <tr><td><i class="fa fa-box-open"></i> Productos</td><td>Los productos que le compr&#225;s a este proveedor en particular.</td></tr>
-          <tr><td><i class="fa fa-tag"></i> Precios</td><td>Hist&#243;rico de precio por producto: cada cambio con fecha y variaci&#243;n en %. Toc&#225;s el l&#225;piz para registrar un precio nuevo.</td></tr>
-          <tr><td><i class="fa fa-note-sticky"></i> Notas</td><td>Notas libres sobre condiciones de pago, entregas o acuerdos particulares.</td></tr>
+          <tr><td><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-address-card"/></svg></i> Informaci&#243;n</td><td>Contacto, CUIT, condici&#243;n de IVA, plazo de pago, lead time, CBU/alias. Debajo, cantidad de productos y costo total.</td></tr>
+          <tr><td><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-box-open"/></svg></i> Productos</td><td>Los productos que le compr&#225;s a este proveedor en particular.</td></tr>
+          <tr><td><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-tag"/></svg></i> Precios</td><td>Hist&#243;rico de precio por producto: cada cambio con fecha y variaci&#243;n en %. Toc&#225;s el l&#225;piz para registrar un precio nuevo.</td></tr>
+          <tr><td><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-note-sticky"/></svg></i> Notas</td><td>Notas libres sobre condiciones de pago, entregas o acuerdos particulares.</td></tr>
         </tbody>
       </table>
 
       <div class="callout daily">
-        <i class="fa fa-bullseye"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i>
         <span><b>Tu d&#237;a a d&#237;a:</b> tu proveedor de cajas te avisa de un aumento del 12%. Abr&#237;s su pesta&#241;a Precios, ves que la suba real fue 6 meses atr&#225;s del 8%, y le respond&#233;s con argumento.</span>
       </div>
 
       <div class="callout tip">
-        <i class="fa fa-lightbulb"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-lightbulb"/></svg></i>
         <span>Carg&#225; al menos 2 proveedores por insumo cr&#237;tico. La negociaci&#243;n cambia cuando saben que ten&#233;s opci&#243;n.</span>
       </div>
 
-      <a href="/app/proveedores" class="sec-cta">Ir a Proveedores <i class="fa fa-arrow-right"></i></a>
+      <a href="/app/proveedores" class="sec-cta">Ir a Proveedores <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></i></a>
     </section>
 
     <!-- 5 INSUMOS -->
     <section class="sec" id="insumos">
       <div class="sec-header">
-        <div class="sec-icon green"><i class="fa fa-boxes-stacked"></i></div>
+        <div class="sec-icon green"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-boxes-stacked"/></svg></i></div>
         <div class="sec-meta">
           <span class="sec-tag">05 &#183; Tus materiales</span>
           <h2>Insumos</h2>
@@ -511,40 +573,40 @@ footer a{color:var(--brand);font-weight:500}
       <div class="flow">
         <div class="flow-card">
           <span class="flow-label action">Tu acci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-boxes-stacked"></i> Toc&#225;s Insumos</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-boxes-stacked"/></svg></i> Toc&#225;s Insumos</div>
           <div class="flow-sub">Sidebar, secci&#243;n Herramientas</div>
         </div>
         <div class="flow-card">
           <span class="flow-label react">Reacci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-link"></i> Insumos vinculados</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-link"/></svg></i> Insumos vinculados</div>
           <div class="flow-sub">Qui&#233;n depende de qu&#233; material</div>
         </div>
         <div class="flow-card">
           <span class="flow-label benefit">Para qu&#233;</span>
-          <div class="flow-title"><i class="fa fa-bell"></i> Alerta antes de que falte</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bell"/></svg></i> Alerta antes de que falte</div>
           <div class="flow-sub">Repon&#233;s antes de quedarte sin material</div>
         </div>
       </div>
 
       <ol class="steps">
-        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="fa fa-plus"></i> Nuevo insumo</span></b> y carg&#225;s nombre, costo unitario y stock actual.</div></li>
+        <li><div class="step-text"><b>Toc&#225;s <span class="ref primary"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></i> Nuevo insumo</span></b> y carg&#225;s nombre, costo unitario y stock actual.</div></li>
         <li><div class="step-text"><b>Defin&#237;s stock m&#237;nimo</b> &#8212; el n&#250;mero que dispara la alerta amarilla.</div></li>
         <li><div class="step-text"><b>Lo asoci&#225;s a un producto</b>: &#8220;cada caja regalo usa 1 caja kraft + 2 metros de cinta + 1 etiqueta&#8221;.</div></li>
-        <li><div class="step-text"><b>Cada venta lo descuenta solo.</b> Cuando baj&#225;s del m&#237;nimo, aparece en <span class="ref danger"><i class="fa fa-triangle-exclamation"></i> Stock bajo</span> del Dashboard.</div></li>
+        <li><div class="step-text"><b>Cada venta lo descuenta solo.</b> Cuando baj&#225;s del m&#237;nimo, aparece en <span class="ref danger"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-triangle-exclamation"/></svg></i> Stock bajo</span> del Dashboard.</div></li>
       </ol>
 
       <div class="callout daily">
-        <i class="fa fa-bullseye"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i>
         <span><b>Tu d&#237;a a d&#237;a:</b> es viernes de D&#237;a de la Madre, vendiste 40 cajas y no te diste cuenta que las etiquetas se acabaron. Con la alerta de stock bajo, esa situaci&#243;n no vuelve a pasar.</span>
       </div>
 
-      <a href="/app/insumos" class="sec-cta">Ir a Insumos <i class="fa fa-arrow-right"></i></a>
+      <a href="/app/insumos" class="sec-cta">Ir a Insumos <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></i></a>
     </section>
 
     <!-- 6 PEDIDOS -->
     <section class="sec" id="pedidos">
       <div class="sec-header">
-        <div class="sec-icon purple"><i class="fa fa-file-invoice-dollar"></i></div>
+        <div class="sec-icon purple"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-file-invoice-dollar"/></svg></i></div>
         <div class="sec-meta">
           <span class="sec-tag">06 &#183; El coraz&#243;n de la app</span>
           <h2>Pedidos y Presupuestos</h2>
@@ -562,17 +624,17 @@ footer a{color:var(--brand);font-weight:500}
       <div class="flow">
         <div class="flow-card">
           <span class="flow-label action">Tu acci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-plus"></i> Nuevo pedido</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></i> Nuevo pedido</div>
           <div class="flow-sub">Sidebar o FAB inferior en mobile</div>
         </div>
         <div class="flow-card">
           <span class="flow-label react">Reacci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-file-pdf"></i> PDF con tu marca</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-file-pdf"/></svg></i> PDF con tu marca</div>
           <div class="flow-sub">Numeraci&#243;n secuencial, total y formas de pago</div>
         </div>
         <div class="flow-card">
           <span class="flow-label benefit">Para qu&#233;</span>
-          <div class="flow-title"><i class="fa-brands fa-whatsapp"></i> Lo mand&#225;s en un clic</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Lo mand&#225;s en un clic</div>
           <div class="flow-sub">Mensaje pre-armado al WhatsApp del cliente</div>
         </div>
       </div>
@@ -604,7 +666,7 @@ footer a{color:var(--brand);font-weight:500}
           <li><b>Margen, se&#241;a y descuento</b> en porcentaje &#8212; se recalculan solos en el total.</li>
           <li>Si el env&#237;o es &#8220;a cotizar&#8221;, tild&#225;s la casilla y el PDF muestra esa leyenda.</li>
         </ul>
-        <div class="detail-note"><i class="fa fa-circle-info"></i> Este es el paso con m&#225;s campos &#8212; pero ninguno es obligatorio para avanzar. Complet&#225; lo que tengas y volv&#233; despu&#233;s.</div>
+        <div class="detail-note"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-circle-info"/></svg></i> Este es el paso con m&#225;s campos &#8212; pero ninguno es obligatorio para avanzar. Complet&#225; lo que tengas y volv&#233; despu&#233;s.</div>
       </div>
 
       <div class="detail">
@@ -612,31 +674,31 @@ footer a{color:var(--brand);font-weight:500}
         <ul>
           <li>Ves un resumen de Cliente, Productos y Entrega &#8212; con bot&#243;n <b>Editar</b> en cada bloque para corregir sin volver atr&#225;s.</li>
           <li>Totales desglosados: subtotal, descuento, IVA (si aplica) y se&#241;a.</li>
-          <li>Toc&#225;s <span class="ref primary"><i class="fa fa-floppy-disk"></i> Guardar Presupuesto</span> &#8212; ese es el bot&#243;n que lo crea.</li>
+          <li>Toc&#225;s <span class="ref primary"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-floppy-disk"/></svg></i> Guardar Presupuesto</span> &#8212; ese es el bot&#243;n que lo crea.</li>
         </ul>
       </div>
 
       <div class="detail green">
-        <div class="detail-head"><div class="detail-num"><i class="fa fa-check" style="font-size:9px"></i></div><b>Despu&#233;s de guardar</b></div>
+        <div class="detail-head"><div class="detail-num"><i class="ico" style="font-size:9px" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></i></div><b>Despu&#233;s de guardar</b></div>
         <ul>
-          <li><span class="ref wa"><i class="fa-brands fa-whatsapp"></i> Enviar</span> manda el presupuesto por WhatsApp con mensaje pre-armado.</li>
-          <li><span class="ref"><i class="fa fa-eye"></i> Vista previa</span> y <span class="ref"><i class="fa fa-file-pdf"></i> PDF</span> para revisar o descargar.</li>
+          <li><span class="ref wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Enviar</span> manda el presupuesto por WhatsApp con mensaje pre-armado.</li>
+          <li><span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-eye"/></svg></i> Vista previa</span> y <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-file-pdf"/></svg></i> PDF</span> para revisar o descargar.</li>
           <li>Si ten&#233;s Mercado Pago activo, un bot&#243;n manda tambi&#233;n el link de cobro.</li>
         </ul>
       </div>
 
       <div class="callout daily">
-        <i class="fa fa-bullseye"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i>
         <span><b>Tu d&#237;a a d&#237;a:</b> te escriben por WhatsApp pidiendo cotizaci&#243;n. En vez de armarla a mano y mandarla con tres mensajes, complet&#225;s los 4 pasos y sac&#225;s un PDF prolijo en pocos minutos. Cerr&#225;s m&#225;s ventas porque respond&#233;s r&#225;pido y profesional.</span>
       </div>
 
-      <a href="/app/presupuesto" class="sec-cta">Crear pedido <i class="fa fa-arrow-right"></i></a>
+      <a href="/app/presupuesto" class="sec-cta">Crear pedido <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></i></a>
     </section>
 
     <!-- 7 LOG&#205;STICA -->
     <section class="sec" id="logistica">
       <div class="sec-header">
-        <div class="sec-icon orange"><i class="fa fa-truck-fast"></i></div>
+        <div class="sec-icon orange"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-truck-fast"/></svg></i></div>
         <div class="sec-meta">
           <span class="sec-tag">07 &#183; C&#243;mo llega</span>
           <h2>Log&#237;stica</h2>
@@ -647,41 +709,41 @@ footer a{color:var(--brand);font-weight:500}
       <div class="flow">
         <div class="flow-card">
           <span class="flow-label action">Tu acci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-truck-fast"></i> Nuevo env&#237;o</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-truck-fast"/></svg></i> Nuevo env&#237;o</div>
           <div class="flow-sub">Desde el pedido o por Log&#237;stica en sidebar</div>
         </div>
         <div class="flow-card">
           <span class="flow-label react">Reacci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-barcode"></i> Carrier + tracking</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-barcode"/></svg></i> Carrier + tracking</div>
           <div class="flow-sub">V&#237;a Cargo, Andreani u otro</div>
         </div>
         <div class="flow-card">
           <span class="flow-label benefit">Para qu&#233;</span>
-          <div class="flow-title"><i class="fa-brands fa-whatsapp"></i> Compart&#237;s el link</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Compart&#237;s el link</div>
           <div class="flow-sub">El cliente sigue su paquete solo</div>
         </div>
       </div>
 
       <ol class="steps">
         <li><div class="step-text"><b>Confirm&#225;s la direcci&#243;n</b> con el cliente antes de despachar.<small>Cambiar destino despu&#233;s cuesta redespacho.</small></div></li>
-        <li><div class="step-text"><b>Eleg&#237;s el carrier</b>: <span class="ref"><i class="fa fa-truck-fast"></i> V&#237;a Cargo</span> &#183; <span class="ref"><i class="fa fa-truck-fast"></i> Andreani</span> &#183; <span class="ref"><i class="fa fa-truck-fast"></i> Otro</span>.<small>Cada uno abre el link directo al seguimiento oficial cuando peg&#225;s el c&#243;digo.</small></div></li>
+        <li><div class="step-text"><b>Eleg&#237;s el carrier</b>: <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-truck-fast"/></svg></i> V&#237;a Cargo</span> &#183; <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-truck-fast"/></svg></i> Andreani</span> &#183; <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-truck-fast"/></svg></i> Otro</span>.<small>Cada uno abre el link directo al seguimiento oficial cuando peg&#225;s el c&#243;digo.</small></div></li>
         <li><div class="step-text"><b>Carg&#225;s remito, bultos, peso y flete</b> (opcional). Pod&#233;s dejar solo el m&#237;nimo: cliente, direcci&#243;n, carrier y tracking.</div></li>
-        <li><div class="step-text"><b>Compart&#237;s el tracking</b> con <span class="ref wa"><i class="fa-brands fa-whatsapp"></i> Enviar link</span> &#8212; se abre WhatsApp con mensaje pre-armado y el link al seguimiento oficial.</div></li>
+        <li><div class="step-text"><b>Compart&#237;s el tracking</b> con <span class="ref wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Enviar link</span> &#8212; se abre WhatsApp con mensaje pre-armado y el link al seguimiento oficial.</div></li>
         <li><div class="step-text"><b>Actualiz&#225;s el estado</b> (En camino, Entregado, Con problema) desde la lista o la ficha.</div></li>
       </ol>
 
       <div class="callout daily">
-        <i class="fa fa-bullseye"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i>
         <span><b>Tu d&#237;a a d&#237;a:</b> en vez de responder &#8220;&#191;ya lleg&#243;?&#8221; 5 veces por d&#237;a, el cliente mira el link y se autocontrola. Gan&#225;s 30 minutos diarios para vender, no para coordinar.</span>
       </div>
 
-      <a href="/app/logistica" class="sec-cta">Ir a Log&#237;stica <i class="fa fa-arrow-right"></i></a>
+      <a href="/app/logistica" class="sec-cta">Ir a Log&#237;stica <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></i></a>
     </section>
 
     <!-- 8 MENSAJES WA -->
     <section class="sec" id="mensajes">
       <div class="sec-header">
-        <div class="sec-icon wa"><i class="fa-brands fa-whatsapp"></i></div>
+        <div class="sec-icon wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i></div>
         <div class="sec-meta">
           <span class="sec-tag">08 &#183; Tu voz, pre-armada</span>
           <h2>Mensajes WhatsApp</h2>
@@ -692,41 +754,41 @@ footer a{color:var(--brand);font-weight:500}
       <div class="flow">
         <div class="flow-card">
           <span class="flow-label action">Tu acci&#243;n</span>
-          <div class="flow-title"><i class="fa-brands fa-whatsapp"></i> Toc&#225;s Mensajes WA</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Toc&#225;s Mensajes WA</div>
           <div class="flow-sub">Sidebar, secci&#243;n Herramientas</div>
         </div>
         <div class="flow-card">
           <span class="flow-label react">Reacci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-pen-to-square"></i> Plantillas por etapa</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-pen-to-square"/></svg></i> Plantillas por etapa</div>
           <div class="flow-sub">Captaci&#243;n, Presupuestos, Pagos, Log&#237;stica, Post-Venta</div>
         </div>
         <div class="flow-card">
           <span class="flow-label benefit">Para qu&#233;</span>
-          <div class="flow-title"><i class="fa fa-paper-plane"></i> Mand&#225;s desde cada ficha</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-paper-plane"/></svg></i> Mand&#225;s desde cada ficha</div>
           <div class="flow-sub">WhatsApp abre con el texto personalizado</div>
         </div>
       </div>
 
       <ol class="steps">
-        <li><div class="step-text"><b>Eleg&#237;s la solapa</b>: <span class="ref"><i class="fa fa-bullhorn"></i> Captaci&#243;n</span> &#183; <span class="ref"><i class="fa fa-file-invoice-dollar"></i> Presupuestos</span> &#183; <span class="ref"><i class="fa fa-credit-card"></i> Pagos</span> &#183; <span class="ref"><i class="fa fa-truck-fast"></i> Log&#237;stica</span> &#183; <span class="ref"><i class="fa fa-heart"></i> Post-Venta</span>.</div></li>
-        <li><div class="step-text"><b>Edit&#225;s cada plantilla</b> con <span class="ref"><i class="fa fa-pen"></i> Editar</span>. Pod&#233;s cambiar el texto o crear nuevas &#8212; us&#225;s tu tono real.</div></li>
+        <li><div class="step-text"><b>Eleg&#237;s la solapa</b>: <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullhorn"/></svg></i> Captaci&#243;n</span> &#183; <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-file-invoice-dollar"/></svg></i> Presupuestos</span> &#183; <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-credit-card"/></svg></i> Pagos</span> &#183; <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-truck-fast"/></svg></i> Log&#237;stica</span> &#183; <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg></i> Post-Venta</span>.</div></li>
+        <li><div class="step-text"><b>Edit&#225;s cada plantilla</b> con <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-pen"/></svg></i> Editar</span>. Pod&#233;s cambiar el texto o crear nuevas &#8212; us&#225;s tu tono real.</div></li>
         <li><div class="step-text"><b>Us&#225;s las variables</b> &#8212; se completan solas: <span class="ref">&#123;&#123;nombre&#125;&#125;</span> <span class="ref">&#123;&#123;negocio&#125;&#125;</span> <span class="ref">&#123;&#123;producto&#125;&#125;</span> <span class="ref">&#123;&#123;precio&#125;&#125;</span> <span class="ref">&#123;&#123;fecha&#125;&#125;</span>.</div></li>
         <li><div class="step-text"><b>Dispar&#225;s desde:</b> ficha de cliente, detalle de pedido, lista de env&#237;os, Dashboard.</div></li>
-        <li><div class="step-text"><b>Toc&#225;s <span class="ref wa"><i class="fa-brands fa-whatsapp"></i> Enviar</span></b> y se abre WhatsApp con el chat del cliente y el mensaje listo &#8212; solo revis&#225;s y mand&#225;s.</div></li>
+        <li><div class="step-text"><b>Toc&#225;s <span class="ref wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Enviar</span></b> y se abre WhatsApp con el chat del cliente y el mensaje listo &#8212; solo revis&#225;s y mand&#225;s.</div></li>
       </ol>
 
       <div class="callout daily">
-        <i class="fa fa-bullseye"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i>
         <span><b>Tu d&#237;a a d&#237;a:</b> bloque de 20 minutos los martes para reactivar clientes que hace +60 d&#237;as no compran. Con plantilla personalizada por &#250;ltima compra, recuper&#225;s 2-3 ventas que se hab&#237;an dormido &#8212; todas las semanas.</span>
       </div>
 
-      <a href="/app/mensajes" class="sec-cta">Ir a Mensajes <i class="fa fa-arrow-right"></i></a>
+      <a href="/app/mensajes" class="sec-cta">Ir a Mensajes <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></i></a>
     </section>
 
     <!-- 9 DASHBOARD -->
     <section class="sec" id="dashboard">
       <div class="sec-header">
-        <div class="sec-icon purple"><i class="fa fa-chart-line"></i></div>
+        <div class="sec-icon purple"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-chart-line"/></svg></i></div>
         <div class="sec-meta">
           <span class="sec-tag">09 &#183; El panel de tu d&#237;a</span>
           <h2>Dashboard</h2>
@@ -737,23 +799,23 @@ footer a{color:var(--brand);font-weight:500}
       <div class="flow">
         <div class="flow-card">
           <span class="flow-label action">Tu acci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-chart-line"></i> Toc&#225;s Dashboard</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-chart-line"/></svg></i> Toc&#225;s Dashboard</div>
           <div class="flow-sub">Sidebar &#8212; primera opci&#243;n</div>
         </div>
         <div class="flow-card">
           <span class="flow-label react">Reacci&#243;n</span>
-          <div class="flow-title"><i class="fa fa-table-cells-large"></i> KPIs + seguimiento</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-table-cells-large"/></svg></i> KPIs + seguimiento</div>
           <div class="flow-sub">Resumen, Pedidos, An&#225;lisis, Seguimiento</div>
         </div>
         <div class="flow-card">
           <span class="flow-label benefit">Para qu&#233;</span>
-          <div class="flow-title"><i class="fa fa-mug-hot"></i> Empez&#225;s el d&#237;a con foco</div>
+          <div class="flow-title"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-mug-hot"/></svg></i> Empez&#225;s el d&#237;a con foco</div>
           <div class="flow-sub">Sab&#233;s qu&#233; resolver primero</div>
         </div>
       </div>
 
       <div class="detail">
-        <div class="detail-head"><div class="detail-num"><i class="fa fa-house" style="font-size:9px"></i></div><b>Resumen</b></div>
+        <div class="detail-head"><div class="detail-num"><i class="ico" style="font-size:9px" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-house"/></svg></i></div><b>Resumen</b></div>
         <ul>
           <li><b>KPIs del per&#237;odo</b>: facturado, margen, pedidos generados, tasa de conversi&#243;n, ticket promedio, top clientes.</li>
           <li>Comparativa contra el per&#237;odo anterior (delta % en verde o rojo).</li>
@@ -762,16 +824,16 @@ footer a{color:var(--brand);font-weight:500}
       </div>
 
       <div class="detail">
-        <div class="detail-head"><div class="detail-num"><i class="fa fa-receipt" style="font-size:9px"></i></div><b>Pedidos</b></div>
+        <div class="detail-head"><div class="detail-num"><i class="ico" style="font-size:9px" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-receipt"/></svg></i></div><b>Pedidos</b></div>
         <ul>
           <li>Lista completa del per&#237;odo, ordenable y con b&#250;squeda.</li>
           <li>Estado (borrador, enviado, confirmado, en producci&#243;n, entregado), monto, cliente y fecha.</li>
-          <li>Bot&#243;n <span class="ref"><i class="fa fa-download"></i> Exportar CSV</span> para Excel o contadora.</li>
+          <li>Bot&#243;n <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-download"/></svg></i> Exportar CSV</span> para Excel o contadora.</li>
         </ul>
       </div>
 
       <div class="detail">
-        <div class="detail-head"><div class="detail-num"><i class="fa fa-chart-bar" style="font-size:9px"></i></div><b>An&#225;lisis</b></div>
+        <div class="detail-head"><div class="detail-num"><i class="ico" style="font-size:9px" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-chart-bar"/></svg></i></div><b>An&#225;lisis</b></div>
         <ul>
           <li>Distribuci&#243;n por estado, evoluci&#243;n mensual, top clientes por facturaci&#243;n, top productos.</li>
           <li>Margen real vs. margen objetivo &#8212; detect&#225;s si est&#225;s cotizando bajo.</li>
@@ -779,26 +841,26 @@ footer a{color:var(--brand);font-weight:500}
       </div>
 
       <div class="detail orange">
-        <div class="detail-head"><div class="detail-num"><i class="fa fa-bell" style="font-size:9px"></i></div><b>Seguimiento &#8212; lo urgente</b></div>
+        <div class="detail-head"><div class="detail-num"><i class="ico" style="font-size:9px" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bell"/></svg></i></div><b>Seguimiento &#8212; lo urgente</b></div>
         <ul>
           <li><b>Sem&#225;foro por d&#237;as hasta la entrega comprometida</b>: rojo (cr&#237;tico), naranja (urgente 8-14d), amarillo, verde.</li>
           <li>Presupuestos <b>enviados sin respuesta</b> &#8212; para reactivar con la plantilla &#8220;Recordatorio suave&#8221; de Mensajes.</li>
           <li>El contador junto al nombre de la pesta&#241;a te avisa cu&#225;ntos casos hay pendientes.</li>
         </ul>
-        <div class="detail-note"><i class="fa fa-circle-info"></i> Esta es la pesta&#241;a que abr&#237;s primero cada ma&#241;ana &#8212; el resto del dashboard es contexto, esta es acci&#243;n.</div>
+        <div class="detail-note"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-circle-info"/></svg></i> Esta es la pesta&#241;a que abr&#237;s primero cada ma&#241;ana &#8212; el resto del dashboard es contexto, esta es acci&#243;n.</div>
       </div>
 
       <ol class="steps">
-        <li><div class="step-text"><b>Eleg&#237;s el per&#237;odo</b> con el dropdown <span class="ref"><i class="fa fa-calendar"></i> Per&#237;odo</span> (7d, 30d, este mes, a&#241;o, custom).</div></li>
-        <li><div class="step-text"><b>Bot&#243;n <span class="ref primary"><i class="fa fa-plus"></i> Nuevo pedido</span></b> arriba a la derecha &#8212; el atajo m&#225;s r&#225;pido para empezar a cotizar.</div></li>
+        <li><div class="step-text"><b>Eleg&#237;s el per&#237;odo</b> con el dropdown <span class="ref"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-calendar"/></svg></i> Per&#237;odo</span> (7d, 30d, este mes, a&#241;o, custom).</div></li>
+        <li><div class="step-text"><b>Bot&#243;n <span class="ref primary"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></i> Nuevo pedido</span></b> arriba a la derecha &#8212; el atajo m&#225;s r&#225;pido para empezar a cotizar.</div></li>
       </ol>
 
       <div class="callout daily">
-        <i class="fa fa-bullseye"></i>
+        <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i>
         <span><b>Tu d&#237;a a d&#237;a:</b> abr&#237;s ANMA antes que el correo. En 5 minutos identific&#225;s qu&#233; necesita atenci&#243;n y qu&#233; puede esperar. Cada alerta se resuelve a tiempo, sin que se acumulen.</span>
       </div>
 
-      <a href="/app/" class="sec-cta">Ir al Dashboard <i class="fa fa-arrow-right"></i></a>
+      <a href="/app/" class="sec-cta">Ir al Dashboard <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></i></a>
     </section>
 
   </main>
@@ -809,7 +871,7 @@ footer a{color:var(--brand);font-weight:500}
     <h2>Listo. Ya conoc&#233;s ANMA Hub.</h2>
     <p>Si te trab&#225;s en cualquier secci&#243;n, escribime por WhatsApp y vemos juntas. Estoy del otro lado.</p>
     <div class="final-btns">
-      <a class="primary" href="/app/registro">Empezar ahora <i class="fa fa-arrow-right"></i></a>
+      <a class="primary" href="/app/registro">Empezar ahora <i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg></i></a>
       <a class="ghost" href="https://wa.me/5491169456863?text=Hola%20Ana%2C%20estoy%20viendo%20la%20gu%C3%ADa%20de%20ANMA%20Hub%20y%20tengo%20una%20duda" target="_blank">Hablar por WhatsApp</a>
     </div>
   </div>
