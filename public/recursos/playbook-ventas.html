@@ -8,49 +8,58 @@
 <meta name="description" content="Plan de ataque para captar clientes en frío: visitas, mensajes, SEO y AEO. Documento interno.">
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="/favicon-32.png" type="image/png">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+@font-face{font-family:'Figtree';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/figtree-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Figtree';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/figtree-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/poppins-600-anmahub.woff2) format('woff2');unicode-range:U+20,U+41,U+48,U+4D-4E,U+62,U+75}
+
+/* Iconos: sprite propio, inyectado al abrir el documento.
+   Antes: Font Awesome desde cdnjs, 171 KB para 79 usos. */
+.ico{display:inline-block;vertical-align:-.125em;line-height:1}
+.ico svg{width:1em;height:1em;vertical-align:top;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 :root{
-  --brand:#7C3AED; --brand2:#C026D3; --brand-dk:#5B21B6; --brand-lt:#F5EFFE;
-  --emerald:#10B981; --emerald-dk:#047857; --emerald-lt:#ECFDF5;
-  --amber:#F59E0B; --amber-lt:#FFFBEB; --amber-dk:#92400E;
-  --rose:#E11D74; --rose-lt:#FDF2F8;
-  --ink:#1b1530; --txt:#3c3753; --txt2:#6a6680; --txt3:#94909f;
-  --line:#ece8f2; --bg:#fdfcfa; --surf:#f7f4fb;
+  --brand:#652BDF; --brand-dk:#4718AE; --deep:#2B0A60; --brand-lt:#EFE7FE;
+  --go:#0B7D59; --go-hover:#095E43; --go-on-dark:#6EE7B7;
+  --accent:#F6DE8B; --accent-lt:#FDF6DD; --lila:#CFBFF0; --lila2:#B59BF5;
+  --alert:#B42318; --alert-lt:#FDECEC; --alert-line:#F4CDCA;
+  --ink:#2B0A60; --txt:#574A6B; --txt2:#6E6383; --txt3:#6E6383;
+  --line:#B59BF5; --line-soft:#DECDFC; --bg:#F5EFE4; --surf:#EFE7FE;
+  --sans:'Figtree',-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:ui-monospace,'Cascadia Mono','Segoe UI Mono',Menlo,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--txt);font-family:'Inter',-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a:focus-visible{outline:3px solid var(--brand);outline-offset:3px;border-radius:6px}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 svg{display:block}
 a{color:inherit;text-decoration:none}
 
 /* ── Nav ── */
-.nav{display:flex;align-items:center;justify-content:space-between;padding:15px 26px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(253,252,250,.88);backdrop-filter:blur(12px);z-index:50}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-weight:600;color:var(--ink);font-size:18.5px}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:15px 26px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(245,239,228,.9);backdrop-filter:blur(12px);z-index:50}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',var(--sans);font-weight:600;color:var(--ink);font-size:18.5px}
 .logo img{width:30px;height:30px;border-radius:8px}
 .nav-r{display:flex;align-items:center;gap:18px}
 .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--txt);font-weight:600;font-size:14px}
 .nav-back:hover{color:var(--brand)}
 .nav-back::before{content:'←';font-size:15px}
-.nav .private-tag{background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;letter-spacing:.3px;display:inline-flex;align-items:center;gap:6px}
-.nav .private-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:#f59e0b}
+.nav .private-tag{background:var(--accent-lt);color:var(--ink);font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;letter-spacing:.3px;display:inline-flex;align-items:center;gap:6px}
+.nav .private-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
 @media(max-width:520px){.nav-back span{display:none}.nav .private-tag{display:none}}
 
 /* ── Hero ── */
 .hero{max-width:780px;margin:0 auto;padding:64px 26px 32px;text-align:center}
-.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--brand-lt),#fbf5fe);border:1px solid #e9ddfb;color:var(--brand-dk);font-size:12px;font-weight:700;padding:8px 16px;border-radius:99px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
-.hero .eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 3px rgba(225,29,116,.2)}
-.hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(36px,5.5vw,52px);line-height:1.06;letter-spacing:-1.3px;color:var(--ink);margin-bottom:14px;text-wrap:balance}
-.hero h1 em{font-style:italic;background:linear-gradient(120deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--surf);border:1px solid var(--line);color:var(--brand-dk);font-size:12px;font-weight:700;padding:8px 16px;border-radius:99px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
+.hero .eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--alert);box-shadow:0 0 0 3px rgba(225,29,116,.2)}
+.hero h1{font-family:var(--sans);font-weight:800;font-size:clamp(36px,5.5vw,52px);line-height:1.06;letter-spacing:normal;color:var(--ink);margin-bottom:14px;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--brand)}
 .hero p{font-size:18px;color:var(--txt);max-width:580px;margin:0 auto;line-height:1.55}
 
 /* ── Resumen ejecutivo ── */
 .exec{max-width:780px;margin:36px auto 0;padding:0 26px}
 .exec-inner{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 28px;box-shadow:0 8px 24px -16px rgba(124,58,237,.18)}
 .exec-lbl{font-size:10.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:8px}
-.exec h2{font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:var(--ink);line-height:1.3;margin-bottom:10px;letter-spacing:-.3px}
+.exec h2{font-family:var(--sans);font-weight:800;font-size:22px;color:var(--ink);line-height:1.3;margin-bottom:10px;letter-spacing:-.3px}
 .exec p{color:var(--txt);font-size:15.5px;line-height:1.6}
 .exec p b{color:var(--ink);font-weight:600}
 
@@ -79,11 +88,11 @@ a{color:inherit;text-decoration:none}
 .sec{padding:28px 0 56px;border-bottom:1px solid var(--line);scroll-margin-top:80px}
 .sec:last-child{border-bottom:none;padding-bottom:32px}
 .sec-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:6px}
-.sec-num{flex-shrink:0;width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--brand-lt),#fbf5fe);color:var(--brand);display:flex;align-items:center;justify-content:center;border:1px solid #ece1fb;box-shadow:0 6px 18px -10px rgba(124,58,237,.4)}
+.sec-num{flex-shrink:0;width:56px;height:56px;border-radius:14px;background:var(--surf);color:var(--brand-dk);display:flex;align-items:center;justify-content:center;border:1px solid var(--line);box-shadow:0 6px 18px -10px rgba(124,58,237,.4)}
 .sec-num i{font-size:22px}
 .sec-titles{flex:1;min-width:0;padding-top:4px}
 .sec-tag{display:inline-block;font-size:10.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
-.sec h2{font-family:'Fraunces',serif;font-size:28px;font-weight:600;line-height:1.15;color:var(--ink);letter-spacing:-.5px;margin-bottom:6px;text-wrap:balance}
+.sec h2{font-family:var(--sans);font-size:28px;font-weight:600;line-height:1.15;color:var(--ink);letter-spacing:-.5px;margin-bottom:6px;text-wrap:balance}
 .sec .why{font-size:15.5px;color:var(--txt);line-height:1.6;margin:14px 0 22px}
 .sec .why b{color:var(--ink);font-weight:600}
 @media(max-width:600px){
@@ -94,7 +103,7 @@ a{color:inherit;text-decoration:none}
 
 /* ── Subsection ── */
 .sub{margin:24px 0 18px}
-.sub h3{font-family:'Fraunces',serif;font-size:19px;color:var(--ink);font-weight:600;margin-bottom:6px;letter-spacing:-.2px;display:flex;align-items:center;gap:8px}
+.sub h3{font-family:var(--sans);font-size:19px;color:var(--ink);font-weight:600;margin-bottom:6px;letter-spacing:-.2px;display:flex;align-items:center;gap:8px}
 .sub h3 i{color:var(--brand);font-size:15px}
 .sub p{font-size:14.5px;color:var(--txt);line-height:1.6}
 .sub p b{color:var(--ink);font-weight:600}
@@ -103,7 +112,7 @@ a{color:inherit;text-decoration:none}
 .numbered{margin:0 0 18px;padding:0;list-style:none;counter-reset:numstep}
 .numbered li{counter-increment:numstep;display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
 .numbered li:last-child{border-bottom:none}
-.numbered li::before{content:counter(numstep);flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;font-family:'Fraunces',serif}
+.numbered li::before{content:counter(numstep);flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;font-family:var(--sans)}
 .numbered li .step-body{flex:1;min-width:0;font-size:14.5px;color:var(--txt);line-height:1.55;padding-top:3px}
 .numbered li .step-body b{color:var(--ink);font-weight:600}
 .numbered li .step-body small{display:block;margin-top:4px;font-size:12.5px;color:var(--txt2);line-height:1.5}
@@ -111,30 +120,30 @@ a{color:inherit;text-decoration:none}
 /* ── Bullet list con check ── */
 .checks{list-style:none;padding:0;margin:0 0 18px;display:flex;flex-direction:column;gap:10px}
 .checks li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:var(--txt);line-height:1.55}
-.checks li::before{content:'';flex-shrink:0;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),var(--emerald-dk));margin-top:3px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700}
+.checks li::before{content:'';flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--go);margin-top:3px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700}
 .checks li::after{content:'';position:absolute}
 .checks li{position:relative}
 .checks li b{color:var(--ink);font-weight:600}
 
 /* ── Template / script box ── */
 .tpl{background:#fff;border:1px solid var(--line);border-radius:14px;margin:0 0 18px;overflow:hidden;box-shadow:0 4px 14px -10px rgba(16,24,40,.1)}
-.tpl-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(135deg,#fafbfc,#f7f4fb);border-bottom:1px solid var(--line)}
+.tpl-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surf);border-bottom:1px solid var(--line)}
 .tpl-head-l{display:flex;align-items:center;gap:8px}
 .tpl-head-ico{width:28px;height:28px;border-radius:8px;background:var(--brand-lt);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:13px}
-.tpl-head-ico.wa{background:#dcfce7;color:#15803d}
-.tpl-head-ico.mail{background:#dbeafe;color:#1e40af}
-.tpl-head-ico.dm{background:#fce7f3;color:#be185d}
-.tpl-head-ico.voice{background:#fef3c7;color:#92400e}
+.tpl-head-ico.wa{background:#fff;color:var(--go);border:1px solid var(--go)}
+.tpl-head-ico.mail{background:var(--surf);color:var(--brand-dk)}
+.tpl-head-ico.dm{background:var(--alert-lt);color:var(--alert)}
+.tpl-head-ico.voice{background:var(--accent-lt);color:var(--ink)}
 .tpl-name{font-size:13px;font-weight:700;color:var(--ink)}
 .tpl-context{font-size:11.5px;color:var(--txt2);font-weight:500}
-.tpl-body{padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.7;color:var(--ink);white-space:pre-wrap;background:#fdfcfa}
-.tpl-body em{font-style:normal;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif}
-.tpl-foot{padding:10px 16px;background:#fafbfc;border-top:1px solid var(--line);font-size:12px;color:var(--txt2);font-style:italic}
+.tpl-body{padding:16px 18px;font-family:var(--mono);font-size:13.5px;line-height:1.7;color:var(--ink);white-space:pre-wrap;background:var(--bg)}
+.tpl-body em{font-style:normal;background:var(--accent-lt);color:var(--ink);padding:1px 6px;border-radius:4px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif}
+.tpl-foot{padding:10px 16px;background:var(--surf);border-top:1px solid var(--line);font-size:12px;color:var(--txt2);font-style:italic}
 
 /* ── Tabla ── */
 .tbl-wrap{overflow-x:auto;margin:0 0 18px;border:1px solid var(--line);border-radius:14px;background:#fff}
 table.t{width:100%;border-collapse:collapse;font-size:14px}
-table.t th{background:#fafbfc;font-size:11px;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.6px;padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+table.t th{background:var(--surf);font-size:11px;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.6px;padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
 table.t td{padding:11px 14px;color:var(--txt);border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
 table.t tbody tr:last-child td{border-bottom:none}
 table.t td b{color:var(--ink);font-weight:600}
@@ -142,19 +151,19 @@ table.t td b{color:var(--ink);font-weight:600}
 /* ── Chip / pill ── */
 .chip{display:inline-flex;align-items:center;gap:5px;background:var(--surf);color:var(--ink);font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:7px;vertical-align:middle;margin:1px}
 .chip i{font-size:10px;color:var(--brand)}
-.chip.ok{background:var(--emerald-lt);color:var(--emerald-dk)}
-.chip.warn{background:var(--amber-lt);color:var(--amber-dk)}
+.chip.ok{background:var(--surf);color:var(--go)}
+.chip.warn{background:var(--accent-lt);color:var(--ink)}
 .chip.brand{background:var(--brand);color:#fff}
 .chip.brand i{color:#fff}
 
 /* ── Callout ── */
-.callout{display:flex;gap:14px;background:linear-gradient(135deg,var(--brand-lt) 0%,#fbf5fe 100%);border:1px solid #e9ddfb;border-radius:14px;padding:16px 18px;margin:0 0 18px}
-.callout-ico{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand-dk));color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+.callout{display:flex;gap:14px;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 18px}
+.callout-ico{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
 .callout-body{flex:1;min-width:0;font-size:14px;color:var(--brand-dk);line-height:1.55}
-.callout-body b{font-weight:700;color:var(--ink);font-family:'Fraunces',serif;display:block;margin-bottom:3px;font-size:13.5px}
-.callout.warn{background:var(--amber-lt);border-color:#fde68a}
-.callout.warn .callout-ico{background:linear-gradient(135deg,var(--amber),var(--amber-dk))}
-.callout.warn .callout-body{color:var(--amber-dk)}
+.callout-body b{font-weight:700;color:var(--ink);font-family:var(--sans);display:block;margin-bottom:3px;font-size:13.5px}
+.callout.warn{background:var(--accent-lt);border-color:var(--accent)}
+.callout.warn .callout-ico{background:var(--accent);color:var(--ink)}
+.callout.warn .callout-body{color:var(--ink)}
 
 /* ── Día tabs (semana modelo) ── */
 .week{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:0 0 18px}
@@ -162,16 +171,16 @@ table.t td b{color:var(--ink);font-weight:600}
 .day{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;transition:.15s}
 .day:hover{border-color:var(--brand);box-shadow:0 6px 16px -10px rgba(124,58,237,.3)}
 .day-name{font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-.day-h{font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.25}
+.day-h{font-family:var(--sans);font-size:15.5px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.25}
 .day-list{list-style:none;padding:0;margin:0;font-size:12.5px;color:var(--txt);line-height:1.5}
 .day-list li{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px}
 .day-list li::before{content:'·';color:var(--brand);font-weight:700;flex-shrink:0}
 
 /* ── Final CTA ── */
 .final{max-width:780px;margin:48px auto 0;padding:0 26px 80px}
-.box-cta{background:linear-gradient(150deg,#120327 0%,#2d0a57 50%,#5b21b6 100%);border-radius:24px;padding:42px 36px;text-align:center;position:relative;overflow:hidden}
-.box-cta::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:520px;height:520px;background:radial-gradient(circle,rgba(192,38,211,.35),transparent 62%);pointer-events:none}
-.box-cta h2{font-family:'Fraunces',serif;color:#fff;font-size:26px;margin:0 0 10px;letter-spacing:-.5px;position:relative;text-wrap:balance}
+.box-cta{background:var(--deep);border-radius:24px;padding:42px 36px;text-align:center;position:relative;overflow:hidden}
+/* el orbe radial salio: cero degrades */
+.box-cta h2{font-family:var(--sans);color:#fff;font-size:26px;margin:0 0 10px;letter-spacing:-.5px;position:relative;text-wrap:balance}
 .box-cta p{color:rgba(255,255,255,.78);font-size:15px;margin:0;line-height:1.55;position:relative;max-width:480px;margin-left:auto;margin-right:auto}
 
 footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font-size:13px;color:var(--txt3)}
@@ -187,6 +196,51 @@ footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font
 </style>
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><defs>
+  <symbol id="i-arrow-trend-up" viewBox="0 0 24 24"><path d="M2.9 18.4l6.4-6.4 3.6 3.6 6.6-6.6"/><path d="M14.6 8.4h6.4v6.4"/></symbol>
+  <symbol id="i-arrow-up-right-from-square" viewBox="0 0 24 24"><path d="M14.2 3.4h6.4v6.4"/><path d="M20.6 3.4l-8.4 8.4"/><path d="M18.4 13.6v5.4a1.8 1.8 0 0 1-1.8 1.8H5a1.8 1.8 0 0 1-1.8-1.8V7.4A1.8 1.8 0 0 1 5 5.6h5.4"/></symbol>
+  <symbol id="i-backpack" viewBox="0 0 24 24"><path d="M5.4 9.4a4.6 4.6 0 0 1 4.6-4.6h4a4.6 4.6 0 0 1 4.6 4.6v9.4a2.2 2.2 0 0 1-2.2 2.2H7.6a2.2 2.2 0 0 1-2.2-2.2z"/><path d="M9.4 4.8V3.4h5.2v1.4"/><path d="M8.8 12.6h6.4v3.4H8.8z"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M5.4 20.6V4.6a1.6 1.6 0 0 1 1.6-1.6h10a1.6 1.6 0 0 1 1.6 1.6v16"/><path d="M3.4 20.6h17.2M9 7.4h2M13 7.4h2M9 11.4h2M13 11.4h2M10.4 20.6v-4.2h3.2v4.2"/></symbol>
+  <symbol id="i-bullseye" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.2"/><circle cx="12" cy="12" r="1.4"/></symbol>
+  <symbol id="i-calculator" viewBox="0 0 24 24"><rect x="4.6" y="2.9" width="14.8" height="18.2" rx="2.2"/><path d="M8 6.8h8v3.2H8z"/><path d="M8.4 14h.1M12 14h.1M15.6 14h.1M8.4 17.6h.1M12 17.6h.1M15.6 17.6h.1"/></symbol>
+  <symbol id="i-calendar-check" viewBox="0 0 24 24"><rect x="3.4" y="5.4" width="17.2" height="15.2" rx="2.4"/><path d="M3.4 10.2h17.2M8.4 2.9v4.4M15.6 2.9v4.4"/><path d="M9.2 15.4l2.2 2.2 4-4.2"/></symbol>
+  <symbol id="i-calendar-week" viewBox="0 0 24 24"><rect x="3.4" y="5.4" width="17.2" height="15.2" rx="2.4"/><path d="M3.4 10.2h17.2M8.4 2.9v4.4M15.6 2.9v4.4"/><path d="M7.4 14.6h9.2"/></symbol>
+  <symbol id="i-chart-line" viewBox="0 0 24 24"><path d="M3.6 3.6v16.8h16.8"/><path d="M7 15.8l3.6-4.2 3 2.6 4.6-5.6"/></symbol>
+  <symbol id="i-chart-pie" viewBox="0 0 24 24"><path d="M12 3.1a8.9 8.9 0 1 0 8.9 8.9H12z"/><path d="M15.4 2.6a8.9 8.9 0 0 1 6 6h-6z"/></symbol>
+  <symbol id="i-clapperboard" viewBox="0 0 24 24"><path d="M3.2 9.4h17.6v9.4a2 2 0 0 1-2 2H5.2a2 2 0 0 1-2-2z"/><path d="M3.6 9.4l1.2-4.2 15.4 2.2-.6 2"/><path d="M8.6 5.8L7.2 9.4M13.6 6.6l-1.4 2.8"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 6.8V12l3.4 2"/></symbol>
+  <symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="8.6" cy="6.6" rx="5.4" ry="2.6"/><path d="M3.2 6.6v4c0 1.4 2.4 2.6 5.4 2.6"/><path d="M3.2 10.6v4c0 1.4 2.4 2.6 5.4 2.6"/><ellipse cx="15.4" cy="12.6" rx="5.4" ry="2.6"/><path d="M10 12.6v4.8c0 1.4 2.4 2.6 5.4 2.6s5.4-1.2 5.4-2.6v-4.8"/></symbol>
+  <symbol id="i-comments" viewBox="0 0 24 24"><path d="M15.6 12.4a2 2 0 0 1-2 2H7.2l-3.6 3v-3H3.4a2 2 0 0 1-2-2V5.6a2 2 0 0 1 2-2h10.2a2 2 0 0 1 2 2z"/><path d="M18.4 8.2h.6a2 2 0 0 1 2 2v6.8a2 2 0 0 1-2 2h-.4v2.6l-3-2.6h-3.4"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><path d="M20 6.1c0 1.8-3.6 3.2-8 3.2S4 7.9 4 6.1 7.6 2.9 12 2.9s8 1.4 8 3.2zM4 6.1v11.8c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V6.1M4 12c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2"/></symbol>
+  <symbol id="i-envelope" viewBox="0 0 24 24"><rect x="2.6" y="4.9" width="18.8" height="14.2" rx="2.2"/><path d="M3.4 7.1l8.6 5.8 8.6-5.8"/></symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M14.6 21.1v-8.2h2.8l.5-3.4h-3.3V7.3c0-1 .3-1.7 1.7-1.7h1.8V2.6a23 23 0 0 0-2.6-.1c-2.6 0-4.4 1.6-4.4 4.5v2.5H8.3v3.4h2.8v8.2z"/></symbol>
+  <symbol id="i-flag-checkered" viewBox="0 0 24 24"><path d="M4.6 21.1V3.4"/><path d="M4.6 4.4c4.8-2.2 9.6 2.2 14.4 0v9.8c-4.8 2.2-9.6-2.2-14.4 0z"/><path d="M11.8 3.9v9.8M4.6 9.2c2.4-1.1 4.8-.5 7.2.2M11.8 8.8c2.4.7 4.8 1.3 7.2.2"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9.4 2.9v6.4L4 18.4a1.8 1.8 0 0 0 1.6 2.7h12.8a1.8 1.8 0 0 0 1.6-2.7l-5.4-9.1V2.9"/><path d="M8.4 2.9h7.2M6.4 15.4h11.2"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3.2" y="9.4" width="17.6" height="4.2" rx="1"/><path d="M4.8 13.6v6.2a1.4 1.4 0 0 0 1.4 1.4h11.6a1.4 1.4 0 0 0 1.4-1.4v-6.2"/><path d="M12 9.4v11.8"/><path d="M12 9.4H7.9a2.4 2.4 0 1 1 0-4.8c2.8 0 4.1 4.8 4.1 4.8zM12 9.4h4.1a2.4 2.4 0 1 0 0-4.8C13.3 4.6 12 9.4 12 9.4z"/></symbol>
+  <symbol id="i-google" viewBox="0 0 24 24"><path d="M20.8 12.2c0-.7-.1-1.3-.2-1.9H12v3.7h4.9a4.2 4.2 0 0 1-1.8 2.8v2.3h3a9 9 0 0 0 2.7-6.9z"/><path d="M12 21.2c2.4 0 4.5-.8 6-2.2l-3-2.3a5.6 5.6 0 0 1-8.3-2.9h-3v2.4A9 9 0 0 0 12 21.2z"/><path d="M6.7 13.8a5.4 5.4 0 0 1 0-3.5V7.9h-3a9 9 0 0 0 0 8.2z"/><path d="M12 6.6a4.9 4.9 0 0 1 3.4 1.3l2.6-2.6A8.7 8.7 0 0 0 12 2.9a9 9 0 0 0-8.1 5l3 2.4A5.4 5.4 0 0 1 12 6.6z"/></symbol>
+  <symbol id="i-graduation-cap" viewBox="0 0 24 24"><path d="M12 3.4L1.9 8.4 12 13.4l10.1-5z"/><path d="M5.8 10.6v5.2c0 1.8 2.8 3.2 6.2 3.2s6.2-1.4 6.2-3.2v-5.2"/><path d="M22.1 8.4v6"/></symbol>
+  <symbol id="i-hand-holding-heart" viewBox="0 0 24 24"><path d="M2.6 15.4h3l2.4 2h4.2a1.4 1.4 0 0 0 0-2.8h-2.8"/><path d="M5.6 17.4l5 3.2 10.2-5.2a1.6 1.6 0 0 0-1.8-2.6l-4.6 2.4"/><path d="M12 9.6L9.3 7.1a1.9 1.9 0 0 1 2.7-2.7 1.9 1.9 0 0 1 2.7 2.7z"/></symbol>
+  <symbol id="i-handshake" viewBox="0 0 24 24"><path d="M11.2 7.4L8.8 9.6a1.7 1.7 0 0 0 2.3 2.5l2.2-2 4.4 4a1.7 1.7 0 0 1-2.4 2.4"/><path d="M15.3 16.5a1.7 1.7 0 0 1-2.4 2.4l-.9-.8"/><path d="M12 18.1a1.7 1.7 0 0 1-2.4 2.4l-4.3-4"/><path d="M2.6 7.4h3l3.4-2.2h6l3.4 2.2h3"/><path d="M18.4 7.4v8M5.6 7.4v8"/></symbol>
+  <symbol id="i-lightbulb" viewBox="0 0 24 24"><path d="M9.2 17.4a6 6 0 1 1 5.6 0v1.8a1.4 1.4 0 0 1-1.4 1.4h-2.8a1.4 1.4 0 0 1-1.4-1.4z"/><path d="M9.6 18.4h4.8"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10.2 13.8a3.8 3.8 0 0 0 5.7.4l2.4-2.4a3.8 3.8 0 0 0-5.4-5.4l-1.4 1.4"/><path d="M13.8 10.2a3.8 3.8 0 0 0-5.7-.4l-2.4 2.4a3.8 3.8 0 0 0 5.4 5.4l1.4-1.4"/></symbol>
+  <symbol id="i-list-check" viewBox="0 0 24 24"><path d="M9.4 6.4h11.2M9.4 12h11.2M9.4 17.6h11.2"/><path d="M3.4 6.2l1.4 1.4 2.2-2.4M3.4 11.8l1.4 1.4 2.2-2.4M3.4 17.4l1.4 1.4 2.2-2.4"/></symbol>
+  <symbol id="i-magnifying-glass" viewBox="0 0 24 24"><circle cx="10.6" cy="10.6" r="7.2"/><path d="M15.8 15.8l5 5"/></symbol>
+  <symbol id="i-magnifying-glass-chart" viewBox="0 0 24 24"><circle cx="10.6" cy="10.6" r="7.2"/><path d="M15.8 15.8l5 5"/><path d="M8 12.4v-2M10.6 12.4V8.6M13.2 12.4v-3"/></symbol>
+  <symbol id="i-microphone" viewBox="0 0 24 24"><rect x="9" y="2.6" width="6" height="11.4" rx="3"/><path d="M5.6 11.6v1.2a6.4 6.4 0 0 0 12.8 0v-1.2"/><path d="M12 19.2v2.2"/></symbol>
+  <symbol id="i-mobile-screen" viewBox="0 0 24 24"><rect x="6" y="2.2" width="12" height="19.6" rx="2.6"/><path d="M6 17.4h12M10.2 19.6h3.6"/></symbol>
+  <symbol id="i-robot" viewBox="0 0 24 24"><rect x="3.6" y="7.4" width="16.8" height="12" rx="2.6"/><path d="M12 3.2v4.2"/><circle cx="12" cy="2.6" r="1.2"/><path d="M8.6 12.2v1.6M15.4 12.2v1.6M9.4 16.4h5.2"/><path d="M1.6 11.4v4M22.4 11.4v4"/></symbol>
+  <symbol id="i-seedling" viewBox="0 0 24 24"><path d="M12 21.1v-7.4"/><path d="M12 13.7C12 9.9 15.1 6.8 19 6.8c0 3.8-3.1 6.9-7 6.9z"/><path d="M12 15.4c-3.5 0-6.4-2.8-6.4-6.3C9.1 9.1 12 11.9 12 15.4z"/></symbol>
+  <symbol id="i-share-nodes" viewBox="0 0 24 24"><circle cx="18" cy="5.4" r="2.8"/><circle cx="6" cy="12" r="2.8"/><circle cx="18" cy="18.6" r="2.8"/><path d="M8.5 10.6l7-3.8M8.5 13.4l7 3.8"/></symbol>
+  <symbol id="i-shield-halved" viewBox="0 0 24 24"><path d="M12 2.7l7.6 3v5.5c0 4.6-3.1 8.4-7.6 10.1-4.5-1.7-7.6-5.5-7.6-10.1V5.7l7.6-3z"/><path d="M12 2.7v18.6"/></symbol>
+  <symbol id="i-shop" viewBox="0 0 24 24"><path d="M3.4 9.4h17.2v10a1.6 1.6 0 0 1-1.6 1.6H5a1.6 1.6 0 0 1-1.6-1.6z"/><path d="M2.6 9.4l1.8-5.2h15.2l1.8 5.2"/><path d="M8.2 9.4a2 2 0 0 1-4 0M12 9.4a2 2 0 0 1-3.8 0M15.8 9.4a2 2 0 0 1-3.8 0M19.6 9.4a2 2 0 0 1-3.8 0"/><path d="M9.4 21v-5.6h5.2V21"/></symbol>
+  <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M8.2 11.4c-1.4-1.6-1.6-2.6-1.3-4.3A4 4 0 0 1 12 3.6a4 4 0 0 1 4 4.6c-.3 1.4-.6 1.8-1.4 3.2h2.9a2 2 0 0 1 2 2v2.4H4.5v-2.4a2 2 0 0 1 2-2z"/><path d="M4.5 20.4h15"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.9l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5-4.7-4.6 6.5-.9z"/></symbol>
+  <symbol id="i-triangle-exclamation" viewBox="0 0 24 24"><path d="M10.6 3.9L2.4 18.1a1.6 1.6 0 0 0 1.4 2.4h16.4a1.6 1.6 0 0 0 1.4-2.4L13.4 3.9a1.6 1.6 0 0 0-2.8 0z"/><path d="M12 9.4v4.2M12 17.2v.1"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7.4 3.4h9.2v6.2a4.6 4.6 0 0 1-9.2 0z"/><path d="M7.4 5.2H4.6v1.6a3.4 3.4 0 0 0 3 3.4M16.6 5.2h2.8v1.6a3.4 3.4 0 0 1-3 3.4"/><path d="M12 14.2v3.4M8.4 20.6h7.2l-.8-3H9.2z"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="2.6" y="6.4" width="12.8" height="11.2" rx="2.2"/><path d="M15.4 11.2l5.8-3.2v8l-5.8-3.2z"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M3.1 20.9l1.3-4.6a8.4 8.4 0 1 1 3.2 3.1l-4.5 1.5z"/><path d="M9 9.1c-.2 1.9 1.4 4.3 3.4 5.1.7.3 1.3.4 1.7-.2.3-.5.6-.9 0-1.3-.5-.4-1.1-.8-1.5-.3-.3.4-.6.3-1-.1-.5-.4-.9-1-1-1.5-.1-.4.1-.6.4-.9.4-.4.1-.8-.2-1.3-.3-.5-.7-.4-1.1-.2-.4.2-.7.4-.7.7z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M3.4 3.4l17.2 17.2M20.6 3.4L3.4 20.6"/></symbol>
+</defs></svg>
 
 <nav class="nav">
   <a href="/" class="logo"><img src="/favicon-a.png" alt=""> ANMA Hub</a>
@@ -237,7 +291,7 @@ footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font
     <!-- 1 OFERTA -->
     <section class="sec" id="oferta">
       <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="sec-num"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i></div>
         <div class="sec-titles">
           <span class="sec-tag">01 · El "qué" antes del "cómo"</span>
           <h2>La oferta irresistible</h2>
@@ -246,12 +300,12 @@ footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font
       <p class="why">Antes de salir a vender, definí <b>qué exactamente estás ofreciendo</b>. La diferencia entre "te ofrezco mi software" y "te ordeno la operación en 7 días o no pagás" es lo que separa una conversación normal de una venta cerrada.</p>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-stamp"></i> Tu propuesta en una línea</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-stamp"/></svg></i> Tu propuesta en una línea</h3>
         <p><b>"Ordeno tu negocio en 10 minutos, lo configuro con vos en una llamada de 30 minutos, y si en 7 días no recuperaste tiempo, no pagás el primer mes."</b></p>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-gift"></i> El bonus stack (lo que sumás sin cobrar más)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-gift"/></svg></i> El bonus stack (lo que sumás sin cobrar más)</h3>
         <ol class="numbered">
           <li><div class="step-body"><b>Setup gratuito</b> (sesión de 30 min para configurar la app con tus datos reales).<small>Valor percibido: $25.000</small></div></li>
           <li><div class="step-body"><b>Migración de productos y clientes</b> desde tu Excel o WhatsApp.<small>Valor percibido: $15.000</small></div></li>
@@ -260,13 +314,13 @@ footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font
           <li><div class="step-body"><b>7 días gratis</b>, sin tarjeta. Y si en una semana no notás la diferencia, no cobramos.<small>Riesgo cero para el cliente.</small></div></li>
         </ol>
         <div class="callout">
-          <div class="callout-ico"><i class="fa-solid fa-lightbulb"></i></div>
+          <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-lightbulb"/></svg></i></div>
           <div class="callout-body"><b>Por qué funciona</b>Hormozi lo llama "value stack": cuando el valor percibido (~$68k) supera 10× el precio ($30k/mes), la decisión deja de ser racional y se vuelve obvia.</div>
         </div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-shield-halved"></i> La garantía que cierra la venta</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-shield-halved"/></svg></i> La garantía que cierra la venta</h3>
         <p><b>"Si en 7 días no recuperaste por lo menos 3 horas de trabajo manual, te devuelvo lo que pagaste y nos despedimos amigas."</b></p>
         <p>La garantía no se usa casi nunca (la app cumple), pero <b>elimina el último obstáculo</b> mental antes de decir que sí.</p>
       </div>
@@ -275,7 +329,7 @@ footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font
     <!-- 2 SEMANA -->
     <section class="sec" id="semana">
       <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-calendar-week"></i></div>
+        <div class="sec-num"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-calendar-week"/></svg></i></div>
         <div class="sec-titles">
           <span class="sec-tag">02 · Ritmo y consistencia</span>
           <h2>Tu semana modelo</h2>
@@ -332,7 +386,7 @@ footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font
       </div>
 
       <div class="callout">
-        <div class="callout-ico"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-chart-line"/></svg></i></div>
         <div class="callout-body"><b>Cuenta semanal típica</b>30 WhatsApps + 16 visitas + 3 demos = 1 a 2 clientes nuevos. <b>10 clientes en 90 días</b> es realista con esta cadencia, sin invertir en ads.</div>
       </div>
     </section>
@@ -340,7 +394,7 @@ footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font
     <!-- 3 VISITAS -->
     <section class="sec" id="visitas">
       <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-shop"></i></div>
+        <div class="sec-num"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-shop"/></svg></i></div>
         <div class="sec-titles">
           <span class="sec-tag">03 · El que más cierra</span>
           <h2>Canal A · Visitas presenciales</h2>
@@ -349,7 +403,7 @@ footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font
       <p class="why">Es el canal con más conversión (1 de cada 5 visitas termina probando la app). Toma tiempo pero el cliente que vino así, se queda. <b>Visitas el martes y jueves</b>, 5 comercios cada vez.</p>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-magnifying-glass"></i> Cómo elegir a qué comercios visitar</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-magnifying-glass"/></svg></i> Cómo elegir a qué comercios visitar</h3>
         <ol class="numbered">
           <li><div class="step-body"><b>Rubros que ya funcionan en ANMA</b>: indumentaria, decoración, regalería, almacenes, distribuidoras chicas, tecnología/electrónica.</div></li>
           <li><div class="step-body"><b>Zona acotada</b>: 8-10 cuadras alrededor de un punto. Optimizás tiempo de viaje.</div></li>
@@ -358,11 +412,11 @@ footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;font
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-comments"></i> Script · Apertura de visita (30-40 seg)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-comments"/></svg></i> Script · Apertura de visita (30-40 seg)</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico voice"><i class="fa-solid fa-microphone"></i></div>
+              <div class="tpl-head-ico voice"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-microphone"/></svg></i></div>
               <div>
                 <div class="tpl-name">Primer contacto presencial</div>
                 <div class="tpl-context">Saludo + propuesta de valor + pedido chico</div>
@@ -382,11 +436,11 @@ un solo lugar — todo desde el celular.
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-mobile-screen"></i> Script · Demo en vivo en el celular (60-90 seg)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-mobile-screen"/></svg></i> Script · Demo en vivo en el celular (60-90 seg)</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico voice"><i class="fa-solid fa-microphone"></i></div>
+              <div class="tpl-head-ico voice"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-microphone"/></svg></i></div>
               <div>
                 <div class="tpl-name">Mostrar la app en el celu</div>
                 <div class="tpl-context">Después del "sí" al minuto</div>
@@ -407,11 +461,11 @@ Te lo dejo abierto por si querés probar tocar algo.
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-hand-holding-heart"></i> Cierre · El pedido del WhatsApp</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-hand-holding-heart"/></svg></i> Cierre · El pedido del WhatsApp</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico voice"><i class="fa-solid fa-microphone"></i></div>
+              <div class="tpl-head-ico voice"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-microphone"/></svg></i></div>
               <div>
                 <div class="tpl-name">Si hay interés (aunque sea mínimo)</div>
                 <div class="tpl-context">El "cómo me cuesta nada" del cierre</div>
@@ -429,11 +483,11 @@ Si no, también — sin compromiso.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-x"></i> Si no quiere ver la demo</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-x"/></svg></i> Si no quiere ver la demo</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico voice"><i class="fa-solid fa-microphone"></i></div>
+              <div class="tpl-head-ico voice"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-microphone"/></svg></i></div>
               <div>
                 <div class="tpl-name">Plan B · Cuando está apurada</div>
                 <div class="tpl-context">No insistir — capturar contacto y seguir</div>
@@ -448,7 +502,7 @@ para que la veas cuando puedas? Sin presión, palabra.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-backpack"></i> Qué llevar (versión sin presupuesto)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-backpack"/></svg></i> Qué llevar (versión sin presupuesto)</h3>
         <ul class="checks">
           <li><b>Celular cargado</b> con la app abierta y un pedido de demo armado. Es tu folleto vivo.</li>
           <li><b>Notebook (opcional)</b> en mochila, para si te invitan a sentarte 5 min y mostrar mejor.</li>
@@ -457,17 +511,17 @@ para que la veas cuando puedas? Sin presión, palabra.</div>
           <li><b>Cargador portátil chico</b>. Si se te apaga el celular en plena demo, perdiste la visita.</li>
         </ul>
         <div class="callout">
-          <div class="callout-ico"><i class="fa-solid fa-lightbulb"></i></div>
+          <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-lightbulb"/></svg></i></div>
           <div class="callout-body"><b>El folleto físico no es necesario</b>Lo que cierra es que ella te dé el WhatsApp en el momento y vos le mandes el link de la guía. Eso queda en su celular para siempre — el folleto papel termina en la basura el mismo día.</div>
         </div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-whatsapp"></i> Mensaje WhatsApp que mandás en el momento</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Mensaje WhatsApp que mandás en el momento</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="tpl-head-ico wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i></div>
               <div>
                 <div class="tpl-name">Post-visita inmediato</div>
                 <div class="tpl-context">Antes de salir del comercio</div>
@@ -486,7 +540,7 @@ Cualquier duda me escribís acá mismo. ¡Gracias por el rato!</div>
       </div>
 
       <div class="callout warn">
-        <div class="callout-ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-triangle-exclamation"/></svg></i></div>
         <div class="callout-body"><b>Error a evitar</b>No intentes cerrar la venta en la primera visita. Tu objetivo real es <b>capturar el WhatsApp</b> y abrir una conversación. La venta se cierra al 3er contacto, casi nunca en el 1ro.</div>
       </div>
     </section>
@@ -494,7 +548,7 @@ Cualquier duda me escribís acá mismo. ¡Gracias por el rato!</div>
     <!-- 4 WHATSAPP -->
     <section class="sec" id="cold">
       <div class="sec-head">
-        <div class="sec-num"><i class="fa-brands fa-whatsapp"></i></div>
+        <div class="sec-num"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i></div>
         <div class="sec-titles">
           <span class="sec-tag">04 · El más escalable</span>
           <h2>Canal B · WhatsApp y email en frío</h2>
@@ -503,11 +557,11 @@ Cualquier duda me escribís acá mismo. ¡Gracias por el rato!</div>
       <p class="why">El lunes le dedicás 1 hora a esto. <b>20 WhatsApps + 3 emails personalizados</b>. Convierten 1 de cada 15, pero sumás base muy rápido.</p>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-whatsapp"></i> Plantilla 1 · WhatsApp primer contacto</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Plantilla 1 · WhatsApp primer contacto</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="tpl-head-ico wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i></div>
               <div>
                 <div class="tpl-name">Primer mensaje · Cold</div>
                 <div class="tpl-context">Después de mirar 30 segundos su Instagram</div>
@@ -531,11 +585,11 @@ Si te hace sentido, charlamos cuando quieras.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-whatsapp"></i> Plantilla 2 · Follow-up post-visita (a los 3 días)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Plantilla 2 · Follow-up post-visita (a los 3 días)</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="tpl-head-ico wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i></div>
               <div>
                 <div class="tpl-name">Re-contacto después de visita</div>
                 <div class="tpl-context">Si pasaste por el local y le mandaste el link</div>
@@ -557,11 +611,11 @@ podemos hacer eso. Sin costo.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-whatsapp"></i> Plantilla 3 · Follow-up frío (a los 3 días)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Plantilla 3 · Follow-up frío (a los 3 días)</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="tpl-head-ico wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i></div>
               <div>
                 <div class="tpl-name">Re-contacto sin haber visitado</div>
                 <div class="tpl-context">Si no respondió el primer WhatsApp</div>
@@ -582,11 +636,11 @@ Sin presión. Si te hace clic alguna vez, estoy.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-whatsapp"></i> Plantilla 4 · Después de demo agendada</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Plantilla 4 · Después de demo agendada</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="tpl-head-ico wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i></div>
               <div>
                 <div class="tpl-name">Cierre post-demo</div>
                 <div class="tpl-context">Mismo día de la demo, 1-2 horas después</div>
@@ -608,11 +662,11 @@ Probala con calma y, si te quedan dudas, me escribís acá.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-whatsapp"></i> Plantilla 5 · Reactivación (a los 60 días)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Plantilla 5 · Reactivación (a los 60 días)</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="tpl-head-ico wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i></div>
               <div>
                 <div class="tpl-name">Reactivación de contacto frío</div>
                 <div class="tpl-context">Si nunca respondió o quedó pendiente hace tiempo</div>
@@ -636,11 +690,11 @@ no te molesto más.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-whatsapp"></i> Plantilla 6 · Cuando dijo "te confirmo" y no apareció</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Plantilla 6 · Cuando dijo "te confirmo" y no apareció</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="tpl-head-ico wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i></div>
               <div>
                 <div class="tpl-name">Recuperar interesado tibio</div>
                 <div class="tpl-context">A los 5-7 días sin respuesta</div>
@@ -660,11 +714,11 @@ si decidiste que no.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-envelope"></i> Plantilla 7 · Email frío inicial</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-envelope"/></svg></i> Plantilla 7 · Email frío inicial</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico mail"><i class="fa-solid fa-envelope"></i></div>
+              <div class="tpl-head-ico mail"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-envelope"/></svg></i></div>
               <div>
                 <div class="tpl-name">Primer contacto por mail</div>
                 <div class="tpl-context">Asunto: <em>"Idea rápida para {nombre comercio}"</em></div>
@@ -698,11 +752,11 @@ ANMA Hub · anmahub.com</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-envelope"></i> Plantilla 8 · Email follow-up (a los 5 días)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-envelope"/></svg></i> Plantilla 8 · Email follow-up (a los 5 días)</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico mail"><i class="fa-solid fa-envelope"></i></div>
+              <div class="tpl-head-ico mail"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-envelope"/></svg></i></div>
               <div>
                 <div class="tpl-name">Re-contacto cortito</div>
                 <div class="tpl-context">Asunto: <em>"¿Lo viste?"</em> (responder al hilo anterior)</div>
@@ -727,11 +781,11 @@ Ana</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-envelope"></i> Plantilla 9 · Email post-visita (cuando no estaba)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-envelope"/></svg></i> Plantilla 9 · Email post-visita (cuando no estaba)</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico mail"><i class="fa-solid fa-envelope"></i></div>
+              <div class="tpl-head-ico mail"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-envelope"/></svg></i></div>
               <div>
                 <div class="tpl-name">Pasé por el local y no te encontré</div>
                 <div class="tpl-context">Asunto: <em>"Pasé por {comercio} hoy"</em></div>
@@ -760,11 +814,11 @@ Ana</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-envelope"></i> Plantilla 10 · Email con caso real (después del follow-up)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-envelope"/></svg></i> Plantilla 10 · Email con caso real (después del follow-up)</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico mail"><i class="fa-solid fa-envelope"></i></div>
+              <div class="tpl-head-ico mail"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-envelope"/></svg></i></div>
               <div>
                 <div class="tpl-name">Si pidió tiempo y pasaron 2 semanas</div>
                 <div class="tpl-context">Asunto: <em>"Caso real de {rubro del lead}"</em></div>
@@ -792,7 +846,7 @@ Ana</div>
       </div>
 
       <div class="callout">
-        <div class="callout-ico"><i class="fa-solid fa-database"></i></div>
+        <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-database"/></svg></i></div>
         <div class="callout-body"><b>De dónde sacar los contactos</b>Google Maps de tu zona, hashtags de Instagram por rubro (#regaleriaargentina, #indumentariaba), grupos de Facebook de emprendedores, listas de comercios de la cámara local.</div>
       </div>
     </section>
@@ -800,7 +854,7 @@ Ana</div>
     <!-- 5 REFERIDOS -->
     <section class="sec" id="referidos">
       <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-handshake"></i></div>
+        <div class="sec-num"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-handshake"/></svg></i></div>
         <div class="sec-titles">
           <span class="sec-tag">05 · El que escala solo</span>
           <h2>Canal C · Referidos</h2>
@@ -809,11 +863,11 @@ Ana</div>
       <p class="why">El cliente feliz es tu mejor vendedora. <b>Pedile 2 referidos cada viernes</b> al que ya usa la app y está contento. Sin programa formal de premios — funciona mejor pedir favor con motivo.</p>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-whatsapp"></i> Plantilla 11 · Pedido de referido</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i> Plantilla 11 · Pedido de referido</h3>
         <div class="tpl">
           <div class="tpl-head">
             <div class="tpl-head-l">
-              <div class="tpl-head-ico wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="tpl-head-ico wa"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg></i></div>
               <div>
                 <div class="tpl-name">Activar referido</div>
                 <div class="tpl-context">A cliente activo, viernes a la mañana</div>
@@ -834,7 +888,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-star"></i> Sistema de testimonios (combo con referidos)</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></i> Sistema de testimonios (combo con referidos)</h3>
         <ol class="numbered">
           <li><div class="step-body"><b>Al cliente del mes 2</b>: pedí <b>video corto</b> de 30 segundos donde diga su nombre, qué hace y qué cambió desde ANMA.<small>Lo que captás en video le da 10× más credibilidad que texto.</small></div></li>
           <li><div class="step-body"><b>Subilo a Reels + LinkedIn + landing.</b> 1 testimonio bueno trae 3-4 conversaciones nuevas al mes.</div></li>
@@ -846,7 +900,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
     <!-- 6.5 TRÁFICO WEB $0 -->
     <section class="sec" id="trafico">
       <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-arrow-trend-up"></i></div>
+        <div class="sec-num"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-trend-up"/></svg></i></div>
         <div class="sec-titles">
           <span class="sec-tag">06 · Las primeras visitas, sin plata</span>
           <h2>Canal D · Tráfico web sin invertir un peso</h2>
@@ -855,12 +909,12 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       <p class="why">El SEO tarda 3-6 meses en dar frutos. Pero las <b>primeras visitas</b> las conseguís en semanas, gratis, poniéndote donde tu cliente ya está buscando. Esta es la parte que se saltea todo el mundo — y es la que mueve la aguja al principio, cuando el sitio todavía no tiene tráfico.</p>
 
       <div class="callout" style="margin-bottom:22px">
-        <div class="callout-ico"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-bullseye"/></svg></i></div>
         <div class="callout-body"><b>La regla de oro del tráfico gratis</b>Nunca pegues un link a lo bruto. Aportá valor primero (respondé la duda de alguien, sumá tu experiencia), y el link va como consecuencia natural. El spam te banea; el valor te posiciona. En cada acción de abajo: 90% ayuda, 10% mención.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-list-check"></i> Directorios de software · listar es gratis y trae leads calificados</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-list-check"/></svg></i> Directorios de software · listar es gratis y trae leads calificados</h3>
         <p>Cuando alguien busca "sistema de gestión para pymes Argentina" o "alternativa a Excel para stock", muchos van directo a estos directorios. Estar listado es <b>gratis</b> y el que llega ya está buscando comprar. 1 hora de trabajo, tráfico por años.</p>
         <table class="t">
           <thead><tr><th>Directorio</th><th>Por qué conviene</th></tr></thead>
@@ -872,13 +926,13 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
           </tbody>
         </table>
         <div class="callout">
-          <div class="callout-ico"><i class="fa-solid fa-clock"></i></div>
+          <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-clock"/></svg></i></div>
           <div class="callout-body"><b>Bloque de 2 horas, una sola vez</b>Un sábado a la mañana: creá el perfil de ANMA en los 4 con el mismo texto (descripción, capturas, link a anmahub.com y a /recursos/guia). Es de las cosas de mayor retorno por hora invertida que vas a hacer.</div>
         </div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-facebook"></i> Grupos y comunidades · donde tu cliente ya pregunta</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-facebook"/></svg></i> Grupos y comunidades · donde tu cliente ya pregunta</h3>
         <ol class="numbered">
           <li><div class="step-body"><b>Sumate a 5-8 grupos de Facebook</b> de emprendedores y comerciantes argentinos.<small>Buscá: "emprendedores argentina", "pymes argentina", "comerciantes [tu provincia]", "mujeres emprendedoras", grupos de tu rubro.</small></div></li>
           <li><div class="step-body"><b>La primera semana solo escuchá y ayudá.</b> Cuando alguien pregunte "¿cómo llevan el stock?" o "¿qué usan para presupuestos?", respondé con tu experiencia real — y ahí sí sumás el link al artículo que lo explica.</div></li>
@@ -888,7 +942,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-google"></i> Google Business Profile · tu vidriera en el mapa</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-google"/></svg></i> Google Business Profile · tu vidriera en el mapa</h3>
         <ol class="numbered">
           <li><div class="step-body"><b>Si ya lo tenés creado, subí 1 post por semana</b> (novedad, tip, captura de la app). Google premia los perfiles activos mostrándolos más.</div></li>
           <li><div class="step-body"><b>Completá el 100% del perfil</b>: categoría "Software company", descripción con keywords, todas las fotos, horario, link a la web.</div></li>
@@ -897,7 +951,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-share-nodes"></i> Tu red inmediata · el tráfico más fácil de todos</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-share-nodes"/></svg></i> Tu red inmediata · el tráfico más fácil de todos</h3>
         <ol class="numbered">
           <li><div class="step-body"><b>Estado de WhatsApp</b>: 1 vez por semana, un tip útil de gestión con el link a un artículo. Tus contactos son emprendedores o conocen a uno.</div></li>
           <li><div class="step-body"><b>Mandá la guía, no la landing.</b> Cuando alguien te pregunta qué hacés, mandá <chip class="chip">anmahub.com/recursos/guia</chip>. Es valor puro — convierte mucho más que "mirá mi app".</div></li>
@@ -905,8 +959,8 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
         </ol>
       </div>
 
-      <div class="callout" style="border-color:var(--brand);background:linear-gradient(135deg,rgba(124,58,237,.05),rgba(5,150,105,.04))">
-        <div class="callout-ico" style="background:var(--brand)"><i class="fa-solid fa-flag-checkered"></i></div>
+      <div class="callout" style="border-color:var(--brand);background:rgba(124,58,237,.05)">
+        <div class="callout-ico" style="background:var(--brand)"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-flag-checkered"/></svg></i></div>
         <div class="callout-body"><b>Plan de la primera semana (2-3 hs total)</b><br>
         <b>Día 1</b> — Listate en AlternativeTo + SaaSHub (1 h).<br>
         <b>Día 2</b> — Sumate a 6 grupos de Facebook + Reddit. Solo mirá.<br>
@@ -920,7 +974,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
     <!-- 7 SEO + AEO -->
     <section class="sec" id="seo">
       <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+        <div class="sec-num"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-magnifying-glass-chart"/></svg></i></div>
         <div class="sec-titles">
           <span class="sec-tag">07 · Que te encuentren sin moverte</span>
           <h2>Posicionamiento Google + IA</h2>
@@ -929,7 +983,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       <p class="why">SEO clásico tarda 3-6 meses pero después trae leads en piloto automático. <b>AEO</b> (Answer Engine Optimization) es lo nuevo: aparecer cuando alguien le pregunta a ChatGPT, Perplexity o Google AI Overviews.</p>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-google"></i> SEO clásico · 5 acciones de impacto</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-google"/></svg></i> SEO clásico · 5 acciones de impacto</h3>
         <ol class="numbered">
           <li><div class="step-body"><b>Cada artículo apunta a una pregunta real de Google</b>.<small>Ej: "Cómo controlar el stock de una tienda de ropa" tiene 720 búsquedas/mes. "Tips de stock" tiene 30.</small></div></li>
           <li><div class="step-body"><b>El título es la pregunta exacta</b> + tu marca al final. Nada de creatividad rara.</div></li>
@@ -940,7 +994,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-robot"></i> AEO · Aparecer en respuestas de IA</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-robot"/></svg></i> AEO · Aparecer en respuestas de IA</h3>
         <table class="t">
           <thead>
             <tr><th>Qué hacer</th><th>Por qué funciona</th></tr>
@@ -969,13 +1023,13 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
           </tbody>
         </table>
         <div class="callout">
-          <div class="callout-ico"><i class="fa-solid fa-flask"></i></div>
+          <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-flask"/></svg></i></div>
           <div class="callout-body"><b>Test mensual</b>Una vez por mes, escribí en ChatGPT y Perplexity: "¿Qué sistema de gestión me recomendás para una tienda chica en Argentina?". Si no aparece ANMA, falta trabajo. Ajustá según qué fuentes citan.</div>
         </div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-arrow-up-right-from-square"></i> Cómo mejorar los artículos ya publicados</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow-up-right-from-square"/></svg></i> Cómo mejorar los artículos ya publicados</h3>
         <p>Tenés 13 artículos en <a href="/recursos/" style="color:var(--brand);font-weight:600">/recursos/</a>. El checklist para cada uno:</p>
         <ul class="checks">
           <li><b>Respuesta de 2 oraciones al inicio</b> antes del primer h2 (para AI Overviews).</li>
@@ -991,7 +1045,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
     <!-- 8 CONTENIDO -->
     <section class="sec" id="contenido">
       <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-video"></i></div>
+        <div class="sec-num"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-video"/></svg></i></div>
         <div class="sec-titles">
           <span class="sec-tag">08 · Donde ya están mirando</span>
           <h2>Contenido que trae leads</h2>
@@ -1000,7 +1054,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       <p class="why">No hace falta volverse influencer. <b>1 reel + 1 post por semana</b>, cada uno con propósito claro. La consistencia importa más que la cantidad.</p>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-clapperboard"></i> Las 4 fórmulas de contenido que funcionan</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-clapperboard"/></svg></i> Las 4 fórmulas de contenido que funcionan</h3>
         <table class="t">
           <thead>
             <tr><th>Tipo</th><th>Ejemplo concreto</th><th>Para</th></tr>
@@ -1031,7 +1085,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-calendar-check"></i> Calendario semanal de contenido</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-calendar-check"/></svg></i> Calendario semanal de contenido</h3>
         <ol class="numbered">
           <li><div class="step-body"><b>Lunes</b>: 1 post con tip útil (carrusel).</div></li>
           <li><div class="step-body"><b>Miércoles</b>: 1 reel con caso/antes-después.</div></li>
@@ -1039,7 +1093,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
           <li><div class="step-body"><b>Viernes</b>: 1 post en LinkedIn (perspectiva profesional, formato más extenso).</div></li>
         </ol>
         <div class="callout">
-          <div class="callout-ico"><i class="fa-solid fa-link"></i></div>
+          <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-link"/></svg></i></div>
           <div class="callout-body"><b>Bio y CTAs</b>Tu bio de Instagram tiene que tener un solo link: <chip class="chip">anmahub.com/recursos/guia</chip>. No tu landing. La guía convierte 4× más porque es valor antes de pedir nada.</div>
         </div>
       </div>
@@ -1048,7 +1102,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
     <!-- 9 METRICAS -->
     <section class="sec" id="metricas">
       <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-chart-pie"></i></div>
+        <div class="sec-num"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-chart-pie"/></svg></i></div>
         <div class="sec-titles">
           <span class="sec-tag">09 · Lo que no se mide no se mejora</span>
           <h2>Métricas semanales</h2>
@@ -1074,7 +1128,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </table>
 
       <div class="callout">
-        <div class="callout-ico"><i class="fa-solid fa-trophy"></i></div>
+        <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-trophy"/></svg></i></div>
         <div class="callout-body"><b>La métrica que importa de verdad</b><b>CAC</b> (costo de adquirir un cliente): horas que invertiste en captarlo. Si te cuesta más de 5 horas por cliente, algo del proceso necesita ajuste.</div>
       </div>
     </section>
@@ -1082,7 +1136,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
     <!-- 10 ERRORES -->
     <section class="sec" id="errores">
       <div class="sec-head">
-        <div class="sec-num"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="sec-num"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-triangle-exclamation"/></svg></i></div>
         <div class="sec-titles">
           <span class="sec-tag">10 · Las trampas comunes</span>
           <h2>Errores a evitar</h2>
@@ -1102,21 +1156,21 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
     <!-- CANAL E · PRESUPUESTO PAGADO ($54K BIEN USADO) -->
     <section class="sec" id="pagado">
       <div class="sec-head">
-        <div class="sec-num" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af;border-color:#93c5fd"><i class="fa-solid fa-coins"></i></div>
+        <div class="sec-num" style="background:var(--surf);color:var(--brand-dk);border-color:var(--line)"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-coins"/></svg></i></div>
         <div class="sec-titles">
-          <span class="sec-tag" style="color:#1e40af">Canal E · Cuando tenés un presupuesto acotado</span>
+          <span class="sec-tag" style="color:var(--brand-dk)">Canal E · Cuando tenés un presupuesto acotado</span>
           <h2>$54.000 bien usados</h2>
         </div>
       </div>
       <p class="why">Con un presupuesto chico no vas a explotar el mercado — vas a <b>validar 2-3 canales rentables</b> que después escalás. La regla es dividir en experimentos con métrica clara, no gastar todo en un solo lugar.</p>
 
       <div class="callout ok">
-        <div class="callout-ico"><i class="fa-solid fa-lightbulb"></i></div>
+        <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-lightbulb"/></svg></i></div>
         <div class="callout-body"><b>Sin redes propias no corren Meta Ads.</b>Google Ads Search es el único canal pagado que corre con solo tu sitio. El resto del presupuesto va a pauta en newsletters PYME + material físico + herramientas.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-chart-pie"></i> Cómo repartir los $54.000</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-chart-pie"/></svg></i> Cómo repartir los $54.000</h3>
         <ol class="numbered">
           <li><div class="step-body"><b>$28.000 · Google Ads Search (30 días).</b>Único canal pagado que corre sin red social. CPC estimado AR $200-350 en tus keywords. Esperable: 80-140 clics, 3-6 leads. Keywords a testear: <em>"sistema de gestión pyme argentina"</em>, <em>"reemplazar Excel comercio"</em>, <em>"control de stock con variantes"</em>, <em>"presupuestos por WhatsApp"</em>.</div></li>
           <li><div class="step-body"><b>$15.000 · Pauta en newsletter de una cámara PYME.</b>Cámara de Comercio de Rosario, Córdoba o Mendoza envían a 500-2.000 socios activos por semana. Contactás a <em>comunicación@[cámara]</em> y pedís presupuesto de mención sponsor. Mejor ratio impresión/costo que Google Ads.</div></li>
@@ -1126,7 +1180,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-brands fa-google"></i> Google Ads · setup mínimo viable</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-google"/></svg></i> Google Ads · setup mínimo viable</h3>
         <ol class="numbered">
           <li><div class="step-body"><b>3 grupos de anuncios</b>, uno por intención: <em>reemplazar Excel</em>, <em>control de stock</em>, <em>presupuestos WhatsApp</em>. No mezcles todo en uno.</div></li>
           <li><div class="step-body"><b>Presupuesto diario $1.000</b>. Es lo mínimo para que el algoritmo aprenda sin quemar rápido.</div></li>
@@ -1137,7 +1191,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="callout warn">
-        <div class="callout-ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-triangle-exclamation"/></svg></i></div>
         <div class="callout-body"><b>Métrica de éxito realista.</b>Costo por lead aceptable: $5.000-10.000. Costo por cliente activado (paga los $30k): $30.000-60.000. Si al día 20 el CPL supera $12.000 y no baja, pausá Google y mové el resto a newsletter cámara.</div>
       </div>
     </section>
@@ -1145,16 +1199,16 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
     <!-- CANAL F · ALIADOS QUE MULTIPLICAN -->
     <section class="sec" id="aliados">
       <div class="sec-head">
-        <div class="sec-num" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);color:#9d174d;border-color:#f9a8d4"><i class="fa-solid fa-handshake"></i></div>
+        <div class="sec-num" style="background:var(--alert-lt);color:var(--alert);border-color:var(--alert-line)"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-handshake"/></svg></i></div>
         <div class="sec-titles">
-          <span class="sec-tag" style="color:#9d174d">Canal F · El más subestimado</span>
+          <span class="sec-tag" style="color:var(--alert)">Canal F · El más subestimado</span>
           <h2>Aliados que multiplican</h2>
         </div>
       </div>
       <p class="why">Cada aliado <b>vale más que 50 mensajes en frío</b>. Un solo contador tiene 30-80 pymes; una cámara del interior alcanza 500-2.000 socios. La inversión es tiempo, no plata — y es cómo llegás al interior del país sin viajar.</p>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-calculator"></i> Contadores y estudios contables</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-calculator"/></svg></i> Contadores y estudios contables</h3>
         <p>Es probablemente <b>tu mejor canal costo/beneficio</b>. Los contadores manejan carteras de pymes y ya recomiendan herramientas. Empezá con 5 estudios de tu zona.</p>
         <ol class="numbered">
           <li><div class="step-body"><b>Buscá en LinkedIn</b>: "contador público" + "Buenos Aires" o "CABA", filtrá por estudios chicos (2-10 personas). Priorizá los que ya postean contenido para PYMEs.</div></li>
@@ -1165,7 +1219,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-building"></i> Cámaras del interior · el atajo al interior sin viajar</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-building"/></svg></i> Cámaras del interior · el atajo al interior sin viajar</h3>
         <p>Cámaras de comercio locales tienen newsletter semanal y calendario de charlas. Es la vía más limpia para llegar a pymes fuera de CABA sin brand awareness previa.</p>
         <ol class="numbered">
           <li><div class="step-body"><b>Lista corta</b>: Cámara de Comercio de Rosario, Córdoba, Mendoza, Tucumán, Neuquén, Bahía Blanca. Cada una atiende 300-3.000 socios.</div></li>
@@ -1176,7 +1230,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-graduation-cap"></i> Universidades y cátedras de emprendedurismo</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-graduation-cap"/></svg></i> Universidades y cátedras de emprendedurismo</h3>
         <p>Docentes de cátedras de emprendedurismo en UBA, UP, ITBA, UNC (Córdoba), UNR (Rosario), UNCuyo (Mendoza) mencionan 3-4 herramientas por curso. Es tráfico calificado por goteo constante.</p>
         <ol class="numbered">
           <li><div class="step-body"><b>Contacto por LinkedIn</b> al docente. Ofrecé cuentas gratis full para todos los alumnos que emprendan un negocio real.</div></li>
@@ -1185,7 +1239,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="sub">
-        <h3><i class="fa-solid fa-microphone"></i> Radios y podcasts locales · invitada, no pauta</h3>
+        <h3><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-microphone"/></svg></i> Radios y podcasts locales · invitada, no pauta</h3>
         <p>Ads pagos en radio tienen bajo ROI para SaaS. Pero <b>estar como invitada</b> en programas de emprendedores del interior es gratis y alcanza 5-30k oyentes por programa.</p>
         <ol class="numbered">
           <li><div class="step-body"><b>Referencias</b>: programas de emprendedurismo en Radio Rivadavia interior, LT8 Rosario, LV3 Córdoba, LU5 Neuquén. Podcasts de PYMEs argentinas que aceptan invitados.</div></li>
@@ -1194,7 +1248,7 @@ Si me referís a alguien que se queda, te regalo el próximo mes.</div>
       </div>
 
       <div class="callout ok">
-        <div class="callout-ico"><i class="fa-solid fa-seedling"></i></div>
+        <div class="callout-ico"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-seedling"/></svg></i></div>
         <div class="callout-body"><b>Regla de aliados.</b>No prometas comisiones altas ni gift cards. Prometé <b>valor real</b> (cuenta gratis, prioridad en soporte, exclusividad para sus alumnos/clientes). Los aliados que quieren plata rápida no traen buenos leads; los que ven valor mutuo sí.</div>
       </div>
     </section>
