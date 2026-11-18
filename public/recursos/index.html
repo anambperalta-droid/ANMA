@@ -59,57 +59,60 @@
 ]}
 </script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
-  :root{--brand:#7C3AED;--brand-dark:#5B21B6;--txt:#1E1B4B;--txt2:#475569;--txt3:#64748b;--border:#e5e7eb;--bg:#fff;--surface:#F8FAFC}
+  @font-face{font-family:'Figtree';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/figtree-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:'Figtree';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/figtree-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/poppins-600-anmahub.woff2) format('woff2');unicode-range:U+20,U+41,U+48,U+4D-4E,U+62,U+75}
+  :root{--brand:#652BDF;--brand-dk:#4718AE;--deep:#2B0A60;--band:#360C72;--go:#0B7D59;--go-hover:#095E43;--go-on-dark:#6EE7B7;--accent:#F6DE8B;--txt:#2B0A60;--txt2:#574A6B;--txt3:#6E6383;--lila:#CFBFF0;--lila2:#B59BF5;--border:#B59BF5;--border-soft:#DECDFC;--bg:#F5EFE4;--surface:#EFE7FE;--sans:'Figtree',-apple-system,'Segoe UI',Roboto,sans-serif}
   *{box-sizing:border-box}
-  body{margin:0;font-family:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--txt2);background:var(--bg);line-height:1.7;font-size:16px}
-  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);z-index:10}
-  .logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',sans-serif;font-weight:600;color:var(--txt);text-decoration:none;font-size:18.5px;letter-spacing:.2px}
+  a:focus-visible{outline:3px solid var(--brand);outline-offset:3px;border-radius:6px}
+  body{margin:0;font-family:var(--sans);color:var(--txt2);background:var(--bg);line-height:1.7;font-size:16px}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(245,239,228,.9);backdrop-filter:blur(8px);z-index:10}
+  .logo{display:flex;align-items:center;gap:9px;font-family:'Poppins',var(--sans);font-weight:600;color:var(--txt);text-decoration:none;font-size:18.5px;letter-spacing:.2px}
   .logo img{width:30px;height:30px;border-radius:8px}
-  .nav a.cta{background:var(--brand);color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:9px}
-  .nav a.cta:hover{background:var(--brand-dark)}
+  .nav a.cta{background:var(--go);color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:9px}
+  .nav a.cta:hover{background:var(--go-hover)}
 
-  .hero{position:relative;overflow:hidden;background:linear-gradient(150deg,#120327 0%,#2d0a57 45%,#5b21b6 100%);color:#fff;padding:80px 22px 64px;text-align:center}
-  .hero::before{content:'';position:absolute;top:-45%;left:50%;transform:translateX(-50%);width:720px;height:720px;max-width:140%;background:radial-gradient(circle,rgba(168,85,247,.4),transparent 62%);pointer-events:none}
-  .hero::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 120%,rgba(16,185,129,.14),transparent 45%);pointer-events:none}
+  .hero{position:relative;overflow:hidden;background:var(--band);color:#fff;padding:80px 22px 64px;text-align:center}
+  /* los orbes radiales salieron: cero degrades */
+  /* idem */
   .hero .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto}
-  .crumbs{font-size:12.5px;color:rgba(255,255,255,.6);margin-bottom:18px;letter-spacing:.3px}
-  .crumbs a{color:rgba(255,255,255,.7);text-decoration:none}
+  .crumbs{font-size:12.5px;color:var(--lila);margin-bottom:18px;letter-spacing:.3px}
+  .crumbs a{color:var(--lila);text-decoration:underline}
   .crumbs a:hover{color:#fff}
-  h1{font-family:'Fraunces',serif;font-size:clamp(34px,5.6vw,50px);font-weight:600;letter-spacing:-1.2px;line-height:1.1;margin:0 0 16px;text-wrap:balance}
-  h1 em{font-style:normal;background:linear-gradient(90deg,#a78bfa,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p{font-size:17.5px;color:rgba(255,255,255,.78);max-width:640px;margin:0 auto;line-height:1.65;text-wrap:balance}
+  h1{font-family:var(--sans);font-size:clamp(34px,5.6vw,50px);font-weight:800;letter-spacing:normal;line-height:1.1;margin:0 0 16px;text-wrap:balance}
+  h1 em{font-style:normal;color:var(--accent)}
+  .hero p{font-size:17.5px;color:var(--lila);max-width:640px;margin:0 auto;line-height:1.65;text-wrap:balance}
 
   main{max-width:1100px;margin:0 auto;padding:56px 22px 24px}
-  .section-h{font-size:14px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:1.2px;margin:0 0 24px;display:flex;align-items:center;gap:10px}
-  .section-h::after{content:'';flex:1;height:1px;background:var(--border)}
+  .section-h{font-size:14px;font-weight:800;color:var(--brand-dk);text-transform:uppercase;letter-spacing:1.2px;margin:0 0 24px;display:flex;align-items:center;gap:10px}
+  .section-h::after{content:'';flex:1;height:1px;background:var(--border-soft)}
 
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
-  .card{background:#fff;border:1px solid #eef0f5;border-radius:18px;padding:28px 28px 24px;text-decoration:none;color:inherit;transition:transform .2s cubic-bezier(.4,0,.2,1),border-color .2s,box-shadow .25s;display:flex;flex-direction:column;position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 16px -8px rgba(16,24,40,.08)}
-  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--brand),#c026d3);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.4,0,.2,1)}
-  .card:hover{transform:translateY(-4px);border-color:#e9d5ff;box-shadow:0 22px 44px -14px rgba(124,58,237,.24)}
+  .card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:28px 28px 24px;text-decoration:none;color:inherit;transition:transform .2s cubic-bezier(.4,0,.2,1),border-color .2s,box-shadow .25s;display:flex;flex-direction:column;position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(43,10,96,.05),0 6px 16px -8px rgba(43,10,96,.10)}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--brand);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+  .card:hover{transform:translateY(-4px);border-color:var(--brand);box-shadow:0 22px 44px -14px rgba(43,10,96,.26)}
   .card:hover::before{transform:scaleX(1)}
-  .card-tag{display:inline-block;font-size:10.5px;font-weight:800;color:var(--brand);background:#F5F3FF;padding:4px 10px;border-radius:99px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px;align-self:flex-start}
-  .card h2{font-family:'Fraunces',serif;font-size:21px;font-weight:600;color:var(--txt);margin:0 0 10px;line-height:1.25;letter-spacing:-.4px}
+  .card-tag{display:inline-block;font-size:10.5px;font-weight:800;color:var(--brand-dk);background:var(--surface);padding:4px 10px;border-radius:99px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px;align-self:flex-start}
+  .card h2{font-family:var(--sans);font-size:21px;font-weight:700;color:var(--txt);margin:0 0 10px;line-height:1.25;letter-spacing:normal}
   .card p{font-size:14.5px;color:var(--txt2);margin:0 0 18px;line-height:1.6;flex:1}
-  .card-foot{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--brand);font-weight:700}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--brand-dk);font-weight:700}
   .card-foot::after{content:'→';transition:transform .2s}
   .card:hover .card-foot::after{transform:translateX(4px)}
 
-  .featured{background:linear-gradient(135deg,#F5F3FF,#FAF5FF);border:1.5px solid #DDD6FE;grid-column:1/-1}
+  .featured{background:var(--surface);border:1.5px solid var(--border);grid-column:1/-1}
   .featured h2{font-size:23px}
-  .featured .card-tag{background:#fff;color:var(--brand-dark)}
+  .featured .card-tag{background:#fff;color:var(--brand-dk)}
 
-  .cta-box{background:linear-gradient(135deg,#1a0636,#3b1278);border-radius:20px;padding:48px 32px;margin:64px 0 0;text-align:center;color:#fff}
-  .cta-box h3{font-family:'Fraunces',serif;font-size:28px;font-weight:600;margin:0 0 10px;letter-spacing:-.5px}
-  .cta-box h3 em{font-style:normal;background:linear-gradient(90deg,#a78bfa,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .cta-box p{font-size:15px;color:rgba(255,255,255,.72);margin:0 0 24px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6}
-  .cta-box a{display:inline-block;background:linear-gradient(135deg,#059669,#10b981);color:#fff;text-decoration:none;font-weight:800;padding:15px 34px;border-radius:12px;font-size:15px;box-shadow:0 8px 24px rgba(5,150,105,.35);transition:transform .15s,box-shadow .2s}
-  .cta-box a:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(5,150,105,.5)}
-  .cta-box .micro{margin-top:14px;font-size:12px;color:rgba(255,255,255,.55);letter-spacing:.3px}
+  .cta-box{background:var(--deep);border-radius:20px;padding:48px 32px;margin:64px 0 0;text-align:center;color:#fff}
+  .cta-box h3{font-family:var(--sans);font-size:28px;font-weight:800;margin:0 0 10px;letter-spacing:normal;color:#fff}
+  .cta-box h3 em{font-style:normal;color:var(--accent)}
+  .cta-box p{font-size:15px;color:var(--lila);margin:0 0 24px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6}
+  .cta-box a{display:inline-block;background:var(--go-on-dark);color:var(--deep);text-decoration:none;font-weight:800;padding:15px 34px;border-radius:12px;font-size:15px;transition:transform .15s,filter .2s}
+  .cta-box a:hover{transform:translateY(-2px);filter:brightness(1.07)}
+  .cta-box .micro{margin-top:14px;font-size:12px;color:var(--lila2);letter-spacing:.3px}
 
-  footer{border-top:1px solid var(--border);padding:30px 22px;margin-top:64px;text-align:center;font-size:13px;color:var(--txt3)}
-  footer a{color:var(--brand);text-decoration:none}
+  footer{border-top:1px solid var(--border-soft);padding:30px 22px;margin-top:64px;text-align:center;font-size:13px;color:var(--txt3)}
+  footer a{color:var(--brand-dk);text-decoration:none}
   footer a:hover{text-decoration:underline}
 
   @media(max-width:720px){
@@ -141,7 +144,7 @@
     <div class="crumbs"><a href="/">ANMA Hub</a> · Recursos</div>
     <h1>Para que cierres la compu <em>con la cabeza tranquila</em></h1>
     <p>Guías cortas para dueños de comercio y emprendedores en Argentina. Cómo ordenar el stock, entender márgenes y decidir con números — no con sensaciones. Escritas por gente que vende todos los días.</p>
-    <div style="margin-top:22px;font-size:12px;color:rgba(255,255,255,.55);letter-spacing:.3px">
+    <div style="margin-top:22px;font-size:12px;color:#B59BF5;letter-spacing:.3px">
       <span>16 guías · Actualizadas 2026</span>
       <span style="margin:0 8px;opacity:.4">·</span>
       <span>Lectura promedio: 6 min</span>
@@ -155,8 +158,8 @@
 
   <h2 class="section-h">Si ya estás usando ANMA</h2>
   <div class="grid" style="margin-bottom:48px">
-    <a href="/recursos/guia" class="card featured" style="background:linear-gradient(135deg,#F5F3FF 0%,#FDF2F8 100%);border-color:#DDD6FE;position:relative">
-      <span class="card-tag" style="background:#7C3AED;color:#fff">Manual completo · NUEVO</span>
+    <a href="/recursos/guia" class="card featured" style="position:relative">
+      <span class="card-tag" style="background:#4718AE;color:#fff">Manual completo · NUEVO</span>
       <h2>Guía completa: ANMA Hub pestaña por pestaña</h2>
       <p>Las 9 secciones de la app explicadas con flujos visuales, tips de experta y errores a evitar. Con progreso visual y TOC sticky — para que sepas qué leíste y qué te falta.</p>
       <span class="card-foot">Ver la guía</span>
@@ -301,24 +304,24 @@
        en un formato leible + escaneable por bots. -->
   <h2 class="section-h" style="margin-top:56px">Preguntas frecuentes</h2>
   <div class="faq-list" style="max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
-    <details style="background:#fff;border:1px solid #eef0f5;border-radius:14px;padding:18px 22px;box-shadow:0 1px 2px rgba(16,24,40,.04)">
-      <summary style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--txt);cursor:pointer;list-style:none;position:relative;padding-right:28px">¿Cuándo conviene pasar de Excel a un sistema de gestión?<span style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--brand);font-family:'Inter',sans-serif;font-weight:800">+</span></summary>
-      <p style="margin:12px 0 0;font-size:15px;line-height:1.65;color:var(--txt2)">Cuando ya perdés ventas por no saber qué tenés en stock, cuando calcular márgenes te lleva más de 5 minutos por producto, o cuando tenés más de 100 clientes y no podés retomar conversaciones sin buscar mensajes viejos. Antes de eso, Excel es más rápido y barato — te lo contamos honestamente <a href="/recursos/excel-vs-sistema-de-gestion" style="color:var(--brand);text-decoration:none;font-weight:600">en esta comparativa</a>.</p>
+    <details style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 22px;box-shadow:0 1px 2px rgba(43,10,96,.05)">
+      <summary style="font-family:var(--sans);font-size:17px;font-weight:700;color:var(--txt);cursor:pointer;list-style:none;position:relative;padding-right:28px">¿Cuándo conviene pasar de Excel a un sistema de gestión?<span style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--brand-dk);font-family:var(--sans);font-weight:800">+</span></summary>
+      <p style="margin:12px 0 0;font-size:15px;line-height:1.65;color:var(--txt2)">Cuando ya perdés ventas por no saber qué tenés en stock, cuando calcular márgenes te lleva más de 5 minutos por producto, o cuando tenés más de 100 clientes y no podés retomar conversaciones sin buscar mensajes viejos. Antes de eso, Excel es más rápido y barato — te lo contamos honestamente <a href="/recursos/excel-vs-sistema-de-gestion" style="color:var(--brand-dk);text-decoration:none;font-weight:600">en esta comparativa</a>.</p>
     </details>
-    <details style="background:#fff;border:1px solid #eef0f5;border-radius:14px;padding:18px 22px;box-shadow:0 1px 2px rgba(16,24,40,.04)">
-      <summary style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--txt);cursor:pointer;list-style:none;position:relative;padding-right:28px">¿Qué es un sistema de gestión para pymes en Argentina?<span style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--brand);font-family:'Inter',sans-serif;font-weight:800">+</span></summary>
+    <details style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 22px;box-shadow:0 1px 2px rgba(43,10,96,.05)">
+      <summary style="font-family:var(--sans);font-size:17px;font-weight:700;color:var(--txt);cursor:pointer;list-style:none;position:relative;padding-right:28px">¿Qué es un sistema de gestión para pymes en Argentina?<span style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--brand-dk);font-family:var(--sans);font-weight:800">+</span></summary>
       <p style="margin:12px 0 0;font-size:15px;line-height:1.65;color:var(--txt2)">Es una app que centraliza clientes, productos, stock, pedidos, cobros y proveedores en un solo lugar. La diferencia con Excel es que los datos se actualizan solos: al vender se descuenta stock, al cobrar se registra la cobranza, y podés ver márgenes reales por rubro en vez de estimar por sensación.</p>
     </details>
-    <details style="background:#fff;border:1px solid #eef0f5;border-radius:14px;padding:18px 22px;box-shadow:0 1px 2px rgba(16,24,40,.04)">
-      <summary style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--txt);cursor:pointer;list-style:none;position:relative;padding-right:28px">¿Cuánto tarda implementar el sistema sin frenar las ventas?<span style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--brand);font-family:'Inter',sans-serif;font-weight:800">+</span></summary>
+    <details style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 22px;box-shadow:0 1px 2px rgba(43,10,96,.05)">
+      <summary style="font-family:var(--sans);font-size:17px;font-weight:700;color:var(--txt);cursor:pointer;list-style:none;position:relative;padding-right:28px">¿Cuánto tarda implementar el sistema sin frenar las ventas?<span style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--brand-dk);font-family:var(--sans);font-weight:800">+</span></summary>
       <p style="margin:12px 0 0;font-size:15px;line-height:1.65;color:var(--txt2)">Con un plan por bloques (Día 1: catálogo básico. Día 2: clientes activos. Día 3: primer pedido cargado en el sistema) podés operar en menos de una semana sin cortar ventas. La clave es NO cargar todo el histórico de una — solo lo que necesitás para vender hoy, y sumar el resto de a poco.</p>
     </details>
-    <details style="background:#fff;border:1px solid #eef0f5;border-radius:14px;padding:18px 22px;box-shadow:0 1px 2px rgba(16,24,40,.04)">
-      <summary style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--txt);cursor:pointer;list-style:none;position:relative;padding-right:28px">¿Sirve para mi rubro? (ropa, tecnología, decoración, distribuidora)<span style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--brand);font-family:'Inter',sans-serif;font-weight:800">+</span></summary>
-      <p style="margin:12px 0 0;font-size:15px;line-height:1.65;color:var(--txt2)">Sí, si vendés productos (físicos o digitales) y necesitás llevar stock, pedidos y márgenes. Tenemos guías específicas por rubro: <a href="/recursos/control-de-stock-tienda-de-ropa" style="color:var(--brand);text-decoration:none;font-weight:600">indumentaria</a>, <a href="/recursos/stock-tecnologia-electronica" style="color:var(--brand);text-decoration:none;font-weight:600">tecnología</a>, <a href="/recursos/gestion-local-decoracion" style="color:var(--brand);text-decoration:none;font-weight:600">decoración</a> y <a href="/recursos/gestion-almacen-distribuidora" style="color:var(--brand);text-decoration:none;font-weight:600">almacén/distribuidora</a>.</p>
+    <details style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 22px;box-shadow:0 1px 2px rgba(43,10,96,.05)">
+      <summary style="font-family:var(--sans);font-size:17px;font-weight:700;color:var(--txt);cursor:pointer;list-style:none;position:relative;padding-right:28px">¿Sirve para mi rubro? (ropa, tecnología, decoración, distribuidora)<span style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--brand-dk);font-family:var(--sans);font-weight:800">+</span></summary>
+      <p style="margin:12px 0 0;font-size:15px;line-height:1.65;color:var(--txt2)">Sí, si vendés productos (físicos o digitales) y necesitás llevar stock, pedidos y márgenes. Tenemos guías específicas por rubro: <a href="/recursos/control-de-stock-tienda-de-ropa" style="color:var(--brand-dk);text-decoration:none;font-weight:600">indumentaria</a>, <a href="/recursos/stock-tecnologia-electronica" style="color:var(--brand-dk);text-decoration:none;font-weight:600">tecnología</a>, <a href="/recursos/gestion-local-decoracion" style="color:var(--brand-dk);text-decoration:none;font-weight:600">decoración</a> y <a href="/recursos/gestion-almacen-distribuidora" style="color:var(--brand-dk);text-decoration:none;font-weight:600">almacén/distribuidora</a>.</p>
     </details>
-    <details style="background:#fff;border:1px solid #eef0f5;border-radius:14px;padding:18px 22px;box-shadow:0 1px 2px rgba(16,24,40,.04)">
-      <summary style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--txt);cursor:pointer;list-style:none;position:relative;padding-right:28px">¿Las guías son gratis?<span style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--brand);font-family:'Inter',sans-serif;font-weight:800">+</span></summary>
+    <details style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 22px;box-shadow:0 1px 2px rgba(43,10,96,.05)">
+      <summary style="font-family:var(--sans);font-size:17px;font-weight:700;color:var(--txt);cursor:pointer;list-style:none;position:relative;padding-right:28px">¿Las guías son gratis?<span style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--brand-dk);font-family:var(--sans);font-weight:800">+</span></summary>
       <p style="margin:12px 0 0;font-size:15px;line-height:1.65;color:var(--txt2)">Todas las guías son gratis y no piden email para leerlas. Están pensadas para que decidas con información — uses o no ANMA Hub. Si querés probar la app, tenés 7 días gratis sin tarjeta.</p>
     </details>
   </div>
