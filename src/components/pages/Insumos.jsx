@@ -332,12 +332,12 @@ export default function Insumos() {
       <div className="bento bento-kpis-2 ins-kpis" style={{ marginBottom: 14 }}>
         <div className="bento-kpi" style={{ borderLeft: '3px solid var(--green)', padding: '12px 14px 10px' }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Valor en stock</div>
-          <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{fmtDec(totalValue)}</div>
+          <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--money)', letterSpacing: '-.03em', lineHeight: 1.1, fontFamily: "'Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{fmtDec(totalValue)}</div>
           <div style={{ fontSize: 9.5, color: 'var(--txt3)', marginTop: 2 }}>capital inmovilizado</div>
         </div>
         <div className="bento-kpi" style={{ borderLeft: `3px solid ${lowStock.length > 0 ? 'var(--red)' : warnStock.length > 0 ? 'var(--amber)' : 'var(--green)'}`, padding: '12px 14px 10px' }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Para reponer</div>
-          <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-.03em', lineHeight: 1.1, color: lowStock.length > 0 ? 'var(--red)' : 'var(--txt)', fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{lowStock.length}</div>
+          <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-.03em', lineHeight: 1.1, color: lowStock.length > 0 ? 'var(--red)' : 'var(--txt)', fontFamily: "'Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>{lowStock.length}</div>
           {/* Un insumo en ambar (por caer bajo el minimo) con el tablero diciendo
               "Todo en orden" es justo lo que no queres ver como jefe de compras. */}
           {lowStock.length > 0 ? (

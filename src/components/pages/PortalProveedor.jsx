@@ -226,7 +226,7 @@ export default function PortalProveedor() {
             <div style={{ display: 'grid', gridTemplateColumns: data.paymentTerm || data.leadTime ? 'repeat(2,1fr)' : 'repeat(2,1fr)', gap: 10 }}>
               <div style={{ background: 'linear-gradient(135deg,#FBF4EC,#FCE9DC)', borderRadius: 10, padding: '12px 14px' }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: '#D4521E', textTransform: 'uppercase', letterSpacing: '.5px' }}>Monto estimado</div>
-                <div style={{ fontSize: 22, fontWeight: 800, color: '#2A1810', fontFamily: "'Space Grotesk','Inter',sans-serif", letterSpacing: '-.5px', lineHeight: 1.15, marginTop: 3 }}>{fmt(totalValue)}</div>
+                <div style={{ fontSize: 22, fontWeight: 800, color: '#2A1810', fontFamily: "'Inter',sans-serif", letterSpacing: '-.5px', lineHeight: 1.15, marginTop: 3 }}>{fmt(totalValue)}</div>
                 <div style={{ fontSize: 11, color: '#6B7280', marginTop: 2 }}>{products.length} producto{products.length !== 1 ? 's' : ''} · {totalUnits} u.</div>
               </div>
               <div style={{ background: 'linear-gradient(135deg,#F2F8EB,#DCFCE7)', borderRadius: 10, padding: '12px 14px' }}>
@@ -260,7 +260,7 @@ export default function PortalProveedor() {
                 return (
                   <div key={i} style={S.reorderItem}>
                     <div className="pp-reorder-name" style={{ ...S.reorderItemName, flex: 1, minWidth: 0 }}>{p.name}</div>
-                    <div style={{ fontWeight: 700, fontSize: 13, color: '#F2762E', whiteSpace: 'nowrap', fontFamily: "'Space Grotesk','Inter',sans-serif", marginRight: 10 }}>{need} u.</div>
+                    <div style={{ fontWeight: 700, fontSize: 13, color: '#F2762E', whiteSpace: 'nowrap', fontFamily: "'Inter',sans-serif", marginRight: 10 }}>{need} u.</div>
                     <div style={S.reorderItemCost}>{fmt(p.cost)} <span style={{ fontSize: 9, color: '#F2994A', fontWeight: 500 }}>/u</span></div>
                   </div>
                 )
@@ -269,7 +269,7 @@ export default function PortalProveedor() {
             {reorderTotal > 0 && (
               <div style={{ ...S.reorderTotal, marginBottom: 0 }}>
                 <span style={{ fontSize: 12, color: '#6B7280' }}>Total estimado de reposición</span>
-                <b style={{ fontSize: 18, color: '#2A1810', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{fmt(reorderTotal)}</b>
+                <b style={{ fontSize: 18, color: '#2A1810', fontFamily: "'Inter',sans-serif" }}>{fmt(reorderTotal)}</b>
               </div>
             )}
           </div>
@@ -304,7 +304,7 @@ export default function PortalProveedor() {
                       </td>
                       <td data-k="Cantidad" style={{ ...S.td, textAlign: 'center', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{qty} u.</td>
                       <td data-k="Precio u." style={{ ...S.td, textAlign: 'right', color: '#374151', fontVariantNumeric: 'tabular-nums' }}>{fmt(p.cost)}</td>
-                      <td data-k="Subtotal" style={{ ...S.td, textAlign: 'right', fontWeight: 700, color: '#F2762E', fontVariantNumeric: 'tabular-nums', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{fmt(p.cost * qty)}</td>
+                      <td data-k="Subtotal" style={{ ...S.td, textAlign: 'right', fontWeight: 700, color: '#F2762E', fontVariantNumeric: 'tabular-nums', fontFamily: "'Inter',sans-serif" }}>{fmt(p.cost * qty)}</td>
                     </tr>
                     )
                   })}
@@ -426,7 +426,7 @@ const S = {
     display: 'inline-block', background: 'rgba(255,255,255,.14)',
     padding: '4px 10px', borderRadius: 12, backdropFilter: 'blur(8px)',
   },
-  heroTitle: { margin: 0, fontSize: 26, fontWeight: 700, letterSpacing: '-.6px', lineHeight: 1.15, fontFamily: "'Space Grotesk','Inter',sans-serif" },
+  heroTitle: { margin: 0, fontSize: 26, fontWeight: 700, letterSpacing: '-.6px', lineHeight: 1.15, fontFamily: "'Inter',sans-serif" },
   heroSub: { margin: '10px 0 0', fontSize: 14, opacity: .94, lineHeight: 1.55 },
   heroValid: {
     fontSize: 12, opacity: .9, marginTop: 16,
@@ -519,7 +519,7 @@ const S = {
   condCard: { background: 'linear-gradient(135deg,#FBF4EC,#F2F8EB)', borderRadius: 12, padding: '14px 16px', border: '1px solid #FCE9DC' },
   condIcon: { fontSize: 22, marginBottom: 4 },
   condLabel: { fontSize: 10, color: '#6B7280', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '.6px' },
-  condValue: { fontSize: 22, fontWeight: 700, color: '#2A1810', marginTop: 3, letterSpacing: '-.5px', fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' },
+  condValue: { fontSize: 22, fontWeight: 700, color: '#2A1810', marginTop: 3, letterSpacing: '-.5px', fontFamily: "'Inter',sans-serif", fontVariantNumeric: 'tabular-nums' },
   condUnit: { fontSize: 12, color: '#6B7280', fontWeight: 500 },
 
   // CTA
@@ -529,7 +529,7 @@ const S = {
     boxShadow: '0 4px 18px rgba(242,118,46,.10)',
     textAlign: 'center', border: '1.5px solid #FCE9DC',
   },
-  ctaTitle: { margin: '0 0 8px', fontSize: 18, color: '#2A1810', fontWeight: 700, fontFamily: "'Space Grotesk','Inter',sans-serif" },
+  ctaTitle: { margin: '0 0 8px', fontSize: 18, color: '#2A1810', fontWeight: 700, fontFamily: "'Inter',sans-serif" },
   ctaSub: { margin: '0 0 18px', fontSize: 13, color: '#6B7280', lineHeight: 1.55 },
   ctaButtons: { display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' },
   btnConfirm: {

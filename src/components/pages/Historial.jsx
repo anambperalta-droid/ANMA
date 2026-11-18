@@ -775,7 +775,7 @@ function StatusDonut({ statuses, budgets, onSegmentClick }) {
             <title>{`${s.l}: ${s.n} (${Math.round(s.pct)}%) — click para filtrar`}</title>
           </circle>
         ))}
-        <text x="45" y="50" textAnchor="middle" fontSize="16" fontWeight="700" fill="var(--txt)" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{budgets.length}</text>
+        <text x="45" y="50" textAnchor="middle" fontSize="16" fontWeight="700" fill="var(--txt)" style={{ fontFamily: "'Inter',sans-serif" }}>{budgets.length}</text>
       </svg>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
         {statuses.filter(s => budgets.filter(b => b.status === s.k).length > 0).length === 0 ? (
@@ -1933,7 +1933,7 @@ export default function Historial() {
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: '#DC2626', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-hand-holding-dollar" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, color: '#DC2626', textTransform: 'uppercase', letterSpacing: '.06em' }}>Cobros vencidos</div>
-                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{cobrosVencidos.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{cobrosVencidos.length === 1 ? 'pedido' : 'pedidos'}</span></div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Inter',sans-serif" }}>{cobrosVencidos.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{cobrosVencidos.length === 1 ? 'pedido' : 'pedidos'}</span></div>
                     </div>
                     <i className="fa fa-arrow-right" style={{ color: '#DC2626', fontSize: 12 }} />
                   </div>
@@ -1951,7 +1951,7 @@ export default function Historial() {
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: '#D97706', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-truck-fast" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, color: '#D97706', textTransform: 'uppercase', letterSpacing: '.06em' }}>Entregas hoy</div>
-                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{entregasHoy.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{entregasHoy.length === 1 ? 'pedido' : 'pedidos'}</span></div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Inter',sans-serif" }}>{entregasHoy.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{entregasHoy.length === 1 ? 'pedido' : 'pedidos'}</span></div>
                     </div>
                     <i className="fa fa-arrow-right" style={{ color: '#D97706', fontSize: 12 }} />
                   </div>
@@ -1969,7 +1969,7 @@ export default function Historial() {
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: 'var(--brand)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-comments" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--brand)', textTransform: 'uppercase', letterSpacing: '.06em' }}>A confirmar</div>
-                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{aConfirmar.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>seguimientos</span></div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Inter',sans-serif" }}>{aConfirmar.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>seguimientos</span></div>
                     </div>
                     <i className="fa fa-arrow-right" style={{ color: 'var(--brand)', fontSize: 12 }} />
                   </div>
@@ -1987,7 +1987,7 @@ export default function Historial() {
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: '#2E8BD6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-calendar-day" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, color: '#2E8BD6', textTransform: 'uppercase', letterSpacing: '.06em' }}>Próximas entregas</div>
-                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{proximasEntregas.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>en 7 días</span></div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Inter',sans-serif" }}>{proximasEntregas.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>en 7 días</span></div>
                     </div>
                     <i className="fa fa-arrow-right" style={{ color: '#2E8BD6', fontSize: 12 }} />
                   </div>
@@ -2005,7 +2005,7 @@ export default function Historial() {
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: '#EA580C', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-clock-rotate-left" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, color: '#EA580C', textTransform: 'uppercase', letterSpacing: '.06em' }}>Sin cobrar +7d</div>
-                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{sinCobrar7d.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{sinCobrar7d.length === 1 ? 'pedido' : 'pedidos'}</span></div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Inter',sans-serif" }}>{sinCobrar7d.length} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{sinCobrar7d.length === 1 ? 'pedido' : 'pedidos'}</span></div>
                     </div>
                     <i className="fa fa-arrow-right" style={{ color: '#EA580C', fontSize: 12 }} />
                   </div>
@@ -2023,7 +2023,7 @@ export default function Historial() {
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: '#EF4444', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><i className="fa fa-boxes-stacked" /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, color: '#EF4444', textTransform: 'uppercase', letterSpacing: '.06em' }}>Stock critico</div>
-                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>{stockCriticoCount} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{stockCriticoCount === 1 ? 'item' : 'items'}</span></div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--txt)', lineHeight: 1.1, fontFamily: "'Inter',sans-serif" }}>{stockCriticoCount} <span style={{ fontSize: 11, color: 'var(--txt3)', fontWeight: 500 }}>{stockCriticoCount === 1 ? 'item' : 'items'}</span></div>
                     </div>
                     <i className="fa fa-arrow-right" style={{ color: '#EF4444', fontSize: 12 }} />
                   </div>
@@ -2601,7 +2601,7 @@ export default function Historial() {
                           </div>
                         )}
                       </td>
-                      <td data-cell="total" data-label="Total" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.01em', fontSize: 13.5, fontFamily: "'Space Grotesk','Inter',sans-serif" }}>
+                      <td data-cell="total" data-label="Total" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--money)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-.01em', fontSize: 13.5, fontFamily: "'Inter',sans-serif" }}>
                         <div>{(b.totalFinal || b.total) ? money(b.totalFinal || b.total) : <span style={{ color: 'var(--txt4)', fontWeight: 600 }}>—</span>}</div>
                         {/* "gan. pendiente" no es un dato, es la falta de uno, y salia
                             en gris en la mayoria de las filas. Si no hay ganancia

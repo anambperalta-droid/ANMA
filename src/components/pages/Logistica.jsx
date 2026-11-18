@@ -223,7 +223,7 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
         .viaje-card-meta b{color:var(--txt2);font-weight:700}
         .viaje-card-meta i{font-size:10px}
         .viaje-card-total{text-align:right;flex-shrink:0;line-height:1.1}
-        .viaje-card-total-val{font-weight:800;font-size:14.5px;color:var(--money);font-family:'Space Grotesk','Inter',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+        .viaje-card-total-val{font-weight:800;font-size:14.5px;color:var(--money);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
         .viaje-card-total-lbl{font-size:9.5px;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;margin-top:1px;font-weight:600}
         .viaje-card-acts{display:flex;align-items:center;gap:4px;flex-shrink:0}
         .viaje-act{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--txt3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:background .12s,color .12s}
@@ -272,7 +272,7 @@ function ViajesTab({ get, saveEntity, saveBudget, deleteEntity, toast, confirm }
           </div>
           <div className="card viajes-kpi-card">
             <div className="viajes-kpi-lbl">Paradas</div>
-            <div className="viajes-kpi-val" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{stats.totalParadas}</div>
+            <div className="viajes-kpi-val" style={{ fontFamily: "'Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{stats.totalParadas}</div>
             <div className="viajes-kpi-chips">
               {stats.tipoCount.insumos > 0 && <span><i className="fa fa-box" style={{ color: '#F2762E' }} /> {stats.tipoCount.insumos}</span>}
               {stats.tipoCount.mercaderia > 0 && <span><i className="fa fa-cart-shopping" style={{ color: '#2E8BD6' }} /> {stats.tipoCount.mercaderia}</span>}

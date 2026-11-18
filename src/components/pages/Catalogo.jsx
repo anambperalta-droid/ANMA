@@ -691,7 +691,7 @@ export default function Catalogo() {
         .cli-pill.icon-compact{width:44px;padding:0;justify-content:center}
         .cli-pill.icon-compact span{display:none}
         .cli-pill.icon-compact i{font-size:14px}
-        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:var(--brand);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
+        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:var(--brand);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
         .cli-pill-new:hover{filter:brightness(1.08);transform:translateY(-1px)}
         .cli-pill-new:active{transform:scale(.95)}
         .cli-pill-new i{font-size:11px}
@@ -949,7 +949,7 @@ export default function Catalogo() {
                     </td>
                     {!opHideCosts && <td style={{ textAlign: 'right' }}>
                       {Number(p.cost) > 0
-                        ? <span style={{ fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{fmt(p.cost)}</span>
+                        ? <span style={{ fontFamily: "'Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{fmt(p.cost)}</span>
                         : <span title="Sin costo cargado — no vas a poder fijar bien el precio" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 10.5, fontWeight: 700, color: '#B45309', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 20, padding: '2px 9px', whiteSpace: 'nowrap' }}><i className="fa fa-triangle-exclamation" style={{ fontSize: 9 }} />Sin costo</span>}
                       {showCostInfo && (
                         <div style={{ fontSize: 10, marginTop: 2 }}>
@@ -968,13 +968,13 @@ export default function Catalogo() {
                       return (
                         <td className="col-hide-mobile" style={{ textAlign: 'right' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end' }}>
-                            <span style={{ fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 800, color: 'var(--money)' }}>{fmt(primary)}</span>
+                            <span style={{ fontFamily: "'Inter',sans-serif", fontVariantNumeric: 'tabular-nums', fontWeight: 800, color: 'var(--money)' }}>{fmt(primary)}</span>
                             {!opHideCosts && (mp !== null
                               ? <span style={{ fontSize: 10.5, fontWeight: 800, color: marginColor(mp), background: marginColor(mp) + '18', padding: '1px 7px', borderRadius: 9 }}>{mp}%</span>
                               : <span style={{ color: 'var(--txt4)', fontSize: 10.5 }}>—</span>)}
                           </div>
                           {showB2C && showB2B && (
-                            <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 2, fontFamily: "'Space Grotesk','Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>May. {fmt(may)}</div>
+                            <div style={{ fontSize: 10.5, color: 'var(--txt3)', marginTop: 2, fontFamily: "'Inter',sans-serif", fontVariantNumeric: 'tabular-nums' }}>May. {fmt(may)}</div>
                           )}
                         </td>
                       )

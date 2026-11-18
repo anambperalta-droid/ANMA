@@ -651,7 +651,7 @@ export default function Ventas() {
           strokeLinecap="round" transform={`rotate(-90 ${size/2} ${size/2})`}
           style={{ transition: 'stroke-dashoffset .6s ease' }} />
         <text x={size/2} y={size/2} textAnchor="middle" dominantBaseline="central"
-          style={{ fontSize: size * 0.24, fontWeight: 800, fill: 'var(--txt)', fontFamily: "'Space Grotesk','Inter',sans-serif" }}>
+          style={{ fontSize: size * 0.24, fontWeight: 800, fill: 'var(--txt)', fontFamily: "'Inter',sans-serif" }}>
           {percent}%
         </text>
       </svg>

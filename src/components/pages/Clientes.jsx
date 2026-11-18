@@ -760,7 +760,7 @@ export default function Clientes() {
         .cli-pill:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-xlt)}
         .cli-pill:active{transform:scale(.95)}
         .cli-pill i{font-size:12px}
-        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:var(--brand);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
+        .cli-pill-new{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border-radius:9999px;border:none;background:var(--brand);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:-.1px;line-height:1;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .18s;box-shadow:0 6px 18px var(--brand-dim)}
         .cli-pill-new:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 10px 26px var(--brand-dim)}
         .cli-pill-new:active{transform:scale(.95)}
         .cli-pill-new i{font-size:11px}
@@ -773,7 +773,7 @@ export default function Clientes() {
         .cli-mob-id{flex:1;min-width:0;display:flex;align-items:center;gap:7px}
         .cli-mob-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
         .cli-mob-id-text{min-width:0;flex:1}
-        .cli-mob-company{font-weight:700;font-size:13.5px;color:var(--txt);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.2px}
+        .cli-mob-company{font-weight:700;font-size:13.5px;color:var(--txt);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Inter',sans-serif;letter-spacing:-.2px}
         .cli-mob-contact{font-size:11px;color:#6B7280;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .cli-mob-mid{flex-shrink:0;display:flex;align-items:center;gap:6px}
         .cli-mob-cicons{display:flex;gap:5px}
@@ -853,7 +853,7 @@ export default function Clientes() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         <span title={dotTip} style={{ width: 6, height: 6, borderRadius: '50%', background: dotColor, flexShrink: 0 }} />
                         <div>
-                          <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--txt)', lineHeight: 1.3, fontFamily: "'Space Grotesk','Inter',sans-serif", letterSpacing: '-.2px' }}>{c.company || c.contact || '—'}</div>
+                          <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--txt)', lineHeight: 1.3, fontFamily: "'Inter',sans-serif", letterSpacing: '-.2px' }}>{c.company || c.contact || '—'}</div>
                           {c.contact && c.company && <div style={{ fontSize: 11, color: '#6B7280', marginTop: 1 }}>{c.contact}</div>}
                         </div>
                       </div>
