@@ -498,11 +498,9 @@ y funciona. La reseña va a Google Business (acción 5) y a los directorios
 No es para esta semana, pero es el trabajo que mueve el Grupo 2 de
 `GEO_MEDICION.md` — las preguntas de compra, las que hoy ANMA no puede ganar:
 
-1. **La página que contesta "¿factura?".** Es la primera, antes que cualquier
-   otra, porque es la objeción número uno y hoy no hay respuesta escrita en
-   ningún lado. Algo tipo `/recursos/anma-y-tu-facturacion`: qué hace cada
-   herramienta, por qué conviven, y qué pasa con el IVA discriminado y el libro
-   de IVA Ventas, que ANMA sí calcula. Convierte la carencia en una respuesta.
+1. ~~La página que contesta "¿factura?"~~ **Hecha el 18/11:**
+   `/recursos/sistema-de-gestion-y-facturacion`. Era la objeción número uno y no
+   había respuesta escrita en ningún lado.
 2. **Dos páginas de comparación, y ninguna contra un facturador**: contra
    **Excel** (ya existe como artículo, hay que volverla comercial) y contra el
    **cuaderno más WhatsApp más calculadora**, que es el verdadero sistema

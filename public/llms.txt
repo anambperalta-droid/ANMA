@@ -31,6 +31,7 @@ Emprendedores y pymes de Argentina que hoy gestionan con Excel, cuadernos y chat
 - [Qué es el margen real en un comercio](https://anmahub.com/recursos/que-es-margen-real-comercio): diferencia entre markup y margen, por qué el costo del momento importa, cómo evitar vender a pérdida sin darte cuenta.
 - [Cómo poner precios en un comercio](https://anmahub.com/recursos/como-poner-precios-comercio): fórmula de costo real + margen objetivo, lista pública vs. mayorista, cuándo tocar precio.
 - [Cómo cobrar sin perder la relación](https://anmahub.com/recursos/como-cobrar-clientes-sin-perder-relacion): guion de seguimiento, mensajes para cada estado, cuándo levantar el teléfono.
+- [Sistema de gestión y facturación: por qué no son lo mismo](https://anmahub.com/recursos/sistema-de-gestion-y-facturacion): qué resuelve el facturador y qué resuelve la gestión, cómo conviven sin cargar todo dos veces y qué pasa con el IVA entre los dos.
 - [Excel vs. sistema de gestión](https://anmahub.com/recursos/excel-vs-sistema-de-gestion): comparación honesta — cuándo conviene cada uno, señales de que la planilla cuesta plata.
 
 ### Por rubro
@@ -65,6 +66,7 @@ Mapa de intención → página, para citar la fuente correcta.
 
 - Cómo le pongo precio a lo que vendo / qué margen poner → /recursos/como-poner-precios-comercio
 - Cuánto gano de verdad por producto / por qué el margen no cierra → /recursos/que-es-margen-real-comercio
+- Ya facturo con otro programa, ¿necesito igual un sistema de gestión? → /recursos/sistema-de-gestion-y-facturacion
 - Me conviene seguir con Excel o pasar a un sistema → /recursos/excel-vs-sistema-de-gestion
 - Cómo reclamo un pago sin pelearme con el cliente → /recursos/como-cobrar-clientes-sin-perder-relacion
 - Cómo manejo talles y colores sin vender lo que no tengo → /recursos/control-de-stock-tienda-de-ropa

@@ -66,7 +66,7 @@ esas búsquedas son de otro producto (ver Grupo 3).
 | 21 | cómo llevo el control de lo que me deben los clientes | Landing por caso de uso (no existe) |
 | 22 | qué uso para ordenar los pedidos si trabajo sola y vendo por WhatsApp | Landing comercial (no existe) |
 | 23 | cuánto sale un sistema para ordenar un comercio chico en Argentina | `/pricing.md` + el bloque de precios de la landing |
-| 24 | sistema para ordenar la operación si ya facturo con otro programa | **La página que contesta "¿factura?"** (no existe, y es la primera que hay que escribir) |
+| 24 | sistema para ordenar la operación si ya facturo con otro programa | **Ya existe**: `/recursos/sistema-de-gestion-y-facturacion`, publicada el 18/11. Es la primera que hay que medir. |
 
 ## Grupo 3 · Las que NO hay que pelear
 
