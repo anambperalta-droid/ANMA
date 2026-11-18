@@ -265,12 +265,6 @@ export default function Login() {
              tarjeta es mas alta que la pantalla y antes se cortaba el pie. */
           overflow:auto;-webkit-overflow-scrolling:touch;
         }
-        /* El corte del isotipo, a tamano de pantalla. */
-        .lp-wrap::before{
-          content:'';position:fixed;inset:0;pointer-events:none;
-          background:#2B0A60;
-          clip-path:polygon(100% 26%,100% 100%,26% 100%);
-        }
         /* El filo amarillo de la imagen de compartir. */
         .lp-wrap::after{
           content:'';position:fixed;top:0;left:0;right:0;height:5px;
@@ -282,7 +276,7 @@ export default function Login() {
           background:#F5EFE4;
           border:1px solid #E4D9C6;
           border-radius:26px;padding:40px 38px 30px;
-          box-shadow:0 30px 70px -24px rgba(12,2,34,.6);
+          box-shadow:0 34px 80px -26px rgba(12,2,34,.7);
           animation:lp-card-in .5s cubic-bezier(.2,.7,.2,1) both;
         }
 
