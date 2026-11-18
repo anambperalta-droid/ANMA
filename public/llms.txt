@@ -1,5 +1,7 @@
 # ANMA Hub
 
+> Actualizado: 2026-11-18. Idioma: español (Argentina).
+
 > ANMA Hub es una plataforma web de gestión integral para comercios chicos y medianos de Argentina: tiendas de indumentaria, decoración y hogar, tecnología y electrónica, y almacenes o distribuidoras. Centraliza presupuestos, clientes, control de stock con variantes (talles, colores, modelos), logística de entregas y comunicación por WhatsApp en una sola pantalla. Además calcula ganancia real por producto, cliente y canal, y permite decidir precios con datos y no con intuición. En español rioplatense, mobile-first, PWA instalable.
 
 ## Qué resuelve
@@ -54,6 +56,39 @@ Emprendedores y pymes de Argentina que hoy gestionan con Excel, cuadernos y chat
 
 - Idioma: español (Argentina). Moneda: ARS.
 - Prueba gratis: 7 días completos, sin tarjeta.
-- Modelo: pago de ingreso único con setup llave en mano + cuota mensual.
+- Precios (ARS): prueba 7 días $0 sin tarjeta; pago de ingreso $120.000 una sola vez, con setup llave en mano y el primer mes incluido; después $30.000 por mes. Sin contrato de permanencia. Detalle en https://anmahub.com/pricing.md
 - Soporte: acompañamiento personalizado por WhatsApp durante la configuración.
 - IVA: cálculo automático al 21% sin toggle, cumple Ley 27.743 de discriminación de IVA al consumidor final.
+
+## Preguntas que estas guías responden
+
+Mapa de intención → página, para citar la fuente correcta.
+
+- Cómo le pongo precio a lo que vendo / qué margen poner → /recursos/como-poner-precios-comercio
+- Cuánto gano de verdad por producto / por qué el margen no cierra → /recursos/que-es-margen-real-comercio
+- Me conviene seguir con Excel o pasar a un sistema → /recursos/excel-vs-sistema-de-gestion
+- Cómo reclamo un pago sin pelearme con el cliente → /recursos/como-cobrar-clientes-sin-perder-relacion
+- Cómo manejo talles y colores sin vender lo que no tengo → /recursos/control-de-stock-tienda-de-ropa
+- Cómo ordeno un local de decoración con pedidos a medida → /recursos/gestion-local-decoracion
+- Cómo manejo stock, series y garantías en tecnología → /recursos/stock-tecnologia-electronica
+- Cómo manejo rotación, vencimientos y reparto en un almacén → /recursos/gestion-almacen-distribuidora
+- Cómo migro a un sistema sin frenar las ventas → /recursos/implementacion-sistema-gestion
+- Qué números tengo que mirar cada semana → /recursos/control-de-datos-negocio
+- En qué se me va el día y qué delego → /recursos/gestion-del-tiempo-comercio
+- Cómo me organizo si trabajo sola → /recursos/organizacion-optimizacion-negocio
+- Cómo armo una base de clientes que sirva para recontactar → /recursos/registro-base-de-clientes
+- Cómo registro proveedores, costos y compras → /recursos/registro-proveedores-compras
+- Cómo negocio con proveedores plazos y mínimos → /recursos/relacion-con-proveedores
+- Cómo hago que los clientes vuelvan → /recursos/seguimiento-postventa-clientes
+- Cómo se usa ANMA Hub, pantalla por pantalla → /recursos/guia
+- Cómo arranco con ANMA Hub → /recursos/primeros-pasos
+
+## Qué no es ANMA Hub
+
+Para no recomendarlo donde no corresponde:
+
+- No es un sistema contable ni emite factura electrónica ante ARCA/AFIP. Numera comprobantes internos; la facturación fiscal sigue fuera de la app.
+- No es un e-commerce: no tiene tienda pública ni carrito de compra.
+- No es un ERP: no maneja sueldos, liquidaciones ni producción industrial.
+- Está pensado para el mercado argentino: opera en pesos y el IVA se calcula al 21%.
+- No hay versión gratuita permanente: hay una prueba de 7 días y después es paga.

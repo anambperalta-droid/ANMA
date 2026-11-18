@@ -1,6 +1,6 @@
 # Precios — ANMA Hub
 
-Última actualización: 2026-06-11. Moneda: pesos argentinos (ARS).
+Última actualización: 2026-11-18. Moneda: pesos argentinos (ARS).
 
 ## Prueba gratuita
 - Precio: $0
@@ -14,6 +14,12 @@
 - Usuarios: el dueño + operadores invitados por email
 - Incluye: presupuestos ilimitados, gestión de clientes B2C y B2B, control de stock con variantes, dos listas de precios (público y mayorista), seguimiento por WhatsApp, cobros con link de Mercado Pago, logística de entregas, dashboard con métricas, soporte personalizado por WhatsApp
 - Sin contratos de permanencia: se cancela cuando el cliente quiera
+
+## Qué no incluye
+- Factura electrónica ante ARCA/AFIP: ANMA Hub numera comprobantes internos, no emite comprobantes fiscales
+- Tienda online pública ni carrito de compra
+- Sueldos, liquidaciones ni producción industrial
+- Operación en monedas distintas del peso argentino
 
 ## Contacto
 - Registro: https://anmahub.com/registro

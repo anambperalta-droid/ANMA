@@ -1,36 +1,119 @@
 # ANMA Hub — robots.txt
-# Crawlers tradicionales: todo permitido
+# Revisado: 18/11/2026
+
+# Crawlers tradicionales
 User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /app/
 
-# Bots de IA (GEO): permitidos explícitamente para que ChatGPT, Perplexity,
-# Claude, Gemini y Copilot puedan citar a ANMA Hub en sus respuestas.
+# ---------------------------------------------------------------------------
+# Bots de IA (GEO / AEO)
+# Cada plataforma usa un user-agent distinto para entrenar, para indexar y para
+# ir a buscar una página cuando la persona pregunta. El que decide si te pueden
+# citar es el de indexación y búsqueda, no el de entrenamiento.
+# Están todos permitidos a propósito: si el bot no entra, esa IA no te cita.
+# ---------------------------------------------------------------------------
+
+# OpenAI — ChatGPT
+# OAI-SearchBot es el que define si aparecés en las respuestas de ChatGPT.
+# GPTBot es el de entrenamiento. ChatGPT-User va a buscar la página cuando
+# alguien pregunta en el chat.
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+Disallow: /app/
+
 User-agent: GPTBot
 Allow: /
+Disallow: /api/
+Disallow: /app/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /api/
+Disallow: /app/
 
-User-agent: PerplexityBot
+# Anthropic — Claude
+# Claude-SearchBot indexa para los resultados de búsqueda de Claude;
+# Claude-User va a buscar la página cuando la persona pregunta;
+# ClaudeBot es el de entrenamiento.
+User-agent: Claude-SearchBot
 Allow: /
+Disallow: /api/
+Disallow: /app/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /api/
+Disallow: /app/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /api/
+Disallow: /app/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /api/
+Disallow: /app/
 
+# Perplexity — PerplexityBot indexa, Perplexity-User va a buscar la página.
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+Disallow: /app/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /api/
+Disallow: /app/
+
+# Google — Googlebot (el de arriba, en "*") es el que alimenta los AI Overviews.
+# Google-Extended controla aparte si el contenido se usa en Gemini y en Vertex.
 User-agent: Google-Extended
 Allow: /
 
+# Microsoft — Copilot entra por el índice de Bing.
 User-agent: Bingbot
 Allow: /
+Disallow: /api/
+Disallow: /app/
+
+# Apple — Applebot crawlea; Applebot-Extended es solo la señal de permiso para
+# los modelos de Apple (no crawlea nada por su cuenta).
+User-agent: Applebot
+Allow: /
+Disallow: /api/
+Disallow: /app/
+
+User-agent: Applebot-Extended
+Allow: /
+
+# DuckDuckGo (DuckAssist), Mistral y Meta.
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /api/
+Disallow: /app/
+
+User-agent: MistralAI-User
+Allow: /
+Disallow: /api/
+Disallow: /app/
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /api/
+Disallow: /app/
 
 Sitemap: https://anmahub.com/sitemap.xml
 Sitemap: https://anmahub.com/sitemap-images.xml
 
-# IndexNow — ping instantáneo a Bing / Yandex / DuckDuckGo cuando se actualiza contenido.
-# Key verificado en https://anmahub.com/c0a497317daf8921e2ea8f39c2a1ddb4.txt
+# Resumen del producto y catálogo de guías para sistemas de IA:
+# https://anmahub.com/llms.txt
+# Precios en formato legible por máquinas: https://anmahub.com/pricing.md
+
+# IndexNow — ping instantáneo a Bing / Yandex / DuckDuckGo cuando se actualiza
+# contenido. Key verificado en
+# https://anmahub.com/c0a497317daf8921e2ea8f39c2a1ddb4.txt
 # Docs: https://www.indexnow.org/documentation
