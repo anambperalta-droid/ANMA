@@ -521,7 +521,9 @@ export default function Login() {
                 style={{ paddingRight: 42 }}
                 autoFocus={!!email}
               />
-              <button className="lp-eye" type="button" onClick={() => setShowPwd(!showPwd)} title={showPwd ? 'Ocultar' : 'Mostrar'}>
+              <button className="lp-eye" type="button" onClick={() => setShowPwd(!showPwd)}
+                aria-label={showPwd ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                aria-pressed={showPwd} title={showPwd ? 'Ocultar' : 'Mostrar'}>
                 <i className={`fa ${showPwd ? 'fa-eye-slash' : 'fa-eye'}`} />
               </button>
             </div>
@@ -562,7 +564,7 @@ export default function Login() {
 
           <div className="lp-divider">o</div>
 
-          <a className="lp-cta" href="/landing.html">
+          <a className="lp-cta" href="/">
             <span className="lp-cta-pill">Nuevo</span>
             ¿Todavía no usás ANMA? Conocelo en 60 segundos
             <i className="fa fa-arrow-right" style={{ fontSize: 11, marginLeft: 2 }} />
@@ -573,7 +575,7 @@ export default function Login() {
             <span className="lp-dot" />
             <span>ANMA <b>{APP_VERSION}</b></span>
             <span className="lp-dot" />
-            <a href="/landing.html#planes">Planes</a>
+            <a href="/#pricing">Planes</a>
           </div>
         </form>
       </div>
