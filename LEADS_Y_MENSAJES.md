@@ -160,34 +160,122 @@ No linkees el demo mientras no se rehaga.
 
 ## Track D · Comercios, uno a uno · **el único que cierra**
 
-Al precio actual, el cierre es cara a cara o por teléfono. Todo lo demás sirve
+Al precio actual el cierre es cara a cara o por teléfono. Todo lo demás sirve
 para que te conozcan, no para que te paguen.
 
-### De dónde salen los nombres
+### Primero: a quién sí
+
+El perfil sale de lo que la app hace de verdad, no de una idea general de
+"comercio chico". Los cuatro rubros que contempla el onboarding son
+indumentaria, tecnología, decoración y almacén, y los tres tipos de venta son
+minorista, mayorista y **ambos**.
+
+**Ambos canales es la señal más fuerte que existe.** Un negocio que vende por
+mayor y por menor necesita las dos listas de precios, la cuenta corriente, las
+señas y los pedidos antes de la venta: cuatro features tuyas al mismo tiempo.
+
+| Encaja | Por qué |
+|---|---|
+| Vende **por mayor y por menor** | Las dos listas de precios en paralelo |
+| Productos con **talle, color o modelo** | Stock con variantes |
+| **Toma pedidos** antes de cobrar | Presupuesto, seña y saldo |
+| **Coordina por WhatsApp** | Plantillas y seguimiento por rubro |
+| **Envía o entrega** | Logística con costo por pedido |
+| **Le compra a proveedores** seguido | Costo de reposición y margen real |
+| Equipo de **1 a 3 personas** | Es para quien no tiene administrativo |
+
+### A quién no, y por qué · esto te ahorra la mitad del tiempo
+
+| No encaja | Por qué |
+|---|---|
+| Kiosco, supermercado, farmacia | Mostrador de alto volumen: necesitan caja y **factura en cada venta**, y ANMA no factura |
+| Servicios sin stock | No hay nada que reponer ni variantes |
+| Gastronomía | Ni siquiera está entre los cuatro rubros de la app |
+| Segunda mano, vintage, piezas únicas | Sin reposición y sin variantes: media app queda sin uso |
+| Distribuidores grandes (SA, SRL con depósito) | Ya tienen ERP, y el ciclo de venta es de meses |
+| Locales en shopping o franquicias | El sistema lo decide la marca, no el local |
+
+### Las búsquedas, corregidas
+
+**Las probé el 18/11 y cambié las que traían el perfil equivocado.** "Tienda de
+ropa Villa Crespo" devolvía boutiques de mostrador: ventas instantáneas, sin
+pedidos ni señas. Agregar "por mayor" cambia la lista entera.
+
+**Indumentaria** — el distrito es Avellaneda, en Flores (Helguera, Cuenca,
+Av. Avellaneda). Casi todos dicen "mayorista" u "outlet" en el nombre, que es
+el cartel de que manejan dos listas de precios:
 
 ```
-https://www.google.com/maps/search/tienda+de+ropa+Villa+Crespo
-https://www.google.com/maps/search/regaleria+Caballito
-https://www.google.com/maps/search/casa+de+decoracion+Belgrano
-https://www.google.com/maps/search/distribuidora+de+alimentos+Flores
+https://www.google.com/maps/search/venta+por+mayor+ropa+Flores+CABA
+https://www.google.com/maps/search/indumentaria+mayorista+Avellaneda+Flores
+https://www.google.com/maps/search/showroom+indumentaria+por+mayor+CABA
 ```
 
-Quedate con los que tengan teléfono y pocas fotos: suelen ser los que están
-desbordados y los que menos sistema tienen.
+**Decoración, bazar y regalería** — el distrito es Once (Valentín Gómez,
+Sarmiento, Jean Jaures):
+
+```
+https://www.google.com/maps/search/distribuidora+mayorista+bazar+y+regaleria+CABA
+https://www.google.com/maps/search/mayorista+decoracion+hogar+Once
+```
+
+**Almacén** — apuntá a la **distribuidora**, no al almacén de la esquina. El de
+la esquina es mostrador y factura; la distribuidora vive de listas de precios,
+cuenta corriente y reparto:
+
+```
+https://www.google.com/maps/search/distribuidora+de+alimentos+y+bebidas+CABA
+https://www.google.com/maps/search/distribuidora+dietetica+mayorista+CABA
+```
+
+**Tecnología — ojo acá.** Es el único rubro donde "mayorista" **no** funciona:
+la búsqueda devuelve distribuidores corporativos (New Bytes, Microglobal,
+Corcisa, SRL y SA con depósito propio) que ya tienen ERP. Buscá el local chico:
+
+```
+https://www.google.com/maps/search/tienda+de+insumos+y+accesorios+informatica+barrio+CABA
+https://www.google.com/maps/search/local+de+celulares+y+accesorios+por+mayor+CABA
+```
+
+### El filtro sobre los resultados
+
+Heurística, no ciencia, pero ordena la lista en dos minutos:
+
+- **Menos de ~150 reseñas** → chico. Probablemente sin sistema. **Llamá.**
+- **Más de ~500 reseñas** → ya tiene sistema, o es cadena. Dejalo para después.
+- **"SA" o "SRL" en el nombre** → casi siempre demasiado grande.
+- **Sin teléfono listado** → salteá, no pierdas el tiempo buscándolo.
+- **"Por mayor", "mayorista" u "outlet" en el nombre** → **prioridad uno.**
+
+### Lista de arranque
+
+Esto devolvieron las búsquedas el 18/11. No están validadas una por una:
+usalas para ver el perfil y armá la tuya con el filtro de arriba.
+
+| Negocio | Rubro | Reseñas | Señal |
+|---|---|---|---|
+| Wuau Ropa de Mujer · Por Mayor | Indumentaria | 30 | Chico y mayorista: el perfil exacto |
+| MARMIN · Indumentaria femenina mayorista | Indumentaria | 38 | Ídem |
+| Swaga | Indumentaria | 136 | En el distrito, tamaño justo |
+| Dos Chingadas Mayorista | Indumentaria | 332 | Mayorista, algo más grande |
+| Rimmel Flores Mayoristas y Outlet | Indumentaria | 363 | Mayorista **y** outlet: dos listas seguro |
+| Oak Gold | Bazar mayorista | 14 | Muy chico, alta probabilidad de planilla |
+| Bazar Once Mayorista | Bazar · importador | 20 | Importa y vende por mayor |
+| Bazar mayorista Once Maju | Bazar | 159 | En pleno Once |
+| ~~DD2 Regalos~~ | Bazar | 6.584 | **Descartar:** demasiado grande |
+| ~~New Bytes, Microglobal, Corcisa~~ | Tecnología | — | **Descartar:** distribuidores corporativos |
 
 ### El primer mensaje
 
 Corto. Una sola pregunta. Nada de "solución integral":
 
 > Hola, ¿cómo andás? Te escribo de ANMA Hub. Una pregunta sola: ¿cómo llevás
-> hoy los pedidos y lo que te deben los clientes? Si es con planilla o
-> cuaderno, tengo algo que te puede ahorrar tiempo — y si ya tenés sistema,
+> hoy los pedidos por mayor y lo que te deben los clientes? Si es con planilla
+> o cuaderno, tengo algo que te puede ahorrar tiempo — y si ya tenés sistema,
 > te dejo tranquila.
 
 **Meta:** 20 por semana. **Medida:** tasa de respuesta sobre enviados. Si está
 por debajo del 20%, el problema es el mensaje, no la lista.
-
----
 
 ## Track E · La comparativa propia
 
