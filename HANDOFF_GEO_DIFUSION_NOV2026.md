@@ -140,6 +140,20 @@ y `demo.html`.
 
 ## 2. El plan de difusión
 
+### La regla de base: sin redes sociales, y sin plan de abrirlas
+
+Confirmado por Ana el 18/11/2026: **no tiene redes sociales para ANMA y no las
+va a desarrollar en el corto plazo.** Eso incluye Instagram, Facebook, TikTok
+**y también publicar contenido en LinkedIn.**
+
+Entonces ninguna de las diez acciones de abajo depende de abrir una cuenta, de
+sostener un calendario de publicaciones ni de juntar seguidores. Las diez
+funcionan con lo que ya existe: el sitio, el mail, el WhatsApp y el teléfono.
+
+LinkedIn aparece una sola vez, y como **directorio de lectura** para encontrar
+el nombre de un contador — opcional, con alternativa que no lo necesita. No
+como lugar donde publicar.
+
 ### Lo que ya estaba escrito, y lo que le pasa
 
 El `playbook-ventas.html` (v1.1, julio 2026) es bueno y está lleno de cosas
@@ -172,8 +186,8 @@ Honesto incluye los que descarto.
 | 3 | **Contadores y estudios contables** | Medio, sostenido | **El más alto por hora invertida.** Un contador tiene 30 a 80 pymes y ya recomienda herramientas | **Hacer primero** |
 | 4 | **Cámaras de comercio del interior** | Medio: un mail, después una charla de 30 min | Alto. Es el atajo al interior sin viajar ni tener marca previa | Hacer, semana 2 |
 | 5 | **Contacto directo 1 a 1** (visitas, WhatsApp, email) | Alto y constante | Medio-alto, y es el único que **cierra** al precio actual | Mantener: es el motor |
-| 6 | **LinkedIn personal de Ana** | Bajo: 1 post por semana | Medio. Llega a contadores, cámaras y docentes — justo los aliados de arriba | Hacer, es el apoyo de 3 y 4 |
-| 7 | **Reddit y Quora en español** | Medio: respuestas largas de verdad | Medio-alto para IA. ChatGPT cita Reddit seguido | Hacer, semana 3 |
+| 6 | **La red inmediata por WhatsApp** | Muy bajo: un mensaje por semana | Medio. Tus contactos son emprendedores o conocen a uno, y el canal ya lo usás | Hacer, es gratis y es tuyo |
+| 7 | **Reddit y Quora en español** | Medio: respuestas largas de verdad | Medio-alto para IA. ChatGPT cita Reddit seguido | **Opcional.** Nada más del plan depende de esto |
 | 8 | **Google Business Profile** | Bajo: completar + 1 post semanal | Medio. Local, y Google premia los perfiles activos | Hacer, está a medias |
 | 9 | **Referidos de clientes activos** | Muy bajo: un mensaje los viernes | Alto cuando hay clientes contentos | Hacer en cuanto haya base |
 | 10 | **Universidades y cátedras** | Medio | Bajo y lento. Alumnos no compran a $120.000 | Después, no ahora |
@@ -181,6 +195,7 @@ Honesto incluye los que descarto.
 | 12 | **Radios y podcasts del interior** | Medio | Difícil de medir, audiencia poco calificada | Esperar |
 | 13 | **Grupos de Facebook** | Bajo | Era el corazón del canal D | **Descartado: Ana no usa Facebook** |
 | 14 | **Instagram, TikTok, reels, carruseles** | Alto y permanente | — | **Descartado por decisión de Ana** |
+| 14b | **Publicar contenido en LinkedIn** | Bajo por post, alto sostenido | Medio | **Descartado: tampoco es un canal que Ana vaya a sostener** |
 | 15 | **Meta Ads** | — | — | **Descartado, ya estaba** |
 | 16 | **Product Hunt** | Medio | Bajo: audiencia global y técnica, producto en español para Argentina | Descartado por desalineación |
 | 17 | **Google Ads Search** | Bajo de tiempo, requiere plata | Medio | En pausa hasta que haya presupuesto |
@@ -258,10 +273,19 @@ directorio en el panel de la app.
 **4 · Cinco estudios contables** · 3 horas · esta semana
 
 El canal de mejor relación costo/beneficio del playbook, y el que sigue sin
-arrancar. Buscar en LinkedIn "contador público" + la zona, filtrar estudios
-chicos (2 a 10 personas), priorizar los que publican contenido para pymes.
+arrancar. **No hace falta LinkedIn para esto.** De dónde salen los nombres, en
+orden de practicidad:
 
-El primer mensaje **no vende ANMA** (está en el playbook y conviene respetarlo):
+1. **El Consejo Profesional de Ciencias Económicas** de la jurisdicción publica
+   el padrón de matriculados, con estudio y contacto. Es la fuente más limpia.
+2. **Google Maps**, buscando "estudio contable" + el barrio o la ciudad. Da
+   teléfono, mail y web, y sirve para quedarte con los estudios chicos.
+3. **La cámara de comercio local** suele tener socios contadores listados.
+4. LinkedIn, solo si ya tenés cuenta y solo para leer: "contador público" + la
+   zona, filtrando estudios de 2 a 10 personas. Es opcional.
+
+El primer contacto va por mail o por teléfono, y **no vende ANMA** (está en el
+playbook y conviene respetarlo):
 
 > Hola [nombre], trabajo con comercios y emprendedores que quieren salir de
 > Excel. ¿Tenés clientes que se pierden entre planillas y papeles? Me
@@ -295,8 +319,9 @@ publicados" por semana. Eso no va a pasar. Cambiarlo por lo que sí se hace:
 |---|---|
 | Mails a aliados (contadores, cámaras, blogs) | 5 |
 | Respuestas de aliados | registrar, sin meta |
-| Posts en LinkedIn personal | 1 |
-| Respuestas en Reddit o Quora | 2 |
+| Mensajes a la red inmediata con la guía | 1 |
+| Posteos en Google Business | 1 |
+| Respuestas en Reddit o Quora (opcional) | 2 |
 | Visitas presenciales | 10 |
 | WhatsApps en frío | 20 |
 | Demos agendadas | 3 |
@@ -312,22 +337,27 @@ el problema es el tablero, no Ana.
 
 ---
 
-**7 · Un posteo por semana en el LinkedIn de Ana** · 40 minutos · todos los viernes
+**7 · Mandar la guía a tu red inmediata, uno por semana** · 15 minutos · todos los viernes
 
-No es para vender: es para que los contadores, las cámaras y los docentes a
-los que les escribís vean que existís cuando buscan tu nombre. Es el apoyo de
-las acciones 2, 4 y 8.
+Sin red social y sin publicar nada. Es un mensaje de WhatsApp a una persona
+distinta por semana, de tu propia agenda: conocidos con un comercio, ex
+compañeros, proveedores, la contadora, el que te arregla la vidriera. Tus
+contactos son emprendedores o conocen a uno.
 
-Cuatro temas que ya están escritos y solo hay que contar en primera persona:
+La regla del playbook que importa acá: **mandá la guía, no la landing.**
+`anmahub.com/recursos/guia` es valor puro y convierte mucho más que "mirá mi
+app". Un mensaje, sin archivo adjunto y sin pitch:
 
-- Un número que la gente calcula mal (el margen real, con el ejemplo de la
-  guía). Link a `/recursos/que-es-margen-real-comercio`.
-- Cuándo Excel todavía alcanza y cuándo empieza a costar plata. Es la
-  comparación honesta, y la honestidad es lo que se comparte.
-- Algo que estás construyendo y por qué te lo pidió una clienta.
-- Un error de gestión concreto, con el arreglo de dos minutos.
+> Hola [nombre], ¿cómo andás? Armé una guía de gestión para comercios chicos
+> y me acordé de vos. Te la dejo por si te sirve o si conocés a alguien a
+> quien le sume: anmahub.com/recursos/guia
 
-*Medida:* publicados / semana, y visitas a `/recursos` con referrer LinkedIn.
+Cuatro cosas de las que podés hablar si te preguntan, todas ya escritas en
+`/recursos`: el margen real y por qué se calcula mal, cuándo Excel todavía
+alcanza y cuándo empieza a costar plata, los cinco números de cada semana, y
+cómo se le reclama un pago a un cliente sin quedar mal.
+
+*Medida:* mensajes por semana, respuestas, y visitas a `/recursos/guia`.
 
 ---
 
@@ -407,7 +437,8 @@ inventada arruina la serie.** Si no se midió, se deja en blanco.
 Para que nadie se desanime en la semana tres:
 
 - **Semanas 1 a 2** — nada visible. Se están sembrando mails y perfiles.
-- **Semanas 3 a 6** — primeras visitas de directorios y de LinkedIn. Primeras
+- **Semanas 3 a 6** — primeras visitas de los directorios y de Google
+  Business. Primeras
   respuestas de contadores y cámaras. Los clientes de este período, si hay,
   vienen del 1 a 1, no del sitio.
 - **Meses 2 a 3** — si alguna nota de terceros te incluyó, el Grupo 2 de la
@@ -437,5 +468,8 @@ Para que nadie se desanime en la semana tres:
 - **La paleta naranja de "feria" en `src/index.css` sigue abierta** y esta
   sesión no la tocó.
 - **El playbook de ventas es v1.1 de julio y tiene secciones que ya no
-  corren** (Instagram, Facebook). Vale como fuente de plantillas y de ritmo;
-  no como lista de canales vigentes.
+  corren** (Instagram, Facebook, y publicar en LinkedIn). Vale como fuente de
+  plantillas y de ritmo; no como lista de canales vigentes.
+- **Ninguna acción del plan requiere abrir ni sostener una red social.** Si una
+  propuesta futura empieza con "publicá", está fuera del tablero antes de
+  evaluarla.
