@@ -175,7 +175,17 @@ Contraste medido sobre la pantalla renderizada: **0 fallos AA** en 48 nodos de t
 
 **Ojo con esto:** la app y la landing tienen hoy dos paletas distintas. La landing es violeta + crema; los tokens de `src/index.css` siguen siendo los de "feria" con `--brand:#F2762E` naranja y `--sidebar-bg:#2A2118` calido. El login quedo del lado de la landing, que es de donde llega el usuario al apretar "Ingresar". Si se decide que la app tiene que ir a violeta, este login ya es el puente; si se decide al reves, hay que volver sobre el.
 
-**Queda un emoji** en el saludo (`<em> 👋</em>` cuando no hay nombre conocido), y la regla de la casa es que en la app no van emojis. No lo toque porque es texto.
+### Lo mismo en Regalos (18/11, repo `anma-regalos`, commit `bce070f`)
+
+Mismo tratamiento, sus colores: fondo rosa profundo `#831843` con el corte diagonal en la tinta de la casa `#1F1338`, filo rosa claro arriba y tres baldosas planas como unico adorno (eran cuatro emojis flotando: 🎁🎀✨💝). Tarjeta en `#FDF2F8`, campos blancos, acentos y boton en `#BE185D`. Los mismos tres arreglos de fondo: scroll en vez de recorte, foco visible y bordes de control que se ven. **0 fallos AA** en 41 nodos; el borde de los campos da 4,46 contra la tarjeta.
+
+Ojo con una diferencia entre los dos repos: en Hub `/landing.html` es un stub que redirige a `/`, en Regalos **es la landing de verdad**. Los links del login de Regalos estan bien como estan.
+
+### Dos cosas de contenido que no toque
+
+**Queda un emoji** en el saludo (`<em> 👋</em>` cuando no hay nombre conocido), y la regla de la casa es que en la app no van emojis. En Regalos pasa lo mismo con un 🎁. No los toque porque son texto.
+
+**El pie dice "Cifrado E2E"** con un candado, en las dos apps. E2E (punta a punta) significa que ni el servidor puede leer los datos, y con Supabase no es asi: hay cifrado en transito y en reposo, que es otra cosa y esta muy bien, pero no es lo mismo. Es una promesa de seguridad escrita en la pantalla donde la gente entrega su contrasena, asi que conviene decir lo que de verdad hace, por ejemplo "Conexion cifrada". No lo cambie porque es texto y es tuyo.
 
 ## Pendientes
 
