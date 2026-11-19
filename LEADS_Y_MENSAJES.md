@@ -27,69 +27,139 @@ preguntan "qué sistema me conviene". Está como acción 5 acá abajo.
 
 ---
 
-## Track A · Contadores · **el de mayor retorno**
+## Fuera: contadores
 
-Un contador tiene entre 30 y 80 pymes y ya les recomienda herramientas. Es el
-único canal donde una sola conversación puede traer varios clientes.
+Estaba en el plan como "el canal de mayor retorno". **Lo saco.** Es un canal
+indirecto: dependés de que un tercero se acuerde de vos, en una conversación
+que vos no ves, con un cliente que no elegiste. El retorno llega en meses y no
+lo controlás. Para un producto sin marca todavía, es el orden equivocado.
 
-### Cómo sacar 20 nombres en 15 minutos
+Lo que sigue son tres mecanismos donde **vos** generás el lead, no esperás que
+te lo pasen.
 
-No hace falta LinkedIn. Google Maps te da estudio, teléfono, mail y web, y te
-deja filtrar los chicos, que son los que te van a atender:
+---
 
-```
-https://www.google.com/maps/search/estudio+contable+Palermo+CABA
-```
+## Motor 1 · El territorio · tu ventaja más grande, y no la estás usando
 
-Cambiá el barrio y repetí. Ocho búsquedas te dan la lista entera:
-Palermo, Villa Crespo, Caballito, Belgrano, Flores, Almagro, San Telmo, Núñez.
-Si no estás en CABA, poné tu zona.
+La mayoría de los SaaS tiene el cliente ideal desparramado por todo el país.
+**Vos no.** Tu ICP está concentrado en veinte cuadras:
 
-**Quedate con los que tengan**: entre 2 y 10 personas, web propia, y que no sean
-un estudio grande. El estudio grande ya tiene sistema y no te va a dar bola.
+| Distrito | Dónde | Qué hay |
+|---|---|---|
+| **Avellaneda**, en Flores | Av. Avellaneda, Helguera, Cuenca, Bogotá | Cientos de mayoristas de indumentaria, con outlet al público |
+| **Once** | Valentín Gómez, Sarmiento, Lavalle, Jean Jaures | Bazar, regalería, deco, textil, importadores |
 
-**El padrón oficial** del Consejo Profesional de Ciencias Económicas de tu
-jurisdicción (`consejo.org.ar` en CABA) es la otra fuente, más completa pero
-más lenta de recorrer. Empezá por Maps.
+Una mañana caminando Helguera son 30 o 40 contactos cara a cara con el perfil
+exacto. Ningún canal digital te da eso con cero presupuesto.
 
-### El mensaje · primer contacto
+### Calificás de un vistazo, antes de hablar
 
-Va por mail o por teléfono. **No vende ANMA.** Si en el primer mensaje vendés,
-te contesta el 5%; si preguntás, te contesta el 30%.
+No necesitás CRM ni preguntar nada. Mirás el mostrador:
 
-> **Asunto: Una consulta sobre tus clientes que usan Excel**
->
-> Hola [nombre], soy Ana. Trabajo con comercios y emprendedores que quieren
-> salir de las planillas.
->
-> Te escribo porque me interesa entender algo desde tu lado: ¿tenés clientes
-> que te llegan con los números desordenados, con la información en cuadernos
-> y en WhatsApp? ¿Cómo lo resolvés hoy?
->
-> Lo pregunto en serio, no es la introducción de una venta. Estoy armando algo
-> para ese problema y quiero escuchar a quien lo ve todos los meses.
->
-> Gracias,
-> Ana — anmahub.com
+- **Cuaderno o carpeta con pedidos anotados a mano** → prospecto.
+- **Calculadora al lado de la caja** → prospecto.
+- **Cartel de "precio por mayor" y "precio por menor"** → prospecto fuerte: dos listas.
+- **Alguien buscando un talle en el celular, scrolleando WhatsApp** → prospecto fuerte.
+- **Terminal de facturación con sistema andando** → seguí de largo.
+- **Local de cadena o franquicia** → seguí de largo.
 
-### Cuando contestan
+### El horario decide si esto funciona
 
-Ahí sí, y recién ahí:
+Es el detalle que la mayoría pasa por alto. En Avellaneda y Once:
 
-> Te cuento qué armé: ANMA Hub, un sistema de gestión para comercios chicos.
-> Pedidos, stock, dos listas de precios, cuentas corrientes y seguimiento por
-> WhatsApp.
->
-> **No factura ante ARCA** — eso lo siguen haciendo donde lo hacen hoy. Se
-> ocupa de la operación, que es lo que te llega desordenado a vos. Y exporta
-> el detalle con el IVA discriminado en CSV, para que vos no tengas que
-> reconstruir nada: anmahub.com/recursos/sistema-de-gestion-y-facturacion
->
-> Si te sirve, te abro una cuenta completa sin cargo mientras trabajemos
-> juntos, y condición preferencial para los clientes que me derives.
+- **8 a 9:30** — están abriendo, todavía no llegaron los compradores. **Se puede hablar.**
+- **10 a 16** — están reventados de clientes. **No existís. No vayas.**
+- **Después de 17** — bajó el movimiento, el dueño queda ordenando. **Se puede hablar.**
 
-**Meta de la semana:** 10 mensajes. **Medida:** respuestas / estudios con cuenta
-abierta / clientes derivados.
+Dos bloques de dos horas, martes y jueves. No más.
+
+### Qué decir en los primeros diez segundos
+
+No se presenta el producto. Se nombra el dolor del rubro, que es siempre el
+mismo:
+
+> Hola, perdón que te interrumpa. ¿Vos llevás el pedido por mayor en cuaderno
+> o ya tenés algo? Lo pregunto porque armé algo justo para eso y quiero saber
+> si sirve o no.
+
+Si contesta "cuaderno" o "planilla", seguís. Si contesta "ya tengo sistema",
+agradecés y te vas. **Una visita que termina en 20 segundos también es un
+resultado**: descartaste y seguís.
+
+### La excusa para volver, que es lo que cierra
+
+Nadie compra en la primera visita a ese precio. Lo que te abre la segunda es
+irte con algo que hacer:
+
+> ¿Me pasás tu lista de precios? Te la dejo armada en PDF para mandar por
+> WhatsApp, sin cargo y sin compromiso. Si te sirve hablamos, y si no, te
+> quedaste con la lista.
+
+Es media hora tuya, usa el catálogo y el PDF que la app ya hace, y te deja los
+datos adentro del sistema. Volvés en tres días con algo hecho en la mano, no a
+insistir.
+
+**Meta:** 2 salidas por semana, 15 locales cada una. **Medida:** descartados en
+el momento / listas de precios que te llevaste / segundas visitas.
+
+---
+
+## Motor 2 · El producto como canal · el único que crece solo
+
+Esto estaba adelante tuyo y no lo estabas usando.
+
+**Cada presupuesto que manda un cliente tuyo abre un portal, y ese portal lo ve
+otro comercio.** Un mayorista manda entre 20 y 50 presupuestos por semana a
+compradores que son, casi todos, tu ICP: comercios chicos que revenden. Y cada
+orden de compra que le manda a su proveedor abre el portal de proveedor, que
+también es un mayorista.
+
+Un solo cliente mayorista te pone la marca enfrente de decenas de prospectos
+calificados por semana, gratis, para siempre.
+
+### Lo que estaba roto, y quedó arreglado hoy
+
+| Superficie | Antes | Ahora |
+|---|---|---|
+| Portal de **cliente** | "Hecho con ANMA" en texto gris de 10px, **sin link**. Imposible de clickear. | Link real + "¿Querés algo así para tu negocio?", igual que el de proveedor |
+| Portal de **proveedor** | Ya tenía el link, pero sin UTM: el tráfico se contaba como "otro sitio" | UTM propio |
+| `inferChannel` | **No tenía rama para portal.** Una visita desde un portal se descartaba por venir de anmahub.com | Reconoce el canal `portal` |
+
+O sea: el canal existía, no se podía clickear, y si alguien llegaba igual, no se
+medía. Ahora en `/admin` vas a ver **portal** como canal de adquisición propio.
+
+**Esto no pide trabajo tuyo.** Cuanto más usás la app con tus clientes, más
+corre solo. Es el único mecanismo de los tres que compone.
+
+**Medida:** canal `portal` en el panel de `/admin`, cada semana.
+
+---
+
+## Motor 3 · Los directorios del distrito · la lista ya está hecha
+
+No hace falta que armes la lista: alguien ya la armó, y es pública.
+
+| Fuente | Qué tiene |
+|---|---|
+| **argentino.com.ar/flores/mayoristas** | Unos **253 mayoristas de Flores** con reseñas, horario y dirección. Es la lista entera del distrito |
+| **avellanedaauntoque.com** | Plataforma gratuita del centro comercial de Av. Avellaneda: catálogos de locales mayoristas y fabricantes, con contacto directo |
+| **modatex.com.ar** | Listado de tiendas mayoristas de Avellaneda ordenado alfabéticamente |
+
+Con eso armás 250 nombres en una tarde, todos del perfil exacto, sin caminar.
+Caminar lo dejás para los que ya elegiste.
+
+**Ojo:** Distrito Moda cerró sus operaciones. Si lo ves recomendado en algún
+lado, está desactualizado.
+
+### Cómo cruzarlo con el territorio
+
+El orden que ahorra más tiempo:
+
+1. Bajás la lista del directorio y la filtrás con el criterio de reseñas.
+2. Marcás en el mapa los que están sobre la misma calle.
+3. Salís una mañana y caminás esa calle, con los nombres ya elegidos.
+
+Así una salida de dos horas son 15 visitas dirigidas, no 15 locales al azar.
 
 ---
 
@@ -297,10 +367,11 @@ depende de que un competidor te deje pasar.
 
 Cinco minutos. Una fila por semana.
 
-| Semana | Contadores | Cámaras | Comercios | Respuestas | Demos | Registros | Clientes |
+| Semana | Visitas al distrito | Listas de precios que te llevaste | Segundas visitas | Mails a cámaras | Demos | Canal portal | Clientes |
 |---|---|---|---|---|---|---|---|
-| | 10 | 3 | 20 | | 3 | 4 | 1 |
-| | | | | | | | |
+| **Meta** | 2 | 6 | 4 | 3 | 3 | mirar | 1 |
+| 24/11 | | | | | | | |
+| 01/12 | | | | | | | |
 
 **Una fila vacía es información. Una fila inventada arruina la serie.**
 
@@ -314,11 +385,12 @@ insistir más fuerte.
 
 | Día | Qué | Tiempo |
 |---|---|---|
-| Lunes | Search Console: anotar impresiones y clics. Después, 20 nombres de contadores desde Maps | 1 h |
-| Martes | Los 10 mails a contadores | 1 h |
+| Lunes | Search Console: impresiones y clics. Después, bajar 50 nombres del directorio de Flores y filtrarlos | 1,5 h |
+| **Martes 8 a 10** | Salida al distrito: 15 locales de una misma calle, ya elegidos | 2 h |
 | Miércoles | Los 3 mails a cámaras + verificar si existe el Google Business | 1,5 h |
-| Jueves | Los 4 directorios, de una sentada | 2 h |
-| Viernes | 20 comercios por WhatsApp + llenar la planilla | 2 h |
+| **Jueves 8 a 10** | Segunda salida: volvés con las listas de precios armadas | 2 h |
+| Jueves tarde | Los 4 directorios de software, de una sentada | 2 h |
+| Viernes | Seguimiento por WhatsApp de la semana + llenar la planilla | 1,5 h |
 
 **Lo primero del lunes no es un mail: es mirar Search Console.** Impresiones con
 cero clics y cero impresiones son dos problemas distintos, y hasta no ver ese
