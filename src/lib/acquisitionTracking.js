@@ -25,6 +25,9 @@ function inferChannel({ source, medium, referrer }) {
   const m = (medium || '').toLowerCase()
   const r = (referrer || '').toLowerCase()
 
+  // Portales de cliente y proveedor: el presupuesto que circula es un canal propio.
+  if (s.includes('portal')) return 'portal'
+
   if (s.includes('instagram') || s === 'ig' || r.includes('instagram.com')) return 'instagram'
   if (s.includes('whatsapp') || s === 'wa' || r.includes('wa.me') || r.includes('whatsapp')) return 'whatsapp'
   if (s.includes('facebook') || s === 'fb' || r.includes('facebook.com')) return 'facebook'

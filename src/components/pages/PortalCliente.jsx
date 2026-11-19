@@ -414,7 +414,24 @@ export default function PortalCliente() {
             Link válido hasta {new Date(data.e).toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' })}
           </div>
           <div style={{ fontSize: 10, color: '#9CA3AF', marginTop: 2 }}>
-            Hecho con <b style={{ color: '#F2762E' }}>ANMA</b>
+            Hecho con{' '}
+            <a
+              href="https://anmahub.com/?utm_source=portal-cliente&utm_medium=producto"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#F2762E', fontWeight: 700, textDecoration: 'none' }}
+            >
+              ANMA
+            </a>
+            {' · '}
+            <a
+              href="https://anmahub.com/?utm_source=portal-cliente&utm_medium=producto"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#F2762E', textDecoration: 'none' }}
+            >
+              ¿Querés algo así para tu negocio?
+            </a>
           </div>
         </div>
       </div>

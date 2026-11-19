@@ -389,7 +389,7 @@ export default function PortalProveedor() {
           <span style={S.footDot} />
           <span>Información de solo lectura</span>
           <span style={S.footDot} />
-          <a href="https://anmahub.com" style={S.footLink}>¿Querés algo así para tu negocio?</a>
+          <a href="https://anmahub.com/?utm_source=portal-proveedor&utm_medium=producto" target="_blank" rel="noopener noreferrer" style={S.footLink}>¿Querés algo así para tu negocio?</a>
         </div>
       </div>
     </div>
